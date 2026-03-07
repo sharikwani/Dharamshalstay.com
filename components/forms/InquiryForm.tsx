@@ -1,7 +1,7 @@
 'use client';
 import { useState, FormEvent } from 'react';
 import { Send, Check, AlertCircle } from 'lucide-react';
-import { getMinDate, getMinCheckoutDate } from '@/lib/utils';
+import { getMinDate, getMinCheckoutDate, enforceCheckIn, enforceCheckOut } from '@/lib/date-helpers';
 
 export default function InquiryForm({ type, propertyId, trekId, paraglidingId, title = 'Send an Inquiry', subtitle = "We'll get back within 2 hours.", className = '' }: {
   type: 'hotel' | 'taxi' | 'trek' | 'paragliding' | 'general'; propertyId?: string; trekId?: string; paraglidingId?: string; title?: string; subtitle?: string; className?: string;
@@ -11,6 +11,16 @@ export default function InquiryForm({ type, propertyId, trekId, paraglidingId, t
   const [checkOut, setCheckOut] = useState('');
   const minDate = getMinDate();
   const minCheckout = getMinCheckoutDate(checkIn);
+
+  // MOBILE FIX: enforce valid dates on change
+  function handleCheckInChange(val: string) {
+    const clamped = enforceCheckIn(val);
+    setCheckIn(clamped);
+    if (checkOut && checkOut <= clamped) setCheckOut('');
+  }
+  function handleCheckOutChange(val: string) {
+    setCheckOut(enforceCheckOut(val, checkIn));
+  }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault(); setStatus('loading');
@@ -35,12 +45,18 @@ export default function InquiryForm({ type, propertyId, trekId, paraglidingId, t
           <div className="grid grid-cols-3 gap-3">
             <div>
               <label className="block text-xs text-slate-500 mb-1">Check-in / Date</label>
-              <input type="date" value={checkIn} onChange={e => setCheckIn(e.target.value)} min={minDate}
+              <input type="date" value={checkIn}
+                onChange={e => handleCheckInChange(e.target.value)}
+                onBlur={() => { if (checkIn) setCheckIn(enforceCheckIn(checkIn)); }}
+                min={minDate}
                 className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" />
             </div>
             <div>
               <label className="block text-xs text-slate-500 mb-1">Check-out</label>
-              <input type="date" value={checkOut} onChange={e => setCheckOut(e.target.value)} min={checkIn ? minCheckout : minDate}
+              <input type="date" value={checkOut}
+                onChange={e => handleCheckOutChange(e.target.value)}
+                onBlur={() => { if (checkOut) setCheckOut(enforceCheckOut(checkOut, checkIn)); }}
+                min={checkIn ? minCheckout : minDate}
                 className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" />
             </div>
             <select name="guests" className="px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none">

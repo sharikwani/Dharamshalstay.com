@@ -1,7 +1,8 @@
 'use client';
 import { useState, FormEvent, useEffect } from 'react';
 import { Send, Check, AlertCircle } from 'lucide-react';
-import { getMinDate, getMinCheckoutDate, validateBookingDates, validateActivityDate, formatPrice } from '@/lib/utils';
+import { formatPrice } from '@/lib/utils';
+import { getMinDate, getMinCheckoutDate, validateBookingDates, validateActivityDate, enforceCheckIn, enforceCheckOut, enforceActivityDate } from '@/lib/date-helpers';
 
 interface BookingFormProps {
   category: 'hotel' | 'taxi' | 'trek' | 'paragliding';
@@ -30,11 +31,37 @@ export default function BookingForm({ category, entityId, entityName, defaultAmo
   const needsActivityDate = category === 'trek' || category === 'paragliding' || isTaxi;
   const hasDefaultAmount = typeof defaultAmount === 'number' && defaultAmount > 0;
 
-  useEffect(() => {
-    if (checkIn && checkOut && checkOut <= checkIn) {
-      setCheckOut('');
-    }
-  }, [checkIn]);
+  // ===== MOBILE FIX: enforce valid dates on every change =====
+  function handleCheckInChange(value: string) {
+    const clamped = enforceCheckIn(value);
+    setCheckIn(clamped);
+    // If check-out is now invalid, clear it
+    if (checkOut && checkOut <= clamped) setCheckOut('');
+    setDateError('');
+  }
+
+  function handleCheckOutChange(value: string) {
+    const clamped = enforceCheckOut(value, checkIn);
+    setCheckOut(clamped);
+    setDateError('');
+  }
+
+  function handleActivityDateChange(value: string) {
+    const clamped = enforceActivityDate(value);
+    setActivityDate(clamped);
+    setDateError('');
+  }
+
+  // Re-enforce on blur (catches edge cases with programmatic date pickers)
+  function handleCheckInBlur() {
+    if (checkIn) setCheckIn(enforceCheckIn(checkIn));
+  }
+  function handleCheckOutBlur() {
+    if (checkOut) setCheckOut(enforceCheckOut(checkOut, checkIn));
+  }
+  function handleActivityDateBlur() {
+    if (activityDate) setActivityDate(enforceActivityDate(activityDate));
+  }
 
   function validateDates(): boolean {
     setDateError('');
@@ -128,16 +155,23 @@ export default function BookingForm({ category, entityId, entityName, defaultAmo
         </div>
         <input name="guest_email" type="email" placeholder="Email" className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none" />
 
+        {/* Hotel dates — MOBILE FIX: onChange clamps + onBlur re-validates */}
         {needsDates && (
           <div className="grid grid-cols-3 gap-3">
             <div>
               <label className="block text-xs font-medium text-slate-600 mb-1">Check-in *</label>
-              <input type="date" value={checkIn} onChange={e => setCheckIn(e.target.value)} min={minDate} required
+              <input type="date" value={checkIn}
+                onChange={e => handleCheckInChange(e.target.value)}
+                onBlur={handleCheckInBlur}
+                min={minDate} required
                 className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" />
             </div>
             <div>
               <label className="block text-xs font-medium text-slate-600 mb-1">Check-out *</label>
-              <input type="date" value={checkOut} onChange={e => setCheckOut(e.target.value)} min={minCheckout} required
+              <input type="date" value={checkOut}
+                onChange={e => handleCheckOutChange(e.target.value)}
+                onBlur={handleCheckOutBlur}
+                min={minCheckout} required
                 className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" />
             </div>
             <div>
@@ -149,11 +183,15 @@ export default function BookingForm({ category, entityId, entityName, defaultAmo
           </div>
         )}
 
+        {/* Activity date — MOBILE FIX: same enforcement */}
         {needsActivityDate && (
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-medium text-slate-600 mb-1">{isTaxi ? 'Pickup Date *' : 'Activity Date *'}</label>
-              <input type="date" value={activityDate} onChange={e => setActivityDate(e.target.value)} min={minDate} required
+              <input type="date" value={activityDate}
+                onChange={e => handleActivityDateChange(e.target.value)}
+                onBlur={handleActivityDateBlur}
+                min={minDate} required
                 className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" />
             </div>
             {isTaxi ? (
@@ -179,7 +217,6 @@ export default function BookingForm({ category, entityId, entityName, defaultAmo
           </div>
         )}
 
-        {/* Amount input — shown when no fixed defaultAmount */}
         {!hasDefaultAmount && (
           <div>
             <label className="block text-xs font-medium text-slate-600 mb-1">Estimated Amount (₹)</label>

@@ -1,10 +1,10 @@
 'use client';
 import { useState } from 'react';
-import Image from 'next/image';
 import { Car, Search, MapPin, Clock, MessageCircle, Plane, Route as RouteIcon, Map } from 'lucide-react';
 import { Breadcrumb, FAQSection } from '@/components/ui/Cards';
 import BookingForm from '@/components/forms/BookingForm';
-import { formatPrice, getWhatsAppLink, getMinDate, cn } from '@/lib/utils';
+import { formatPrice, getWhatsAppLink, cn } from '@/lib/utils';
+import { getMinDate, enforceActivityDate } from '@/lib/date-helpers';
 
 const TRIP_TYPES = [
   { key: 'all', label: 'All Routes', icon: Car },
@@ -26,6 +26,11 @@ export default function TaxiSearch({ taxiRoutes }: { taxiRoutes: any[] }) {
   const [searchTo, setSearchTo] = useState('');
   const [date, setDate] = useState('');
   const minDate = getMinDate();
+
+  // MOBILE FIX: clamp date on change and blur so mobile pickers can't select past dates
+  function handleDateChange(val: string) {
+    setDate(enforceActivityDate(val));
+  }
 
   const filteredRoutes = activeType === 'all'
     ? taxiRoutes
@@ -59,7 +64,11 @@ export default function TaxiSearch({ taxiRoutes }: { taxiRoutes: any[] }) {
             </div>
             <div className="flex-1">
               <label className="text-xs font-semibold text-slate-500 uppercase mb-1 block">Date</label>
-              <input type="date" value={date} onChange={e => setDate(e.target.value)} min={minDate} className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" />
+              <input type="date" value={date}
+                onChange={e => handleDateChange(e.target.value)}
+                onBlur={() => { if (date) setDate(enforceActivityDate(date)); }}
+                min={minDate}
+                className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" />
             </div>
           </div>
         </div>

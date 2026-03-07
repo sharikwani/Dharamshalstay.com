@@ -2,12 +2,13 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Building, Clock, CheckCircle, Car, Mountain, Users, MessageSquare, LogOut, AlertTriangle, Eye, Wind, ShoppingBag, DollarSign, BarChart3 } from 'lucide-react';
+import { Building, Clock, CheckCircle, Car, Mountain, Users, MessageSquare, LogOut, AlertTriangle, Eye, Wind, ShoppingBag, DollarSign, User } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { formatPrice, formatDateTime, STATUS_COLORS, statusLabel, cn } from '@/lib/utils';
 
 export default function AdminDashboard() {
   const router = useRouter();
+  const [adminName, setAdminName] = useState('');
   const [stats, setStats] = useState<any>({});
   const [pending, setPending] = useState<any[]>([]);
   const [recentBookings, setRecentBookings] = useState<any[]>([]);
@@ -17,8 +18,9 @@ export default function AdminDashboard() {
     async function load() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { router.push('/admin/login'); return; }
-      const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+      const { data: profile } = await supabase.from('profiles').select('role, full_name').eq('id', user.id).single();
       if (profile?.role !== 'admin') { router.push('/admin/login'); return; }
+      setAdminName(profile.full_name || user.user_metadata?.full_name || user.email || 'Admin');
 
       const [propRes, pendRes, bookRes, inqRes] = await Promise.all([
         supabase.from('properties').select('id, status', { count: 'exact' }),
@@ -46,16 +48,26 @@ export default function AdminDashboard() {
     load();
   }, [router]);
 
-  if (loading) return <div className="min-h-[60vh] flex items-center justify-center"><p>Loading...</p></div>;
+  if (loading) return <div className="min-h-[60vh] flex items-center justify-center"><div className="w-8 h-8 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin" /></div>;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      {/* Header with admin name */}
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-heading font-bold text-slate-900">Admin Dashboard</h1>
           <p className="text-slate-600 text-sm">Manage properties, bookings, taxis, treks, paragliding, and more.</p>
         </div>
-        <button onClick={async () => { await supabase.auth.signOut(); router.push('/admin/login'); }} className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-red-600"><LogOut className="h-4 w-4" /> Logout</button>
+        <div className="flex items-center gap-4">
+          <div className="hidden sm:flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2">
+            <User className="h-4 w-4 text-brand-600" />
+            <span className="text-sm font-medium text-slate-700">{adminName}</span>
+          </div>
+          <button onClick={async () => { await supabase.auth.signOut(); router.push('/admin/login'); }}
+            className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-red-600 px-3 py-2 rounded-lg hover:bg-red-50 transition-colors">
+            <LogOut className="h-4 w-4" /> Logout
+          </button>
+        </div>
       </div>
 
       {/* Stats */}
@@ -91,9 +103,8 @@ export default function AdminDashboard() {
         ))}
       </div>
 
-      {/* Pending + Recent Bookings side by side */}
+      {/* Pending + Recent Bookings */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Pending submissions */}
         <div className="bg-white border border-slate-200 rounded-xl p-6">
           <h2 className="text-lg font-heading font-bold text-slate-900 mb-4 flex items-center gap-2">
             <Clock className="h-5 w-5 text-amber-500" /> Pending Submissions ({pending.length})
@@ -113,7 +124,6 @@ export default function AdminDashboard() {
           )}
         </div>
 
-        {/* Recent bookings */}
         <div className="bg-white border border-slate-200 rounded-xl p-6">
           <h2 className="text-lg font-heading font-bold text-slate-900 mb-4 flex items-center gap-2">
             <ShoppingBag className="h-5 w-5 text-purple-500" /> Recent Bookings
@@ -135,7 +145,7 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* More management links */}
+      {/* Management links */}
       <div className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Link href="/admin/properties" className="bg-white border border-slate-200 rounded-xl p-4 hover:shadow-md text-center"><Building className="h-6 w-6 text-brand-600 mx-auto mb-2" /><p className="font-semibold text-sm">All Properties</p></Link>
         <Link href="/admin/inquiries" className="bg-white border border-slate-200 rounded-xl p-4 hover:shadow-md text-center"><MessageSquare className="h-6 w-6 text-purple-600 mx-auto mb-2" /><p className="font-semibold text-sm">Inquiries</p></Link>
