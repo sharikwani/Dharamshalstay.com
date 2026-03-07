@@ -332,8 +332,8 @@ export const ID_TYPES = [
 export const UNSPLASH_IMAGES = {
   hero: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1920&q=80',
   dharamshala: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=800&q=80',
-  mcleodganj: 'https://images.unsplash.com/photo-1573408259889-e93e789e3643?w=800&q=80',
-  bhagsu: 'https://images.unsplash.com/photo-1590050752117-238cb4f94e78?w=800&q=80',
+  mcleodganj: 'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=800&q=80',
+  bhagsu: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800&q=80',
   dharamkot: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80',
   naddi: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80',
   triund: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=800&q=80',
@@ -354,3 +354,4 @@ export const UNSPLASH_IMAGES = {
   prayer_flags: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=600&q=80',
   paragliding: 'https://images.unsplash.com/photo-1503264116251-35a269479413?w=800&q=80',
 } as const;
+

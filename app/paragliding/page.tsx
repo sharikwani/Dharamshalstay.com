@@ -29,7 +29,7 @@ const PACKAGES = [
     destination: 'Dharamshala', type: 'tandem', duration: '10–20 min flight',
     altitude: 'Launch at 1,800m', price: 2500,
     description: 'A shorter but equally thrilling flight from the hills above Dharamshala. Perfect for first-timers wanting a taste of the skies.',
-    image: 'https://images.unsplash.com/photo-1540575467063-178a50a2df73?w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=80',
     includes: ['Certified pilot', 'Safety equipment', 'GoPro video', 'Transport'],
     featured: true,
   },
@@ -159,3 +159,4 @@ export default function ParaglidingPage() {
     </>
   );
 }
+

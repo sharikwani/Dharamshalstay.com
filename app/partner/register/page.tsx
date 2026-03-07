@@ -91,3 +91,4 @@ export default function PartnerRegister() {
     </div>
   );
 }
+
