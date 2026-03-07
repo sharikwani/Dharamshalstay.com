@@ -3,18 +3,101 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { MapPin, Clock, Ruler, Mountain, Calendar, MessageCircle } from 'lucide-react';
 import { Breadcrumb, FAQSection, TrekCard } from '@/components/ui/Cards';
-import InquiryForm from '@/components/forms/InquiryForm';
+import BookingForm from '@/components/forms/BookingForm';
 import JsonLd from '@/components/seo/JsonLd';
-import { getTrekBySlug, getAllTrekSlugs, treks } from '@/data/treks';
+import { getTrekBySlug, getPublishedTreks } from '@/lib/db';
 import { generateSEO, breadcrumbSchema, faqSchema } from '@/lib/seo';
 import { formatPrice, getWhatsAppLink, cn } from '@/lib/utils';
+
+export const revalidate = 60;
+export const dynamicParams = true;
+
 interface Props { params: { slug: string } }
-export function generateStaticParams() { return getAllTrekSlugs().map(slug => ({ slug })); }
-export function generateMetadata({ params }: Props): Metadata { const t = getTrekBySlug(params.slug); if (!t) return {}; return generateSEO({ title: t.meta_title, description: t.meta_description, path: `/treks/${t.slug}` }); }
-export default function TrekPage({ params }: Props) {
-  const trek = getTrekBySlug(params.slug);
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const t = await getTrekBySlug(params.slug);
+  if (!t) return {};
+  return generateSEO({ title: t.meta_title || t.name, description: t.meta_description || t.short_description, path: `/treks/${t.slug}` });
+}
+
+export default async function TrekPage({ params }: Props) {
+  const trek = await getTrekBySlug(params.slug);
   if (!trek) notFound();
-  const others = treks.filter(t => t.slug !== trek.slug);
+
+  const allTreks = await getPublishedTreks();
+  const others = allTreks.filter((t: any) => t.slug !== trek.slug);
   const dc: Record<string, string> = { easy: 'bg-green-100 text-green-700', moderate: 'bg-amber-100 text-amber-700', hard: 'bg-red-100 text-red-700', expert: 'bg-purple-100 text-purple-700' };
-  return (<><JsonLd data={[breadcrumbSchema([{ name: 'Home', href: '/' }, { name: 'Treks', href: '/treks' }, { name: trek.name, href: `/treks/${trek.slug}` }]), ...(trek.faqs.length ? [faqSchema(trek.faqs)] : [])]} /><section className="relative h-[280px]"><Image src={trek.images[0]} alt={trek.name} fill className="object-cover" /><div className="absolute inset-0 bg-brand-950/60" /><div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 h-full flex flex-col justify-end pb-8 text-white"><Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Treks', href: '/treks' }, { label: trek.name }]} /><h1 className="text-3xl font-heading font-bold">{trek.name}</h1><div className="flex flex-wrap gap-3 mt-2 text-sm"><span className={cn('px-2 py-0.5 rounded-full font-medium', dc[trek.difficulty])}>{trek.difficulty}</span><span className="text-slate-300">{trek.duration}</span><span className="text-slate-300">{trek.max_altitude}</span></div><p className="mt-2 text-xl font-bold">{formatPrice(trek.price_per_person)} <span className="text-sm font-normal text-slate-300">/ person</span></p></div></section><div className="max-w-7xl mx-auto px-4 sm:px-6 py-10"><div className="grid grid-cols-1 lg:grid-cols-3 gap-8"><div className="lg:col-span-2 space-y-8"><div><h2 className="text-xl font-heading font-semibold mb-3">Overview</h2><p className="text-slate-600 whitespace-pre-line">{trek.description}</p></div><div><h2 className="text-xl font-heading font-semibold mb-3">Itinerary</h2>{trek.itinerary.map(d => <div key={d.day} className="border border-slate-200 rounded-xl p-4 mb-3"><h3 className="font-semibold">Day {d.day}: {d.title}</h3><p className="text-sm text-slate-600">{d.description}</p></div>)}</div><div className="grid grid-cols-2 gap-6"><div><h3 className="font-semibold mb-2">Included</h3><ul className="space-y-1">{trek.includes.map(i => <li key={i} className="text-sm flex gap-2"><span className="text-green-500">✓</span>{i}</li>)}</ul></div><div><h3 className="font-semibold mb-2">Not Included</h3><ul className="space-y-1">{trek.excludes.map(e => <li key={e} className="text-sm flex gap-2"><span className="text-red-400">✗</span>{e}</li>)}</ul></div></div>{trek.faqs.length > 0 && <div><h2 className="text-xl font-heading font-semibold mb-3">FAQs</h2><FAQSection faqs={trek.faqs} /></div>}</div><div><div className="sticky top-20 space-y-4"><InquiryForm type="trek" trekId={trek.id} title={`Book ${trek.name}`} /><a href={getWhatsAppLink(`Interested in ${trek.name}`)} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-green-500 text-white py-3 rounded-xl font-medium hover:bg-green-600 w-full"><MessageCircle className="h-4 w-4" /> WhatsApp</a></div></div></div>{others.length > 0 && <div className="mt-12"><h2 className="text-2xl font-heading font-bold mb-4">More Treks</h2><div className="grid grid-cols-1 sm:grid-cols-2 gap-6">{others.map(t => <TrekCard key={t.id} trek={t} />)}</div></div>}</div></>);
+
+  return (
+    <>
+      <JsonLd data={[
+        breadcrumbSchema([{ name: 'Home', href: '/' }, { name: 'Treks', href: '/treks' }, { name: trek.name, href: `/treks/${trek.slug}` }]),
+        ...(trek.faqs?.length ? [faqSchema(trek.faqs)] : []),
+      ]} />
+
+      <section className="relative h-[280px]">
+        <Image src={trek.images?.[0] || 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=1200&q=80'} alt={trek.name} fill className="object-cover" />
+        <div className="absolute inset-0 bg-brand-950/60" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 h-full flex flex-col justify-end pb-8 text-white">
+          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Treks', href: '/treks' }, { label: trek.name }]} />
+          <h1 className="text-3xl font-heading font-bold">{trek.name}</h1>
+          <div className="flex flex-wrap gap-3 mt-2 text-sm">
+            <span className={cn('px-2 py-0.5 rounded-full font-medium', dc[trek.difficulty] || '')}>{trek.difficulty}</span>
+            <span className="text-slate-300">{trek.duration}</span>
+            <span className="text-slate-300">{trek.max_altitude}</span>
+          </div>
+          <p className="mt-2 text-xl font-bold">{formatPrice(trek.price_per_person)} <span className="text-sm font-normal text-slate-300">/ person</span></p>
+        </div>
+      </section>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 space-y-8">
+            <div><h2 className="text-xl font-heading font-semibold mb-3">Overview</h2><p className="text-slate-600 whitespace-pre-line">{trek.description}</p></div>
+            {trek.itinerary?.length > 0 && (
+              <div>
+                <h2 className="text-xl font-heading font-semibold mb-3">Itinerary</h2>
+                {trek.itinerary.map((d: any) => (
+                  <div key={d.day} className="border border-slate-200 rounded-xl p-4 mb-3">
+                    <h3 className="font-semibold">Day {d.day}: {d.title}</h3>
+                    <p className="text-sm text-slate-600">{d.description}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+            <div className="grid grid-cols-2 gap-6">
+              {trek.includes?.length > 0 && (
+                <div>
+                  <h3 className="font-semibold mb-2">Included</h3>
+                  <ul className="space-y-1">{trek.includes.map((i: string) => <li key={i} className="text-sm flex gap-2"><span className="text-green-500">✓</span>{i}</li>)}</ul>
+                </div>
+              )}
+              {trek.excludes?.length > 0 && (
+                <div>
+                  <h3 className="font-semibold mb-2">Not Included</h3>
+                  <ul className="space-y-1">{trek.excludes.map((e: string) => <li key={e} className="text-sm flex gap-2"><span className="text-red-400">✗</span>{e}</li>)}</ul>
+                </div>
+              )}
+            </div>
+            {trek.faqs?.length > 0 && <div><h2 className="text-xl font-heading font-semibold mb-3">FAQs</h2><FAQSection faqs={trek.faqs} /></div>}
+          </div>
+          <div>
+            <div className="sticky top-20 space-y-4">
+              <BookingForm category="trek" entityId={trek.id} entityName={trek.name} defaultAmount={trek.price_per_person} />
+              <a href={getWhatsAppLink(`Interested in ${trek.name}`)} target="_blank" rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 bg-green-500 text-white py-3 rounded-xl font-medium hover:bg-green-600 w-full">
+                <MessageCircle className="h-4 w-4" /> WhatsApp
+              </a>
+            </div>
+          </div>
+        </div>
+        {others.length > 0 && (
+          <div className="mt-12">
+            <h2 className="text-2xl font-heading font-bold mb-4">More Treks</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">{others.map((t: any) => <TrekCard key={t.id} trek={t} />)}</div>
+          </div>
+        )}
+      </div>
+    </>
+  );
 }
