@@ -11,4 +11,3 @@ export const blogPosts: BlogPost[] = [
 export function getBlogBySlug(slug: string) { return blogPosts.find((b) => b.slug === slug); }
 export function getFeaturedBlogPosts() { return blogPosts.filter((b) => b.featured); }
 export function getAllBlogSlugs() { return blogPosts.map((b) => b.slug); }
-

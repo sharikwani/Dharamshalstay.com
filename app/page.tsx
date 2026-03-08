@@ -25,7 +25,6 @@ import {
 import HeroSearch from '@/components/sections/HeroSearch';
 import JsonLd from '@/components/seo/JsonLd';
 import { getDestinations, getFeaturedTreks } from '@/lib/db';
-import { getFeaturedBlogPosts } from '@/data/blog';
 import { testimonials, homepageFAQs } from '@/data/testimonials';
 import { faqSchema } from '@/lib/seo';
 import { getWhatsAppLink } from '@/lib/utils';
@@ -34,17 +33,16 @@ import { UNSPLASH_IMAGES } from '@/types';
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const [destinations, featuredTreks] = await Promise.all([
+  const [destinations] = await Promise.all([
     getDestinations(),
     getFeaturedTreks(),
   ]);
-  const featuredBlogs = getFeaturedBlogPosts();
 
   return (
     <>
       <JsonLd data={faqSchema(homepageFAQs)} />
 
-      {/* ===== HERO — Premium tourism-first design ===== */}
+      {/* HERO */}
       <section className="relative min-h-[600px] lg:min-h-[680px] flex items-center overflow-hidden">
         <Image
           src={UNSPLASH_IMAGES.hero}
@@ -56,12 +54,14 @@ export default async function HomePage() {
         />
         <div className="absolute inset-0 bg-gradient-to-br from-brand-950/80 via-brand-950/50 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent" />
+
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full py-20 lg:py-28">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md text-white text-xs font-medium px-3 py-1.5 rounded-full mb-6 border border-white/20">
               <Sparkles className="h-3.5 w-3.5 text-amber-300" />
               Dharamshala&apos;s Only Local Travel Marketplace
             </div>
+
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold text-white leading-[1.1] mb-5">
               Your Himalayan
               <br />
@@ -69,17 +69,19 @@ export default async function HomePage() {
                 Adventure Starts Here
               </span>
             </h1>
+
             <p className="text-lg lg:text-xl text-blue-100/90 mb-10 max-w-2xl leading-relaxed">
-              Hotels, treks, paragliding &amp; taxis — handpicked by locals
+              Hotels, treks, paragliding and taxis — handpicked by locals
               who&apos;ve lived every trail, tasted every café, and watched every
               sunrise in the Kangra Valley.
             </p>
           </div>
+
           <HeroSearch />
         </div>
       </section>
 
-      {/* ===== WHY BOOK WITH US — Trust strip ===== */}
+      {/* WHY BOOK WITH US */}
       <section className="py-10 bg-white relative -mt-6 z-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8">
@@ -121,7 +123,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ===== WHAT MAKES US DIFFERENT ===== */}
+      {/* WHAT MAKES US DIFFERENT */}
       <section className="py-16 lg:py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12">
@@ -134,6 +136,7 @@ export default async function HomePage() {
               driver.
             </p>
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               {
@@ -179,7 +182,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ===== BEST AREAS TO STAY ===== */}
+      {/* BEST AREAS TO STAY */}
       <section className="py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <SectionHeading
@@ -202,7 +205,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ===== EXPERIENCES — Trek, Paragliding, Taxi ===== */}
+      {/* EXPERIENCES */}
       <section className="py-16 lg:py-20 bg-brand-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12">
@@ -214,6 +217,7 @@ export default async function HomePage() {
               experiences.
             </p>
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               {
@@ -235,7 +239,7 @@ export default async function HomePage() {
               },
               {
                 icon: Car,
-                title: 'Airport & Outstation Taxis',
+                title: 'Airport and Outstation Taxis',
                 desc: 'Gaggal Airport, Pathankot, Delhi, Manali — reliable drivers who know every mountain road.',
                 href: '/taxi',
                 image: UNSPLASH_IMAGES.taxi,
@@ -275,7 +279,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ===== COMBO OFFERS / PACKAGES ===== */}
+      {/* COMBO OFFERS */}
       <section className="py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12">
@@ -286,6 +290,7 @@ export default async function HomePage() {
               Exclusive deals you won&apos;t find on any other platform.
             </p>
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               {
@@ -345,6 +350,7 @@ export default async function HomePage() {
               </div>
             ))}
           </div>
+
           <p className="text-center text-sm text-slate-500 mt-6">
             All packages customizable.{' '}
             <a
@@ -359,7 +365,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ===== SEASONAL HIGHLIGHTS ===== */}
+      {/* SEASONAL HIGHLIGHTS */}
       <section className="py-16 lg:py-20 bg-gradient-to-br from-blue-50 via-white to-amber-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12">
@@ -371,6 +377,7 @@ export default async function HomePage() {
               and perfect trekking weather.
             </p>
           </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {[
               {
@@ -409,7 +416,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ===== TESTIMONIALS ===== */}
+      {/* TESTIMONIALS */}
       <section className="py-16 lg:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <SectionHeading
@@ -424,7 +431,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ===== LIST YOUR PROPERTY CTA ===== */}
+      {/* LIST YOUR PROPERTY CTA */}
       <section className="py-16 bg-brand-900 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <Building className="h-10 w-10 text-orange-400 mx-auto mb-4" />
@@ -444,7 +451,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ===== FAQ ===== */}
+      {/* FAQ */}
       <section className="py-16 lg:py-20 bg-slate-50">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <SectionHeading title="Frequently Asked Questions" />
@@ -452,7 +459,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ===== FINAL CTA ===== */}
+      {/* FINAL CTA */}
       <section className="py-16 bg-brand-600 text-white">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-4">
@@ -470,9 +477,7 @@ export default async function HomePage() {
               Browse Hotels
             </Link>
             <a
-              href={getWhatsAppLink(
-                'Hi! Help me plan my Dharamshala trip.',
-              )}
+              href={getWhatsAppLink('Hi! Help me plan my Dharamshala trip.')}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 bg-green-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-green-600 transition-colors"

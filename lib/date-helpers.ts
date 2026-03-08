@@ -64,4 +64,3 @@ export function validateActivityDate(date: string): { valid: boolean; error?: st
 export function enforceActivityDate(value: string): string {
   return clampDateToMin(value, getTodayIST());
 }
-

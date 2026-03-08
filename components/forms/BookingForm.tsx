@@ -256,4 +256,3 @@ export default function BookingForm({ category, entityId, entityName, defaultAmo
     </div>
   );
 }
-

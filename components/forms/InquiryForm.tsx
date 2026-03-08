@@ -80,4 +80,3 @@ export default function InquiryForm({ type, propertyId, trekId, paraglidingId, t
     </div>
   );
 }
-

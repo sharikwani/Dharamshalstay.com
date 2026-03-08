@@ -112,4 +112,3 @@ export const STATUS_COLORS: Record<string, string> = {
 export function statusLabel(s: string): string {
   return (s || '').replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 }
-

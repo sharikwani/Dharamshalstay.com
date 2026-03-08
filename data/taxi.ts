@@ -12,4 +12,3 @@ export const taxiRoutes: TaxiRoute[] = [
 ];
 
 export function getTaxiRoutesByType(type: string) { return taxiRoutes.filter((r) => r.route_type === type); }
-

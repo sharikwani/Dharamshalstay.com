@@ -15,4 +15,3 @@ export const homepageFAQs: FAQ[] = [
   { question: 'Is Dharamshala safe for solo travellers?', answer: 'Yes, very safe including for solo women. Large international tourist community and friendly locals.' },
   { question: 'How do I reach Dharamshala?', answer: 'Fly to Gaggal Airport, train to Pathankot + drive 85 km, or overnight Volvo bus from Delhi/Chandigarh.' },
 ];
-

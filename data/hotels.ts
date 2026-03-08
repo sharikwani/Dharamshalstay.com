@@ -117,4 +117,3 @@ export function getHotelBySlug(slug: string) { return hotels.find((h) => h.slug 
 export function getHotelsByDestination(slug: string) { return hotels.filter((h) => h.destination_slug === slug); }
 export function getFeaturedHotels() { return hotels.filter((h) => h.featured); }
 export function getAllHotelSlugs() { return hotels.map((h) => h.slug); }
-

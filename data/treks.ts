@@ -42,4 +42,3 @@ export const treks: Trek[] = [
 export function getTrekBySlug(slug: string) { return treks.find((t) => t.slug === slug); }
 export function getFeaturedTreks() { return treks.filter((t) => t.featured); }
 export function getAllTrekSlugs() { return treks.map((t) => t.slug); }
-

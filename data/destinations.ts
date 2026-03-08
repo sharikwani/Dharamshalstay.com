@@ -72,4 +72,3 @@ export const destinations: Destination[] = [
 
 export function getDestinationBySlug(slug: string): Destination | undefined { return destinations.find((d) => d.slug === slug); }
 export function getAllDestinationSlugs(): string[] { return destinations.map((d) => d.slug); }
-

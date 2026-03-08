@@ -27,4 +27,3 @@ export const DESTINATION_LINKS = [
 
 export const BOOKING_CATEGORIES = ['hotel', 'taxi', 'trek', 'paragliding'] as const;
 export type BookingCategory = (typeof BOOKING_CATEGORIES)[number];
-
