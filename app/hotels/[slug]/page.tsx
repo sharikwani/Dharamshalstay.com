@@ -73,14 +73,25 @@ export default async function HotelDetailPage({ params }: Props) {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 mb-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-2 rounded-xl overflow-hidden h-[300px] md:h-[400px]">
           <div className="md:col-span-2 relative bg-slate-200">
-            <Image src={primaryImg} alt={hotel.name} fill className="object-cover" priority sizes="(max-width:768px) 100vw, 66vw"
-              onError={(e: any) => { e.target.src = FALLBACK_IMG; }} />
+            <Image
+              src={primaryImg}
+              alt={hotel.name}
+              fill
+              className="object-cover"
+              priority
+              sizes="(max-width:768px) 100vw, 66vw"
+            />
           </div>
           <div className="hidden md:grid grid-rows-2 gap-2">
             {images.slice(1, 3).map((img: any, i: number) => (
               <div key={i} className="relative bg-slate-200">
-                <Image src={img.url || FALLBACK_IMG} alt={img.alt || hotel.name} fill className="object-cover" sizes="33vw"
-                  onError={(e: any) => { e.target.src = FALLBACK_IMG; }} />
+                <Image
+                  src={img.url || FALLBACK_IMG}
+                  alt={img.alt || hotel.name}
+                  fill
+                  className="object-cover"
+                  sizes="33vw"
+                />
               </div>
             ))}
             {images.length < 3 && (
@@ -144,15 +155,20 @@ export default async function HotelDetailPage({ params }: Props) {
                 <h2 className="text-xl font-heading font-semibold mb-4">Choose Your Room</h2>
                 <div className="space-y-4">
                   {hotel.rooms.map((room: any, i: number) => {
-                    const roomImg = room.images?.[0] || images[0]?.url || FALLBACK_IMG;
+                    const roomImg = room.images?.[0]?.url || images[0]?.url || FALLBACK_IMG;
                     const mealLabel = room.meal_plan === 'cp' ? 'Breakfast Included' : room.meal_plan === 'map' ? 'Breakfast + Dinner' : room.meal_plan === 'ap' ? 'All Meals Included' : 'Room Only';
                     return (
                       <div key={i} className="border border-slate-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow">
                         <div className="flex flex-col sm:flex-row">
                           {/* Left: Room Photo */}
                           <div className="relative w-full sm:w-56 lg:w-64 aspect-[4/3] sm:aspect-auto sm:min-h-[200px] bg-slate-100 shrink-0">
-                            <Image src={roomImg} alt={room.name || 'Room'} fill className="object-cover" sizes="(max-width:640px) 100vw, 256px"
-                              onError={(e: any) => { e.target.src = FALLBACK_IMG; }} />
+                            <Image
+                              src={roomImg}
+                              alt={room.name || 'Room'}
+                              fill
+                              className="object-cover"
+                              sizes="(max-width:640px) 100vw, 256px"
+                            />
                             {room.images?.length > 1 && (
                               <span className="absolute bottom-2 left-2 bg-black/60 text-white text-[10px] px-2 py-0.5 rounded-full">
                                 +{room.images.length - 1} photos
@@ -274,4 +290,3 @@ export default async function HotelDetailPage({ params }: Props) {
     </>
   );
 }
-
