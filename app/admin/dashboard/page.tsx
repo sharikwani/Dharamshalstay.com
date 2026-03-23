@@ -142,7 +142,7 @@ export default function AdminDashboard() {
               ))}
             </div>
           )}
-          <Link href="/admin/bookings" className="block text-center text-sm text-brand-600 font-medium mt-4 hover:text-brand-700">View All Bookings -></Link>
+          <Link href="/admin/bookings" className="block text-center text-sm text-brand-600 font-medium mt-4 hover:text-brand-700">View All Bookings {'->'}</Link>
         </div>
       </div>
 
