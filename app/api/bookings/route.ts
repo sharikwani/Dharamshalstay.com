@@ -30,6 +30,8 @@ const schema = z.object({
   payment_method: z.enum(['online', 'offline', 'pay_at_hotel', 'partial_online']).default('offline'),
   booking_source: z.enum(['website', 'whatsapp', 'phone', 'walkin', 'admin']).default('website'),
   commission_pct: z.number().min(0).max(100).default(10),
+  user_id: z.string().uuid().optional().nullable(),
+  room_name: z.string().optional(),
 });
 
 export async function POST(req: NextRequest) {
@@ -97,6 +99,8 @@ export async function POST(req: NextRequest) {
         commission_pct: data.commission_pct,
         commission_amount,
         commission_status,
+        user_id: data.user_id || null,
+        room_name: data.room_name || null,
       }).select().single();
 
       if (error) {
@@ -130,7 +134,7 @@ export async function POST(req: NextRequest) {
 
       return NextResponse.json({ success: true, booking_ref: booking.booking_ref, booking_id: booking.id });
     } else {
-      console.log('📩 Booking (no Supabase):', JSON.stringify(data, null, 2));
+      console.log('[Booking] No Supabase:', JSON.stringify(data, null, 2));
       return NextResponse.json({ success: true, booking_ref: 'BKG-DEMO-00001' });
     }
   } catch (err) {
