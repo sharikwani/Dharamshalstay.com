@@ -1,6 +1,6 @@
 'use client';
-import { useState, FormEvent } from 'react';
-import { Send, Check, AlertCircle, CreditCard, Loader2, Building } from 'lucide-react';
+import { useState, useMemo, FormEvent } from 'react';
+import { Send, Check, AlertCircle, CreditCard, Loader2, Building, Moon } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
 import { supabase } from '@/lib/supabase';
 import { getMinDate, getMinCheckoutDate, validateBookingDates, validateActivityDate, enforceCheckIn, enforceCheckOut, enforceActivityDate } from '@/lib/date-helpers';
@@ -9,13 +9,22 @@ interface BookingFormProps {
   category: 'hotel' | 'taxi' | 'trek' | 'paragliding';
   entityId?: string;
   entityName?: string;
+  pricePerNight?: number;
   defaultAmount?: number;
   roomName?: string;
   commissionPct?: number;
   className?: string;
 }
 
-export default function BookingForm({ category, entityId, entityName, defaultAmount, roomName, commissionPct = 10, className = '' }: BookingFormProps) {
+function calcNights(checkIn: string, checkOut: string): number {
+  if (!checkIn || !checkOut) return 0;
+  const d1 = new Date(checkIn);
+  const d2 = new Date(checkOut);
+  const diff = Math.round((d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
+  return diff > 0 ? diff : 0;
+}
+
+export default function BookingForm({ category, entityId, entityName, pricePerNight, defaultAmount, roomName, commissionPct = 10, className = '' }: BookingFormProps) {
   const [status, setStatus] = useState<'idle' | 'loading' | 'paying' | 'success' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
   const [bookingRef, setBookingRef] = useState('');
@@ -23,7 +32,7 @@ export default function BookingForm({ category, entityId, entityName, defaultAmo
   const [checkOut, setCheckOut] = useState('');
   const [activityDate, setActivityDate] = useState('');
   const [dateError, setDateError] = useState('');
-  const [amount, setAmount] = useState<number>(defaultAmount ?? 0);
+  const [customAmount, setCustomAmount] = useState(0);
   const [payMethod, setPayMethod] = useState('pay_at_hotel');
 
   const minDate = getMinDate();
@@ -32,10 +41,23 @@ export default function BookingForm({ category, entityId, entityName, defaultAmo
   const isTaxi = category === 'taxi';
   const needsDates = isHotel;
   const needsActivityDate = category === 'trek' || category === 'paragliding' || isTaxi;
-  const hasDefaultAmount = typeof defaultAmount === 'number' && defaultAmount > 0;
-  const finalAmount = hasDefaultAmount ? defaultAmount : amount;
 
-  function handleCheckInChange(v: string) { const c = enforceCheckIn(v); setCheckIn(c); if (checkOut && checkOut <= c) setCheckOut(''); setDateError(''); }
+  // Calculate nights and total
+  const nights = useMemo(() => calcNights(checkIn, checkOut), [checkIn, checkOut]);
+  const hasPricePerNight = typeof pricePerNight === 'number' && pricePerNight > 0;
+  const hasFixedAmount = !hasPricePerNight && typeof defaultAmount === 'number' && defaultAmount > 0;
+  const totalAmount = useMemo(() => {
+    if (hasPricePerNight && nights > 0) return pricePerNight * nights;
+    if (hasPricePerNight) return pricePerNight;
+    if (hasFixedAmount) return defaultAmount;
+    return customAmount;
+  }, [hasPricePerNight, pricePerNight, nights, hasFixedAmount, defaultAmount, customAmount]);
+
+  function handleCheckInChange(v: string) {
+    const c = enforceCheckIn(v); setCheckIn(c);
+    if (checkOut && checkOut <= c) setCheckOut('');
+    setDateError('');
+  }
   function handleCheckOutChange(v: string) { setCheckOut(enforceCheckOut(v, checkIn)); setDateError(''); }
   function handleActivityDateChange(v: string) { setActivityDate(enforceActivityDate(v)); setDateError(''); }
 
@@ -55,27 +77,15 @@ export default function BookingForm({ category, entityId, entityName, defaultAmo
     setStatus('loading'); setErrorMsg('');
 
     const fd = new FormData(e.currentTarget);
-
-    // Get user_id if logged in
     let userId: string | null = null;
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) userId = user.id;
-    } catch {}
+    try { const { data: { user } } = await supabase.auth.getUser(); if (user) userId = user.id; } catch {}
 
     const payload: Record<string, any> = {
-      category,
-      guest_name: fd.get('guest_name'),
-      guest_email: fd.get('guest_email') || '',
-      guest_phone: fd.get('guest_phone'),
-      num_guests: Number(fd.get('num_guests')) || 1,
-      special_requests: fd.get('special_requests') || '',
-      amount: finalAmount,
-      payment_method: payMethod,
-      booking_source: 'website',
-      commission_pct: commissionPct,
-      user_id: userId,
-      room_name: roomName || '',
+      category, guest_name: fd.get('guest_name'), guest_email: fd.get('guest_email') || '',
+      guest_phone: fd.get('guest_phone'), num_guests: Number(fd.get('num_guests')) || 1,
+      special_requests: fd.get('special_requests') || '', amount: totalAmount,
+      payment_method: payMethod, booking_source: 'website', commission_pct: commissionPct,
+      user_id: userId, room_name: roomName || '',
     };
 
     if (isHotel) { payload.check_in = checkIn; payload.check_out = checkOut; payload.property_id = entityId || null; }
@@ -84,60 +94,24 @@ export default function BookingForm({ category, entityId, entityName, defaultAmo
     else if (category === 'paragliding') { payload.activity_date = activityDate; payload.paragliding_id = entityId || null; }
 
     try {
-      // Step 1: Create booking
-      const res = await fetch('/api/bookings', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
+      const res = await fetch('/api/bookings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
       const data = await res.json();
       if (!res.ok) { setErrorMsg(data.error || 'Booking failed'); setStatus('error'); return; }
 
-      // Step 2: If pay online, redirect to Stripe
-      if (payMethod === 'online' && finalAmount >= 100) {
+      if (payMethod === 'online' && totalAmount >= 100) {
         setStatus('paying');
-        const checkoutRes = await fetch('/api/checkout', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            bookingId: data.booking_id,
-            bookingRef: data.booking_ref,
-            amount: finalAmount,
-            guestName: fd.get('guest_name'),
-            guestEmail: fd.get('guest_email') || '',
-            hotelName: entityName || '',
-            roomName: roomName || '',
-            checkIn, checkOut,
-          }),
+        const cr = await fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ bookingId: data.booking_id, bookingRef: data.booking_ref, amount: totalAmount, guestName: fd.get('guest_name'), guestEmail: fd.get('guest_email') || '', hotelName: entityName || '', roomName: roomName || '', checkIn, checkOut }),
         });
-        const checkoutData = await checkoutRes.json();
-        if (checkoutData.url) {
-          window.location.href = checkoutData.url;
-          return;
-        } else {
-          setErrorMsg('Payment setup failed. Your booking is saved -- pay later or contact us.');
-          setBookingRef(data.booking_ref || '');
-          setStatus('success');
-          return;
-        }
+        const cd = await cr.json();
+        if (cd.url) { window.location.href = cd.url; return; }
+        else { setErrorMsg('Payment setup failed. Booking saved -- contact us.'); setBookingRef(data.booking_ref || ''); setStatus('success'); return; }
       }
 
-      // Step 3: Non-payment booking success
       setBookingRef(data.booking_ref || '');
       setStatus('success');
-
-      // Send confirmation email (non-blocking)
-      if (data.booking_id) {
-        fetch('/api/email/booking-confirmation', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ bookingId: data.booking_id }),
-        }).catch(() => {});
-      }
-    } catch {
-      setErrorMsg('Network error. Please try again or WhatsApp us.');
-      setStatus('error');
-    }
+      if (data.booking_id) { fetch('/api/email/booking-confirmation', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ bookingId: data.booking_id }) }).catch(() => {}); }
+    } catch { setErrorMsg('Network error. Please try again or WhatsApp us.'); setStatus('error'); }
   }
 
   if (status === 'success') return (
@@ -152,8 +126,7 @@ export default function BookingForm({ category, entityId, entityName, defaultAmo
   if (status === 'paying') return (
     <div className={'bg-blue-50 border border-blue-200 rounded-xl p-8 text-center ' + className}>
       <Loader2 className="h-8 w-8 text-brand-600 mx-auto mb-3 animate-spin" />
-      <h3 className="text-lg font-heading font-bold text-slate-900 mb-1">Redirecting to Payment...</h3>
-      <p className="text-sm text-slate-600">You will be redirected to the secure Stripe checkout page.</p>
+      <h3 className="text-lg font-heading font-bold text-slate-900">Redirecting to Payment...</h3>
     </div>
   );
 
@@ -206,6 +179,40 @@ export default function BookingForm({ category, entityId, entityName, defaultAmo
 
         <textarea name="special_requests" rows={2} placeholder="Special requests or notes..." className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm outline-none resize-none" />
 
+        {/* Price breakdown */}
+        {hasPricePerNight && (
+          <div className="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 space-y-1.5">
+            <div className="flex justify-between text-sm">
+              <span className="text-slate-600">{formatPrice(pricePerNight)} x {nights > 0 ? nights : '...'} {nights === 1 ? 'night' : 'nights'}</span>
+              {nights > 0 && <span className="font-semibold text-slate-800">{formatPrice(pricePerNight * nights)}</span>}
+            </div>
+            {nights > 1 && (
+              <div className="flex justify-between text-xs text-slate-500 pt-1 border-t border-blue-200">
+                <span className="flex items-center gap-1"><Moon className="h-3 w-3" /> {nights} nights total</span>
+                <span className="font-bold text-lg text-slate-900">{formatPrice(totalAmount)}</span>
+              </div>
+            )}
+            {nights === 0 && (
+              <p className="text-xs text-blue-600">Select check-in and check-out dates to see total</p>
+            )}
+          </div>
+        )}
+
+        {!hasPricePerNight && hasFixedAmount && (
+          <div className="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 flex items-center justify-between">
+            <span className="text-sm font-medium text-slate-700">Amount</span>
+            <span className="text-lg font-bold text-slate-900">{formatPrice(defaultAmount)}</span>
+          </div>
+        )}
+
+        {!hasPricePerNight && !hasFixedAmount && !needsActivityDate && (
+          <div>
+            <label className="block text-xs font-medium text-slate-600 mb-1">Estimated Amount</label>
+            <input name="amount" type="number" min="0" value={customAmount || ''} onChange={e => setCustomAmount(Number(e.target.value))}
+              placeholder="Enter amount if known" className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm outline-none" />
+          </div>
+        )}
+
         {/* Payment method */}
         <div>
           <label className="block text-xs font-medium text-slate-600 mb-2">Payment Method</label>
@@ -224,18 +231,11 @@ export default function BookingForm({ category, entityId, entityName, defaultAmo
         {dateError && <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg"><AlertCircle className="h-4 w-4 shrink-0" />{dateError}</div>}
         {status === 'error' && <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg"><AlertCircle className="h-4 w-4 shrink-0" />{errorMsg}</div>}
 
-        {hasDefaultAmount && (
-          <div className="bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 flex items-center justify-between">
-            <span className="text-sm font-medium text-slate-700">Amount</span>
-            <span className="text-lg font-bold text-slate-900">{formatPrice(defaultAmount)}</span>
-          </div>
-        )}
-
         <button type="submit" disabled={status === 'loading'}
           className={'w-full font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-colors disabled:opacity-60 text-white ' + (payMethod === 'online' ? 'bg-green-600 hover:bg-green-700' : 'bg-orange-500 hover:bg-orange-600')}>
           {status === 'loading' ? <><Loader2 className="h-4 w-4 animate-spin" /> Processing...</> :
-            payMethod === 'online' ? <><CreditCard className="h-4 w-4" /> Pay {hasDefaultAmount ? formatPrice(defaultAmount) : 'Now'}</> :
-            <><Send className="h-4 w-4" /> Book Now</>}
+            payMethod === 'online' ? <><CreditCard className="h-4 w-4" /> Pay {totalAmount > 0 ? formatPrice(totalAmount) : 'Now'}</> :
+            <><Send className="h-4 w-4" /> {totalAmount > 0 ? 'Book for ' + formatPrice(totalAmount) : 'Book Now'}</>}
         </button>
 
         {payMethod === 'online' && <p className="text-xs text-center text-slate-400">Secure payment via Stripe. Card, UPI, and netbanking accepted.</p>}

@@ -343,7 +343,7 @@ export default async function HotelDetailPage({ params }: Props) {
           {/* Sidebar */}
           <div>
             <div className="sticky top-20 space-y-4">
-              <BookingForm category="hotel" entityId={hotel.id} entityName={hotel.name} defaultAmount={hotel.price_min ? discountedPrice(hotel.price_min) : undefined} />
+              <BookingForm category="hotel" entityId={hotel.id} entityName={hotel.name} pricePerNight={hotel.price_min ? discountedPrice(hotel.price_min) : undefined} />
               <div className="text-center text-xs text-slate-400">or send an inquiry</div>
               <InquiryForm type="hotel" propertyId={hotel.id} title="Quick Inquiry" subtitle="Not ready to book? Ask a question." />
               <a href={getWhatsAppLink('Hi! Interested in ' + hotel.name + '.')} target="_blank" rel="noopener noreferrer"

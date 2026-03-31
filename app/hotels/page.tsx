@@ -25,8 +25,8 @@ export default async function HotelsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Hotels' }]} />
           <h1 className="text-3xl font-heading font-bold mt-2 mb-2">Hotels & Stays in Dharamshala</h1>
-          <p className="text-blue-200 max-w-2xl">
-            From luxury resorts with valley views to budget hostels near the Triund trail. Every property personally vetted by our team. All prices Rs.500 less than MakeMyTrip.
+          <p className="text-blue-200 max-w-2xl mb-6">
+            From luxury resorts with valley views to budget hostels near the Triund trail. Every property personally vetted. All prices Rs.500 less than MakeMyTrip.
           </p>
         </div>
       </section>

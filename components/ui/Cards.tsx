@@ -5,19 +5,21 @@ import { Property, Trek, Destination, BlogPost, FAQ } from '@/types';
 import { formatPrice, cn } from '@/lib/utils';
 import { getPrimaryImageUrl } from '@/lib/images';
 
-export function HotelCard({ hotel }: { hotel: Property }) {
+export function HotelCard({ hotel, nights = 0 }: { hotel: Property; nights?: number }) {
   // Use normalizer -- handles string[], {url}[], null, mixed shapes
   const img = getPrimaryImageUrl(hotel.images);
   const alt = hotel.images?.[0]?.alt || hotel.name || 'Hotel';
+  const perNight = hotel.price_min > 500 ? hotel.price_min - 500 : hotel.price_min;
+  const total = nights > 1 ? perNight * nights : 0;
   return (
-    <Link href={`/hotels/${hotel.slug}`} className="group block">
+    <Link href={'/hotels/' + hotel.slug} className="group block">
       <div className="bg-white rounded-xl overflow-hidden border border-slate-200 hover:shadow-lg transition-all">
         <div className="relative aspect-[4/3] overflow-hidden">
           <Image src={img} alt={alt} fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="(max-width:768px) 100vw, 33vw" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
           {hotel.featured && <span className="absolute top-3 left-3 bg-orange-500 text-white text-xs font-bold px-2.5 py-1 rounded">FEATURED</span>}
           <div className="absolute bottom-3 left-3 flex items-center gap-1 bg-white/90 backdrop-blur-sm text-slate-800 text-xs font-medium px-2 py-1 rounded">
-            <MapPin className="h-3 w-3" />{hotel.destination_slug?.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
+            <MapPin className="h-3 w-3" />{hotel.destination_slug?.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())}
           </div>
         </div>
         <div className="p-4">
@@ -29,21 +31,29 @@ export function HotelCard({ hotel }: { hotel: Property }) {
               </span>
             )}
           </div>
-          <p className="text-xs text-slate-500 capitalize mb-2">{hotel.type}{hotel.review_count ? ` · ${hotel.review_count} reviews` : ''}</p>
+          <p className="text-xs text-slate-500 capitalize mb-2">{hotel.type}{hotel.review_count ? ' \u00b7 ' + hotel.review_count + ' reviews' : ''}</p>
           {hotel.short_description && <p className="text-sm text-slate-600 line-clamp-2 mb-3">{hotel.short_description}</p>}
-          <div className="flex items-center justify-between pt-2 border-t border-slate-100">
-            <div>
-              {hotel.price_min > 0 ? (
+          <div className="pt-2 border-t border-slate-100">
+            {hotel.price_min > 0 ? (
+              <div className="flex items-center justify-between">
                 <div>
-                  <span className="text-xs text-slate-400 line-through mr-1">{formatPrice(hotel.price_min)}</span>
-                  <span className="text-lg font-bold text-slate-900">{formatPrice(Math.max(hotel.price_min - 500, hotel.price_min))}</span>
-                  <span className="text-xs text-slate-500 ml-1">/ night</span>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-xs text-slate-400 line-through">{formatPrice(hotel.price_min)}</span>
+                    <span className="text-lg font-bold text-slate-900">{formatPrice(perNight)}</span>
+                    <span className="text-xs text-slate-500">/ night</span>
+                  </div>
+                  {total > 0 && (
+                    <p className="text-xs text-green-600 font-semibold">{formatPrice(total)} for {nights} nights</p>
+                  )}
                 </div>
-              ) : (
+                <span className="text-sm text-brand-600 font-semibold flex items-center gap-0.5">View <ChevronRight className="h-4 w-4" /></span>
+              </div>
+            ) : (
+              <div className="flex items-center justify-between">
                 <span className="text-sm text-slate-500">Price on request</span>
-              )}
-            </div>
-            <span className="text-sm text-brand-600 font-semibold flex items-center gap-0.5">View <ChevronRight className="h-4 w-4" /></span>
+                <span className="text-sm text-brand-600 font-semibold flex items-center gap-0.5">View <ChevronRight className="h-4 w-4" /></span>
+              </div>
+            )}
           </div>
         </div>
       </div>
