@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Building, ArrowLeft, Eye, Pencil, ToggleLeft, ToggleRight, Trash2 } from 'lucide-react';
+import { Building, ArrowLeft, Eye, Pencil, ToggleLeft, ToggleRight, Trash2, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { formatPrice, statusLabel, STATUS_COLORS, cn } from '@/lib/utils';
 
@@ -14,13 +14,13 @@ export default function AdminProperties() {
   const [properties, setProperties] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<string>('published');
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   async function load() {
     setLoading(true);
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { router.push('/admin/login'); return; }
 
-    // Always fetch ALL for counts, then filter client-side
     const { data } = await supabase.from('properties').select('*').order('updated_at', { ascending: false });
     const all = data || [];
     setAllProperties(all);
@@ -28,9 +28,8 @@ export default function AdminProperties() {
     setLoading(false);
   }
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => { load(); /* eslint-disable-next-line */ }, []);
 
-  // Re-filter when filter changes (without re-fetching)
   useEffect(() => {
     setProperties(filter === 'all' ? allProperties : allProperties.filter(p => p.status === filter));
   }, [filter, allProperties]);
@@ -41,21 +40,60 @@ export default function AdminProperties() {
   }
 
   async function toggleFeatured(id: string, current: boolean) {
-    await supabase.from('properties').update({ featured: !current }).eq('id', id);
+    const { error } = await supabase.from('properties').update({ featured: !current }).eq('id', id);
+    if (error) alert('Failed to update: ' + error.message);
     load();
   }
 
   async function changeStatus(id: string, newStatus: string) {
     const updates: any = { status: newStatus, updated_at: new Date().toISOString() };
     if (newStatus === 'published') updates.published_at = new Date().toISOString();
-    await supabase.from('properties').update(updates).eq('id', id);
+    const { error } = await supabase.from('properties').update(updates).eq('id', id);
+    if (error) alert('Failed to update status: ' + error.message);
     load();
   }
 
-  async function deleteProperty(id: string) {
-    if (!confirm('Permanently delete this property? This cannot be undone.')) return;
-    await supabase.from('properties').delete().eq('id', id);
-    load();
+  async function deleteProperty(id: string, name: string) {
+    if (!confirm('Permanently delete "' + name + '"?\n\nThis will:\n- Delete the property from the database\n- Keep booking/inquiry history (property reference will be removed)\n\nThis cannot be undone.')) return;
+
+    setDeletingId(id);
+    try {
+      // Get fresh session token
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) {
+        alert('Your session has expired. Please log in again.');
+        router.push('/admin/login');
+        return;
+      }
+
+      const res = await fetch('/api/admin/properties/' + id, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': 'Bearer ' + session.access_token,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        alert('Delete failed: ' + (result.error || 'Unknown error'));
+        console.error('Delete failed:', result);
+        return;
+      }
+
+      // Success - remove from local state immediately
+      setAllProperties(prev => prev.filter(p => p.id !== id));
+
+      if (result.cleanup_errors?.length) {
+        alert('Property deleted, but some cleanup warnings:\n' + result.cleanup_errors.join('\n'));
+      }
+    } catch (err: any) {
+      alert('Delete failed: ' + (err.message || 'Network error'));
+      console.error(err);
+    } finally {
+      setDeletingId(null);
+    }
   }
 
   return (
@@ -96,7 +134,7 @@ export default function AdminProperties() {
       ) : properties.length === 0 ? (
         <div className="bg-white border border-slate-200 rounded-xl p-12 text-center">
           <Building className="h-12 w-12 text-slate-300 mx-auto mb-4" />
-          <p className="text-slate-500">No properties with status "{statusLabel(filter)}".</p>
+          <p className="text-slate-500">No properties with status &quot;{statusLabel(filter)}&quot;.</p>
         </div>
       ) : (
         <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
@@ -135,17 +173,16 @@ export default function AdminProperties() {
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-1">
-                        <Link href={`/admin/properties/${p.id}/edit`} title="Edit Property"
+                        <Link href={'/admin/properties/' + p.id + '/edit'} title="Edit"
                           className="text-brand-600 hover:text-brand-700 p-1 rounded hover:bg-blue-50">
                           <Pencil className="h-4 w-4" />
                         </Link>
                         {p.status === 'published' && p.slug && (
-                          <Link href={`/hotels/${p.slug}`} target="_blank" title="View Live"
+                          <Link href={'/hotels/' + p.slug} target="_blank" title="View Live"
                             className="text-green-600 hover:text-green-700 p-1 rounded hover:bg-green-50">
                             <Eye className="h-4 w-4" />
                           </Link>
                         )}
-                        {/* Status actions */}
                         {p.status === 'pending_review' && (
                           <button onClick={() => changeStatus(p.id, 'published')}
                             className="text-xs text-green-600 font-medium px-2 py-1 rounded hover:bg-green-50">
@@ -164,9 +201,13 @@ export default function AdminProperties() {
                             Restore
                           </button>
                         )}
-                        <button onClick={() => deleteProperty(p.id)} title="Delete"
-                          className="text-slate-400 hover:text-red-600 p-1 rounded hover:bg-red-50">
-                          <Trash2 className="h-4 w-4" />
+                        <button onClick={() => deleteProperty(p.id, p.name || 'Untitled')}
+                          disabled={deletingId === p.id}
+                          title="Delete"
+                          className="text-slate-400 hover:text-red-600 p-1 rounded hover:bg-red-50 disabled:opacity-50">
+                          {deletingId === p.id
+                            ? <Loader2 className="h-4 w-4 animate-spin" />
+                            : <Trash2 className="h-4 w-4" />}
                         </button>
                       </div>
                     </td>
