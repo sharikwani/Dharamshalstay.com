@@ -1,6 +1,8 @@
 export const siteConfig = {
   name: 'Dharamshala Stay',
-  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://dharamshalastay.com',
+  // IMPORTANT: must match the domain the site actually serves on (www),
+  // otherwise every canonical tag points to a different URL and dilutes SEO signals.
+  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.dharamshalastay.com',
   description: 'Discover the best hotels, homestays, treks, paragliding, and experiences in Dharamshala, McLeod Ganj & the Kangra Valley.',
   phone: process.env.NEXT_PUBLIC_PHONE || '+91-98057-00665',
   email: process.env.NEXT_PUBLIC_EMAIL || 'hello@dharamshalastay.com',
