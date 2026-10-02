@@ -79,9 +79,9 @@ export function DestinationCard({ destination }: { destination: Destination }) {
 export function TrekCard({ trek }: { trek: Trek }) {
   const colors: Record<string, string> = { easy: 'bg-green-100 text-green-700', moderate: 'bg-amber-100 text-amber-700', hard: 'bg-red-100 text-red-700', expert: 'bg-purple-100 text-purple-700' };
   // Null-safe: trek.images could be null/undefined from DB
-  const trekImg = trek.images?.[0] || 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&q=80';
+  const trekImg = trek.images?.[0] || '/images/places/dhauladhar-hero.jpg';
   // Handle both string and object shapes
-  const imgSrc = typeof trekImg === "string" ? trekImg : ((trekImg as any)?.url || "https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&q=80");
+  const imgSrc = typeof trekImg === "string" ? trekImg : ((trekImg as any)?.url || '/images/places/dhauladhar-hero.jpg');
   return (
     <Link href={`/treks/${trek.slug}`} className="group block">
       <div className="bg-white rounded-xl overflow-hidden border border-slate-200 hover:shadow-lg transition-all">

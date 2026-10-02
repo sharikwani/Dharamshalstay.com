@@ -1,25 +1,75 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Shield, HeadphonesIcon, MapPin, Mountain, Car, ArrowRight, Star, MessageCircle, Building, Wind, Heart, Sparkles, IndianRupee, Compass, Palette, Coffee } from 'lucide-react';
-import { DestinationCard, TrekCard, SectionHeading, FAQSection, TestimonialCard } from '@/components/ui/Cards';
+import { DestinationCard, SectionHeading, FAQSection, TestimonialCard, BlogCard } from '@/components/ui/Cards';
 import HeroSearch from '@/components/sections/HeroSearch';
 import JsonLd from '@/components/seo/JsonLd';
 import { getDestinations, getFeaturedTreks } from '@/lib/db';
 import { getFeaturedBlogPosts } from '@/data/blog';
 import { testimonials, homepageFAQs } from '@/data/testimonials';
-import { faqSchema } from '@/lib/seo';
+import { faqSchema, generateSEO } from '@/lib/seo';
 import { getWhatsAppLink } from '@/lib/utils';
 import { siteConfig } from '@/lib/config';
 import { UNSPLASH_IMAGES } from '@/types';
 
-export const revalidate = 60;
+export const revalidate = 3600;
+
+export const metadata: Metadata = generateSEO({
+  title: 'Dharamshala Stay - Hotels, Treks & Travel in Dharamshala & McLeod Ganj',
+  description: 'Local guide to Dharamshala, McLeod Ganj & Kangra Valley: verified hotels and homestays, Triund treks, Bir Billing paragliding, airport taxis and free trip planning.',
+  path: '/',
+});
+
+type Season = { intro: string; items: { icon: typeof Mountain; title: string; desc: string }[] };
+
+/** "What's special right now" -- follows the real calendar instead of a hard-coded season. */
+function currentSeason(month: number): Season {
+  if (month >= 2 && month <= 5) return {
+    intro: 'Spring and early summer in Dharamshala mean clear skies, blooming rhododendrons and prime trekking weather.',
+    items: [
+      { icon: Mountain, title: 'Trekking Season', desc: 'Triund, Kareri Lake and the high Dhauladhar trails are at their best.' },
+      { icon: Wind, title: 'Paragliding Season', desc: 'Good spring flying at Bir Billing. Book flights early on weekends.' },
+      { icon: Coffee, title: 'Cafe Hopping', desc: "McLeod Ganj's rooftop cafes are buzzing again." },
+      { icon: Palette, title: 'Escape the Heat', desc: 'Pleasant days while the plains are scorching -- ideal for families.' },
+    ],
+  };
+  if (month >= 6 && month <= 8) return {
+    intro: 'Monsoon turns the Kangra Valley emerald green. Expect heavy rain, misty views and the lowest hotel rates of the year.',
+    items: [
+      { icon: Wind, title: 'Waterfalls in Full Flow', desc: 'Bhagsu and the streams around Dharamkot are at their most dramatic.' },
+      { icon: IndianRupee, title: 'Off-Season Rates', desc: 'Hotels drop prices significantly -- great value for slow travel.' },
+      { icon: Coffee, title: 'Cafe & Culture Days', desc: 'Monasteries, museums and long lunches while the rain falls.' },
+      { icon: Mountain, title: 'Trek With Care', desc: 'Trails get slippery; go guided and check the forecast.' },
+    ],
+  };
+  if (month >= 9 && month <= 10) return {
+    intro: 'Autumn is the clearest season in Dharamshala -- crisp air, sharp Dhauladhar views and the best paragliding of the year.',
+    items: [
+      { icon: Mountain, title: 'Best Trekking Window', desc: 'Post-monsoon skies make Triund and Kareri Lake spectacular.' },
+      { icon: Wind, title: 'Bir Billing Peak Season', desc: 'October-November is prime time for tandem flights.' },
+      { icon: Palette, title: 'Festive Season', desc: 'Navratri at Chamunda and Kangra temples, Diwali in the hills.' },
+      { icon: Coffee, title: 'Golden Evenings', desc: 'Sunsets from Naddi and Dharamkot are at their best.' },
+    ],
+  };
+  return {
+    intro: 'Winter brings snow to the Dhauladhar peaks, quiet streets in McLeod Ganj and cosy, discounted stays.',
+    items: [
+      { icon: Mountain, title: 'Snow on the Peaks', desc: 'Snow-capped Dhauladhar views, with snowfall at Triund and above.' },
+      { icon: Palette, title: 'Losar & Tibetan Culture', desc: 'Tibetan New Year usually falls in February or early March.' },
+      { icon: Coffee, title: 'Cosy Cafe Season', desc: 'Thukpa, butter tea and heated rooms in McLeod Ganj.' },
+      { icon: IndianRupee, title: 'Winter Deals', desc: 'Outside Christmas-New Year, rates are among the lowest of the year.' },
+    ],
+  };
+}
 
 export default async function HomePage() {
   const [destinations, featuredTreks] = await Promise.all([
     getDestinations(),
     getFeaturedTreks(),
   ]);
-  const featuredBlogs = getFeaturedBlogPosts();
+  const featuredBlogs = getFeaturedBlogPosts(6);
+  const season = currentSeason(new Date().getMonth());
 
   return (
     <>
@@ -27,19 +77,19 @@ export default async function HomePage() {
 
       {/* HERO */}
       <section className="relative min-h-[600px] lg:min-h-[680px] flex items-center overflow-hidden">
-        <Image src={UNSPLASH_IMAGES.hero} alt="Dhauladhar mountains Dharamshala" fill className="object-cover scale-105" priority quality={90} />
+        <Image src={UNSPLASH_IMAGES.hero} alt="Snow-capped Dhauladhar range above Dharamshala and McLeod Ganj" fill className="object-cover scale-105" priority quality={85} sizes="100vw" />
         <div className="absolute inset-0 bg-gradient-to-br from-brand-950/80 via-brand-950/50 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full py-20 lg:py-28">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md text-white text-xs font-medium px-3 py-1.5 rounded-full mb-6 border border-white/20">
               <Sparkles className="h-3.5 w-3.5 text-amber-300" />
-              {"Dharamshala's Only Local Travel Marketplace"}
+              {"Dharamshala's Local Travel Marketplace"}
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold text-white leading-[1.1] mb-5">
-              {"Your Himalayan"}
+              {"Dharamshala & McLeod Ganj"}
               <br />
-              <span className="bg-gradient-to-r from-amber-200 to-orange-200 bg-clip-text text-transparent">Adventure Starts Here</span>
+              <span className="bg-gradient-to-r from-amber-200 to-orange-200 bg-clip-text text-transparent">Stays, Treks & Local Travel</span>
             </h1>
             <p className="text-lg lg:text-xl text-blue-100/90 mb-10 max-w-2xl leading-relaxed">
               {"Hotels, treks, paragliding & taxis -- handpicked by locals who know every trail, cafe, and sunset spot in the Kangra Valley."}
@@ -54,9 +104,9 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8">
             {[
-              { icon: IndianRupee, label: 'Better Local Pricing', desc: 'Direct hotel rates, no OTA markup' },
-              { icon: Shield, label: 'Verified Properties', desc: 'Every stay personally inspected' },
-              { icon: HeadphonesIcon, label: '2-Hour Response', desc: 'WhatsApp, call, or email' },
+              { icon: IndianRupee, label: 'Better Local Pricing', desc: 'Direct rates from owners' },
+              { icon: Shield, label: 'Checked Properties', desc: 'Vetted by our local team' },
+              { icon: HeadphonesIcon, label: 'Quick Replies', desc: 'WhatsApp, call, or email' },
               { icon: Heart, label: 'Local Expertise', desc: 'We live here -- ask us anything' },
             ].map((item) => (
               <div key={item.label} className="flex items-start gap-3 group">
@@ -78,7 +128,7 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-heading font-bold text-slate-900 mb-3">
-              Why Thousands Choose Dharamshala Stay
+              Why Travellers Choose Dharamshala Stay
             </h2>
             <p className="text-slate-600 text-lg max-w-2xl mx-auto">
               {"We're not another generic booking platform. We're a local team that builds real relationships with every hotel, guide, and driver."}
@@ -88,8 +138,8 @@ export default async function HomePage() {
             {[
               {
                 icon: Building, title: 'Handpicked Stays',
-                desc: "Every hotel, homestay, and hostel on our platform is personally visited. We reject properties that don't meet our standards for cleanliness, service, and value.",
-                highlight: '100% Verified',
+                desc: "Our local team checks the hotels, homestays and hostels we list, and we turn down properties that don't meet our standards for cleanliness, service and value.",
+                highlight: 'Locally Checked',
               },
               {
                 icon: Compass, title: 'Complete Trip Planning',
@@ -97,9 +147,9 @@ export default async function HomePage() {
                 highlight: 'All-In-One',
               },
               {
-                icon: IndianRupee, title: 'Better Than OTA Prices',
-                desc: 'We negotiate directly with property owners -- no platform commissions inflating your room rate. Many guests save 15-30% compared to MakeMyTrip and Booking.com.',
-                highlight: 'Save 15-30%',
+                icon: IndianRupee, title: 'Direct Local Rates',
+                desc: 'We deal directly with property owners, so the rate we quote is often lower than on the big booking sites. Send us your dates and compare.',
+                highlight: 'Direct Rates',
               },
             ].map(item => (
               <div key={item.title} className="bg-white rounded-2xl p-7 border border-slate-100 hover:shadow-lg transition-shadow">
@@ -152,8 +202,8 @@ export default async function HomePage() {
               },
               {
                 icon: Wind, title: 'Paragliding',
-                desc: "Soar over the Kangra Valley from Bir Billing -- the world's #2 paragliding site. HD video included.",
-                href: '/paragliding', image: 'https://images.unsplash.com/photo-1503264116251-35a269479413?w=600&q=80', price: 'From Rs.2,500',
+                desc: "Soar over the Kangra Valley from Bir Billing -- India's best-known paragliding site and host of the 2015 Paragliding World Cup.",
+                href: '/paragliding', image: UNSPLASH_IMAGES.paragliding, price: 'From Rs.2,500',
               },
               {
                 icon: Car, title: 'Airport & Outstation Taxis',
@@ -186,7 +236,7 @@ export default async function HomePage() {
               Special Dharamshala Packages
             </h2>
             <p className="text-slate-600 text-lg max-w-2xl mx-auto">
-              {"Exclusive deals you won't find on any other platform."}
+              {"Packages built by our local team -- hotel, transfers and activities in one plan."}
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -229,17 +279,13 @@ export default async function HomePage() {
             <h2 className="text-3xl lg:text-4xl font-heading font-bold text-slate-900 mb-3">
               {"What's Special Right Now"}
             </h2>
-            <p className="text-slate-600 text-lg">
-              Spring in Dharamshala means clear skies, blooming rhododendrons, and perfect trekking weather.
+            <p className="text-slate-600 text-lg max-w-3xl mx-auto">
+              {season.intro}{' '}
+              <Link href="/blog/best-time-to-visit-dharamshala" className="text-brand-600 font-medium underline">Month-by-month guide</Link>
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {[
-              { icon: Mountain, title: 'Triund Open', desc: 'Clear skies, moderate temps. Best trekking months are here.' },
-              { icon: Wind, title: 'Paragliding Season', desc: 'Mar-Jun peak thermals at Bir Billing. Book early.' },
-              { icon: Coffee, title: 'Cafe Hopping', desc: "McLeod Ganj's rooftop cafes are buzzing with live music." },
-              { icon: Palette, title: 'Tibetan Festivals', desc: 'Experience Losar and teachings at Tsuglagkhang Complex.' },
-            ].map(s => (
+            {season.items.map(s => (
               <div key={s.title} className="bg-white/80 backdrop-blur-sm rounded-xl p-5 border border-slate-100">
                 <s.icon className="h-6 w-6 text-brand-600 mb-3" />
                 <h3 className="font-heading font-semibold text-slate-900 mb-1">{s.title}</h3>
@@ -249,6 +295,26 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* TRAVEL GUIDES */}
+      {featuredBlogs.length > 0 && (
+        <section className="py-16 lg:py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <SectionHeading title="Plan Your Trip: Local Travel Guides" subtitle="Honest, up-to-date answers to what travellers ask before visiting Dharamshala, McLeod Ganj and the Kangra Valley." />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {featuredBlogs.map((p) => <BlogCard key={p.id} post={p} />)}
+            </div>
+            <div className="flex flex-wrap justify-center gap-3 mt-8">
+              <Link href="/blog" className="inline-flex items-center gap-2 bg-brand-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-brand-700 transition-colors">
+                All Travel Guides <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link href="/faq" className="inline-flex items-center gap-2 border border-slate-300 text-slate-800 px-6 py-3 rounded-xl font-semibold hover:bg-slate-50 transition-colors">
+                Questions &amp; Answers
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* TESTIMONIALS */}
       <section className="py-16 lg:py-20 bg-white">
@@ -277,6 +343,9 @@ export default async function HomePage() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <SectionHeading title="Frequently Asked Questions" />
           <FAQSection faqs={homepageFAQs} />
+          <p className="text-center mt-6">
+            <Link href="/faq" className="text-brand-600 font-semibold hover:text-brand-700">See all Dharamshala travel questions &amp; answers &rarr;</Link>
+          </p>
         </div>
       </section>
 

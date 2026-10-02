@@ -1,4 +1,14 @@
 import { MetadataRoute } from 'next';
+import { siteConfig } from '@/lib/config';
+
 export default function robots(): MetadataRoute.Robots {
-  return { rules: [{ userAgent: '*', allow: '/', disallow: ['/api/', '/admin/', '/partner/'] }], sitemap: 'https://dharamshalastay.com/sitemap.xml' };
+  return {
+    rules: [{
+      userAgent: '*',
+      allow: '/',
+      disallow: ['/api/', '/admin/', '/partner/', '/account', '/auth/', '/booking/'],
+    }],
+    sitemap: siteConfig.url + '/sitemap.xml',
+    host: siteConfig.url,
+  };
 }

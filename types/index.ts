@@ -260,6 +260,7 @@ export interface BlogPost {
   meta_title: string;
   meta_description: string;
   related_slugs: string[];
+  faqs?: FAQ[];
 }
 
 // ===== INQUIRY =====
@@ -329,28 +330,23 @@ export const ID_TYPES = [
   'Passport', 'Government ID',
 ] as const;
 
+// Real photos of each place (Wikimedia Commons, self-hosted). The old name is
+// kept so existing imports keep working; nothing here is generic stock any more.
 export const UNSPLASH_IMAGES = {
-  hero: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=1920&q=80',
-  dharamshala: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=800&q=80',
-  mcleodganj: 'https://images.unsplash.com/photo-1573408259889-e93e789e3643?w=800&q=80',
-  bhagsu: 'https://images.unsplash.com/photo-1590050752117-238cb4f94e78?w=800&q=80',
-  dharamkot: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80',
-  naddi: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80',
-  triund: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=800&q=80',
-  mountains: 'https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=800&q=80',
-  hotel1: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80',
-  hotel2: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80',
-  hotel3: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&q=80',
-  hotel4: 'https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=800&q=80',
-  hotel5: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&q=80',
-  hotel6: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80',
-  room1: 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800&q=80',
-  room2: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80',
-  cafe: 'https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=800&q=80',
-  taxi: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80',
-  trek1: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=800&q=80',
-  trek2: 'https://images.unsplash.com/photo-1486911278844-a81c5267e227?w=800&q=80',
-  monastery: 'https://images.unsplash.com/photo-1567591370504-80e1efea0e5c?w=800&q=80',
-  prayer_flags: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=600&q=80',
-  paragliding: 'https://images.unsplash.com/photo-1503264116251-35a269479413?w=800&q=80',
+  hero: '/images/places/dhauladhar-hero.jpg',
+  dharamshala: '/images/places/dharamshala-town.jpg',
+  mcleodganj: '/images/places/mcleod-ganj.jpg',
+  bhagsu: '/images/places/bhagsu-waterfall.jpg',
+  dharamkot: '/images/places/dharamkot.jpg',
+  naddi: '/images/places/naddi.jpg',
+  triund: '/images/places/triund.jpg',
+  mountains: '/images/places/dhauladhar-hero.jpg',
+  cafe: '/images/places/mcleod-cafe.jpg',
+  taxi: '/images/places/mountain-road.jpg',
+  trek1: '/images/places/triund.jpg',
+  trek2: '/images/places/indrahar-pass.jpg',
+  kareri: '/images/places/kareri-lake.jpg',
+  monastery: '/images/places/tsuglagkhang.jpg',
+  prayer_flags: '/images/places/prayer-flags.jpg',
+  paragliding: '/images/places/bir-paragliding.jpg',
 } as const;

@@ -1,20 +1,26 @@
 import { BlogPost } from '@/types';
+import { placeImage } from '@/lib/place-images';
+import { photoCredits } from './photo-credits';
+import { blogPostsA } from './blog-posts-a';
+import { blogPostsB } from './blog-posts-b';
+import { blogPostsC } from './blog-posts-c';
 
+// Real photos of each place (see lib/place-images.ts).
 const UI = {
-  hotel1: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80',
-  mcleodganj: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=800&q=80',
-  trek1: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=800&q=80',
-  mountains: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80',
-  cafe: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=80',
-  dharamshala: 'https://images.unsplash.com/photo-1558431382-27e303142255?w=800&q=80',
-  paragliding: 'https://images.unsplash.com/photo-1503264116251-35a269479413?w=800&q=80',
-  taxi: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=800&q=80',
-  dharamkot: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80',
-  naddi: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80',
-  bhagsu: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800&q=80',
+  hotel1: placeImage('dharamshala-town'),
+  mcleodganj: placeImage('mcleod-ganj'),
+  trek1: placeImage('triund'),
+  mountains: placeImage('kangra-valley'),
+  cafe: placeImage('mcleod-cafe'),
+  dharamshala: placeImage('dharamshala-town'),
+  paragliding: placeImage('bir-paragliding'),
+  taxi: placeImage('mountain-road'),
+  dharamkot: placeImage('dharamkot'),
+  naddi: placeImage('naddi'),
+  bhagsu: placeImage('bhagsu-waterfall'),
 };
 
-export const blogPosts: BlogPost[] = [
+const corePosts: BlogPost[] = [
   {
     id: 'blog-1', slug: 'best-hotels-in-dharamshala',
     title: 'Best Hotels in Dharamshala for Every Budget (2026)',
@@ -39,7 +45,7 @@ The Naddi and upper Dharamshala areas have the best luxury properties with drama
 
 ## How to Book at the Best Price
 
-Booking directly through [our hotels page](/hotels) saves you Rs.500-1,000 per night compared to MakeMyTrip. We negotiate directly with property owners and do not charge the 15-25% OTA commission.
+Booking through [our hotels page](/hotels) is often cheaper than the big booking sites because we deal with property owners directly. Send us your dates and compare.
 
 ## When to Visit for Best Rates
 
@@ -49,8 +55,8 @@ Timing matters hugely for hotel pricing. Check our [month-by-month guide](/blog/
 
 For a quick trip, our [weekend itinerary guide](/blog/dharamshala-weekend-itinerary) helps you make the most of 2-3 days. [Browse all hotels](/hotels) or [contact us](/contact) for personalized recommendations.`,
     category: 'Hotels', tags: ['hotels', 'dharamshala', 'budget travel', 'luxury hotels', 'accommodation'],
-    author: 'Dharamshala Stay Team', published_at: '2026-01-15', updated_at: '2026-03-25',
-    image: UI.hotel1, image_alt: 'Hotel room with mountain view in Dharamshala',
+    author: 'Dharamshala Stay Team', published_at: '2026-01-15', updated_at: '2026-10-01',
+    image: UI.hotel1, image_alt: 'Dharamshala town spread across the Kangra Valley hillside',
     read_time: 8, featured: true,
     meta_title: 'Best Hotels in Dharamshala 2026 - Budget to Luxury | Local Guide',
     meta_description: 'Discover the best hotels in Dharamshala for every budget. Locally verified picks from Rs.800 to Rs.15,000/night. Book direct and save Rs.500+.',
@@ -86,8 +92,8 @@ Book 2-3 weeks in advance during peak season (April-June, October-November). Che
 
 Many guests combine McLeod Ganj with a [Bir Billing paragliding day trip](/blog/bir-billing-paragliding-guide) or a [weekend itinerary](/blog/dharamshala-weekend-itinerary) covering the highlights. We can arrange everything including [airport and intercity taxis](/blog/dharamshala-to-delhi-taxi-guide).`,
     category: 'Hotels', tags: ['hotels', 'mcleod-ganj', 'accommodation', 'where to stay'],
-    author: 'Dharamshala Stay Team', published_at: '2026-01-20', updated_at: '2026-03-25',
-    image: UI.mcleodganj, image_alt: 'McLeod Ganj street with mountain backdrop',
+    author: 'Dharamshala Stay Team', published_at: '2026-01-20', updated_at: '2026-10-01',
+    image: UI.mcleodganj, image_alt: 'McLeod Ganj town, the Little Lhasa above Dharamshala',
     read_time: 7, featured: true,
     meta_title: 'Best Hotels in McLeod Ganj 2026 - Area Guide | Dharamshala Stay',
     meta_description: 'Find the best hotels in McLeod Ganj by area and budget. Temple Road, Jogiwara, Naddi - our local team picks the top stays.',
@@ -97,21 +103,21 @@ Many guests combine McLeod Ganj with a [Bir Billing paragliding day trip](/blog/
     id: 'blog-3', slug: 'triund-trek-complete-guide',
     title: 'Triund Trek: The Complete Guide for 2026',
     excerpt: 'Everything you need for Triund -- route details, permits, camping tips, packing list, and insider advice from local guides.',
-    content: `## Why Triund is the Most Popular Trek in Himachal
+    content: `## Why Triund Is One of Himachal's Most Popular Treks
 
-Triund is a 9 km trek from McLeod Ganj to a stunning ridge at 2,875 metres with panoramic views of the Dhauladhar range. It is doable in a single day or an overnight camping trip. Most visitors make it the highlight of their [Dharamshala weekend itinerary](/blog/dharamshala-weekend-itinerary).
+Triund is about 9 km from McLeod Ganj (6-7 km from Gallu Devi temple above Dharamkot) to a stunning ridge at roughly 2,850 metres with panoramic views of the Dhauladhar range. It is doable in a single day or an overnight camping trip. Most visitors make it the highlight of their [Dharamshala weekend itinerary](/blog/dharamshala-weekend-itinerary).
 
 ## Route and Distance
 
-The standard route starts from Gallu Devi temple. The trail is 9 km one way -- 4-5 hours up, 2-3 hours down. The first half is gentle through oak forests. The second half gets steep with rocky patches.
+The standard route starts from Gallu Devi temple above Dharamkot. From there the trail is about 6-7 km one way -- 4-5 hours up, 2-3 hours down. The first half is gentle through oak forests. The second half gets steep with rocky patches.
 
 ## Permits and Fees
 
-Forest department permit: Rs.150 for Indians, Rs.500 for foreigners. Camping fee: Rs.350 additional. Your trek operator can arrange these.
+Forest Department entry fee: Rs.100 per person per day. Overnight tent fee: about Rs.550 for two people (includes entry). Overnight stays at the top are capped (about 20 tents / 40 people), so book camping through a registered operator. Fees were last revised in 2024 -- check locally before you go.
 
 ## Best Time to Trek
 
-March to June and September to November are ideal. Check our [month-by-month weather guide](/blog/best-time-to-visit-dharamshala) for detailed conditions. During [monsoon](/blog/dharamshala-monsoon-travel-guide), the trail is slippery and officially discouraged.
+March to June and September to November are ideal. Check our [month-by-month weather guide](/blog/best-time-to-visit-dharamshala) for detailed conditions. During [monsoon](/blog/dharamshala-monsoon-travel-guide), the trail is slippery, and in monsoon or after heavy snowfall the district administration sometimes closes Triund and higher treks -- check current orders before you go.
 
 ## What to Pack
 
@@ -125,11 +131,11 @@ We recommend staying in [McLeod Ganj](/blog/best-hotels-in-mcleod-ganj) the nigh
 
 If Triund gives you the trekking bug, consider a [Bir Billing paragliding trip](/blog/bir-billing-paragliding-guide) for a completely different adrenaline rush. [Browse our trek packages](/treks) or [contact us](/contact) for guided trips.`,
     category: 'Treks', tags: ['triund', 'trekking', 'dharamshala', 'hiking', 'camping'],
-    author: 'Dharamshala Stay Team', published_at: '2026-02-01', updated_at: '2026-03-25',
+    author: 'Dharamshala Stay Team', published_at: '2026-02-01', updated_at: '2026-10-01',
     image: UI.trek1, image_alt: 'Triund summit with Dhauladhar mountain view',
     read_time: 10, featured: true,
     meta_title: 'Triund Trek Guide 2026 - Route, Permits, Camping | Dharamshala Stay',
-    meta_description: 'Complete Triund trek guide: 9km trail from McLeod Ganj, permits Rs.150, best months March-June. Book guided treks with local experts.',
+    meta_description: 'Complete Triund trek guide: 9 km trail from McLeod Ganj, entry fees, camping rules, best months. Book guided treks with local experts.',
     related_slugs: ['best-time-to-visit-dharamshala', 'dharamshala-weekend-itinerary'],
   },
   {
@@ -154,14 +160,14 @@ The best kept secret. Clear skies, 10-25 degrees, golden autumn colours, fewer t
 
 ## December to February: Winter
 
-Cold but beautiful. Snowfall in McLeod Ganj from late December. Carry heavy woolens and check road conditions. If you need a [taxi from Delhi](/blog/dharamshala-to-delhi-taxi-guide), allow extra time for mountain roads.
+Cold but beautiful. McLeod Ganj, Naddi and Dharamkot get occasional snowfall, most likely between late December and February, but snow is not guaranteed every year; lower Dharamshala rarely sees it. Carry heavy woolens and check road conditions. If you need a [taxi from Delhi](/blog/dharamshala-to-delhi-taxi-guide), allow extra time for mountain roads.
 
 ## Our Recommendation
 
 Visit in October or early November. Best weather, uncrowded trails, reasonable rates. If you only have a weekend, follow our [2-night itinerary](/blog/dharamshala-weekend-itinerary) for the perfect short trip. [Digital nomads](/blog/dharamshala-for-digital-nomads) often prefer March-May for the longest pleasant season.`,
     category: 'Travel Tips', tags: ['dharamshala', 'weather', 'travel planning', 'seasons', 'when to visit'],
-    author: 'Dharamshala Stay Team', published_at: '2026-02-10', updated_at: '2026-03-25',
-    image: UI.mountains, image_alt: 'Dharamshala mountains in clear weather',
+    author: 'Dharamshala Stay Team', published_at: '2026-02-10', updated_at: '2026-10-01',
+    image: UI.mountains, image_alt: 'Kangra Valley and the Dhauladhar range on a clear day',
     read_time: 7, featured: false,
     meta_title: 'Best Time to Visit Dharamshala 2026 - Month-by-Month Guide',
     meta_description: 'When to visit Dharamshala? March-June for trekking, Oct-Nov for fewer crowds, Dec-Feb for snow. Complete season guide with prices.',
@@ -171,9 +177,9 @@ Visit in October or early November. Best weather, uncrowded trails, reasonable r
     id: 'blog-5', slug: 'top-cafes-in-mcleod-ganj',
     title: 'Top 12 Cafes in McLeod Ganj You Must Visit (2026)',
     excerpt: 'From Tibetan butter tea to artisan espresso -- the cafes our team visits every week, with honest reviews.',
-    content: `## Why McLeod Ganj Has India's Best Cafe Culture
+    content: `## Why McLeod Ganj Has One of India's Best Cafe Scenes
 
-McLeod Ganj has the highest concentration of great cafes per square kilometre in India. The combination of Tibetan culinary influence, backpacker culture, and stunning views has created a cafe scene unlike anywhere else. It is one reason [digital nomads love this town](/blog/dharamshala-for-digital-nomads).
+McLeod Ganj packs an unusually dense mix of great cafes into a few walkable streets. The combination of Tibetan culinary influence, backpacker culture, and stunning views has created a cafe scene unlike anywhere else. It is one reason [digital nomads love this town](/blog/dharamshala-for-digital-nomads).
 
 ## Our Top Picks
 
@@ -197,8 +203,8 @@ Most cafes close by 9 PM. Weekends get crowded during [peak season](/blog/best-t
 
 For the best cafe access, stay in the [McLeod Ganj main market area](/blog/best-hotels-in-mcleod-ganj). If you are here for a [weekend trip](/blog/dharamshala-weekend-itinerary), day 1 is perfect for cafe hopping before your [Triund trek](/blog/triund-trek-complete-guide) on day 2. [Browse McLeod Ganj hotels](/hotels) for stays within walking distance.`,
     category: 'Food', tags: ['cafes', 'mcleod-ganj', 'food', 'restaurants', 'coffee'],
-    author: 'Dharamshala Stay Team', published_at: '2026-02-15', updated_at: '2026-03-25',
-    image: UI.cafe, image_alt: 'Cafe with mountain view in McLeod Ganj',
+    author: 'Dharamshala Stay Team', published_at: '2026-02-15', updated_at: '2026-10-01',
+    image: UI.cafe, image_alt: 'Cafe street scene in McLeod Ganj',
     read_time: 6, featured: false,
     meta_title: 'Top 12 Cafes in McLeod Ganj 2026 - Local Picks | Dharamshala Stay',
     meta_description: 'Best cafes in McLeod Ganj: Illiterati, Moonpeak Espresso, Jimmy\'s Italian + 9 more. Honest reviews by locals.',
@@ -234,7 +240,7 @@ We write about what real travellers search for: [best cafes](/blog/top-cafes-in-
 
 Build with SEO from day one. Use local knowledge as your moat. Find experts who have been there before. And pick a stack that lets you iterate fast. [Reach out](/contact) if you want to chat about building something similar.`,
     category: 'Behind the Scenes', tags: ['startup', 'travel tech', 'business', 'tools', 'seo'],
-    author: 'Dharamshala Stay Team', published_at: '2026-03-15', updated_at: '2026-03-28',
+    author: 'Dharamshala Stay Team', published_at: '2026-03-15', updated_at: '2026-10-01',
     image: UI.dharamshala, image_alt: 'Dharamshala valley view - behind the scenes of building a travel startup',
     read_time: 9, featured: true,
     meta_title: 'How We Built Dharamshala Stay - Tools, Tech & Expert Services',
@@ -247,19 +253,19 @@ Build with SEO from day one. Use local knowledge as your moat. Find experts who 
     excerpt: 'Everything about paragliding at Bir Billing -- costs, best season, what to expect, safety tips, and how to book from Dharamshala.',
     content: `## Bir Billing: The Paragliding Capital of India
 
-Bir Billing, about 70 km from Dharamshala, is ranked among the top paragliding sites in the world. The 900-metre altitude difference gives you 15-30 minutes of flying time over the Kangra Valley. Many guests combine it with their [Dharamshala weekend trip](/blog/dharamshala-weekend-itinerary).
+Bir Billing, about 70 km from Dharamshala, is India's best-known paragliding site and hosted the 2015 Paragliding World Cup. The roughly 1,000-metre height difference between Billing (about 2,400 m) and Bir gives standard tandem flights of about 15-30 minutes over the Kangra Valley. Many guests combine it with their [Dharamshala weekend trip](/blog/dharamshala-weekend-itinerary).
 
 ## How to Get There from Dharamshala
 
-Bir is 2-2.5 hours from McLeod Ganj. [Hire a taxi](/blog/dharamshala-to-delhi-taxi-guide) (approximately Rs.2,500 one way) or take a local bus (Rs.150, 3 hours). We offer packages including pickup from your [Dharamshala hotel](/blog/best-hotels-in-dharamshala), the flight, HD video, and drop-back. [Check our paragliding page](/paragliding).
+Bir is 2-2.5 hours from McLeod Ganj. [Hire a taxi](/taxi) (approximately Rs.2,500 one way) or take a local bus (Rs.150, 3 hours). We offer packages including pickup from your [Dharamshala hotel](/blog/best-hotels-in-dharamshala), the flight, HD video, and drop-back. [Check our paragliding page](/paragliding).
 
 ## Types of Flights
 
-**Tandem Flight** -- Fly with a certified pilot. No experience needed. 15-30 minutes. Cost: Rs.2,500-3,500 including transport from Dharamshala.
+**Tandem Flight** -- Fly with a certified pilot. No experience needed. 15-30 minutes. Cost: approx. Rs.2,500-4,500 for the flight (as of 2026), depending on duration; transport from Dharamshala extra or as part of a package. Flying is banned every year from 15 July to 15 September.
 
 **Solo Flying** -- For licensed pilots (P2+). Gear rental available in Bir.
 
-**Courses** -- P1 and P2 courses take 7-14 days, Rs.25,000-35,000.
+**Courses** -- P1 and P2 courses take roughly 5-14 days in total; contact registered schools in Bir for current fees.
 
 ## Best Season
 
@@ -267,13 +273,13 @@ March to June for strongest thermals. October-November for clear skies. See our 
 
 ## Where to Stay
 
-If you want to stay overnight in Bir, there are charming cafes and guesthouses. Otherwise, stay in [McLeod Ganj](/blog/best-hotels-in-mcleod-ganj) and do Bir as a day trip. After landing, the [cafes in Bir](/blog/top-cafes-in-mcleod-ganj) are great for a post-flight celebratory coffee.
+If you want to stay overnight in Bir, there are charming cafes and guesthouses. Otherwise, stay in [McLeod Ganj](/blog/best-hotels-in-mcleod-ganj) and do Bir as a day trip. After landing, the cafes in Bir's Tibetan colony are great for a post-flight celebratory coffee.
 
 ## Is It Worth It?
 
 Absolutely. Most guests say it was the highlight of their trip. Combine it with a [Triund trek](/blog/triund-trek-complete-guide) for the ultimate adventure weekend. [Book your paragliding trip](/paragliding).`,
     category: 'Activities', tags: ['paragliding', 'bir billing', 'adventure', 'dharamshala', 'activities'],
-    author: 'Dharamshala Stay Team', published_at: '2026-03-01', updated_at: '2026-03-28',
+    author: 'Dharamshala Stay Team', published_at: '2026-03-01', updated_at: '2026-10-01',
     image: UI.paragliding, image_alt: 'Paragliding over Bir Billing Kangra Valley',
     read_time: 8, featured: false,
     meta_title: 'Bir Billing Paragliding from Dharamshala 2026 - Costs, Season, Safety',
@@ -290,9 +296,9 @@ The journey is approximately 480 km, 9-11 hours by road. A private taxi offers t
 
 ## Routes
 
-**Via Chandigarh (NH44)** -- 520 km, 10-11 hours. Most common. Good highway after Chandigarh.
+**Via Chandigarh, Una and Kangra** -- about 480-520 km, 10-11 hours. Most common. Good highway after Chandigarh.
 
-**Via Pathankot-Jalandhar** -- 480 km, 9-10 hours. Slightly shorter. Good roads throughout.
+**Via Jalandhar and Pathankot (NH44)** -- about 480-500 km, 9-10 hours. Slightly shorter. Good roads throughout.
 
 ## Current Rates (2026)
 
@@ -310,8 +316,8 @@ We also arrange airport transfers, sightseeing trips, and [Bir Billing paraglidi
 
 [Check our taxi rates](/taxi) or WhatsApp us. We use verified local drivers who know the mountain roads well. Book 24 hours in advance, especially during [peak season](/blog/best-time-to-visit-dharamshala).`,
     category: 'Transport', tags: ['taxi', 'delhi', 'dharamshala', 'transport', 'travel tips'],
-    author: 'Dharamshala Stay Team', published_at: '2026-03-05', updated_at: '2026-03-28',
-    image: UI.taxi, image_alt: 'Taxi on mountain road near Dharamshala',
+    author: 'Dharamshala Stay Team', published_at: '2026-03-05', updated_at: '2026-10-01',
+    image: UI.taxi, image_alt: 'Mountain road through the Kangra hills near Dharamshala',
     read_time: 7, featured: false,
     meta_title: 'Dharamshala to Delhi Taxi 2026 - Routes, Rates Rs.7,500+ | Book Now',
     meta_description: 'Dharamshala to Delhi taxi guide. Sedan Rs.7,500, SUV Rs.9,000. 9-11 hours via Chandigarh or Pathankot. Book reliable local drivers.',
@@ -325,7 +331,7 @@ We also arrange airport transfers, sightseeing trips, and [Bir Billing paraglidi
 
 **Morning:** Arrive in Dharamshala. Check into your [McLeod Ganj hotel](/blog/best-hotels-in-mcleod-ganj). Grab breakfast at a [local cafe](/blog/top-cafes-in-mcleod-ganj).
 
-**Late Morning:** Visit the Tsuglagkhang Complex and Tibet Museum. Free entry.
+**Late Morning:** Visit the Tsuglagkhang Complex and the [Tibet Museum](/blog/dalai-lama-temple-guide). The temple is free to enter.
 
 **Afternoon:** Walk the McLeod Ganj market. Momos at Tibet Kitchen.
 
@@ -333,13 +339,13 @@ We also arrange airport transfers, sightseeing trips, and [Bir Billing paraglidi
 
 ## Day 2: Triund Trek or Bhagsu Day
 
-**Option A: [Triund Trek](/blog/triund-trek-complete-guide)** -- Start 7 AM. Drive to Gallu Devi temple. Trek 9 km to the summit. Return by evening.
+**Option A: [Triund Trek](/blog/triund-trek-complete-guide)** -- Start 7 AM. Drive to Gallu Devi temple. Trek about 6-7 km to the top. Return by evening.
 
 **Option B: Bhagsu + Dharamkot** -- Walk to Bhagsu village, visit the waterfall, continue to Dharamkot for panoramic views and hilltop cafes.
 
 ## Day 3: Culture and Departure
 
-**Morning:** Norbulingka Institute (20 min from McLeod Ganj). Beautiful Tibetan arts centre. Great gardens and cafe.
+**Morning:** Norbulingka Institute (about 12 km, 30-40 min by taxi from McLeod Ganj; small entry fee). Beautiful Tibetan arts centre. Great gardens and cafe.
 
 **Before Departure:** Pick up souvenirs. If heading to Delhi, our [taxi service](/blog/dharamshala-to-delhi-taxi-guide) can pick you up from the hotel. For your next visit, consider adding [Bir Billing paragliding](/blog/bir-billing-paragliding-guide).
 
@@ -351,7 +357,7 @@ Rs.8,000-15,000 for two people including [hotel (2 nights)](/hotels), meals, act
 
 [Browse hotels](/hotels) or [WhatsApp us](/contact) for a custom package.`,
     category: 'Travel Tips', tags: ['itinerary', 'weekend trip', 'dharamshala', 'mcleod ganj', 'travel planning'],
-    author: 'Dharamshala Stay Team', published_at: '2026-03-10', updated_at: '2026-03-28',
+    author: 'Dharamshala Stay Team', published_at: '2026-03-10', updated_at: '2026-10-01',
     image: UI.dharamkot, image_alt: 'Panoramic view from Dharamkot near McLeod Ganj',
     read_time: 8, featured: true,
     meta_title: 'Dharamshala Weekend Itinerary 2026 - 2N/3D Perfect Plan | Local Guide',
@@ -364,11 +370,11 @@ Rs.8,000-15,000 for two people including [hotel (2 nights)](/hotels), meals, act
     excerpt: 'Can you work remotely from Dharamshala? Yes. Here is everything about internet, coworking, accommodation, and costs.',
     content: `## Why Digital Nomads Are Choosing Dharamshala
 
-High-speed internet, affordable living, mountain scenery, and a welcoming international community. Dharamshala is becoming India's top remote work destination. Learn [how we built our own platform](/blog/how-we-built-dharamshala-stay) while working from here.
+High-speed internet, affordable living, mountain scenery, and a welcoming international community. Dharamshala is one of India's most popular mountain bases for remote work. Learn [how we built our own platform](/blog/how-we-built-dharamshala-stay) while working from here.
 
 ## Internet and Connectivity
 
-4G with Jio/Airtel gives 15-30 Mbps. Many [hotels and cafes](/blog/top-cafes-in-mcleod-ganj) offer WiFi. For long stays, look for accommodation with fibre broadband (50-100 Mbps).
+Jio and Airtel offer 4G and, in many areas, 5G; speeds vary by location. Many [hotels and cafes](/blog/top-cafes-in-mcleod-ganj) offer WiFi. For long stays, look for accommodation with fibre broadband (50-100 Mbps).
 
 ## Work-Friendly Cafes
 
@@ -390,11 +396,11 @@ March-May and October-November offer the best weather for outdoor breaks. Avoid 
 
 Break up your work weeks with a [Triund trek](/blog/triund-trek-complete-guide) or [Bir Billing paragliding](/blog/bir-billing-paragliding-guide). Follow our [weekend itinerary](/blog/dharamshala-weekend-itinerary) for the perfect 2-day reset. [Contact us](/contact) for nomad-friendly accommodation.`,
     category: 'Travel Tips', tags: ['digital nomad', 'remote work', 'dharamshala', 'coworking', 'wifi'],
-    author: 'Dharamshala Stay Team', published_at: '2026-03-18', updated_at: '2026-03-28',
+    author: 'Dharamshala Stay Team', published_at: '2026-03-18', updated_at: '2026-10-01',
     image: UI.naddi, image_alt: 'Mountain view from Naddi - ideal for digital nomads',
     read_time: 8, featured: false,
     meta_title: 'Dharamshala Digital Nomad Guide 2026 - WiFi, Coworking, Costs',
-    meta_description: 'Work remotely from Dharamshala. WiFi 15-30 Mbps, living cost Rs.30,000-50,000/month, coworking spaces, best areas for nomads.',
+    meta_description: 'Work remotely from Dharamshala. WiFi, 4G/5G, living cost Rs.30,000-50,000/month, coworking spaces, best areas for nomads.',
     related_slugs: ['top-cafes-in-mcleod-ganj', 'best-hotels-in-dharamshala'],
   },
   {
@@ -429,8 +435,8 @@ Reduced rainfall, lush green landscape, low prices, sun appearing. Arguably the 
 
 [McLeod Ganj hotels](/blog/best-hotels-in-mcleod-ganj) are most convenient when it rains -- everything walkable, no taxi needed. [Book monsoon-rate hotels](/hotels).`,
     category: 'Travel Tips', tags: ['monsoon', 'dharamshala', 'rainy season', 'budget travel', 'weather'],
-    author: 'Dharamshala Stay Team', published_at: '2026-03-22', updated_at: '2026-03-28',
-    image: UI.bhagsu, image_alt: 'Lush green Bhagsu during monsoon season',
+    author: 'Dharamshala Stay Team', published_at: '2026-03-22', updated_at: '2026-10-01',
+    image: UI.bhagsu, image_alt: 'Bhagsu waterfall near McLeod Ganj',
     read_time: 7, featured: false,
     meta_title: 'Dharamshala in Monsoon 2026 - Is It Worth Visiting? Honest Guide',
     meta_description: 'Should you visit Dharamshala in monsoon? Hotels 30-50% cheaper, waterfalls at peak, but road risks. Complete July-September guide.',
@@ -438,6 +444,32 @@ Reduced rainfall, lush green landscape, low prices, sun appearing. Arguably the 
   },
 ];
 
+/** Alt text must describe the actual photo, so take it from the verified photo manifest. */
+function withPhotoAlt(post: BlogPost): BlogPost {
+  const key = post.image.match(/\/images\/places\/([a-z0-9-]+)\.jpg$/)?.[1];
+  const credit = key ? photoCredits[key] : undefined;
+  return credit ? { ...post, image_alt: credit.alt } : post;
+}
+
+/** All guides, newest first. */
+export const blogPosts: BlogPost[] = [...blogPostsA, ...blogPostsB, ...blogPostsC, ...corePosts]
+  .map(withPhotoAlt)
+  .sort((a, b) => b.published_at.localeCompare(a.published_at));
+
 export function getBlogBySlug(slug: string) { return blogPosts.find((b) => b.slug === slug); }
 export function getAllBlogSlugs() { return blogPosts.map((b) => b.slug); }
-export function getFeaturedBlogPosts() { return blogPosts.filter((b) => b.featured); }
+export function getFeaturedBlogPosts(limit = 6) { return blogPosts.filter((b) => b.featured).slice(0, limit); }
+export function getBlogCategories() { return Array.from(new Set(blogPosts.map((b) => b.category))); }
+
+/** Explicit related_slugs first, then posts sharing the most tags/category. */
+export function getRelatedPosts(post: BlogPost, limit = 4): BlogPost[] {
+  const picked = post.related_slugs
+    .map((s) => blogPosts.find((b) => b.slug === s))
+    .filter((b): b is BlogPost => !!b);
+  const score = (b: BlogPost) =>
+    b.tags.filter((t) => post.tags.includes(t)).length * 2 + (b.category === post.category ? 1 : 0);
+  const rest = blogPosts
+    .filter((b) => b.slug !== post.slug && !picked.includes(b))
+    .sort((a, b) => score(b) - score(a));
+  return [...picked, ...rest].slice(0, limit);
+}

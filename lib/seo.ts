@@ -39,7 +39,9 @@ export function generateSEO({
   const fullTitle = baseTitle.includes(siteConfig.name) ? baseTitle : baseTitle + suffix;
 
   const url = siteConfig.url + (path === '/' ? '' : path);
-  const ogImage = image || siteConfig.url + '/images/og-default.jpg';
+  const ogImage = image
+    ? (image.startsWith('http') ? image : siteConfig.url + image)
+    : siteConfig.url + '/images/og-default.jpg';
 
   return {
     metadataBase: new URL(siteConfig.url),
@@ -203,15 +205,37 @@ export function hotelSchema(h: { name: string; description: string; address_line
 }
 
 export function localBusinessSchema() {
-  return { '@context': 'https://schema.org', '@type': 'TravelAgency', name: siteConfig.name, url: siteConfig.url, telephone: siteConfig.phone, email: siteConfig.email, address: { '@type': 'PostalAddress', addressLocality: 'Dharamshala', addressRegion: 'Himachal Pradesh', postalCode: '176215', addressCountry: 'IN' }, geo: { '@type': 'GeoCoordinates', latitude: 32.219, longitude: 76.3234 }, areaServed: ['Dharamshala', 'McLeod Ganj', 'Bhagsu', 'Dharamkot', 'Naddi', 'Kangra Valley'], description: siteConfig.description, priceRange: '\u20B9\u20B9' };
+  return { '@context': 'https://schema.org', '@type': 'TravelAgency', name: siteConfig.name, url: siteConfig.url, telephone: siteConfig.phone, email: siteConfig.email, address: { '@type': 'PostalAddress', addressLocality: 'Dharamshala', addressRegion: 'Himachal Pradesh', postalCode: '176215', addressCountry: 'IN' }, geo: { '@type': 'GeoCoordinates', latitude: 32.219, longitude: 76.3234 }, image: siteConfig.url + '/images/og-default.jpg', areaServed: ['Dharamshala', 'McLeod Ganj', 'Bhagsu', 'Dharamkot', 'Naddi', 'Kangra Valley', 'Palampur', 'Bir Billing'], description: siteConfig.description, priceRange: '\u20B9\u20B9' };
 }
 
 export function faqSchema(faqs: { question: string; answer: string }[]) {
   return { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.question, acceptedAnswer: { '@type': 'Answer', text: f.answer } })) };
 }
 
-export function articleSchema(p: { title: string; excerpt: string; slug: string; author: string; published_at: string; updated_at: string; image: string }) {
-  return { '@context': 'https://schema.org', '@type': 'Article', headline: p.title, description: p.excerpt, url: siteConfig.url + '/blog/' + p.slug, author: { '@type': 'Organization', name: p.author }, publisher: { '@type': 'Organization', name: siteConfig.name, url: siteConfig.url }, datePublished: p.published_at, dateModified: p.updated_at, image: p.image.startsWith('http') ? p.image : siteConfig.url + p.image };
+export function articleSchema(p: { title: string; excerpt: string; slug: string; author: string; published_at: string; updated_at: string; image: string; tags?: string[]; category?: string }) {
+  const url = siteConfig.url + '/blog/' + p.slug;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: p.title,
+    description: p.excerpt,
+    url,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+    inLanguage: 'en-IN',
+    author: { '@type': 'Organization', name: p.author, url: siteConfig.url + '/about' },
+    publisher: {
+      '@type': 'Organization',
+      name: siteConfig.name,
+      url: siteConfig.url,
+      logo: { '@type': 'ImageObject', url: siteConfig.url + '/icon-512.png', width: 512, height: 512 },
+    },
+    datePublished: p.published_at,
+    dateModified: p.updated_at,
+    image: p.image.startsWith('http') ? p.image : siteConfig.url + p.image,
+    ...(p.category && { articleSection: p.category }),
+    ...(p.tags?.length && { keywords: p.tags.join(', ') }),
+    about: { '@type': 'Place', name: 'Dharamshala, Himachal Pradesh, India' },
+  };
 }
 
 export function breadcrumbSchema(items: { name: string; href: string }[]) {
@@ -219,9 +243,29 @@ export function breadcrumbSchema(items: { name: string; href: string }[]) {
 }
 
 export function organizationSchema() {
-  return { '@context': 'https://schema.org', '@type': 'Organization', name: siteConfig.name, url: siteConfig.url, contactPoint: { '@type': 'ContactPoint', telephone: siteConfig.phone, contactType: 'customer service', availableLanguage: ['English', 'Hindi'] } };
+  return { '@context': 'https://schema.org', '@type': 'Organization', name: siteConfig.name, url: siteConfig.url, logo: siteConfig.url + '/icon-512.png', email: siteConfig.email, contactPoint: { '@type': 'ContactPoint', telephone: siteConfig.phone, contactType: 'customer service', availableLanguage: ['English', 'Hindi'] } };
 }
 
 export function websiteSchema() {
   return { '@context': 'https://schema.org', '@type': 'WebSite', name: siteConfig.name, url: siteConfig.url, potentialAction: { '@type': 'SearchAction', target: siteConfig.url + '/hotels?q={search_term_string}', 'query-input': 'required name=search_term_string' } };
+}
+
+export function itemListSchema(items: { name: string; href: string }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    itemListElement: items.map((item, i) => ({ '@type': 'ListItem', position: i + 1, name: item.name, url: siteConfig.url + item.href })),
+  };
+}
+
+export function touristDestinationSchema(d: { name: string; description: string; slug: string; image?: string }) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'TouristDestination',
+    name: d.name,
+    description: d.description,
+    url: siteConfig.url + '/destinations/' + d.slug,
+    ...(d.image && { image: d.image.startsWith('http') ? d.image : siteConfig.url + d.image }),
+    containedInPlace: { '@type': 'AdministrativeArea', name: 'Kangra district, Himachal Pradesh, India' },
+  };
 }

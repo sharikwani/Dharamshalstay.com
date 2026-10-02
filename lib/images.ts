@@ -16,7 +16,8 @@ export interface NormalizedImage {
   sort_order: number;
 }
 
-const FALLBACK_IMG = 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&q=80';
+// Real photo of Dharamshala (not stock) for properties with no photos yet.
+const FALLBACK_IMG = '/images/places/dharamshala-town.jpg';
 
 /**
  * Normalize a single image entry to a consistent shape.

@@ -36,7 +36,7 @@ export default async function TrekPage({ params }: Props) {
       ]} />
 
       <section className="relative h-[280px]">
-        <Image src={trek.images?.[0] || 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=1200&q=80'} alt={trek.name} fill className="object-cover" />
+        <Image src={trek.images?.[0] || '/images/places/dhauladhar-hero.jpg'} alt={trek.name} fill className="object-cover" />
         <div className="absolute inset-0 bg-brand-950/60" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 h-full flex flex-col justify-end pb-8 text-white">
           <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Treks', href: '/treks' }, { label: trek.name }]} />

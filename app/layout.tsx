@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Poppins, Inter } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -7,18 +8,23 @@ import JsonLd from '@/components/seo/JsonLd';
 import { siteConfig } from '@/lib/config';
 import { organizationSchema, websiteSchema, localBusinessSchema } from '@/lib/seo';
 
+// Self-hosted at build time: no render-blocking request to Google Fonts.
+const heading = Poppins({ subsets: ['latin'], weight: ['500', '600', '700', '800'], variable: '--font-heading', display: 'swap' });
+const body = Inter({ subsets: ['latin'], weight: ['400', '500', '600'], variable: '--font-body', display: 'swap' });
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
     default: 'Dharamshala Stay - Hotels, Treks & Travel in Dharamshala & McLeod Ganj',
     template: '%s | Dharamshala Stay',
   },
-  description: 'Book verified hotels, homestays, Triund treks, Bir Billing paragliding, and taxis in Dharamshala, McLeod Ganj & Kangra Valley. Rs.500 less than MakeMyTrip. Local team, direct support.',
+  description: 'Book verified hotels, homestays, Triund treks, Bir Billing paragliding and taxis in Dharamshala, McLeod Ganj & the Kangra Valley. Local team, direct rates, free trip planning.',
   keywords: [
     'Dharamshala hotels', 'McLeod Ganj hotels', 'Dharamshala stay', 'Triund trek',
     'Bir Billing paragliding', 'Dharamshala taxi', 'McLeod Ganj homestay',
     'Dharamshala travel', 'Kangra Valley hotels', 'Dharamshala booking',
     'hotels near Dalai Lama temple', 'Bhagsu hotels', 'Dharamkot stay',
+    'places to visit in Dharamshala', 'Palampur', 'Kangra', 'Himachal travel guide',
   ],
   authors: [{ name: 'Dharamshala Stay', url: siteConfig.url }],
   creator: 'Dharamshala Stay',
@@ -54,9 +60,8 @@ export const metadata: Metadata = {
     description: 'Book verified hotels, treks, taxis in Dharamshala & McLeod Ganj.',
     images: [siteConfig.url + '/images/og-default.jpg'],
   },
-  alternates: {
-    canonical: siteConfig.url,
-  },
+  // No canonical here: it would be inherited by every page that doesn't set
+  // its own, telling Google those pages are duplicates of the homepage.
   robots: {
     index: true,
     follow: true,
@@ -68,18 +73,18 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  verification: {},
+  verification: {
+    ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION && { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }),
+  },
   category: 'travel',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en-IN" className={heading.variable + ' ' + body.variable}>
       <head>
         <meta name="theme-color" content="#1e3a5f" />
         <meta name="msapplication-TileColor" content="#1e3a5f" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <JsonLd data={[organizationSchema(), websiteSchema(), localBusinessSchema()]} />
       </head>
       <body className="min-h-screen flex flex-col">

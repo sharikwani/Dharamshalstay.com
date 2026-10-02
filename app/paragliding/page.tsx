@@ -7,6 +7,7 @@ import BookingForm from '@/components/forms/BookingForm';
 import JsonLd from '@/components/seo/JsonLd';
 import { generateSEO, faqSchema } from '@/lib/seo';
 import { formatPrice, getWhatsAppLink } from '@/lib/utils';
+import { placeImage } from '@/lib/place-images';
 
 export const metadata: Metadata = generateSEO({
   title: 'Paragliding in Bir Billing & Dharamshala - Book Flights',
@@ -20,16 +21,16 @@ const PACKAGES = [
     destination: 'Bir Billing', type: 'tandem', duration: '15-25 min flight',
     altitude: 'Launch at 2,400m', price: 3500,
     description: 'Fly tandem with a certified pilot from the world-famous Bir Billing launch site. Soar over tea gardens and the Kangra Valley with Dhauladhar views.',
-    image: 'https://images.unsplash.com/photo-1503264116251-35a269479413?w=800&q=80',
+    image: placeImage('bir-paragliding'),
     includes: ['Certified pilot', 'All safety equipment', 'GoPro video & photos', 'Transport to launch site', 'Landing field pickup'],
     featured: true,
   },
   {
     id: 'pg-2', name: 'Tandem Paragliding - Dharamshala', slug: 'tandem-dharamshala',
-    destination: 'Dharamshala', type: 'tandem', duration: '10-20 min flight',
-    altitude: 'Launch at 1,800m', price: 2500,
+    destination: 'Dharamshala', type: 'tandem', duration: '10-15 min flight',
+    altitude: 'Launch at about 1,600 m (Indrunag)', price: 2500,
     description: 'A shorter but equally thrilling flight from the hills above Dharamshala. Perfect for first-timers wanting a taste of the skies.',
-    image: 'https://images.unsplash.com/photo-1540575467063-178a50a2df73?w=800&q=80',
+    image: placeImage('dhauladhar-hero'),
     includes: ['Certified pilot', 'Safety equipment', 'GoPro video', 'Transport'],
     featured: true,
   },
@@ -38,17 +39,17 @@ const PACKAGES = [
     destination: 'Bir Billing', type: 'scenic', duration: '30-45 min flight',
     altitude: 'Launch at 2,400m, thermal soaring', price: 5500,
     description: 'An extended flight for those who want more airtime. Ride thermals higher, cover more distance, and get panoramic shots of the entire valley.',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80',
+    image: placeImage('kangra-valley'),
     includes: ['Certified pilot', 'Extended flight time', 'GoPro HD video', 'Transport', 'Snacks'],
     featured: false,
   },
 ];
 
 const FAQS = [
-  { question: 'Is paragliding safe?', answer: 'Yes, when done with certified pilots and proper equipment. All our operators are APPI/BHPA certified with thousands of flights.' },
+  { question: 'Is paragliding safe?', answer: 'Yes, when flown with registered, experienced pilots in suitable weather. Tandem pilots and operators in Himachal must be registered with the state Tourism Department, and we only work with registered operators. Like any adventure sport, it carries some risk.' },
   { question: 'What should I wear?', answer: 'Comfortable clothing, sturdy shoes (not sandals), and a windbreaker. Gloves recommended in winter.' },
   { question: 'Can I fly if I have no experience?', answer: 'Absolutely -- tandem flights require zero experience. Your certified pilot handles everything.' },
-  { question: 'Best time for paragliding here?', answer: 'October to June. March-May and October-November offer the best thermal conditions.' },
+  { question: 'Best time for paragliding here?', answer: 'Mid-September to mid-July. Paragliding at Bir Billing is banned every year from 15 July to 15 September for the monsoon. October-November and March-May are the best months.' },
   { question: 'What if the weather is bad?', answer: 'Safety first -- flights are rescheduled or refunded if wind/weather conditions are unsafe.' },
 ];
 
@@ -59,7 +60,7 @@ export default function ParaglidingPage() {
 
       {/* Hero */}
       <section className="relative h-[350px]">
-        <Image src="https://images.unsplash.com/photo-1503264116251-35a269479413?w=1920&q=80" alt="Paragliding over Kangra Valley" fill className="object-cover" priority />
+        <Image src={placeImage('bir-paragliding')} alt="Paragliders over Bir Billing in the Kangra Valley" fill className="object-cover" priority />
         <div className="absolute inset-0 bg-gradient-to-b from-brand-950/60 to-brand-950/80" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 h-full flex flex-col justify-end pb-10 text-white">
           <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Paragliding' }]} />
@@ -75,8 +76,8 @@ export default function ParaglidingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { icon: Shield, label: 'Certified Pilots', desc: 'APPI/BHPA rated' },
-              { icon: Wind, label: 'World-Class Site', desc: 'Bir Billing #2 globally' },
+              { icon: Shield, label: 'Registered Pilots', desc: 'HP Tourism registered' },
+              { icon: Wind, label: 'World-Class Site', desc: 'Hosted 2015 World Cup' },
               { icon: Clock, label: '15-45 Min Flights', desc: 'Multiple options' },
               { icon: Star, label: 'HD Video Included', desc: 'GoPro footage' },
             ].map(h => (
@@ -138,8 +139,8 @@ export default function ParaglidingPage() {
             <div className="lg:col-span-2">
               <h2 className="text-2xl font-heading font-bold mb-4">About Paragliding in This Region</h2>
               <div className="prose prose-slate max-w-none mb-8">
-                <p>Bir Billing is ranked among the top paragliding sites in the world. Located about 70 km from Dharamshala, the launch site sits at 2,400 metres with a spectacular view of the Kangra Valley floor 1,500 metres below.</p>
-                <p>Dharamshala also offers shorter flights from sites above the town, perfect for first-timers or travellers short on time. All our partner operators are certified, insured, and use premium equipment.</p>
+                <p>Bir Billing is India&apos;s best-known paragliding site and hosted the 2015 Paragliding World Cup. About 70 km from Dharamshala, the launch site at Billing sits at about 2,400 metres, roughly 1,000 metres above the landing ground in Bir, with sweeping views over the Kangra Valley.</p>
+                <p>Dharamshala also offers shorter flights from Indrunag above the town, good for first-timers or travellers short on time. We work only with operators registered with Himachal Pradesh Tourism. Flying is suspended every year from 15 July to 15 September for the monsoon. Read our <Link href="/blog/bir-billing-paragliding-guide">Bir Billing paragliding guide</Link> for costs, season and tips.</p>
               </div>
               <h2 className="text-2xl font-heading font-bold mb-4">FAQs</h2>
               <FAQSection faqs={FAQS} />

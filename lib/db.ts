@@ -12,6 +12,7 @@
  */
 import { createServerClient } from './supabase';
 import { Property } from '@/types';
+import { placeImage, placeImageAlt, isStockImage, DESTINATION_IMAGE, TREK_IMAGES } from './place-images';
 
 // Static fallback imports (only used when Supabase is unavailable)
 import { hotels as seedHotels, getHotelBySlug as seedGetBySlug, getHotelsByDestination as seedGetByDest, getFeaturedHotels as seedFeatured } from '@/data/hotels';
@@ -61,14 +62,16 @@ export async function getPublishedProperties(options?: {
     if (options?.limit) query = query.limit(options.limit);
 
     const { data, error } = await query;
+    // Never fall back to the fictional seed hotels in production: a DB hiccup
+    // would otherwise publish fake listings that Google can index.
     if (error) {
       console.error('DB getPublishedProperties error:', error.message);
-      return seedHotels.filter(h => h.status === 'published');
+      return [];
     }
     return (data as Property[]) || [];
   } catch (err) {
     console.error('DB getPublishedProperties exception:', err);
-    return seedHotels.filter(h => h.status === 'published');
+    return [];
   }
 }
 
@@ -87,13 +90,10 @@ export async function getPropertyBySlug(slug: string): Promise<Property | null> 
       .eq('status', 'published')
       .single();
 
-    if (error || !data) {
-      // Fallback: try static data
-      return seedGetBySlug(slug) || null;
-    }
+    if (error || !data) return null;
     return data as Property;
   } catch {
-    return seedGetBySlug(slug) || null;
+    return null;
   }
 }
 
@@ -110,12 +110,10 @@ export async function getAllPublishedSlugs(): Promise<string[]> {
       .select('slug')
       .eq('status', 'published');
 
-    if (error || !data) {
-      return seedHotels.filter(h => h.status === 'published').map(h => h.slug);
-    }
+    if (error || !data) return [];
     return data.map((d: { slug: string }) => d.slug);
   } catch {
-    return seedHotels.map(h => h.slug);
+    return [];
   }
 }
 
@@ -133,29 +131,44 @@ export async function getFeaturedProperties(limit = 6): Promise<Property[]> {
 // DESTINATIONS
 // ===========================
 
+/**
+ * Destinations have no admin editor, so data/destinations.ts is the source of
+ * truth for the five core areas (it carries fact-checked altitudes, distances
+ * and FAQs that the older DB rows don't). We also swap stored stock-photo URLs
+ * for the real photo of that destination.
+ */
+function withDestinationImage<T extends { slug: string; image?: string; image_alt?: string } | null | undefined>(d: T): T {
+  if (!d) return d;
+  const seed = seedDestBySlug(d.slug);
+  const merged = seed ? { ...d, ...seed, id: (d as any).id ?? seed.id } : d;
+  const key = DESTINATION_IMAGE[d.slug];
+  if (!key) return merged;
+  return { ...merged, image: placeImage(key), image_alt: placeImageAlt(key) };
+}
+
 export async function getDestinations() {
-  if (!isSupabaseConfigured()) return seedDestinations;
+  if (!isSupabaseConfigured()) return seedDestinations.map(withDestinationImage);
 
   try {
     const sb = createServerClient();
     const { data, error } = await sb.from('destinations').select('*').order('name');
-    if (error || !data || data.length === 0) return seedDestinations;
-    return data;
+    if (error || !data || data.length === 0) return seedDestinations.map(withDestinationImage);
+    return data.map(withDestinationImage);
   } catch {
-    return seedDestinations;
+    return seedDestinations.map(withDestinationImage);
   }
 }
 
 export async function getDestinationBySlug(slug: string) {
-  if (!isSupabaseConfigured()) return seedDestBySlug(slug);
+  if (!isSupabaseConfigured()) return withDestinationImage(seedDestBySlug(slug));
 
   try {
     const sb = createServerClient();
     const { data, error } = await sb.from('destinations').select('*').eq('slug', slug).single();
-    if (error || !data) return seedDestBySlug(slug);
-    return data;
+    if (error || !data) return withDestinationImage(seedDestBySlug(slug));
+    return withDestinationImage(data);
   } catch {
-    return seedDestBySlug(slug);
+    return withDestinationImage(seedDestBySlug(slug));
   }
 }
 
@@ -163,8 +176,17 @@ export async function getDestinationBySlug(slug: string) {
 // TREKS
 // ===========================
 
+/** Real trail photos for known treks; keep any non-stock photos stored in the DB. */
+function withTrekImages<T extends { slug: string; images?: string[] } | null | undefined>(t: T): T {
+  if (!t) return t;
+  const own = (t.images || []).filter((u) => !isStockImage(u));
+  const real = (TREK_IMAGES[t.slug] || []).map(placeImage);
+  const images = Array.from(new Set([...real, ...own]));
+  return { ...t, images: images.length ? images : [placeImage('dhauladhar-hero')] };
+}
+
 export async function getPublishedTreks() {
-  if (!isSupabaseConfigured()) return seedTreks.filter(t => t.status === 'published');
+  if (!isSupabaseConfigured()) return seedTreks.filter(t => t.status === 'published').map(withTrekImages);
 
   try {
     const sb = createServerClient();
@@ -175,36 +197,36 @@ export async function getPublishedTreks() {
       .order('is_sponsored', { ascending: false })
       .order('priority_score', { ascending: false })
       .order('featured', { ascending: false });
-    if (error || !data || data.length === 0) return seedTreks.filter(t => t.status === 'published');
-    return data;
+    if (error || !data || data.length === 0) return seedTreks.filter(t => t.status === 'published').map(withTrekImages);
+    return data.map(withTrekImages);
   } catch {
-    return seedTreks.filter(t => t.status === 'published');
+    return seedTreks.filter(t => t.status === 'published').map(withTrekImages);
   }
 }
 
 export async function getTrekBySlug(slug: string) {
-  if (!isSupabaseConfigured()) return seedTrekBySlug(slug) || null;
+  if (!isSupabaseConfigured()) return withTrekImages(seedTrekBySlug(slug)) || null;
 
   try {
     const sb = createServerClient();
     const { data, error } = await sb.from('treks').select('*').eq('slug', slug).eq('status', 'published').single();
-    if (error || !data) return seedTrekBySlug(slug) || null;
-    return data;
+    if (error || !data) return withTrekImages(seedTrekBySlug(slug)) || null;
+    return withTrekImages(data);
   } catch {
-    return seedTrekBySlug(slug) || null;
+    return withTrekImages(seedTrekBySlug(slug)) || null;
   }
 }
 
 export async function getFeaturedTreks() {
-  if (!isSupabaseConfigured()) return seedFeaturedTreks();
+  if (!isSupabaseConfigured()) return seedFeaturedTreks().map(withTrekImages);
 
   try {
     const sb = createServerClient();
     const { data, error } = await sb.from('treks').select('*').eq('status', 'published').eq('featured', true).limit(6);
-    if (error || !data || data.length === 0) return seedFeaturedTreks();
-    return data;
+    if (error || !data || data.length === 0) return seedFeaturedTreks().map(withTrekImages);
+    return data.map(withTrekImages);
   } catch {
-    return seedFeaturedTreks();
+    return seedFeaturedTreks().map(withTrekImages);
   }
 }
 

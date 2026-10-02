@@ -2,11 +2,11 @@ import { Trek, UNSPLASH_IMAGES } from '@/types';
 
 export const treks: Trek[] = [
   {
-    id: 'trek-1', slug: 'triund-trek', name: 'Triund Trek', destination_slug: 'dharamkot', difficulty: 'moderate', duration: '1-2 Days', distance: '9 km one way', max_altitude: '2,828 m', best_season: 'March-June, Sep-Dec', price_per_person: 1500,
+    id: 'trek-1', slug: 'triund-trek', name: 'Triund Trek', destination_slug: 'dharamkot', difficulty: 'moderate', duration: '1-2 Days', distance: '9 km one way', max_altitude: '2,850 m', best_season: 'March-June, Sep-Dec', price_per_person: 1500,
     short_description: 'The most popular trek near Dharamshala -- a rewarding overnight hike to a grassy ridge with 360° views of the Dhauladhar range and Kangra Valley.',
     description: 'Triund is the crown jewel of Dharamshala treks. Starting from Dharamkot, the trail winds through oak and rhododendron forests before opening up to a dramatic alpine meadow.\n\nThe summit ridge offers a staggering panorama: snow-capped Dhauladhar peaks on one side, the Kangra Valley below on the other. Camping overnight to watch sunset turn the peaks golden is quintessential Dharamshala.',
     itinerary: [
-      { day: 1, title: 'Dharamkot to Triund', description: 'Start 9 AM. Trek through dense forest 6 km to Snowline Cafe. Push through steep 3 km switchbacks to Triund. Camp, sunset, bonfire dinner.' },
+      { day: 1, title: 'Dharamkot to Triund', description: 'Start 9 AM from Gallu Devi above Dharamkot. Trek through oak and rhododendron forest to Magic View Cafe, then tackle the steep final switchbacks to Triund (about 6-7 km in total). Camp, sunset, dinner.' },
       { day: 2, title: 'Sunrise & Descent', description: 'Wake early for sunrise over Dhauladhar. Breakfast, then descend 3-4 hours back to Dharamkot.' },
     ],
     includes: ['Professional guide', 'Camping tent & sleeping bag', 'Meals (dinner + breakfast)', 'Forest permits', 'First aid'],
@@ -15,9 +15,9 @@ export const treks: Trek[] = [
     images: [UNSPLASH_IMAGES.trek1, UNSPLASH_IMAGES.trek2], featured: true,
     faqs: [
       { question: 'Is Triund safe for beginners?', answer: 'Yes, considered beginner-friendly though moderately strenuous. Well-marked trail, guides available.' },
-      { question: 'Do I need a permit?', answer: 'Yes, forest permit ₹150/person at Dharamkot check post. We handle this when you book through us.' },
+      { question: 'Do I need a permit?', answer: 'Yes. The Forest Department charges an entry fee (Rs.100 per person per day as of the 2024 revision) and camping is about Rs.550 per two-person tent including entry; overnight numbers are capped. Fees change, so check locally -- we handle this when you book through us.' },
     ],
-    status: 'published', meta_title: 'Triund Trek - Complete Guide, Booking & Tips | Dharamshala Stay', meta_description: 'Book the Triund Trek. Complete guide with itinerary, permits & camping info. Guided treks from ₹1,500/person.',
+    status: 'published', meta_title: 'Triund Trek - Complete Guide, Booking & Tips | Dharamshala Stay', meta_description: 'Book the Triund Trek. Complete guide with itinerary, fees & camping info. Guided treks from ₹1,500/person.',
     created_at: '2024-01-01', updated_at: '2025-03-01',
   },
   {

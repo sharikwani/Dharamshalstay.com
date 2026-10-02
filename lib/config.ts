@@ -1,8 +1,19 @@
+const CANONICAL_ORIGIN = 'https://www.dharamshalastay.com';
+
+function normaliseSiteUrl(envUrl?: string): string {
+  if (!envUrl) return CANONICAL_ORIGIN;
+  const trimmed = envUrl.trim().replace(/\/+$/, '');
+  // Production domain must always be https + www, whatever the env var says.
+  if (/^https?:\/\/(www\.)?dharamshalastay\.com$/i.test(trimmed)) return CANONICAL_ORIGIN;
+  return trimmed;
+}
+
 export const siteConfig = {
   name: 'Dharamshala Stay',
-  // IMPORTANT: must match the domain the site actually serves on (www),
-  // otherwise every canonical tag points to a different URL and dilutes SEO signals.
-  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.dharamshalastay.com',
+  // IMPORTANT: must match the domain the site actually serves on (www).
+  // next.config.js 301s the bare domain to www, so a non-www value here makes
+  // every canonical/sitemap URL a redirect. We normalise whatever the env says.
+  url: normaliseSiteUrl(process.env.NEXT_PUBLIC_SITE_URL),
   description: 'Discover the best hotels, homestays, treks, paragliding, and experiences in Dharamshala, McLeod Ganj & the Kangra Valley.',
   phone: process.env.NEXT_PUBLIC_PHONE || '+91-98057-00665',
   email: process.env.NEXT_PUBLIC_EMAIL || 'hello@dharamshalastay.com',
@@ -15,7 +26,8 @@ export const NAV_LINKS = [
   { label: 'Treks', href: '/treks' },
   { label: 'Paragliding', href: '/paragliding' },
   { label: 'Taxi', href: '/taxi' },
-  { label: 'Blog', href: '/blog' },
+  { label: 'Travel Guides', href: '/blog' },
+  { label: 'FAQ', href: '/faq' },
   { label: 'Contact', href: '/contact' },
 ] as const;
 
