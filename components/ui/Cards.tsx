@@ -50,7 +50,7 @@ export function HotelCard({ hotel, nights = 0 }: { hotel: Property; nights?: num
               </div>
             ) : (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-slate-500">Price on request</span>
+                <span className="text-sm text-slate-500">{(hotel as any).price_band ? (hotel as any).price_band.replace(/^./, (c: string) => c.toUpperCase()) + ' · rates on request' : 'Price on request'}</span>
                 <span className="text-sm text-brand-600 font-semibold flex items-center gap-0.5">View <ChevronRight className="h-4 w-4" /></span>
               </div>
             )}

@@ -8,7 +8,7 @@ export const revalidate = 60;
 
 export const metadata: Metadata = generateSEO({
   title: 'Hotels in Dharamshala & McLeod Ganj - Best Stays',
-  description: 'Browse curated hotels, homestays, hostels in Dharamshala, McLeod Ganj, Bhagsu, Dharamkot & Naddi. Rs.500 less than MakeMyTrip.',
+  description: 'Compare hotels, homestays and hostels in Dharamshala, McLeod Ganj, Bhagsu, Dharamkot & Naddi by area, type and budget. Direct rates and free local booking help.',
   path: '/hotels',
   keywords: ['dharamshala hotels', 'mcleod ganj hotels', 'homestay dharamshala', 'budget hotels dharamshala'],
 });
@@ -26,7 +26,8 @@ export default async function HotelsPage() {
           <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Hotels' }]} />
           <h1 className="text-3xl font-heading font-bold mt-2 mb-2">Hotels & Stays in Dharamshala</h1>
           <p className="text-blue-200 max-w-2xl mb-6">
-            From luxury resorts with valley views to budget hostels near the Triund trail. Every property personally vetted. All prices Rs.500 less than MakeMyTrip.
+            From boutique stays with valley views to budget hostels near the Triund trail, across Dharamshala, McLeod Ganj, Bhagsu, Dharamkot and Naddi.
+            Partner properties show direct rates; directory listings are rates on request -- send an enquiry and we&apos;ll check for you.
           </p>
         </div>
       </section>

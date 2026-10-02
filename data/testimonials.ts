@@ -1,11 +1,9 @@
 import { Testimonial, FAQ } from '@/types';
 
-export const testimonials: Testimonial[] = [
-  { id: 'test-1', name: 'Priya Sharma', location: 'Delhi', rating: 5, text: 'Dharamshala Stay helped us find the perfect homestay in Bhagsu. Their local recommendations made our trip truly special.', date: '2024-12-15' },
-  { id: 'test-2', name: 'Rahul Mehta', location: 'Mumbai', rating: 5, text: 'Booked our Triund trek and McLeod Ganj hotel through them. Everything was perfectly arranged -- airport pickup to trek guide.', date: '2024-11-20' },
-  { id: 'test-3', name: 'Sarah Chen', location: 'Singapore', rating: 4, text: 'Quick WhatsApp responses and honest recommendations. They suggested Dharamkot instead of McLeod Ganj for my yoga retreat -- perfect choice.', date: '2025-01-05' },
-  { id: 'test-4', name: 'Amit & Neha Gupta', location: 'Bangalore', rating: 5, text: 'Anniversary weekend through Dharamshala Stay. Mountain-view room at a better rate than booking sites, plus a bonfire dinner.', date: '2025-02-10' },
-];
+// Placeholder testimonials were removed (Oct 2026): only publish reviews from
+// real guests. Add them here, or link to Google reviews via
+// NEXT_PUBLIC_GOOGLE_REVIEW_URL on the homepage.
+export const testimonials: Testimonial[] = [];
 
 export const homepageFAQs: FAQ[] = [
   { question: 'How do I book a hotel through Dharamshala Stay?', answer: 'Browse our listings, pick a property, and submit an inquiry. You can also message us on WhatsApp. We confirm availability and handle the booking.' },

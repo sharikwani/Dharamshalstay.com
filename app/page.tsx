@@ -2,12 +2,12 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Shield, HeadphonesIcon, MapPin, Mountain, Car, ArrowRight, Star, MessageCircle, Building, Wind, Heart, Sparkles, IndianRupee, Compass, Palette, Coffee } from 'lucide-react';
-import { DestinationCard, SectionHeading, FAQSection, TestimonialCard, BlogCard } from '@/components/ui/Cards';
+import { DestinationCard, SectionHeading, FAQSection, BlogCard } from '@/components/ui/Cards';
 import HeroSearch from '@/components/sections/HeroSearch';
 import JsonLd from '@/components/seo/JsonLd';
 import { getDestinations, getFeaturedTreks } from '@/lib/db';
 import { getFeaturedBlogPosts } from '@/data/blog';
-import { testimonials, homepageFAQs } from '@/data/testimonials';
+import { homepageFAQs } from '@/data/testimonials';
 import { faqSchema, generateSEO } from '@/lib/seo';
 import { getWhatsAppLink } from '@/lib/utils';
 import { siteConfig } from '@/lib/config';
@@ -316,15 +316,19 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* TESTIMONIALS */}
-      <section className="py-16 lg:py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <SectionHeading title="What Travellers Say" subtitle="Real reviews from real guests." />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {testimonials.map((t) => <TestimonialCard key={t.id} t={t} />)}
+      {/* REVIEWS -- only real Google reviews; set NEXT_PUBLIC_GOOGLE_REVIEW_URL to show this */}
+      {process.env.NEXT_PUBLIC_GOOGLE_REVIEW_URL && (
+        <section className="py-14 bg-white">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
+            <h2 className="text-2xl sm:text-3xl font-heading font-bold text-slate-900 mb-3">Travelled with us?</h2>
+            <p className="text-slate-600 mb-6">Your review helps other travellers find honest local help in Dharamshala.</p>
+            <a href={process.env.NEXT_PUBLIC_GOOGLE_REVIEW_URL} target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-brand-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-brand-700">
+              <Star className="h-4 w-4" /> Leave a Google review
+            </a>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* LIST YOUR PROPERTY CTA */}
       <section className="py-16 bg-brand-900 text-white">

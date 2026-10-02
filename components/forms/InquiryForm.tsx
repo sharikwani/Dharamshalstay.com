@@ -3,8 +3,11 @@ import { useState, FormEvent } from 'react';
 import { Send, Check, AlertCircle } from 'lucide-react';
 import { getMinDate, getMinCheckoutDate, enforceCheckIn, enforceCheckOut } from '@/lib/date-helpers';
 
-export default function InquiryForm({ type, propertyId, trekId, paraglidingId, title = 'Send an Inquiry', subtitle = "We'll get back within 2 hours.", className = '' }: {
-  type: 'hotel' | 'taxi' | 'trek' | 'paragliding' | 'general'; propertyId?: string; trekId?: string; paraglidingId?: string; title?: string; subtitle?: string; className?: string;
+export default function InquiryForm({ type, propertyId, trekId, paraglidingId, contextNote, title = 'Send an Inquiry', subtitle = "We'll get back within 2 hours.", className = '' }: {
+  type: 'hotel' | 'taxi' | 'trek' | 'paragliding' | 'general'; propertyId?: string; trekId?: string; paraglidingId?: string;
+  /** Prepended to the message so the team knows what the enquiry is about (e.g. a directory hotel with no DB id). */
+  contextNote?: string;
+  title?: string; subtitle?: string; className?: string;
 }) {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [checkIn, setCheckIn] = useState('');
@@ -26,7 +29,7 @@ export default function InquiryForm({ type, propertyId, trekId, paraglidingId, t
     e.preventDefault(); setStatus('loading');
     const fd = new FormData(e.currentTarget);
     try {
-      const res = await fetch('/api/inquiries', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type, name: fd.get('name'), email: fd.get('email'), phone: fd.get('phone'), message: fd.get('message'), check_in: checkIn || undefined, check_out: checkOut || undefined, guests: fd.get('guests') ? Number(fd.get('guests')) : undefined, property_id: propertyId, trek_id: trekId, paragliding_id: paraglidingId, pickup_location: fd.get('pickup_location') || undefined, drop_location: fd.get('drop_location') || undefined }) });
+      const res = await fetch('/api/inquiries', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type, name: fd.get('name'), email: fd.get('email'), phone: fd.get('phone'), message: contextNote ? '[' + contextNote + '] ' + (fd.get('message') || '') : fd.get('message'), check_in: checkIn || undefined, check_out: checkOut || undefined, guests: fd.get('guests') ? Number(fd.get('guests')) : undefined, property_id: propertyId, trek_id: trekId, paragliding_id: paraglidingId, pickup_location: fd.get('pickup_location') || undefined, drop_location: fd.get('drop_location') || undefined }) });
       if (!res.ok) throw new Error(); setStatus('success');
     } catch { setStatus('error'); }
   }

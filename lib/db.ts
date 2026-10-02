@@ -13,6 +13,7 @@
 import { createServerClient } from './supabase';
 import { Property } from '@/types';
 import { placeImage, placeImageAlt, isStockImage, DESTINATION_IMAGE, TREK_IMAGES } from './place-images';
+import { directoryProperties, getDirectoryPropertyBySlug } from '@/data/directory-hotels';
 
 // Static fallback imports (only used when Supabase is unavailable)
 import { hotels as seedHotels, getHotelBySlug as seedGetBySlug, getHotelsByDestination as seedGetByDest, getFeaturedHotels as seedFeatured } from '@/data/hotels';
@@ -29,8 +30,29 @@ function isSupabaseConfigured(): boolean {
 // PROPERTIES (Hotels)
 // ===========================
 
-/** Get all published properties, sorted by sponsored > priority > rating */
-export async function getPublishedProperties(options?: {
+type PropertyQuery = { destination?: string; type?: string; limit?: number; featured?: boolean };
+
+/**
+ * Partner properties (Supabase) first, then directory listings for real
+ * properties we don't partner with yet. A DB row always wins over a directory
+ * entry with the same slug (e.g. once an owner claims their listing).
+ */
+export async function getPublishedProperties(options?: PropertyQuery): Promise<Property[]> {
+  const partners = await getPartnerProperties({ ...options, limit: undefined });
+  if (options?.featured) return options.limit ? partners.slice(0, options.limit) : partners;
+
+  const taken = new Set(partners.map((p) => p.slug));
+  const directory = directoryProperties.filter((d) =>
+    !taken.has(d.slug) &&
+    (!options?.destination || d.destination_slug === options.destination) &&
+    (!options?.type || d.type === options.type));
+
+  const all = [...partners, ...directory];
+  return options?.limit ? all.slice(0, options.limit) : all;
+}
+
+/** Get all published partner properties, sorted by sponsored > priority > rating */
+async function getPartnerProperties(options?: {
   destination?: string;
   type?: string;
   limit?: number;
@@ -75,8 +97,12 @@ export async function getPublishedProperties(options?: {
   }
 }
 
-/** Get a single published property by slug */
+/** Get a single published property by slug (partner first, then directory) */
 export async function getPropertyBySlug(slug: string): Promise<Property | null> {
+  return (await getPartnerPropertyBySlug(slug)) || getDirectoryPropertyBySlug(slug) || null;
+}
+
+async function getPartnerPropertyBySlug(slug: string): Promise<Property | null> {
   if (!isSupabaseConfigured()) {
     return seedGetBySlug(slug) || null;
   }
@@ -97,8 +123,13 @@ export async function getPropertyBySlug(slug: string): Promise<Property | null> 
   }
 }
 
-/** Get all published property slugs (for sitemap, etc) */
+/** Get all published property slugs, partner + directory (for sitemap, etc) */
 export async function getAllPublishedSlugs(): Promise<string[]> {
+  const partner = await getPartnerSlugs();
+  return Array.from(new Set([...partner, ...directoryProperties.map((d) => d.slug)]));
+}
+
+async function getPartnerSlugs(): Promise<string[]> {
   if (!isSupabaseConfigured()) {
     return seedHotels.filter(h => h.status === 'published').map(h => h.slug);
   }

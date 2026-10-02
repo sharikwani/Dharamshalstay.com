@@ -2,6 +2,7 @@ import { MetadataRoute } from 'next';
 import { getPublishedProperties, getDestinations, getPublishedTreks } from '@/lib/db';
 import { blogPosts } from '@/data/blog';
 import { siteConfig } from '@/lib/config';
+import { getTaxiRouteGroups } from '@/lib/taxi';
 
 // Must be the canonical (www) origin -- the bare domain 301s to www, and a
 // sitemap full of redirecting URLs is largely ignored by Google.
@@ -15,10 +16,11 @@ function date(value?: string | null, fallback = new Date()): Date {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [hotels, destinations, treks] = await Promise.all([
+  const [hotels, destinations, treks, taxiRoutes] = await Promise.all([
     getPublishedProperties(),
     getDestinations(),
     getPublishedTreks(),
+    getTaxiRouteGroups(),
   ]);
 
   const latestPost = blogPosts.reduce((max, b) => (b.updated_at > max ? b.updated_at : max), '2026-01-01');
@@ -62,6 +64,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: B + '/hotels/' + h.slug,
       lastModified: date(h.updated_at || h.created_at),
       changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    })),
+
+    ...taxiRoutes.map(g => ({
+      url: B + '/taxi/' + g.slug,
+      lastModified: date(g.updatedAt, contentDate),
+      changeFrequency: 'monthly' as const,
       priority: 0.7,
     })),
 

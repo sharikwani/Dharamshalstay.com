@@ -5,9 +5,11 @@ import { Star, MapPin, Clock, Tag, Shield, Phone, CheckCircle } from 'lucide-rea
 import { Breadcrumb, FAQSection, HotelCard } from '@/components/ui/Cards';
 import PhotoGallery from '@/components/ui/PhotoGallery';
 import HotelBooking from '@/components/hotels/HotelBooking';
+import DirectoryListing from '@/components/hotels/DirectoryListing';
+import { isDirectoryListing } from '@/data/directory-hotels';
 import JsonLd from '@/components/seo/JsonLd';
 import { getPropertyBySlug, getPropertiesByDestination, getAllPublishedSlugs } from '@/lib/db';
-import { generateHotelSEO, hotelSchemaFull, breadcrumbSchema, faqSchema } from '@/lib/seo';
+import { generateHotelSEO, generateSEO, hotelSchemaFull, breadcrumbSchema, faqSchema } from '@/lib/seo';
 import { formatPrice, getWhatsAppLink } from '@/lib/utils';
 import { siteConfig } from '@/lib/config';
 import { normalizeImages, getRoomImageUrl, FALLBACK_IMG } from '@/lib/images';
@@ -25,6 +27,16 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const h = await getPropertyBySlug(params.slug);
   if (!h) return {};
+  if (isDirectoryListing(h)) {
+    const typeLabel = h.type.charAt(0).toUpperCase() + h.type.slice(1);
+    return generateSEO({
+      title: h.name + ', ' + h.city + ' - ' + typeLabel + ' Guide & Enquiries',
+      description: (h.short_description + ' Location, nearby sights and who it suits. Enquire for rates.').slice(0, 158),
+      path: '/hotels/' + h.slug,
+      image: (h.images?.[0] as any)?.url,
+      keywords: [h.name, h.name + ' ' + h.city, typeLabel.toLowerCase() + ' in ' + h.city, 'where to stay in ' + h.city],
+    });
+  }
   return generateHotelSEO(h);
 }
 
@@ -40,6 +52,22 @@ export default async function HotelDetailPage({ params }: Props) {
 
   const related = (await getPropertiesByDestination(hotel.destination_slug))
     .filter(h => h.slug !== hotel.slug).slice(0, 3);
+
+  if (isDirectoryListing(hotel)) {
+    return (
+      <>
+        <JsonLd data={[
+          hotelSchemaFull({ ...hotel, images: [] }),
+          breadcrumbSchema([
+            { name: 'Home', href: '/' },
+            { name: 'Hotels', href: '/hotels' },
+            { name: hotel.name, href: '/hotels/' + hotel.slug },
+          ]),
+        ]} />
+        <DirectoryListing hotel={hotel} related={related} />
+      </>
+    );
+  }
 
   const dest = hotel.destination_slug?.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()) || '';
   const images = normalizeImages(hotel.images);
