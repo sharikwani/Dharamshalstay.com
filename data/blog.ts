@@ -59,7 +59,7 @@ For a quick trip, our [weekend itinerary guide](/blog/dharamshala-weekend-itiner
     image: UI.hotel1, image_alt: 'Dharamshala town spread across the Kangra Valley hillside',
     read_time: 8, featured: true,
     meta_title: 'Best Hotels in Dharamshala 2026 - Budget to Luxury | Local Guide',
-    meta_description: 'Discover the best hotels in Dharamshala for every budget. Locally verified picks from Rs.800 to Rs.15,000/night. Book direct and save Rs.500+.',
+    meta_description: 'Discover the best hotels in Dharamshala for every budget. Locally verified picks from Rs.800 to Rs.15,000/night. Up to Rs.500 off when you book with us.',
     related_slugs: ['best-hotels-in-mcleod-ganj', 'best-time-to-visit-dharamshala'],
   },
   {

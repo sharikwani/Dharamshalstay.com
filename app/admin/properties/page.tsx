@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Building, ArrowLeft, Eye, Pencil, ToggleLeft, ToggleRight, Trash2, Loader2, Mail, Check, X } from 'lucide-react';
+import { Building, ArrowLeft, Eye, Pencil, ToggleLeft, ToggleRight, Trash2, Loader2, Mail, Check, X, Search, ShieldCheck, ShieldAlert } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { formatPrice, statusLabel, STATUS_COLORS, cn } from '@/lib/utils';
 
@@ -14,6 +14,8 @@ export default function AdminProperties() {
   const [properties, setProperties] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<string>('published');
+  const [kind, setKind] = useState<'all' | 'partner' | 'directory'>('all');
+  const [query, setQuery] = useState('');
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [assigningId, setAssigningId] = useState<string | null>(null);
   const [assignEmail, setAssignEmail] = useState('');
@@ -26,17 +28,21 @@ export default function AdminProperties() {
     const { data } = await supabase.from('properties').select('*').order('updated_at', { ascending: false });
     const all = data || [];
     setAllProperties(all);
-    setProperties(filter === 'all' ? all : all.filter(p => p.status === filter));
     setLoading(false);
   }
 
   useEffect(() => { load(); }, []);
+  const matchesKind = (p: any) => kind === 'all' || (p.listing_type || 'partner') === kind;
   useEffect(() => {
-    setProperties(filter === 'all' ? allProperties : allProperties.filter(p => p.status === filter));
-  }, [filter, allProperties]);
+    const q = query.trim().toLowerCase();
+    setProperties(allProperties.filter(p =>
+      (filter === 'all' || p.status === filter) && matchesKind(p) &&
+      (!q || [p.name, p.slug, p.city, p.destination_slug, p.owner_email].join(' ').toLowerCase().includes(q))));
+  }, [filter, kind, query, allProperties]);
 
   function getCount(f: string): number {
-    return f === 'all' ? allProperties.length : allProperties.filter(p => p.status === f).length;
+    const pool = allProperties.filter(matchesKind);
+    return f === 'all' ? pool.length : pool.filter(p => p.status === f).length;
   }
 
   async function toggleFeatured(id: string, current: boolean) {
@@ -105,6 +111,22 @@ export default function AdminProperties() {
         <Building className="h-6 w-6 text-brand-500" /> All Properties
       </h1>
 
+      <div className="flex flex-col sm:flex-row gap-3 mb-4">
+        <div className="flex rounded-lg bg-slate-100 p-1 text-sm">
+          {(['all', 'partner', 'directory'] as const).map(k => (
+            <button key={k} onClick={() => setKind(k)}
+              className={cn('px-3 py-1.5 rounded-md font-medium capitalize', kind === k ? 'bg-white shadow text-slate-900' : 'text-slate-600')}>
+              {k === 'all' ? 'All listings' : k}
+            </button>
+          ))}
+        </div>
+        <div className="relative flex-1 max-w-sm">
+          <Search className="h-4 w-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+          <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Search name, area, owner email..."
+            className="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-brand-500" />
+        </div>
+      </div>
+
       <div className="flex gap-2 mb-6 overflow-x-auto scrollbar-hide pb-1">
         {FILTERS.map(f => (
           <button key={f} onClick={() => setFilter(f)}
@@ -131,11 +153,13 @@ export default function AdminProperties() {
               <thead>
                 <tr className="bg-slate-50 border-b text-left">
                   <th className="px-4 py-3 font-semibold text-slate-700">Property</th>
+                  <th className="px-4 py-3 font-semibold text-slate-700">Listing</th>
                   <th className="px-4 py-3 font-semibold text-slate-700">Type</th>
                   <th className="px-4 py-3 font-semibold text-slate-700">Area</th>
                   <th className="px-4 py-3 font-semibold text-slate-700">Price</th>
                   <th className="px-4 py-3 font-semibold text-slate-700">Owner Email</th>
                   <th className="px-4 py-3 font-semibold text-slate-700">Status</th>
+                  <th className="px-4 py-3 font-semibold text-slate-700">Compliance</th>
                   <th className="px-4 py-3 font-semibold text-slate-700">Featured</th>
                   <th className="px-4 py-3 font-semibold text-slate-700">Actions</th>
                 </tr>
@@ -146,6 +170,12 @@ export default function AdminProperties() {
                     <td className="px-4 py-3">
                       <p className="font-medium text-slate-900 truncate max-w-[200px]">{p.name || 'Untitled'}</p>
                       <p className="text-xs text-slate-500">{p.city}</p>
+                    </td>
+                    <td className="px-4 py-3">
+                      <span className={cn('text-xs font-medium px-2 py-0.5 rounded-full capitalize',
+                        p.listing_type === 'directory' ? 'bg-amber-50 text-amber-800' : 'bg-blue-50 text-blue-700')}>
+                        {p.listing_type || 'partner'}
+                      </span>
                     </td>
                     <td className="px-4 py-3 text-slate-600 capitalize">{p.type}</td>
                     <td className="px-4 py-3 text-slate-600 capitalize">{p.destination_slug?.replace(/-/g, ' ')}</td>
@@ -184,6 +214,15 @@ export default function AdminProperties() {
                       </span>
                     </td>
                     <td className="px-4 py-3">
+                      {p.last_verified_at ? (
+                        <span className="text-xs text-green-700 flex items-center gap-1" title={'Checks passed: ' + Object.values(p.compliance || {}).filter(Boolean).length}>
+                          <ShieldCheck className="h-3.5 w-3.5" />{new Date(p.last_verified_at).toLocaleDateString('en-IN')}
+                        </span>
+                      ) : (
+                        <span className="text-xs text-amber-700 flex items-center gap-1"><ShieldAlert className="h-3.5 w-3.5" />Not verified</span>
+                      )}
+                    </td>
+                    <td className="px-4 py-3">
                       <button onClick={() => toggleFeatured(p.id, p.featured)} className="text-slate-400 hover:text-amber-500">
                         {p.featured ? <ToggleRight className="h-5 w-5 text-amber-500" /> : <ToggleLeft className="h-5 w-5" />}
                       </button>
@@ -200,13 +239,13 @@ export default function AdminProperties() {
                             <Eye className="h-4 w-4" />
                           </Link>
                         )}
-                        {p.status === 'pending_review' && (
+                        {['pending_review', 'draft', 'changes_requested', 'rejected', 'approved'].includes(p.status) && (
                           <button onClick={() => changeStatus(p.id, 'published')}
                             className="text-xs text-green-600 font-medium px-2 py-1 rounded hover:bg-green-50">Publish</button>
                         )}
                         {p.status === 'published' && (
                           <button onClick={() => changeStatus(p.id, 'suspended')}
-                            className="text-xs text-red-500 font-medium px-2 py-1 rounded hover:bg-red-50">Suspend</button>
+                            className="text-xs text-red-500 font-medium px-2 py-1 rounded hover:bg-red-50" title="Block: hides it from the website">Suspend</button>
                         )}
                         {p.status === 'suspended' && (
                           <button onClick={() => changeStatus(p.id, 'published')}

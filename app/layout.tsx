@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     url: siteConfig.url,
     siteName: siteConfig.name,
     title: 'Dharamshala Stay - Hotels, Treks & Travel in Dharamshala',
-    description: 'Book verified hotels, treks, taxis in Dharamshala & McLeod Ganj. Rs.500 less than MakeMyTrip.',
+    description: 'Book hotels, treks and taxis in Dharamshala & McLeod Ganj. Up to Rs.500 off every booking.',
     images: [{
       url: siteConfig.url + '/images/og-default.jpg',
       width: 1200,

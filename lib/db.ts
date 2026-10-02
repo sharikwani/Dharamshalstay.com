@@ -13,7 +13,6 @@
 import { createServerClient } from './supabase';
 import { Property } from '@/types';
 import { placeImage, placeImageAlt, isStockImage, DESTINATION_IMAGE, TREK_IMAGES } from './place-images';
-import { directoryProperties, getDirectoryPropertyBySlug } from '@/data/directory-hotels';
 
 // Static fallback imports (only used when Supabase is unavailable)
 import { hotels as seedHotels, getHotelBySlug as seedGetBySlug, getHotelsByDestination as seedGetByDest, getFeaturedHotels as seedFeatured } from '@/data/hotels';
@@ -30,25 +29,34 @@ function isSupabaseConfigured(): boolean {
 // PROPERTIES (Hotels)
 // ===========================
 
+const DESTINATION_SLUGS = ['dharamshala', 'mcleod-ganj', 'bhagsu', 'dharamkot', 'naddi'];
+
+/**
+ * Imported properties sometimes carry a locality as their destination
+ * (e.g. 'kharota'), which has no destination page -- the breadcrumb 404s and
+ * the hotel never appears under an area. Map those to a real destination.
+ */
+function normaliseDestination<T extends Property | null>(p: T): T {
+  if (!p || DESTINATION_SLUGS.includes(p.destination_slug)) return p;
+  const text = [p.destination_slug, p.address_line1, p.city].join(' ').toLowerCase();
+  const slug = /mcleod|mcleo/.test(text) ? 'mcleod-ganj'
+    : /bhagsu/.test(text) ? 'bhagsu'
+    : /dharamkot/.test(text) ? 'dharamkot'
+    : /naddi/.test(text) ? 'naddi'
+    : 'dharamshala';
+  return { ...p, destination_slug: slug };
+}
+
 type PropertyQuery = { destination?: string; type?: string; limit?: number; featured?: boolean };
 
 /**
- * Partner properties (Supabase) first, then directory listings for real
- * properties we don't partner with yet. A DB row always wins over a directory
- * entry with the same slug (e.g. once an owner claims their listing).
+ * All published properties (partner and directory listings both live in
+ * Supabase and are managed in /admin/properties). Partners rank first.
  */
 export async function getPublishedProperties(options?: PropertyQuery): Promise<Property[]> {
-  const partners = await getPartnerProperties({ ...options, limit: undefined });
-  if (options?.featured) return options.limit ? partners.slice(0, options.limit) : partners;
-
-  const taken = new Set(partners.map((p) => p.slug));
-  const directory = directoryProperties.filter((d) =>
-    !taken.has(d.slug) &&
-    (!options?.destination || d.destination_slug === options.destination) &&
-    (!options?.type || d.type === options.type));
-
-  const all = [...partners, ...directory];
-  return options?.limit ? all.slice(0, options.limit) : all;
+  const rows = await getPartnerProperties(options);
+  const rank = (p: Property) => ((p as any).listing_type === 'directory' ? 1 : 0);
+  return [...rows].sort((x, y) => rank(x) - rank(y));
 }
 
 /** Get all published partner properties, sorted by sponsored > priority > rating */
@@ -78,7 +86,6 @@ async function getPartnerProperties(options?: {
       .order('rating', { ascending: false, nullsFirst: false })
       .order('published_at', { ascending: false });
 
-    if (options?.destination) query = query.eq('destination_slug', options.destination);
     if (options?.type) query = query.eq('type', options.type);
     if (options?.featured) query = query.eq('featured', true);
     if (options?.limit) query = query.limit(options.limit);
@@ -90,16 +97,17 @@ async function getPartnerProperties(options?: {
       console.error('DB getPublishedProperties error:', error.message);
       return [];
     }
-    return (data as Property[]) || [];
+    const rows = ((data as Property[]) || []).map(normaliseDestination);
+    return options?.destination ? rows.filter((p) => p.destination_slug === options.destination) : rows;
   } catch (err) {
     console.error('DB getPublishedProperties exception:', err);
     return [];
   }
 }
 
-/** Get a single published property by slug (partner first, then directory) */
+/** Get a single published property by slug */
 export async function getPropertyBySlug(slug: string): Promise<Property | null> {
-  return (await getPartnerPropertyBySlug(slug)) || getDirectoryPropertyBySlug(slug) || null;
+  return getPartnerPropertyBySlug(slug);
 }
 
 async function getPartnerPropertyBySlug(slug: string): Promise<Property | null> {
@@ -117,16 +125,15 @@ async function getPartnerPropertyBySlug(slug: string): Promise<Property | null> 
       .single();
 
     if (error || !data) return null;
-    return data as Property;
+    return normaliseDestination(data as Property);
   } catch {
     return null;
   }
 }
 
-/** Get all published property slugs, partner + directory (for sitemap, etc) */
+/** Get all published property slugs (for sitemap, etc) */
 export async function getAllPublishedSlugs(): Promise<string[]> {
-  const partner = await getPartnerSlugs();
-  return Array.from(new Set([...partner, ...directoryProperties.map((d) => d.slug)]));
+  return getPartnerSlugs();
 }
 
 async function getPartnerSlugs(): Promise<string[]> {

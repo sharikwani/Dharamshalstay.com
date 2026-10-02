@@ -1,4 +1,4 @@
-import type { DirectoryHotel } from './directory-hotels';
+import type { DirectoryHotel } from './types';
 
 /**
  * Directory batch 1: McLeod Ganj (6), lower Dharamshala (5), Naddi (4).

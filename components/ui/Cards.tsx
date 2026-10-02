@@ -9,7 +9,7 @@ export function HotelCard({ hotel, nights = 0 }: { hotel: Property; nights?: num
   // Use normalizer -- handles string[], {url}[], null, mixed shapes
   const img = getPrimaryImageUrl(hotel.images);
   const alt = hotel.images?.[0]?.alt || hotel.name || 'Hotel';
-  const perNight = hotel.price_min > 500 ? hotel.price_min - 500 : hotel.price_min;
+  const perNight = hotel.price_min;
   const total = nights > 1 ? perNight * nights : 0;
   return (
     <Link href={'/hotels/' + hotel.slug} className="group block">
@@ -38,13 +38,13 @@ export function HotelCard({ hotel, nights = 0 }: { hotel: Property; nights?: num
               <div className="flex items-center justify-between">
                 <div>
                   <div className="flex items-baseline gap-1">
-                    <span className="text-xs text-slate-400 line-through">{formatPrice(hotel.price_min)}</span>
                     <span className="text-lg font-bold text-slate-900">{formatPrice(perNight)}</span>
                     <span className="text-xs text-slate-500">/ night</span>
                   </div>
                   {total > 0 && (
-                    <p className="text-xs text-green-600 font-semibold">{formatPrice(total)} for {nights} nights</p>
+                    <p className="text-xs text-slate-600 font-semibold">{formatPrice(total)} for {nights} nights</p>
                   )}
+                  <p className="text-[11px] text-green-700 font-medium">Up to {'₹'}500 off on booking</p>
                 </div>
                 <span className="text-sm text-brand-600 font-semibold flex items-center gap-0.5">View <ChevronRight className="h-4 w-4" /></span>
               </div>

@@ -9,11 +9,11 @@ import { formatPrice, getWhatsAppLink } from '@/lib/utils';
 import { getRoomImageUrl } from '@/lib/images';
 import { siteConfig } from '@/lib/config';
 
-const PRICE_DISCOUNT = 500;
-function discountedPrice(price: number): number {
-  if (!price || price <= PRICE_DISCOUNT) return price;
-  return price - PRICE_DISCOUNT;
-}
+import { BOOKING_DISCOUNT_NOTE } from '@/lib/pricing';
+
+// Rates are shown exactly as listed; the up-to-Rs.500 discount is applied
+// by our team when the booking is confirmed.
+const discountedPrice = (price: number) => price;
 
 const mealLabels: Record<string, string> = { ep: 'Room Only', cp: 'Breakfast Included', map: 'Breakfast + Dinner', ap: 'All Meals' };
 
@@ -59,7 +59,7 @@ export default function HotelBooking({ hotel }: Props) {
           <div>
             <div className="flex items-center justify-between mb-5">
               <h2 className="text-xl font-heading font-bold text-slate-900">Choose Your Room</h2>
-              <span className="text-xs bg-green-100 text-green-700 px-3 py-1.5 rounded-full font-semibold">All prices Rs.{PRICE_DISCOUNT} less than MakeMyTrip</span>
+              <span className="text-xs bg-green-100 text-green-700 px-3 py-1.5 rounded-full font-semibold">{BOOKING_DISCOUNT_NOTE}</span>
             </div>
 
             <div className="space-y-6">
@@ -122,10 +122,10 @@ export default function HotelBooking({ hotel }: Props) {
                                   </div>
                                   <div className="text-right shrink-0">
                                     <div className="flex items-baseline gap-1.5">
-                                      {plan.price > PRICE_DISCOUNT && <span className="text-xs text-slate-400 line-through">{formatPrice(plan.price)}</span>}
                                       <span className="text-xl font-bold text-slate-900">{formatPrice(ourPrice)}</span>
                                     </div>
                                     <p className="text-[10px] text-slate-500">per night + taxes</p>
+                                    <p className="text-[10px] text-green-700 font-medium">{BOOKING_DISCOUNT_NOTE}</p>
                                   </div>
                                   <button
                                     onClick={() => selectRoom(room.name, plan.name || mealTag, plan.price)}
@@ -140,10 +140,9 @@ export default function HotelBooking({ hotel }: Props) {
                           <div className="flex items-center justify-between pt-4 border-t border-slate-100">
                             <div>
                               <div className="flex items-baseline gap-1.5">
-                                <span className="text-xs text-slate-400 line-through">{formatPrice(room.base_price)}</span>
-                                <span className="text-2xl font-bold text-slate-900">{formatPrice(discountedPrice(room.base_price))}</span>
+                                <span className="text-2xl font-bold text-slate-900">{formatPrice(room.base_price)}</span>
                               </div>
-                              <p className="text-xs text-green-600 font-medium">Save Rs.{PRICE_DISCOUNT} vs MakeMyTrip</p>
+                              <p className="text-xs text-green-600 font-medium">{BOOKING_DISCOUNT_NOTE}</p>
                             </div>
                             <button onClick={() => selectRoom(room.name, 'Room Only', room.base_price)}
                               className="bg-orange-500 hover:bg-orange-600 text-white text-sm font-bold px-6 py-3 rounded-xl transition-colors">

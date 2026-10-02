@@ -1,38 +1,9 @@
-import type { DirectoryHotel } from './directory-hotels';
+import type { DirectoryHotel } from './types';
 
 export const directoryHotels2: DirectoryHotel[] = [
   // ---------------------------------------------------------------------------
   // BHAGSU (Bhagsunag / Upper Bhagsu)
   // ---------------------------------------------------------------------------
-  {
-    slug: 'the-hosteller-upper-bhagsu',
-    name: 'The Hosteller McLeodganj, Upper Bhagsu',
-    type: 'hostel',
-    destination_slug: 'bhagsu',
-    locality: 'Upper Bhagsu',
-    price_band: 'budget',
-    short_description: 'Branded backpacker hostel up a flight of steps above Bhagsu, with dorms and private rooms, a vegetarian cafe and a garden for evening bonfires.',
-    description: 'This outpost of The Hosteller chain sits in Upper Bhagsu, the quieter, forested shelf above the busy Bhagsunag bazaar. Reaching it involves climbing roughly a hundred-odd steps from the road, which keeps traffic noise away but is worth remembering if you are carrying heavy bags. Both the dorms and the private rooms have their own attached washrooms, and a few private rooms accept pets.\n\nThe social side is the main draw: there is a common lounge with indoor games, a garden where bonfires are lit on cool nights, and an in-house vegetarian cafe serving breakfast, lunch and dinner. It suits solo travellers and groups who want company for treks to Triund or the waterfall without paying hotel rates. There is no air conditioning or pool, which is normal for the hills. Bhagsu Waterfall and the Bhagsunag temple are an easy walk, and Dharamkot is reachable on foot along the hillside path.',
-    highlights: [
-      'Quiet Upper Bhagsu setting among deodar trees',
-      'Attached washrooms in both dorms and private rooms',
-      'Garden with bonfire area',
-      'Vegetarian in-house cafe open for all meals',
-    ],
-    good_for: ['Backpackers', 'Solo travellers', 'Trekkers', 'Groups of friends'],
-    nearby: [
-      'Bhagsu Waterfall -- approx 10-15 min walk',
-      'Bhagsunag Temple -- approx 10 min walk',
-      'Dharamkot village -- approx 25-30 min walk',
-      'McLeod Ganj main square -- approx 2 km',
-    ],
-    amenities: ['Wi-Fi', 'Cafe', 'Garden', 'Common room', 'Indoor games', 'Lockers', '24-hour hot water', '24-hour reception', 'Travel desk', 'Housekeeping', 'CCTV'],
-    website: 'https://www.thehosteller.com/hostels/the-hosteller-mcleodganj-mini/',
-    sources: [
-      'https://www.thehosteller.com/hostels/the-hosteller-mcleodganj-mini/',
-      'https://www.expedia.co.uk/Dharamshala-Hotels-The-Hosteller-Mcleodganj-Bhagsu.h122049948.Hotel-Information',
-    ],
-  },
   {
     slug: 'loopin-mcleodganj-upper-bhagsu',
     name: 'Loopin McLeodganj',
@@ -116,13 +87,13 @@ export const directoryHotels2: DirectoryHotel[] = [
   },
   {
     slug: 'hotel-shivaay-grand-bhagsu',
-    name: 'Hotel Shivaay Grand',
+    name: 'Hotel Shivaay Morex',
     type: 'hotel',
     destination_slug: 'bhagsu',
     locality: 'Bhagsunag Road',
     price_band: 'budget',
     short_description: 'Good-value vegetarian hotel on Bhagsunag Road, close to the temple, with spacious rooms, mountain-facing balconies and home-style food.',
-    description: 'Shivaay Grand is a straightforward, well-run hotel on Bhagsunag Road near the Vaishnodevi temple, a few minutes on foot from the Bhagsunag temple and the start of the waterfall walk. It is one of the most consistently well-reviewed hotels in Bhagsu, with guests often pointing to the size and cleanliness of the rooms and the attentive staff.\n\nThe in-house restaurant is purely vegetarian and is known for home-style cooking, including local Himachali dishes; non-vegetarians will need to eat out, which is easy given the number of cafes nearby. Rooms come with air conditioning, a TV, a kettle and housekeeping, and some have balconies facing the hills. There is free parking, which is not a given in Bhagsu, plus a 24-hour front desk. It is a sensible pick for families and couples who want hotel comforts at a modest budget and a location close to the action.',
+    description: 'Hotel Shivaay Morex (listed on some sites as Shivaay Grand) is a straightforward, well-run hotel on Bhagsunag Road near the Vaishnodevi temple, a few minutes on foot from the Bhagsunag temple and the start of the waterfall walk. It is one of the most consistently well-reviewed hotels in Bhagsu, with guests often pointing to the size and cleanliness of the rooms and the attentive staff.\n\nThe in-house restaurant is purely vegetarian and is known for home-style cooking, including local Himachali dishes; non-vegetarians will need to eat out, which is easy given the number of cafes nearby. Rooms come with air conditioning, a TV, a kettle and housekeeping, and some have balconies facing the hills. There is free parking, which is not a given in Bhagsu, plus a 24-hour front desk. It is a sensible pick for families and couples who want hotel comforts at a modest budget and a location close to the action.',
     highlights: [
       'Walking distance to Bhagsunag temple',
       'Pure vegetarian restaurant with Himachali dishes',

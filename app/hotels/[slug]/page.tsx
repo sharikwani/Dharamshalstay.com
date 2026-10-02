@@ -6,7 +6,7 @@ import { Breadcrumb, FAQSection, HotelCard } from '@/components/ui/Cards';
 import PhotoGallery from '@/components/ui/PhotoGallery';
 import HotelBooking from '@/components/hotels/HotelBooking';
 import DirectoryListing from '@/components/hotels/DirectoryListing';
-import { isDirectoryListing } from '@/data/directory-hotels';
+import { isDirectoryListing, areaName } from '@/lib/listing';
 import JsonLd from '@/components/seo/JsonLd';
 import { getPropertyBySlug, getPropertiesByDestination, getAllPublishedSlugs } from '@/lib/db';
 import { generateHotelSEO, generateSEO, hotelSchemaFull, breadcrumbSchema, faqSchema } from '@/lib/seo';
@@ -30,21 +30,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (isDirectoryListing(h)) {
     const typeLabel = h.type.charAt(0).toUpperCase() + h.type.slice(1);
     return generateSEO({
-      title: h.name + ', ' + h.city + ' - ' + typeLabel + ' Guide & Enquiries',
-      description: (h.short_description + ' Location, nearby sights and who it suits. Enquire for rates.').slice(0, 158),
+      title: h.meta_title || (h.name + ', ' + areaName(h.destination_slug) + ' - ' + typeLabel + ' Guide & Enquiries'),
+      description: h.meta_description || ((h.short_description || '') + ' Location, photos, nearby sights and who it suits. Enquire for rates.').trim().slice(0, 158),
       path: '/hotels/' + h.slug,
       image: (h.images?.[0] as any)?.url,
-      keywords: [h.name, h.name + ' ' + h.city, typeLabel.toLowerCase() + ' in ' + h.city, 'where to stay in ' + h.city],
+      keywords: [h.name, h.name + ' ' + areaName(h.destination_slug), typeLabel.toLowerCase() + ' in ' + areaName(h.destination_slug), 'where to stay in ' + areaName(h.destination_slug)],
     });
   }
   return generateHotelSEO(h);
 }
 
-const PRICE_DISCOUNT = 500;
-function discountedPrice(price: number): number {
-  if (!price || price <= PRICE_DISCOUNT) return price;
-  return price - PRICE_DISCOUNT;
-}
+import { BOOKING_DISCOUNT_NOTE } from '@/lib/pricing';
 
 export default async function HotelDetailPage({ params }: Props) {
   const hotel = await getPropertyBySlug(params.slug);
@@ -57,12 +53,13 @@ export default async function HotelDetailPage({ params }: Props) {
     return (
       <>
         <JsonLd data={[
-          hotelSchemaFull({ ...hotel, images: [] }),
+          hotelSchemaFull({ ...hotel, rating: 0, review_count: 0 }),
           breadcrumbSchema([
             { name: 'Home', href: '/' },
             { name: 'Hotels', href: '/hotels' },
             { name: hotel.name, href: '/hotels/' + hotel.slug },
           ]),
+          ...(hotel.faqs?.length ? [faqSchema(hotel.faqs)] : []),
         ]} />
         <DirectoryListing hotel={hotel} related={related} />
       </>
@@ -121,7 +118,7 @@ export default async function HotelDetailPage({ params }: Props) {
               </span>
             )}
             <span className="text-xs font-semibold px-2.5 py-1 bg-green-50 text-green-700 rounded-full flex items-center gap-1">
-              <Tag className="h-3 w-3" /> Rs.{PRICE_DISCOUNT} less than MakeMyTrip
+              <Tag className="h-3 w-3" /> {BOOKING_DISCOUNT_NOTE}
             </span>
           </div>
 
@@ -144,11 +141,10 @@ export default async function HotelDetailPage({ params }: Props) {
             <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl px-5 py-4 flex items-center justify-between flex-wrap gap-3">
               <div>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-slate-400 line-through text-sm">{formatPrice(hotel.price_min)}</span>
-                  <span className="text-3xl font-bold text-green-700">{formatPrice(discountedPrice(hotel.price_min))}</span>
+                  <span className="text-3xl font-bold text-green-700">{formatPrice(hotel.price_min)}</span>
                   <span className="text-slate-500 text-sm">/ night onwards</span>
                 </div>
-                <p className="text-xs text-green-600 mt-0.5 font-medium">You save Rs.{PRICE_DISCOUNT} per night vs MakeMyTrip</p>
+                <p className="text-xs text-green-600 mt-0.5 font-medium">{BOOKING_DISCOUNT_NOTE}</p>
               </div>
             </div>
           )}
@@ -157,7 +153,7 @@ export default async function HotelDetailPage({ params }: Props) {
         {/* Trust strip */}
         <div className="grid grid-cols-3 gap-3 mb-10">
           {[
-            { icon: Tag, text: 'Rs.' + PRICE_DISCOUNT + ' less than OTAs' },
+            { icon: Tag, text: 'Up to ₹500 off every booking' },
             { icon: Shield, text: 'Verified property' },
             { icon: Phone, text: 'Direct local support' },
           ].map(item => (
