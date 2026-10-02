@@ -3,6 +3,8 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { ChevronRight, Search, X } from 'lucide-react';
 import type { FAQCategory } from '@/data/faqs';
+import { useT } from '@/lib/i18n/client';
+import { fmt } from '@/lib/i18n/dict';
 
 /**
  * Searchable, topic-filtered Q&A list. Rendered on the server first (every
@@ -10,6 +12,8 @@ import type { FAQCategory } from '@/data/faqs';
  * filters what is shown.
  */
 export default function FAQBrowser({ categories }: { categories: FAQCategory[] }) {
+  const { t, href } = useT();
+  const f = t.faq;
   const [q, setQ] = useState('');
   const query = q.trim().toLowerCase();
 
@@ -28,8 +32,8 @@ export default function FAQBrowser({ categories }: { categories: FAQCategory[] }
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[230px_1fr] gap-10">
-      <nav aria-label="FAQ topics" className="lg:sticky lg:top-24 self-start">
-        <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-3">Topics</p>
+      <nav aria-label={f.topics} className="lg:sticky lg:top-24 self-start">
+        <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-3">{f.topics}</p>
         <ul className="flex flex-wrap lg:flex-col gap-2 lg:gap-1 text-sm">
           {categories.map((c) => (
             <li key={c.id}>
@@ -44,19 +48,19 @@ export default function FAQBrowser({ categories }: { categories: FAQCategory[] }
       <div>
         <div className="relative mb-8">
           <Search className="h-5 w-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2" />
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search questions -- e.g. snow, Triund, ATM, momos, taxi fare"
-            aria-label="Search questions"
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={f.searchPlaceholder}
+            aria-label={f.searchLabel}
             className="w-full pl-12 pr-10 py-3.5 border border-slate-300 rounded-xl text-base outline-none focus:ring-2 focus:ring-brand-500 shadow-sm" />
           {q && (
-            <button onClick={() => setQ('')} aria-label="Clear search" className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700">
+            <button onClick={() => setQ('')} aria-label={t.blog.clear} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700">
               <X className="h-5 w-5" />
             </button>
           )}
-          {query && <p className="text-sm text-slate-500 mt-2">{shown} matching answer{shown === 1 ? '' : 's'}</p>}
+          {query && <p className="text-sm text-slate-500 mt-2">{fmt(f.matches, { n: shown })}</p>}
         </div>
 
         {filtered.length === 0 && (
-          <p className="text-slate-600">No matches. Try a simpler word, or <Link href="/contact" className="text-brand-600 underline">ask us directly</Link>.</p>
+          <p className="text-slate-600">{f.noMatch} <Link href={href('/contact')} className="text-brand-600 underline">{f.askUs}</Link></p>
         )}
 
         <div className="space-y-12">
@@ -73,7 +77,7 @@ export default function FAQBrowser({ categories }: { categories: FAQCategory[] }
                     <div className="px-5 pb-5 text-slate-600 leading-relaxed">
                       <p>{f.answer}</p>
                       {f.link && (
-                        <Link href={f.link.href} className="inline-block mt-2 text-sm font-semibold text-brand-600 hover:text-brand-700">
+                        <Link href={href(f.link.href)} className="inline-block mt-2 text-sm font-semibold text-brand-600 hover:text-brand-700">
                           {f.link.label} &rarr;
                         </Link>
                       )}

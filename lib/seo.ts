@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { siteConfig } from './config';
+import { hasHindiVersion, localizePath, type Lang } from './i18n/core';
 
 interface SEOProps {
   title: string;
@@ -11,6 +12,10 @@ interface SEOProps {
   publishedTime?: string;
   modifiedTime?: string;
   keywords?: string[];
+  /** Language of THIS page. `path` is always the English path. */
+  lang?: Lang;
+  /** Whether a Hindi version of this page exists (defaults to the section rule). */
+  hindi?: boolean;
 }
 
 /**
@@ -33,12 +38,19 @@ export function generateSEO({
   publishedTime,
   modifiedTime,
   keywords,
+  lang = 'en',
+  hindi,
 }: SEOProps): Metadata {
   const suffix = ' | ' + siteConfig.name;
   const baseTitle = title.endsWith(suffix) ? title.slice(0, -suffix.length) : title;
   const fullTitle = baseTitle.includes(siteConfig.name) ? baseTitle : baseTitle + suffix;
 
-  const url = siteConfig.url + (path === '/' ? '' : path);
+  const hasHi = hindi ?? hasHindiVersion(path);
+  const enUrl = siteConfig.url + (path === '/' ? '' : path);
+  const hiUrl = siteConfig.url + localizePath(path, 'hi');
+  // A Hindi URL without a real translation points search engines at the English page.
+  const url = lang === 'hi' && hasHi ? hiUrl : enUrl;
+  const languages = hasHi ? { 'en-IN': enUrl, 'hi-IN': hiUrl, 'x-default': enUrl } : undefined;
   const ogImage = image
     ? (image.startsWith('http') ? image : siteConfig.url + image)
     : siteConfig.url + '/images/og-default.jpg';
@@ -64,14 +76,15 @@ export function generateSEO({
             'max-snippet': -1,
           },
         },
-    alternates: { canonical: url },
+    alternates: { canonical: url, ...(languages && { languages }) },
     openGraph: {
       type,
       url,
       title: fullTitle,
       description,
       siteName: siteConfig.name,
-      locale: 'en_IN',
+      locale: lang === 'hi' ? 'hi_IN' : 'en_IN',
+      ...(hasHi && { alternateLocale: lang === 'hi' ? ['en_IN'] : ['hi_IN'] }),
       images: [{ url: ogImage, width: 1200, height: 630, alt: baseTitle }],
       ...(type === 'article' && publishedTime ? { publishedTime } : {}),
       ...(type === 'article' && modifiedTime ? { modifiedTime } : {}),
@@ -96,7 +109,8 @@ export function generateHotelSEO(hotel: {
   price_min?: number; price_max?: number;
   star_rating?: number; rating?: number; review_count?: number;
   slug: string; images?: any[];
-}): Metadata {
+}, lang: Lang = 'en'): Metadata {
+  if (lang === 'hi') return generateHotelSEOHindi(hotel);
   const area = hotel.destination_slug?.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()) || hotel.city || 'Dharamshala';
   const typeLabel = hotel.type ? hotel.type.charAt(0).toUpperCase() + hotel.type.slice(1) : 'Hotel';
   const starText = hotel.star_rating ? hotel.star_rating + '-Star ' : '';
@@ -123,6 +137,24 @@ export function generateHotelSEO(hotel: {
     path: '/hotels/' + hotel.slug,
     image: imageUrl,
     keywords,
+  });
+}
+
+const HI_AREAS: Record<string, string> = { dharamshala: 'धर्मशाला', 'mcleod-ganj': 'मैक्लोडगंज', bhagsu: 'भागसू', dharamkot: 'धर्मकोट', naddi: 'नड्डी' };
+const HI_TYPES: Record<string, string> = { hotel: 'होटल', homestay: 'होमस्टे', hostel: 'हॉस्टल', guesthouse: 'गेस्टहाउस', resort: 'रिसॉर्ट', villa: 'विला', camp: 'कैंप' };
+
+function generateHotelSEOHindi(hotel: { name: string; short_description?: string; type?: string; destination_slug?: string; price_min?: number; slug: string; images?: any[] }): Metadata {
+  const area = HI_AREAS[hotel.destination_slug || ''] || 'धर्मशाला';
+  const type = HI_TYPES[hotel.type || ''] || 'होटल';
+  const price = hotel.price_min ? ' -- ₹' + hotel.price_min.toLocaleString('en-IN') + '/रात से' : '';
+  const primaryImage = hotel.images?.[0]?.url || hotel.images?.[0];
+  return generateSEO({
+    title: hotel.name + ' -- ' + area + ' में ' + type + price,
+    description: (hotel.name + ', ' + area + ' में ' + type + '। ' + (hotel.short_description || '') + ' लोकेशन, फ़ोटो, आसपास की जगहें और बुकिंग में मदद।').slice(0, 158),
+    path: '/hotels/' + hotel.slug,
+    image: typeof primaryImage === 'string' ? primaryImage : undefined,
+    keywords: [hotel.name, area + ' में ' + type, area + ' होटल'],
+    lang: 'hi',
   });
 }
 
@@ -212,8 +244,8 @@ export function faqSchema(faqs: { question: string; answer: string }[]) {
   return { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.question, acceptedAnswer: { '@type': 'Answer', text: f.answer } })) };
 }
 
-export function articleSchema(p: { title: string; excerpt: string; slug: string; author: string; published_at: string; updated_at: string; image: string; tags?: string[]; category?: string }) {
-  const url = siteConfig.url + '/blog/' + p.slug;
+export function articleSchema(p: { title: string; excerpt: string; slug: string; author: string; published_at: string; updated_at: string; image: string; tags?: string[]; category?: string }, lang: Lang = 'en') {
+  const url = siteConfig.url + localizePath('/blog/' + p.slug, lang);
   return {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -221,7 +253,7 @@ export function articleSchema(p: { title: string; excerpt: string; slug: string;
     description: p.excerpt,
     url,
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
-    inLanguage: 'en-IN',
+    inLanguage: lang === 'hi' ? 'hi-IN' : 'en-IN',
     author: { '@type': 'Organization', name: p.author, url: siteConfig.url + '/about' },
     publisher: {
       '@type': 'Organization',
@@ -238,7 +270,8 @@ export function articleSchema(p: { title: string; excerpt: string; slug: string;
   };
 }
 
-export function breadcrumbSchema(items: { name: string; href: string }[]) {
+export function breadcrumbSchema(items: { name: string; href: string }[], lang: Lang = 'en') {
+  items = items.map((i) => ({ ...i, href: localizePath(i.href, lang) }));
   return { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: items.map((item, i) => ({ '@type': 'ListItem', position: i + 1, name: item.name, item: siteConfig.url + item.href })) };
 }
 
@@ -250,7 +283,8 @@ export function websiteSchema() {
   return { '@context': 'https://schema.org', '@type': 'WebSite', name: siteConfig.name, url: siteConfig.url, potentialAction: { '@type': 'SearchAction', target: siteConfig.url + '/hotels?q={search_term_string}', 'query-input': 'required name=search_term_string' } };
 }
 
-export function itemListSchema(items: { name: string; href: string }[]) {
+export function itemListSchema(items: { name: string; href: string }[], lang: Lang = 'en') {
+  items = items.map((i) => ({ ...i, href: localizePath(i.href, lang) }));
   return {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
@@ -258,13 +292,13 @@ export function itemListSchema(items: { name: string; href: string }[]) {
   };
 }
 
-export function touristDestinationSchema(d: { name: string; description: string; slug: string; image?: string }) {
+export function touristDestinationSchema(d: { name: string; description: string; slug: string; image?: string }, lang: Lang = 'en') {
   return {
     '@context': 'https://schema.org',
     '@type': 'TouristDestination',
     name: d.name,
     description: d.description,
-    url: siteConfig.url + '/destinations/' + d.slug,
+    url: siteConfig.url + localizePath('/destinations/' + d.slug, lang),
     ...(d.image && { image: d.image.startsWith('http') ? d.image : siteConfig.url + d.image }),
     containedInPlace: { '@type': 'AdministrativeArea', name: 'Kangra district, Himachal Pradesh, India' },
   };

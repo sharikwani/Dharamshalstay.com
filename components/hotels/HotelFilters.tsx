@@ -3,29 +3,16 @@ import { useState, useMemo } from 'react';
 import { Search, SlidersHorizontal, X, Calendar, Users, MapPin } from 'lucide-react';
 import { HotelCard } from '@/components/ui/Cards';
 import { formatPrice } from '@/lib/utils';
+import { useT } from '@/lib/i18n/client';
+import { fmt } from '@/lib/i18n/dict';
 
 interface Props {
   hotels: any[];
   destinations: any[];
 }
 
-const TYPES = [
-  { value: '', label: 'All Types' },
-  { value: 'hotel', label: 'Hotels' },
-  { value: 'homestay', label: 'Homestays' },
-  { value: 'resort', label: 'Resorts' },
-  { value: 'guesthouse', label: 'Guesthouses' },
-  { value: 'hostel', label: 'Hostels' },
-  { value: 'villa', label: 'Villas' },
-];
-
-const SORT_OPTIONS = [
-  { value: 'recommended', label: 'Recommended' },
-  { value: 'price_low', label: 'Price: Low to High' },
-  { value: 'price_high', label: 'Price: High to Low' },
-  { value: 'rating', label: 'Highest Rated' },
-  { value: 'newest', label: 'Newest First' },
-];
+const TYPES = ['', 'hotel', 'homestay', 'resort', 'guesthouse', 'hostel', 'villa'];
+const SORT_OPTIONS = ['recommended', 'price_low', 'price_high', 'rating', 'newest'];
 
 function getTodayStr(): string {
   const d = new Date();
@@ -44,6 +31,9 @@ function calcNights(ci: string, co: string): number {
 }
 
 export default function HotelFilters({ hotels, destinations }: Props) {
+  const { t, lang } = useT();
+  const f = t.filters;
+  const nightWord = (n: number) => (n === 1 ? f.night : f.nights);
   const [search, setSearch] = useState('');
   const [area, setArea] = useState('');
   const [type, setType] = useState('');
@@ -110,39 +100,39 @@ export default function HotelFilters({ hotels, destinations }: Props) {
       <div className="bg-white border border-slate-200 rounded-2xl p-4 mb-6 shadow-sm -mt-14 relative z-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
           <div className="lg:col-span-1">
-            <label className="text-xs font-medium text-slate-500 mb-1 block flex items-center gap-1"><MapPin className="h-3 w-3" /> Destination</label>
+            <label className="text-xs font-medium text-slate-500 mb-1 block flex items-center gap-1"><MapPin className="h-3 w-3" /> {t.search.destination}</label>
             <select value={area} onChange={e => setArea(e.target.value)}
               className="w-full px-3 py-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-500 bg-white">
-              <option value="">All Areas</option>
+              <option value="">{f.allAreas}</option>
               {destinations.map((d: any) => <option key={d.slug} value={d.slug}>{d.name}</option>)}
             </select>
           </div>
           <div>
-            <label className="text-xs font-medium text-slate-500 mb-1 block flex items-center gap-1"><Calendar className="h-3 w-3" /> Check-in</label>
+            <label className="text-xs font-medium text-slate-500 mb-1 block flex items-center gap-1"><Calendar className="h-3 w-3" /> {t.search.checkIn}</label>
             <input type="date" value={checkIn} onChange={e => handleCheckInChange(e.target.value)} min={getTodayStr()}
               className="w-full px-3 py-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-500" />
           </div>
           <div>
-            <label className="text-xs font-medium text-slate-500 mb-1 block flex items-center gap-1"><Calendar className="h-3 w-3" /> Check-out</label>
+            <label className="text-xs font-medium text-slate-500 mb-1 block flex items-center gap-1"><Calendar className="h-3 w-3" /> {t.search.checkOut}</label>
             <input type="date" value={checkOut} onChange={e => setCheckOut(e.target.value)} min={checkIn ? getTomorrowStr(checkIn) : getTomorrowStr()}
               className="w-full px-3 py-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-500" />
           </div>
           <div>
-            <label className="text-xs font-medium text-slate-500 mb-1 block flex items-center gap-1"><Users className="h-3 w-3" /> Guests</label>
+            <label className="text-xs font-medium text-slate-500 mb-1 block flex items-center gap-1"><Users className="h-3 w-3" /> {f.guests}</label>
             <select value={guests} onChange={e => setGuests(e.target.value)}
               className="w-full px-3 py-2.5 border border-slate-300 rounded-xl text-sm outline-none bg-white">
-              <option value="1">1 Guest</option><option value="2">2 Guests</option><option value="3">3 Guests</option><option value="4">4 Guests</option><option value="5">5+ Guests</option>
+              {f.guestOptions.map((g, i) => <option key={g} value={String(i + 1)}>{g}</option>)}
             </select>
           </div>
           <div className="flex items-end">
             <button onClick={() => {}} className="w-full bg-brand-600 text-white py-2.5 px-4 rounded-xl text-sm font-semibold hover:bg-brand-700 transition-colors flex items-center justify-center gap-2">
-              <Search className="h-4 w-4" /> Search
+              <Search className="h-4 w-4" /> {t.search.search}
             </button>
           </div>
         </div>
         {nights > 0 && (
           <p className="text-xs text-brand-600 font-medium mt-2 text-center">
-            {nights} {nights === 1 ? 'night' : 'nights'} stay {checkIn && checkOut && <span className="text-slate-400">({checkIn} to {checkOut})</span>}
+            {nights} {nightWord(nights)} {f.stay} {checkIn && checkOut && <span className="text-slate-400">({checkIn} {f.to} {checkOut})</span>}
           </p>
         )}
       </div>
@@ -151,36 +141,36 @@ export default function HotelFilters({ hotels, destinations }: Props) {
       <div className="flex flex-col sm:flex-row gap-3 mb-4">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-          <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by hotel name..."
+          <input type="text" value={search} onChange={e => setSearch(e.target.value)} placeholder={f.searchName}
             className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-500" />
           {search && <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"><X className="h-4 w-4" /></button>}
         </div>
         <button onClick={() => setShowFilters(!showFilters)}
           className="flex items-center gap-2 px-4 py-2.5 border border-slate-300 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50 shrink-0">
-          <SlidersHorizontal className="h-4 w-4" /> Filters
+          <SlidersHorizontal className="h-4 w-4" /> {f.filters}
           {activeFilterCount > 0 && <span className="bg-brand-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">{activeFilterCount}</span>}
         </button>
         <select value={sort} onChange={e => setSort(e.target.value)}
           className="px-4 py-2.5 border border-slate-300 rounded-xl text-sm outline-none text-slate-700 bg-white shrink-0">
-          {SORT_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+          {SORT_OPTIONS.map(o => <option key={o} value={o}>{f.sort[o]}</option>)}
         </select>
       </div>
 
       {showFilters && (
         <div className="bg-slate-50 rounded-xl p-4 mb-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
-            <label className="text-xs font-medium text-slate-600 mb-1 block">Property Type</label>
+            <label className="text-xs font-medium text-slate-600 mb-1 block">{f.propertyType}</label>
             <select value={type} onChange={e => setType(e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none bg-white">
-              {TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
+              {TYPES.map(v => <option key={v} value={v}>{v ? t.common.propertyTypes[v] : f.allTypes}</option>)}
             </select>
           </div>
           <div>
-            <label className="text-xs font-medium text-slate-600 mb-1 block">Max Price: {formatPrice(priceRange[1])}/night</label>
+            <label className="text-xs font-medium text-slate-600 mb-1 block">{f.maxPrice}: {formatPrice(priceRange[1])}{t.common.perNight}</label>
             <input type="range" min={0} max={maxPrice} step={500} value={priceRange[1]}
               onChange={e => setPriceRange([priceRange[0], Number(e.target.value)])} className="w-full accent-brand-600" />
           </div>
           {activeFilterCount > 0 && (
-            <div className="flex items-end"><button onClick={clearFilters} className="text-sm text-red-500 hover:text-red-700 font-medium">Clear all</button></div>
+            <div className="flex items-end"><button onClick={clearFilters} className="text-sm text-red-500 hover:text-red-700 font-medium">{f.clearAll}</button></div>
           )}
         </div>
       )}
@@ -188,7 +178,7 @@ export default function HotelFilters({ hotels, destinations }: Props) {
       {/* Area pills */}
       <div className="flex gap-2 overflow-x-auto pb-3 scrollbar-hide mb-2">
         <button onClick={() => setArea('')}
-          className={'shrink-0 px-4 py-2 text-sm font-medium rounded-full transition-colors ' + (!area ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-blue-50')}>All</button>
+          className={'shrink-0 px-4 py-2 text-sm font-medium rounded-full transition-colors ' + (!area ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-blue-50')}>{f.all}</button>
         {destinations.map((d: any) => (
           <button key={d.slug} onClick={() => setArea(d.slug)}
             className={'shrink-0 px-4 py-2 text-sm font-medium rounded-full transition-colors ' + (area === d.slug ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-blue-50')}>{d.name}</button>
@@ -196,19 +186,19 @@ export default function HotelFilters({ hotels, destinations }: Props) {
       </div>
 
       <p className="text-sm text-slate-500 mb-4">
-        {filtered.length} {filtered.length === 1 ? 'property' : 'properties'} found
-        {search && <span> for &quot;{search}&quot;</span>}
-        {nights > 0 && <span> &middot; {nights} {nights === 1 ? 'night' : 'nights'}</span>}
+        {fmt(filtered.length === 1 ? f.foundOne : f.foundMany, { n: filtered.length })}
+        {search && <span> &quot;{search}&quot;</span>}
+        {nights > 0 && <span> &middot; {nights} {nightWord(nights)}</span>}
       </p>
 
       {filtered.length === 0 ? (
         <div className="text-center py-16">
-          <p className="text-slate-500 text-lg mb-3">No properties match your filters</p>
-          <button onClick={clearFilters} className="text-brand-600 font-medium hover:text-brand-700">Clear filters</button>
+          <p className="text-slate-500 text-lg mb-3">{f.noMatch}</p>
+          <button onClick={clearFilters} className="text-brand-600 font-medium hover:text-brand-700">{f.clearFilters}</button>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map((h: any) => <HotelCard key={h.id} hotel={h} nights={nights} />)}
+          {filtered.map((h: any) => <HotelCard key={h.id} hotel={h} nights={nights} lang={lang} />)}
         </div>
       )}
     </div>

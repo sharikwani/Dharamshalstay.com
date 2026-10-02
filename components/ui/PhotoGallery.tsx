@@ -2,6 +2,8 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { X, ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
+import { useT } from '@/lib/i18n/client';
+import { fmt } from '@/lib/i18n/dict';
 
 interface GalleryImage {
   url: string;
@@ -15,6 +17,7 @@ interface Props {
 }
 
 export default function PhotoGallery({ images, hotelName }: Props) {
+  const { t } = useT();
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -76,7 +79,7 @@ export default function PhotoGallery({ images, hotelName }: Props) {
                 <Image src={img.url} alt={img.alt || hotelName} fill className="object-cover" sizes="25vw" />
                 {i === 3 && images.length > 5 && (
                   <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">+{images.length - 5} more</span>
+                    <span className="text-white font-bold text-lg">+{images.length - 5} {t.gallery.more}</span>
                   </div>
                 )}
               </div>
@@ -87,7 +90,7 @@ export default function PhotoGallery({ images, hotelName }: Props) {
         {images.length > 1 && (
           <button onClick={() => open(0)}
             className="mt-2 w-full flex items-center justify-center gap-2 text-sm font-medium text-brand-600 hover:text-brand-700 py-2 bg-brand-50 rounded-xl hover:bg-brand-100 transition-colors">
-            <Maximize2 className="h-4 w-4" /> View all {images.length} photos
+            <Maximize2 className="h-4 w-4" /> {fmt(t.gallery.viewAll, { n: images.length })}
           </button>
         )}
       </div>

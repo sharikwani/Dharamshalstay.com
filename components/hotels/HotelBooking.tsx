@@ -9,13 +9,13 @@ import { formatPrice, getWhatsAppLink } from '@/lib/utils';
 import { getRoomImageUrl } from '@/lib/images';
 import { siteConfig } from '@/lib/config';
 
-import { BOOKING_DISCOUNT_NOTE } from '@/lib/pricing';
+import { useT } from '@/lib/i18n/client';
+import { fmt } from '@/lib/i18n/dict';
 
 // Rates are shown exactly as listed; the up-to-Rs.500 discount is applied
 // by our team when the booking is confirmed.
 const discountedPrice = (price: number) => price;
 
-const mealLabels: Record<string, string> = { ep: 'Room Only', cp: 'Breakfast Included', map: 'Breakfast + Dinner', ap: 'All Meals' };
 
 interface SelectedRoom {
   roomName: string;
@@ -28,6 +28,9 @@ interface Props {
 }
 
 export default function HotelBooking({ hotel }: Props) {
+  const { t } = useT();
+  const b = t.booking;
+  const mealLabels: Record<string, string> = b.meals;
   const [selected, setSelected] = useState<SelectedRoom>({
     roomName: '',
     planName: '',
@@ -58,8 +61,8 @@ export default function HotelBooking({ hotel }: Props) {
         {hotel.rooms?.length > 0 && (
           <div>
             <div className="flex items-center justify-between mb-5">
-              <h2 className="text-xl font-heading font-bold text-slate-900">Choose Your Room</h2>
-              <span className="text-xs bg-green-100 text-green-700 px-3 py-1.5 rounded-full font-semibold">{BOOKING_DISCOUNT_NOTE}</span>
+              <h2 className="text-xl font-heading font-bold text-slate-900">{b.chooseRoom}</h2>
+              <span className="text-xs bg-green-100 text-green-700 px-3 py-1.5 rounded-full font-semibold">{t.common.discountNote}</span>
             </div>
 
             <div className="space-y-6">
@@ -74,19 +77,19 @@ export default function HotelBooking({ hotel }: Props) {
                       {/* Room image */}
                       <div className="w-full md:w-72 lg:w-80 shrink-0">
                         <div className="relative aspect-[4/3] md:aspect-auto md:h-full bg-slate-100">
-                          <Image src={roomImg} alt={room.name || 'Room'} fill className="object-cover" sizes="(max-width:768px) 100vw, 320px" />
+                          <Image src={roomImg} alt={room.name || b.room} fill className="object-cover" sizes="(max-width:768px) 100vw, 320px" />
                         </div>
                       </div>
 
                       {/* Details */}
                       <div className="flex-1 p-5 md:p-6">
-                        <h3 className="font-heading font-bold text-xl text-slate-900 mb-2">{room.name || 'Room'}</h3>
+                        <h3 className="font-heading font-bold text-xl text-slate-900 mb-2">{room.name || b.room}</h3>
                         {room.description && <p className="text-sm text-slate-600 mb-3">{room.description}</p>}
 
                         <div className="flex flex-wrap gap-3 text-xs text-slate-500 mb-3">
                           {room.room_size && <span className="bg-slate-50 px-2.5 py-1 rounded-lg">{room.room_size}</span>}
-                          {room.bed_type && <span className="bg-slate-50 px-2.5 py-1 rounded-lg">{room.bed_type} Bed</span>}
-                          {room.max_occupancy && <span className="bg-slate-50 px-2.5 py-1 rounded-lg">Max {room.max_occupancy} guests</span>}
+                          {room.bed_type && <span className="bg-slate-50 px-2.5 py-1 rounded-lg">{fmt(b.bed, { type: room.bed_type })}</span>}
+                          {room.max_occupancy && <span className="bg-slate-50 px-2.5 py-1 rounded-lg">{fmt(b.maxGuests, { n: room.max_occupancy })}</span>}
                         </div>
 
                         {(room.amenities || []).length > 0 && (
@@ -98,15 +101,15 @@ export default function HotelBooking({ hotel }: Props) {
                         )}
 
                         {roomImages.length > 1 && (
-                          <div className="mb-4"><RoomGallery images={roomImages} roomName={room.name || 'Room'} /></div>
+                          <div className="mb-4"><RoomGallery images={roomImages} roomName={room.name || b.room} /></div>
                         )}
 
                         {/* Rate Plans */}
                         {hasRatePlans ? (
                           <div className="space-y-2 pt-4 border-t border-slate-100">
-                            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Pricing Options</p>
+                            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">{b.pricingOptions}</p>
                             {room.rate_plans.map((plan: any, pi: number) => {
-                              const mealTag = mealLabels[plan.meal_plan] || 'Room Only';
+                              const mealTag = mealLabels[plan.meal_plan] || mealLabels.ep;
                               const ourPrice = discountedPrice(plan.price);
                               const isFree = plan.cancellation && plan.cancellation.toLowerCase().includes('free');
                               const isSelected = selected.roomName === room.name && selected.planName === (plan.name || mealTag) && selected.pricePerNight === ourPrice;
@@ -117,20 +120,20 @@ export default function HotelBooking({ hotel }: Props) {
                                     <p className="text-sm font-semibold text-slate-800">{plan.name || mealTag}</p>
                                     <div className="flex flex-wrap items-center gap-1.5 mt-1">
                                       <span className={'text-[11px] font-medium px-2 py-0.5 rounded-full ' + (plan.meal_plan === 'ep' ? 'bg-slate-200 text-slate-600' : 'bg-green-100 text-green-700')}>{mealTag}</span>
-                                      {isFree && <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-green-100 text-green-700">Free Cancellation</span>}
+                                      {isFree && <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-green-100 text-green-700">{b.freeCancellation}</span>}
                                     </div>
                                   </div>
                                   <div className="text-right shrink-0">
                                     <div className="flex items-baseline gap-1.5">
                                       <span className="text-xl font-bold text-slate-900">{formatPrice(ourPrice)}</span>
                                     </div>
-                                    <p className="text-[10px] text-slate-500">per night + taxes</p>
-                                    <p className="text-[10px] text-green-700 font-medium">{BOOKING_DISCOUNT_NOTE}</p>
+                                    <p className="text-[10px] text-slate-500">{b.perNightTaxes}</p>
+                                    <p className="text-[10px] text-green-700 font-medium">{t.common.discountNote}</p>
                                   </div>
                                   <button
                                     onClick={() => selectRoom(room.name, plan.name || mealTag, plan.price)}
                                     className={'text-sm font-bold px-4 py-2.5 rounded-xl transition-colors whitespace-nowrap shrink-0 ' + (isSelected ? 'bg-green-600 text-white' : 'bg-orange-500 hover:bg-orange-600 text-white')}>
-                                    {isSelected ? 'Selected' : 'Book'}
+                                    {isSelected ? b.selected : b.book}
                                   </button>
                                 </div>
                               );
@@ -142,9 +145,9 @@ export default function HotelBooking({ hotel }: Props) {
                               <div className="flex items-baseline gap-1.5">
                                 <span className="text-2xl font-bold text-slate-900">{formatPrice(room.base_price)}</span>
                               </div>
-                              <p className="text-xs text-green-600 font-medium">{BOOKING_DISCOUNT_NOTE}</p>
+                              <p className="text-xs text-green-600 font-medium">{t.common.discountNote}</p>
                             </div>
-                            <button onClick={() => selectRoom(room.name, 'Room Only', room.base_price)}
+                            <button onClick={() => selectRoom(room.name, mealLabels.ep, room.base_price)}
                               className="bg-orange-500 hover:bg-orange-600 text-white text-sm font-bold px-6 py-3 rounded-xl transition-colors">
                               Book Now
                             </button>
@@ -166,17 +169,17 @@ export default function HotelBooking({ hotel }: Props) {
           {/* Selected room indicator */}
           {selected.roomName && (
             <div className="bg-green-50 border border-green-200 rounded-xl px-4 py-3">
-              <p className="text-xs text-green-600 font-medium">Selected Room</p>
+              <p className="text-xs text-green-600 font-medium">{b.selectedRoom}</p>
               <p className="font-semibold text-slate-900 text-sm">{selected.roomName}</p>
               {selected.planName && <p className="text-xs text-slate-600">{selected.planName}</p>}
-              <p className="text-lg font-bold text-green-700 mt-1">{formatPrice(selected.pricePerNight)} <span className="text-xs font-normal text-slate-500">/ night</span></p>
+              <p className="text-lg font-bold text-green-700 mt-1">{formatPrice(selected.pricePerNight)} <span className="text-xs font-normal text-slate-500">{t.common.perNight}</span></p>
             </div>
           )}
 
           {!selected.roomName && hotel.rooms?.length > 0 && (
             <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-center">
-              <p className="text-sm text-amber-700 font-medium">Select a room and plan below to book</p>
-              <p className="text-xs text-amber-600 mt-0.5">Click &quot;Book&quot; on any room option</p>
+              <p className="text-sm text-amber-700 font-medium">{b.selectPrompt}</p>
+              <p className="text-xs text-amber-600 mt-0.5">{b.selectHint}</p>
             </div>
           )}
 
@@ -188,16 +191,16 @@ export default function HotelBooking({ hotel }: Props) {
             roomName={selected.roomName ? selected.roomName + (selected.planName ? ' - ' + selected.planName : '') : ''}
           />
 
-          <div className="text-center text-xs text-slate-400">or send an inquiry</div>
-          <InquiryForm type="hotel" propertyId={hotel.id} title="Quick Inquiry" subtitle="Not ready to book? Ask a question." />
+          <div className="text-center text-xs text-slate-400">{b.orInquiry}</div>
+          <InquiryForm type="hotel" propertyId={hotel.id} title={b.quickInquiry} subtitle={b.quickInquirySub} />
 
           <a href={getWhatsAppLink('Hi! Interested in ' + hotel.name + (selected.roomName ? ' - ' + selected.roomName : '') + '.')} target="_blank" rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 bg-green-500 text-white py-3 rounded-xl font-medium hover:bg-green-600 w-full">
-            <MessageCircle className="h-4 w-4" /> WhatsApp Us
+            <MessageCircle className="h-4 w-4" /> {t.home.ctaWhatsApp}
           </a>
           <a href={'tel:' + siteConfig.phone}
             className="flex items-center justify-center gap-2 border border-slate-300 text-slate-700 py-3 rounded-xl font-medium hover:bg-slate-50 w-full">
-            <Phone className="h-4 w-4" /> Call {siteConfig.phone}
+            <Phone className="h-4 w-4" /> {b.call} {siteConfig.phone}
           </a>
         </div>
       </div>

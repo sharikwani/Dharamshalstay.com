@@ -106,6 +106,14 @@ export const DESTINATION_IMAGE: Record<string, PlaceImageKey> = {
 export const TREK_IMAGES: Record<string, PlaceImageKey[]> = {
   'triund-trek': ['triund', 'indrahar-pass', 'dhauladhar-hero'],
   'kareri-lake-trek': ['kareri-lake', 'dhauladhar-hero'],
+  'indrahar-pass-trek': ['indrahar-pass', 'laka-glacier', 'triund'],
+  'triund-snowline-laka-got-trek': ['laka-glacier', 'triund', 'indrahar-pass'],
+  'guna-devi-temple-hike': ['dharamkot', 'dhauladhar-hero'],
+  'thatharana-trek': ['dhauladhar-hero', 'kangra-valley'],
+  'bir-billing-rajgundha-trek': ['rajgundha', 'bir-paragliding', 'barot-valley'],
+  'dharamkot-gallu-devi-sunrise-hike': ['gallu-devi', 'dharamkot'],
+  'minkiani-pass-trek': ['kareri-lake', 'dhauladhar-hero'],
+  'adi-himani-chamunda-trek': ['chamunda-devi', 'kangra-valley'],
 };
 
 /** Old hosts whose images are generic stock, not the actual place. */

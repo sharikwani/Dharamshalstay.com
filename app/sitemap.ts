@@ -3,6 +3,8 @@ import { getPublishedProperties, getDestinations, getPublishedTreks } from '@/li
 import { blogPosts } from '@/data/blog';
 import { siteConfig } from '@/lib/config';
 import { getTaxiRouteGroups } from '@/lib/taxi';
+import { hasHindiVersion, localizePath } from '@/lib/i18n/core';
+import { hasHindiPost } from '@/lib/i18n/content';
 
 // Must be the canonical (www) origin -- the bare domain 301s to www, and a
 // sitemap full of redirecting URLs is largely ignored by Google.
@@ -26,7 +28,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const latestPost = blogPosts.reduce((max, b) => (b.updated_at > max ? b.updated_at : max), '2026-01-01');
   const contentDate = date(latestPost);
 
-  return [
+  const entries: MetadataRoute.Sitemap = [
     { url: B, lastModified: contentDate, changeFrequency: 'weekly', priority: 1.0 },
     { url: B + '/hotels', lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
     { url: B + '/blog', lastModified: contentDate, changeFrequency: 'weekly', priority: 0.9 },
@@ -82,4 +84,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       images: t.images?.[0] ? [String(t.images[0]).startsWith('http') ? t.images[0] : B + t.images[0]] : undefined,
     })),
   ];
+  return withHindi(entries);
+}
+
+/**
+ * Add the Hindi twin of every page that has one, and cross-reference both via
+ * hreflang alternates (guides only when a real translation exists).
+ */
+function withHindi(entries: MetadataRoute.Sitemap): MetadataRoute.Sitemap {
+  const out: MetadataRoute.Sitemap = [];
+  for (const e of entries) {
+    const path = e.url.slice(B.length) || '/';
+    const blogSlug = path.startsWith('/blog/') ? path.slice(6) : null;
+    const hindi = hasHindiVersion(path) && (!blogSlug || hasHindiPost(blogSlug));
+    if (!hindi) { out.push(e); continue; }
+    const enUrl = e.url;
+    const hiUrl = B + localizePath(path, 'hi');
+    const alternates = { languages: { 'en-IN': enUrl, 'hi-IN': hiUrl } };
+    out.push({ ...e, alternates });
+    out.push({ ...e, url: hiUrl, priority: Math.max(0.1, (e.priority ?? 0.5) - 0.1), alternates });
+  }
+  return out;
 }

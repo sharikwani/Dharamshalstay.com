@@ -17,8 +17,8 @@ export function slugify(text: string): string {
   return text.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim();
 }
 
-export function formatDate(dateString: string): string {
-  return new Date(dateString).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
+export function formatDate(dateString: string, lang: 'en' | 'hi' = 'en'): string {
+  return new Date(dateString).toLocaleDateString(lang === 'hi' ? 'hi-IN' : 'en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
 export function formatDateTime(dateString: string): string {

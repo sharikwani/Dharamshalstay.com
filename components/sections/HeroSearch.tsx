@@ -3,16 +3,24 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Search, Building, Mountain, Car, Wind } from 'lucide-react';
 import { getMinDate, getMinCheckoutDate, enforceCheckIn, enforceCheckOut, enforceActivityDate } from '@/lib/date-helpers';
+import { useT } from '@/lib/i18n/client';
 
 const TABS = [
-  { key: 'hotels', icon: Building, label: 'Hotels', href: '/hotels' },
-  { key: 'treks', icon: Mountain, label: 'Treks', href: '/treks' },
-  { key: 'paragliding', icon: Wind, label: 'Paragliding', href: '/paragliding' },
-  { key: 'taxi', icon: Car, label: 'Taxi', href: '/taxi' },
+  { key: 'hotels', icon: Building, href: '/hotels' },
+  { key: 'treks', icon: Mountain, href: '/treks' },
+  { key: 'paragliding', icon: Wind, href: '/paragliding' },
+  { key: 'taxi', icon: Car, href: '/taxi' },
 ] as const;
+
+// Values stay English (they match route names in the database); labels are translated.
+const PICKUPS = ['Gaggal Airport', 'Pathankot Railway Station', 'Chakki Bank Railway Station', 'Amb Andaura Railway Station', 'Kangra Railway Station', 'Dharamshala', 'Delhi', 'Chandigarh', 'Amritsar'];
+const DROPS = ['Dharamshala', 'McLeod Ganj', 'Bir Billing', 'Palampur', 'Manali', 'Dalhousie', 'Delhi', 'Chandigarh', 'Amritsar'];
 
 export default function HeroSearch() {
   const router = useRouter();
+  const { t, href } = useT();
+  const s = t.search;
+  const place = (p: string) => t.taxiPlaces[p] || p;
   const [activeTab, setActiveTab] = useState<string>('hotels');
   const [destination, setDestination] = useState('');
   const [checkIn, setCheckIn] = useState('');
@@ -53,7 +61,7 @@ export default function HeroSearch() {
       if (activityDate) params.set('date', activityDate);
     }
     const qs = params.toString();
-    router.push(qs ? `${tab.href}?${qs}` : tab.href);
+    router.push(qs ? `${href(tab.href)}?${qs}` : href(tab.href));
   }
 
   return (
@@ -64,7 +72,7 @@ export default function HeroSearch() {
             className={`flex items-center gap-2 px-5 py-3.5 text-sm font-semibold border-b-2 transition-colors whitespace-nowrap ${
               activeTab === tab.key ? 'border-brand-600 text-brand-600 bg-blue-50/50' : 'border-transparent text-slate-600 hover:text-brand-600'
             }`}>
-            <tab.icon className="h-4 w-4" />{tab.label}
+            <tab.icon className="h-4 w-4" />{s.tabs[tab.key]}
           </button>
         ))}
       </div>
@@ -72,19 +80,15 @@ export default function HeroSearch() {
         {activeTab === 'hotels' && (
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="flex-1">
-              <label className="text-xs font-semibold text-slate-500 uppercase mb-1 block">Destination</label>
+              <label className="text-xs font-semibold text-slate-500 uppercase mb-1 block">{s.destination}</label>
               <select value={destination} onChange={e => setDestination(e.target.value)}
                 className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none">
-                <option value="">All Destinations</option>
-                <option value="dharamshala">Dharamshala</option>
-                <option value="mcleod-ganj">McLeod Ganj</option>
-                <option value="bhagsu">Bhagsu</option>
-                <option value="dharamkot">Dharamkot</option>
-                <option value="naddi">Naddi</option>
+                <option value="">{s.allDestinations}</option>
+                {['dharamshala', 'mcleod-ganj', 'bhagsu', 'dharamkot', 'naddi'].map((d) => <option key={d} value={d}>{t.places[d]}</option>)}
               </select>
             </div>
             <div className="flex-1">
-              <label className="text-xs font-semibold text-slate-500 uppercase mb-1 block">Check-in</label>
+              <label className="text-xs font-semibold text-slate-500 uppercase mb-1 block">{s.checkIn}</label>
               <input type="date" value={checkIn}
                 onChange={e => handleCheckInChange(e.target.value)}
                 onBlur={() => { if (checkIn) setCheckIn(enforceCheckIn(checkIn)); }}
@@ -92,7 +96,7 @@ export default function HeroSearch() {
                 className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" />
             </div>
             <div className="flex-1">
-              <label className="text-xs font-semibold text-slate-500 uppercase mb-1 block">Check-out</label>
+              <label className="text-xs font-semibold text-slate-500 uppercase mb-1 block">{s.checkOut}</label>
               <input type="date" value={checkOut}
                 onChange={e => handleCheckOutChange(e.target.value)}
                 onBlur={() => { if (checkOut) setCheckOut(enforceCheckOut(checkOut, checkIn)); }}
@@ -102,7 +106,7 @@ export default function HeroSearch() {
             <div className="sm:self-end">
               <button onClick={handleSearch}
                 className="flex items-center justify-center gap-2 bg-brand-600 text-white px-8 py-2.5 rounded-lg font-semibold hover:bg-brand-700 transition-colors text-sm h-[42px] w-full sm:w-auto">
-                <Search className="h-4 w-4" /> Search
+                <Search className="h-4 w-4" /> {s.search}
               </button>
             </div>
           </div>
@@ -111,25 +115,23 @@ export default function HeroSearch() {
         {activeTab === 'taxi' && (
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="flex-1">
-              <label className="text-xs font-semibold text-slate-500 uppercase mb-1 block">Pickup</label>
+              <label className="text-xs font-semibold text-slate-500 uppercase mb-1 block">{s.pickup}</label>
               <select value={pickup} onChange={e => setPickup(e.target.value)}
                 className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none">
-                <option value="">Select Pickup</option>
-                <option>Gaggal Airport</option><option>Pathankot Station</option><option>McLeod Ganj</option>
-                <option>Dharamshala Bus Stand</option><option>Chandigarh</option><option>Delhi</option>
+                <option value="">{s.selectPickup}</option>
+                {PICKUPS.map((p) => <option key={p} value={p}>{place(p)}</option>)}
               </select>
             </div>
             <div className="flex-1">
-              <label className="text-xs font-semibold text-slate-500 uppercase mb-1 block">Drop</label>
+              <label className="text-xs font-semibold text-slate-500 uppercase mb-1 block">{s.drop}</label>
               <select value={drop} onChange={e => setDrop(e.target.value)}
                 className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none">
-                <option value="">Select Drop</option>
-                <option>McLeod Ganj</option><option>Dharamshala</option><option>Gaggal Airport</option>
-                <option>Pathankot Station</option><option>Manali</option><option>Delhi</option><option>Amritsar</option>
+                <option value="">{s.selectDrop}</option>
+                {DROPS.map((p) => <option key={p} value={p}>{place(p)}</option>)}
               </select>
             </div>
             <div className="flex-1">
-              <label className="text-xs font-semibold text-slate-500 uppercase mb-1 block">Pickup Date</label>
+              <label className="text-xs font-semibold text-slate-500 uppercase mb-1 block">{s.pickupDate}</label>
               <input type="date" value={activityDate}
                 onChange={e => handleActivityDateChange(e.target.value)}
                 onBlur={() => { if (activityDate) setActivityDate(enforceActivityDate(activityDate)); }}
@@ -139,7 +141,7 @@ export default function HeroSearch() {
             <div className="sm:self-end">
               <button onClick={handleSearch}
                 className="flex items-center justify-center gap-2 bg-brand-600 text-white px-8 py-2.5 rounded-lg font-semibold hover:bg-brand-700 text-sm h-[42px] w-full sm:w-auto">
-                <Search className="h-4 w-4" /> Search
+                <Search className="h-4 w-4" /> {s.search}
               </button>
             </div>
           </div>
@@ -149,19 +151,15 @@ export default function HeroSearch() {
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="flex-1">
               <label className="text-xs font-semibold text-slate-500 uppercase mb-1 block">
-                {activeTab === 'treks' ? 'Trek' : 'Package'}
+                {activeTab === 'treks' ? s.trek : s.pkg}
               </label>
               <select className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none">
-                <option value="">All {activeTab === 'treks' ? 'Treks' : 'Packages'}</option>
-                {activeTab === 'treks' ? (
-                  <><option>Triund Trek</option><option>Kareri Lake Trek</option><option>Indrahar Pass</option></>
-                ) : (
-                  <><option>Tandem Flight</option><option>Solo Course</option><option>Scenic Flight</option></>
-                )}
+                <option value="">{activeTab === 'treks' ? s.allTreks : s.allPackages}</option>
+                {(activeTab === 'treks' ? s.trekOptions : s.pkgOptions).map((o) => <option key={o}>{o}</option>)}
               </select>
             </div>
             <div className="flex-1">
-              <label className="text-xs font-semibold text-slate-500 uppercase mb-1 block">Date</label>
+              <label className="text-xs font-semibold text-slate-500 uppercase mb-1 block">{s.date}</label>
               <input type="date" value={activityDate}
                 onChange={e => handleActivityDateChange(e.target.value)}
                 onBlur={() => { if (activityDate) setActivityDate(enforceActivityDate(activityDate)); }}
@@ -169,15 +167,15 @@ export default function HeroSearch() {
                 className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" />
             </div>
             <div className="flex-1">
-              <label className="text-xs font-semibold text-slate-500 uppercase mb-1 block">People</label>
+              <label className="text-xs font-semibold text-slate-500 uppercase mb-1 block">{s.people}</label>
               <select className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none">
-                <option>1 Person</option><option>2 People</option><option>3 People</option><option>4 People</option><option>5+ People</option>
+                {s.peopleOptions.map((o) => <option key={o}>{o}</option>)}
               </select>
             </div>
             <div className="sm:self-end">
               <button onClick={handleSearch}
                 className="flex items-center justify-center gap-2 bg-brand-600 text-white px-8 py-2.5 rounded-lg font-semibold hover:bg-brand-700 text-sm h-[42px] w-full sm:w-auto">
-                <Search className="h-4 w-4" /> Search
+                <Search className="h-4 w-4" /> {s.search}
               </button>
             </div>
           </div>

@@ -290,3 +290,39 @@ export async function getActiveTaxiRoutes() {
     return seedTaxiRoutes;
   }
 }
+
+// ===========================
+// PARAGLIDING PACKAGES
+// ===========================
+
+export interface ParaglidingPackage {
+  slug: string; name: string; destination: string; duration: string; altitude: string;
+  price_per_person: number; description: string; includes: string[]; featured: boolean; image: string;
+}
+
+/** Published packages from /admin/paragliding (empty list if none are published yet). */
+export async function getParaglidingPackages(): Promise<ParaglidingPackage[]> {
+  if (!isSupabaseConfigured()) return [];
+  try {
+    const sb = createServerClient();
+    const { data, error } = await sb
+      .from('paragliding_packages')
+      .select('*')
+      .eq('status', 'published')
+      .order('is_sponsored', { ascending: false })
+      .order('priority_score', { ascending: false })
+      .order('price_per_person', { ascending: true });
+    if (error || !data) return [];
+    return data.map((p: any) => {
+      const img = Array.isArray(p.images) ? (typeof p.images[0] === 'string' ? p.images[0] : p.images[0]?.url) : undefined;
+      return {
+        slug: p.slug, name: p.name, destination: p.destination, duration: p.duration || '', altitude: p.altitude || '',
+        price_per_person: p.price_per_person, description: p.short_description || p.description || '',
+        includes: Array.isArray(p.includes) ? p.includes : [], featured: !!p.featured,
+        image: img || (/bir/i.test(p.destination) ? placeImage('bir-paragliding') : placeImage('dhauladhar-hero')),
+      };
+    });
+  } catch {
+    return [];
+  }
+}

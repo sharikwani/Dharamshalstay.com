@@ -2,6 +2,7 @@
 import { useState, useMemo, FormEvent } from 'react';
 import { Send, Check, AlertCircle, CreditCard, Loader2, Building, Moon } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
+import { useT } from '@/lib/i18n/client';
 import { supabase } from '@/lib/supabase';
 import { getMinDate, getMinCheckoutDate, validateBookingDates, validateActivityDate, enforceCheckIn, enforceCheckOut, enforceActivityDate } from '@/lib/date-helpers';
 
@@ -25,6 +26,8 @@ function calcNights(checkIn: string, checkOut: string): number {
 }
 
 export default function BookingForm({ category, entityId, entityName, pricePerNight, defaultAmount, roomName, commissionPct = 10, className = '' }: BookingFormProps) {
+  const { t } = useT();
+  const f = t.form;
   const [status, setStatus] = useState<'idle' | 'loading' | 'paying' | 'success' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
   const [bookingRef, setBookingRef] = useState('');
@@ -65,7 +68,7 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
     setDateError('');
     if (needsDates) { const v = validateBookingDates(checkIn, checkOut); if (!v.valid) { setDateError(v.error || ''); return false; } }
     if (needsActivityDate) {
-      if (!activityDate) { setDateError(isTaxi ? 'Pickup date is required' : 'Activity date is required'); return false; }
+      if (!activityDate) { setDateError(isTaxi ? f.pickupDateRequired : f.activityDateRequired); return false; }
       const v = validateActivityDate(activityDate); if (!v.valid) { setDateError(v.error || ''); return false; }
     }
     return true;
@@ -96,7 +99,7 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
     try {
       const res = await fetch('/api/bookings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
       const data = await res.json();
-      if (!res.ok) { setErrorMsg(data.error || 'Booking failed'); setStatus('error'); return; }
+      if (!res.ok) { setErrorMsg(data.error || f.bookingFailed); setStatus('error'); return; }
 
       if (payMethod === 'online' && totalAmount >= 100) {
         setStatus('paying');
@@ -105,51 +108,51 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
         });
         const cd = await cr.json();
         if (cd.url) { window.location.href = cd.url; return; }
-        else { setErrorMsg('Payment setup failed. Booking saved -- contact us.'); setBookingRef(data.booking_ref || ''); setStatus('success'); return; }
+        else { setErrorMsg(f.paymentFailed); setBookingRef(data.booking_ref || ''); setStatus('success'); return; }
       }
 
       setBookingRef(data.booking_ref || '');
       setStatus('success');
       if (data.booking_id) { fetch('/api/email/booking-confirmation', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ bookingId: data.booking_id }) }).catch(() => {}); }
-    } catch { setErrorMsg('Network error. Please try again or WhatsApp us.'); setStatus('error'); }
+    } catch { setErrorMsg(f.networkError); setStatus('error'); }
   }
 
   if (status === 'success') return (
     <div className={'bg-green-50 border border-green-200 rounded-xl p-8 text-center ' + className}>
       <Check className="h-10 w-10 text-green-600 mx-auto mb-3" />
-      <h3 className="text-xl font-heading font-bold text-slate-900 mb-1">Booking Submitted!</h3>
+      <h3 className="text-xl font-heading font-bold text-slate-900 mb-1">{f.bookingSubmitted}</h3>
       {bookingRef && <p className="text-sm text-green-700 font-mono font-semibold mb-2">Ref: {bookingRef}</p>}
-      <p className="text-sm text-slate-600">{"We'll confirm within 2 hours. Check your email or WhatsApp us."}</p>
+      <p className="text-sm text-slate-600">{f.bookingConfirmNote}</p>
     </div>
   );
 
   if (status === 'paying') return (
     <div className={'bg-blue-50 border border-blue-200 rounded-xl p-8 text-center ' + className}>
       <Loader2 className="h-8 w-8 text-brand-600 mx-auto mb-3 animate-spin" />
-      <h3 className="text-lg font-heading font-bold text-slate-900">Redirecting to Payment...</h3>
+      <h3 className="text-lg font-heading font-bold text-slate-900">{f.redirecting}</h3>
     </div>
   );
 
   return (
     <div className={'bg-white border border-slate-200 rounded-xl p-6 shadow-sm ' + className}>
       <h3 className="text-lg font-heading font-bold text-slate-900 mb-1">
-        {isHotel ? 'Book This Property' : isTaxi ? 'Book Taxi' : category === 'paragliding' ? 'Book Paragliding' : 'Book This Trek'}
+        {isHotel ? f.bookProperty : isTaxi ? f.bookTaxi : category === 'paragliding' ? f.bookParagliding : f.bookTrek}
       </h3>
-      {entityName && <p className="text-sm text-brand-600 font-medium mb-4">{entityName}</p>}
+      {entityName && !['Taxi Booking', 'Paragliding Flight'].includes(entityName) && <p className="text-sm text-brand-600 font-medium mb-4">{entityName}</p>}
       <form onSubmit={handleSubmit} className="space-y-3">
         <div className="grid grid-cols-2 gap-3">
-          <input name="guest_name" required placeholder="Full Name *" className="col-span-2 sm:col-span-1 w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" />
-          <input name="guest_phone" type="tel" required placeholder="Phone *" className="col-span-2 sm:col-span-1 w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" />
+          <input name="guest_name" required placeholder={f.fullName} className="col-span-2 sm:col-span-1 w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" />
+          <input name="guest_phone" type="tel" required placeholder={f.phone} className="col-span-2 sm:col-span-1 w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" />
         </div>
-        <input name="guest_email" type="email" placeholder="Email (for confirmation)" className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" />
+        <input name="guest_email" type="email" placeholder={f.emailConfirm} className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" />
 
         {needsDates && (
           <div className="grid grid-cols-3 gap-3">
-            <div><label className="block text-xs font-medium text-slate-600 mb-1">Check-in *</label>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">{f.checkInReq}</label>
               <input type="date" value={checkIn} onChange={e => handleCheckInChange(e.target.value)} onBlur={() => checkIn && setCheckIn(enforceCheckIn(checkIn))} min={minDate} required className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm outline-none" /></div>
-            <div><label className="block text-xs font-medium text-slate-600 mb-1">Check-out *</label>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">{f.checkOutReq}</label>
               <input type="date" value={checkOut} onChange={e => handleCheckOutChange(e.target.value)} onBlur={() => checkOut && setCheckOut(enforceCheckOut(checkOut, checkIn))} min={minCheckout} required className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm outline-none" /></div>
-            <div><label className="block text-xs font-medium text-slate-600 mb-1">Guests</label>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">{t.filters.guests}</label>
               <select name="num_guests" className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm outline-none">
                 <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5+</option></select></div>
           </div>
@@ -157,13 +160,13 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
 
         {needsActivityDate && (
           <div className="grid grid-cols-2 gap-3">
-            <div><label className="block text-xs font-medium text-slate-600 mb-1">{isTaxi ? 'Pickup Date *' : 'Activity Date *'}</label>
+            <div><label className="block text-xs font-medium text-slate-600 mb-1">{isTaxi ? f.pickupDateReq : f.activityDateReq}</label>
               <input type="date" value={activityDate} onChange={e => handleActivityDateChange(e.target.value)} min={minDate} required className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm outline-none" /></div>
             {isTaxi ? (
-              <div><label className="block text-xs font-medium text-slate-600 mb-1">Pickup Time</label>
+              <div><label className="block text-xs font-medium text-slate-600 mb-1">{f.pickupTime}</label>
                 <input name="pickup_time" type="time" className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm outline-none" /></div>
             ) : (
-              <div><label className="block text-xs font-medium text-slate-600 mb-1">Participants</label>
+              <div><label className="block text-xs font-medium text-slate-600 mb-1">{f.participants}</label>
                 <select name="num_guests" className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm outline-none">
                   <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5+</option></select></div>
             )}
@@ -172,58 +175,58 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
 
         {isTaxi && (
           <div className="grid grid-cols-2 gap-3">
-            <input name="pickup_location" placeholder="Pickup Location" className="px-3 py-2.5 border border-slate-300 rounded-lg text-sm outline-none" />
-            <input name="drop_location" placeholder="Drop Location" className="px-3 py-2.5 border border-slate-300 rounded-lg text-sm outline-none" />
+            <input name="pickup_location" placeholder={f.pickupLocation} className="px-3 py-2.5 border border-slate-300 rounded-lg text-sm outline-none" />
+            <input name="drop_location" placeholder={f.dropLocation} className="px-3 py-2.5 border border-slate-300 rounded-lg text-sm outline-none" />
           </div>
         )}
 
-        <textarea name="special_requests" rows={2} placeholder="Special requests or notes..." className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm outline-none resize-none" />
+        <textarea name="special_requests" rows={2} placeholder={f.specialRequests} className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm outline-none resize-none" />
 
         {/* Price breakdown */}
         {hasPricePerNight && (
           <div className="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 space-y-1.5">
             <div className="flex justify-between text-sm">
-              <span className="text-slate-600">{formatPrice(pricePerNight)} x {nights > 0 ? nights : '...'} {nights === 1 ? 'night' : 'nights'}</span>
+              <span className="text-slate-600">{formatPrice(pricePerNight)} x {nights > 0 ? nights : '...'} {nights === 1 ? t.filters.night : t.filters.nights}</span>
               {nights > 0 && <span className="font-semibold text-slate-800">{formatPrice(pricePerNight * nights)}</span>}
             </div>
             {nights > 1 && (
               <div className="flex justify-between text-xs text-slate-500 pt-1 border-t border-blue-200">
-                <span className="flex items-center gap-1"><Moon className="h-3 w-3" /> {nights} nights total</span>
+                <span className="flex items-center gap-1"><Moon className="h-3 w-3" /> {nights} {f.nightsTotal}</span>
                 <span className="font-bold text-lg text-slate-900">{formatPrice(totalAmount)}</span>
               </div>
             )}
             {nights === 0 && (
-              <p className="text-xs text-blue-600">Select check-in and check-out dates to see total</p>
+              <p className="text-xs text-blue-600">{f.selectDatesTotal}</p>
             )}
           </div>
         )}
 
         {!hasPricePerNight && hasFixedAmount && (
           <div className="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 flex items-center justify-between">
-            <span className="text-sm font-medium text-slate-700">Amount</span>
+            <span className="text-sm font-medium text-slate-700">{f.amount}</span>
             <span className="text-lg font-bold text-slate-900">{formatPrice(defaultAmount)}</span>
           </div>
         )}
 
         {!hasPricePerNight && !hasFixedAmount && !needsActivityDate && (
           <div>
-            <label className="block text-xs font-medium text-slate-600 mb-1">Estimated Amount</label>
+            <label className="block text-xs font-medium text-slate-600 mb-1">{f.estimatedAmount}</label>
             <input name="amount" type="number" min="0" value={customAmount || ''} onChange={e => setCustomAmount(Number(e.target.value))}
-              placeholder="Enter amount if known" className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm outline-none" />
+              placeholder={f.enterAmount} className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm outline-none" />
           </div>
         )}
 
         {/* Payment method */}
         <div>
-          <label className="block text-xs font-medium text-slate-600 mb-2">Payment Method</label>
+          <label className="block text-xs font-medium text-slate-600 mb-2">{f.paymentMethod}</label>
           <div className="grid grid-cols-2 gap-2">
             <button type="button" onClick={() => setPayMethod('online')}
               className={'flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold border-2 transition-all ' + (payMethod === 'online' ? 'border-green-500 bg-green-50 text-green-700' : 'border-slate-200 text-slate-600 hover:border-slate-300')}>
-              <CreditCard className="h-4 w-4" /> Pay Online
+              <CreditCard className="h-4 w-4" /> {f.payOnline}
             </button>
             <button type="button" onClick={() => setPayMethod('pay_at_hotel')}
               className={'flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold border-2 transition-all ' + (payMethod === 'pay_at_hotel' ? 'border-brand-500 bg-brand-50 text-brand-700' : 'border-slate-200 text-slate-600 hover:border-slate-300')}>
-              <Building className="h-4 w-4" /> {isHotel ? 'Pay at Hotel' : 'Pay Later'}
+              <Building className="h-4 w-4" /> {isHotel ? f.payAtHotel : f.payLater}
             </button>
           </div>
         </div>
@@ -233,13 +236,13 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
 
         <button type="submit" disabled={status === 'loading'}
           className={'w-full font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-colors disabled:opacity-60 text-white ' + (payMethod === 'online' ? 'bg-green-600 hover:bg-green-700' : 'bg-orange-500 hover:bg-orange-600')}>
-          {status === 'loading' ? <><Loader2 className="h-4 w-4 animate-spin" /> Processing...</> :
-            payMethod === 'online' ? <><CreditCard className="h-4 w-4" /> Pay {totalAmount > 0 ? formatPrice(totalAmount) : 'Now'}</> :
-            <><Send className="h-4 w-4" /> {totalAmount > 0 ? 'Book for ' + formatPrice(totalAmount) : 'Book Now'}</>}
+          {status === 'loading' ? <><Loader2 className="h-4 w-4 animate-spin" /> {f.processing}</> :
+            payMethod === 'online' ? <><CreditCard className="h-4 w-4" /> {f.pay} {totalAmount > 0 ? formatPrice(totalAmount) : f.now}</> :
+            <><Send className="h-4 w-4" /> {totalAmount > 0 ? f.bookFor + ' ' + formatPrice(totalAmount) : f.bookNow}</>}
         </button>
 
-        {payMethod === 'online' && <p className="text-xs text-center text-slate-400">Secure payment via Stripe. Card, UPI, and netbanking accepted.</p>}
-        {payMethod !== 'online' && <p className="text-xs text-center text-slate-400">Confirmation within 2 hours. No charges until confirmed.</p>}
+        {payMethod === 'online' && <p className="text-xs text-center text-slate-400">{f.securePayment}</p>}
+        {payMethod !== 'online' && <p className="text-xs text-center text-slate-400">{f.confirmNoCharge}</p>}
       </form>
     </div>
   );
