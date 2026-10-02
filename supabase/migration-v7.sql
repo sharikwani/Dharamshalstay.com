@@ -10,7 +10,7 @@
 -- Forest Department fee is Rs.100/person/day since the 2024 revision.
 UPDATE treks SET
   max_altitude = '2,850 m',
-  distance = '6-7 km one way from Gallu Devi (about 9 km from McLeod Ganj)',
+  distance = '6-7 km one way (from Gallu Devi)',
   itinerary = '[
     {"day": 1, "title": "Dharamkot to Triund", "description": "Start 9 AM from Gallu Devi above Dharamkot. Trek through oak and rhododendron forest to Magic View Cafe, then tackle the steep final switchbacks to Triund (about 6-7 km in total). Camp, sunset, dinner."},
     {"day": 2, "title": "Sunrise & Descent", "description": "Wake early for sunrise over the Dhauladhar. Breakfast, then descend 3-4 hours back to Dharamkot."}
