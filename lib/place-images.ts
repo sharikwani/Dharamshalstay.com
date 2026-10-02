@@ -18,6 +18,10 @@ export const PLACE_IMAGE_KEYS = [
   'dharamshala-snow', 'tibetan-momos', 'mcleod-cafe', 'war-memorial',
   'tibet-museum', 'andretta', 'indrahar-pass', 'mountain-road', 'kangra-valley',
   'prayer-flags',
+  // Round 2
+  'gallu-devi', 'laka-glacier', 'deer-park-bir', 'dalhousie', 'khajjiar', 'chamba',
+  'barot-valley', 'gaddi-shepherds', 'kangra-painting', 'himachali-dham',
+  'tibetan-monks-ceremony', 'tushita', 'pong-dam', 'rajgundha',
 ] as const;
 
 export type PlaceImageKey = (typeof PLACE_IMAGE_KEYS)[number];
@@ -49,6 +53,20 @@ const FALLBACKS: Partial<Record<PlaceImageKey, PlaceImageKey>> = {
   'hpca-stadium': 'dharamshala-town',
   'dharamshala-town': 'dhauladhar-hero',
   'kangra-valley': 'dhauladhar-hero',
+  'gallu-devi': 'triund',
+  'laka-glacier': 'indrahar-pass',
+  'deer-park-bir': 'bir-monastery',
+  'dalhousie': 'kangra-valley',
+  'khajjiar': 'kangra-valley',
+  'chamba': 'kangra-valley',
+  'barot-valley': 'kangra-valley',
+  'gaddi-shepherds': 'kangra-valley',
+  'kangra-painting': 'kangra-fort',
+  'himachali-dham': 'kangra-valley',
+  'tibetan-monks-ceremony': 'tsuglagkhang',
+  'tushita': 'dharamkot',
+  'pong-dam': 'kangra-valley',
+  'rajgundha': 'bir-paragliding',
 };
 
 function resolveKey(key: PlaceImageKey, depth = 0): PlaceImageKey {

@@ -4,6 +4,15 @@ import { photoCredits } from './photo-credits';
 import { blogPostsA } from './blog-posts-a';
 import { blogPostsB } from './blog-posts-b';
 import { blogPostsC } from './blog-posts-c';
+import { blogPostsW1 } from './blog-posts-w1';
+import { blogPostsW2 } from './blog-posts-w2';
+import { blogPostsW3 } from './blog-posts-w3';
+import { blogPostsW4 } from './blog-posts-w4';
+import { blogPostsW5 } from './blog-posts-w5';
+import { blogPostsW6 } from './blog-posts-w6';
+import { blogPostsW7 } from './blog-posts-w7';
+import { blogPostsW8 } from './blog-posts-w8';
+import { blogPostsW9 } from './blog-posts-w9';
 
 // Real photos of each place (see lib/place-images.ts).
 const UI = {
@@ -114,6 +123,8 @@ The standard route starts from Gallu Devi temple above Dharamkot. From there the
 ## Permits and Fees
 
 Forest Department entry fee: Rs.100 per person per day. Overnight tent fee: about Rs.550 for two people (includes entry). Overnight stays at the top are capped (about 20 tents / 40 people), so book camping through a registered operator. Fees were last revised in 2024 -- check locally before you go.
+
+**2026 updates:** since 11 August 2026 trekkers on the Triund route also pay a **refundable Rs.500 waste deposit** at the forest checkpost and get a garbage bag -- bring your non-biodegradable waste back down to get the deposit back. In January 2026 the Kangra District Disaster Management Authority also restricted trekking above 3,000 m and routed permission for Triund and Kareri through the SP Kangra office during bad-weather spells. Rules have been changing through 2026, so confirm the current position at the Galu checkpost or with us before you set out. See our [Triund camping guide](/blog/triund-camping-guide) for overnight rules.
 
 ## Best Time to Trek
 
@@ -452,7 +463,7 @@ function withPhotoAlt(post: BlogPost): BlogPost {
 }
 
 /** All guides, newest first. */
-export const blogPosts: BlogPost[] = [...blogPostsA, ...blogPostsB, ...blogPostsC, ...corePosts]
+export const blogPosts: BlogPost[] = [...blogPostsA, ...blogPostsB, ...blogPostsC, ...blogPostsW1, ...blogPostsW2, ...blogPostsW3, ...blogPostsW4, ...blogPostsW5, ...blogPostsW6, ...blogPostsW7, ...blogPostsW8, ...blogPostsW9, ...corePosts]
   .map(withPhotoAlt)
   .sort((a, b) => b.published_at.localeCompare(a.published_at));
 

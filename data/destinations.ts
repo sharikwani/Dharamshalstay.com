@@ -19,9 +19,9 @@ export const destinations: Destination[] = [
   },
   {
     id: 'dest-2', slug: 'mcleod-ganj', name: 'McLeod Ganj', tagline: 'Little Lhasa of India',
-    description: 'McLeod Ganj is the vibrant hilltop suburb of Dharamshala and the seat of the Tibetan government-in-exile. Perched at about 2,080 metres, it buzzes with backpackers, monks, and spiritual seekers.',
+    description: 'McLeod Ganj is the vibrant hilltop suburb of Dharamshala and the seat of the Tibetan government-in-exile. Spread up the hillside at roughly 1,750 to 2,080 metres, it buzzes with backpackers, monks, and spiritual seekers.',
     long_description: 'The heart of McLeod Ganj is the Tsuglagkhang Complex, housing the Dalai Lama\'s temple, a museum, and a peaceful prayer hall. The town\'s energy is a unique blend of Tibetan exile culture, Indian hospitality, and an international backpacker scene.\n\nFrom here you can walk to Bhagsu waterfall, hike to Triund, attend meditation retreats, or sip chai at a rooftop cafe while watching clouds drift below snow-capped peaks.',
-    altitude: '2,082 m', best_time: 'March to June, September to November',
+    altitude: '1,750–2,080 m', best_time: 'March to June, September to November',
     how_to_reach: 'Buses and shared taxis from Dharamshala bus stand (about 9 km by road, 20-30 min). Direct overnight buses from Delhi drop at McLeod Ganj bus stand. The Dharamshala-McLeod Ganj ropeway was suspended after a landslide in August 2025 -- check locally whether it has reopened.',
     things_to_do: ['Visit Dalai Lama Temple', 'Hike to Triund', 'Explore Bhagsu Waterfall', 'Take a Tibetan cooking class', 'Join a meditation retreat', 'Shop for Tibetan handicrafts', 'Eat at rooftop cafes on Jogiwara Road'],
     image: UNSPLASH_IMAGES.mcleodganj, image_alt: 'Colourful prayer flags and cafes in McLeod Ganj', hotel_count: 56,

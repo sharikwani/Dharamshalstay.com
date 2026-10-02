@@ -21,7 +21,7 @@ The practical upshot: group your sightseeing by area, walk within McLeod Ganj, a
 
 ### 1. Tsuglagkhang Complex (Dalai Lama Temple)
 
-The main temple of the Tibetan community in exile, the official residence of the Dalai Lama, Namgyal Monastery and the Tibet Museum all sit in one complex at the bottom of Temple Road. Expect monks debating in the courtyard in the afternoons, butter lamps, and a huge gilded Shakyamuni Buddha in the main hall.
+The main temple of the Tibetan community in exile, the official residence of the Dalai Lama and Namgyal Monastery all sit in one complex at the bottom of Temple Road. Expect monks debating in the courtyard in the afternoons, butter lamps, and a huge gilded Shakyamuni Buddha in the main hall.
 
 - **Time needed:** 1 to 2 hours (add an hour for the museum)
 - **Entry:** free
@@ -30,7 +30,7 @@ The main temple of the Tibetan community in exile, the official residence of the
 
 ### 2. Tibet Museum
 
-Inside the Tsuglagkhang complex, this small museum documents the Chinese occupation of Tibet and the journey into exile through photographs and testimonies. It is sobering and essential context for everything else you will see in McLeod Ganj.
+This small museum documents the Chinese occupation of Tibet and the journey into exile through photographs and testimonies. The museum is on the 2nd floor of the T-Building at the Central Tibetan Administration in Gangchen Kyishong, between Dharamshala and McLeod Ganj (open 9 am to 5 pm with a 1 to 2 pm lunch break; closed Saturdays and government holidays, per its official website). It is sobering and essential context for everything else you will see in McLeod Ganj.
 
 - **Time needed:** 45 minutes to 1 hour
 - **Entry:** free or a token amount
@@ -212,7 +212,7 @@ About 40 km from Dharamshala, a group of 8th century monolithic temples carved o
 | Place | Area | Time needed | Entry (approx., 2026) | Best time |
 |---|---|---|---|---|
 | Tsuglagkhang (Dalai Lama Temple) | McLeod Ganj | 1 to 2 hrs | Free | Early morning |
-| Tibet Museum | McLeod Ganj | 1 hr | Free or token | Morning |
+| Tibet Museum | Gangchen Kyishong | 1 hr | Free or token | Weekday morning |
 | Lingkhor kora | McLeod Ganj | 45 min | Free | Early morning |
 | Bhagsunag temple and waterfall | Bhagsu | 2 to 3 hrs | Free | Weekday morning |
 | Dharamkot | Above Bhagsu | Half day | Free | Any |
@@ -755,7 +755,7 @@ Kangra town itself has limited good accommodation, while Dharamshala and McLeod 
     slug: 'dalai-lama-temple-guide',
     title: 'Dalai Lama Temple, McLeod Ganj (2026): Timings, Etiquette, Teachings and Kora',
     excerpt: 'A complete visitor guide to the Tsuglagkhang complex in McLeod Ganj: what is inside, opening hours, dress code, photography rules, the Tibet Museum, the kora walk, and how to attend a public teaching.',
-    content: `The **Dalai Lama Temple** in McLeod Ganj, properly called the **Tsuglagkhang complex**, is open to everyone, free of charge, roughly from early morning until early evening every day. It contains the main temple with a large gilded Buddha, the Kalachakra temple, **Namgyal Monastery**, the **Tibet Museum** and the official residence of the Dalai Lama. Plan on 1 to 2 hours, dress modestly, leave your camera in your bag inside the shrine halls, and walk the **kora** path around the complex while you are there.
+    content: `The **Dalai Lama Temple** in McLeod Ganj, properly called the **Tsuglagkhang complex**, is open to everyone, free of charge, roughly from early morning until early evening every day. It contains the main temple with a large gilded Buddha, the Kalachakra temple, **Namgyal Monastery** and the official residence of the Dalai Lama. Plan on 1 to 2 hours, dress modestly, leave your camera in your bag inside the shrine halls, and walk the **kora** path around the complex while you are there.
 
 If you hope to see the Dalai Lama, the only realistic way is to attend a **public teaching or event** when one is scheduled. These are announced on the official website, dalailama.com, and require registration in McLeod Ganj a few days before. Details are below.
 
@@ -768,7 +768,7 @@ After the Dalai Lama fled Tibet in 1959, the Tibetan government in exile settled
 - **The main temple (Tsuglagkhang):** an upstairs hall with a large gilded statue of Shakyamuni Buddha, along with images of Avalokiteshvara (Chenrezig), the bodhisattva of compassion of whom the Dalai Lama is considered an emanation, and Padmasambhava (Guru Rinpoche). Rows of butter lamps and offerings line the hall.
 - **The Kalachakra Temple:** beside the main temple, with vivid murals associated with the Kalachakra tradition. Photography is not permitted inside.
 - **Namgyal Monastery:** the Dalai Lama's personal monastery. Its monks perform rituals for the temple and, on many afternoons, debate Buddhist philosophy in the courtyard with dramatic claps and stamps.
-- **The Tibet Museum:** at the entrance level of the complex. Photographs, documents and personal testimonies tell the story of Tibet, the 1959 uprising and the escape into exile. It is small but powerful.
+- **The Tibet Museum:** not inside the complex any more. The museum is on the 2nd floor of the T-Building at the Central Tibetan Administration in Gangchen Kyishong, between Dharamshala and McLeod Ganj (open 9 am to 5 pm with a 1 to 2 pm lunch break; closed Saturdays and government holidays, per its official website). Photographs, documents and personal testimonies tell the story of Tibet, the 1959 uprising and the escape into exile. It is small but powerful.
 - **The Dalai Lama's residence:** within the complex but not open to visitors.
 - **A bookshop and a cafe**, useful for a quiet tea after your visit.
 
@@ -871,7 +871,7 @@ Temple Road and the streets just above it have guesthouses and hotels within a f
       },
       {
         question: 'Is there an entry fee for the Dalai Lama Temple in McLeod Ganj?',
-        answer: 'No, entry to the complex is free. The Tibet Museum inside is free or charges a token amount.',
+        answer: 'No, entry to the complex is free. The Tibet Museum, now at the Central Tibetan Administration in Gangchen Kyishong, is free or charges a token amount and is closed on Saturdays.',
       },
       {
         question: 'Can I meet the Dalai Lama in McLeod Ganj?',

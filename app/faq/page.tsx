@@ -1,10 +1,11 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Metadata } from 'next';
-import { ChevronRight, MessageCircle } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 import { Breadcrumb } from '@/components/ui/Cards';
 import JsonLd from '@/components/seo/JsonLd';
-import { faqCategories } from '@/data/faqs';
+import { allFaqCategories } from '@/data/faq-all';
+import FAQBrowser from '@/components/faq/FAQBrowser';
 import { generateSEO, breadcrumbSchema, faqSchema } from '@/lib/seo';
 import { getWhatsAppLink } from '@/lib/utils';
 import { placeImage } from '@/lib/place-images';
@@ -18,7 +19,7 @@ export const metadata: Metadata = generateSEO({
 });
 
 export default function FAQPage() {
-  const all = faqCategories.flatMap((c) => c.faqs);
+  const all = allFaqCategories.flatMap((c) => c.faqs);
 
   return (
     <>
@@ -42,45 +43,10 @@ export default function FAQPage() {
         </div>
       </section>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-10">
-        <nav aria-label="FAQ topics" className="lg:sticky lg:top-24 self-start">
-          <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-3">Topics</p>
-          <ul className="flex flex-wrap lg:flex-col gap-2 lg:gap-1 text-sm">
-            {faqCategories.map((c) => (
-              <li key={c.id}>
-                <a href={'#' + c.id} className="block px-3 py-1.5 rounded-lg bg-slate-100 lg:bg-transparent hover:bg-blue-50 text-slate-700 hover:text-brand-700">
-                  {c.title}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+        <FAQBrowser categories={allFaqCategories} />
 
-        <div className="space-y-12">
-          {faqCategories.map((c) => (
-            <section key={c.id} id={c.id} className="scroll-mt-24">
-              <h2 className="text-2xl font-heading font-bold text-slate-900 mb-4">{c.title}</h2>
-              <div className="space-y-3">
-                {c.faqs.map((f) => (
-                  <details key={f.question} className="group bg-white border border-slate-200 rounded-xl open:shadow-sm">
-                    <summary className="flex items-center justify-between cursor-pointer px-5 py-4 font-medium text-slate-800 hover:text-brand-600">
-                      <h3 className="text-base font-medium pr-2">{f.question}</h3>
-                      <ChevronRight className="h-4 w-4 text-slate-400 group-open:rotate-90 transition-transform shrink-0" />
-                    </summary>
-                    <div className="px-5 pb-5 text-slate-600 leading-relaxed">
-                      <p>{f.answer}</p>
-                      {f.link && (
-                        <Link href={f.link.href} className="inline-block mt-2 text-sm font-semibold text-brand-600 hover:text-brand-700">
-                          {f.link.label} &rarr;
-                        </Link>
-                      )}
-                    </div>
-                  </details>
-                ))}
-              </div>
-            </section>
-          ))}
-
+        <div className="mt-12">
           <div className="bg-gradient-to-br from-brand-50 to-blue-50 rounded-2xl p-8 text-center">
             <h2 className="font-heading font-bold text-xl text-slate-900 mb-2">Still have a question?</h2>
             <p className="text-slate-600 mb-5">We live in Dharamshala. Ask us anything about your trip -- we usually reply within a couple of hours.</p>

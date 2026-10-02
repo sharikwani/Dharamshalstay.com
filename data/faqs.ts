@@ -172,7 +172,7 @@ export const faqCategories: FAQCategory[] = [
       {
         question: 'Is there an entry fee for the Dalai Lama Temple?',
         answer:
-          "No, the Tsuglagkhang Complex is free to enter. Visitors pass through a security check, and photography may be restricted inside prayer halls or during special events. The Tibet Museum is at the complex entrance. Dress modestly, walk clockwise around the temple and keep your voice low. The complex is generally open from early morning to evening, but timings can change on religious days and during teachings.",
+          "No, the Tsuglagkhang Complex is free to enter. Visitors pass through a security check, and photography may be restricted inside prayer halls or during special events. The Tibet Museum is now separate, at the Central Tibetan Administration in Gangchen Kyishong (closed Saturdays). Dress modestly, walk clockwise around the temple and keep your voice low. The complex is generally open from early morning to evening, but timings can change on religious days and during teachings.",
         link: { href: '/blog/dalai-lama-temple-guide', label: 'Dalai Lama Temple guide' },
       },
       {
@@ -232,7 +232,7 @@ export const faqCategories: FAQCategory[] = [
       {
         question: 'What is the Triund trek entry fee?',
         answer:
-          "Under the Forest Department's 2024 revision, the Triund entry fee is ₹100 per person per day, and overnight tenting costs ₹550 for two people including entry. Registered local guides who are certified adventure operators were exempted from the fee. Carry cash and photo ID for the checkpoint. Fees can be revised, so treat these figures as indicative for 2026 and check locally.",
+          "Under the Forest Department's 2024 revision, the Triund entry fee is ₹100 per person per day, and overnight tenting costs ₹550 for two people including entry. Since 11 August 2026 there is also a refundable ₹500 waste deposit, returned when you bring your rubbish back down. Carry cash and photo ID for the checkpoint. Rules changed several times in 2026, so check locally.",
         link: { href: '/treks/triund-trek', label: 'Triund trek details' },
       },
       {
