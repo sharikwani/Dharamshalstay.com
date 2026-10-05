@@ -33,6 +33,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: B + '/hotels', lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
     { url: B + '/blog', lastModified: contentDate, changeFrequency: 'weekly', priority: 0.9 },
     { url: B + '/faq', lastModified: contentDate, changeFrequency: 'monthly', priority: 0.8 },
+    { url: B + '/essentials', lastModified: contentDate, changeFrequency: 'monthly', priority: 0.8 },
     { url: B + '/destinations', lastModified: contentDate, changeFrequency: 'monthly', priority: 0.8 },
     { url: B + '/treks', lastModified: contentDate, changeFrequency: 'weekly', priority: 0.8 },
     { url: B + '/paragliding', lastModified: contentDate, changeFrequency: 'monthly', priority: 0.8 },

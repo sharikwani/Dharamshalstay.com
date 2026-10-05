@@ -17,7 +17,7 @@ export default function Header() {
     { label: t.nav.paragliding, href: '/paragliding' },
     { label: t.nav.taxi, href: '/taxi' },
     { label: t.nav.guides, href: '/blog' },
-    { label: t.nav.faq, href: '/faq' },
+    { label: t.nav.essentials, href: '/essentials' },
     { label: t.nav.contact, href: '/contact' },
   ];
 

@@ -16,7 +16,8 @@ export default function Footer() {
   const quick = [
     { label: t.nav.hotels, href: '/hotels' }, { label: t.nav.treks, href: '/treks' },
     { label: t.nav.paragliding, href: '/paragliding' }, { label: t.nav.taxi, href: '/taxi' },
-    { label: t.nav.guides, href: '/blog' }, { label: t.nav.faq, href: '/faq' },
+    { label: t.nav.guides, href: '/blog' }, { label: t.nav.essentials, href: '/essentials' },
+    { label: t.nav.faq, href: '/faq' },
     { label: t.nav.contact, href: '/contact' }, { label: t.footer.allDestinations, href: '/destinations' },
     { label: t.footer.aboutUs, href: '/about' },
   ];
