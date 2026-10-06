@@ -11,8 +11,31 @@ import { localizePath, type Lang } from '@/lib/i18n/core';
 
 const INLINE = /(\*\*[^*]+\*\*|\[[^\]]+\]\([^)\s]+\)|<a\s[^>]*href="[^"]+"[^>]*>[^<]*<\/a>)/g;
 
+/**
+ * Heading id for in-page anchors and the table of contents.
+ *
+ * Keeps Devanagari (ऀ-ॿ) as well as ASCII: stripping it left every
+ * Hindi heading with an empty id, so every entry in a translated guide's table
+ * of contents rendered as href="#" and navigated nowhere. Non-ASCII ids are
+ * valid HTML and browsers percent-encode them in the fragment.
+ *
+ * The fallback keeps a heading addressable when it survives as nothing at all
+ * (punctuation or emoji only). It hashes the text rather than counting
+ * headings, so the id is identical whether it comes from here or from
+ * extractHeadings, which walk the content separately.
+ */
 export function slugifyHeading(text: string): string {
-  return text.toLowerCase().replace(/<[^>]+>/g, '').replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-').slice(0, 80);
+  const slug = text
+    .toLowerCase()
+    .replace(/<[^>]+>/g, '')
+    .replace(/[^a-z0-9ऀ-ॿ\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .slice(0, 80);
+  if (slug.replace(/-/g, '')) return slug;
+  let hash = 0;
+  for (let i = 0; i < text.length; i++) hash = (hash * 31 + text.charCodeAt(i)) | 0;
+  return 'section-' + Math.abs(hash).toString(36);
 }
 
 function renderLink(label: ReactNode, href: string, key: string, lang: Lang, rel?: string) {
