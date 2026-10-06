@@ -15,6 +15,8 @@ export default function AdminApprovals() {
     async function load() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { router.push('/admin/login'); return; }
+      const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+      if (profile?.role !== 'admin') { router.push('/admin/login'); return; }
       const query = filter === 'all'
         ? supabase.from('properties').select('*').order('created_at', { ascending: false })
         : supabase.from('properties').select('*').eq('status', filter).order('submitted_at', { ascending: false });

@@ -18,6 +18,8 @@ export default function AdminApprovalDetail() {
     async function load() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { router.push('/admin/login'); return; }
+      const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+      if (profile?.role !== 'admin') { router.push('/admin/login'); return; }
       const { data } = await supabase.from('properties').select('*').eq('id', params.id).single();
       if (!data) { router.push('/admin/approvals'); return; }
       setProperty(data);
@@ -29,40 +31,47 @@ export default function AdminApprovalDetail() {
   async function handleApprove() {
     setAction('approve');
     const { data: { user } } = await supabase.auth.getUser();
-    await supabase.from('properties').update({
+    const { data: saved, error } = await supabase.from('properties').update({
       status: 'published', published_at: new Date().toISOString(),
       reviewed_by: user?.id, reviewed_at: new Date().toISOString(),
       admin_notes: notes || null,
-    }).eq('id', params.id);
+    }).eq('id', params.id).select('id');
+    // RLS turns a forbidden update into "0 rows", not an error.
+    if (error || !saved?.length) { alert('Could not save: ' + (error?.message || 'no permission to update this listing')); setAction(null); return; }
     router.push('/admin/approvals');
   }
 
   async function handleRequestChanges() {
     setAction('request_changes');
     const { data: { user } } = await supabase.auth.getUser();
-    await supabase.from('properties').update({
+    const { data: saved, error } = await supabase.from('properties').update({
       status: 'changes_requested',
       reviewed_by: user?.id, reviewed_at: new Date().toISOString(),
       admin_notes: notes,
-    }).eq('id', params.id);
+    }).eq('id', params.id).select('id');
+    // RLS turns a forbidden update into "0 rows", not an error.
+    if (error || !saved?.length) { alert('Could not save: ' + (error?.message || 'no permission to update this listing')); setAction(null); return; }
     router.push('/admin/approvals');
   }
 
   async function handleReject() {
     setAction('reject');
     const { data: { user } } = await supabase.auth.getUser();
-    await supabase.from('properties').update({
+    const { data: saved, error } = await supabase.from('properties').update({
       status: 'rejected',
       reviewed_by: user?.id, reviewed_at: new Date().toISOString(),
       rejection_reason: reason, admin_notes: notes || null,
-    }).eq('id', params.id);
+    }).eq('id', params.id).select('id');
+    // RLS turns a forbidden update into "0 rows", not an error.
+    if (error || !saved?.length) { alert('Could not save: ' + (error?.message || 'no permission to update this listing')); setAction(null); return; }
     router.push('/admin/approvals');
   }
 
   // Admin can edit any field inline
   async function updateField(field: string, value: any) {
     setProperty((prev: any) => ({ ...prev, [field]: value }));
-    await supabase.from('properties').update({ [field]: value, updated_at: new Date().toISOString() }).eq('id', params.id);
+    const { error } = await supabase.from('properties').update({ [field]: value, updated_at: new Date().toISOString() }).eq('id', params.id);
+    if (error) alert('Could not save ' + field + ': ' + error.message);
   }
 
   if (loading) return <div className="min-h-[60vh] flex items-center justify-center"><p>Loading...</p></div>;

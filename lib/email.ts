@@ -94,3 +94,33 @@ export async function sendAdminNotification(booking: {
     return null;
   }
 }
+
+const escHtml = (s: unknown) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
+
+/** Tells the admin a partner has submitted (or resubmitted) a listing for approval. */
+export async function sendPropertySubmittedNotification(p: {
+  id: string; name: string; type?: string; destination_slug?: string; city?: string;
+  contact_name?: string; contact_phone?: string; contact_email?: string; resubmitted?: boolean;
+}) {
+  const adminEmail = process.env.ADMIN_EMAIL || 'hello@dharamshalastay.com';
+  if (!process.env.RESEND_API_KEY) return null;
+  const site = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.dharamshalastay.com';
+
+  try {
+    return await getResend().emails.send({
+      from: FROM,
+      to: adminEmail,
+      subject: (p.resubmitted ? 'Listing resubmitted: ' : 'New listing to approve: ') + p.name,
+      html: `
+        <h2>${p.resubmitted ? 'A partner resubmitted a listing' : 'A partner submitted a new listing'}</h2>
+        <p><strong>Property:</strong> ${escHtml(p.name)} (${escHtml(p.type || 'hotel')})</p>
+        <p><strong>Area:</strong> ${escHtml(p.destination_slug || p.city || '-')}</p>
+        <p><strong>Contact:</strong> ${escHtml(p.contact_name || '-')} · ${escHtml(p.contact_phone || '-')} · ${escHtml(p.contact_email || '-')}</p>
+        <p><a href="${site}/admin/approvals/${encodeURIComponent(p.id)}">Review it in the admin panel</a></p>
+      `,
+    });
+  } catch (err) {
+    console.error('Property submitted email error:', err);
+    return null;
+  }
+}

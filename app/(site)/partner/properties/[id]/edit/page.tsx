@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { Building, MapPin, Bed, Camera, Shield, ChevronRight, ChevronLeft, Save, Send, Check, ArrowLeft } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { supabase, notifyPropertySubmitted } from '@/lib/supabase';
 import { PROPERTY_AMENITIES, ROOM_AMENITIES, BATHROOM_AMENITIES, FOOD_OPTIONS, ID_TYPES } from '@/types';
 import { slugify } from '@/lib/utils';
 import { PropertyInput, PropertyCheckbox } from '@/components/forms/PropertyFormFields';
@@ -75,6 +75,7 @@ export default function EditPropertyPage() {
     delete payload.reviewed_at;
 
     const { error } = await supabase.from('properties').update(payload).eq('id', params.id);
+    if (!error && submitForReview) await notifyPropertySubmitted(String(params.id));
     setSaving(false);
     if (error) { alert('Error saving: ' + error.message); return; }
     router.push('/partner/dashboard');

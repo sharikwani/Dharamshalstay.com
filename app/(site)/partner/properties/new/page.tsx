@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Building, MapPin, Bed, Camera, Shield, ChevronRight, ChevronLeft, Save, Send, Check } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { supabase, notifyPropertySubmitted } from '@/lib/supabase';
 import { PROPERTY_AMENITIES, ROOM_AMENITIES, BATHROOM_AMENITIES, FOOD_OPTIONS, ID_TYPES } from '@/types';
 import { slugify } from '@/lib/utils';
 import { PropertyInput, PropertyCheckbox } from '@/components/forms/PropertyFormFields';
@@ -51,11 +51,26 @@ export default function NewPropertyPage() {
   };
   const removeRoom = (idx: number) => update('rooms', form.rooms.filter((_: any, i: number) => i !== idx));
 
+  /** Insert the listing; if another property already uses the slug, add a short suffix. */
+  async function insertProperty(status: 'draft' | 'pending_review') {
+    const prices = form.rooms.map((r: any) => r.base_price || 0).filter((p: number) => p > 0);
+    const base = slugify(form.name || 'untitled-property');
+    const payload: Record<string, any> = {
+      ...form, owner_id: userId, status,
+      price_min: prices.length ? Math.min(...prices) : 0,
+      price_max: prices.length ? Math.max(...prices) : 0,
+      ...(status === 'pending_review' && { submitted_at: new Date().toISOString() }),
+    };
+    let result = await supabase.from('properties').insert({ ...payload, slug: base }).select('id').single();
+    if (result.error?.code === '23505') {
+      result = await supabase.from('properties').insert({ ...payload, slug: base + '-' + Math.random().toString(36).slice(2, 6) }).select('id').single();
+    }
+    return result;
+  }
+
   async function handleSaveDraft() {
     setLoading(true);
-    const slug = slugify(form.name || 'untitled-property');
-    const payload = { ...form, owner_id: userId, status: 'draft', slug, price_min: Math.min(...form.rooms.map((r: any) => r.base_price || 0)), price_max: Math.max(...form.rooms.map((r: any) => r.base_price || 0)) };
-    const { error } = await supabase.from('properties').insert(payload);
+    const { error } = await insertProperty('draft');
     setLoading(false);
     if (!error) router.push('/partner/dashboard');
     else alert('Error saving: ' + error.message);
@@ -63,9 +78,8 @@ export default function NewPropertyPage() {
 
   async function handleSubmitForReview() {
     setLoading(true);
-    const slug = slugify(form.name || 'untitled-property');
-    const payload = { ...form, owner_id: userId, status: 'pending_review', slug, submitted_at: new Date().toISOString(), price_min: Math.min(...form.rooms.map((r: any) => r.base_price || 0)), price_max: Math.max(...form.rooms.map((r: any) => r.base_price || 0)) };
-    const { error } = await supabase.from('properties').insert(payload);
+    const { data, error } = await insertProperty('pending_review');
+    if (data?.id) await notifyPropertySubmitted(data.id);
     setLoading(false);
     if (!error) router.push('/partner/dashboard');
     else alert('Error submitting: ' + error.message);
