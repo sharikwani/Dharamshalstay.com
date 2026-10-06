@@ -1,5 +1,5 @@
 'use client';
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import { X, ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
 import { useT } from '@/lib/i18n/client';
@@ -166,16 +166,24 @@ function Lightbox({ images, currentIndex, setCurrentIndex, title, onClose, onPre
 }
 
 /* Room-specific image gallery - horizontal scroll with larger images + lightbox */
-export function RoomGallery({ images, roomName }: { images: any[]; roomName: string }) {
+export function RoomGallery({ images, roomName, fallbackUrl }: { images: any[]; roomName: string; fallbackUrl?: string }) {
+  const { t } = useT();
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const scrollRef = useRef<HTMLDivElement>(null);
 
   const normalizedImages = images
     .map((img: any) => typeof img === 'string' ? { url: img, alt: roomName } : { url: img?.url || '', alt: img?.alt || roomName })
     .filter((img: any) => img.url);
 
-  if (!normalizedImages.length) return null;
+  // No room photos of its own: show the property photo, not clickable.
+  if (!normalizedImages.length) {
+    if (!fallbackUrl) return null;
+    return (
+      <div className="relative aspect-[16/9] md:aspect-[4/3] rounded-xl overflow-hidden bg-slate-100">
+        <Image src={fallbackUrl} alt={roomName} fill className="object-cover" sizes="(max-width:768px) 100vw, 280px" />
+      </div>
+    );
+  }
 
   function openLightbox(idx: number) {
     setCurrentIndex(idx);
@@ -188,51 +196,35 @@ export function RoomGallery({ images, roomName }: { images: any[]; roomName: str
     document.body.style.overflow = '';
   }
 
-  function scrollLeft() {
-    if (scrollRef.current) scrollRef.current.scrollBy({ left: -240, behavior: 'smooth' });
-  }
-  function scrollRight() {
-    if (scrollRef.current) scrollRef.current.scrollBy({ left: 240, behavior: 'smooth' });
-  }
+  const thumbs = normalizedImages.slice(1, 4);
+  const hiddenCount = normalizedImages.length - 4;
 
   return (
     <>
-      {/* Scrollable image strip */}
-      <div className="relative group/scroll">
-        {/* Left arrow */}
-        {normalizedImages.length > 2 && (
-          <button onClick={scrollLeft}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-white/90 hover:bg-white shadow-md rounded-full flex items-center justify-center opacity-0 group-hover/scroll:opacity-100 transition-opacity">
-            <ChevronLeft className="h-4 w-4 text-slate-700" />
-          </button>
+      {/* Main photo at a fixed 4:3 ratio, thumbnails underneath */}
+      <button type="button" onClick={() => openLightbox(0)}
+        className="relative block w-full aspect-[16/9] md:aspect-[4/3] rounded-xl overflow-hidden bg-slate-100 group/img">
+        <Image src={normalizedImages[0].url} alt={normalizedImages[0].alt} fill className="object-cover transition-transform duration-300 group-hover/img:scale-105" sizes="(max-width:768px) 100vw, 280px" />
+        {normalizedImages.length > 1 && (
+          <span className="absolute bottom-2 left-2 bg-black/60 text-white text-[11px] font-semibold px-2 py-1 rounded-md flex items-center gap-1">
+            <Maximize2 className="h-3 w-3" /> {fmt(t.gallery.viewAll, { n: normalizedImages.length })}
+          </span>
         )}
+      </button>
 
-        <div ref={scrollRef}
-          className="flex gap-2 overflow-x-auto scroll-smooth scrollbar-hide py-1 px-1"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-          {normalizedImages.map((img, i) => (
-            <button key={i} onClick={() => openLightbox(i)}
-              className="shrink-0 w-36 h-24 sm:w-44 sm:h-28 md:w-48 md:h-32 rounded-xl overflow-hidden bg-slate-100 hover:ring-2 hover:ring-brand-400 transition-all relative group/img">
-              <Image src={img.url} alt={img.alt} fill className="object-cover" sizes="192px" />
-              <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/10 transition-colors" />
-              {/* Image count badge on last visible */}
-              {i === normalizedImages.length - 1 && normalizedImages.length > 3 && (
-                <div className="absolute bottom-1.5 right-1.5 bg-black/60 text-white text-[10px] font-bold px-2 py-0.5 rounded-md flex items-center gap-1">
-                  <Maximize2 className="h-2.5 w-2.5" /> {normalizedImages.length}
-                </div>
+      {thumbs.length > 0 && (
+        <div className="grid grid-cols-3 gap-1.5 mt-1.5">
+          {thumbs.map((img, i) => (
+            <button type="button" key={i} onClick={() => openLightbox(i + 1)}
+              className="relative aspect-[4/3] rounded-lg overflow-hidden bg-slate-100 hover:ring-2 hover:ring-brand-400 transition-all">
+              <Image src={img.url} alt={img.alt} fill className="object-cover" sizes="96px" />
+              {i === thumbs.length - 1 && hiddenCount > 0 && (
+                <span className="absolute inset-0 bg-black/55 flex items-center justify-center text-white text-sm font-bold">+{hiddenCount}</span>
               )}
             </button>
           ))}
         </div>
-
-        {/* Right arrow */}
-        {normalizedImages.length > 2 && (
-          <button onClick={scrollRight}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-white/90 hover:bg-white shadow-md rounded-full flex items-center justify-center opacity-0 group-hover/scroll:opacity-100 transition-opacity">
-            <ChevronRight className="h-4 w-4 text-slate-700" />
-          </button>
-        )}
-      </div>
+      )}
 
       {/* Lightbox */}
       {lightboxOpen && (

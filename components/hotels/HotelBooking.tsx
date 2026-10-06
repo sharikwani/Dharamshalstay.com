@@ -1,7 +1,6 @@
 'use client';
 import { useState, useRef } from 'react';
-import Image from 'next/image';
-import { Tag, MessageCircle, Phone, Shield, CheckCircle } from 'lucide-react';
+import { MessageCircle, Phone, Shield, CheckCircle, Check, BedDouble, Users, Maximize, UtensilsCrossed } from 'lucide-react';
 import { RoomGallery } from '@/components/ui/PhotoGallery';
 import BookingForm from '@/components/forms/BookingForm';
 import InquiryForm from '@/components/forms/InquiryForm';
@@ -68,94 +67,94 @@ export default function HotelBooking({ hotel }: Props) {
             <div className="space-y-6">
               {hotel.rooms.map((room: any, i: number) => {
                 const roomImg = getRoomImageUrl(room.images, hotel.images);
-                const hasRatePlans = room.rate_plans && Array.isArray(room.rate_plans) && room.rate_plans.length > 0;
+                const roomName = room.name || b.room;
                 const roomImages = (room.images || []).map((img: any) => typeof img === 'string' ? { url: img, alt: room.name } : { url: img?.url || '', alt: img?.alt || room.name }).filter((im: any) => im.url);
+                // A room without rate plans is sold as a single room-only plan at its base price.
+                const plans: any[] = Array.isArray(room.rate_plans) && room.rate_plans.length > 0
+                  ? room.rate_plans
+                  : room.base_price > 0 ? [{ meal_plan: 'ep', price: room.base_price }] : [];
+                const amenities: string[] = room.amenities || [];
 
                 return (
-                  <div key={i} className="border border-slate-200 rounded-2xl overflow-hidden hover:shadow-lg transition-shadow bg-white">
-                    <div className="flex flex-col md:flex-row">
-                      {/* Room image */}
-                      <div className="w-full md:w-72 lg:w-80 shrink-0">
-                        <div className="relative aspect-[4/3] md:aspect-auto md:h-full bg-slate-100">
-                          <Image src={roomImg} alt={room.name || b.room} fill className="object-cover" sizes="(max-width:768px) 100vw, 320px" />
-                        </div>
+                  <article key={i} className="border border-slate-200 rounded-2xl overflow-hidden bg-white hover:shadow-lg transition-shadow">
+                    <div className="grid grid-cols-1 md:grid-cols-[260px_minmax(0,1fr)]">
+                      {/* Room info */}
+                      <div className="p-4 md:p-5 md:border-r border-slate-100">
+                        <RoomGallery images={roomImages} roomName={roomName} fallbackUrl={roomImg} />
+
+                        <h3 className="font-heading font-bold text-lg text-slate-900 mt-4">{roomName}</h3>
+
+                        {(room.room_size || room.bed_type || room.max_occupancy) && (
+                          <ul className="mt-2 space-y-1.5 text-sm text-slate-600">
+                            {room.room_size && <li className="flex items-center gap-2"><Maximize className="h-4 w-4 text-slate-400 shrink-0" />{room.room_size}</li>}
+                            {room.bed_type && <li className="flex items-center gap-2"><BedDouble className="h-4 w-4 text-slate-400 shrink-0" />{fmt(b.bed, { type: room.bed_type })}</li>}
+                            {room.max_occupancy && <li className="flex items-center gap-2"><Users className="h-4 w-4 text-slate-400 shrink-0" />{fmt(b.maxGuests, { n: room.max_occupancy })}</li>}
+                          </ul>
+                        )}
+
+                        {room.description && <p className="text-sm text-slate-600 leading-relaxed mt-3">{room.description}</p>}
+
+                        {amenities.length > 0 && (
+                          <ul className="mt-3 grid grid-cols-2 md:grid-cols-1 gap-x-3 gap-y-1.5">
+                            {amenities.slice(0, 8).map((a: string) => (
+                              <li key={a} className="flex items-start gap-1.5 text-xs text-slate-600">
+                                <Check className="h-3.5 w-3.5 text-green-600 shrink-0 mt-px" /><span className="min-w-0">{a}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
                       </div>
 
-                      {/* Details */}
-                      <div className="flex-1 p-5 md:p-6">
-                        <h3 className="font-heading font-bold text-xl text-slate-900 mb-2">{room.name || b.room}</h3>
-                        {room.description && <p className="text-sm text-slate-600 mb-3">{room.description}</p>}
-
-                        <div className="flex flex-wrap gap-3 text-xs text-slate-500 mb-3">
-                          {room.room_size && <span className="bg-slate-50 px-2.5 py-1 rounded-lg">{room.room_size}</span>}
-                          {room.bed_type && <span className="bg-slate-50 px-2.5 py-1 rounded-lg">{fmt(b.bed, { type: room.bed_type })}</span>}
-                          {room.max_occupancy && <span className="bg-slate-50 px-2.5 py-1 rounded-lg">{fmt(b.maxGuests, { n: room.max_occupancy })}</span>}
-                        </div>
-
-                        {(room.amenities || []).length > 0 && (
-                          <div className="flex flex-wrap gap-1.5 mb-4">
-                            {room.amenities.slice(0, 8).map((a: string) => (
-                              <span key={a} className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full">{a}</span>
-                            ))}
-                          </div>
-                        )}
-
-                        {roomImages.length > 1 && (
-                          <div className="mb-4"><RoomGallery images={roomImages} roomName={room.name || b.room} /></div>
-                        )}
-
-                        {/* Rate Plans */}
-                        {hasRatePlans ? (
-                          <div className="space-y-2 pt-4 border-t border-slate-100">
-                            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">{b.pricingOptions}</p>
-                            {room.rate_plans.map((plan: any, pi: number) => {
+                      {/* Rate plans */}
+                      {plans.length > 0 && (
+                        <div className="p-4 md:p-5 bg-slate-50/60 border-t md:border-t-0 border-slate-100">
+                          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">{b.pricingOptions}</p>
+                          <div className="space-y-3">
+                            {plans.map((plan: any, pi: number) => {
                               const mealTag = mealLabels[plan.meal_plan] || mealLabels.ep;
+                              const planName = plan.name || mealTag;
                               const ourPrice = discountedPrice(plan.price);
                               const isFree = plan.cancellation && plan.cancellation.toLowerCase().includes('free');
-                              const isSelected = selected.roomName === room.name && selected.planName === (plan.name || mealTag) && selected.pricePerNight === ourPrice;
+                              const isSelected = selected.roomName === room.name && selected.planName === planName && selected.pricePerNight === ourPrice;
 
                               return (
-                                <div key={pi} className={'flex items-center justify-between gap-4 py-3 px-4 rounded-xl transition-all ' + (isSelected ? 'bg-green-50 border-2 border-green-400 shadow-sm' : 'bg-slate-50 hover:bg-green-50/50')}>
+                                <div key={pi} className={'rounded-xl border bg-white p-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 transition-all ' + (isSelected ? 'border-green-500 ring-1 ring-green-500 shadow-sm' : 'border-slate-200 hover:border-slate-300')}>
                                   <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-semibold text-slate-800">{plan.name || mealTag}</p>
-                                    <div className="flex flex-wrap items-center gap-1.5 mt-1">
-                                      <span className={'text-[11px] font-medium px-2 py-0.5 rounded-full ' + (plan.meal_plan === 'ep' ? 'bg-slate-200 text-slate-600' : 'bg-green-100 text-green-700')}>{mealTag}</span>
-                                      {isFree && <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-green-100 text-green-700">{b.freeCancellation}</span>}
-                                    </div>
+                                    <p className="font-semibold text-slate-900 leading-snug">{planName}</p>
+                                    <ul className="mt-1.5 space-y-1 text-xs">
+                                      {mealTag !== planName && (
+                                        <li className={'flex items-center gap-1.5 ' + (plan.meal_plan && plan.meal_plan !== 'ep' ? 'text-green-700' : 'text-slate-600')}>
+                                          <UtensilsCrossed className="h-3.5 w-3.5 shrink-0" />{mealTag}
+                                        </li>
+                                      )}
+                                      {isFree ? (
+                                        <li className="flex items-center gap-1.5 text-green-700"><CheckCircle className="h-3.5 w-3.5 shrink-0" />{b.freeCancellation}</li>
+                                      ) : plan.cancellation ? (
+                                        <li className="flex items-center gap-1.5 text-slate-500"><Shield className="h-3.5 w-3.5 shrink-0" />{plan.cancellation}</li>
+                                      ) : null}
+                                    </ul>
                                   </div>
-                                  <div className="text-right shrink-0">
-                                    <div className="flex items-baseline gap-1.5">
-                                      <span className="text-xl font-bold text-slate-900">{formatPrice(ourPrice)}</span>
+
+                                  <div className="flex items-center justify-between sm:justify-end gap-4 pt-3 sm:pt-0 border-t sm:border-t-0 border-slate-100">
+                                    <div className="sm:text-right">
+                                      <p className="text-xl font-bold text-slate-900 leading-none">{formatPrice(ourPrice)}</p>
+                                      <p className="text-[11px] text-slate-500 mt-1">{b.perNightTaxes}</p>
                                     </div>
-                                    <p className="text-[10px] text-slate-500">{b.perNightTaxes}</p>
-                                    <p className="text-[10px] text-green-700 font-medium">{t.common.discountNote}</p>
+                                    <button
+                                      type="button"
+                                      onClick={() => selectRoom(room.name, planName, plan.price)}
+                                      className={'text-sm font-bold px-5 py-2.5 rounded-xl transition-colors whitespace-nowrap shrink-0 ' + (isSelected ? 'bg-green-600 text-white' : 'bg-orange-500 hover:bg-orange-600 text-white')}>
+                                      {isSelected ? b.selected : b.book}
+                                    </button>
                                   </div>
-                                  <button
-                                    onClick={() => selectRoom(room.name, plan.name || mealTag, plan.price)}
-                                    className={'text-sm font-bold px-4 py-2.5 rounded-xl transition-colors whitespace-nowrap shrink-0 ' + (isSelected ? 'bg-green-600 text-white' : 'bg-orange-500 hover:bg-orange-600 text-white')}>
-                                    {isSelected ? b.selected : b.book}
-                                  </button>
                                 </div>
                               );
                             })}
                           </div>
-                        ) : room.base_price > 0 ? (
-                          <div className="flex items-center justify-between pt-4 border-t border-slate-100">
-                            <div>
-                              <div className="flex items-baseline gap-1.5">
-                                <span className="text-2xl font-bold text-slate-900">{formatPrice(room.base_price)}</span>
-                              </div>
-                              <p className="text-xs text-green-600 font-medium">{t.common.discountNote}</p>
-                            </div>
-                            <button onClick={() => selectRoom(room.name, mealLabels.ep, room.base_price)}
-                              className="bg-orange-500 hover:bg-orange-600 text-white text-sm font-bold px-6 py-3 rounded-xl transition-colors">
-                              Book Now
-                            </button>
-                          </div>
-                        ) : null}
-                      </div>
+                        </div>
+                      )}
                     </div>
-                  </div>
+                  </article>
                 );
               })}
             </div>
