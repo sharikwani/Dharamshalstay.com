@@ -194,10 +194,10 @@ export const faqCategories: FAQCategory[] = [
         link: { href: '/blog/tibetan-food-mcleod-ganj', label: 'Tibetan food guide' },
       },
       {
-        question: 'Can I watch cricket at the HPCA Stadium?',
+        question: 'Can I visit the HPCA Stadium, and what are the timings?',
         answer:
-          "Yes, when matches are scheduled. The HPCA Stadium in lower Dharamshala, with the Dhauladhar range rising behind it, hosts international and IPL fixtures in some seasons, and tickets are sold through official channels for each match. On non-match days visitors have generally been allowed in for a small fee, but access rules change, so check locally before you go.",
-        link: { href: '/destinations/dharamshala', label: 'Things to do in Dharamshala' },
+          "Yes. On most non-match days the HPCA Stadium in lower Dharamshala is open to visitors from roughly 10 am to 4 pm, and you pay at the gate, usually Rs 50 to Rs 250 per person. No advance booking is needed for a normal visit. The hours are not officially fixed, though: the ground closes for matches, practice sessions, maintenance and VIP visits, so check on the morning you plan to go. For matches themselves, tickets are sold online through the official ticketing partner announced for that fixture.",
+        link: { href: '/blog/hpca-cricket-stadium-guide', label: 'HPCA Stadium timings & tickets' },
       },
       {
         question: 'What are good day trips from Dharamshala?',

@@ -740,11 +740,13 @@ Booking questions are answered in our [FAQ](/faq).`,
   {
     id: 'blog-hpca-cricket-stadium-guide',
     slug: 'hpca-cricket-stadium-guide',
-    title: 'HPCA Stadium Dharamshala Guide 2026: Visiting, Match Tickets & Entry Rules',
-    excerpt: 'How to visit the HPCA Cricket Stadium in Dharamshala on non-match days, how to get tickets and what to carry on match days, parking and traffic, the ground\'s history and the nearby War Memorial.',
-    content: `The **HPCA Cricket Stadium** in Dharamshala is often called the most beautiful cricket ground in the world: a compact stadium at about **1,450 m**, with the snow-covered **Dhauladhar range** rising directly behind the pavilion. On **non-match days** you can usually walk in for a small fee and sit in the stands; on **match days** it becomes a 20,000-plus crowd with strict security, road closures and no walk-ins.
+    title: 'HPCA Stadium Dharamshala: Timings, Entry Fee & Tickets (2026)',
+    excerpt: 'Visiting hours and entry fee for the HPCA Cricket Stadium in Dharamshala, why the timings change, how to get match tickets and what to carry, parking and traffic, the ground\'s history and the nearby War Memorial.',
+    content: `**In short:** on most non-match days the stadium is open to visitors roughly **10 am to 4 pm**, and you pay **at the gate** — usually **₹50 to ₹250** per person depending on the season and how many visitors are coming through. **No advance booking** is needed for a normal visit. Timings and fees are not fixed: the ground closes to visitors for matches, practice sessions, maintenance and VIP visits, so **check the same morning before you travel down**.
 
-The stadium is in **lower Dharamshala**, about **10 km below McLeod Ganj** and **roughly 12–15 km from Kangra Airport (Gaggal)**. It sits right beside the **Dharamshala War Memorial**, so the two are an easy combined visit. Below: visiting hours and fees (with a caveat), match-day tickets and rules, getting there, history, and practical tips. Prices and timings are approx. as of 2026; always check locally.
+The **HPCA Cricket Stadium** in Dharamshala is often called the most beautiful cricket ground in the world: a compact stadium at about **1,450 m**, with the snow-covered **Dhauladhar range** rising directly behind the pavilion. On **non-match days** you can usually walk in and sit in the stands; on **match days** it becomes a 20,000-plus crowd with strict security, road closures and no walk-ins.
+
+The stadium is in **lower Dharamshala**, about **10 km below McLeod Ganj** and **roughly 12–15 km from Kangra Airport (Gaggal)**. It sits right beside the **Dharamshala War Memorial**, so the two are an easy combined visit. Below: visiting hours and fees, why they change, match-day tickets and rules, getting there, history, and practical tips. Prices and timings are approx. as of 2026; always check locally.
 
 ## Quick Facts
 
@@ -757,7 +759,9 @@ The stadium is in **lower Dharamshala**, about **10 km below McLeod Ganj** and *
 | Altitude | approx. 1,450 m |
 | International debut | ODI, India v England, January 2013 |
 | First Test | India v Australia, March 2017 |
-| Non-match-day entry | small fee per person (check at gate) |
+| Visiting hours (non-match days) | usually approx. 10 am – 4 pm; varies — check same day |
+| Entry fee | approx. ₹50–₹250 per person, paid at the gate |
+| Advance booking | not needed for a normal visit |
 | From McLeod Ganj | approx. 10 km, 25–40 min |
 | From Kangra Airport | approx. 12–15 km, 30–40 min |
 
@@ -765,13 +769,27 @@ The stadium is in **lower Dharamshala**, about **10 km below McLeod Ganj** and *
 
 On normal days the stadium is open to visitors, and it is one of the most photographed spots in Dharamshala.
 
-- **Timings:** generally daytime, roughly morning to around sunset. Exact hours change, and the ground is closed to visitors on match days, during practice sessions for big fixtures, during maintenance and for private events. Check at the gate or call ahead.
-- **Entry fee:** a small fee per person has applied in recent years (historically around ₹50; confirm current rates at the ticket counter). Camera charges may apply for professional equipment.
+- **Timings:** usually around **10 am to 4 pm**. These are the hours most visitors find, but they are not officially fixed and they do change — see [why the timings change](#why-the-timings-change) below.
+- **Entry fee:** paid at the gate, no booking. Expect roughly **₹50 to ₹250 per person**, and sometimes more. The rate is not a fixed published price: it moves with the season and visitor numbers, so treat ₹50 as a best case and carry more. Camera charges may apply for professional equipment.
 - **What you can do:** walk into the lower stands, take photos with the Dhauladhar behind the pavilion, and look at the ground. You cannot walk on the outfield or pitch.
 - **Best time for photos:** clear mornings from October to March, when the mountains are sharp and usually snow-capped. In the monsoon the peaks are often hidden by cloud.
 - **Time needed:** 30–45 minutes is enough.
 
 **Tip:** if a domestic match (Ranji Trophy, age-group or women's cricket) is on, entry is sometimes free or cheap and it is a great way to watch cricket in the setting without the international-match crowds. Check the HPCA website or local news for fixtures.
+
+## Why the Timings Change
+
+This is the part most pages leave out, and it is the reason you should not plan a tight schedule around a published opening time. The stadium is a working cricket ground first and a visitor attraction second. Visitor access gets suspended, often at short notice, for:
+
+- **Matches and the days around them.** International, IPL and domestic fixtures close the ground to casual visitors, and so do the practice and preparation days before a big match.
+- **Net sessions and team training.** When a squad is in, the ground is shut to visitors even with no match scheduled.
+- **VIP and official visits.** These are rarely announced in advance and can close the ground for a few hours on an otherwise normal day.
+- **Pitch and outfield maintenance.** Rolling, re-laying, drainage work and pre-season preparation all restrict access, and HPCA has done significant outfield and drainage work in recent years.
+- **Private events and weather.** Heavy monsoon rain also means there is little point going, because the Dhauladhar you came to photograph will be behind cloud.
+
+The entry fee moves for similar reasons — it is not a fixed published tariff, and it tends to be higher in peak season and when visitor numbers are heavy.
+
+**So what should you actually do?** Treat 10 am to 4 pm as the likely window, not a guarantee. Call or check on the morning you plan to go, before you come down from McLeod Ganj, because a wasted round trip costs you an hour each way plus the taxi fare. If you are staying with us, [ask us](/contact) and we will check the gate situation for you before you set out.
 
 ## Match Days: Tickets
 
@@ -894,17 +912,25 @@ For other questions, see our [FAQ](/faq).`,
     image_alt: 'HPCA Cricket Stadium in Dharamshala with the snow-capped Dhauladhar range behind the pavilion',
     read_time: 9,
     featured: false,
-    meta_title: 'HPCA Stadium Dharamshala 2026: Visit, Tickets & Rules',
-    meta_description: 'HPCA Cricket Stadium Dharamshala guide: visiting on non-match days, match tickets, entry rules, what to carry, parking, traffic, history and War Memorial.',
+    meta_title: 'HPCA Stadium Dharamshala Timings & Entry Fee 2026',
+    meta_description: 'HPCA Stadium Dharamshala is usually open to visitors 10 am–4 pm, entry about ₹50–₹250 at the gate. Timings and fees vary with matches, maintenance and VIP visits — how to check before you go.',
     related_slugs: ['places-to-visit-in-dharamshala', 'one-day-in-dharamshala', 'best-hotels-in-dharamshala'],
     faqs: [
       {
+        question: 'What are the HPCA Stadium Dharamshala visiting timings?',
+        answer: 'On most non-match days the stadium is open to visitors from about 10 am to 4 pm. These hours are not officially fixed and they do change, because the ground closes to visitors for matches, practice sessions, maintenance and VIP visits. Check on the morning you plan to go rather than assuming it is open.',
+      },
+      {
         question: 'Can I visit the HPCA Stadium on non-match days?',
-        answer: 'Yes. The stadium is usually open to visitors during the day for a small entry fee, but it closes on match days, during practice for big fixtures and for maintenance. Check at the gate or call ahead.',
+        answer: 'Yes. The stadium is usually open to visitors through the day, roughly 10 am to 4 pm, for a gate fee. It closes on match days, during practice for big fixtures, for maintenance and for VIP visits. Check at the gate or call ahead.',
       },
       {
         question: 'What is the entry fee for the HPCA Stadium Dharamshala?',
-        answer: 'A small fee per person applies on normal days, historically around Rs 50. Rates can change, so confirm the current fee at the ticket counter.',
+        answer: 'Entry is paid at the gate and is usually between Rs 50 and Rs 250 per person, sometimes more. It is not a fixed published rate, so it varies with the season and visitor numbers. Carry more than Rs 50 to be safe. Camera charges may apply for professional equipment.',
+      },
+      {
+        question: 'Do I need to book tickets in advance to visit the HPCA Stadium?',
+        answer: 'No. For a normal sightseeing visit there is no advance booking and no online ticket. You simply pay at the gate. Advance booking applies only to match tickets, which are sold online through the official ticketing partner for that match.',
       },
       {
         question: 'How do I buy tickets for a match at HPCA Stadium?',

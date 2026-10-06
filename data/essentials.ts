@@ -248,6 +248,11 @@ export const essentialGroups: EssentialGroup[] = [
         href: '/blog/travelling-with-pets-dharamshala',
       },
       {
+        q: 'Can I just turn up at the cricket stadium?',
+        a: 'Usually yes -- on a normal day you walk up, pay a modest fee at the gate and sit in the stands, with no booking and no online ticket. The catch is that it is a working ground, so it shuts to visitors for matches, practice, maintenance and official visits, often without notice. Check the same morning rather than driving down on spec.',
+        href: '/blog/hpca-cricket-stadium-guide',
+      },
+      {
         q: 'What do first-timers usually get wrong?',
         a: 'Underestimating the cold, over-packing the itinerary, assuming Dharamshala and McLeod Ganj are the same place, and booking a hotel up a hill they then have to climb with luggage four times a day.',
         href: '/blog/first-time-visitor-tips-mistakes',
