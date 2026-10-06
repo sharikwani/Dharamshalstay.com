@@ -46,7 +46,7 @@ export async function TreksListView({ lang }: { lang: Lang }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <Breadcrumb lang={lang} items={[{ label: t.common.home, href: '/' }, { label: t.common.treks }]} />
           <h1 className="text-3xl font-heading font-bold mt-2">{t.treks.h1}</h1>
-          <p className="text-blue-200 max-w-2xl">{t.treks.intro}</p>
+          <p className="text-brand-200 max-w-2xl">{t.treks.intro}</p>
         </div>
       </section>
       <section className="py-8">
@@ -159,7 +159,7 @@ export async function TrekDetailView({ slug, lang }: { slug: string; lang: Lang 
             )}
 
             {guide && (
-              <p className="bg-blue-50 rounded-xl p-4 text-sm text-slate-700">
+              <p className="bg-brand-50 rounded-xl p-4 text-sm text-slate-700">
                 {k.readGuide}{' '}<Link href={href('/blog/' + guide)} className="text-brand-700 font-semibold underline">{k.fullGuide} &rarr;</Link>
               </p>
             )}
@@ -167,10 +167,10 @@ export async function TrekDetailView({ slug, lang }: { slug: string; lang: Lang 
             {trek.faqs?.length > 0 && <div><h2 className="text-xl font-heading font-semibold mb-3">{t.common.faqs}</h2><FAQSection faqs={trek.faqs} /></div>}
           </div>
           <div>
-            <div className="sticky top-20 space-y-4">
+            <div id="book" className="sticky top-20 space-y-4">
               <BookingForm category="trek" entityId={trek.id} entityName={trek.name} defaultAmount={trek.price_per_person} />
               <a href={getWhatsAppLink(fmt(k.whatsappMsg, { name: raw.name }))} target="_blank" rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 bg-green-500 text-white py-3 rounded-xl font-medium hover:bg-green-600 w-full">
+                className="flex items-center justify-center gap-2 bg-green-700 text-white py-3 rounded-xl font-medium hover:bg-green-800 w-full">
                 <MessageCircle className="h-4 w-4" /> {t.common.whatsapp}
               </a>
             </div>

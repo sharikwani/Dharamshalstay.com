@@ -39,7 +39,7 @@ export async function TaxiListView({ lang }: { lang: Lang }) {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 h-full flex flex-col justify-end pb-8 text-white">
           <Breadcrumb lang={lang} items={[{ label: t.common.home, href: '/' }, { label: t.common.taxi }]} />
           <h1 className="text-3xl font-heading font-bold mt-2">{x.h1}</h1>
-          <p className="text-blue-200 max-w-2xl">{x.intro}</p>
+          <p className="text-brand-200 max-w-2xl">{x.intro}</p>
         </div>
       </section>
       <TaxiSearch taxiRoutes={taxiRoutes} />
@@ -127,7 +127,7 @@ export async function TaxiRouteView({ slug, lang }: { slug: string; lang: Lang }
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 h-full flex flex-col justify-end pb-8 text-white">
           <Breadcrumb lang={lang} items={[{ label: t.common.home, href: '/' }, { label: t.common.taxi, href: '/taxi' }, { label: from + ' → ' + to }]} />
           <h1 className="text-3xl font-heading font-bold">{fmt(x.routeH1, { from, to })}</h1>
-          <p className="text-blue-100 mt-1">{x.fixedFrom} <strong className="text-white">{formatPrice(g.minPrice)}</strong>
+          <p className="text-brand-100 mt-1">{x.fixedFrom} <strong className="text-white">{formatPrice(g.minPrice)}</strong>
             {g.distanceKm ? ' · ' + g.distanceKm + ' km' : ''}{g.duration ? ' · ' + g.duration : ''}</p>
         </div>
       </section>
@@ -196,7 +196,7 @@ export async function TaxiRouteView({ slug, lang }: { slug: string; lang: Lang }
               <h2 className="text-xl font-heading font-bold text-slate-900 mb-3">{x.otherRoutes}</h2>
               <div className="flex flex-wrap gap-2">
                 {others.map((o) => (
-                  <Link key={o.slug} href={href('/taxi/' + o.slug)} className="text-sm px-3 py-2 bg-slate-100 rounded-full hover:bg-blue-50">
+                  <Link key={o.slug} href={href('/taxi/' + o.slug)} className="text-sm px-3 py-2 bg-slate-100 rounded-full hover:bg-brand-50">
                     {place(o.from)} → {place(o.to)} · {formatPrice(o.minPrice)}
                   </Link>
                 ))}
@@ -212,7 +212,7 @@ export async function TaxiRouteView({ slug, lang }: { slug: string; lang: Lang }
         <aside className="lg:sticky lg:top-24 self-start space-y-4">
           <InquiryForm type="taxi" contextNote={'Taxi: ' + g.from + ' to ' + g.to} title={x.bookThis} subtitle={x.bookThisSub} />
           <a href={getWhatsAppLink(fmt(x.whatsappRoute, { from: g.from, to: g.to }))} target="_blank" rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 bg-green-500 text-white py-3 rounded-xl font-semibold hover:bg-green-600">
+            className="flex items-center justify-center gap-2 bg-green-700 text-white py-3 rounded-xl font-semibold hover:bg-green-800">
             <MessageCircle className="h-4 w-4" /> {t.common.bookWhatsApp}
           </a>
         </aside>

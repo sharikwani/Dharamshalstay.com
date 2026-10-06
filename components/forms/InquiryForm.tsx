@@ -78,7 +78,7 @@ export default function InquiryForm({ type, propertyId, trekId, paraglidingId, c
         )}
         <textarea name="message" rows={3} placeholder={f.yourPlans} className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none resize-none" />
         {status === 'error' && <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg"><AlertCircle className="h-4 w-4" /> {f.somethingWrong}</div>}
-        <button type="submit" disabled={status === 'loading'} className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition-colors disabled:opacity-60">
+        <button type="submit" disabled={status === 'loading'} className="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition-colors disabled:opacity-60">
           {status === 'loading' ? f.sending : <><Send className="h-4 w-4" /> {f.sendInquiry}</>}
         </button>
         <p className="text-xs text-center text-slate-400">{f.dataSecure}</p>

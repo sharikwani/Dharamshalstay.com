@@ -54,7 +54,7 @@ export default async function ParaglidingView({ lang }: { lang: Lang }) {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 h-full flex flex-col justify-end pb-10 text-white">
           <Breadcrumb lang={lang} items={[{ label: t.common.home, href: '/' }, { label: t.common.paragliding }]} />
           <h1 className="text-3xl sm:text-4xl font-heading font-bold mt-2">{p.h1}</h1>
-          <p className="text-blue-200 mt-2 max-w-2xl">{p.intro}</p>
+          <p className="text-brand-200 mt-2 max-w-2xl">{p.intro}</p>
         </div>
       </section>
 
@@ -82,7 +82,7 @@ export default async function ParaglidingView({ lang }: { lang: Lang }) {
               <div key={pkg.slug} className="bg-white border border-slate-200 rounded-xl overflow-hidden hover:shadow-lg transition-shadow group">
                 <div className="relative aspect-[16/9]">
                   <Image src={pkg.image} alt={pkg.name} fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="(max-width:768px) 100vw, 33vw" />
-                  {pkg.featured && <span className="absolute top-3 left-3 bg-orange-500 text-white text-xs font-bold px-2.5 py-1 rounded">{t.treks.popular}</span>}
+                  {pkg.featured && <span className="absolute top-3 left-3 bg-orange-600 text-white text-xs font-bold px-2.5 py-1 rounded">{t.treks.popular}</span>}
                 </div>
                 <div className="p-5">
                   <div className="flex items-center gap-2 mb-2">
@@ -126,10 +126,10 @@ export default async function ParaglidingView({ lang }: { lang: Lang }) {
               <FAQSection faqs={p.faqs} />
             </div>
             <div>
-              <div className="sticky top-20 space-y-4">
+              <div id="book" className="sticky top-20 space-y-4">
                 <BookingForm category="paragliding" entityName="Paragliding Flight" defaultAmount={packages[0]?.price_per_person || 3500} commissionPct={15} />
                 <a href={getWhatsAppLink(p.whatsappGeneral)} target="_blank" rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 bg-green-500 text-white py-3 rounded-xl font-medium hover:bg-green-600 w-full">
+                  className="flex items-center justify-center gap-2 bg-green-700 text-white py-3 rounded-xl font-medium hover:bg-green-800 w-full">
                   <MessageCircle className="h-4 w-4" /> {t.home.ctaWhatsApp}
                 </a>
               </div>

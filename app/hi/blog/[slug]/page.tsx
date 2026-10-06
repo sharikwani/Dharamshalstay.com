@@ -4,7 +4,9 @@ import { getAllBlogSlugs } from '@/data/blog';
 
 interface Props { params: { slug: string } }
 
-export const dynamicParams = false;
+// true so unknown slugs reach notFound() and get the styled 404 inside the layout
+// (false would 404 at the router, outside any root layout, as a bare page).
+export const dynamicParams = true;
 
 export function generateStaticParams() {
   return getAllBlogSlugs().map(slug => ({ slug }));

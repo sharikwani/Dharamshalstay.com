@@ -19,6 +19,8 @@ export const siteConfig = {
   email: process.env.NEXT_PUBLIC_EMAIL || 'hello@dharamshalastay.com',
   whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919805700665',
   address: 'Dharamshala, Kangra District, Himachal Pradesh 176215, India',
+  instagram: 'https://www.instagram.com/dharamshala.stay/',
+  instagramHandle: 'dharamshala.stay',
 };
 
 export const NAV_LINKS = [

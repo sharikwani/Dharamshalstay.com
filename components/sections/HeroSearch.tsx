@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useId, useRef, useState, type FormEvent, type KeyboardEvent, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import { Search, Building, Mountain, Car, Wind } from 'lucide-react';
 import { getMinDate, getMinCheckoutDate, enforceCheckIn, enforceCheckOut, enforceActivityDate } from '@/lib/date-helpers';
@@ -11,23 +11,43 @@ const TABS = [
   { key: 'paragliding', icon: Wind, href: '/paragliding' },
   { key: 'taxi', icon: Car, href: '/taxi' },
 ] as const;
+type TabKey = (typeof TABS)[number]['key'];
 
 // Values stay English (they match route names in the database); labels are translated.
 const PICKUPS = ['Gaggal Airport', 'Pathankot Railway Station', 'Chakki Bank Railway Station', 'Amb Andaura Railway Station', 'Kangra Railway Station', 'Dharamshala', 'Delhi', 'Chandigarh', 'Amritsar'];
 const DROPS = ['Dharamshala', 'McLeod Ganj', 'Bir Billing', 'Palampur', 'Manali', 'Dalhousie', 'Delhi', 'Chandigarh', 'Amritsar'];
+const DESTINATIONS = ['dharamshala', 'mcleod-ganj', 'bhagsu', 'dharamkot', 'naddi'];
+
+const INPUT = 'w-full h-11 px-3 border border-slate-300 rounded-lg text-sm bg-white text-slate-800 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none';
+
+function Field({ id, label, children }: { id: string; label: string; children: ReactNode }) {
+  return (
+    <div className="flex-1 min-w-0">
+      <label htmlFor={id} className="text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1 block">{label}</label>
+      {children}
+    </div>
+  );
+}
 
 export default function HeroSearch() {
   const router = useRouter();
   const { t, href } = useT();
   const s = t.search;
   const place = (p: string) => t.taxiPlaces[p] || p;
-  const [activeTab, setActiveTab] = useState<string>('hotels');
+  const uid = useId();
+  const id = (name: string) => `${uid}-${name}`;
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  const [activeTab, setActiveTab] = useState<TabKey>('hotels');
   const [destination, setDestination] = useState('');
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
   const [activityDate, setActivityDate] = useState('');
   const [pickup, setPickup] = useState('');
   const [drop, setDrop] = useState('');
+  const [trek, setTrek] = useState('');
+  const [pkg, setPkg] = useState('');
+  const [people, setPeople] = useState('1');
 
   const minDate = getMinDate();
   const minCheckout = getMinCheckoutDate(checkIn);
@@ -45,10 +65,26 @@ export default function HeroSearch() {
     setActivityDate(enforceActivityDate(val));
   }
 
-  function handleSearch() {
-    const tab = TABS.find(t => t.key === activeTab);
-    if (!tab) return;
+  /** WAI-ARIA tabs: arrows move between tabs, Home/End jump to the ends. */
+  function handleTabKey(e: KeyboardEvent<HTMLButtonElement>, i: number) {
+    const last = TABS.length - 1;
+    const next = e.key === 'ArrowRight' ? (i === last ? 0 : i + 1)
+      : e.key === 'ArrowLeft' ? (i === 0 ? last : i - 1)
+      : e.key === 'Home' ? 0
+      : e.key === 'End' ? last
+      : -1;
+    if (next < 0) return;
+    e.preventDefault();
+    setActiveTab(TABS[next].key);
+    tabRefs.current[next]?.focus();
+  }
+
+  function handleSearch(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     const params = new URLSearchParams();
+    let path: string = TABS.find((x) => x.key === activeTab)!.href;
+    let hash = '';
+
     if (activeTab === 'hotels') {
       if (destination) params.set('destination', destination);
       if (checkIn) params.set('check_in', checkIn);
@@ -57,130 +93,126 @@ export default function HeroSearch() {
       if (pickup) params.set('from', pickup);
       if (drop) params.set('to', drop);
       if (activityDate) params.set('date', activityDate);
-    } else {
+    } else if (activeTab === 'paragliding' || trek) {
+      // A chosen trek or the paragliding page: prefill its booking form and jump to it.
+      // (No trek picked = the trek list, which has no form to fill.)
+      if (trek && activeTab === 'treks') path = '/treks/' + trek;
+      if (activeTab === 'paragliding' && pkg) params.set('package', pkg);
       if (activityDate) params.set('date', activityDate);
+      if (people !== '1') params.set('people', people);
+      hash = '#book';
     }
+
     const qs = params.toString();
-    router.push(qs ? `${href(tab.href)}?${qs}` : href(tab.href));
+    // With #book the booking form scrolls itself into view once it has prefilled;
+    // the router's own scroll-to-top would otherwise win.
+    router.push(href(path) + (qs ? '?' + qs : '') + hash, hash ? { scroll: false } : undefined);
   }
 
+  const dateField = (label: string) => (
+    <Field id={id('date')} label={label}>
+      <input id={id('date')} type="date" value={activityDate}
+        onChange={(e) => handleActivityDateChange(e.target.value)}
+        onBlur={() => { if (activityDate) setActivityDate(enforceActivityDate(activityDate)); }}
+        min={minDate} className={INPUT} />
+    </Field>
+  );
+
   return (
-    <div className="bg-white rounded-xl shadow-2xl max-w-4xl overflow-hidden">
-      <div className="flex border-b border-slate-200 overflow-x-auto scrollbar-hide">
-        {TABS.map((tab) => (
-          <button key={tab.key} onClick={() => setActiveTab(tab.key)}
-            className={`flex items-center gap-2 px-5 py-3.5 text-sm font-semibold border-b-2 transition-colors whitespace-nowrap ${
-              activeTab === tab.key ? 'border-brand-600 text-brand-600 bg-blue-50/50' : 'border-transparent text-slate-600 hover:text-brand-600'
-            }`}>
-            <tab.icon className="h-4 w-4" />{s.tabs[tab.key]}
-          </button>
-        ))}
+    <div className="bg-white rounded-2xl shadow-2xl shadow-brand-950/30 max-w-4xl overflow-hidden">
+      <div role="tablist" aria-label={s.search} className="flex border-b border-slate-200 overflow-x-auto scrollbar-hide">
+        {TABS.map((tab, i) => {
+          const selected = activeTab === tab.key;
+          return (
+            <button key={tab.key} type="button" role="tab" id={id('tab-' + tab.key)}
+              ref={(el) => { tabRefs.current[i] = el; }}
+              aria-selected={selected} aria-controls={id('panel')} tabIndex={selected ? 0 : -1}
+              onClick={() => setActiveTab(tab.key)} onKeyDown={(e) => handleTabKey(e, i)}
+              className={`flex items-center gap-2 px-5 py-3.5 text-sm font-semibold border-b-2 -mb-px transition-colors whitespace-nowrap ${
+                selected ? 'border-brand-600 text-brand-700 bg-brand-50/60' : 'border-transparent text-slate-600 hover:text-brand-700'
+              }`}>
+              <tab.icon className="h-4 w-4" aria-hidden="true" />{s.tabs[tab.key]}
+            </button>
+          );
+        })}
       </div>
-      <div className="p-4 sm:p-5">
+
+      <form id={id('panel')} role="tabpanel" aria-labelledby={id('tab-' + activeTab)} onSubmit={handleSearch}
+        className="p-4 sm:p-5 flex flex-col sm:flex-row gap-3">
         {activeTab === 'hotels' && (
-          <div className="flex flex-col sm:flex-row gap-3">
-            <div className="flex-1">
-              <label className="text-xs font-semibold text-slate-500 uppercase mb-1 block">{s.destination}</label>
-              <select value={destination} onChange={e => setDestination(e.target.value)}
-                className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+          <>
+            <Field id={id('destination')} label={s.destination}>
+              <select id={id('destination')} value={destination} onChange={(e) => setDestination(e.target.value)} className={INPUT}>
                 <option value="">{s.allDestinations}</option>
-                {['dharamshala', 'mcleod-ganj', 'bhagsu', 'dharamkot', 'naddi'].map((d) => <option key={d} value={d}>{t.places[d]}</option>)}
+                {DESTINATIONS.map((d) => <option key={d} value={d}>{t.places[d]}</option>)}
               </select>
-            </div>
-            <div className="flex-1">
-              <label className="text-xs font-semibold text-slate-500 uppercase mb-1 block">{s.checkIn}</label>
-              <input type="date" value={checkIn}
-                onChange={e => handleCheckInChange(e.target.value)}
+            </Field>
+            <Field id={id('check-in')} label={s.checkIn}>
+              <input id={id('check-in')} type="date" value={checkIn}
+                onChange={(e) => handleCheckInChange(e.target.value)}
                 onBlur={() => { if (checkIn) setCheckIn(enforceCheckIn(checkIn)); }}
-                min={minDate}
-                className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" />
-            </div>
-            <div className="flex-1">
-              <label className="text-xs font-semibold text-slate-500 uppercase mb-1 block">{s.checkOut}</label>
-              <input type="date" value={checkOut}
-                onChange={e => handleCheckOutChange(e.target.value)}
+                min={minDate} className={INPUT} />
+            </Field>
+            <Field id={id('check-out')} label={s.checkOut}>
+              <input id={id('check-out')} type="date" value={checkOut}
+                onChange={(e) => handleCheckOutChange(e.target.value)}
                 onBlur={() => { if (checkOut) setCheckOut(enforceCheckOut(checkOut, checkIn)); }}
-                min={checkIn ? minCheckout : minDate}
-                className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" />
-            </div>
-            <div className="sm:self-end">
-              <button onClick={handleSearch}
-                className="flex items-center justify-center gap-2 bg-brand-600 text-white px-8 py-2.5 rounded-lg font-semibold hover:bg-brand-700 transition-colors text-sm h-[42px] w-full sm:w-auto">
-                <Search className="h-4 w-4" /> {s.search}
-              </button>
-            </div>
-          </div>
+                min={checkIn ? minCheckout : minDate} className={INPUT} />
+            </Field>
+          </>
         )}
 
         {activeTab === 'taxi' && (
-          <div className="flex flex-col sm:flex-row gap-3">
-            <div className="flex-1">
-              <label className="text-xs font-semibold text-slate-500 uppercase mb-1 block">{s.pickup}</label>
-              <select value={pickup} onChange={e => setPickup(e.target.value)}
-                className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+          <>
+            <Field id={id('pickup')} label={s.pickup}>
+              <select id={id('pickup')} value={pickup} onChange={(e) => setPickup(e.target.value)} className={INPUT}>
                 <option value="">{s.selectPickup}</option>
                 {PICKUPS.map((p) => <option key={p} value={p}>{place(p)}</option>)}
               </select>
-            </div>
-            <div className="flex-1">
-              <label className="text-xs font-semibold text-slate-500 uppercase mb-1 block">{s.drop}</label>
-              <select value={drop} onChange={e => setDrop(e.target.value)}
-                className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+            </Field>
+            <Field id={id('drop')} label={s.drop}>
+              <select id={id('drop')} value={drop} onChange={(e) => setDrop(e.target.value)} className={INPUT}>
                 <option value="">{s.selectDrop}</option>
                 {DROPS.map((p) => <option key={p} value={p}>{place(p)}</option>)}
               </select>
-            </div>
-            <div className="flex-1">
-              <label className="text-xs font-semibold text-slate-500 uppercase mb-1 block">{s.pickupDate}</label>
-              <input type="date" value={activityDate}
-                onChange={e => handleActivityDateChange(e.target.value)}
-                onBlur={() => { if (activityDate) setActivityDate(enforceActivityDate(activityDate)); }}
-                min={minDate}
-                className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" />
-            </div>
-            <div className="sm:self-end">
-              <button onClick={handleSearch}
-                className="flex items-center justify-center gap-2 bg-brand-600 text-white px-8 py-2.5 rounded-lg font-semibold hover:bg-brand-700 text-sm h-[42px] w-full sm:w-auto">
-                <Search className="h-4 w-4" /> {s.search}
-              </button>
-            </div>
-          </div>
+            </Field>
+            {dateField(s.pickupDate)}
+          </>
         )}
 
         {(activeTab === 'treks' || activeTab === 'paragliding') && (
-          <div className="flex flex-col sm:flex-row gap-3">
-            <div className="flex-1">
-              <label className="text-xs font-semibold text-slate-500 uppercase mb-1 block">
-                {activeTab === 'treks' ? s.trek : s.pkg}
-              </label>
-              <select className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none">
-                <option value="">{activeTab === 'treks' ? s.allTreks : s.allPackages}</option>
-                {(activeTab === 'treks' ? s.trekOptions : s.pkgOptions).map((o) => <option key={o}>{o}</option>)}
+          <>
+            {activeTab === 'treks' ? (
+              <Field id={id('trek')} label={s.trek}>
+                <select id={id('trek')} value={trek} onChange={(e) => setTrek(e.target.value)} className={INPUT}>
+                  <option value="">{s.allTreks}</option>
+                  {Object.entries(s.trekOptions).map(([slug, label]) => <option key={slug} value={slug}>{label}</option>)}
+                </select>
+              </Field>
+            ) : (
+              <Field id={id('package')} label={s.pkg}>
+                <select id={id('package')} value={pkg} onChange={(e) => setPkg(e.target.value)} className={INPUT}>
+                  <option value="">{s.allPackages}</option>
+                  {Object.entries(s.pkgOptions).map(([key, label]) => <option key={key} value={key}>{label}</option>)}
+                </select>
+              </Field>
+            )}
+            {dateField(s.date)}
+            <Field id={id('people')} label={s.people}>
+              <select id={id('people')} value={people} onChange={(e) => setPeople(e.target.value)} className={INPUT}>
+                {s.peopleOptions.map((label, i) => <option key={label} value={String(i + 1)}>{label}</option>)}
               </select>
-            </div>
-            <div className="flex-1">
-              <label className="text-xs font-semibold text-slate-500 uppercase mb-1 block">{s.date}</label>
-              <input type="date" value={activityDate}
-                onChange={e => handleActivityDateChange(e.target.value)}
-                onBlur={() => { if (activityDate) setActivityDate(enforceActivityDate(activityDate)); }}
-                min={minDate}
-                className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" />
-            </div>
-            <div className="flex-1">
-              <label className="text-xs font-semibold text-slate-500 uppercase mb-1 block">{s.people}</label>
-              <select className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none">
-                {s.peopleOptions.map((o) => <option key={o}>{o}</option>)}
-              </select>
-            </div>
-            <div className="sm:self-end">
-              <button onClick={handleSearch}
-                className="flex items-center justify-center gap-2 bg-brand-600 text-white px-8 py-2.5 rounded-lg font-semibold hover:bg-brand-700 text-sm h-[42px] w-full sm:w-auto">
-                <Search className="h-4 w-4" /> {s.search}
-              </button>
-            </div>
-          </div>
+            </Field>
+          </>
         )}
-      </div>
+
+        <div className="sm:self-end">
+          <button type="submit"
+            className="flex items-center justify-center gap-2 bg-brand-600 text-white px-8 h-11 rounded-lg font-semibold hover:bg-brand-700 transition-colors text-sm w-full sm:w-auto">
+            <Search className="h-4 w-4" aria-hidden="true" /> {s.search}
+          </button>
+        </div>
+      </form>
     </div>
   );
 }

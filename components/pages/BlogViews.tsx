@@ -48,14 +48,14 @@ export function BlogIndexView({ lang }: { lang: Lang }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <Breadcrumb lang={lang} items={[{ label: t.common.home, href: '/' }, { label: t.common.guides }]} />
           <h1 className="text-3xl sm:text-4xl font-heading font-bold mt-2">{b.h1}</h1>
-          <p className="text-blue-200 max-w-3xl mt-2">{b.intro}</p>
-          <p className="text-sm text-blue-200 mt-3">{fmt(b.count, { n: posts.length })}</p>
+          <p className="text-brand-200 max-w-3xl mt-2">{b.intro}</p>
+          <p className="text-sm text-brand-200 mt-3">{fmt(b.count, { n: posts.length })}</p>
           <div className="mt-5"><GuideSearch guides={summaries} /></div>
           <div className="flex flex-wrap gap-2 mt-5">
             {categories.map((c) => (
               <a key={c} href={'#' + catId(c)} className="text-xs font-medium bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full">{b.categories[c] || c}</a>
             ))}
-            <Link href={href('/faq')} className="text-xs font-semibold bg-orange-500 hover:bg-orange-600 px-3 py-1.5 rounded-full">{t.common.qa}</Link>
+            <Link href={href('/faq')} className="text-xs font-semibold bg-orange-600 hover:bg-orange-700 px-3 py-1.5 rounded-full">{t.common.qa}</Link>
           </div>
         </div>
       </section>
@@ -161,7 +161,7 @@ export function BlogPostView({ slug, lang }: { slug: string; lang: Lang }) {
         )}
 
         <div className="flex flex-wrap items-center gap-3 mb-4 mt-3">
-          <span className="text-xs font-semibold text-brand-600 bg-blue-50 px-2.5 py-1 rounded-full flex items-center gap-1">
+          <span className="text-xs font-semibold text-brand-600 bg-brand-50 px-2.5 py-1 rounded-full flex items-center gap-1">
             <Tag className="h-3 w-3" />{b.categories[post.category] || post.category}
           </span>
           <span className="text-xs text-slate-500 flex items-center gap-1">
@@ -223,13 +223,13 @@ export function BlogPostView({ slug, lang }: { slug: string; lang: Lang }) {
           </div>
         )}
 
-        <div className="bg-gradient-to-br from-brand-50 to-blue-50 rounded-2xl p-8 text-center mt-10 mb-10">
+        <div className="bg-brand-50 rounded-2xl p-8 text-center mt-10 mb-10">
           <h2 className="font-heading font-bold text-xl text-slate-900 mb-2">{b.ctaTitle}</h2>
           <p className="text-slate-600 mb-5">{b.ctaIntro}</p>
           <div className="flex flex-col sm:flex-row justify-center gap-3">
             <Link href={href('/hotels')} className="bg-brand-600 text-white px-6 py-2.5 rounded-xl font-semibold hover:bg-brand-700 transition-colors">{t.common.browseHotels}</Link>
             <a href={getWhatsAppLink(fmt(b.whatsappMsg, { title: raw.title }))} target="_blank" rel="noopener noreferrer"
-              className="bg-green-500 text-white px-6 py-2.5 rounded-xl font-semibold hover:bg-green-600 transition-colors flex items-center justify-center gap-1.5">
+              className="bg-green-700 text-white px-6 py-2.5 rounded-xl font-semibold hover:bg-green-800 transition-colors flex items-center justify-center gap-1.5">
               <MessageCircle className="h-4 w-4" /> {t.common.whatsapp}
             </a>
           </div>

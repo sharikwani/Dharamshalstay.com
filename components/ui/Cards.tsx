@@ -23,7 +23,7 @@ export function HotelCard({ hotel, nights = 0, lang = 'en' }: { hotel: Property;
         <div className="relative aspect-[4/3] overflow-hidden">
           <Image src={img} alt={alt} fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="(max-width:768px) 100vw, 33vw" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-          {hotel.featured && <span className="absolute top-3 left-3 bg-orange-500 text-white text-xs font-bold px-2.5 py-1 rounded">{t.featured}</span>}
+          {hotel.featured && <span className="absolute top-3 left-3 bg-orange-600 text-white text-xs font-bold px-2.5 py-1 rounded">{t.featured}</span>}
           <div className="absolute bottom-3 left-3 flex items-center gap-1 bg-white/90 backdrop-blur-sm text-slate-800 text-xs font-medium px-2 py-1 rounded">
             <MapPin className="h-3 w-3" />{area}
           </div>
@@ -32,7 +32,7 @@ export function HotelCard({ hotel, nights = 0, lang = 'en' }: { hotel: Property;
           <div className="flex items-start justify-between gap-2 mb-1">
             <h3 className="font-heading font-semibold text-slate-900 group-hover:text-brand-600 line-clamp-1">{hotel.name}</h3>
             {hotel.rating > 0 && (
-              <span className="shrink-0 flex items-center gap-0.5 bg-green-600 text-white text-xs font-bold px-1.5 py-0.5 rounded">
+              <span className="shrink-0 flex items-center gap-0.5 bg-green-700 text-white text-xs font-bold px-1.5 py-0.5 rounded">
                 <Star className="h-3 w-3 fill-white" />{hotel.rating}
               </span>
             )}
@@ -90,7 +90,7 @@ export function TrekCard({ trek, lang = 'en' }: { trek: Trek; lang?: Lang }) {
       <div className="bg-white rounded-xl overflow-hidden border border-slate-200 hover:shadow-lg transition-all">
         <div className="relative aspect-[16/9]">
           <Image src={imgSrc} alt={trek.name} fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="(max-width:768px) 100vw, 33vw" />
-          {trek.featured && <span className="absolute top-3 left-3 bg-orange-500 text-white text-xs font-bold px-2.5 py-1 rounded">{d.treks.popular}</span>}
+          {trek.featured && <span className="absolute top-3 left-3 bg-orange-600 text-white text-xs font-bold px-2.5 py-1 rounded">{d.treks.popular}</span>}
         </div>
         <div className="p-4">
           <h3 className="font-heading font-semibold text-slate-900 mb-2">{trek.name}</h3>
@@ -124,7 +124,7 @@ export function BlogCard({ post, lang = 'en' }: { post: BlogPost; lang?: Lang })
         </div>
         <div className="p-4">
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-xs font-medium text-brand-600 bg-blue-50 px-2 py-0.5 rounded-full">{d.blog.categories[post.category] || post.category}</span>
+            <span className="text-xs font-medium text-brand-600 bg-brand-50 px-2 py-0.5 rounded-full">{d.blog.categories[post.category] || post.category}</span>
             <span className="text-xs text-slate-400">{post.read_time} {d.common.min}</span>
           </div>
           <h3 className="font-heading font-semibold text-slate-900 group-hover:text-brand-600 line-clamp-2 mb-2">{post.title}</h3>
@@ -139,7 +139,7 @@ export function SectionHeading({ title, subtitle, align = 'center' }: { title: s
   return (
     <div className={cn(align === 'center' ? 'text-center' : 'text-left', 'mb-8 lg:mb-10')}>
       <h2 className="text-2xl sm:text-3xl font-heading font-bold text-slate-900 mb-2">{title}</h2>
-      {subtitle && <p className="text-slate-600 text-base sm:text-lg max-w-2xl mx-auto">{subtitle}</p>}
+      {subtitle && <p className={cn('text-slate-600 text-base sm:text-lg max-w-2xl', align === 'center' && 'mx-auto')}>{subtitle}</p>}
     </div>
   );
 }

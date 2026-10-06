@@ -178,10 +178,10 @@ export default function HotelFilters({ hotels, destinations }: Props) {
       {/* Area pills */}
       <div className="flex gap-2 overflow-x-auto pb-3 scrollbar-hide mb-2">
         <button onClick={() => setArea('')}
-          className={'shrink-0 px-4 py-2 text-sm font-medium rounded-full transition-colors ' + (!area ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-blue-50')}>{f.all}</button>
+          className={'shrink-0 px-4 py-2 text-sm font-medium rounded-full transition-colors ' + (!area ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-brand-50')}>{f.all}</button>
         {destinations.map((d: any) => (
           <button key={d.slug} onClick={() => setArea(d.slug)}
-            className={'shrink-0 px-4 py-2 text-sm font-medium rounded-full transition-colors ' + (area === d.slug ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-blue-50')}>{d.name}</button>
+            className={'shrink-0 px-4 py-2 text-sm font-medium rounded-full transition-colors ' + (area === d.slug ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-brand-50')}>{d.name}</button>
         ))}
       </div>
 

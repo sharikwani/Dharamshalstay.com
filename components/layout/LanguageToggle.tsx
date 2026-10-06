@@ -24,7 +24,7 @@ export default function LanguageToggle({ className = '' }: { className?: string 
 
   const btn = (to: Lang, label: string, title: string) => (
     <button type="button" onClick={() => go(to)} aria-pressed={lang === to} title={title} lang={to === 'hi' ? 'hi' : 'en'}
-      className={'px-2.5 py-1 rounded-md text-xs font-bold transition-colors ' + (lang === to ? 'bg-white text-brand-900' : 'text-blue-100 hover:text-white')}>
+      className={'px-2.5 py-1 rounded-md text-xs font-bold transition-colors ' + (lang === to ? 'bg-white text-brand-900' : 'text-brand-100 hover:text-white')}>
       {label}
     </button>
   );

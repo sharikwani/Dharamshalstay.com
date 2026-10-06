@@ -49,7 +49,7 @@ export function AboutView({ lang }: { lang: Lang }) {
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 py-14 text-white">
           <Breadcrumb lang={lang} items={[{ label: t.common.home, href: '/' }, { label: t.common.about }]} />
           <h1 className="text-3xl sm:text-4xl font-heading font-bold mt-2">{a.h1}</h1>
-          <p className="text-blue-100 mt-3 max-w-2xl">{a.intro}</p>
+          <p className="text-brand-100 mt-3 max-w-2xl">{a.intro}</p>
         </div>
       </section>
 
@@ -100,7 +100,7 @@ export function AboutView({ lang }: { lang: Lang }) {
           </p>
         </section>
 
-        <section className="bg-blue-50 rounded-2xl p-6">
+        <section className="bg-brand-50 rounded-2xl p-6">
           <h2 className="text-xl font-heading font-bold text-slate-900 mb-4">{a.contactTitle}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
             <a href={'tel:' + siteConfig.phone} className="flex items-center gap-2 text-slate-700 hover:text-brand-700"><Phone className="h-4 w-4 text-brand-600" />{siteConfig.phone}</a>
@@ -109,7 +109,7 @@ export function AboutView({ lang }: { lang: Lang }) {
           </div>
           <div className="flex flex-wrap gap-3 mt-5">
             <Link href={href('/contact')} className="bg-brand-600 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-brand-700">{a.contactForm}</Link>
-            <a href={getWhatsAppLink()} target="_blank" rel="noopener noreferrer" className="bg-green-500 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-green-600 flex items-center gap-1"><MessageCircle className="h-4 w-4" /> {t.common.whatsapp}</a>
+            <a href={getWhatsAppLink()} target="_blank" rel="noopener noreferrer" className="bg-green-700 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-green-800 flex items-center gap-1"><MessageCircle className="h-4 w-4" /> {t.common.whatsapp}</a>
             <Link href="/partner/register" className="bg-white border border-slate-300 text-slate-800 px-5 py-2.5 rounded-lg font-medium hover:bg-slate-50">{t.nav.listProperty}</Link>
           </div>
         </section>
@@ -132,7 +132,7 @@ export function ContactView({ lang }: { lang: Lang }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <Breadcrumb lang={lang} items={[{ label: t.common.home, href: '/' }, { label: t.common.contact }]} />
           <h1 className="text-3xl font-heading font-bold mt-2">{c.h1}</h1>
-          <p className="text-blue-200">{c.intro}</p>
+          <p className="text-brand-200">{c.intro}</p>
         </div>
       </section>
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-10">

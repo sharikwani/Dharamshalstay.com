@@ -92,7 +92,7 @@ export default function DirectoryListing({ hotel, related, lang = 'en' }: { hote
           {v.goodFor.length > 0 && (
             <div className="mb-8">
               <h2 className="font-heading font-semibold text-slate-900 mb-3 flex items-center gap-2"><Users className="h-4 w-4 text-brand-600" />{d.goodFor}</h2>
-              <div className="flex flex-wrap gap-2">{v.goodFor.map((g) => <span key={g} className="text-sm bg-blue-50 text-brand-800 px-3 py-1.5 rounded-full">{g}</span>)}</div>
+              <div className="flex flex-wrap gap-2">{v.goodFor.map((g) => <span key={g} className="text-sm bg-brand-50 text-brand-800 px-3 py-1.5 rounded-full">{g}</span>)}</div>
             </div>
           )}
 
@@ -168,7 +168,7 @@ export default function DirectoryListing({ hotel, related, lang = 'en' }: { hote
             title={d.checkRates} subtitle={fmt(d.checkRatesSub, { name: hotel.name })} />
           <a href={getWhatsAppLink('Hi! Please check availability at ' + hotel.name + ' (' + v.locality + ').')}
             target="_blank" rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 bg-green-500 text-white py-3 rounded-xl font-semibold hover:bg-green-600">
+            className="flex items-center justify-center gap-2 bg-green-700 text-white py-3 rounded-xl font-semibold hover:bg-green-800">
             <MessageCircle className="h-4 w-4" /> {t.common.askWhatsApp}
           </a>
           {hotel.website && (

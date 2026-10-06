@@ -118,7 +118,7 @@ export default async function HotelDetailView({ slug, lang }: { slug: string; la
               <span className="flex items-center gap-1.5"><MapPin className="h-4 w-4 text-brand-500" />{hotel.address_line1}{hotel.city ? ', ' + hotel.city : ''}</span>
             )}
             {hotel.rating > 0 && (
-              <span className="flex items-center gap-1 bg-green-600 text-white text-sm font-bold px-2 py-1 rounded-lg">
+              <span className="flex items-center gap-1 bg-green-700 text-white text-sm font-bold px-2 py-1 rounded-lg">
                 <Star className="h-3.5 w-3.5 fill-white" />{hotel.rating}
                 {hotel.review_count > 0 && <span className="font-normal text-xs ml-1 text-green-100">({hotel.review_count})</span>}
               </span>
@@ -144,7 +144,7 @@ export default async function HotelDetailView({ slug, lang }: { slug: string; la
             { icon: Shield, text: p.trustVerified },
             { icon: Phone, text: p.trustSupport },
           ].map(item => (
-            <div key={item.text} className="flex items-center gap-2 bg-blue-50 rounded-xl px-3 py-2.5">
+            <div key={item.text} className="flex items-center gap-2 bg-brand-50 rounded-xl px-3 py-2.5">
               <item.icon className="h-4 w-4 text-brand-600 shrink-0" />
               <span className="text-xs font-medium text-brand-800">{item.text}</span>
             </div>

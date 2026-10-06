@@ -78,7 +78,7 @@ export default function TaxiSearch({ taxiRoutes }: { taxiRoutes: any[] }) {
           {TRIP_TYPES.map(tt => (
             <button key={tt.key} onClick={() => setActiveType(tt.key)}
               className={cn('shrink-0 flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-full transition-colors',
-                activeType === tt.key ? 'bg-brand-600 text-white' : 'bg-white text-slate-600 border border-slate-200 hover:bg-blue-50')}>
+                activeType === tt.key ? 'bg-brand-600 text-white' : 'bg-white text-slate-600 border border-slate-200 hover:bg-brand-50')}>
               <tt.icon className="h-3.5 w-3.5" />{x.types[tt.key]}
             </button>
           ))}
@@ -96,7 +96,7 @@ export default function TaxiSearch({ taxiRoutes }: { taxiRoutes: any[] }) {
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2">
-                          <span className="text-xs font-medium px-2 py-0.5 bg-blue-50 text-brand-700 rounded-full">{x.types[r.route_type] || x.types.local}</span>
+                          <span className="text-xs font-medium px-2 py-0.5 bg-brand-50 text-brand-700 rounded-full">{x.types[r.route_type] || x.types.local}</span>
                           <span className="text-xs text-slate-400">{r.distance_km} km · {localizeUnits(r.duration, lang)}</span>
                         </div>
                         <Link href={href('/taxi/' + taxiRouteSlug(r.from_location, r.to_location))} className="font-heading font-semibold text-slate-900 mb-1 hover:text-brand-600 flex items-center gap-1">
@@ -126,7 +126,7 @@ export default function TaxiSearch({ taxiRoutes }: { taxiRoutes: any[] }) {
               <div className="sticky top-40 space-y-4">
                 <BookingForm category="taxi" entityName="Taxi Booking" />
                 <a href={getWhatsAppLink(x.whatsappGeneral)} target="_blank" rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 bg-green-500 text-white py-3 rounded-xl font-medium hover:bg-green-600 w-full">
+                  className="flex items-center justify-center gap-2 bg-green-700 text-white py-3 rounded-xl font-medium hover:bg-green-800 w-full">
                   <MessageCircle className="h-4 w-4" /> {x.customRoutes}
                 </a>
               </div>

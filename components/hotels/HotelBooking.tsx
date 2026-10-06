@@ -143,7 +143,7 @@ export default function HotelBooking({ hotel }: Props) {
                                     <button
                                       type="button"
                                       onClick={() => selectRoom(room.name, planName, plan.price)}
-                                      className={'text-sm font-bold px-5 py-2.5 rounded-xl transition-colors whitespace-nowrap shrink-0 ' + (isSelected ? 'bg-green-600 text-white' : 'bg-orange-500 hover:bg-orange-600 text-white')}>
+                                      className={'text-sm font-bold px-5 py-2.5 rounded-xl transition-colors whitespace-nowrap shrink-0 ' + (isSelected ? 'bg-green-700 text-white' : 'bg-orange-600 hover:bg-orange-700 text-white')}>
                                       {isSelected ? b.selected : b.book}
                                     </button>
                                   </div>
@@ -194,7 +194,7 @@ export default function HotelBooking({ hotel }: Props) {
           <InquiryForm type="hotel" propertyId={hotel.id} title={b.quickInquiry} subtitle={b.quickInquirySub} />
 
           <a href={getWhatsAppLink('Hi! Interested in ' + hotel.name + (selected.roomName ? ' - ' + selected.roomName : '') + '.')} target="_blank" rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 bg-green-500 text-white py-3 rounded-xl font-medium hover:bg-green-600 w-full">
+            className="flex items-center justify-center gap-2 bg-green-700 text-white py-3 rounded-xl font-medium hover:bg-green-800 w-full">
             <MessageCircle className="h-4 w-4" /> {t.home.ctaWhatsApp}
           </a>
           <a href={'tel:' + siteConfig.phone}

@@ -1,9 +1,8 @@
-'use client';
 import Link from 'next/link';
-import { Mountain, Mail, Phone, MapPin } from 'lucide-react';
+import { Mountain, Mail, Phone, MapPin, Instagram } from 'lucide-react';
 import { siteConfig, DESTINATION_LINKS } from '@/lib/config';
-import { useT } from '@/lib/i18n/client';
-import { fmt } from '@/lib/i18n/dict';
+import { fmt, getDict } from '@/lib/i18n/dict';
+import { localizePath, type Lang } from '@/lib/i18n/core';
 
 const GUIDE_SLUGS = [
   'dharamshala-complete-travel-guide', 'places-to-visit-in-dharamshala', 'things-to-do-in-mcleod-ganj',
@@ -11,8 +10,10 @@ const GUIDE_SLUGS = [
   'dharamshala-in-winter-snowfall', 'palampur-travel-guide', 'himachal-itinerary-delhi-dharamshala-manali',
 ] as const;
 
-export default function Footer() {
-  const { t, href } = useT();
+// Server component: the root layout already knows the language, so no client JS is needed.
+export default function Footer({ lang }: { lang: Lang }) {
+  const t = getDict(lang);
+  const href = (p: string) => localizePath(p, lang);
   const quick = [
     { label: t.nav.hotels, href: '/hotels' }, { label: t.nav.treks, href: '/treks' },
     { label: t.nav.paragliding, href: '/paragliding' }, { label: t.nav.taxi, href: '/taxi' },
@@ -33,6 +34,7 @@ export default function Footer() {
               <a href={`tel:${siteConfig.phone}`} className="flex items-center gap-2 hover:text-orange-400"><Phone className="h-4 w-4 text-orange-500" /> {siteConfig.phone}</a>
               <a href={`mailto:${siteConfig.email}`} className="flex items-center gap-2 hover:text-orange-400"><Mail className="h-4 w-4 text-orange-500" /> {siteConfig.email}</a>
               <p className="flex items-start gap-2"><MapPin className="h-4 w-4 text-orange-500 mt-0.5 shrink-0" />{t.footer.address}</p>
+              <a href={siteConfig.instagram} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-orange-400"><Instagram className="h-4 w-4 text-orange-500" /> @{siteConfig.instagramHandle}</a>
             </div>
           </div>
           <div>
@@ -58,7 +60,7 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-        <div className="border-t border-slate-800 mt-10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <div className="border-t border-slate-800 mt-10 pt-8 pb-20 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <p>&copy; {new Date().getFullYear()} {siteConfig.name}. {t.footer.rights}</p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link href="/privacy" className="hover:text-slate-300">{t.footer.privacy}</Link>

@@ -36,7 +36,7 @@ export async function DestinationsListView({ lang }: { lang: Lang }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <Breadcrumb lang={lang} items={[{ label: t.common.home, href: '/' }, { label: t.common.destinations }]} />
           <h1 className="text-3xl font-heading font-bold mt-2">{d.h1}</h1>
-          <p className="text-blue-200 max-w-3xl mt-2">{d.intro}</p>
+          <p className="text-brand-200 max-w-3xl mt-2">{d.intro}</p>
         </div>
       </section>
       <section className="py-8">
@@ -111,7 +111,7 @@ export async function DestinationDetailView({ slug, lang }: { slug: string; lang
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 h-full flex flex-col justify-end pb-8 text-white">
           <Breadcrumb lang={lang} items={[{ label: t.common.home, href: '/' }, { label: t.common.destinations, href: '/destinations' }, { label: dest.name }]} />
           <h1 className="text-3xl sm:text-4xl font-heading font-bold">{dest.name}</h1>
-          <p className="text-blue-200 italic">{dest.tagline}</p>
+          <p className="text-brand-200 italic">{dest.tagline}</p>
           <p className="text-sm text-slate-300 mt-1">{d.altitude}: {dest.altitude} · {d.best}: {dest.best_time}</p>
         </div>
       </section>
@@ -183,7 +183,7 @@ export async function DestinationDetailView({ slug, lang }: { slug: string; lang
           <h2 className="text-xl font-heading font-bold mb-3">{d.others}</h2>
           <div className="flex flex-wrap gap-2">
             {others.map((x: any) => (
-              <Link key={x.slug} href={href('/destinations/' + x.slug)} className="px-4 py-2 bg-slate-100 rounded-full text-sm font-medium hover:bg-blue-50">{x.name}</Link>
+              <Link key={x.slug} href={href('/destinations/' + x.slug)} className="px-4 py-2 bg-slate-100 rounded-full text-sm font-medium hover:bg-brand-50">{x.name}</Link>
             ))}
           </div>
         </div>

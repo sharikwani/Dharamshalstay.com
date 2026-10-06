@@ -52,6 +52,7 @@ export const hi: Dict = {
     photoCredit: 'फ़ोटो: Wikimedia Commons', credits: 'क्रेडिट',
   },
   home: {
+    proofStays: '{n} ठहरने की जगहें', proofTreks: '{n} गाइडेड ट्रेक', proofGuides: '{n} मुफ़्त ट्रैवल गाइड', proofLocal: 'धर्मशाला में लोकल टीम',
     metaTitle: 'धर्मशाला होटल, ट्रेक और टैक्सी - मैक्लोडगंज यात्रा गाइड',
     metaDescription: 'धर्मशाला, मैक्लोडगंज और कांगड़ा घाटी की लोकल गाइड: भरोसेमंद होटल और होमस्टे, त्रिउंड ट्रेक, बीर बिलिंग पैराग्लाइडिंग, एयरपोर्ट टैक्सी और फ़्री ट्रिप प्लानिंग।',
     heroAlt: 'धर्मशाला और मैक्लोडगंज के ऊपर बर्फ़ से ढकी धौलाधार पर्वतमाला',
@@ -127,8 +128,8 @@ export const hi: Dict = {
     destination: 'जगह', allDestinations: 'सभी जगहें', checkIn: 'चेक-इन', checkOut: 'चेक-आउट', search: 'खोजें',
     pickup: 'पिकअप', selectPickup: 'पिकअप चुनें', drop: 'ड्रॉप', selectDrop: 'ड्रॉप चुनें', pickupDate: 'पिकअप की तारीख',
     trek: 'ट्रेक', pkg: 'पैकेज', allTreks: 'सभी ट्रेक', allPackages: 'सभी पैकेज',
-    trekOptions: ['त्रिउंड ट्रेक', 'करेरी झील ट्रेक', 'इंद्रहार पास', 'स्नोलाइन और लाका गोट', 'गुना देवी हाइक', 'बीर से राजगुंधा'],
-    pkgOptions: ['टैंडम फ़्लाइट', 'लंबी सीनिक फ़्लाइट', 'सोलो कोर्स'],
+    trekOptions: { 'triund-trek': 'त्रिउंड ट्रेक', 'kareri-lake-trek': 'करेरी झील ट्रेक', 'indrahar-pass-trek': 'इंद्रहार पास', 'triund-snowline-laka-got-trek': 'स्नोलाइन और लाका गोट', 'guna-devi-temple-hike': 'गुना देवी हाइक', 'bir-billing-rajgundha-trek': 'बीर से राजगुंधा' } as Record<string, string>,
+    pkgOptions: { tandem: 'टैंडम फ़्लाइट', scenic: 'लंबी सीनिक फ़्लाइट', solo: 'सोलो कोर्स' } as Record<string, string>,
     date: 'तारीख', people: 'लोग', peopleOptions: ['1 व्यक्ति', '2 लोग', '3 लोग', '4 लोग', '5+ लोग'],
   },
   /** Place names used in taxi routes (English keys = database values). */
@@ -360,6 +361,7 @@ export const hi: Dict = {
     pricingOptions: 'कीमत के विकल्प', freeCancellation: 'फ़्री कैंसलेशन', perNightTaxes: 'प्रति रात + टैक्स',
   },
   form: {
+    packageNote: 'पैकेज: {name}',
     pickupDateRequired: 'पिकअप की तारीख ज़रूरी है', activityDateRequired: 'एक्टिविटी की तारीख ज़रूरी है', bookingFailed: 'बुकिंग नहीं हो पाई',
     paymentFailed: 'पेमेंट शुरू नहीं हो पाया। बुकिंग सेव हो गई है -- हमसे संपर्क करें।', networkError: 'नेटवर्क में दिक्कत है। फिर से कोशिश करें या हमें WhatsApp करें।',
     bookingSubmitted: 'बुकिंग भेज दी गई!', bookingConfirmNote: 'हम 2 घंटे के अंदर कन्फ़र्म करेंगे। अपना ईमेल देखें या हमें WhatsApp करें।',

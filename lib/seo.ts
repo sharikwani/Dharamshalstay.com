@@ -237,7 +237,7 @@ export function hotelSchema(h: { name: string; description: string; address_line
 }
 
 export function localBusinessSchema() {
-  return { '@context': 'https://schema.org', '@type': 'TravelAgency', name: siteConfig.name, url: siteConfig.url, telephone: siteConfig.phone, email: siteConfig.email, address: { '@type': 'PostalAddress', addressLocality: 'Dharamshala', addressRegion: 'Himachal Pradesh', postalCode: '176215', addressCountry: 'IN' }, geo: { '@type': 'GeoCoordinates', latitude: 32.219, longitude: 76.3234 }, image: siteConfig.url + '/images/og-default.jpg', areaServed: ['Dharamshala', 'McLeod Ganj', 'Bhagsu', 'Dharamkot', 'Naddi', 'Kangra Valley', 'Palampur', 'Bir Billing'], description: siteConfig.description, priceRange: '\u20B9\u20B9' };
+  return { '@context': 'https://schema.org', '@type': 'TravelAgency', name: siteConfig.name, url: siteConfig.url, telephone: siteConfig.phone, email: siteConfig.email, address: { '@type': 'PostalAddress', addressLocality: 'Dharamshala', addressRegion: 'Himachal Pradesh', postalCode: '176215', addressCountry: 'IN' }, geo: { '@type': 'GeoCoordinates', latitude: 32.219, longitude: 76.3234 }, image: siteConfig.url + '/images/og-default.jpg', areaServed: ['Dharamshala', 'McLeod Ganj', 'Bhagsu', 'Dharamkot', 'Naddi', 'Kangra Valley', 'Palampur', 'Bir Billing'], description: siteConfig.description, priceRange: '\u20B9\u20B9', sameAs: [siteConfig.instagram] };
 }
 
 export function faqSchema(faqs: { question: string; answer: string }[]) {
@@ -276,7 +276,7 @@ export function breadcrumbSchema(items: { name: string; href: string }[], lang: 
 }
 
 export function organizationSchema() {
-  return { '@context': 'https://schema.org', '@type': 'Organization', name: siteConfig.name, url: siteConfig.url, logo: siteConfig.url + '/icon-512.png', email: siteConfig.email, contactPoint: { '@type': 'ContactPoint', telephone: siteConfig.phone, contactType: 'customer service', availableLanguage: ['English', 'Hindi'] } };
+  return { '@context': 'https://schema.org', '@type': 'Organization', name: siteConfig.name, url: siteConfig.url, logo: siteConfig.url + '/icon-512.png', email: siteConfig.email, sameAs: [siteConfig.instagram], contactPoint: { '@type': 'ContactPoint', telephone: siteConfig.phone, contactType: 'customer service', availableLanguage: ['English', 'Hindi'] } };
 }
 
 export function websiteSchema() {

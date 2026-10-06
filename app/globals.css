@@ -2,14 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-/* --font-heading / --font-body are set on <html> by next/font in app/layout.tsx */
+/* --font-heading / --font-body (and --font-deva on Hindi pages) are set on <html> by RootDocument */
 
 html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
-body { font-family: var(--font-body); color: #1e293b; }
-h1,h2,h3,h4,h5,h6 { font-family: var(--font-heading); }
+body { font-family: var(--font-body), var(--font-deva, system-ui), system-ui, sans-serif; color: #1e293b; background: #fff; }
+h1,h2,h3,h4,h5,h6 { font-family: var(--font-heading), var(--font-deva, system-ui), system-ui, sans-serif; }
+
+/* Devanagari matras sit above and below the line; tight Latin leading clips them. */
+:lang(hi) :is(h1, h2, h3) { line-height: 1.4; }
+
+/* Anchored sections (#book etc.) clear the sticky header. */
+[id] { scroll-margin-top: 5rem; }
+
+/* Keyboard users get a visible ring everywhere; mouse clicks don't. */
+:focus-visible { outline: 2px solid #3a74b6; outline-offset: 2px; }
 
 details summary::-webkit-details-marker { display: none; }
 details summary { list-style: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  /* Kills hover zooms and slides; loading spinners (animations) keep turning. */
+  *, *::before, *::after { transition-duration: 0.01ms !important; }
+}
 
 @layer utilities {
   .text-balance { text-wrap: balance; }

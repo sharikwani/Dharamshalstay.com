@@ -64,7 +64,7 @@ export default function EssentialsView({ lang }: { lang: Lang }) {
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 py-12 text-white">
           <Breadcrumb lang={lang} items={[{ label: t.common.home, href: '/' }, { label: e.breadcrumb }]} />
           <h1 className="text-3xl sm:text-4xl font-heading font-bold mt-2">{e.h1}</h1>
-          <p className="text-blue-100 max-w-3xl mt-3">{fmt(e.intro, { n: essentialItems.length })}</p>
+          <p className="text-brand-100 max-w-3xl mt-3">{fmt(e.intro, { n: essentialItems.length })}</p>
         </div>
       </section>
 
@@ -111,12 +111,12 @@ export default function EssentialsView({ lang }: { lang: Lang }) {
           })}
         </div>
 
-        <div className="mt-14 bg-gradient-to-br from-brand-50 to-blue-50 rounded-2xl p-8 text-center">
+        <div className="mt-14 bg-brand-50 rounded-2xl p-8 text-center">
           <h2 className="font-heading font-bold text-xl text-slate-900 mb-2">{e.ctaTitle}</h2>
           <p className="text-slate-600 mb-5 max-w-2xl mx-auto">{e.ctaIntro}</p>
           <div className="flex flex-col sm:flex-row justify-center gap-3">
             <a href={getWhatsAppLink(e.whatsappMsg)} target="_blank" rel="noopener noreferrer"
-              className="bg-green-500 text-white px-6 py-2.5 rounded-xl font-semibold hover:bg-green-600 flex items-center justify-center gap-1.5">
+              className="bg-green-700 text-white px-6 py-2.5 rounded-xl font-semibold hover:bg-green-800 flex items-center justify-center gap-1.5">
               <MessageCircle className="h-4 w-4" /> {t.common.askWhatsApp}
             </a>
             <Link href={href('/faq')} className="bg-white border border-slate-300 text-slate-800 px-6 py-2.5 rounded-xl font-semibold hover:bg-slate-50">

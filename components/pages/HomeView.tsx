@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Shield, HeadphonesIcon, Mountain, Car, ArrowRight, Star, MessageCircle, Building, Wind, Heart, Sparkles, IndianRupee, Compass, Palette, Coffee } from 'lucide-react';
+import { Shield, HeadphonesIcon, Mountain, Car, ArrowRight, Star, MessageCircle, Building, Wind, Heart, Sparkles, IndianRupee, Compass, Palette, Coffee, Check } from 'lucide-react';
 import { DestinationCard, SectionHeading, FAQSection, BlogCard } from '@/components/ui/Cards';
 import HeroSearch from '@/components/sections/HeroSearch';
 import JsonLd from '@/components/seo/JsonLd';
 import PreferredSourceButton from '@/components/seo/PreferredSourceButton';
-import { getDestinations } from '@/lib/db';
-import { getFeaturedBlogPosts } from '@/data/blog';
+import { getDestinations, getPublishedProperties, getPublishedTreks } from '@/lib/db';
+import { blogPosts, getFeaturedBlogPosts } from '@/data/blog';
 import { faqSchema } from '@/lib/seo';
 import { getWhatsAppLink } from '@/lib/utils';
 import { UNSPLASH_IMAGES } from '@/types';
@@ -29,6 +29,23 @@ const SEASON_ICONS = {
   winter: [Mountain, Palette, Coffee, IndianRupee],
 };
 
+/** Left-aligned section title with a "view all" link beside it on wider screens. */
+function SectionHeader({ title, subtitle, action }: { title: string; subtitle?: string; action?: { href: string; label: string } }) {
+  return (
+    <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-8 lg:mb-10">
+      <div className="max-w-2xl">
+        <h2 className="text-2xl sm:text-3xl font-heading font-bold text-slate-900 mb-2">{title}</h2>
+        {subtitle && <p className="text-slate-600 text-base sm:text-lg">{subtitle}</p>}
+      </div>
+      {action && (
+        <Link href={action.href} className="hidden sm:inline-flex items-center gap-1.5 shrink-0 text-sm font-semibold text-brand-600 hover:text-brand-800">
+          {action.label} <ArrowRight className="h-4 w-4" aria-hidden="true" />
+        </Link>
+      )}
+    </div>
+  );
+}
+
 /** "What's special right now" follows the real calendar. */
 function seasonFor(month: number): keyof typeof SEASON_ICONS {
   if (month >= 2 && month <= 5) return 'spring';
@@ -43,6 +60,14 @@ export default async function HomeView({ lang }: { lang: Lang }) {
   const destinations = (await getDestinations()).map((d: any) => localizeDestination(d, lang));
   const featuredBlogs = getFeaturedBlogPosts(6).map((p) => localizePost(p, lang));
   const faqs = getHomepageFAQs(lang);
+  const [stays, treks] = await Promise.all([getPublishedProperties(), getPublishedTreks()]);
+  // Real counts only -- nothing here is a marketing number.
+  const proof = [
+    stays.length > 0 && fmt(h.proofStays, { n: stays.length }),
+    treks.length > 0 && fmt(h.proofTreks, { n: treks.length }),
+    fmt(h.proofGuides, { n: blogPosts.length }),
+    h.proofLocal,
+  ].filter(Boolean) as string[];
   const seasonKey = seasonFor(new Date().getMonth());
   const season = h.seasons[seasonKey];
 
@@ -51,40 +76,44 @@ export default async function HomeView({ lang }: { lang: Lang }) {
       <JsonLd data={faqSchema(faqs)} />
 
       {/* HERO */}
-      <section className="relative min-h-[600px] lg:min-h-[680px] flex items-center overflow-hidden">
-        <Image src={UNSPLASH_IMAGES.hero} alt={h.heroAlt} fill className="object-cover scale-105" priority quality={85} sizes="100vw" />
+      <section className="relative sm:min-h-[600px] lg:min-h-[680px] flex items-center overflow-hidden">
+        <Image src={UNSPLASH_IMAGES.hero} alt={h.heroAlt} fill className="object-cover" priority quality={75} sizes="100vw" />
         <div className="absolute inset-0 bg-gradient-to-br from-brand-950/80 via-brand-950/50 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent" />
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full py-20 lg:py-28">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md text-white text-xs font-medium px-3 py-1.5 rounded-full mb-6 border border-white/20">
-              <Sparkles className="h-3.5 w-3.5 text-amber-300" />{h.badge}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full pt-10 pb-12 sm:py-20 lg:py-28">
+          <div className="max-w-4xl">
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md text-white text-xs font-medium px-3 py-1.5 rounded-full mb-5 sm:mb-6 border border-white/20">
+              <Sparkles className="h-3.5 w-3.5 text-orange-300" aria-hidden="true" />{h.badge}
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold text-white leading-[1.15] mb-5">
+            <h1 className="text-[2rem] sm:text-5xl lg:text-6xl font-heading font-bold text-white leading-[1.15] mb-4 sm:mb-5">
               {h.h1a}
               <br />
-              <span className="bg-gradient-to-r from-amber-200 to-orange-200 bg-clip-text text-transparent">{h.h1b}</span>
+              <span className="text-orange-300">{h.h1b}</span>
             </h1>
-            <p className="text-lg lg:text-xl text-blue-100/90 mb-10 max-w-2xl leading-relaxed">{h.intro}</p>
+            <p className="text-base sm:text-lg lg:text-xl text-white/85 mb-7 sm:mb-10 max-w-2xl leading-relaxed">{h.intro}</p>
           </div>
           <HeroSearch />
+          <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium text-white/90">
+            {proof.map((p) => (
+              <li key={p} className="flex items-center gap-1.5"><Check className="h-4 w-4 text-orange-300" aria-hidden="true" />{p}</li>
+            ))}
+          </ul>
         </div>
       </section>
 
       {/* WHY BOOK WITH US */}
-      <section className="py-10 bg-white relative -mt-6 z-20">
+      <section className="py-10 bg-white border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8">
             {h.trust.map((item, i) => {
               const Icon = TRUST_ICONS[i];
               return (
-                <div key={item.label} className="flex items-start gap-3 group">
-                  <div className="w-10 h-10 rounded-xl bg-brand-50 flex items-center justify-center shrink-0 group-hover:bg-brand-100 transition-colors">
-                    <Icon className="h-5 w-5 text-brand-600" />
+                <div key={item.label} className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-brand-50 flex items-center justify-center shrink-0">
+                    <Icon className="h-5 w-5 text-brand-600" aria-hidden="true" />
                   </div>
                   <div>
-                    <p className="font-semibold text-slate-800 text-sm">{item.label}</p>
-                    <p className="text-xs text-slate-500 mt-0.5">{item.desc}</p>
+                    <p className="font-semibold text-slate-800">{item.label}</p>
+                    <p className="text-sm text-slate-600 mt-0.5">{item.desc}</p>
                   </div>
                 </div>
               );
@@ -104,7 +133,7 @@ export default async function HomeView({ lang }: { lang: Lang }) {
             {h.why.map((item, i) => {
               const Icon = WHY_ICONS[i];
               return (
-                <div key={item.title} className="bg-white rounded-2xl p-7 border border-slate-100 hover:shadow-lg transition-shadow">
+                <div key={item.title} className="bg-white rounded-2xl p-7 border border-slate-200/70">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-11 h-11 rounded-xl bg-brand-50 flex items-center justify-center"><Icon className="h-5 w-5 text-brand-600" /></div>
                     <span className="text-xs font-bold text-brand-600 bg-brand-50 px-2 py-1 rounded-full">{item.highlight}</span>
@@ -121,11 +150,16 @@ export default async function HomeView({ lang }: { lang: Lang }) {
       {/* BEST AREAS TO STAY */}
       <section className="py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <SectionHeading title={h.areasTitle} subtitle={h.areasSubtitle} />
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-            {destinations.map((d: any) => <DestinationCard key={d.id} destination={d} lang={lang} />)}
+          <SectionHeader title={h.areasTitle} subtitle={h.areasSubtitle} action={{ href: href('/hotels'), label: h.browseAllHotels }} />
+          {/* Phones get a swipeable row: five cards don't split evenly into two columns. */}
+          <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide -mx-4 px-4 pb-1 sm:grid sm:grid-cols-3 lg:grid-cols-5 sm:overflow-visible sm:mx-0 sm:px-0 sm:pb-0">
+            {destinations.map((d: any) => (
+              <div key={d.id} className="w-[44%] shrink-0 snap-start sm:w-auto">
+                <DestinationCard destination={d} lang={lang} />
+              </div>
+            ))}
           </div>
-          <div className="text-center mt-8">
+          <div className="text-center mt-8 sm:hidden">
             <Link href={href('/hotels')} className="inline-flex items-center gap-2 bg-brand-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-brand-700 transition-colors">
               {h.browseAllHotels} <ArrowRight className="h-4 w-4" />
             </Link>
@@ -138,7 +172,7 @@ export default async function HomeView({ lang }: { lang: Lang }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-heading font-bold mb-3">{h.expTitle}</h2>
-            <p className="text-blue-200 text-lg max-w-2xl mx-auto">{h.expIntro}</p>
+            <p className="text-brand-200 text-lg max-w-2xl mx-auto">{h.expIntro}</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {h.experiences.map((exp, i) => {
@@ -171,12 +205,12 @@ export default async function HomeView({ lang }: { lang: Lang }) {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {h.packages.map((pkg) => (
-              <div key={pkg.title} className="bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-lg transition-shadow relative overflow-hidden">
+              <div key={pkg.title} className="bg-white border border-slate-200 rounded-2xl p-6 relative overflow-hidden flex flex-col">
                 <span className="absolute top-4 right-4 text-xs font-bold text-brand-600 bg-brand-50 px-2.5 py-1 rounded-full">{pkg.tag}</span>
-                <h3 className="font-heading font-bold text-xl text-slate-900 mb-1">{pkg.title}</h3>
+                <h3 className="font-heading font-bold text-xl text-slate-900 mb-1 pr-24">{pkg.title}</h3>
                 <p className="text-sm text-slate-500 mb-3">{pkg.duration}</p>
                 <p className="text-slate-700 text-sm mb-4">{pkg.desc}</p>
-                <div className="flex items-end justify-between">
+                <div className="flex items-end justify-between mt-auto">
                   <div>
                     <span className="text-2xl font-bold text-slate-900">{pkg.price}</span>
                     <span className="text-xs text-slate-500 ml-1">{t.common.perPerson}</span>
@@ -197,7 +231,7 @@ export default async function HomeView({ lang }: { lang: Lang }) {
       </section>
 
       {/* SEASONAL HIGHLIGHTS */}
-      <section className="py-16 lg:py-20 bg-gradient-to-br from-blue-50 via-white to-amber-50">
+      <section className="py-16 lg:py-20 bg-gradient-to-br from-brand-50 via-white to-amber-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-heading font-bold text-slate-900 mb-3">{h.nowTitle}</h2>
@@ -225,12 +259,12 @@ export default async function HomeView({ lang }: { lang: Lang }) {
       {featuredBlogs.length > 0 && (
         <section className="py-16 lg:py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <SectionHeading title={h.guidesTitle} subtitle={h.guidesSubtitle} />
+            <SectionHeader title={h.guidesTitle} subtitle={h.guidesSubtitle} action={{ href: href('/blog'), label: h.allGuides }} />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {featuredBlogs.map((p) => <BlogCard key={p.id} post={p} lang={lang} />)}
             </div>
             <div className="flex flex-wrap justify-center gap-3 mt-8">
-              <Link href={href('/blog')} className="inline-flex items-center gap-2 bg-brand-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-brand-700 transition-colors">
+              <Link href={href('/blog')} className="inline-flex sm:hidden items-center gap-2 bg-brand-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-brand-700 transition-colors">
                 {h.allGuides} <ArrowRight className="h-4 w-4" />
               </Link>
               <Link href={href('/faq')} className="inline-flex items-center gap-2 border border-slate-300 text-slate-800 px-6 py-3 rounded-xl font-semibold hover:bg-slate-50 transition-colors">
@@ -259,18 +293,6 @@ export default async function HomeView({ lang }: { lang: Lang }) {
         </section>
       )}
 
-      {/* LIST YOUR PROPERTY CTA */}
-      <section className="py-16 bg-brand-900 text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-          <Building className="h-10 w-10 text-orange-400 mx-auto mb-4" />
-          <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-3">{h.ownerTitle}</h2>
-          <p className="text-blue-200 mb-6 max-w-xl mx-auto">{h.ownerIntro}</p>
-          <Link href="/partner/register" className="inline-flex items-center gap-2 bg-orange-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-orange-600 transition-colors">
-            {h.ownerCta} <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-      </section>
-
       {/* FAQ */}
       <section className="py-16 lg:py-20 bg-slate-50">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
@@ -283,19 +305,35 @@ export default async function HomeView({ lang }: { lang: Lang }) {
       </section>
 
       {/* FINAL CTA */}
-      <section className="py-16 bg-brand-600 text-white">
+      <section className="py-16 bg-brand-700 text-white">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-4">{h.ctaTitle}</h2>
-          <p className="text-blue-100 text-lg mb-8">{h.ctaIntro}</p>
+          <p className="text-brand-100 text-lg mb-8">{h.ctaIntro}</p>
           <div className="flex flex-col sm:flex-row justify-center gap-3">
-            <Link href={href('/hotels')} className="inline-flex items-center justify-center gap-2 bg-white text-brand-700 px-6 py-3 rounded-xl font-semibold hover:bg-blue-50 transition-colors">
+            <Link href={href('/hotels')} className="inline-flex items-center justify-center gap-2 bg-white text-brand-700 px-6 py-3 rounded-xl font-semibold hover:bg-brand-50 transition-colors">
               {t.common.browseHotels}
             </Link>
             <a href={getWhatsAppLink(h.ctaMsg)} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 bg-green-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-green-600 transition-colors">
+              className="inline-flex items-center justify-center gap-2 bg-green-700 text-white px-6 py-3 rounded-xl font-semibold hover:bg-green-800 transition-colors">
               <MessageCircle className="h-4 w-4" /> {h.ctaWhatsApp}
             </a>
           </div>
+        </div>
+      </section>
+
+      {/* LIST YOUR PROPERTY -- aimed at owners, so it waits until the traveller content is done */}
+      <section className="py-8 bg-orange-50 border-t border-orange-100">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 text-center sm:text-left">
+          <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center shrink-0 shadow-sm">
+            <Building className="h-6 w-6 text-orange-600" aria-hidden="true" />
+          </div>
+          <div className="flex-1">
+            <h2 className="text-lg font-heading font-bold text-slate-900">{h.ownerTitle}</h2>
+            <p className="text-sm text-slate-600">{h.ownerIntro}</p>
+          </div>
+          <Link href="/partner/register" className="inline-flex items-center gap-2 bg-orange-600 text-white px-5 py-2.5 rounded-xl font-semibold hover:bg-orange-700 transition-colors shrink-0">
+            {h.ownerCta} <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </Link>
         </div>
       </section>
     </>

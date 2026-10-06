@@ -50,6 +50,7 @@ export const en = {
     photoCredit: 'Photo: Wikimedia Commons', credits: 'credits',
   },
   home: {
+    proofStays: '{n} stays listed', proofTreks: '{n} guided treks', proofGuides: '{n} free travel guides', proofLocal: 'Local team in Dharamshala',
     metaTitle: 'Dharamshala Stay - Hotels, Treks & Travel in Dharamshala & McLeod Ganj',
     metaDescription: 'Local guide to Dharamshala, McLeod Ganj & Kangra Valley: verified hotels and homestays, Triund treks, Bir Billing paragliding, airport taxis and free trip planning.',
     heroAlt: 'Snow-capped Dhauladhar range above Dharamshala and McLeod Ganj',
@@ -125,8 +126,9 @@ export const en = {
     destination: 'Destination', allDestinations: 'All Destinations', checkIn: 'Check-in', checkOut: 'Check-out', search: 'Search',
     pickup: 'Pickup', selectPickup: 'Select Pickup', drop: 'Drop', selectDrop: 'Select Drop', pickupDate: 'Pickup Date',
     trek: 'Trek', pkg: 'Package', allTreks: 'All Treks', allPackages: 'All Packages',
-    trekOptions: ['Triund Trek', 'Kareri Lake Trek', 'Indrahar Pass', 'Snowline & Laka Got', 'Guna Devi Hike', 'Bir to Rajgundha'],
-    pkgOptions: ['Tandem Flight', 'Scenic Long Flight', 'Solo Course'],
+    // Keys are trek slugs: picking one opens that trek's page.
+    trekOptions: { 'triund-trek': 'Triund Trek', 'kareri-lake-trek': 'Kareri Lake Trek', 'indrahar-pass-trek': 'Indrahar Pass', 'triund-snowline-laka-got-trek': 'Snowline & Laka Got', 'guna-devi-temple-hike': 'Guna Devi Hike', 'bir-billing-rajgundha-trek': 'Bir to Rajgundha' } as Record<string, string>,
+    pkgOptions: { tandem: 'Tandem Flight', scenic: 'Scenic Long Flight', solo: 'Solo Course' } as Record<string, string>,
     date: 'Date', people: 'People', peopleOptions: ['1 Person', '2 People', '3 People', '4 People', '5+ People'],
   },
   /** Place names used in taxi routes (English keys = database values). English shows the key itself. */
@@ -169,6 +171,7 @@ export const en = {
     pricingOptions: 'Pricing Options', freeCancellation: 'Free Cancellation', perNightTaxes: 'per night + taxes',
   },
   form: {
+    packageNote: 'Package: {name}',
     pickupDateRequired: 'Pickup date is required', activityDateRequired: 'Activity date is required', bookingFailed: 'Booking failed',
     paymentFailed: 'Payment setup failed. Booking saved -- contact us.', networkError: 'Network error. Please try again or WhatsApp us.',
     bookingSubmitted: 'Booking Submitted!', bookingConfirmNote: "We'll confirm within 2 hours. Check your email or WhatsApp us.",

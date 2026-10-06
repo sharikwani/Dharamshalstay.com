@@ -37,7 +37,7 @@ export default function FAQBrowser({ categories }: { categories: FAQCategory[] }
         <ul className="flex flex-wrap lg:flex-col gap-2 lg:gap-1 text-sm">
           {categories.map((c) => (
             <li key={c.id}>
-              <a href={'#' + c.id} className="flex justify-between gap-2 px-3 py-1.5 rounded-lg bg-slate-100 lg:bg-transparent hover:bg-blue-50 text-slate-700 hover:text-brand-700">
+              <a href={'#' + c.id} className="flex justify-between gap-2 px-3 py-1.5 rounded-lg bg-slate-100 lg:bg-transparent hover:bg-brand-50 text-slate-700 hover:text-brand-700">
                 <span>{c.title}</span><span className="text-slate-400">{c.faqs.length}</span>
               </a>
             </li>

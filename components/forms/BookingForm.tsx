@@ -1,8 +1,9 @@
 'use client';
-import { useState, useMemo, FormEvent } from 'react';
+import { useState, useMemo, useEffect, FormEvent } from 'react';
 import { Send, Check, AlertCircle, CreditCard, Loader2, Building, Moon } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
 import { useT } from '@/lib/i18n/client';
+import { fmt } from '@/lib/i18n/dict';
 import { supabase } from '@/lib/supabase';
 import { getMinDate, getMinCheckoutDate, validateBookingDates, validateActivityDate, enforceCheckIn, enforceCheckOut, enforceActivityDate } from '@/lib/date-helpers';
 
@@ -37,6 +38,8 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
   const [dateError, setDateError] = useState('');
   const [customAmount, setCustomAmount] = useState(0);
   const [payMethod, setPayMethod] = useState('pay_at_hotel');
+  const [guests, setGuests] = useState('1');
+  const [notes, setNotes] = useState('');
 
   const minDate = getMinDate();
   const minCheckout = getMinCheckoutDate(checkIn);
@@ -44,6 +47,23 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
   const isTaxi = category === 'taxi';
   const needsDates = isHotel;
   const needsActivityDate = category === 'trek' || category === 'paragliding' || isTaxi;
+
+  // The homepage search sends ?date=&people=&package= along; prefill from them.
+  // Read in an effect (not useSearchParams) so the page stays statically rendered.
+  useEffect(() => {
+    if (category !== 'trek' && category !== 'paragliding') return;
+    const q = new URLSearchParams(window.location.search);
+    const date = q.get('date');
+    if (date && /^\d{4}-\d{2}-\d{2}$/.test(date)) setActivityDate(enforceActivityDate(date));
+    const people = q.get('people');
+    if (people && /^[1-5]$/.test(people)) setGuests(people);
+    const pkg = q.get('package');
+    const pkgName = pkg ? t.search.pkgOptions[pkg] : undefined;
+    if (category === 'paragliding' && pkgName) setNotes((n) => n || fmt(f.packageNote, { name: pkgName }));
+    // Client-side navigation doesn't reliably land on #book (the router's own
+    // scroll cuts the smooth scroll short), so bring the form into view ourselves.
+    if (window.location.hash === '#book') document.getElementById('book')?.scrollIntoView({ block: 'start', behavior: 'instant' });
+  }, [category, t, f.packageNote]);
 
   // Calculate nights and total
   const nights = useMemo(() => calcNights(checkIn, checkOut), [checkIn, checkOut]);
@@ -127,7 +147,7 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
   );
 
   if (status === 'paying') return (
-    <div className={'bg-blue-50 border border-blue-200 rounded-xl p-8 text-center ' + className}>
+    <div className={'bg-brand-50 border border-brand-200 rounded-xl p-8 text-center ' + className}>
       <Loader2 className="h-8 w-8 text-brand-600 mx-auto mb-3 animate-spin" />
       <h3 className="text-lg font-heading font-bold text-slate-900">{f.redirecting}</h3>
     </div>
@@ -153,7 +173,7 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
             <div><label className="block text-xs font-medium text-slate-600 mb-1">{f.checkOutReq}</label>
               <input type="date" value={checkOut} onChange={e => handleCheckOutChange(e.target.value)} onBlur={() => checkOut && setCheckOut(enforceCheckOut(checkOut, checkIn))} min={minCheckout} required className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm outline-none" /></div>
             <div><label className="block text-xs font-medium text-slate-600 mb-1">{t.filters.guests}</label>
-              <select name="num_guests" className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm outline-none">
+              <select name="num_guests" value={guests} onChange={e => setGuests(e.target.value)} className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm outline-none">
                 <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5+</option></select></div>
           </div>
         )}
@@ -167,7 +187,7 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
                 <input name="pickup_time" type="time" className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm outline-none" /></div>
             ) : (
               <div><label className="block text-xs font-medium text-slate-600 mb-1">{f.participants}</label>
-                <select name="num_guests" className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm outline-none">
+                <select name="num_guests" value={guests} onChange={e => setGuests(e.target.value)} className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm outline-none">
                   <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5+</option></select></div>
             )}
           </div>
@@ -180,29 +200,29 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
           </div>
         )}
 
-        <textarea name="special_requests" rows={2} placeholder={f.specialRequests} className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm outline-none resize-none" />
+        <textarea name="special_requests" value={notes} onChange={e => setNotes(e.target.value)} rows={2} placeholder={f.specialRequests} className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm outline-none resize-none" />
 
         {/* Price breakdown */}
         {hasPricePerNight && (
-          <div className="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 space-y-1.5">
+          <div className="bg-brand-50 border border-brand-200 rounded-xl px-4 py-3 space-y-1.5">
             <div className="flex justify-between text-sm">
               <span className="text-slate-600">{formatPrice(pricePerNight)} x {nights > 0 ? nights : '...'} {nights === 1 ? t.filters.night : t.filters.nights}</span>
               {nights > 0 && <span className="font-semibold text-slate-800">{formatPrice(pricePerNight * nights)}</span>}
             </div>
             {nights > 1 && (
-              <div className="flex justify-between text-xs text-slate-500 pt-1 border-t border-blue-200">
+              <div className="flex justify-between text-xs text-slate-500 pt-1 border-t border-brand-200">
                 <span className="flex items-center gap-1"><Moon className="h-3 w-3" /> {nights} {f.nightsTotal}</span>
                 <span className="font-bold text-lg text-slate-900">{formatPrice(totalAmount)}</span>
               </div>
             )}
             {nights === 0 && (
-              <p className="text-xs text-blue-600">{f.selectDatesTotal}</p>
+              <p className="text-xs text-brand-600">{f.selectDatesTotal}</p>
             )}
           </div>
         )}
 
         {!hasPricePerNight && hasFixedAmount && (
-          <div className="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 flex items-center justify-between">
+          <div className="bg-brand-50 border border-brand-200 rounded-xl px-4 py-3 flex items-center justify-between">
             <span className="text-sm font-medium text-slate-700">{f.amount}</span>
             <span className="text-lg font-bold text-slate-900">{formatPrice(defaultAmount)}</span>
           </div>
@@ -235,7 +255,7 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
         {status === 'error' && <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg"><AlertCircle className="h-4 w-4 shrink-0" />{errorMsg}</div>}
 
         <button type="submit" disabled={status === 'loading'}
-          className={'w-full font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-colors disabled:opacity-60 text-white ' + (payMethod === 'online' ? 'bg-green-600 hover:bg-green-700' : 'bg-orange-500 hover:bg-orange-600')}>
+          className={'w-full font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-colors disabled:opacity-60 text-white ' + (payMethod === 'online' ? 'bg-green-700 hover:bg-green-800' : 'bg-orange-600 hover:bg-orange-700')}>
           {status === 'loading' ? <><Loader2 className="h-4 w-4 animate-spin" /> {f.processing}</> :
             payMethod === 'online' ? <><CreditCard className="h-4 w-4" /> {f.pay} {totalAmount > 0 ? formatPrice(totalAmount) : f.now}</> :
             <><Send className="h-4 w-4" /> {totalAmount > 0 ? f.bookFor + ' ' + formatPrice(totalAmount) : f.bookNow}</>}
