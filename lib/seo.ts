@@ -16,6 +16,21 @@ interface SEOProps {
   lang?: Lang;
   /** Whether a Hindi version of this page exists (defaults to the section rule). */
   hindi?: boolean;
+  /** Short label on the share image, e.g. 'From Rs.2,500/night' or '2 days - Moderate'. */
+  ogTag?: string;
+  /** Page has a Markdown twin at `path + '.md'` for AI assistants (see lib/llms.ts). */
+  markdown?: boolean;
+}
+
+/**
+ * Branded 1200x630 share image (app/og/route.tsx): the page photo with its
+ * title on top, so every shared link gets a picture that says what it is.
+ */
+export function ogImageUrl(title: string, image?: string, tag?: string): string {
+  const q = new URLSearchParams({ title });
+  if (image) q.set('image', image);
+  if (tag) q.set('tag', tag);
+  return siteConfig.url + '/og.jpg?' + q.toString();
 }
 
 /**
@@ -40,6 +55,8 @@ export function generateSEO({
   keywords,
   lang = 'en',
   hindi,
+  ogTag,
+  markdown = false,
 }: SEOProps): Metadata {
   const suffix = ' | ' + siteConfig.name;
   const baseTitle = title.endsWith(suffix) ? title.slice(0, -suffix.length) : title;
@@ -51,9 +68,9 @@ export function generateSEO({
   // A Hindi URL without a real translation points search engines at the English page.
   const url = lang === 'hi' && hasHi ? hiUrl : enUrl;
   const languages = hasHi ? { 'en-IN': enUrl, 'hi-IN': hiUrl, 'x-default': enUrl } : undefined;
-  const ogImage = image
-    ? (image.startsWith('http') ? image : siteConfig.url + image)
-    : siteConfig.url + '/images/og-default.jpg';
+  const ogImage = ogImageUrl(baseTitle, image, ogTag);
+  // AI assistants can fetch a clean Markdown copy (English only).
+  const types = markdown && lang === 'en' ? { 'text/markdown': enUrl + '.md' } : undefined;
 
   return {
     metadataBase: new URL(siteConfig.url),
@@ -76,7 +93,7 @@ export function generateSEO({
             'max-snippet': -1,
           },
         },
-    alternates: { canonical: url, ...(languages && { languages }) },
+    alternates: { canonical: url, ...(languages && { languages }), ...(types && { types }) },
     openGraph: {
       type,
       url,
@@ -85,7 +102,7 @@ export function generateSEO({
       siteName: siteConfig.name,
       locale: lang === 'hi' ? 'hi_IN' : 'en_IN',
       ...(hasHi && { alternateLocale: lang === 'hi' ? ['en_IN'] : ['hi_IN'] }),
-      images: [{ url: ogImage, width: 1200, height: 630, alt: baseTitle }],
+      images: [{ url: ogImage, width: 1200, height: 630, alt: baseTitle, type: 'image/jpeg' }],
       ...(type === 'article' && publishedTime ? { publishedTime } : {}),
       ...(type === 'article' && modifiedTime ? { modifiedTime } : {}),
     },
@@ -93,7 +110,7 @@ export function generateSEO({
       card: 'summary_large_image',
       title: fullTitle,
       description,
-      images: [ogImage],
+      images: [{ url: ogImage, alt: baseTitle }],
     },
   };
 }
@@ -137,6 +154,8 @@ export function generateHotelSEO(hotel: {
     path: '/hotels/' + hotel.slug,
     image: imageUrl,
     keywords,
+    ogTag: hotel.price_min ? 'From ₹' + hotel.price_min.toLocaleString('en-IN') + '/night' : typeLabel + ' in ' + area,
+    markdown: true,
   });
 }
 
@@ -155,6 +174,7 @@ function generateHotelSEOHindi(hotel: { name: string; short_description?: string
     image: typeof primaryImage === 'string' ? primaryImage : undefined,
     keywords: [hotel.name, area + ' में ' + type, area + ' होटल'],
     lang: 'hi',
+    ogTag: hotel.price_min ? '₹' + hotel.price_min.toLocaleString('en-IN') + '/रात से' : area + ' में ' + type,
   });
 }
 
@@ -276,11 +296,20 @@ export function breadcrumbSchema(items: { name: string; href: string }[], lang: 
 }
 
 export function organizationSchema() {
-  return { '@context': 'https://schema.org', '@type': 'Organization', name: siteConfig.name, url: siteConfig.url, logo: siteConfig.url + '/icon-512.png', email: siteConfig.email, sameAs: [siteConfig.instagram], contactPoint: { '@type': 'ContactPoint', telephone: siteConfig.phone, contactType: 'customer service', availableLanguage: ['English', 'Hindi'] } };
+  return {
+    '@context': 'https://schema.org', '@type': 'Organization', '@id': siteConfig.url + '/#organization',
+    name: siteConfig.name, url: siteConfig.url, description: siteConfig.description,
+    logo: { '@type': 'ImageObject', url: siteConfig.url + '/icon-512.png', width: 512, height: 512 },
+    image: siteConfig.url + '/images/og-default.jpg',
+    email: siteConfig.email, telephone: siteConfig.phone,
+    address: { '@type': 'PostalAddress', addressLocality: 'Dharamshala', addressRegion: 'Himachal Pradesh', postalCode: '176215', addressCountry: 'IN' },
+    sameAs: [siteConfig.instagram],
+    contactPoint: { '@type': 'ContactPoint', telephone: siteConfig.phone, contactType: 'customer service', areaServed: 'IN', availableLanguage: ['English', 'Hindi'] },
+  };
 }
 
 export function websiteSchema() {
-  return { '@context': 'https://schema.org', '@type': 'WebSite', name: siteConfig.name, url: siteConfig.url, potentialAction: { '@type': 'SearchAction', target: siteConfig.url + '/hotels?q={search_term_string}', 'query-input': 'required name=search_term_string' } };
+  return { '@context': 'https://schema.org', '@type': 'WebSite', '@id': siteConfig.url + '/#website', name: siteConfig.name, url: siteConfig.url, description: siteConfig.description, inLanguage: ['en-IN', 'hi-IN'], publisher: { '@id': siteConfig.url + '/#organization' }, potentialAction: { '@type': 'SearchAction', target: siteConfig.url + '/hotels?q={search_term_string}', 'query-input': 'required name=search_term_string' } };
 }
 
 export function itemListSchema(items: { name: string; href: string }[], lang: Lang = 'en') {

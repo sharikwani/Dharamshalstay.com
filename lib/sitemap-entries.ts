@@ -1,23 +1,43 @@
-import { MetadataRoute } from 'next';
+/**
+ * Every public URL for /sitemap.xml (app/sitemap.xml/route.ts). Next 14's
+ * built-in sitemap.ts drops `images`, so we write the XML ourselves to get a
+ * real image sitemap (Google Images) alongside the hreflang alternates.
+ */
 import { getPublishedProperties, getDestinations, getPublishedTreks } from '@/lib/db';
 import { blogPosts } from '@/data/blog';
 import { siteConfig } from '@/lib/config';
 import { getTaxiRouteGroups } from '@/lib/taxi';
 import { hasHindiVersion, localizePath } from '@/lib/i18n/core';
 import { hasHindiPost } from '@/lib/i18n/content';
+import { normalizeImages } from '@/lib/images';
+import { placeImage, isStockImage } from '@/lib/place-images';
 
 // Must be the canonical (www) origin -- the bare domain 301s to www, and a
 // sitemap full of redirecting URLs is largely ignored by Google.
 const B = siteConfig.url;
 
-export const revalidate = 3600;
+export interface SitemapEntry {
+  url: string;
+  lastModified?: Date;
+  changeFrequency?: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never';
+  priority?: number;
+  images?: string[];
+  alternates?: { languages: Record<string, string> };
+}
+
+const abs = (src: string) => (src.startsWith('http') ? src : B + src);
+/** Image-sitemap entries so every photo can show up in Google Images. */
+const imgs = (list: (string | undefined | null)[]) => {
+  const out = Array.from(new Set(list.filter((u): u is string => !!u && !isStockImage(u)).map(abs)));
+  return out.length ? out.slice(0, 50) : undefined;
+};
 
 function date(value?: string | null, fallback = new Date()): Date {
   const d = value ? new Date(value) : fallback;
   return isNaN(d.getTime()) ? fallback : d;
 }
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export async function sitemapEntries(): Promise<SitemapEntry[]> {
   const [hotels, destinations, treks, taxiRoutes] = await Promise.all([
     getPublishedProperties(),
     getDestinations(),
@@ -28,7 +48,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const latestPost = blogPosts.reduce((max, b) => (b.updated_at > max ? b.updated_at : max), '2026-01-01');
   const contentDate = date(latestPost);
 
-  const entries: MetadataRoute.Sitemap = [
+  const entries: SitemapEntry[] = [
     { url: B, lastModified: contentDate, changeFrequency: 'weekly', priority: 1.0 },
     { url: B + '/hotels', lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
     { url: B + '/blog', lastModified: contentDate, changeFrequency: 'weekly', priority: 0.9 },
@@ -36,7 +56,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: B + '/essentials', lastModified: contentDate, changeFrequency: 'monthly', priority: 0.8 },
     { url: B + '/destinations', lastModified: contentDate, changeFrequency: 'monthly', priority: 0.8 },
     { url: B + '/treks', lastModified: contentDate, changeFrequency: 'weekly', priority: 0.8 },
-    { url: B + '/paragliding', lastModified: contentDate, changeFrequency: 'monthly', priority: 0.8 },
+    { url: B + '/paragliding', lastModified: contentDate, changeFrequency: 'monthly', priority: 0.8, images: imgs([placeImage('bir-paragliding')]) },
     { url: B + '/taxi', lastModified: contentDate, changeFrequency: 'monthly', priority: 0.7 },
     { url: B + '/about', lastModified: contentDate, changeFrequency: 'yearly', priority: 0.5 },
     { url: B + '/contact', lastModified: contentDate, changeFrequency: 'yearly', priority: 0.6 },
@@ -52,7 +72,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: date(d.updated_at, contentDate),
       changeFrequency: 'monthly' as const,
       priority: 0.8,
-      images: d.image ? [d.image.startsWith('http') ? d.image : B + d.image] : undefined,
+      images: imgs([d.image]),
     })),
 
     ...blogPosts.map(b => ({
@@ -60,7 +80,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: date(b.updated_at),
       changeFrequency: 'monthly' as const,
       priority: 0.8,
-      images: [b.image.startsWith('http') ? b.image : B + b.image],
+      images: imgs([b.image]),
     })),
 
     ...hotels.map((h: any) => ({
@@ -68,6 +88,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: date(h.updated_at || h.created_at),
       changeFrequency: 'weekly' as const,
       priority: 0.7,
+      images: imgs([
+        ...normalizeImages(h.images).map((i) => i.url),
+        ...(h.rooms || []).flatMap((r: any) => (Array.isArray(r.images) ? r.images : [])).filter((u: unknown) => typeof u === 'string'),
+      ]),
     })),
 
     ...taxiRoutes.map(g => ({
@@ -75,6 +99,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: date(g.updatedAt, contentDate),
       changeFrequency: 'monthly' as const,
       priority: 0.7,
+      images: imgs([placeImage('mountain-road')]),
     })),
 
     ...treks.map((t: any) => ({
@@ -82,7 +107,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: date(t.updated_at || t.created_at),
       changeFrequency: 'monthly' as const,
       priority: 0.7,
-      images: t.images?.[0] ? [String(t.images[0]).startsWith('http') ? t.images[0] : B + t.images[0]] : undefined,
+      images: imgs((t.images || []).map(String)),
     })),
   ];
   return withHindi(entries);
@@ -92,8 +117,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
  * Add the Hindi twin of every page that has one, and cross-reference both via
  * hreflang alternates (guides only when a real translation exists).
  */
-function withHindi(entries: MetadataRoute.Sitemap): MetadataRoute.Sitemap {
-  const out: MetadataRoute.Sitemap = [];
+function withHindi(entries: SitemapEntry[]): SitemapEntry[] {
+  const out: SitemapEntry[] = [];
   for (const e of entries) {
     const path = e.url.slice(B.length) || '/';
     const blogSlug = path.startsWith('/blog/') ? path.slice(6) : null;
@@ -101,7 +126,7 @@ function withHindi(entries: MetadataRoute.Sitemap): MetadataRoute.Sitemap {
     if (!hindi) { out.push(e); continue; }
     const enUrl = e.url;
     const hiUrl = B + localizePath(path, 'hi');
-    const alternates = { languages: { 'en-IN': enUrl, 'hi-IN': hiUrl } };
+    const alternates = { languages: { 'en-IN': enUrl, 'hi-IN': hiUrl, 'x-default': enUrl } };
     out.push({ ...e, alternates });
     out.push({ ...e, url: hiUrl, priority: Math.max(0.1, (e.priority ?? 0.5) - 0.1), alternates });
   }

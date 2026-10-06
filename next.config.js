@@ -14,6 +14,12 @@ const nextConfig = {
   reactStrictMode: true,
   // Redirect non-www to www so there is exactly ONE canonical domain.
   // This matches the canonical tags which point to www.
+  // Markdown copies of detail pages for AI assistants: /blog/x.md -> app/md (see lib/llms.ts).
+  async rewrites() {
+    return [
+      { source: '/:section(blog|destinations|treks|hotels)/:slug([a-z0-9-]+).md', destination: '/md/:section/:slug' },
+    ];
+  },
   async redirects() {
     return [
       {

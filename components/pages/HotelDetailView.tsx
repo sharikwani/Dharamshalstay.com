@@ -28,6 +28,8 @@ export async function hotelMetadata(slug: string, lang: Lang): Promise<Metadata>
       description: h.meta_description || ((h.short_description || '') + ' Location, photos, nearby sights and who it suits. Enquire for rates.').trim().slice(0, 158),
       path: '/hotels/' + h.slug,
       image: (h.images?.[0] as any)?.url,
+      ogTag: typeLabel + ' in ' + areaName(h.destination_slug),
+      markdown: true,
       keywords: [h.name, h.name + ' ' + areaName(h.destination_slug), typeLabel.toLowerCase() + ' in ' + areaName(h.destination_slug), 'where to stay in ' + areaName(h.destination_slug)],
     });
   }

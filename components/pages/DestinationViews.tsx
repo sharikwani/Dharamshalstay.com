@@ -8,6 +8,7 @@ import JsonLd from '@/components/seo/JsonLd';
 import { getDestinations, getDestinationBySlug, getPropertiesByDestination } from '@/lib/db';
 import { blogPosts } from '@/data/blog';
 import { generateSEO, breadcrumbSchema, itemListSchema, faqSchema, touristDestinationSchema } from '@/lib/seo';
+import { placeImage } from '@/lib/place-images';
 import { serverT } from '@/lib/i18n/server';
 import { fmt } from '@/lib/i18n/dict';
 import { localizeDestination, localizeHotel, localizePost } from '@/lib/i18n/content';
@@ -17,7 +18,7 @@ const GUIDE_SLUGS = ['dharamshala-vs-mcleod-ganj', 'places-to-visit-in-dharamsha
 
 export function destinationsMetadata(lang: Lang): Metadata {
   const t = serverT(lang).t.destinations;
-  return generateSEO({ title: t.metaTitle, description: t.metaDescription, path: '/destinations', lang });
+  return generateSEO({ title: t.metaTitle, description: t.metaDescription, path: '/destinations', image: placeImage('kangra-valley'), lang });
 }
 
 export async function DestinationsListView({ lang }: { lang: Lang }) {
@@ -70,7 +71,7 @@ export async function destinationMetadata(slug: string, lang: Lang): Promise<Met
   const raw = await getDestinationBySlug(slug);
   if (!raw) return {};
   const d = localizeDestination(raw, lang);
-  return generateSEO({ title: d.meta_title || d.name, description: d.meta_description || d.description, path: '/destinations/' + d.slug, image: d.image, lang });
+  return generateSEO({ title: d.meta_title || d.name, description: d.meta_description || d.description, path: '/destinations/' + d.slug, image: d.image, lang, ogTag: d.altitude ? (lang === 'hi' ? d.altitude : d.altitude + ' altitude') : undefined, markdown: true });
 }
 
 export async function DestinationDetailView({ slug, lang }: { slug: string; lang: Lang }) {

@@ -22,7 +22,7 @@ import { localizeUnits } from '@/lib/i18n/units';
 
 export function taxiMetadata(lang: Lang): Metadata {
   const x = serverT(lang).t.taxi;
-  return generateSEO({ title: x.metaTitle, description: x.metaDescription, path: '/taxi', lang });
+  return generateSEO({ title: x.metaTitle, description: x.metaDescription, path: '/taxi', image: placeImage('mountain-road'), lang });
 }
 
 export async function TaxiListView({ lang }: { lang: Lang }) {
@@ -77,6 +77,7 @@ export async function taxiRouteMetadata(slug: string, lang: Lang): Promise<Metad
     path: '/taxi/' + g.slug,
     image: placeImage('mountain-road'),
     lang,
+    ogTag: (lang === 'hi' ? '₹' + price + ' से' : 'From ₹' + price),
     keywords: [g.from + ' to ' + g.to + ' taxi', g.from + ' to ' + g.to + ' taxi fare', g.to + ' taxi', 'dharamshala taxi'],
   });
 }

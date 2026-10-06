@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { siteConfig } from '@/lib/config';
 import type { Lang } from '@/lib/i18n/core';
+import { ogImageUrl } from '@/lib/seo';
 
 /** Site-wide metadata shared by the English and Hindi root layouts. */
 export function rootMetadata(lang: Lang): Metadata {
@@ -41,17 +42,18 @@ export function rootMetadata(lang: Lang): Metadata {
       title: 'Dharamshala Stay - Hotels, Treks & Travel in Dharamshala',
       description: 'Book hotels, treks and taxis in Dharamshala & McLeod Ganj. Up to Rs.500 off every booking.',
       images: [{
-        url: siteConfig.url + '/images/og-default.jpg',
+        url: ogImageUrl('Hotels, Treks & Travel in Dharamshala & McLeod Ganj'),
         width: 1200,
         height: 630,
         alt: 'Dharamshala Stay - Hotels, Treks & Travel',
+        type: 'image/jpeg',
       }],
     },
     twitter: {
       card: 'summary_large_image',
       title: 'Dharamshala Stay - Hotels, Treks & Travel',
       description: 'Book verified hotels, treks, taxis in Dharamshala & McLeod Ganj.',
-      images: [siteConfig.url + '/images/og-default.jpg'],
+      images: [ogImageUrl('Hotels, Treks & Travel in Dharamshala & McLeod Ganj')],
     },
     // No canonical here: it would be inherited by every page that doesn't set
     // its own, telling Google those pages are duplicates of the homepage.
@@ -68,6 +70,8 @@ export function rootMetadata(lang: Lang): Metadata {
     },
     verification: {
       ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION && { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }),
+      ...(process.env.NEXT_PUBLIC_YANDEX_VERIFICATION && { yandex: process.env.NEXT_PUBLIC_YANDEX_VERIFICATION }),
+      ...(process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION && { other: { 'msvalidate.01': process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION } }),
     },
     category: 'travel',
   };

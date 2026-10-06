@@ -8,7 +8,7 @@ import { LANG_COOKIE, hasHindiVersion, localizePath } from '@/lib/i18n/core';
  *   the Hindi page once; we remember that in the cookie.
  * - Crawlers are never redirected (Google indexes both versions via hreflang).
  */
-const BOT = /bot|crawl|spider|slurp|bingpreview|facebookexternalhit|whatsapp|lighthouse|pagespeed|headless/i;
+const BOT = /bot|crawl|spider|slurp|bingpreview|facebookexternalhit|whatsapp|lighthouse|pagespeed|headless|chatgpt|claude|anthropic|perplexity|google-extended|googleother|cohere|meta-external|mistral|ccbot/i;
 
 function prefersHindi(acceptLanguage: string | null): boolean {
   if (!acceptLanguage) return false;

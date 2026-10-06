@@ -8,6 +8,7 @@ import BookingForm from '@/components/forms/BookingForm';
 import JsonLd from '@/components/seo/JsonLd';
 import { getTrekBySlug, getPublishedTreks } from '@/lib/db';
 import { generateSEO, breadcrumbSchema, faqSchema, itemListSchema } from '@/lib/seo';
+import { placeImage } from '@/lib/place-images';
 import { formatPrice, getWhatsAppLink, cn } from '@/lib/utils';
 import { serverT } from '@/lib/i18n/server';
 import { fmt } from '@/lib/i18n/dict';
@@ -30,7 +31,7 @@ const DIFF_COLORS: Record<string, string> = { easy: 'bg-green-100 text-green-700
 
 export function treksMetadata(lang: Lang): Metadata {
   const t = serverT(lang).t.treks;
-  return generateSEO({ title: t.metaTitle, description: t.metaDescription, path: '/treks', lang });
+  return generateSEO({ title: t.metaTitle, description: t.metaDescription, path: '/treks', image: placeImage('triund'), lang });
 }
 
 export async function TreksListView({ lang }: { lang: Lang }) {
@@ -68,7 +69,7 @@ export async function trekMetadata(slug: string, lang: Lang): Promise<Metadata> 
   const raw = await getTrekBySlug(slug);
   if (!raw) return {};
   const x = localizeTrek(raw, lang);
-  return generateSEO({ title: x.meta_title || x.name, description: x.meta_description || x.short_description, path: '/treks/' + x.slug, image: x.images?.[0], lang });
+  return generateSEO({ title: x.meta_title || x.name, description: x.meta_description || x.short_description, path: '/treks/' + x.slug, image: x.images?.[0], lang, ogTag: [x.duration, x.difficulty].filter(Boolean).join(' · ') || undefined, markdown: true });
 }
 
 export async function TrekDetailView({ slug, lang }: { slug: string; lang: Lang }) {

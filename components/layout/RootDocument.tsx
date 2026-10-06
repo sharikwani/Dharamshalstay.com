@@ -18,6 +18,7 @@ export default function RootDocument({ lang, fontClassName = '', children }: { l
       <head>
         <meta name="theme-color" content="#1e3a5f" />
         <meta name="msapplication-TileColor" content="#1e3a5f" />
+        <link rel="alternate" type="application/rss+xml" title="Dharamshala Stay Travel Guides" href="/feed.xml" />
         <JsonLd data={[organizationSchema(), websiteSchema(), localBusinessSchema()]} />
       </head>
       <body className="min-h-screen flex flex-col">

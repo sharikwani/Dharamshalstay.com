@@ -10,6 +10,7 @@ import JsonLd from '@/components/seo/JsonLd';
 import PreferredSourceButton from '@/components/seo/PreferredSourceButton';
 import { blogPosts, getBlogBySlug, getBlogCategories, getRelatedPosts } from '@/data/blog';
 import { generateSEO, articleSchema, breadcrumbSchema, faqSchema, itemListSchema } from '@/lib/seo';
+import { placeImage } from '@/lib/place-images';
 import { formatDate, getWhatsAppLink } from '@/lib/utils';
 import { serverT } from '@/lib/i18n/server';
 import { fmt } from '@/lib/i18n/dict';
@@ -22,7 +23,7 @@ const catId = (c: string) => c.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 export function blogIndexMetadata(lang: Lang): Metadata {
   const b = serverT(lang).t.blog;
   return generateSEO({
-    title: b.metaTitle, description: b.metaDescription, path: '/blog', lang,
+    title: b.metaTitle, description: b.metaDescription, path: '/blog', lang, image: placeImage('mcleod-ganj'),
     keywords: lang === 'hi'
       ? ['धर्मशाला यात्रा गाइड', 'धर्मशाला घूमने की जगह', 'मैक्लोडगंज घूमने की जगह', 'हिमाचल यात्रा']
       : ['dharamshala travel guide', 'mcleod ganj travel guide', 'places to visit in dharamshala', 'kangra travel', 'palampur travel guide', 'himachal itinerary'],
@@ -121,6 +122,8 @@ export function blogPostMetadata(slug: string, lang: Lang): Metadata {
     image: p.image,
     keywords: p.tags,
     lang,
+    ogTag: p.category,
+    markdown: true,
     // Only claim a Hindi alternate when a real translation exists.
     hindi: hasHindiPost(p.slug),
   });
