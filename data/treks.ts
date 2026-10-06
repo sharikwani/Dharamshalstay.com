@@ -2,7 +2,7 @@ import { Trek, UNSPLASH_IMAGES } from '@/types';
 
 export const treks: Trek[] = [
   {
-    id: 'trek-1', slug: 'triund-trek', name: 'Triund Trek', destination_slug: 'dharamkot', difficulty: 'moderate', duration: '1-2 Days', distance: '9 km one way', max_altitude: '2,850 m', best_season: 'March-June, Sep-Dec', price_per_person: 1500,
+    id: 'trek-1', slug: 'triund-trek', name: 'Triund Trek', destination_slug: 'dharamkot', difficulty: 'moderate', duration: '1-2 Days', distance: '9 km from McLeod Ganj (6-7 km from Galu Devi)', max_altitude: '2,850 m', best_season: 'March-June, Sep-Dec', price_per_person: 1500,
     short_description: 'The most popular trek near Dharamshala -- a rewarding overnight hike to a grassy ridge with 360° views of the Dhauladhar range and Kangra Valley.',
     description: 'Triund is the crown jewel of Dharamshala treks. Starting from Dharamkot, the trail winds through oak and rhododendron forests before opening up to a dramatic alpine meadow.\n\nThe summit ridge offers a staggering panorama: snow-capped Dhauladhar peaks on one side, the Kangra Valley below on the other. Camping overnight to watch sunset turn the peaks golden is quintessential Dharamshala.',
     itinerary: [

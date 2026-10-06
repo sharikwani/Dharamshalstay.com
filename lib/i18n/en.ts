@@ -148,6 +148,15 @@ export const en = {
     metaDescription: 'Compare hotels, homestays and hostels in Dharamshala, McLeod Ganj, Bhagsu, Dharamkot & Naddi by area, type and budget. Direct rates and free local booking help.',
     h1: 'Hotels & Stays in Dharamshala',
     intro: "From boutique stays with valley views to budget hostels near the Triund trail, across Dharamshala, McLeod Ganj, Bhagsu, Dharamkot and Naddi. Partner properties show direct rates; directory listings are rates on request -- send an enquiry and we'll check for you.",
+
+    areasTitle: 'Where to stay in Dharamshala: pick your area',
+    areasIntro: 'Each area suits a different trip. Lower Dharamshala is easiest by car, McLeod Ganj puts cafes and the Dalai Lama Temple on your doorstep, Bhagsu and Dharamkot are closest to the Triund trail, and Naddi has the widest Dhauladhar views.',
+    areaStays: '{n} stays',
+    areaGuide: 'Area guide',
+    guidesLine: 'Still deciding? Read our local picks of the {a} and the {b}.',
+    guideA: 'best hotels in Dharamshala',
+    guideB: 'best hotels in McLeod Ganj',
+    faqTitle: 'Hotels in Dharamshala: common questions',
   },
   hotel: {
     stars: '{n}-Star', trustDiscount: 'Up to ₹500 off every booking', trustVerified: 'Verified property', trustSupport: 'Direct local support',

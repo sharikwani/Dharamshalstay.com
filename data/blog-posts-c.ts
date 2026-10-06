@@ -581,8 +581,8 @@ Base yourself in [Dharamshala](/destinations/dharamshala) or [McLeod Ganj](/dest
     image_alt: 'Kangra Valley Railway narrow-gauge toy train passing through the Kangra Valley',
     read_time: 7,
     featured: false,
-    meta_title: 'Kangra Toy Train 2026: Current Status, Route & Tickets',
-    meta_description: 'Kangra Valley Railway status in 2026: reopened in June after the Chakki bridge rebuild, paused for monsoon repairs. Best sections, tickets, timing tips.',
+    meta_title: 'Is the Kangra Toy Train Running? 2026 Status, Route, Tickets',
+    meta_description: 'Kangra toy train 2026: services resumed in June, then paused after August landslides. How to check if it is running today, the best section to ride, tickets and tips.',
     related_slugs: ['places-to-visit-in-kangra', 'palampur-travel-guide', 'kangra-devi-temples-guide'],
     faqs: [
       {

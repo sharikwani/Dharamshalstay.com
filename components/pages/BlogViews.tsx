@@ -18,6 +18,8 @@ import { hasHindiPost, localizePost } from '@/lib/i18n/content';
 import type { Lang } from '@/lib/i18n/core';
 
 const START_HERE = ['dharamshala-complete-travel-guide', 'mcleod-ganj-complete-guide', 'how-to-reach-dharamshala', 'best-time-to-visit-dharamshala', 'places-to-visit-in-dharamshala', 'dharamshala-trip-cost-budget'];
+// Every other guide links here with descriptive anchors: these pages target the money keywords.
+const HOTEL_GUIDES = ['best-hotels-in-dharamshala', 'best-hotels-in-mcleod-ganj'];
 const catId = (c: string) => c.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
 export function blogIndexMetadata(lang: Lang): Metadata {
@@ -224,6 +226,15 @@ export function BlogPostView({ slug, lang }: { slug: string; lang: Lang }) {
           <div className="flex flex-wrap gap-2 mt-8 pt-6 border-t border-slate-200">
             {post.tags.map(tag => <span key={tag} className="text-xs bg-slate-100 text-slate-600 px-3 py-1.5 rounded-full">#{tag}</span>)}
           </div>
+        )}
+
+        {lang === 'en' && !HOTEL_GUIDES.includes(post.slug) && (
+          <p className="mt-10 text-slate-700">
+            <span className="font-semibold text-slate-900">Where to stay:</span> see our picks of the{' '}
+            <Link href="/blog/best-hotels-in-dharamshala" className="text-brand-600 underline">best hotels in Dharamshala</Link> and the{' '}
+            <Link href="/blog/best-hotels-in-mcleod-ganj" className="text-brand-600 underline">best hotels in McLeod Ganj</Link>, or{' '}
+            <Link href="/hotels" className="text-brand-600 underline">compare all hotels and homestays</Link> with direct rates.
+          </p>
         )}
 
         <div className="bg-brand-50 rounded-2xl p-8 text-center mt-10 mb-10">

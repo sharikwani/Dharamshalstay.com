@@ -861,8 +861,8 @@ Temple Road and the streets just above it have guesthouses and hotels within a f
     image_alt: 'Tsuglagkhang complex, the Dalai Lama Temple on Temple Road in McLeod Ganj',
     read_time: 8,
     featured: false,
-    meta_title: 'Dalai Lama Temple McLeod Ganj: Timings & Visitor Guide',
-    meta_description: 'Dalai Lama Temple (Tsuglagkhang) in McLeod Ganj: timings, entry, dress code, photography rules, Tibet Museum, kora walk and how public teachings work.',
+    meta_title: 'Dalai Lama Temple Timings (McLeod Ganj): 5am–8pm, Free',
+    meta_description: 'Dalai Lama Temple, McLeod Ganj is open daily from about 5–6 am to 7–8 pm, free entry. Best time to visit, dress code, photo rules and how to attend teachings.',
     related_slugs: ['things-to-do-in-mcleod-ganj', 'places-to-visit-in-dharamshala', 'best-hotels-in-mcleod-ganj'],
     faqs: [
       {

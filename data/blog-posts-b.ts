@@ -253,8 +253,8 @@ Yes, if you like clear mountain views, quiet streets and cosy cafe afternoons. Y
     image_alt: 'Fresh snow on the Dhauladhar range and rooftops above McLeod Ganj, Dharamshala, in winter',
     read_time: 7,
     featured: false,
-    meta_title: 'Dharamshala Snowfall Guide: When and Where It Snows (2026)',
-    meta_description: 'Does it snow in Dharamshala? When snow falls in McLeod Ganj, Naddi and Triund from December to February, road conditions, packing and winter hotel tips.',
+    meta_title: 'When Does It Snow in Dharamshala? Snowfall Months 2026',
+    meta_description: 'Snow in Dharamshala: McLeod Ganj, Naddi and Dharamkot get snow on some days from late December to February; Triund is white Dec–March. Where to see it, roads, tips.',
     related_slugs: ['best-time-to-visit-dharamshala', 'triund-trek-complete-guide', 'dharamshala-weather-what-to-pack'],
     faqs: [
       {
@@ -608,7 +608,7 @@ Wherever you choose to stay, from lower [Dharamshala](/destinations/dharamshala)
     image_alt: 'Snow-capped Dhauladhar range rising above Dharamshala and McLeod Ganj under a clear sky',
     read_time: 8,
     featured: false,
-    meta_title: 'Dharamshala Weather by Month and What to Pack (2026)',
+    meta_title: 'Dharamshala Weather by Month & What to Wear (2026)',
     meta_description: 'Dharamshala and McLeod Ganj weather month by month with temperatures and rainfall, plus what to pack for summer, monsoon, winter and treks like Triund.',
     related_slugs: ['best-time-to-visit-dharamshala', 'dharamshala-monsoon-travel-guide', 'dharamshala-in-winter-snowfall'],
     faqs: [
