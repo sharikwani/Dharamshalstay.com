@@ -2,8 +2,13 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Clock, Eye, ArrowLeft } from 'lucide-react';
+import { Clock, Eye } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { AdminPageHeader } from '@/components/admin/AdminShell';
+
+const FILTER_LABELS: Record<string, string> = {
+  pending_review: 'Waiting for you', changes_requested: 'Sent back to owner', published: 'Approved & live', rejected: 'Rejected', all: 'Everything',
+};
 
 export default function AdminApprovals() {
   const router = useRouter();
@@ -34,13 +39,12 @@ export default function AdminApprovals() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-      <Link href="/admin/dashboard" className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-800 mb-4"><ArrowLeft className="h-4 w-4" /> Dashboard</Link>
-      <h1 className="text-2xl font-heading font-bold text-slate-900 mb-6">Property Submissions</h1>
+      <AdminPageHeader title="To review" description="Properties that owners have sent in. Open one to check the details, then approve it (it goes live), send it back with notes, or reject it." />
 
       <div className="flex gap-2 mb-6 overflow-x-auto scrollbar-hide">
         {['pending_review', 'changes_requested', 'published', 'rejected', 'all'].map(f => (
           <button key={f} onClick={() => { setFilter(f); setLoading(true); }} className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap ${filter === f ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}>
-            {f === 'all' ? 'All' : f.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
+            {FILTER_LABELS[f]}
           </button>
         ))}
       </div>
@@ -52,7 +56,7 @@ export default function AdminApprovals() {
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2 mb-1">
                   <h3 className="font-semibold text-slate-900 truncate">{p.name || 'Untitled'}</h3>
-                  <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${statusColors[p.status]}`}>{p.status?.replace(/_/g, ' ')}</span>
+                  <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${statusColors[p.status]}`}>{FILTER_LABELS[p.status] || p.status?.replace(/_/g, ' ')}</span>
                 </div>
                 <p className="text-xs text-slate-500 capitalize">{p.type} · {p.destination_slug?.replace(/-/g, ' ')} · {p.city}</p>
                 {p.submitted_at && <p className="text-xs text-slate-400 mt-1">Submitted: {new Date(p.submitted_at).toLocaleDateString()}</p>}

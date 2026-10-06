@@ -2,8 +2,9 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Users, Plus, Pencil, Trash2, ArrowLeft, Save, Star } from 'lucide-react';
+import { Users, Plus, Pencil, Trash2, Save, Star } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { AdminPageHeader } from '@/components/admin/AdminShell';
 
 export default function AdminGuides() {
   const router = useRouter();
@@ -43,11 +44,8 @@ export default function AdminGuides() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-      <Link href="/admin/dashboard" className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-800 mb-4"><ArrowLeft className="h-4 w-4" /> Dashboard</Link>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-heading font-bold text-slate-900 flex items-center gap-2"><Users className="h-6 w-6 text-purple-500" /> Manage Guides</h1>
-        <button onClick={() => setEditing({ id: 'new', name: '', phone: '', email: '', photo: '', bio: '', experience_years: 0, languages: '["Hindi","English"]', specializations: '["Triund","Kareri Lake"]', certifications: '[]', price_per_day: 0, status: 'active' })} className="flex items-center gap-2 bg-brand-600 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-brand-700"><Plus className="h-4 w-4" /> Add Guide</button>
-      </div>
+      <AdminPageHeader title="Local guides" description="Trekking and local guides you work with."
+        action={<button onClick={() => setEditing({ id: 'new', name: '', phone: '', email: '', photo: '', bio: '', experience_years: 0, languages: '["Hindi","English"]', specializations: '["Triund","Kareri Lake"]', certifications: '[]', price_per_day: 0, status: 'active' })} className="flex items-center gap-2 bg-brand-600 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-brand-700"><Plus className="h-4 w-4" /> Add Guide</button>} />
 
       {editing && (
         <div className="bg-white border border-slate-200 rounded-xl p-6 mb-6">

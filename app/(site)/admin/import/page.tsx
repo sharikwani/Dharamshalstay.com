@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Download, Loader2, Check, AlertCircle, Save, Send, Hotel, Sparkles, Copy, LinkIcon, X, ImageIcon } from 'lucide-react';
+import { Download, Loader2, Check, AlertCircle, Save, Send, Hotel, Sparkles, Copy, LinkIcon, X, ImageIcon } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { slugify, formatPrice } from '@/lib/utils';
 
@@ -90,12 +90,10 @@ export default function AdminImportPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-      <Link href="/admin/dashboard" className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-800 mb-4"><ArrowLeft className="h-4 w-4" /> Dashboard</Link>
-
       <div className="flex items-center gap-3 mb-8">
         <div className="w-10 h-10 rounded-xl bg-brand-50 flex items-center justify-center"><Download className="h-5 w-5 text-brand-600" /></div>
         <div>
-          <h1 className="text-2xl font-heading font-bold text-slate-900">Import Property</h1>
+          <h1 className="text-2xl font-heading font-bold text-slate-900">Add a property</h1>
           <p className="text-sm text-slate-500">One command. One paste. Works with any hotel website.</p>
         </div>
       </div>

@@ -2,8 +2,9 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Calendar, DollarSign, Phone, Mail, Check, X, RefreshCw } from 'lucide-react';
+import { Calendar, DollarSign, Phone, Mail, Check, X, RefreshCw } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { AdminPageHeader } from '@/components/admin/AdminShell';
 import { formatPrice, formatDateTime, statusLabel, STATUS_COLORS, cn } from '@/lib/utils';
 
 export default function AdminBookings() {
@@ -60,11 +61,8 @@ export default function AdminBookings() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-      <Link href="/admin/dashboard" className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-800 mb-4"><ArrowLeft className="h-4 w-4" /> Dashboard</Link>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-heading font-bold text-slate-900">All Bookings</h1>
-        <button onClick={load} className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-800"><RefreshCw className="h-4 w-4" /> Refresh</button>
-      </div>
+      <AdminPageHeader title="Bookings" description="Every booking made on the website. Confirm or cancel bookings, and mark commission as paid once the property has paid you."
+        action={<button onClick={load} className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-800"><RefreshCw className="h-4 w-4" /> Refresh</button>} />
 
       {/* Stats -- always from unfiltered data */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">

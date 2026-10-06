@@ -91,7 +91,7 @@ export default function AdminApprovalDetail() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-      <button onClick={() => router.back()} className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-800 mb-6"><ArrowLeft className="h-4 w-4" /> Back to Approvals</button>
+      <button onClick={() => router.back()} className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-800 mb-6"><ArrowLeft className="h-4 w-4" /> Back to list</button>
 
       <div className="flex items-start justify-between mb-6">
         <div>
@@ -189,26 +189,27 @@ export default function AdminApprovalDetail() {
         <div>
           <div className="sticky top-24 space-y-4">
             <div className="bg-white border border-slate-200 rounded-xl p-6">
-              <h3 className="font-heading font-bold text-slate-900 mb-4">Admin Actions</h3>
+              <h3 className="font-heading font-bold text-slate-900 mb-1">Your decision</h3>
+              <p className="text-xs text-slate-500 mb-4">Pick one. The owner is told what you decided.</p>
 
               <div className="space-y-3 mb-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Admin Notes (visible to partner)</label>
-                  <textarea value={notes} onChange={e => setNotes(e.target.value)} rows={3} placeholder="Notes or corrections needed..." className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none resize-none" />
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Message to the owner <span className="font-normal text-slate-400">(needed to send back)</span></label>
+                  <textarea value={notes} onChange={e => setNotes(e.target.value)} rows={3} placeholder="e.g. Please add 3 more room photos and the check-in time" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none resize-none" />
                 </div>
               </div>
 
               <div className="space-y-2">
                 <button onClick={handleApprove} disabled={action !== null} className="w-full flex items-center justify-center gap-2 bg-green-600 text-white py-2.5 rounded-lg font-semibold hover:bg-green-700 disabled:opacity-50 text-sm">
-                  <CheckCircle className="h-4 w-4" /> Approve & Publish
+                  <CheckCircle className="h-4 w-4" /> Approve – put it live
                 </button>
 
                 <button onClick={handleRequestChanges} disabled={action !== null || !notes} className="w-full flex items-center justify-center gap-2 bg-amber-500 text-white py-2.5 rounded-lg font-semibold hover:bg-amber-600 disabled:opacity-50 text-sm">
-                  <MessageSquare className="h-4 w-4" /> Request Changes
+                  <MessageSquare className="h-4 w-4" /> Send back to owner to fix
                 </button>
 
-                <div className="pt-2">
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Rejection Reason</label>
+                <div className="pt-3 mt-3 border-t border-slate-100">
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Reject for good <span className="font-normal text-slate-400">(reason needed)</span></label>
                   <input value={reason} onChange={e => setReason(e.target.value)} placeholder="Why is this being rejected?" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none mb-2" />
                   <button onClick={handleReject} disabled={action !== null || !reason} className="w-full flex items-center justify-center gap-2 bg-red-600 text-white py-2.5 rounded-lg font-semibold hover:bg-red-700 disabled:opacity-50 text-sm">
                     <XCircle className="h-4 w-4" /> Reject

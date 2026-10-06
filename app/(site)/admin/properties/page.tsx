@@ -2,11 +2,17 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Building, ArrowLeft, Eye, Pencil, ToggleLeft, ToggleRight, Trash2, Loader2, Mail, Check, X, Search, ShieldCheck, ShieldAlert } from 'lucide-react';
+import { Building, Eye, Pencil, ToggleLeft, ToggleRight, Trash2, Loader2, Mail, Check, X, Search, ShieldCheck, ShieldAlert } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { AdminPageHeader } from '@/components/admin/AdminShell';
 import { formatPrice, statusLabel, STATUS_COLORS, cn } from '@/lib/utils';
 
 const FILTERS = ['published', 'pending_review', 'changes_requested', 'suspended', 'rejected', 'draft', 'all'] as const;
+const FILTER_LABELS: Record<string, string> = {
+  published: 'Live', pending_review: 'Waiting for review', changes_requested: 'Sent back to owner',
+  suspended: 'Hidden', rejected: 'Rejected', draft: 'Not finished', all: 'Everything',
+};
+const KIND_LABELS = { all: 'All', partner: 'Partner (bookable)', directory: 'Info only' } as const;
 
 export default function AdminProperties() {
   const router = useRouter();
@@ -104,19 +110,15 @@ export default function AdminProperties() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-      <Link href="/admin/dashboard" className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-800 mb-4">
-        <ArrowLeft className="h-4 w-4" /> Dashboard
-      </Link>
-      <h1 className="text-2xl font-heading font-bold text-slate-900 mb-6 flex items-center gap-2">
-        <Building className="h-6 w-6 text-brand-500" /> All Properties
-      </h1>
+      <AdminPageHeader title="All properties"
+        description="Every hotel and homestay on the site. Partner = guests can book online. Info only = we show the property but guests enquire instead of booking." />
 
       <div className="flex flex-col sm:flex-row gap-3 mb-4">
         <div className="flex rounded-lg bg-slate-100 p-1 text-sm">
           {(['all', 'partner', 'directory'] as const).map(k => (
             <button key={k} onClick={() => setKind(k)}
-              className={cn('px-3 py-1.5 rounded-md font-medium capitalize', kind === k ? 'bg-white shadow text-slate-900' : 'text-slate-600')}>
-              {k === 'all' ? 'All listings' : k}
+              className={cn('px-3 py-1.5 rounded-md font-medium', kind === k ? 'bg-white shadow text-slate-900' : 'text-slate-600')}>
+              {KIND_LABELS[k]}
             </button>
           ))}
         </div>
@@ -132,7 +134,7 @@ export default function AdminProperties() {
           <button key={f} onClick={() => setFilter(f)}
             className={cn('px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap flex items-center gap-1.5 transition-colors',
               filter === f ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200')}>
-            {f === 'all' ? 'All' : statusLabel(f)}
+            {FILTER_LABELS[f]}
             <span className={cn('text-xs font-bold rounded-full px-1.5 py-0.5 min-w-[20px] text-center',
               filter === f ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-600')}>{getCount(f)}</span>
           </button>
@@ -144,7 +146,7 @@ export default function AdminProperties() {
       ) : properties.length === 0 ? (
         <div className="bg-white border border-slate-200 rounded-xl p-12 text-center">
           <Building className="h-12 w-12 text-slate-300 mx-auto mb-4" />
-          <p className="text-slate-500">No properties with status &quot;{statusLabel(filter)}&quot;.</p>
+          <p className="text-slate-500">Nothing here under &quot;{FILTER_LABELS[filter]}&quot;.</p>
         </div>
       ) : (
         <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
@@ -153,14 +155,14 @@ export default function AdminProperties() {
               <thead>
                 <tr className="bg-slate-50 border-b text-left">
                   <th className="px-4 py-3 font-semibold text-slate-700">Property</th>
-                  <th className="px-4 py-3 font-semibold text-slate-700">Listing</th>
+                  <th className="px-4 py-3 font-semibold text-slate-700">Kind</th>
                   <th className="px-4 py-3 font-semibold text-slate-700">Type</th>
                   <th className="px-4 py-3 font-semibold text-slate-700">Area</th>
                   <th className="px-4 py-3 font-semibold text-slate-700">Price</th>
-                  <th className="px-4 py-3 font-semibold text-slate-700">Owner Email</th>
+                  <th className="px-4 py-3 font-semibold text-slate-700">Owner</th>
                   <th className="px-4 py-3 font-semibold text-slate-700">Status</th>
-                  <th className="px-4 py-3 font-semibold text-slate-700">Compliance</th>
-                  <th className="px-4 py-3 font-semibold text-slate-700">Featured</th>
+                  <th className="px-4 py-3 font-semibold text-slate-700" title="Have the property's licences and documents been checked?">Checked</th>
+                  <th className="px-4 py-3 font-semibold text-slate-700" title="Featured properties are shown first on the homepage and listings">Featured</th>
                   <th className="px-4 py-3 font-semibold text-slate-700">Actions</th>
                 </tr>
               </thead>
@@ -174,7 +176,7 @@ export default function AdminProperties() {
                     <td className="px-4 py-3">
                       <span className={cn('text-xs font-medium px-2 py-0.5 rounded-full capitalize',
                         p.listing_type === 'directory' ? 'bg-amber-50 text-amber-800' : 'bg-brand-50 text-brand-700')}>
-                        {p.listing_type || 'partner'}
+                        {p.listing_type === 'directory' ? 'Info only' : 'Partner'}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-slate-600 capitalize">{p.type}</td>
@@ -203,14 +205,14 @@ export default function AdminProperties() {
                           {p.owner_email ? (
                             <span className="text-brand-600 truncate max-w-[120px]">{p.owner_email}</span>
                           ) : (
-                            <span className="text-slate-400 group-hover:text-brand-600">Assign</span>
+                            <span className="text-slate-400 group-hover:text-brand-600">Add owner email</span>
                           )}
                         </button>
                       )}
                     </td>
                     <td className="px-4 py-3">
                       <span className={cn('text-xs font-medium px-2 py-0.5 rounded-full', STATUS_COLORS[p.status] || 'bg-slate-100 text-slate-600')}>
-                        {statusLabel(p.status)}
+                        {FILTER_LABELS[p.status] || statusLabel(p.status)}
                       </span>
                     </td>
                     <td className="px-4 py-3">
@@ -241,17 +243,17 @@ export default function AdminProperties() {
                         )}
                         {['pending_review', 'draft', 'changes_requested', 'rejected', 'approved'].includes(p.status) && (
                           <button onClick={() => changeStatus(p.id, 'published')}
-                            className="text-xs text-green-600 font-medium px-2 py-1 rounded hover:bg-green-50">Publish</button>
+                            className="text-xs text-green-600 font-medium px-2 py-1 rounded hover:bg-green-50" title="Put it live on the website now">Make live</button>
                         )}
                         {p.status === 'published' && (
                           <button onClick={() => changeStatus(p.id, 'suspended')}
-                            className="text-xs text-red-500 font-medium px-2 py-1 rounded hover:bg-red-50" title="Block: hides it from the website">Suspend</button>
+                            className="text-xs text-red-500 font-medium px-2 py-1 rounded hover:bg-red-50" title="Hide it from the website (you can show it again later)">Hide</button>
                         )}
                         {p.status === 'suspended' && (
                           <button onClick={() => changeStatus(p.id, 'published')}
-                            className="text-xs text-green-600 font-medium px-2 py-1 rounded hover:bg-green-50">Restore</button>
+                            className="text-xs text-green-600 font-medium px-2 py-1 rounded hover:bg-green-50" title="Put it back on the website">Show again</button>
                         )}
-                        <button onClick={() => deleteProperty(p.id, p.name || 'Untitled')} disabled={deletingId === p.id} title="Delete"
+                        <button onClick={() => deleteProperty(p.id, p.name || 'Untitled')} disabled={deletingId === p.id} title="Delete for ever"
                           className="text-slate-400 hover:text-red-600 p-1 rounded hover:bg-red-50 disabled:opacity-50">
                           {deletingId === p.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
                         </button>

@@ -2,8 +2,9 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Car, Plus, Pencil, Trash2, ArrowLeft, Save } from 'lucide-react';
+import { Car, Plus, Pencil, Trash2, Save } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { AdminPageHeader } from '@/components/admin/AdminShell';
 import { formatPrice } from '@/lib/utils';
 
 const EMPTY_ROUTE = { from_location: '', to_location: '', route_type: 'airport', vehicle_category: 'sedan', vehicle_name: '', max_passengers: 4, price: 0, price_type: 'fixed', distance_km: 0, duration: '', description: '', includes: '[]', excludes: '[]', status: 'active' };
@@ -58,11 +59,8 @@ export default function AdminTaxis() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-      <Link href="/admin/dashboard" className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-800 mb-4"><ArrowLeft className="h-4 w-4" /> Dashboard</Link>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-heading font-bold text-slate-900 flex items-center gap-2"><Car className="h-6 w-6 text-brand-500" /> Manage Taxi Routes</h1>
-        <button onClick={() => setEditing({ ...EMPTY_ROUTE })} className="flex items-center gap-2 bg-brand-600 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-brand-700"><Plus className="h-4 w-4" /> Add Route</button>
-      </div>
+      <AdminPageHeader title="Taxi routes" description="The routes and fares shown on the taxi pages. Click a status to switch a route on or off."
+        action={<button onClick={() => setEditing({ ...EMPTY_ROUTE })} className="flex items-center gap-2 bg-brand-600 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-brand-700"><Plus className="h-4 w-4" /> Add Route</button>} />
 
       {/* Edit form */}
       {editing && (

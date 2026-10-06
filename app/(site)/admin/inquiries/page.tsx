@@ -2,8 +2,9 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { MessageSquare, ArrowLeft, Phone, Mail, Eye } from 'lucide-react';
+import { Phone, Mail, Eye } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { AdminPageHeader } from '@/components/admin/AdminShell';
 
 export default function AdminInquiries() {
   const router = useRouter();
@@ -40,8 +41,7 @@ export default function AdminInquiries() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-      <Link href="/admin/dashboard" className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-800 mb-4"><ArrowLeft className="h-4 w-4" /> Dashboard</Link>
-      <h1 className="text-2xl font-heading font-bold text-slate-900 mb-6 flex items-center gap-2"><MessageSquare className="h-6 w-6 text-purple-500" /> Inquiries</h1>
+      <AdminPageHeader title="Inquiries" description="Questions and requests sent through the website forms. Call or email the person, then update the status so you know who has been handled." />
 
       <div className="flex gap-2 mb-6 overflow-x-auto scrollbar-hide">
         {['all', 'new', 'contacted', 'converted', 'closed'].map(f => (

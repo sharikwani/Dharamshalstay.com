@@ -2,8 +2,9 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Mountain, Plus, Pencil, Trash2, ArrowLeft, Save } from 'lucide-react';
+import { Mountain, Plus, Pencil, Trash2, Save } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { AdminPageHeader } from '@/components/admin/AdminShell';
 import { formatPrice, slugify } from '@/lib/utils';
 
 export default function AdminTreks() {
@@ -40,11 +41,8 @@ export default function AdminTreks() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-      <Link href="/admin/dashboard" className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-800 mb-4"><ArrowLeft className="h-4 w-4" /> Dashboard</Link>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-heading font-bold text-slate-900 flex items-center gap-2"><Mountain className="h-6 w-6 text-green-500" /> Manage Treks</h1>
-        <button onClick={() => setEditing({ id: 'new', name: '', destination_slug: 'dharamkot', difficulty: 'moderate', duration: '', distance: '', max_altitude: '', best_season: '', price_per_person: 0, short_description: '', description: '', itinerary: '[]', includes: [], excludes: [], things_to_carry: [], images: [], featured: false, status: 'draft', meta_title: '', meta_description: '' })} className="flex items-center gap-2 bg-brand-600 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-brand-700"><Plus className="h-4 w-4" /> Add Trek</button>
-      </div>
+      <AdminPageHeader title="Treks" description="Trek pages shown on the website. Only treks set to “Published” are visible to visitors."
+        action={<button onClick={() => setEditing({ id: 'new', name: '', destination_slug: 'dharamkot', difficulty: 'moderate', duration: '', distance: '', max_altitude: '', best_season: '', price_per_person: 0, short_description: '', description: '', itinerary: '[]', includes: [], excludes: [], things_to_carry: [], images: [], featured: false, status: 'draft', meta_title: '', meta_description: '' })} className="flex items-center gap-2 bg-brand-600 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-brand-700"><Plus className="h-4 w-4" /> Add Trek</button>} />
 
       {editing && (
         <div className="bg-white border border-slate-200 rounded-xl p-6 mb-6">
