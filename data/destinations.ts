@@ -57,16 +57,16 @@ export const destinations: Destination[] = [
     meta_description: 'Plan your stay in Dharamkot, the yoga village above McLeod Ganj. Hostels, yoga retreats, cafes, and the Triund trailhead.',
   },
   {
-    id: 'dest-5', slug: 'naddi', name: 'Naddi', tagline: 'Panoramic Sunrises & Untouched Calm',
-    description: 'Naddi is a small unspoilt village 3 km from McLeod Ganj, perched on a ridge with some of the most spectacular sunrise views in the region.',
-    long_description: 'Naddi is where locals go for a quiet escape. The Naddi View Point is famous for sunrise photography. Accommodation here tends to be slightly more upscale and view-focused. It\'s ideal for couples, writers, and anyone who wants mountain solitude.',
+    id: 'dest-5', slug: 'naddi', name: 'Naddi', tagline: 'Ridge-Top Village, Untouched Calm',
+    description: 'Naddi is a small unspoilt village 3 km from McLeod Ganj, perched on a ridge with the closest roadside views of the Dhauladhar range anywhere around Dharamshala.',
+    long_description: 'Naddi is where locals go for a quiet escape. Accommodation here tends to be slightly more upscale and view-focused, and it is ideal for couples, writers, and anyone who wants mountain solitude. The Naddi View Point just above the village is the best-known spot for sunrise and sunset photography; our Naddi and Dal Lake guide below covers the viewpoint, the best time to go and the walk down to Dal Lake in detail.',
     altitude: 'about 2,000 m', best_time: 'Year-round (spectacular in winter snow)',
     how_to_reach: 'A 10-minute drive from McLeod Ganj via Dal Lake road.',
     things_to_do: ['Catch sunrise at Naddi View Point', 'Walk to Dal Lake', 'Photograph the Dhauladhar panorama', 'Forest walks through pine and deodar', 'Relax at a view-facing cafe'],
     image: UNSPLASH_IMAGES.naddi, image_alt: 'Sunrise over the Dhauladhar range from Naddi', hotel_count: 12,
-    faqs: [{ question: 'Is Naddi worth visiting?', answer: 'If you value views and quiet, absolutely. The sunrise over Dhauladhar from Naddi View Point is one of the most memorable sights in the region.' }],
-    meta_title: 'Naddi Village Guide - Sunrise Point, Hotels & Peaceful Stays | Dharamshala Stay',
-    meta_description: 'Escape to Naddi for breathtaking sunrise views, quiet homestays, and pine forest walks. A hidden gem near McLeod Ganj.',
+    faqs: [{ question: 'Is Naddi worth visiting?', answer: 'If you value views and quiet, absolutely. It is a short drive above McLeod Ganj, far calmer than the main bazaar, and the Dhauladhar range feels close enough to touch on a clear morning.' }],
+    meta_title: 'Naddi Village, Dharamshala - Hotels & Quiet Stays | Dharamshala Stay',
+    meta_description: 'Stay in Naddi, a quiet ridge-top village 3 km above McLeod Ganj: view-facing hotels and homestays, pine forest walks and the closest Dhauladhar views near Dharamshala.',
   },
 ];
 

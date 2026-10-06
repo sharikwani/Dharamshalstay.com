@@ -352,9 +352,11 @@ Combine Dharamkot with a [Bhagsu stay or day](/blog/bhagsu-travel-guide), the [D
   {
     id: 'blog-naddi-dal-lake-guide',
     slug: 'naddi-dal-lake-guide',
-    title: 'Naddi & Dal Lake Guide 2026: Sunrise Point, Tota Rani, St. John Church & Stays',
+    title: 'Naddi Sunrise Point, Dharamshala: Dal Lake, Tota Rani & Stays (2026)',
     excerpt: 'An honest guide to Naddi and Dal Lake above Dharamshala: the Naddi viewpoint at sunrise and sunset, the real state of Dal Lake, Tota Rani village, the St. John in the Wilderness walk, Kunal Pathri and where to stay.',
-    content: `**Naddi** is a ridge-top village at roughly **2,000 m, about 3 to 4 km west of McLeod Ganj**, with the closest roadside views of the Dhauladhar range anywhere around Dharamshala. Just below it is **Dal Lake**, a small, deodar-ringed lake that is sacred locally but, honestly, far less impressive than its name suggests. Together with **Tota Rani** village, the forest road down to **St. John in the Wilderness** church, and the **Kunal Pathri** temple in lower Dharamshala, they make one of the most relaxed half-day or full-day outings in the area.
+    content: `**If you are looking for the sunrise point in Dharamshala, it is the Naddi viewpoint** — a ridge above Naddi village, about **3 to 4 km west of McLeod Ganj** and a 10-minute drive up from it. There is no entry fee and no gate; you walk out onto the ridge. Arrive 20 to 30 minutes before sunrise, which means roughly **5:15 to 5:30 am in summer** and **6:30 to 6:45 am in winter**, and dress for cold even in May.
+
+**Naddi** is a ridge-top village at roughly **2,000 m, about 3 to 4 km west of McLeod Ganj**, with the closest roadside views of the Dhauladhar range anywhere around Dharamshala. Just below it is **Dal Lake**, a small, deodar-ringed lake that is sacred locally but, honestly, far less impressive than its name suggests. Together with **Tota Rani** village, the forest road down to **St. John in the Wilderness** church, and the **Kunal Pathri** temple in lower Dharamshala, they make one of the most relaxed half-day or full-day outings in the area.
 
 This guide tells you when to be at the Naddi viewpoint, what Dal Lake is really like in 2026, how to walk the area, which stays are worth it, and what to skip. Prices are approx. as of 2026.
 
@@ -509,8 +511,8 @@ Naddi works well with a [weekend in Dharamshala](/blog/dharamshala-weekend-itine
     image_alt: 'Naddi village and terraced fields with the snow-capped Dhauladhar range behind, near McLeod Ganj',
     read_time: 9,
     featured: false,
-    meta_title: 'Naddi & Dal Lake Guide 2026: Sunrise Point, Walks, Stays',
-    meta_description: 'Naddi and Dal Lake guide 2026: best time for the Naddi viewpoint, the honest state of Dal Lake, Tota Rani, St. John church walk, Kunal Pathri and stays.',
+    meta_title: 'Naddi Sunrise Point Dharamshala: Timings, Views & Dal Lake',
+    meta_description: 'The sunrise point in Dharamshala is the Naddi viewpoint, 3-4 km above McLeod Ganj: when to go, what you actually see, the honest state of Dal Lake, Tota Rani, the St. John church walk and where to stay.',
     related_slugs: ['places-to-visit-in-dharamshala', 'honeymoon-in-dharamshala', 'photography-spots-sunset-points-dharamshala'],
     faqs: [
       { question: 'Is Naddi better at sunrise or sunset?', answer: 'Sunset is more popular and easier to reach; sunrise is quieter and very beautiful if you stay overnight in Naddi. October to March gives the clearest views either way.' },

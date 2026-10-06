@@ -83,10 +83,19 @@ export async function DestinationDetailView({ slug, lang }: { slug: string; lang
   const [hotels, allDests] = await Promise.all([getPropertiesByDestination(dest.slug), getDestinations()]);
   const others = allDests.filter((x: any) => x.slug !== dest.slug).map((x: any) => localizeDestination(x, lang));
   const nameRe = new RegExp(raw.name.replace(/\s+/g, '\\s*'), 'i');
+  // Rank by how specifically a post is ABOUT this place, not by array order: a
+  // guide named after it beats one merely tagged with it, which beats one that
+  // only links here. Without this, the dozen posts that link to a destination
+  // crowded its own dedicated guide out of the three slots.
   const guides = blogPosts
-    .filter((b) => nameRe.test(b.title) || b.tags.some((tag) => nameRe.test(tag)) || b.content.includes('/destinations/' + dest.slug))
+    .map((b) => ({
+      post: b,
+      score: nameRe.test(b.title) ? 2 : b.tags.some((tag) => nameRe.test(tag)) ? 1 : b.content.includes('/destinations/' + dest.slug) ? 0 : -1,
+    }))
+    .filter((x) => x.score >= 0)
+    .sort((a, b) => b.score - a.score)
     .slice(0, 3)
-    .map((p) => localizePost(p, lang));
+    .map((x) => localizePost(x.post, lang));
 
   return (
     <>
