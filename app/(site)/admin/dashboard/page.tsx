@@ -48,10 +48,10 @@ export default function AdminDashboard() {
   if (loading) return <div className="min-h-[60vh] flex items-center justify-center"><div className="w-8 h-8 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin" /></div>;
 
   const todo = [
-    stats.pendingReview > 0 && { href: '/admin/approvals', icon: Inbox, text: `${stats.pendingReview} new ${stats.pendingReview === 1 ? 'property is' : 'properties are'} waiting for your review`, cta: 'Review' },
-    stats.newInquiries > 0 && { href: '/admin/inquiries', icon: MessageSquare, text: `${stats.newInquiries} new ${stats.newInquiries === 1 ? 'inquiry needs' : 'inquiries need'} a reply`, cta: 'Reply' },
-    stats.pendingCommission > 0 && { href: '/admin/bookings', icon: IndianRupee, text: `${formatPrice(stats.pendingCommission)} commission still to collect`, cta: 'See bookings' },
-  ].filter(Boolean) as { href: string; icon: any; text: string; cta: string }[];
+    stats.pendingReview > 0 && { href: '/admin/approvals', icon: Inbox, tone: 'bg-amber-500', text: `${stats.pendingReview} new ${stats.pendingReview === 1 ? 'property is' : 'properties are'} waiting for your review`, cta: 'Review' },
+    stats.newInquiries > 0 && { href: '/admin/inquiries', icon: MessageSquare, tone: 'bg-pink-500', text: `${stats.newInquiries} new ${stats.newInquiries === 1 ? 'inquiry needs' : 'inquiries need'} a reply`, cta: 'Reply' },
+    stats.pendingCommission > 0 && { href: '/admin/bookings', icon: IndianRupee, tone: 'bg-violet-500', text: `${formatPrice(stats.pendingCommission)} commission still to collect`, cta: 'See bookings' },
+  ].filter(Boolean) as { href: string; icon: any; tone: string; text: string; cta: string }[];
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
@@ -60,24 +60,24 @@ export default function AdminDashboard() {
           <h1 className="text-2xl font-heading font-bold text-slate-900">Hello{adminName ? `, ${adminName}` : ''}</h1>
           <p className="text-sm text-slate-500 mt-1">{stats.published} properties are live on the website.</p>
         </div>
-        <Link href="/admin/import" className="inline-flex items-center gap-2 bg-brand-600 text-white px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-brand-700 self-start">
+        <Link href="/admin/import" className="inline-flex items-center gap-2 bg-emerald-600 text-white px-5 py-3 rounded-xl font-semibold text-[15px] hover:bg-emerald-700 shadow-sm self-start">
           <PlusCircle className="h-4 w-4" /> Add a property
         </Link>
       </div>
 
       {/* 1. To-do list */}
-      <section className="bg-white border border-slate-200 rounded-xl mb-8">
-        <h2 className="px-5 pt-5 pb-3 font-heading font-bold text-slate-900">Needs your attention</h2>
+      <section className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden mb-8">
+        <h2 className="px-5 py-4 font-heading font-bold text-lg text-slate-900 border-b border-slate-100">Needs your attention</h2>
         {todo.length === 0 ? (
-          <p className="px-5 pb-5 flex items-center gap-2 text-sm text-green-700"><CheckCircle2 className="h-5 w-5" /> All caught up. Nothing is waiting on you.</p>
+          <p className="px-5 py-5 flex items-center gap-2 text-[15px] text-green-700"><CheckCircle2 className="h-5 w-5" /> All caught up. Nothing is waiting on you.</p>
         ) : (
           <ul className="divide-y divide-slate-100">
             {todo.map(t => (
               <li key={t.href}>
-                <Link href={t.href} className="flex items-center gap-3 px-5 py-4 hover:bg-amber-50/60">
-                  <span className="w-9 h-9 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center shrink-0"><t.icon className="h-4 w-4" /></span>
-                  <span className="flex-1 text-sm text-slate-800">{t.text}</span>
-                  <span className="text-sm font-medium text-brand-600 flex items-center gap-0.5 whitespace-nowrap">{t.cta}<ChevronRight className="h-4 w-4" /></span>
+                <Link href={t.href} className="flex items-center gap-4 px-5 py-4 hover:bg-slate-50 group">
+                  <span className={cn('w-11 h-11 rounded-xl text-white flex items-center justify-center shrink-0 shadow-sm', t.tone)}><t.icon className="h-5 w-5" /></span>
+                  <span className="flex-1 text-[15px] font-medium text-slate-800">{t.text}</span>
+                  <span className="text-sm font-semibold text-white bg-brand-600 group-hover:bg-brand-700 px-4 py-2 rounded-lg flex items-center gap-1 whitespace-nowrap shadow-sm">{t.cta}<ChevronRight className="h-4 w-4" /></span>
                 </Link>
               </li>
             ))}
@@ -87,9 +87,9 @@ export default function AdminDashboard() {
 
       {/* 2. Latest activity */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <section className="bg-white border border-slate-200 rounded-xl p-5">
+        <section className="bg-white border border-slate-200 rounded-2xl shadow-sm p-5">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="font-heading font-bold text-slate-900">Waiting for review</h2>
+            <h2 className="font-heading font-bold text-lg text-slate-900">Waiting for review</h2>
             <Link href="/admin/approvals" className="text-sm text-brand-600 hover:text-brand-700">See all</Link>
           </div>
           {pending.length === 0 ? <p className="text-sm text-slate-500">Nothing to review.</p> : (
@@ -107,9 +107,9 @@ export default function AdminDashboard() {
           )}
         </section>
 
-        <section className="bg-white border border-slate-200 rounded-xl p-5">
+        <section className="bg-white border border-slate-200 rounded-2xl shadow-sm p-5">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="font-heading font-bold text-slate-900">Latest bookings</h2>
+            <h2 className="font-heading font-bold text-lg text-slate-900">Latest bookings</h2>
             <Link href="/admin/bookings" className="text-sm text-brand-600 hover:text-brand-700">See all</Link>
           </div>
           {recentBookings.length === 0 ? <p className="text-sm text-slate-500">No bookings yet.</p> : (
@@ -130,13 +130,13 @@ export default function AdminDashboard() {
 
       {/* 3. Plain-language map of the admin */}
       <section>
-        <h2 className="font-heading font-bold text-slate-900 mb-3">Where to find things</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <h2 className="font-heading font-bold text-lg text-slate-900 mb-3">Where to find things</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {ADMIN_NAV.slice(1).flatMap(g => g.items).map(item => (
-            <Link key={item.href} href={item.href} className="flex items-start gap-3 bg-white border border-slate-200 rounded-xl p-4 hover:border-brand-300 hover:shadow-sm transition">
-              <item.icon className="h-5 w-5 text-brand-600 mt-0.5 shrink-0" />
+            <Link key={item.href} href={item.href} className="flex items-center gap-4 bg-white border border-slate-200 rounded-2xl p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-brand-300 transition">
+              <span className={cn('w-12 h-12 rounded-xl text-white flex items-center justify-center shrink-0 shadow-sm', item.tone)}><item.icon className="h-6 w-6" /></span>
               <span>
-                <span className="block font-semibold text-sm text-slate-900">{item.label}</span>
+                <span className="block font-semibold text-[15px] text-slate-900">{item.label}</span>
                 <span className="block text-xs text-slate-500 mt-0.5">{item.hint}</span>
               </span>
             </Link>

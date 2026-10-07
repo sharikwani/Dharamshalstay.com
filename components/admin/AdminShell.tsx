@@ -6,36 +6,37 @@ import { Home, Inbox, Building, PlusCircle, ShoppingBag, MessageSquare, Car, Mou
 import { supabase } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
 
-type NavItem = { href: string; label: string; hint: string; icon: any; badge?: 'review' | 'inquiries' };
+// tone = the colour of the item's icon tile, so each section is recognisable at a glance.
+type NavItem = { href: string; label: string; hint: string; icon: any; tone: string; badge?: 'review' | 'inquiries' };
 
 // One menu for the whole admin, grouped by job so it is obvious where things live.
 export const ADMIN_NAV: { title: string; items: NavItem[] }[] = [
   {
     title: 'Start here',
-    items: [{ href: '/admin/dashboard', label: 'Home', hint: 'What needs your attention today', icon: Home }],
+    items: [{ href: '/admin/dashboard', label: 'Home', hint: 'What needs your attention today', icon: Home, tone: 'bg-brand-500' }],
   },
   {
     title: 'Hotels & stays',
     items: [
-      { href: '/admin/approvals', label: 'To review', hint: 'New listings from owners waiting for your OK', icon: Inbox, badge: 'review' },
-      { href: '/admin/properties', label: 'All properties', hint: 'Edit, publish, hide or delete any listing', icon: Building },
-      { href: '/admin/import', label: 'Add a property', hint: 'Copy a hotel in from its website', icon: PlusCircle },
+      { href: '/admin/approvals', label: 'To review', hint: 'New listings from owners waiting for your OK', icon: Inbox, tone: 'bg-amber-500', badge: 'review' },
+      { href: '/admin/properties', label: 'All properties', hint: 'Edit, publish, hide or delete any listing', icon: Building, tone: 'bg-sky-500' },
+      { href: '/admin/import', label: 'Add a property', hint: 'Copy a hotel in from its website', icon: PlusCircle, tone: 'bg-emerald-500' },
     ],
   },
   {
     title: 'Customers',
     items: [
-      { href: '/admin/bookings', label: 'Bookings', hint: 'Paid and pending bookings, commission', icon: ShoppingBag },
-      { href: '/admin/inquiries', label: 'Inquiries', hint: 'Questions and leads from the website', icon: MessageSquare, badge: 'inquiries' },
+      { href: '/admin/bookings', label: 'Bookings', hint: 'Paid and pending bookings, commission', icon: ShoppingBag, tone: 'bg-violet-500' },
+      { href: '/admin/inquiries', label: 'Inquiries', hint: 'Questions and leads from the website', icon: MessageSquare, tone: 'bg-pink-500', badge: 'inquiries' },
     ],
   },
   {
     title: 'Tours & transport',
     items: [
-      { href: '/admin/taxis', label: 'Taxi routes', hint: 'Routes and fares', icon: Car },
-      { href: '/admin/treks', label: 'Treks', hint: 'Trek pages and prices', icon: Mountain },
-      { href: '/admin/paragliding', label: 'Paragliding', hint: 'Flight packages', icon: Wind },
-      { href: '/admin/guides', label: 'Local guides', hint: 'Guide profiles', icon: Users },
+      { href: '/admin/taxis', label: 'Taxi routes', hint: 'Routes and fares', icon: Car, tone: 'bg-yellow-500' },
+      { href: '/admin/treks', label: 'Treks', hint: 'Trek pages and prices', icon: Mountain, tone: 'bg-green-600' },
+      { href: '/admin/paragliding', label: 'Paragliding', hint: 'Flight packages', icon: Wind, tone: 'bg-cyan-500' },
+      { href: '/admin/guides', label: 'Local guides', hint: 'Guide profiles', icon: Users, tone: 'bg-orange-500' },
     ],
   },
 ];
@@ -60,49 +61,53 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
   const signOut = async () => { await supabase.auth.signOut(); router.push('/admin/login'); };
 
   return (
-    <div className="bg-slate-50 min-h-[70vh]">
-      {/* Phone / tablet: one scrollable row of tabs */}
-      <nav className="lg:hidden sticky top-0 z-30 bg-white border-b border-slate-200 overflow-x-auto scrollbar-hide" aria-label="Admin menu">
-        <div className="flex gap-1 px-3 py-2 w-max">
+    <div className="bg-slate-100 min-h-[70vh]">
+      {/* Phone / tablet: a swipeable row of big button tabs */}
+      <nav className="lg:hidden sticky top-0 z-30 bg-brand-950 overflow-x-auto scrollbar-hide shadow-md" aria-label="Admin menu">
+        <div className="flex gap-2 px-3 py-3 w-max">
           {ADMIN_NAV.flatMap(g => g.items).map(item => {
             const n = item.badge ? counts[item.badge] : 0;
+            const active = isActive(item.href);
             return (
               <Link key={item.href} href={item.href}
-                className={cn('flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium whitespace-nowrap',
-                  isActive(item.href) ? 'bg-brand-600 text-white' : 'text-slate-600 hover:bg-slate-100')}>
-                <item.icon className="h-4 w-4" />{item.label}
-                {n > 0 && <span className={cn('text-xs font-bold rounded-full px-1.5', isActive(item.href) ? 'bg-white/25' : 'bg-amber-100 text-amber-800')}>{n}</span>}
+                className={cn('flex items-center gap-2 pl-1.5 pr-4 py-1.5 rounded-xl text-[15px] font-semibold whitespace-nowrap transition-colors',
+                  active ? 'bg-white text-brand-900 shadow' : 'bg-white/10 text-white hover:bg-white/20')}>
+                <span className={cn('w-8 h-8 rounded-lg flex items-center justify-center text-white', item.tone)}><item.icon className="h-4 w-4" /></span>
+                {item.label}
+                {n > 0 && <span className="text-xs font-bold rounded-full px-2 py-0.5 bg-red-500 text-white">{n}</span>}
               </Link>
             );
           })}
-          <button onClick={signOut} className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-slate-500 hover:text-red-600 whitespace-nowrap">
+          <button onClick={signOut} className="flex items-center gap-2 px-4 py-1.5 rounded-xl text-[15px] font-semibold text-white/80 bg-white/10 hover:bg-red-500 hover:text-white whitespace-nowrap">
             <LogOut className="h-4 w-4" /> Sign out
           </button>
         </div>
       </nav>
 
       <div className="flex">
-        {/* Desktop: grouped sidebar that stays put */}
-        <aside className="hidden lg:flex flex-col w-64 shrink-0 border-r border-slate-200 bg-white sticky top-0 h-screen overflow-y-auto">
-          <div className="px-5 py-5 border-b border-slate-100">
-            <p className="font-heading font-bold text-slate-900">Admin panel</p>
-            <p className="text-xs text-slate-500">Dharamshala Stay</p>
+        {/* Desktop: dark CRM-style sidebar with big button items */}
+        <aside className="hidden lg:flex flex-col w-72 shrink-0 bg-brand-950 text-white sticky top-0 h-screen overflow-y-auto">
+          <div className="px-6 py-6 border-b border-white/10">
+            <p className="font-heading font-bold text-lg">Admin panel</p>
+            <p className="text-sm text-white/50">Dharamshala Stay</p>
           </div>
-          <nav className="flex-1 px-3 py-4 space-y-5" aria-label="Admin menu">
+          <nav className="flex-1 px-4 py-5 space-y-6" aria-label="Admin menu">
             {ADMIN_NAV.map(group => (
               <div key={group.title}>
-                <p className="px-2 mb-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-400">{group.title}</p>
-                <div className="space-y-0.5">
+                <p className="px-2 mb-2 text-xs font-semibold uppercase tracking-wider text-white/40">{group.title}</p>
+                <div className="space-y-1.5">
                   {group.items.map(item => {
                     const n = item.badge ? counts[item.badge] : 0;
                     const active = isActive(item.href);
                     return (
                       <Link key={item.href} href={item.href} title={item.hint}
-                        className={cn('flex items-center gap-3 px-2.5 py-2 rounded-lg text-sm transition-colors',
-                          active ? 'bg-brand-50 text-brand-700 font-semibold' : 'text-slate-700 hover:bg-slate-100')}>
-                        <item.icon className={cn('h-4 w-4 shrink-0', active ? 'text-brand-600' : 'text-slate-400')} />
+                        className={cn('flex items-center gap-3 p-2 pr-3 rounded-xl text-[15px] font-medium transition-all',
+                          active ? 'bg-white text-brand-900 font-semibold shadow-lg' : 'text-white/85 hover:bg-white/10 hover:text-white')}>
+                        <span className={cn('w-9 h-9 rounded-lg flex items-center justify-center text-white shrink-0 shadow-sm', item.tone)}>
+                          <item.icon className="h-[18px] w-[18px]" />
+                        </span>
                         <span className="flex-1">{item.label}</span>
-                        {n > 0 && <span className="text-xs font-bold rounded-full px-2 py-0.5 bg-amber-100 text-amber-800">{n}</span>}
+                        {n > 0 && <span className="text-xs font-bold rounded-full min-w-[24px] text-center px-2 py-0.5 bg-red-500 text-white">{n}</span>}
                       </Link>
                     );
                   })}
@@ -110,12 +115,12 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
               </div>
             ))}
           </nav>
-          <div className="px-3 py-4 border-t border-slate-100 space-y-0.5">
-            <Link href="/" target="_blank" className="flex items-center gap-3 px-2.5 py-2 rounded-lg text-sm text-slate-600 hover:bg-slate-100">
-              <ExternalLink className="h-4 w-4 text-slate-400" /> View website
+          <div className="px-4 py-4 border-t border-white/10 space-y-1.5">
+            <Link href="/" target="_blank" className="flex items-center gap-3 p-2 pr-3 rounded-xl text-[15px] text-white/80 hover:bg-white/10 hover:text-white">
+              <span className="w-9 h-9 rounded-lg flex items-center justify-center bg-white/10"><ExternalLink className="h-[18px] w-[18px]" /></span> View website
             </Link>
-            <button onClick={signOut} className="w-full flex items-center gap-3 px-2.5 py-2 rounded-lg text-sm text-slate-600 hover:bg-red-50 hover:text-red-600">
-              <LogOut className="h-4 w-4 text-slate-400" /> Sign out
+            <button onClick={signOut} className="w-full flex items-center gap-3 p-2 pr-3 rounded-xl text-[15px] text-white/80 hover:bg-red-500 hover:text-white">
+              <span className="w-9 h-9 rounded-lg flex items-center justify-center bg-white/10"><LogOut className="h-[18px] w-[18px]" /></span> Sign out
             </button>
           </div>
         </aside>
