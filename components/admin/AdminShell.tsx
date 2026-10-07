@@ -86,25 +86,24 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
 
       <div className="flex">
         {/* Desktop: dark CRM-style sidebar with big button items */}
-        <aside className="hidden lg:flex flex-col w-72 shrink-0 bg-brand-950 text-white sticky top-0 h-screen overflow-y-auto">
-          <div className="px-6 py-6 border-b border-white/10">
-            <p className="font-heading font-bold text-lg">Admin panel</p>
-            <p className="text-sm text-white/50">Dharamshala Stay</p>
+        <aside className="hidden lg:flex flex-col w-64 shrink-0 bg-brand-950 text-white sticky top-0 h-screen overflow-y-auto">
+          <div className="px-5 py-3 border-b border-white/10">
+            <p className="font-heading font-bold">Admin panel <span className="font-normal text-sm text-white/50">· Dharamshala Stay</span></p>
           </div>
-          <nav className="flex-1 px-4 py-5 space-y-6" aria-label="Admin menu">
+          <nav className="flex-1 px-3 py-3 space-y-3" aria-label="Admin menu">
             {ADMIN_NAV.map(group => (
               <div key={group.title}>
-                <p className="px-2 mb-2 text-xs font-semibold uppercase tracking-wider text-white/40">{group.title}</p>
-                <div className="space-y-1.5">
+                <p className="px-2 mb-1 text-[11px] font-semibold uppercase tracking-wider text-white/40">{group.title}</p>
+                <div className="space-y-1">
                   {group.items.map(item => {
                     const n = item.badge ? counts[item.badge] : 0;
                     const active = isActive(item.href);
                     return (
                       <Link key={item.href} href={item.href} title={item.hint}
-                        className={cn('flex items-center gap-3 p-2 pr-3 rounded-xl text-[15px] font-medium transition-all',
+                        className={cn('flex items-center gap-2.5 p-1.5 pr-3 rounded-lg text-sm font-medium transition-all',
                           active ? 'bg-white text-brand-900 font-semibold shadow-lg' : 'text-white/85 hover:bg-white/10 hover:text-white')}>
-                        <span className={cn('w-9 h-9 rounded-lg flex items-center justify-center text-white shrink-0 shadow-sm', item.tone)}>
-                          <item.icon className="h-[18px] w-[18px]" />
+                        <span className={cn('w-7 h-7 rounded-md flex items-center justify-center text-white shrink-0 shadow-sm', item.tone)}>
+                          <item.icon className="h-4 w-4" />
                         </span>
                         <span className="flex-1">{item.label}</span>
                         {n > 0 && <span className="text-xs font-bold rounded-full min-w-[24px] text-center px-2 py-0.5 bg-red-500 text-white">{n}</span>}
@@ -115,12 +114,12 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
               </div>
             ))}
           </nav>
-          <div className="px-4 py-4 border-t border-white/10 space-y-1.5">
-            <Link href="/" target="_blank" className="flex items-center gap-3 p-2 pr-3 rounded-xl text-[15px] text-white/80 hover:bg-white/10 hover:text-white">
-              <span className="w-9 h-9 rounded-lg flex items-center justify-center bg-white/10"><ExternalLink className="h-[18px] w-[18px]" /></span> View website
+          <div className="px-3 py-2.5 border-t border-white/10 grid grid-cols-2 gap-1.5">
+            <Link href="/" target="_blank" className="flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-medium text-white/80 bg-white/10 hover:bg-white/20 hover:text-white">
+              <ExternalLink className="h-3.5 w-3.5" /> View website
             </Link>
-            <button onClick={signOut} className="w-full flex items-center gap-3 p-2 pr-3 rounded-xl text-[15px] text-white/80 hover:bg-red-500 hover:text-white">
-              <span className="w-9 h-9 rounded-lg flex items-center justify-center bg-white/10"><LogOut className="h-[18px] w-[18px]" /></span> Sign out
+            <button onClick={signOut} className="flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-medium text-white/80 bg-white/10 hover:bg-red-500 hover:text-white">
+              <LogOut className="h-3.5 w-3.5" /> Sign out
             </button>
           </div>
         </aside>
