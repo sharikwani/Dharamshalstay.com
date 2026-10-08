@@ -659,7 +659,7 @@ January is also peak snow season on the Dhauladhar, so pack properly for cold ni
 
 ### April–May: Cricket season
 
-The **HPCA Stadium** in Dharamshala, one of the world's most scenic cricket grounds, has hosted IPL and international matches in recent seasons. Fixtures change every year, so check the official BCCI and IPL schedules. When there is a match, hotel prices in Dharamshala jump and roads near the stadium are congested. Our [HPCA Cricket Stadium guide](/blog/hpca-cricket-stadium-guide) covers tickets, entry and access.
+The **HPCA Stadium** in Dharamshala, one of the world's most scenic cricket grounds, has hosted IPL and international matches in recent seasons. Fixtures change every year, so check the official BCCI and IPL schedules. When there is a match, hotel prices in Dharamshala jump and roads near the stadium are congested. Our [HPCA Cricket Stadium guide](/blog/hpca-cricket-stadium-guide) covers Dharamshala stadium timings, tickets, entry and access.
 
 ### May–June: Saga Dawa
 

@@ -63,7 +63,7 @@ Buses usually reach between 5 and 7 am, but hotel check-in is often at noon. Ask
 | 4:15-6:00 pm | Naddi viewpoint and Dal Lake for sunset | Short taxi ride; book the return before it gets dark |
 | 7:00 pm | Dinner in McLeod Ganj, early night | Triund starts early tomorrow |
 
-Useful reading: [Dalai Lama Temple guide](/blog/dalai-lama-temple-guide), [Bhagsu travel guide](/blog/bhagsu-travel-guide), [Naddi and Dal Lake guide](/blog/naddi-dal-lake-guide) and [Tibetan food in McLeod Ganj](/blog/tibetan-food-mcleod-ganj).
+Useful reading: [Dalai Lama Temple timings and guide](/blog/dalai-lama-temple-guide), [Bhagsu travel guide](/blog/bhagsu-travel-guide), [Naddi and Dal Lake guide](/blog/naddi-dal-lake-guide) and [Tibetan food in McLeod Ganj](/blog/tibetan-food-mcleod-ganj).
 
 ### Day 2, Option A: Triund Day Trek
 
@@ -109,7 +109,7 @@ Do days 1 and 2 as above, then sleep a second night instead of catching the bus.
 | 2:30-3:30 pm | Kangra Fort, if you are heading towards the airport or Pathankot | About 20 km from Dharamshala; allow 1-1.5 hours |
 | Evening | Flight from Gaggal, or the overnight bus to Delhi | |
 
-A sightseeing taxi for this loop costs approx. ₹2,500-3,500 per car as of 2026. See [Sidhbari, Norbulingka and Gyuto](/blog/sidhbari-norbulingka-gyuto-guide), [HPCA Stadium guide](/blog/hpca-cricket-stadium-guide) and [places to visit in Dharamshala](/blog/places-to-visit-in-dharamshala).
+A sightseeing taxi for this loop costs approx. ₹2,500-3,500 per car as of 2026. See [Sidhbari, Norbulingka and Gyuto](/blog/sidhbari-norbulingka-gyuto-guide), [Dharamshala stadium timings and tickets](/blog/hpca-cricket-stadium-guide) and [places to visit in Dharamshala](/blog/places-to-visit-in-dharamshala).
 
 **Swap option for adventure fans:** replace day 3 with **paragliding at Bir Billing**, about 70 km away (2-2.5 hours by road). A day-trip taxi costs approx. ₹3,500-5,000 per car and a tandem flight approx. ₹3,000-4,000. Remember Bir flying is closed from 15 July to 15 September. Book on our [paragliding page](/paragliding) and read the [Bir Billing guide](/blog/bir-billing-paragliding-guide).
 

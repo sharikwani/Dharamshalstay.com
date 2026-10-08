@@ -26,7 +26,7 @@ The main temple of the Tibetan community in exile, the official residence of the
 - **Time needed:** 1 to 2 hours (add an hour for the museum)
 - **Entry:** free
 - **Timings:** roughly early morning to evening; go before 9 am for prayers and few crowds
-- **Tip:** no photography inside the shrine halls; dress modestly. Our full [Dalai Lama Temple guide](/blog/dalai-lama-temple-guide) covers etiquette and public teachings.
+- **Tip:** no photography inside the shrine halls; dress modestly. Our full [Dalai Lama Temple timings and etiquette guide](/blog/dalai-lama-temple-guide) also covers public teachings.
 
 ### 2. Tibet Museum
 
@@ -755,7 +755,7 @@ Kangra town itself has limited good accommodation, while Dharamshala and McLeod 
     slug: 'dalai-lama-temple-guide',
     title: 'Dalai Lama Temple, McLeod Ganj (2026): Timings, Etiquette, Teachings and Kora',
     excerpt: 'A complete visitor guide to the Tsuglagkhang complex in McLeod Ganj: what is inside, opening hours, dress code, photography rules, the Tibet Museum, the kora walk, and how to attend a public teaching.',
-    content: `The **Dalai Lama Temple** in McLeod Ganj, properly called the **Tsuglagkhang complex**, is open to everyone, free of charge, roughly from early morning until early evening every day. It contains the main temple with a large gilded Buddha, the Kalachakra temple, **Namgyal Monastery** and the official residence of the Dalai Lama. Plan on 1 to 2 hours, dress modestly, leave your camera in your bag inside the shrine halls, and walk the **kora** path around the complex while you are there.
+    content: `The **Dalai Lama Temple** in McLeod Ganj, properly called the **Tsuglagkhang complex**, is open to everyone, free of charge, every day from about **5 to 6 am until 7 to 8 pm** (hours shift slightly with the season; morning prayers run roughly 5 to 7 am). It contains the main temple with a large gilded Buddha, the Kalachakra temple, **Namgyal Monastery** and the official residence of the Dalai Lama. Plan on 1 to 2 hours, dress modestly, leave your camera in your bag inside the shrine halls, and walk the **kora** path around the complex while you are there.
 
 If you hope to see the Dalai Lama, the only realistic way is to attend a **public teaching or event** when one is scheduled. These are announced on the official website, dalailama.com, and require registration in McLeod Ganj a few days before. Details are below.
 

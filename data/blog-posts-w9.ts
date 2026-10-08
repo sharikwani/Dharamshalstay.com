@@ -53,7 +53,7 @@ The British took the area after the Anglo-Sikh wars and set up a cantonment in t
 
 Everything changed after 1959. The 14th Dalai Lama fled Tibet, and in 1960 the Indian government offered McLeod Ganj as a home for him and his government in exile. Monasteries, schools, the Tibetan Children's Village, the Library of Tibetan Works and Archives and the Central Tibetan Administration followed, and the town earned the nickname "Little Lhasa". Today Dharamshala is also Himachal's winter capital, an international cricket venue, and one of north India's most-visited hill destinations.
 
-Read more: [Dalai Lama Temple guide](/blog/dalai-lama-temple-guide), [Tibetan culture and etiquette](/blog/tibetan-culture-etiquette-guide), [Gaddi shepherds and their culture](/blog/gaddi-shepherds-culture), [Kangra Valley places to visit](/blog/places-to-visit-in-kangra).
+Read more: [Dalai Lama Temple timings](/blog/dalai-lama-temple-guide), [Tibetan culture and etiquette](/blog/tibetan-culture-etiquette-guide), [Gaddi shepherds and their culture](/blog/gaddi-shepherds-culture), [Kangra Valley places to visit](/blog/places-to-visit-in-kangra).
 
 ## When to go: season by season
 
@@ -147,7 +147,7 @@ Read more: [Best hotels in Dharamshala](/blog/best-hotels-in-dharamshala), [Best
 | Masroor temples | 40 to 45 km | 1 to 1.5 h | Small ASI fee |
 | HPCA stadium | 9 to 10 km | 30 to 60 min | Check at gate on non-match days |
 
-Read more: [24 places to visit in Dharamshala](/blog/places-to-visit-in-dharamshala), [Things to do in McLeod Ganj](/blog/things-to-do-in-mcleod-ganj), [Places to visit in Kangra](/blog/places-to-visit-in-kangra), [Kangra Devi temples guide](/blog/kangra-devi-temples-guide), [HPCA cricket stadium guide](/blog/hpca-cricket-stadium-guide), [Sidhbari, Norbulingka and Gyuto](/blog/sidhbari-norbulingka-gyuto-guide).
+Read more: [24 places to visit in Dharamshala](/blog/places-to-visit-in-dharamshala), [Things to do in McLeod Ganj](/blog/things-to-do-in-mcleod-ganj), [Places to visit in Kangra](/blog/places-to-visit-in-kangra), [Kangra Devi temples guide](/blog/kangra-devi-temples-guide), [Dharamshala stadium timings](/blog/hpca-cricket-stadium-guide), [Sidhbari, Norbulingka and Gyuto](/blog/sidhbari-norbulingka-gyuto-guide).
 
 ## Treks and outdoor adventures
 
