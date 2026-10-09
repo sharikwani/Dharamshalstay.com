@@ -40,13 +40,15 @@ describe('sendTemplate', () => {
     vi.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('offline'));
     expect(await sendTemplate({ to: '919816000005', template: 'x', params: [] })).toEqual({ ok: false, error: 'offline' });
   });
-  it('sends with a timeout signal and returns an error when it times out', async () => {
+  it('sends with a 5 second timeout signal and returns an error when it times out', async () => {
     vi.stubEnv('WHATSAPP_TOKEN', 'tok'); vi.stubEnv('WHATSAPP_PHONE_NUMBER_ID', '123');
+    const timeoutSpy = vi.spyOn(AbortSignal, 'timeout');
     const fetchMock = vi.spyOn(globalThis, 'fetch').mockRejectedValue(new DOMException('The operation was aborted due to timeout', 'TimeoutError'));
     const r = await sendTemplate({ to: '919816000005', template: 'x', params: [] });
     expect(r.ok).toBe(false);
     expect((r as { error?: string }).error).toMatch(/timeout/i);
     expect((fetchMock.mock.calls[0][1] as RequestInit).signal).toBeInstanceOf(AbortSignal);
+    expect(timeoutSpy).toHaveBeenCalledWith(5000);
   });
 });
 

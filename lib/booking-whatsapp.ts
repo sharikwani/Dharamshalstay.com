@@ -61,17 +61,39 @@ async function loadRecipients(v: BookingView): Promise<Recipient[]> {
   return recipientsFor(v, { partner, staff, property, guide });
 }
 
-/** Send one template and log the attempt. Skipped sends are not logged. Never throws. */
+/**
+ * Send one template and log the attempt. A 'queued' row is written before the send so the
+ * attempt is recorded even if the send never returns; it is then updated to 'sent' or 'failed'.
+ * Nothing is logged when WhatsApp is not configured. Never throws.
+ */
 async function sendAndLog(bookingId: string, kind: RecipientKind | 'customer', to: string, template: string, params: string[]) {
   try {
+    if (!isWhatsAppConfigured()) return;
+    const sb = serviceClient();
+    const base = { booking_id: bookingId, recipient_kind: kind, to_phone: to, template };
+    const { data: queued, error: qErr } = await sb.from('whatsapp_messages').insert({ ...base, status: 'queued' }).select('id').single();
+    if (qErr) console.error('WhatsApp: could not log queued message:', qErr);
     const r = await sendTemplate({ to, template, params });
-    if (!r.ok && r.skipped) return;
-    const { error } = await serviceClient().from('whatsapp_messages').insert({
-      booking_id: bookingId, recipient_kind: kind, to_phone: to, template,
+    if (!r.ok && r.skipped) {
+      if (queued?.id) {
+        const { error } = await sb.from('whatsapp_messages').delete().eq('id', queued.id);
+        if (error) console.error('WhatsApp: could not remove skipped message:', error);
+      }
+      return;
+    }
+    const result = {
       wa_message_id: r.ok ? r.id : null, status: r.ok ? 'sent' : 'failed', error: r.ok ? null : r.error || 'Unknown error',
-    });
+    };
+    const { error } = queued?.id
+      ? await sb.from('whatsapp_messages').update({ ...result, updated_at: new Date().toISOString() }).eq('id', queued.id)
+      : await sb.from('whatsapp_messages').insert({ ...base, ...result });
     if (error) console.error('WhatsApp: could not log message:', error);
   } catch (e) { console.error('WhatsApp send failed:', e); }
+}
+
+/** Send to every recipient at once so one slow number does not hold up the others. */
+async function sendAll(bookingId: string, recipients: Recipient[], template: string, params: string[]) {
+  await Promise.allSettled(recipients.map((r) => sendAndLog(bookingId, r.kind, r.phone, template, params)));
 }
 
 /** New-booking alert to partner/staff/hotel/guide, optionally a confirmation to the customer. Never throws. */
@@ -81,11 +103,11 @@ export async function whatsappNewBooking(bookingId: string, opts: { customer: bo
     const v = await loadBookingView(bookingId);
     if (!v) return;
     const params = newBookingParams(v);
-    for (const r of await loadRecipients(v)) await sendAndLog(bookingId, r.kind, r.phone, 'booking_new_partner', params);
-    if (opts.customer) {
-      const to = normalizeIndianPhone(v.guest_phone);
-      if (to) await sendAndLog(bookingId, 'customer', to, 'booking_confirmed_customer', customerParams(v));
-    }
+    const customerTo = opts.customer ? normalizeIndianPhone(v.guest_phone) : null;
+    await Promise.allSettled([
+      sendAll(bookingId, await loadRecipients(v), 'booking_new_partner', params),
+      customerTo ? sendAndLog(bookingId, 'customer', customerTo, 'booking_confirmed_customer', customerParams(v)) : null,
+    ]);
   } catch (e) { console.error('WhatsApp new booking alert failed:', e); }
 }
 
@@ -96,7 +118,7 @@ export async function whatsappCancelled(bookingId: string, reason: string): Prom
     const v = await loadBookingView(bookingId);
     if (!v) return;
     const params = cancelledParams(v, reason);
-    for (const r of await loadRecipients(v)) await sendAndLog(bookingId, r.kind, r.phone, 'booking_cancelled_partner', params);
+    await sendAll(bookingId, await loadRecipients(v), 'booking_cancelled_partner', params);
   } catch (e) { console.error('WhatsApp cancellation alert failed:', e); }
 }
 
@@ -108,6 +130,6 @@ export async function whatsappReassignedAway(bookingId: string, previousPartnerI
     if (!v) return;
     const partner = await row('profiles', previousPartnerId, 'whatsapp_number, whatsapp_alerts, phone');
     const params = cancelledParams(v, 'Reassigned to another partner - you no longer need to take it');
-    for (const r of recipientsFor(v, { partner })) await sendAndLog(bookingId, r.kind, r.phone, 'booking_cancelled_partner', params);
+    await sendAll(bookingId, recipientsFor(v, { partner }), 'booking_cancelled_partner', params);
   } catch (e) { console.error('WhatsApp reassignment alert failed:', e); }
 }
