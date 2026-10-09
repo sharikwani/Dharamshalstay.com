@@ -1,0 +1,56 @@
+import { NextResponse } from 'next/server';
+import { createClient, type SupabaseClient, type User } from '@supabase/supabase-js';
+
+export class HttpError extends Error {
+  constructor(public status: number, message: string) { super(message); }
+}
+
+export type Caller = { user: User; profile: Record<string, any> };
+
+export function serviceClient(): SupabaseClient {
+  return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
+}
+
+export function bearerFrom(req: Request): string | null {
+  const h = req.headers.get('authorization') || '';
+  const m = /^Bearer\s+(.+)$/i.exec(h);
+  return m ? m[1].trim() : null;
+}
+
+/** The signed-in user behind this request and their profile row, or null. */
+export async function getCaller(req: Request): Promise<Caller | null> {
+  const token = bearerFrom(req);
+  if (!token) return null;
+  const sb = serviceClient();
+  const { data: { user } } = await sb.auth.getUser(token);
+  if (!user) return null;
+  const { data: profile } = await sb.from('profiles').select('*').eq('id', user.id).single();
+  if (!profile) return null;
+  return { user, profile };
+}
+
+export async function requireCaller(req: Request, roles?: string[]): Promise<Caller> {
+  const caller = await getCaller(req);
+  if (!caller) throw new HttpError(401, 'Please log in again');
+  if (roles && !roles.includes(caller.profile.role)) throw new HttpError(403, 'You do not have access to this');
+  return caller;
+}
+
+export function jsonError(e: unknown): NextResponse {
+  if (e instanceof HttpError) return NextResponse.json({ error: e.message }, { status: e.status });
+  console.error(e);
+  return NextResponse.json({ error: 'Server error' }, { status: 500 });
+}
+
+/** Client IP for audit records. Prefers headers set by the Vercel edge; the first X-Forwarded-For entry is client-controlled, so use the last. */
+export function clientIp(req: Request): string {
+  const h = req.headers;
+  const vercel = h.get('x-vercel-forwarded-for')?.split(',')[0].trim();
+  if (vercel) return vercel;
+  const real = h.get('x-real-ip')?.trim();
+  if (real) return real;
+  const parts = (h.get('x-forwarded-for') || '').split(',').map((p) => p.trim()).filter(Boolean);
+  return parts.length ? parts[parts.length - 1] : 'unknown';
+}

@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Download, Loader2, Check, AlertCircle, Save, Send, Hotel, Sparkles, Copy, LinkIcon, X, ImageIcon } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { supabase, authFetch } from '@/lib/supabase';
 import { slugify, formatPrice } from '@/lib/utils';
 
 type Step = 'input' | 'extracting' | 'review' | 'done';
@@ -34,7 +34,7 @@ export default function AdminImportPage() {
     }
     setError(''); setStep('extracting');
     try {
-      const res = await fetch('/api/admin/import-property', {
+      const res = await authFetch('/api/admin/import-property', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ rawContent: rawContent.trim() }),

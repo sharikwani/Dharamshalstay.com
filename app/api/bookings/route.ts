@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { quoteBooking } from '@/lib/pricing';
+import { sendBookingEmails } from '@/lib/booking-emails';
+import { getCaller } from '@/lib/server-auth';
 
 /** Get today in IST as YYYY-MM-DD (same logic as client-side getTodayIST) */
 function getTodayIST(): string {
@@ -26,12 +29,11 @@ const schema = z.object({
   pickup_location: z.string().optional(),
   drop_location: z.string().optional(),
   vehicle_type: z.string().optional(),
-  amount: z.number().min(0).default(0),
+  plan_index: z.number().int().min(0).max(50).optional().nullable(),
   payment_method: z.enum(['online', 'offline', 'pay_at_hotel', 'partial_online']).default('offline'),
   booking_source: z.enum(['website', 'whatsapp', 'phone', 'walkin', 'admin']).default('website'),
-  commission_pct: z.number().min(0).max(100).default(10),
-  user_id: z.string().uuid().optional().nullable(),
   room_name: z.string().optional(),
+  plan_name: z.string().max(200).optional(),
 });
 
 export async function POST(req: NextRequest) {
@@ -43,6 +45,9 @@ export async function POST(req: NextRequest) {
     }
 
     const data = parsed.data;
+    // Never trust a user_id from the body: derive it from the caller's token.
+    const caller = await getCaller(req);
+    const userId = caller?.user.id ?? null;
 
     // Server-side date validation using IST (matches frontend)
     const today = getTodayIST();
@@ -61,17 +66,31 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Check-in and check-out dates are required for hotel bookings' }, { status: 400 });
     }
 
-    // Calculate commission
-    const commission_amount = Math.round(data.amount * data.commission_pct / 100);
-    const commission_status = (data.payment_method === 'offline' || data.payment_method === 'pay_at_hotel') && commission_amount > 0
-      ? 'pending' : 'not_applicable';
-
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
     if (url && key) {
       const { createClient } = await import('@supabase/supabase-js');
       const sb = createClient(url, key);
+
+      // Price comes from the database row, never from the browser.
+      const TABLE = { hotel: 'properties', taxi: 'taxi_routes', trek: 'treks', paragliding: 'paragliding_packages' } as const;
+      const entityId = data.property_id || data.taxi_route_id || data.trek_id || data.paragliding_id || null;
+      let entity: Record<string, any> | null = null;
+      if (entityId) {
+        const { data: row } = await sb.from(TABLE[data.category]).select('*').eq('id', entityId).single();
+        entity = row || null;
+      }
+      const { amount, commission_pct } = quoteBooking(data.category, entity, {
+        num_guests: data.num_guests, check_in: data.check_in, check_out: data.check_out,
+        room_name: data.room_name, plan_index: data.plan_index ?? null,
+      });
+      const commission_amount = Math.round(amount * commission_pct / 100);
+      // Online payment needs a price; quote-only bookings are taken as pay-later.
+      const payment_method = data.payment_method === 'online' && (amount < 100 || !process.env.STRIPE_SECRET_KEY) ? 'offline' : data.payment_method;
+      const commission_status = (payment_method === 'offline' || payment_method === 'pay_at_hotel') && commission_amount > 0
+        ? 'pending' : 'not_applicable';
+      const room_label = data.room_name ? (data.plan_name ? `${data.room_name} - ${data.plan_name}` : data.room_name) : null;
 
       const { data: booking, error } = await sb.from('bookings').insert({
         category: data.category,
@@ -91,16 +110,16 @@ export async function POST(req: NextRequest) {
         pickup_location: data.pickup_location || null,
         drop_location: data.drop_location || null,
         vehicle_type: data.vehicle_type || null,
-        amount: data.amount,
-        payment_method: data.payment_method,
+        amount,
+        payment_method,
         payment_status: 'pending',
         status: 'pending',
         booking_source: data.booking_source,
-        commission_pct: data.commission_pct,
+        commission_pct,
         commission_amount,
         commission_status,
-        user_id: data.user_id || null,
-        room_name: data.room_name || null,
+        user_id: userId,
+        room_name: room_label,
       }).select().single();
 
       if (error) {
@@ -117,7 +136,7 @@ export async function POST(req: NextRequest) {
               type: 'booking_new', recipient_type: 'hotel',
               recipient_email: prop.contact_email, recipient_phone: prop.contact_phone,
               subject: `New Booking: ${data.guest_name} - ${prop.name}`,
-              body: JSON.stringify({ booking_ref: booking.booking_ref, guest: data.guest_name, phone: data.guest_phone, check_in: data.check_in, check_out: data.check_out, guests: data.num_guests, amount: data.amount, payment: data.payment_method }),
+              body: JSON.stringify({ booking_ref: booking.booking_ref, guest: data.guest_name, phone: data.guest_phone, check_in: data.check_in, check_out: data.check_out, guests: data.num_guests, amount, payment: payment_method }),
               booking_id: booking.id, property_id: data.property_id, status: 'queued',
             });
           }
@@ -125,14 +144,15 @@ export async function POST(req: NextRequest) {
         await sb.from('notification_log').insert({
           type: 'booking_new', recipient_type: 'admin',
           subject: `New ${data.category} Booking: ${booking.booking_ref}`,
-          body: JSON.stringify({ booking_ref: booking.booking_ref, category: data.category, guest: data.guest_name, amount: data.amount }),
+          body: JSON.stringify({ booking_ref: booking.booking_ref, category: data.category, guest: data.guest_name, amount }),
           booking_id: booking.id, property_id: data.property_id || null, status: 'queued',
         });
       } catch (notifErr) {
         console.error('Notification logging failed (non-fatal):', notifErr);
       }
 
-      return NextResponse.json({ success: true, booking_ref: booking.booking_ref, booking_id: booking.id });
+      if (payment_method !== 'online') await sendBookingEmails(booking.id);
+      return NextResponse.json({ success: true, booking_ref: booking.booking_ref, booking_id: booking.id, amount, payment_method });
     } else {
       console.log('[Booking] No Supabase:', JSON.stringify(data, null, 2));
       return NextResponse.json({ success: true, booking_ref: 'BKG-DEMO-00001' });

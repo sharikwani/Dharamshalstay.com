@@ -1,14 +1,21 @@
 'use client';
-import { useState, FormEvent } from 'react';
+import { useEffect, useState, FormEvent } from 'react';
 import Link from 'next/link';
 import { Building, Eye, EyeOff } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { PARTNER_TYPE_LABELS, PARTNER_TYPES, type PartnerType } from '@/lib/partners/types';
 
 export default function PartnerRegister() {
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [ptype, setPtype] = useState<PartnerType>('hotel');
+
+  useEffect(() => {
+    const t = new URLSearchParams(window.location.search).get('type');
+    if (t && (PARTNER_TYPES as readonly string[]).includes(t)) setPtype(t as PartnerType);
+  }, []);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault(); setLoading(true); setError('');
@@ -21,7 +28,7 @@ export default function PartnerRegister() {
 
     const { error: err } = await supabase.auth.signUp({
       email, password,
-      options: { data: { role: 'partner', full_name, phone, business_name } },
+      options: { data: { role: 'partner', partner_type: ptype, full_name, phone, business_name } },
     });
 
     if (err) { setError(err.message); setLoading(false); return; }
@@ -33,7 +40,7 @@ export default function PartnerRegister() {
       <div className="max-w-md text-center">
         <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"><Building className="h-8 w-8 text-green-600" /></div>
         <h1 className="text-2xl font-heading font-bold text-slate-900 mb-2">Registration Successful!</h1>
-        <p className="text-slate-600 mb-6">Please check your email to verify your account. Once verified, you can log in and start adding your property.</p>
+        <p className="text-slate-600 mb-6">Please check your email to verify your account. Once verified, you can log in and finish setting up your account.</p>
         <Link href="/partner/login" className="bg-brand-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-brand-700 transition-colors inline-block">Go to Login</Link>
       </div>
     </div>
@@ -44,18 +51,29 @@ export default function PartnerRegister() {
       <div className="w-full max-w-lg">
         <div className="text-center mb-8">
           <Building className="h-10 w-10 text-brand-600 mx-auto mb-3" />
-          <h1 className="text-2xl font-heading font-bold text-slate-900 mb-1">List Your Property</h1>
-          <p className="text-slate-600">Create a partner account to list your hotel, homestay, or hostel on Dharamshala Stay.</p>
+          <h1 className="text-2xl font-heading font-bold text-slate-900 mb-1">Become a Partner</h1>
+          <p className="text-slate-600">Create a partner account for your hotel, paragliding, taxi or trek business on Dharamshala Stay.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8 space-y-4 shadow-sm">
+          <fieldset>
+            <legend className="block text-sm font-medium text-slate-700 mb-2">What do you offer? *</legend>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {PARTNER_TYPES.map((t) => (
+                <label key={t} className={'flex items-center gap-2 border rounded-lg px-3 py-2.5 text-sm cursor-pointer ' + (ptype === t ? 'border-brand-600 bg-brand-50' : 'border-slate-300')}>
+                  <input type="radio" name="partner_type" value={t} checked={ptype === t} onChange={() => setPtype(t)} />
+                  {PARTNER_TYPE_LABELS[t]}
+                </label>
+              ))}
+            </div>
+          </fieldset>
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Full Name *</label>
             <input name="full_name" required className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" placeholder="Your full name" />
           </div>
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Business / Property Name *</label>
-            <input name="business_name" required className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" placeholder="e.g. Mountain View Homestay" />
+            <input name="business_name" required className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" placeholder="e.g. Mountain View Homestay or Bir Sky Paragliding" />
           </div>
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Phone Number *</label>

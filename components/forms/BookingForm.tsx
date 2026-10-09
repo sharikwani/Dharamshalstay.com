@@ -4,7 +4,7 @@ import { Send, Check, AlertCircle, CreditCard, Loader2, Building, Moon } from 'l
 import { formatPrice } from '@/lib/utils';
 import { useT } from '@/lib/i18n/client';
 import { fmt } from '@/lib/i18n/dict';
-import { supabase } from '@/lib/supabase';
+import { authFetch } from '@/lib/supabase';
 import { getMinDate, getMinCheckoutDate, validateBookingDates, validateActivityDate, enforceCheckIn, enforceCheckOut, enforceActivityDate } from '@/lib/date-helpers';
 
 interface BookingFormProps {
@@ -14,7 +14,8 @@ interface BookingFormProps {
   pricePerNight?: number;
   defaultAmount?: number;
   roomName?: string;
-  commissionPct?: number;
+  planName?: string;
+  planIndex?: number;
   className?: string;
 }
 
@@ -26,7 +27,7 @@ function calcNights(checkIn: string, checkOut: string): number {
   return diff > 0 ? diff : 0;
 }
 
-export default function BookingForm({ category, entityId, entityName, pricePerNight, defaultAmount, roomName, commissionPct = 10, className = '' }: BookingFormProps) {
+export default function BookingForm({ category, entityId, entityName, pricePerNight, defaultAmount, roomName, planName, planIndex, className = '' }: BookingFormProps) {
   const { t } = useT();
   const f = t.form;
   const [status, setStatus] = useState<'idle' | 'loading' | 'paying' | 'success' | 'error'>('idle');
@@ -100,15 +101,14 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
     setStatus('loading'); setErrorMsg('');
 
     const fd = new FormData(e.currentTarget);
-    let userId: string | null = null;
-    try { const { data: { user } } = await supabase.auth.getUser(); if (user) userId = user.id; } catch {}
 
     const payload: Record<string, any> = {
       category, guest_name: fd.get('guest_name'), guest_email: fd.get('guest_email') || '',
       guest_phone: fd.get('guest_phone'), num_guests: Number(fd.get('num_guests')) || 1,
-      special_requests: fd.get('special_requests') || '', amount: totalAmount,
-      payment_method: payMethod, booking_source: 'website', commission_pct: commissionPct,
-      user_id: userId, room_name: roomName || '',
+      special_requests: fd.get('special_requests') || '',
+      payment_method: payMethod, booking_source: 'website',
+      room_name: roomName || '', plan_name: planName || '',
+      plan_index: typeof planIndex === 'number' ? planIndex : null,
     };
 
     if (isHotel) { payload.check_in = checkIn; payload.check_out = checkOut; payload.property_id = entityId || null; }
@@ -117,23 +117,20 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
     else if (category === 'paragliding') { payload.activity_date = activityDate; payload.paragliding_id = entityId || null; }
 
     try {
-      const res = await fetch('/api/bookings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      const res = await authFetch('/api/bookings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
       const data = await res.json();
       if (!res.ok) { setErrorMsg(data.error || f.bookingFailed); setStatus('error'); return; }
 
-      if (payMethod === 'online' && totalAmount >= 100) {
+      if (payMethod === 'online' && data.payment_method === 'online' && data.amount >= 100) {
         setStatus('paying');
-        const cr = await fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ bookingId: data.booking_id, bookingRef: data.booking_ref, amount: totalAmount, guestName: fd.get('guest_name'), guestEmail: fd.get('guest_email') || '', hotelName: entityName || '', roomName: roomName || '', checkIn, checkOut }),
-        });
+        const cr = await fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ bookingId: data.booking_id }) });
         const cd = await cr.json();
         if (cd.url) { window.location.href = cd.url; return; }
-        else { setErrorMsg(f.paymentFailed); setBookingRef(data.booking_ref || ''); setStatus('success'); return; }
+        setErrorMsg(f.paymentFailed); setBookingRef(data.booking_ref || ''); setStatus('success'); return;
       }
 
       setBookingRef(data.booking_ref || '');
       setStatus('success');
-      if (data.booking_id) { fetch('/api/email/booking-confirmation', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ bookingId: data.booking_id }) }).catch(() => {}); }
     } catch { setErrorMsg(f.networkError); setStatus('error'); }
   }
 

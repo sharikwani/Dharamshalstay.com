@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Home, Inbox, Building, PlusCircle, ShoppingBag, MessageSquare, Car, Mountain, Wind, Users, LogOut, ExternalLink } from 'lucide-react';
+import { Home, Inbox, Building, PlusCircle, ShoppingBag, MessageSquare, Car, Mountain, Wind, Users, LogOut, ExternalLink, BadgeCheck } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
 
@@ -28,6 +28,12 @@ export const ADMIN_NAV: { title: string; items: NavItem[] }[] = [
     items: [
       { href: '/admin/bookings', label: 'Bookings', hint: 'Paid and pending bookings, commission', icon: ShoppingBag, tone: 'bg-violet-500' },
       { href: '/admin/inquiries', label: 'Inquiries', hint: 'Questions and leads from the website', icon: MessageSquare, tone: 'bg-pink-500', badge: 'inquiries' },
+    ],
+  },
+  {
+    title: 'Partners',
+    items: [
+      { href: '/admin/partners', label: 'Partners', hint: 'Verify paragliding, taxi and trek partners', icon: BadgeCheck, tone: 'bg-teal-500' },
     ],
   },
   {

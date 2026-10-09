@@ -127,7 +127,7 @@ export default async function ParaglidingView({ lang }: { lang: Lang }) {
             </div>
             <div>
               <div id="book" className="sticky top-20 space-y-4">
-                <BookingForm category="paragliding" entityName="Paragliding Flight" defaultAmount={packages[0]?.price_per_person || 3500} commissionPct={15} />
+                <BookingForm category="paragliding" entityId={packages[0]?.id} entityName="Paragliding Flight" defaultAmount={packages[0]?.price_per_person || 3500} />
                 <a href={getWhatsAppLink(p.whatsappGeneral)} target="_blank" rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 bg-green-700 text-white py-3 rounded-xl font-medium hover:bg-green-800 w-full">
                   <MessageCircle className="h-4 w-4" /> {t.home.ctaWhatsApp}

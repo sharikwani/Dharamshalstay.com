@@ -158,7 +158,7 @@ a time limit (2 h; taxi 15 min) or the booking is escalated to admin.
 - New **private** bucket `partner-kyc`. Uploads go through an API route
   (service role) that checks the caller owns the record; files are read only
   via short-lived signed URLs generated for admins (and for the owner, their
-  own documents). Max 8 MB; jpg/png/pdf. Storage policies written as SQL in the
+  own documents). Max 4 MB; jpg/png/pdf. Storage policies written as SQL in the
   migration, not set by hand.
 
 ### RLS summary
@@ -335,3 +335,10 @@ partner B's data.
 - `CRON_SECRET`, `BOOKING_TOKEN_SECRET`.
 - Lawyer-reviewed agreement text.
 - Running each `supabase/migration-v14+.sql` file in the Supabase SQL editor.
+
+## 12. Changes made during planning (2026-10-09)
+
+1. **Server-rendered page guards (spec §3 item 5) are deferred.** The site stores the Supabase session in browser localStorage, not cookies, so server pages cannot see it without migrating all auth to `@supabase/ssr` cookies. Data stays protected by RLS and by bearer-token checks in every API route; page redirects remain client-side. Revisit in a dedicated auth task.
+2. **Drivers and pilots share one table, `partner_staff`** (`role` = `driver` | `pilot` | `guide`), instead of separate `drivers`/pilot tables. Driver logins arrive in Phase 2.
+3. **No `agreement_versions` table yet.** The agreement text and version live in code (`lib/partners/agreement.ts`); each signature stores a full snapshot of the text plus its hash. An admin editor for new versions is deferred.
+4. **Booking confirmation emails** are sent from server code (`lib/booking-emails.ts`); the public `/api/email/booking-confirmation` route is deleted rather than protected with a secret.

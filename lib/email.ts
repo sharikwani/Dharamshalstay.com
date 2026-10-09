@@ -8,6 +8,15 @@ function getResend(): Resend {
 
 const FROM = process.env.EMAIL_FROM || 'Dharamshala Stay <bookings@dharamshalastay.com>';
 
+const ADMIN_TO = process.env.ADMIN_EMAIL || 'hello@dharamshalastay.com';
+export const adminEmail = () => ADMIN_TO;
+
+export async function sendEmail(msg: { to: string | string[]; subject: string; html: string; attachments?: { filename: string; content: Buffer }[] }): Promise<void> {
+  if (!process.env.RESEND_API_KEY) { console.log('[email skipped: no RESEND_API_KEY]', msg.subject); return; }
+  const { error } = await getResend().emails.send({ from: FROM, to: msg.to, subject: msg.subject, html: msg.html, attachments: msg.attachments });
+  if (error) console.error('Email failed:', msg.subject, error);
+}
+
 export async function sendBookingConfirmation(booking: {
   guest_name: string; guest_email: string; booking_ref: string;
   check_in?: string; check_out?: string; activity_date?: string;

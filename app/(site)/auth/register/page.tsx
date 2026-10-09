@@ -18,24 +18,13 @@ export default function UserRegisterPage() {
     if (form.password.length < 6) { setError('Password must be at least 6 characters'); return; }
     setLoading(true); setError('');
 
-    const { data, error: signUpErr } = await supabase.auth.signUp({
+    const { error: signUpErr } = await supabase.auth.signUp({
       email: form.email,
       password: form.password,
-      options: { data: { full_name: form.name, phone: form.phone } },
+      options: { data: { role: 'user', full_name: form.name, phone: form.phone } },
     });
 
     if (signUpErr) { setError(signUpErr.message); setLoading(false); return; }
-
-    // Create profile with role 'user'
-    if (data.user) {
-      await supabase.from('profiles').upsert({
-        id: data.user.id,
-        full_name: form.name,
-        phone: form.phone,
-        email: form.email,
-        role: 'user',
-      });
-    }
 
     router.push('/account');
   }
