@@ -20,7 +20,7 @@ if (!token || !wabaId) {
 const templates = [
   {
     name: 'booking_new_partner',
-    body: 'New booking {{1}} from Dharamshala Stay. {{2}} on {{3}}, {{4}} people. Customer: {{5}}, {{6}}. Price {{7}}. Payment: {{8}}.',
+    body: 'New booking {{1}} from Dharamshala Stay. Service: {{2}}. Date: {{3}}. Guests: {{4}}. Customer name: {{5}}. Customer phone: {{6}}. Price: {{7}}. Payment: {{8}}. Please tap a button below to confirm.',
     example: ['DS-1042', 'Dharamshala to McLeodganj taxi', '12 Oct 2026, 9:00 AM', '3', 'Asha Sharma', '9816000000', 'Rs.1,500', 'Customer pays the partner directly'],
     buttons: ['Accept', "Can't do it"],
   },
@@ -31,8 +31,8 @@ const templates = [
   },
   {
     name: 'booking_confirmed_customer',
-    body: 'Your Dharamshala Stay booking {{1}} is confirmed: {{2}} on {{3}}, {{4}} people. {{5}}. Price {{6}}, payment: {{7}}. Questions? Reply here.',
-    example: ['DS-1042', 'Dharamshala to McLeodganj taxi', '12 Oct 2026, 9:00 AM', '3', 'Your driver: Ravi, 9816000001', 'Rs.1,500', 'Pay at the time of service'],
+    body: 'Your Dharamshala Stay booking {{1}} is confirmed. Service: {{2}}. Date: {{3}}. Guests: {{4}}. {{5}}. Price: {{6}}. Payment: {{7}}. Questions? Reply here.',
+    example: ['DS-1042', 'Dharamshala to McLeodganj taxi', '12 Oct 2026, 9:00 AM', '3', 'Your driver: Ravi, 9816000001', 'Rs.1,500', 'Customer pays the partner directly'],
   },
 ];
 

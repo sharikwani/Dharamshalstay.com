@@ -30,9 +30,9 @@ backup. Nothing changes until WhatsApp credentials are configured.
 | Secrets | `WHATSAPP_TOKEN`, `WHATSAPP_APP_SECRET`, `WHATSAPP_VERIFY_TOKEN` only in Vercel env. Non-secret: `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_WABA_ID`. |
 
 ## 4. Templates (category UTILITY, language `en`)
-1. `booking_new_partner` — body: "New booking {{1}} from Dharamshala Stay. {{2}} on {{3}}, {{4}} people. Customer: {{5}}, {{6}}. Price {{7}}. Payment: {{8}}." Buttons: quick reply "Accept", quick reply "Can't do it".
-2. `booking_cancelled_partner` — body: "Booking {{1}} ({{2}} on {{3}}) has been cancelled. Reason: {{4}}."
-3. `booking_confirmed_customer` — body: "Your Dharamshala Stay booking {{1}} is confirmed: {{2}} on {{3}}, {{4}} people. {{5}}. Price {{6}}, payment: {{7}}. Questions? Reply here."
+1. `booking_new_partner` — body: "New booking {{1}} from Dharamshala Stay. Service: {{2}}. Date: {{3}}. Guests: {{4}}. Customer name: {{5}}. Customer phone: {{6}}. Price: {{7}}. Payment: {{8}}. Please tap a button below to confirm." (8 params: ref, service, date, guests, customer name, customer phone, price, payment) Buttons: quick reply "Accept", quick reply "Can't do it".
+2. `booking_cancelled_partner` — body: "Booking {{1}} ({{2}} on {{3}}) has been cancelled. Reason: {{4}}." (4 params)
+3. `booking_confirmed_customer` — body: "Your Dharamshala Stay booking {{1}} is confirmed. Service: {{2}}. Date: {{3}}. Guests: {{4}}. {{5}}. Price: {{6}}. Payment: {{7}}. Questions? Reply here." (7 params; {{5}} is always a full phrase: "Your driver: …" / "Your pilot: …" / "Your guide: …", "Assigned: …" for other categories, or "Assigned: Not yet assigned")
 Template parameters never contain newlines or more than 4 consecutive spaces (Meta rule); text is trimmed to 300 chars per parameter.
 
 ## 5. Data — `supabase/migration-v17-whatsapp.sql`

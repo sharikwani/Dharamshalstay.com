@@ -78,7 +78,22 @@ describe('params', () => {
     expect(customerParams(view)).toEqual(['DS-1', 'Hotel · Room', '1 Jan – 2 Jan 2027', '2', 'Your driver: Ravi, 98160', 'Rs.12,500', 'Payment pending']);
     expect(customerParams({ ...view, category: 'paragliding' })[4]).toBe('Your pilot: Ravi, 98160');
     expect(customerParams({ ...view, category: 'guide' })[4]).toBe('Your guide: Ravi, 98160');
-    expect(customerParams({ ...view, assignee_text: null })[4]).toBe('-');
+    expect(customerParams({ ...view, assignee_text: null })[4]).toBe('Assigned: Not yet assigned');
+    expect(customerParams({ ...view, category: 'trek' })[4]).toBe('Assigned: Ravi, 98160');
+  });
+});
+
+describe('templates', () => {
+  it('param counts match the template bodies in the creation script', async () => {
+    const { readFileSync } = await import('node:fs');
+    const src = readFileSync('scripts/create-whatsapp-templates.mjs', 'utf8');
+    const count = (name: string) => {
+      const body = src.split(`name: '${name}'`)[1].match(/body: '([^']*)'/)![1];
+      return new Set(body.match(/\{\{\d+\}\}/g)).size;
+    };
+    expect(count('booking_new_partner')).toBe(newBookingParams(view).length);
+    expect(count('booking_cancelled_partner')).toBe(cancelledParams(view, 'x').length);
+    expect(count('booking_confirmed_customer')).toBe(customerParams(view).length);
   });
 });
 

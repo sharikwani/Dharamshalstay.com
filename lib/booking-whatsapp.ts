@@ -31,16 +31,20 @@ export function recipientsFor(_view: BookingView, rows: RecipientRows): Recipien
 
 const rupees = (n: unknown) => `Rs.${Number(n || 0).toLocaleString('en-IN')}`;
 
+/** Params for booking_new_partner (8, in template order). */
 export const newBookingParams = (v: BookingView): string[] => [
   v.booking_ref, v.item_name, v.date_text, v.num_guests, v.guest_name, v.guest_phone, rupees(v.amount), v.payment_text,
 ].map(cleanParam);
 
+/** Params for booking_cancelled_partner (4, in template order). */
 export const cancelledParams = (v: BookingView, reason: string): string[] =>
   [v.booking_ref, v.item_name, v.date_text, reason].map(cleanParam);
 
+/** Params for booking_confirmed_customer (7, in template order). */
 export function customerParams(v: BookingView): string[] {
   const who = v.category === 'taxi' ? 'Your driver' : v.category === 'paragliding' ? 'Your pilot' : v.category === 'guide' ? 'Your guide' : null;
-  const assignee = v.assignee_text && who ? `${who}: ${v.assignee_text}` : '-';
+  // Template param {{5}} must read as a full phrase on its own.
+  const assignee = v.assignee_text ? `${who || 'Assigned'}: ${v.assignee_text}` : 'Assigned: Not yet assigned';
   return [v.booking_ref, v.item_name, v.date_text, v.num_guests, assignee, rupees(v.amount), v.payment_text].map(cleanParam);
 }
 
