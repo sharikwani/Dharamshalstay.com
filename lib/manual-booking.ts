@@ -21,10 +21,18 @@ export function splitAmount(finalAmount: number, pct: number) {
   return { commission_amount, partner_share_amount: finalAmount - commission_amount };
 }
 
+/** Who actually collects the money. Website bookings have collected_by NULL: online/paid ones went to the platform, the rest are paid to the partner. */
+export function effectiveCollector(b: { collected_by?: string | null; payment_status?: string | null; payment_method?: string | null }): 'partner' | 'platform' {
+  if (b.collected_by === 'partner' || b.collected_by === 'platform') return b.collected_by;
+  return b.payment_status === 'paid' || b.payment_status === 'partially_paid' || b.payment_method === 'online' ? 'platform' : 'partner';
+}
+
 export function paymentFields(
   choice: PaymentChoice, category: ManualCategory, finalAmount: number,
-  opts: { amountReceived?: number | null; channel?: PaymentChannel | null; reference?: string | null } = {},
+  opts: { amountReceived?: number | null; channel?: PaymentChannel | null; reference?: string | null; commissionAmount?: number | null } = {},
 ) {
+  // A zero commission means nothing is owed, so there is nothing to track
+  const owed = opts.commissionAmount === 0 ? 'not_applicable' : 'pending';
   if (choice === 'platform_paid') {
     const channel = opts.channel || 'cash';
     return {
@@ -36,11 +44,11 @@ export function paymentFields(
   if (choice === 'partner_collects') {
     return {
       payment_method: category === 'hotel' ? 'pay_at_hotel' : 'offline', payment_status: 'pending',
-      collected_by: 'partner' as const, commission_status: 'pending', paid_amount: null, payment_channel: null, payment_reference: null,
+      collected_by: 'partner' as const, commission_status: owed, paid_amount: null, payment_channel: null, payment_reference: null,
     };
   }
   return {
-    payment_method: 'offline', payment_status: 'pending', collected_by: null, commission_status: 'pending',
+    payment_method: 'offline', payment_status: 'pending', collected_by: null, commission_status: owed,
     paid_amount: null, payment_channel: null, payment_reference: null,
   };
 }

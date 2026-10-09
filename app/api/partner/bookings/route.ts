@@ -30,7 +30,7 @@ export async function GET(req: Request) {
       return {
         id: v.id, booking_ref: v.booking_ref, category: v.category, status: v.status,
         item_name: v.item_name, date_text: v.date_text, assignee_text: v.assignee_text,
-        num_guests: v.num_guests, amount: v.amount, collected_by: v.collected_by, payment_text: v.payment_text,
+        num_guests: v.num_guests, amount: v.amount, collected_by: v.effective_collector, payment_text: v.payment_text,
         commission_amount: v.commission_amount, partner_share_amount: v.partner_share_amount,
         special_requests: v.special_requests ?? null, created_at: v.created_at,
         guest_name: v.guest_name,
