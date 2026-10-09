@@ -78,7 +78,7 @@ Useful reading: [Dalai Lama Temple timings and guide](/blog/dalai-lama-temple-gu
 | 4:00 pm | Back in Dharamkot for a cafe stop | Then rest your legs |
 | Evening | Dinner, then the overnight bus to Delhi (most leave in the evening) | Pick up souvenirs before you go |
 
-Not confident on your own? Join a [guided Triund trek](/treks/triund-trek). Fees and rules on Triund have changed during 2026, so confirm at the Galu checkpost; our [Triund trek complete guide](/blog/triund-trek-complete-guide) has the latest.
+Not confident on your own? Join a [guided Triund trek](/treks/triund-trek). Fees and rules on Triund have changed during 2026, so confirm at the Gallu checkpost; our [Triund trek complete guide](/blog/triund-trek-complete-guide) has the latest.
 
 ### Day 2, Option B: Easy Day in Dharamkot
 
@@ -195,7 +195,7 @@ With one more day, extend to our [five-day Kangra Valley itinerary](/blog/five-d
     {
       question: 'Can I do the Triund trek on a weekend trip?',
       answer:
-        'Yes. Start from Gallu Devi temple above Dharamkot by 7 am; it is about 6-7 km and 4-5 hours up, 2-3 hours down, so you are back by mid-afternoon. Carry 2 litres of water and a warm layer, and confirm current fees and rules at the Galu checkpost.',
+        'Yes. Start from Gallu Devi temple above Dharamkot by 7 am; it is about 6-7 km and 4-5 hours up, 2-3 hours down, so you are back by mid-afternoon. Carry 2 litres of water and a warm layer, and confirm current fees and rules at the Gallu checkpost.',
     },
     {
       question: 'How much does a weekend in Dharamshala cost for two?',

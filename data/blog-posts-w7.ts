@@ -679,7 +679,7 @@ One day gives you a taste. Two days lets you add Triund or a Kangra loop; our [w
       },
       {
         question: 'Can I do Triund and McLeod Ganj sightseeing in one day?',
-        answer: 'Not comfortably. The Triund hike takes 5-7 hours return from Galu Devi or Dharamkot, leaving little time or energy for anything else. Choose one, or stay an extra day.',
+        answer: 'Not comfortably. The Triund hike takes 5-7 hours return from Gallu Devi or Dharamkot, leaving little time or energy for anything else. Choose one, or stay an extra day.',
       },
       {
         question: 'How much does a one-day sightseeing taxi in Dharamshala cost?',
@@ -752,14 +752,14 @@ If you arrived on an overnight bus, keep this day slow. Nap after lunch and save
 
 ## Day 2: Triund
 
-The **Triund trek** is the highlight for most visitors: a 9 km climb (one way) from McLeod Ganj, or about 7 km from the Galu Devi temple trailhead above Dharamkot, to a grassy ridge facing the Dhauladhar.
+The **Triund trek** is the highlight for most visitors: a 9 km climb (one way) from McLeod Ganj, or about 7 km from the Gallu Devi temple trailhead above Dharamkot, to a grassy ridge facing the Dhauladhar.
 
 - **Start by 8 am**, reach the top by 11:30 am-12:30 pm, and be back down by 4-5 pm.
 - Carry 2 litres of water, snacks, a rain jacket and a warm layer.
 - There is a forest entry fee and rules on camping that have changed in recent years; check our [Triund trek guide](/blog/triund-trek-complete-guide) for the current position before you go.
 - Want a guide or a camping package? See our [Triund trek page](/treks/triund-trek).
 
-**Not a hiker?** Swap Triund for an easy day: the Galu Devi temple walk, the Dharamkot - Bhagsu loop, or a cooking or meditation class. Most of these take 1-3 hours and need no guide.
+**Not a hiker?** Swap Triund for an easy day: the Gallu Devi temple walk, the Dharamkot - Bhagsu loop, or a cooking or meditation class. Most of these take 1-3 hours and need no guide.
 
 **Overnight:** McLeod Ganj area (or Triund itself, if camping is permitted at the time you go).
 
@@ -825,7 +825,7 @@ Lower Dharamshala and Sidhbari are easier for parking and closer to the airport;
 
 ## Winter Variant (December-February)
 
-- **Day 2:** Triund in snow is beautiful but needs proper shoes, gear and often a guide; the upper section can be icy. If unsure, do the walk to Galu Devi, or see snow at Naddi after a fresh snowfall.
+- **Day 2:** Triund in snow is beautiful but needs proper shoes, gear and often a guide; the upper section can be icy. If unsure, do the walk to Gallu Devi, or see snow at Naddi after a fresh snowfall.
 - **Days are shorter.** Light fades around 5:30 pm; start every day earlier.
 - **Bir:** paragliding usually continues in winter on clear days, but it is cold at Billing; dress warmly.
 - **Roads:** the main valley roads stay open. Snow sometimes blocks roads above McLeod Ganj and to Billing for short periods.

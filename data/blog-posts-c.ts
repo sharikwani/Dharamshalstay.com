@@ -46,7 +46,7 @@ Arrive early, check in and sleep for a couple of hours. In the afternoon walk to
 
 ### Day 2: Triund trek or Dharamshala sightseeing
 
-If you are reasonably fit, hike to **Triund** (about 9 km one way from McLeod Ganj via Galu Devi, 4 to 5 hours up). Do it as a day hike or camp if current rules allow; read the [Triund trek complete guide](/blog/triund-trek-complete-guide) or book a [guided Triund trek](/treks/triund-trek).
+If you are reasonably fit, hike to **Triund** (about 9 km one way from McLeod Ganj via Gallu Devi, 4 to 5 hours up). Do it as a day hike or camp if current rules allow; read the [Triund trek complete guide](/blog/triund-trek-complete-guide) or book a [guided Triund trek](/treks/triund-trek).
 
 Not a hiker? Spend the day on [Bhagsu](/destinations/bhagsu) waterfall, [Dharamkot](/destinations/dharamkot) cafes, St. John in the Wilderness church and the [Naddi](/destinations/naddi) sunset viewpoint. More ideas are in our list of [places to visit in Dharamshala](/blog/places-to-visit-in-dharamshala).
 

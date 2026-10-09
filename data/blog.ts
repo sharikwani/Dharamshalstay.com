@@ -126,7 +126,7 @@ The standard route starts from Gallu Devi temple above Dharamkot. From there the
 
 Forest Department entry fee: Rs.100 per person per day. Overnight tent fee: about Rs.550 for two people (includes entry). Overnight stays at the top are capped (about 20 tents / 40 people), so book camping through a registered operator. Fees were last revised in 2024 -- check locally before you go.
 
-**2026 updates:** since 11 August 2026 trekkers on the Triund route also pay a **refundable Rs.500 waste deposit** at the forest checkpost and get a garbage bag -- bring your non-biodegradable waste back down to get the deposit back. In January 2026 the Kangra District Disaster Management Authority also restricted trekking above 3,000 m and routed permission for Triund and Kareri through the SP Kangra office during bad-weather spells. Rules have been changing through 2026, so confirm the current position at the Galu checkpost or with us before you set out. See our [Triund camping guide](/blog/triund-camping-guide) for overnight rules.
+**2026 updates:** since 11 August 2026 trekkers on the Triund route also pay a **refundable Rs.500 waste deposit** at the forest checkpost and get a garbage bag -- bring your non-biodegradable waste back down to get the deposit back. In January 2026 the Kangra District Disaster Management Authority also restricted trekking above 3,000 m and routed permission for Triund and Kareri through the SP Kangra office during bad-weather spells. Rules have been changing through 2026, so confirm the current position at the Gallu checkpost or with us before you set out. See our [Triund camping guide](/blog/triund-camping-guide) for overnight rules.
 
 ## Best Time to Trek
 

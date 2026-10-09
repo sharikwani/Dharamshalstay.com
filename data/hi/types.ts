@@ -23,6 +23,8 @@ export interface HindiDestination {
   faqs: HindiFAQ[];
   meta_title: string;
   meta_description: string;
+  h1?: string;
+  stays_intro?: string;
 }
 
 export interface HindiHotel {

@@ -151,6 +151,10 @@ export interface Destination {
   faqs: FAQ[];
   meta_title: string;
   meta_description: string;
+  /** Page heading when it should differ from the place name (e.g. a stays-led page). */
+  h1?: string;
+  /** Lead with the stays comparison instead of the About section; this text introduces it. */
+  stays_intro?: string;
 }
 
 // ===== TAXI =====

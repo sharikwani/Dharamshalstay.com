@@ -13,6 +13,7 @@ import { serverT } from '@/lib/i18n/server';
 import { fmt } from '@/lib/i18n/dict';
 import { localizeDestination, localizeHotel, localizePost } from '@/lib/i18n/content';
 import type { Lang } from '@/lib/i18n/core';
+import { formatPrice } from '@/lib/utils';
 
 const GUIDE_SLUGS = ['dharamshala-vs-mcleod-ganj', 'places-to-visit-in-dharamshala', 'places-to-visit-in-kangra', 'palampur-travel-guide'];
 
@@ -98,6 +99,60 @@ export async function DestinationDetailView({ slug, lang }: { slug: string; lang
     .slice(0, 3)
     .map((x) => localizePost(x.post, lang));
 
+  // A stays-led page (e.g. Naddi) opens with a side-by-side comparison of its
+  // listings; other destinations keep the cards further down the page.
+  const staysFirst = !!dest.stays_intro && hotels.length > 0;
+  const has = (h: any, re: RegExp) => [...(h.amenities || []), ...(h.room_amenities || [])].some((a: string) => re.test(a));
+  const staysSection = hotels.length > 0 && (
+    <>
+      <SectionHeading title={fmt(t.footer.hotelsIn, { place: dest.name })} align="left" />
+      {staysFirst && (
+        <div className="mb-8">
+          <h3 className="font-heading font-semibold text-lg mb-3">{fmt(d.compareStays, { name: dest.name })}</h3>
+          <div className="overflow-x-auto rounded-xl border border-slate-200">
+            <table className="w-full text-sm text-left">
+              <thead className="bg-slate-50 text-slate-700">
+                <tr>
+                  {[d.colStay, d.colType, d.colRooms, d.colViews, d.colParking, d.colFamily, d.colRate].map((c) => (
+                    <th key={c} scope="col" className="px-3 py-2.5 font-semibold whitespace-nowrap">{c}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {hotels.map((raw: any) => {
+                  const h = localizeHotel(raw, lang);
+                  const rooms = (h.rooms || []).map((r: any) => r.name).filter(Boolean);
+                  const family = rooms.some((n: string) => /family/i.test(n)) || has(h, /kids|children/i);
+                  return (
+                    <tr key={h.id} className="align-top">
+                      <th scope="row" className="px-3 py-2.5 font-medium">
+                        <Link href={href('/hotels/' + h.slug)} className="text-brand-600 hover:underline">{h.name}</Link>
+                      </th>
+                      <td className="px-3 py-2.5 whitespace-nowrap">{t.common.propertyTypes[h.type] || h.type}</td>
+                      <td className="px-3 py-2.5 text-slate-600 min-w-[12rem]">{rooms.length ? rooms.join(', ') : '—'}</td>
+                      <td className="px-3 py-2.5">{has(h, /mountain view/i) ? d.yes : '—'}</td>
+                      <td className="px-3 py-2.5">{has(h, /parking/i) ? d.yes : '—'}</td>
+                      <td className="px-3 py-2.5">{family ? d.yes : '—'}</td>
+                      <td className="px-3 py-2.5 whitespace-nowrap">
+                        {h.price_min > 0 ? fmt(d.fromPrice, { price: formatPrice(h.price_min) }) : (
+                          <Link href={href('/hotels/' + h.slug)} className="text-brand-600 hover:underline">{d.onRequest}</Link>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          <p className="text-xs text-slate-500 mt-2">{d.compareNote}</p>
+        </div>
+      )}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+        {hotels.map((h: any) => <HotelCard key={h.id} hotel={localizeHotel(h, lang)} lang={lang} />)}
+      </div>
+    </>
+  );
+
   return (
     <>
       <JsonLd data={[
@@ -111,13 +166,25 @@ export async function DestinationDetailView({ slug, lang }: { slug: string; lang
         <div className="absolute inset-0 bg-brand-950/60" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 h-full flex flex-col justify-end pb-8 text-white">
           <Breadcrumb lang={lang} items={[{ label: t.common.home, href: '/' }, { label: t.common.destinations, href: '/destinations' }, { label: dest.name }]} />
-          <h1 className="text-3xl sm:text-4xl font-heading font-bold">{dest.name}</h1>
+          <h1 className="text-3xl sm:text-4xl font-heading font-bold">{dest.h1 || dest.name}</h1>
           <p className="text-brand-200 italic">{dest.tagline}</p>
           <p className="text-sm text-slate-300 mt-1">{d.altitude}: {dest.altitude} · {d.best}: {dest.best_time}</p>
         </div>
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+        {staysFirst && (
+          <>
+            <div className="max-w-3xl mb-8">
+              <p className="text-slate-700 leading-relaxed">{dest.stays_intro}</p>
+              {guides[0] && (
+                <Link href={href('/blog/' + guides[0].slug)} className="text-sm text-brand-600 font-medium mt-2 inline-block">{d.sightseeingGuide} &rarr;</Link>
+              )}
+            </div>
+            {staysSection}
+          </>
+        )}
+
         <div className="max-w-3xl mb-10">
           <h2 className="text-2xl font-heading font-bold mb-3">{fmt(d.about, { name: dest.name })}</h2>
           <p className="text-slate-600 whitespace-pre-line">{dest.long_description}</p>
@@ -155,14 +222,7 @@ export async function DestinationDetailView({ slug, lang }: { slug: string; lang
           </div>
         )}
 
-        {hotels.length > 0 && (
-          <>
-            <SectionHeading title={fmt(t.footer.hotelsIn, { place: dest.name })} align="left" />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-              {hotels.map((h: any) => <HotelCard key={h.id} hotel={localizeHotel(h, lang)} lang={lang} />)}
-            </div>
-          </>
-        )}
+        {!staysFirst && staysSection}
 
         {dest.faqs?.length > 0 && (
           <div className="max-w-3xl mb-10">

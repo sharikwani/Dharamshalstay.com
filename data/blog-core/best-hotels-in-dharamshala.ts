@@ -30,7 +30,7 @@ Every hotel named below is listed on our [hotels page](/hotels), where you can c
 
 | | |
 |---|---|
-| Budget rooms (approx.) | ₹900-1,800 per night; hostel dorm beds approx. ₹400-800 |
+| Budget rooms (approx.) | ₹900-1,800 per night; hostel dorm beds approx. ₹400-800; see our [affordable hotel shortlist](/blog/budget-hotels-in-dharamshala) |
 | Mid-range hotels (approx.) | ₹2,000-4,500 per night |
 | Upscale and boutique (approx.) | ₹5,000-10,000 per night |
 | Luxury resorts (approx.) | ₹10,000-25,000+ per night |

@@ -35,7 +35,7 @@ Think of Dharamshala as a staircase climbing north towards the snow.
 - **Forsyth Ganj**: a quiet strip on the forest road with St. John in the Wilderness church and army areas.
 - **McLeod Ganj**: around 2,000 m, the Tibetan town, home of the Dalai Lama's residence and the Tsuglagkhang temple. Hotels, cafes, monasteries, crowds.
 - **Bhagsu (Bhagsunag)**: 2 km east of McLeod Ganj. Shiva temple, waterfall, Israeli and backpacker cafe scene, noisy on weekends.
-- **Dharamkot**: above Bhagsu, about 2.5 km from McLeod Ganj by road. Yoga, meditation, long stays, start point for Triund via Galu Devi.
+- **Dharamkot**: above Bhagsu, about 2.5 km from McLeod Ganj by road. Yoga, meditation, long stays, start point for Triund via Gallu Devi.
 - **Naddi**: about 3 to 4 km west of McLeod Ganj, past Dal Lake. Famous Dhauladhar viewpoint, quieter hotels.
 - **Sidhbari and the lower valley**: Norbulingka Institute and Gyuto Monastery, 25 to 35 minutes below town.
 
@@ -155,14 +155,14 @@ Dharamshala is one of the easiest places in India to go from a cafe to a high ri
 
 | Trek | Start | Distance (approx.) | Max altitude | Difficulty | Days |
 |---|---|---|---|---|---|
-| Triund | McLeod Ganj / Galu Devi | 9 km one way from McLeod (6 to 7 km from Galu Devi) | approx. 2,850 m | Moderate | 1 to 2 |
+| Triund | McLeod Ganj / Gallu Devi | 9 km one way from McLeod (6 to 7 km from Gallu Devi) | approx. 2,850 m | Moderate | 1 to 2 |
 | Snowline and Laka Glacier | via Triund | 2 to 3 km beyond Triund | approx. 3,200 to 3,350 m | Moderate to hard | 1 to 2 |
 | Indrahar Pass | via Triund and Lahesh Cave | approx. 14 km one way | approx. 4,340 m | Hard | 3 |
 | Kareri Lake | Kareri village | approx. 13 km one way | approx. 2,934 m | Moderate | 2 to 3 |
 | Bir to Rajgundha | Billing | varies by route | approx. 2,600 m | Moderate | 2 to 3 |
 | Easy hikes (Guna Devi, Bhagsu falls, Dharamkot loops) | McLeod Ganj | 2 to 6 km | under 2,500 m | Easy | half day |
 
-For Triund, the forest department charges an entry fee (approx. 100 rupees per person per day in recent seasons) and controls overnight tenting with capped numbers; rules change, so confirm at the Galu checkpost or with your operator. Start early, carry water, and never attempt Indrahar or winter routes without a local guide.
+For Triund, the forest department charges an entry fee (approx. 100 rupees per person per day in recent seasons) and controls overnight tenting with capped numbers; rules change, so confirm at the Gallu checkpost or with your operator. Start early, carry water, and never attempt Indrahar or winter routes without a local guide.
 
 Paragliding at **Bir Billing**, a two to three hour drive away, is one of the best tandem flying sites in the world in season (roughly October to November and March to May).
 
@@ -322,7 +322,7 @@ Picture the **main square** (usually just called "the square" or "Chowk") as the
 1. **Temple Road** runs south-east and downhill, lined with shops, cafes and stalls, ending at the **Tsuglagkhang Complex** after about 700 to 800 m. This is the lane most pilgrims walk.
 2. **Jogiwara Road** runs roughly parallel to Temple Road, also heading down and south-east, packed with cafes, bookshops, travel agents and guesthouses. Temple Road and Jogiwara Road are joined at their lower ends, so many people walk down one and back up the other. Vehicle traffic follows a one-way pattern on parts of this loop, so taxis may take a longer way round.
 3. **Bhagsu Road** heads east and slightly uphill towards **Bhagsunag** (about 2 km). Halfway along, a lane forks up towards **Dharamkot**.
-4. **Dharamkot Road** (via the Tipa Road area, where the Tibetan Institute of Performing Arts sits) climbs north towards Dharamkot and the Galu Devi trailhead for Triund.
+4. **Dharamkot Road** (via the Tipa Road area, where the Tibetan Institute of Performing Arts sits) climbs north towards Dharamkot and the Gallu Devi trailhead for Triund.
 5. **The Dal Lake / Naddi road** heads north-west towards **Dal Lake**, the Tibetan Children's Village and **Naddi**.
 6. **The Cantt road** drops south-west through Forsyth Ganj, past **St. John in the Wilderness** church, down to lower Dharamshala. Another steep road drops via **Gangchen Kyishong** (the Tibetan government area) to Kotwali Bazaar.
 
@@ -376,7 +376,7 @@ A 2 km walk east along Bhagsu Road. The old Shiva temple has spring-fed pools; t
 
 Read more: [Bhagsu travel guide](/blog/bhagsu-travel-guide).
 
-### Dharamkot and Galu Devi
+### Dharamkot and Gallu Devi
 
 Above Bhagsu, Dharamkot is a village of guesthouses, yoga shalas and cafes among deodars. Keep climbing and you reach the small **Galu (Gallu) Devi temple**, where the shorter Triund trail begins. Even if you are not trekking, the walk up gives big views.
 
@@ -473,7 +473,7 @@ Browse rooms on our [hotels page](/hotels), and read [Best hotels in McLeod Ganj
 | Kora (Lingkhor) | 1.5 to 2 km loop | 30 to 45 min | Easy | Prayer flags, prayer wheels |
 | Square to Bhagsu falls | 3 km one way | 1 h | Easy | Temple, waterfall |
 | Bhagsu to Dharamkot via the cafe path | 1.5 km | 40 min | Moderate (steep) | Village lanes, views |
-| Dharamkot to Galu Devi | 2 km | 45 to 60 min | Moderate | Forest, Dhauladhar |
+| Dharamkot to Gallu Devi | 2 km | 45 to 60 min | Moderate | Forest, Dhauladhar |
 | Square to St. John's and back | 4 km round trip | 1.5 h | Easy | Deodar forest, church |
 | Square to Naddi via Dal Lake | 4 km | 1.5 h | Easy to moderate | Lake, TCV, sunset view |
 | Triund | 9 km one way | 4 to 5 h up | Moderate | Ridge, snow peaks |
@@ -570,7 +570,7 @@ Beyond the Tsuglagkhang, you can attend prayers at smaller temples, join introdu
 
 ### Plan B: the active day
 
-Start at 6.30 am from Dharamkot or Galu Devi for **Triund**. Reach the ridge by 10 or 11 am, lunch at the top, and descend by mid-afternoon, before the usual afternoon weather. Evening: rest your legs in a cafe and eat thukpa.
+Start at 6.30 am from Dharamkot or Gallu Devi for **Triund**. Reach the ridge by 10 or 11 am, lunch at the top, and descend by mid-afternoon, before the usual afternoon weather. Evening: rest your legs in a cafe and eat thukpa.
 
 ### Plan C: the slow, cultural day
 
@@ -650,7 +650,7 @@ Read more: [Naddi and Dal Lake guide](/blog/naddi-dal-lake-guide), [Naddi destin
 
 ### 2. Triund ridge (sunrise, sunset and stars)
 
-At about 2,850 m, Triund puts you face to face with the Dhauladhar, with the Kangra Valley falling away behind you. Sunrise lights the peaks from the east; sunset turns the valley side gold. Overnight tenting at Triund is controlled by the forest department with capped numbers and fees that change, so book through a registered operator or confirm rules at the Galu checkpost. A day hike starting in the dark also gives you sunrise light on the upper trail.
+At about 2,850 m, Triund puts you face to face with the Dhauladhar, with the Kangra Valley falling away behind you. Sunrise lights the peaks from the east; sunset turns the valley side gold. Overnight tenting at Triund is controlled by the forest department with capped numbers and fees that change, so book through a registered operator or confirm rules at the Gallu checkpost. A day hike starting in the dark also gives you sunrise light on the upper trail.
 
 Read more: [Triund trek complete guide](/blog/triund-trek-complete-guide), [Triund camping guide](/blog/triund-camping-guide), [book the Triund trek](/treks/triund-trek).
 
@@ -666,9 +666,9 @@ Strings of prayer flags, rows of brass prayer wheels and Tibetan elders walking 
 
 Read more: [Dalai Lama Temple guide](/blog/dalai-lama-temple-guide), [Tibetan culture and etiquette](/blog/tibetan-culture-etiquette-guide).
 
-### 5. Dharamkot and Galu Devi (sunrise, golden hour)
+### 5. Dharamkot and Gallu Devi (sunrise, golden hour)
 
-The upper lanes of Dharamkot look across to the Dhauladhar and down over the McLeod Ganj ridge. Galu Devi temple, above Dharamkot at the Triund trailhead, gives a wider view and is a good sunrise spot without a full trek.
+The upper lanes of Dharamkot look across to the Dhauladhar and down over the McLeod Ganj ridge. Gallu Devi temple, above Dharamkot at the Triund trailhead, gives a wider view and is a good sunrise spot without a full trek.
 
 Read more: [Dharamkot travel guide](/blog/dharamkot-travel-guide).
 
@@ -712,7 +712,7 @@ Read more: [Places to visit in Kangra](/blog/places-to-visit-in-kangra), [Palamp
 | Triund | Sunrise and sunset | Oct to Nov, Mar to Apr | 9 km trek | Moderate |
 | HPCA stadium | Morning | Oct to Feb | 9 to 10 km | Easy |
 | Kora / Tsuglagkhang | Dawn | Any | 800 m | Easy |
-| Dharamkot / Galu Devi | Sunrise | Oct to Apr | 3 to 5 km | Easy to moderate |
+| Dharamkot / Gallu Devi | Sunrise | Oct to Apr | 3 to 5 km | Easy to moderate |
 | Bhagsu waterfall | Morning | Monsoon end, Sept to Oct | 2 to 3 km | Easy |
 | St. John's church | Morning | Any | 2 km | Easy |
 | Snowline / Laka | Midday light on peaks | May to June, Oct | 11 to 12 km trek | Hard |
@@ -758,7 +758,7 @@ Light pollution from Dharamshala and the Kangra Valley spreads to the south and 
 | Triund | Good towards the north | Valley lights visible to the south; legal camping needed for night shoots |
 | Snowline / Laka | Very good | Cold and exposed; guided overnight only |
 | Kareri Lake | Very good | Remote, few people, still water |
-| Upper Dharamkot / Galu Devi | Moderate | Easy access, some village light |
+| Upper Dharamkot / Gallu Devi | Moderate | Easy access, some village light |
 | Naddi | Moderate | Good for star trails over peaks, some light from hotels |
 | Bir and Rajgundha | Good to very good | Rajgundha is remote and dark |
 
@@ -1125,13 +1125,13 @@ The international cafes are great, but some of the best food here is cheap Tibet
 
 The single most common mistake. Start at 10 or 11 am and you climb in the heat, reach a crowded top, and descend in afternoon clouds or darkness.
 
-**Fix**: be on the trail by 7 am. From McLeod Ganj the trail is about 9 km one way (6 to 7 km from Galu Devi), typically 4 to 5 hours up for average walkers. Read the [Triund trek complete guide](/blog/triund-trek-complete-guide) or book a guided [Triund trek](/treks/triund-trek).
+**Fix**: be on the trail by 7 am. From McLeod Ganj the trail is about 9 km one way (6 to 7 km from Gallu Devi), typically 4 to 5 hours up for average walkers. Read the [Triund trek complete guide](/blog/triund-trek-complete-guide) or book a guided [Triund trek](/treks/triund-trek).
 
 ### 21. Camping wherever you like
 
 Overnight tenting at Triund is controlled by the forest department, with capped numbers and fees that change.
 
-**Fix**: confirm current rules at the Galu checkpost or book through a registered operator. See the [Triund camping guide](/blog/triund-camping-guide).
+**Fix**: confirm current rules at the Gallu checkpost or book through a registered operator. See the [Triund camping guide](/blog/triund-camping-guide).
 
 ### 22. Underestimating the cold up high
 
@@ -1198,6 +1198,169 @@ Read our [complete Dharamshala travel guide](/blog/dharamshala-complete-travel-g
       { question: 'Do I need cash in McLeod Ganj?', answer: 'Yes, some. UPI works almost everywhere, but networks drop and ATMs can run out on busy weekends. Keep 2,000 to 3,000 rupees in cash for trails, small shops and taxis.' },
       { question: 'Are there Uber or Ola cabs in Dharamshala?', answer: 'No. Local taxis run on fixed union rates. Ask your hotel or pre-book transfers, especially for early or late airport and bus-stand pickups.' },
       { question: 'Are the monkeys in McLeod Ganj dangerous?', answer: 'They are usually just bold, but they snatch food and bags and can bite if provoked. Keep food out of sight, avoid plastic bags, do not feed them and let go if one grabs something.' },
+    ],
+  },
+  {
+    id: 'blog-budget-hotels-in-dharamshala',
+    slug: 'budget-hotels-in-dharamshala',
+    title: 'Budget Hotels in Dharamshala 2026: Compare Affordable Stays',
+    excerpt: 'A practical shortlist of budget hotels, guesthouses and hostels in Dharamshala, McLeod Ganj, Bhagsu, Dharamkot and Naddi, with prices we checked on MakeMyTrip, EaseMyTrip, Booking.com and Hostelworld, what the total really costs, and which area suits a tight budget.',
+    content: `**In short:** a dorm bed in McLeod Ganj, Bhagsu or Dharamkot costs from about **₹350 to ₹700** a night, a basic private room in a guesthouse about **₹700 to ₹1,300**, and a simple budget hotel about **₹1,000 to ₹2,000**, plus taxes and fees. **Bhagsu and Dharamkot** have the most hostels and cheap guesthouses, **McLeod Ganj** has budget hotels within walking distance of everything, and **lower Dharamshala** is best for late arrivals, the bus stand and cricket days.
+
+> **Prices checked on 9 October 2026** on MakeMyTrip, EaseMyTrip, Booking.com, Hostelworld and Tripadvisor for upcoming dates. Online rates change daily and jump on weekends and holidays, so treat them as a guide and check the total for your own dates before you pay.
+
+## Quick Facts
+
+| | |
+|---|---|
+| Dorm bed (hostel) | approx. ₹350–700 per night |
+| Private room, guesthouse or homestay | approx. ₹700–1,300 per night |
+| Budget hotel room | approx. ₹1,000–2,000 per night |
+| Taxes and fees | added at checkout; about 5–6% on the rates we saw |
+| Cheapest areas | Bhagsu, Dharamkot, Jogiwara Road (McLeod Ganj) |
+| Cheapest months | July–August (monsoon) and weekdays in January–February |
+| Most expensive | May–June, October, Christmas–New Year, long weekends, match days |
+
+## Budget Stays You Can Enquire About With Us
+
+These are budget stays listed on our [hotels page](/hotels). Rates are on request: open a stay, send your dates, and our local team checks the price and availability for you.
+
+| Stay | Area | Type | Good for |
+|---|---|---|---|
+| [Zostel Dharamkot](/hotels/zostel-dharamkot-upper-bhagsu) | Upper Bhagsu | Hostel | Dorms with balconies, parking, social travellers |
+| [Young Monk Hostel](/hotels/young-monk-hostel-upper-dharamkot) | Upper Dharamkot | Hostel | Dorms and private rooms, close to the Triund trail |
+| [Shalom Backpackers](/hotels/shalom-backpackers-upper-dharamkot) | Upper Dharamkot | Hostel | Female dorm, mountain-view double rooms |
+| [Eevolve Eco Hostel](/hotels/eevolve-eco-hostel-dharamkot) | Dharamkot | Hostel | Quiet eco hostel with free parking |
+| [Loopin McLeodganj](/hotels/loopin-mcleodganj-upper-bhagsu) | Upper Bhagsu | Hostel | Dorm beds near Bhagsu cafes |
+| [The Hosteller Dharamshala](/hotels/the-hosteller-dharamshala-bangatu) | Bangatu, Dharamshala | Hostel | Branded hostel away from McLeod crowds |
+| [White Rabbit Guest House](/hotels/white-rabbit-guest-house-bhagsu) | Bhagsu | Guesthouse | Private rooms with breakfast |
+| [Hotel Shivaay Grand](/hotels/hotel-shivaay-grand-bhagsu) | Bhagsu | Hotel | Budget hotel with free parking and heating |
+| [Green Hotel](/hotels/green-hotel-bhagsu-road-mcleod-ganj) | Bhagsu Road, McLeod Ganj | Hotel | Balcony rooms 5 minutes from the main square |
+| [Backpackers Inn](/hotels/backpackers-inn-jogiwara-road-mcleod-ganj) | Jogiwara Road, McLeod Ganj | Guesthouse | Cheap rooms with heating, central |
+| [HPTDC Hotel Kunal](/hotels/hptdc-hotel-kunal-dharamshala) | Near Dharamshala bus stand | Government hotel | Late arrivals, transit, cricket days, parking |
+| [Mustard House Homestay](/hotels/mustard-house-homestay-dharamkot) | Dharamkot | Homestay | Breakfast included, free parking |
+| [Tranquil Trails Home Stay](/hotels/tranquil-trails-homestay-naddi) | Naddi | Homestay | Family rooms, kitchenettes and mountain views |
+
+Two of these also showed public rates on the day we checked: **Tranquil Trails** in Naddi from about US$18 (≈ ₹1,550) on Booking.com, rated 9.6 from 50 reviews, and **Green Hotel** at an average of about US$22 (≈ ₹1,900), rated 8.4 from 154 reviews. Backpackers Inn appeared on KAYAK from ₹575.
+
+## Prices We Found on Booking Sites
+
+These stays are not listed with us; they are the cheapest well-rated options the big platforms showed on 9 October 2026. Prices are per night before taxes unless noted. US dollar prices are converted at roughly ₹88 and rounded.
+
+### Private rooms under about ₹1,300
+
+| Stay | Area | Where we saw it | Price seen | Notes |
+|---|---|---|---|---|
+| Mcleodganj Diaries Guesthouse | Dharamshala | Booking.com | about US$7 (≈ ₹630) | Rated 9.0 from 62 reviews |
+| Himalayan Hostel | Dharamkot Road, McLeod Ganj | EaseMyTrip | ₹704 + ₹40 tax | Free breakfast and free cancellation shown |
+| Anchal House | Dharamshala | Booking.com | about US$8.70 (≈ ₹770) | Rated 9.2 from 43 reviews |
+| Hotel Adventure Inn | Bhagsu Nag | EaseMyTrip | ₹783 + ₹45 tax | Free cancellation shown |
+| Sweet Dreams | Bhagsu | Booking.com | average about US$9.80 (≈ ₹860) | Rated 8.2 from 43 reviews |
+| Hotel Freedom Palace | Jogiwara Road, McLeod Ganj | EaseMyTrip | ₹880 + ₹50 tax | Parking, free cancellation shown |
+| Bhagsu Home Stay | Upper Bhagsunag | Booking.com | average about US$10.70 (≈ ₹940) | Rated 8.1 from 70 reviews |
+| goSTOPS Mcleodganj Mall Road | Temple Road, McLeod Ganj | MakeMyTrip | ₹1,058 + tax | Hostel-hotel; EaseMyTrip showed ₹1,944 the same day |
+| Hotel Divyansh by VRB Hotels | McLeod Ganj | MakeMyTrip | ₹1,162 + tax | |
+| Ghar By The Mountains | McLeod Ganj | EaseMyTrip | ₹1,188 + ₹60 tax | Free cancellation shown |
+| Thrillomania Mcleodganj | Dharamkot Road | EaseMyTrip | ₹1,294 + ₹75 tax | Parking, free cancellation shown |
+| Tree House Bhagsu | Upper Bhagsunag Road | EaseMyTrip | ₹1,307 + ₹75 tax | Free cancellation shown |
+
+The same room can cost very different amounts on different sites on the same day: goSTOPS Mall Road was ₹1,058 on MakeMyTrip and ₹1,944 on EaseMyTrip. Always compare the **final price with taxes** on two or three sites, or ask the property directly.
+
+### Dorm beds
+
+| Hostel | Area | Dorm bed from (Hostelworld) |
+|---|---|---|
+| 12 Monks | Bhagsu | about US$3.70 (≈ ₹330) |
+| PACK Dharamkot | Dharamkot | about US$5.30 (≈ ₹470) |
+| The Hosteller Mcleodganj | Bhagsu | about US$5.80 (≈ ₹510) |
+| Zostel Mcleodganj | McLeod Ganj | about US$6.40 (≈ ₹560) |
+
+"From" prices are for the cheapest bed, usually in the biggest mixed dorm. Female-only and smaller dorms cost more.
+
+### Well-reviewed budget hotels on Tripadvisor
+
+Tripadvisor's McLeod Ganj budget list did not show prices, but two good-value budget hotels stood out on reviews: **Hotel Shivani International** (4.5 from 496 reviews) and **Hotel Asian Plaza** (4.2 from 313 reviews). Check their current rates on a booking site.
+
+## Dorm Bed or Private Room?
+
+- **Dorm bed (₹350–700):** cheapest by far, and the easiest way to meet trekking partners for [Triund](/treks/triund-trek). Bring earplugs and a padlock; check whether blankets are enough in winter.
+- **Private room in a hostel (₹1,000–2,000):** many hostels in Bhagsu and Dharamkot have private doubles, sometimes with a balcony and view, with the hostel's cafe and common areas.
+- **Guesthouse or homestay room (₹700–1,300):** usually the best value for couples. Rooms are simple, hosts are local, and food is often home-cooked.
+- **Budget hotel (₹1,000–2,000):** more likely to have road access, parking, a front desk and a heater, which matters for families and winter trips.
+
+## Which Area Is Best on a Budget?
+
+| Area | Typical budget room | Best for | Watch out for |
+|---|---|---|---|
+| Lower Dharamshala | ₹1,000–1,800 | Bus stand, late arrivals, HPCA Stadium, parking | Far from McLeod Ganj cafes and monasteries |
+| McLeod Ganj (Jogiwara Road, Temple Road) | ₹900–1,800 | Walking to the Dalai Lama Temple, food, buses | Noise and traffic, few rooms with parking |
+| Bhagsu | ₹700–1,500; dorms from ₹350 | Hostels, cafes, the waterfall | Busy and loud on weekends |
+| Dharamkot | ₹800–1,500; dorms from ₹450 | Quiet long stays, yoga, Triund start | Steep lanes and steps, little road access |
+| Naddi | ₹1,200–2,000 | Mountain views, sunrise, quiet | Fewer cheap options, a taxi ride to McLeod Ganj |
+
+For the bigger picture on areas, read [Dharamshala vs McLeod Ganj](/blog/dharamshala-vs-mcleod-ganj). For mid-range and upscale stays, see [best hotels in Dharamshala](/blog/best-hotels-in-dharamshala) and [best hotels in McLeod Ganj](/blog/best-hotels-in-mcleod-ganj).
+
+## What the Total Really Costs
+
+Before you book, check what the headline price leaves out:
+
+- **Taxes and fees:** platforms add them at the last step. On the rates we saw they added about 5–6%.
+- **Heater charges:** from November to March some budget places charge ₹200–500 a night extra for a room heater.
+- **Hot water:** ask whether it is a geyser in the room or solar water that runs out by evening.
+- **Breakfast:** "room only" is the norm at the cheapest rates; breakfast can add ₹150–300 per person.
+- **Parking:** many McLeod Ganj, Bhagsu and Dharamkot stays have no parking at all; paid lots cost extra per day.
+- **Steps and road access:** a cheap room 150 steps down a lane is hard work with luggage. Check the last stretch on the map.
+- **Cancellation:** the cheapest rates are often non-refundable. A free-cancellation rate a little higher is worth it in the monsoon, when roads close.
+
+## When Budget Rooms Are Cheapest
+
+- **Cheapest:** July and August (monsoon), and weekdays in January and February.
+- **Most expensive:** May and June, October, Christmas to New Year, Indian long weekends, and days when there is a match at the [HPCA Stadium](/blog/hpca-cricket-stadium-guide).
+- **Weekends vs weekdays:** Friday and Saturday nights cost noticeably more, especially for visitors driving up from Punjab, Chandigarh and Delhi.
+
+See [best time to visit Dharamshala](/blog/best-time-to-visit-dharamshala) for the month-by-month weather.
+
+## How to Book
+
+1. **Pick your area first**, using the table above, then shortlist two or three stays.
+2. **For stays listed with us**, open the stay on our [hotels page](/hotels) and send an enquiry with your dates; we confirm the rate and availability.
+3. **For other stays**, compare the final price with taxes on two or three booking sites, and read reviews from the last few months.
+4. **Ask before you pay** about heaters, hot water, parking and the walk from the road.
+
+If you are arriving by air or a late bus, pre-book a [taxi](/taxi) so you are not bargaining at night.`,
+    category: 'Hotels',
+    tags: ['budget hotels', 'cheap hotels', 'hostels', 'dharamshala', 'mcleod-ganj', 'bhagsu', 'dharamkot', 'budget travel', 'accommodation'],
+    author: 'Dharamshala Stay Team',
+    published_at: '2026-10-09',
+    updated_at: '2026-10-09',
+    image: placeImage('mcleod-ganj'),
+    image_alt: 'Guesthouses and budget hotels on the hillside in McLeod Ganj, Dharamshala',
+    read_time: 9,
+    featured: false,
+    meta_title: 'Budget Hotels in Dharamshala: Compare Affordable Stays (2026)',
+    meta_description: 'Budget hotels in Dharamshala and McLeod Ganj compared: dorm beds from about ₹350, private rooms ₹700–1,300 plus tax. Prices checked on MakeMyTrip, Booking.com and more.',
+    related_slugs: ['best-hotels-in-dharamshala', 'best-hotels-in-mcleod-ganj', 'dharamshala-vs-mcleod-ganj'],
+    faqs: [
+      {
+        question: 'What is the cheapest place to stay in Dharamshala?',
+        answer: 'Hostel dorm beds in Bhagsu, Dharamkot and McLeod Ganj are the cheapest, from about Rs 350 to Rs 700 a night in October 2026. For a private room, guesthouses in Bhagsu and on Jogiwara Road in McLeod Ganj start around Rs 700 to Rs 900 plus taxes.',
+      },
+      {
+        question: 'Are there hotels under Rs 1,000 in Dharamshala?',
+        answer: 'Yes. On 9 October 2026 we found several private rooms under Rs 1,000 before tax, for example Himalayan Hostel on Dharamkot Road (Rs 704), Hotel Adventure Inn in Bhagsu (Rs 783) and Hotel Freedom Palace on Jogiwara Road (Rs 880) on EaseMyTrip. Prices change daily, so check for your dates.',
+      },
+      {
+        question: 'Which area is best for budget hotels: Dharamshala or McLeod Ganj?',
+        answer: 'Bhagsu, Dharamkot and McLeod Ganj have the most cheap guesthouses and hostels. Lower Dharamshala has fewer very cheap rooms but is better for the bus stand, late arrivals, parking and the cricket stadium.',
+      },
+      {
+        question: 'Do budget hotels in McLeod Ganj have heaters?',
+        answer: 'Many do in winter, but some charge Rs 200 to Rs 500 a night extra and the cheapest rooms may only have extra blankets. Ask before you book if you are travelling between November and March.',
+      },
+      {
+        question: 'When are budget hotels cheapest in Dharamshala?',
+        answer: 'July and August, during the monsoon, and weekdays in January and February. Rates are highest in May and June, October, over Christmas and New Year, on long weekends and on cricket match days.',
+      },
     ],
   },
 ];

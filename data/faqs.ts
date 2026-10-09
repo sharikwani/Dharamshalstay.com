@@ -196,7 +196,7 @@ export const faqCategories: FAQCategory[] = [
       {
         question: 'Can I visit the HPCA Stadium, and what are the timings?',
         answer:
-          "Yes. On most non-match days the HPCA Stadium in lower Dharamshala is open to visitors from roughly 10 am to 4 pm, and you pay at the gate, usually Rs 50 to Rs 250 per person. No advance booking is needed for a normal visit. The hours are not officially fixed, though: the ground closes for matches, practice sessions, maintenance and VIP visits, so check on the morning you plan to go. For matches themselves, tickets are sold online through the official ticketing partner announced for that fixture.",
+          "Yes. The HPCA Stadium in lower Dharamshala is open to visitors Monday to Saturday, 10 am to 4 pm, and closed on Sundays. You pay at the gate, usually Rs 50 to Rs 250 per person, and no advance booking is needed for a normal visit. On an open day it closes only for matches, VIP movement or maintenance, so call the stadium office on the morning you plan to go. For matches themselves, tickets are sold online through the official ticketing partner announced for that fixture.",
         link: { href: '/blog/hpca-cricket-stadium-guide', label: 'HPCA Stadium timings & tickets' },
       },
       {

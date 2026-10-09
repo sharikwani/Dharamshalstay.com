@@ -54,7 +54,7 @@ Two kilometres east of McLeod Ganj, an old Shiva temple with spring-fed bathing 
 
 ### 5. Dharamkot
 
-A hillside village above McLeod Ganj known for slow cafes, yoga and meditation courses and a long-stay traveller crowd. It is also a common starting point for the Triund trail via Galu Devi temple.
+A hillside village above McLeod Ganj known for slow cafes, yoga and meditation courses and a long-stay traveller crowd. It is also a common starting point for the Triund trail via Gallu Devi temple.
 
 - **Time needed:** half a day to wander, or stay a few nights
 - **Entry:** free
@@ -103,7 +103,7 @@ Part of the Tsuglagkhang complex, Namgyal is the personal monastery of the Dalai
 
 ### 11. Triund
 
-The classic Dharamshala day hike: around 9 km one way from McLeod Ganj (via Galu Devi), climbing to a grassy ridge at about 2,850 m with a wall of Dhauladhar peaks in front of you. Most fit beginners do it in 3 to 4 hours up.
+The classic Dharamshala day hike: around 9 km one way from McLeod Ganj (via Gallu Devi), climbing to a grassy ridge at about 2,850 m with a wall of Dhauladhar peaks in front of you. Most fit beginners do it in 3 to 4 hours up.
 
 - **Time needed:** a full day, or overnight where camping is permitted
 - **Entry:** a forest department trekking fee applies; the amount and camping rules have changed several times, so confirm locally
@@ -753,9 +753,9 @@ Kangra town itself has limited good accommodation, while Dharamshala and McLeod 
   {
     id: 'blog-dalai-lama-temple-guide',
     slug: 'dalai-lama-temple-guide',
-    title: 'Dalai Lama Temple, McLeod Ganj (2026): Timings, Etiquette, Teachings and Kora',
+    title: 'Dalai Lama Temple Timings in McLeod Ganj (10 am–5 pm) & Visitor Guide',
     excerpt: 'A complete visitor guide to the Tsuglagkhang complex in McLeod Ganj: what is inside, opening hours, dress code, photography rules, the Tibet Museum, the kora walk, and how to attend a public teaching.',
-    content: `The **Dalai Lama Temple** in McLeod Ganj, properly called the **Tsuglagkhang complex**, is open to everyone, free of charge, every day from about **5 to 6 am until 7 to 8 pm** (hours shift slightly with the season; morning prayers run roughly 5 to 7 am). It contains the main temple with a large gilded Buddha, the Kalachakra temple, **Namgyal Monastery** and the official residence of the Dalai Lama. Plan on 1 to 2 hours, dress modestly, leave your camera in your bag inside the shrine halls, and walk the **kora** path around the complex while you are there.
+    content: `The **Dalai Lama Temple** in McLeod Ganj, properly called the **Tsuglagkhang complex**, is open to everyone, free of charge, **every day of the week from 10 am to 5 pm**. It contains the main temple with a large gilded Buddha, the Kalachakra temple, **Namgyal Monastery** and the official residence of the Dalai Lama. Plan on 1 to 2 hours, dress modestly, leave your camera in your bag inside the shrine halls, and walk the **kora** path around the complex while you are there.
 
 If you hope to see the Dalai Lama, the only realistic way is to attend a **public teaching or event** when one is scheduled. These are announced on the official website, dalailama.com, and require registration in McLeod Ganj a few days before. Details are below.
 
@@ -774,15 +774,15 @@ After the Dalai Lama fled Tibet in 1959, the Tibetan government in exile settled
 
 ## Timings and entry fee
 
-| What | Timings (approx., as of 2026) | Entry |
+| What | Timings (as of October 2026) | Entry |
 |---|---|---|
-| Tsuglagkhang complex | Early morning (around 5 to 6 am) to evening (around 7 to 8 pm), seasonal | Free |
-| Morning prayers | Early morning, roughly 5 to 7 am | Free |
+| Tsuglagkhang complex (temple visiting hours) | 10 am to 5 pm, every day of the week | Free |
+| Monks' morning prayers | Early morning, before visitor hours | Not open to visitors |
 | Monk debates | Many afternoons, not daily | Free |
 | Tibet Museum | Roughly 9 am to 5 pm with a lunch break; closed one day a week | Free or token amount |
-| Lingkhor kora | Always open; best at dawn | Free |
+| Lingkhor kora (outside the complex) | Always open; best at dawn | Free |
 
-Timings change seasonally and on special occasions, and the complex may close to the public during high-security events. Check at the gate or with your hotel on your first day.
+Visiting hours, prayer times and teaching registration are three different things: the temple is open to visitors from 10 am to 5 pm, the monks' own prayers happen early in the morning before then, and registration for a public teaching has its own office hours (see [How public teachings work](#how-public-teachings-work)). The complex can close to the public on special occasions and during high-security events, so check at the gate or with your hotel on your first day.
 
 ## Dress code and etiquette
 
@@ -825,7 +825,8 @@ Private audiences are rarely granted to individual tourists these days, so do no
 
 ## Best time to visit
 
-- **Early morning (6 to 8 am):** prayers, kora walkers, cool air, few tourists. The best time.
+- **Opening time (10 to 11 am):** the halls are calm and Temple Road is still quiet. The best time inside.
+- **Dawn on the kora:** the Lingkhor path outside the complex is open at any hour, and early morning, when elderly Tibetans walk it with prayer beads, is the most moving time to go.
 - **Afternoon (2 to 4 pm):** chance of monk debates in the courtyard.
 - **Avoid:** midday on weekends and Indian holidays, when the complex and Temple Road are busiest.
 - **Special days:** Losar (Tibetan New Year, usually February or March), Saga Dawa (around May or June) and the Dalai Lama's birthday on 6 July bring ceremonies and crowds. The 10 March Tibetan Uprising Day commemoration usually starts from here with a march.
@@ -856,18 +857,18 @@ Temple Road and the streets just above it have guesthouses and hotels within a f
     tags: ['dalai lama temple', 'tsuglagkhang', 'mcleod ganj', 'tibet museum', 'kora', 'dalai lama teachings'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-09-24',
-    updated_at: '2026-10-01',
+    updated_at: '2026-10-09',
     image: placeImage('tsuglagkhang'),
     image_alt: 'Tsuglagkhang complex, the Dalai Lama Temple on Temple Road in McLeod Ganj',
     read_time: 8,
     featured: false,
-    meta_title: 'Dalai Lama Temple Timings (McLeod Ganj): 5am–8pm, Free',
-    meta_description: 'Dalai Lama Temple, McLeod Ganj is open daily from about 5–6 am to 7–8 pm, free entry. Best time to visit, dress code, photo rules and how to attend teachings.',
+    meta_title: 'Dalai Lama Temple Timings in McLeod Ganj: 10am–5pm, Free',
+    meta_description: 'Dalai Lama Temple, McLeod Ganj is open every day, 10 am–5 pm, free entry. Visiting hours vs prayer times, dress code, photo rules and how to attend teachings.',
     related_slugs: ['things-to-do-in-mcleod-ganj', 'places-to-visit-in-dharamshala', 'best-hotels-in-mcleod-ganj'],
     faqs: [
       {
         question: 'What are the Dalai Lama Temple timings?',
-        answer: 'The Tsuglagkhang complex is open roughly from early morning, around 5 to 6 am, until evening, around 7 to 8 pm. Timings vary by season and special events, so confirm locally.',
+        answer: 'The Tsuglagkhang complex is open to visitors from 10 am to 5 pm, every day of the week, and entry is free. It can close on special occasions and during high-security events, so check at the gate on the day.',
       },
       {
         question: 'Is there an entry fee for the Dalai Lama Temple in McLeod Ganj?',

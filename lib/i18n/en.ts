@@ -147,6 +147,7 @@ export const en = {
     metaTitle: 'Hotels in Dharamshala & McLeod Ganj - Best Stays',
     metaDescription: 'Compare hotels, homestays and hostels in Dharamshala, McLeod Ganj, Bhagsu, Dharamkot & Naddi by area, type and budget. Direct rates and free local booking help.',
     h1: 'Hotels & Stays in Dharamshala',
+    budgetLink: 'Travelling on a budget? Compare budget hotels in Dharamshala',
     intro: "From boutique stays with valley views to budget hostels near the Triund trail, across Dharamshala, McLeod Ganj, Bhagsu, Dharamkot and Naddi. Partner properties show direct rates; directory listings are rates on request -- send an enquiry and we'll check for you.",
 
     areasTitle: 'Where to stay in Dharamshala: pick your area',
@@ -205,6 +206,10 @@ export const en = {
     notSure: 'Not sure which to choose?', areaGuides: 'Area Guides', altitude: 'Altitude', best: 'Best',
     about: 'About {name}', howToReach: 'How to Reach {name}', bookTaxi: 'Book a taxi transfer', bestTime: 'Best Time to Visit',
     thingsToDo: 'Things to Do', guidesFor: '{name} Travel Guides', others: 'Explore Other Destinations',
+    compareStays: 'Compare stays in {name}', colStay: 'Stay', colType: 'Type', colRooms: 'Room types', colViews: 'Mountain views',
+    colParking: 'Parking', colFamily: 'Family rooms', colRate: 'Rates', yes: 'Yes', fromPrice: 'from {price}/night',
+    onRequest: 'On request', compareNote: 'Rates change with season and dates. Where a rate is on request, open the stay and send an enquiry and we will confirm the price for your dates.',
+    sightseeingGuide: 'Sunrise, viewpoint and sightseeing guide',
   },
   treks: {
     popular: 'POPULAR', details: 'Details',

@@ -169,7 +169,7 @@ So if your dream is to wake up to snow on your balcony, plan for McLeod Ganj or 
 | Lower Dharamshala, Kotwali Bazaar | 1,250-1,450 m | Very rare | Cold, sunny days, frosty nights, hail possible |
 | McLeod Ganj, Bhagsu | 1,750-1,850 m | Occasional, Jan-Feb | A few snowy days in a good winter, often melting quickly |
 | Dharamkot, Naddi | 1,900-2,100 m | Better than McLeod Ganj | More frequent snow, lingers longer in shaded spots |
-| Galu Devi temple, Triund trail start | around 2,100-2,200 m | Fairly regular | Snow patches on the trail most of Jan-Feb |
+| Gallu Devi temple, Triund trail start | around 2,100-2,200 m | Fairly regular | Snow patches on the trail most of Jan-Feb |
 | Triund ridge | around 2,850 m | Very likely Dec-Mar | Snow cover often knee-deep after storms |
 | Snowline and Indrahar Pass | 3,200-4,300 m | Snowbound | Not for casual winter trekkers |
 
@@ -192,7 +192,7 @@ Still cold, a bit wetter on average, with another good window for snow in the up
 ## Best Snow Spots Near Dharamshala
 
 1. **Naddi**: a short drive above McLeod Ganj with a wide view of the Dhauladhar. In a snowy week it is the easiest place to see snow on the ground without trekking. See our [Naddi destination guide](/destinations/naddi).
-2. **Dharamkot and the Galu Devi area**: the trailhead for Triund. After a fresh fall, the forest paths here look like a postcard. Explore [Dharamkot](/destinations/dharamkot).
+2. **Dharamkot and the Gallu Devi area**: the trailhead for Triund. After a fresh fall, the forest paths here look like a postcard. Explore [Dharamkot](/destinations/dharamkot).
 3. **Triund**: the most reliable snow you can reach in a day. In winter the last section above Magic View can be icy; microspikes and a local guide are wise. Read our [Triund trek complete guide](/blog/triund-trek-complete-guide) and check [guided Triund treks](/treks/triund-trek).
 4. **Dal Lake and Talnu side**: snowy pines and quiet roads beyond Naddi in a good winter.
 5. **The Dhauladhar from town**: even with zero snow underfoot, the snow-capped range filling the skyline is the winter highlight in Dharamshala.
@@ -347,7 +347,7 @@ A realistic daily food spend is approx. ₹500-800 for a backpacker, ₹1,000-1,
 | Full-day local sightseeing taxi | ₹2,500-3,500 per car |
 | Kangra Airport to McLeod Ganj taxi | ₹1,000-1,500 |
 
-Triund fees and camping rules are set by the forest department and change from season to season, so confirm at the Galu checkpost or with your guide. Browse [guided Triund treks](/treks/triund-trek), other [treks around Dharamshala](/treks), [paragliding options](/paragliding) and [fixed-price local taxis](/taxi).
+Triund fees and camping rules are set by the forest department and change from season to season, so confirm at the Gallu checkpost or with your guide. Browse [guided Triund treks](/treks/triund-trek), other [treks around Dharamshala](/treks), [paragliding options](/paragliding) and [fixed-price local taxis](/taxi).
 
 ## Sample 3-Day Budgets (Per Person, From Delhi)
 
@@ -675,7 +675,7 @@ Getting between lower Dharamshala and McLeod Ganj takes 20-30 minutes by taxi (a
 
 ### Backpackers and budget travellers
 
-**Best base: Bhagsu or McLeod Ganj.** Bhagsu has a dense cluster of hostels, cheap guesthouses and travellers' cafes, while McLeod Ganj keeps you close to the bus stand and food stalls. Both are close to the [Triund trek](/treks/triund-trek) trailhead. Explore [Bhagsu](/destinations/bhagsu) and the [McLeod Ganj area guide](/destinations/mcleod-ganj).
+**Best base: Bhagsu or McLeod Ganj.** Bhagsu has a dense cluster of hostels, cheap guesthouses and travellers' cafes, while McLeod Ganj keeps you close to the bus stand and food stalls. Both are close to the [Triund trek](/treks/triund-trek) trailhead. Explore [Bhagsu](/destinations/bhagsu) and the [McLeod Ganj area guide](/destinations/mcleod-ganj), and compare [budget stays by area](/blog/budget-hotels-in-dharamshala).
 
 ### Spiritual travellers and long stays
 
@@ -695,7 +695,7 @@ Getting between lower Dharamshala and McLeod Ganj takes 20-30 minutes by taxi (a
 
 ### Trekkers
 
-**Best base: Dharamkot or McLeod Ganj.** The Triund trail starts near Galu Devi temple above Dharamkot, so staying here lets you start at first light. For multi-day treks like [Kareri Lake](/treks/kareri-lake-trek), lower Dharamshala can actually be closer to the road head. Our [Triund trek complete guide](/blog/triund-trek-complete-guide) has the full route.
+**Best base: Dharamkot or McLeod Ganj.** The Triund trail starts near Gallu Devi temple above Dharamkot, so staying here lets you start at first light. For multi-day treks like [Kareri Lake](/treks/kareri-lake-trek), lower Dharamshala can actually be closer to the road head. Our [Triund trek complete guide](/blog/triund-trek-complete-guide) has the full route.
 
 ## Pros and Cons in Brief
 

@@ -79,7 +79,7 @@ For routes and alternatives, see [how to reach Dharamshala](/blog/how-to-reach-d
 | Kora around Tsuglagkhang | Paved and sheltered by trees; the best rainy-day walk in town. |
 | Naddi and Dal Lake | Good for a drive or short walk when the cloud lifts. |
 
-Triund also has a forest entry fee (Rs.100 per person) and, since 11 August 2026, a **refundable Rs.500 waste deposit** at the checkpost. Rules have been changing through 2026, so confirm at the Galu checkpost. Our [Triund trek guide](/blog/triund-trek-complete-guide) and [easy hikes near McLeod Ganj](/blog/easy-hikes-near-mcleod-ganj) have more detail.
+Triund also has a forest entry fee (Rs.100 per person) and, since 11 August 2026, a **refundable Rs.500 waste deposit** at the checkpost. Rules have been changing through 2026, so confirm at the Gallu checkpost. Our [Triund trek guide](/blog/triund-trek-complete-guide) and [easy hikes near McLeod Ganj](/blog/easy-hikes-near-mcleod-ganj) have more detail.
 
 ## Paragliding at Bir Billing: Closed
 
@@ -163,7 +163,7 @@ Approx. 2026 ranges for a double room; long weekends cost more.
     {
       question: 'Can I do the Triund trek in the monsoon?',
       answer:
-        'It is best avoided in July and August. The trail is muddy and slippery, cloud hides the views and the district sometimes closes Triund and higher treks in bad weather. Late September is often possible on dry days. Always check current orders at the Galu checkpost.',
+        'It is best avoided in July and August. The trail is muddy and slippery, cloud hides the views and the district sometimes closes Triund and higher treks in bad weather. Late September is often possible on dry days. Always check current orders at the Gallu checkpost.',
     },
     {
       question: 'Is paragliding open in Bir Billing during the monsoon?',

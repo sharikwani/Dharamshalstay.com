@@ -32,7 +32,8 @@ export default async function HotelsView({ lang }: { lang: Lang }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <Breadcrumb lang={lang} items={[{ label: t.common.home, href: '/' }, { label: t.common.hotels }]} />
           <h1 className="text-3xl font-heading font-bold mt-2 mb-2">{t.hotels.h1}</h1>
-          <p className="text-brand-200 max-w-2xl mb-6">{t.hotels.intro}</p>
+          <p className="text-brand-200 max-w-2xl mb-3">{t.hotels.intro}</p>
+          <Link href={href('/blog/budget-hotels-in-dharamshala')} className="inline-block text-sm font-semibold text-white underline underline-offset-4 hover:text-brand-200 mb-6">{t.hotels.budgetLink} &rarr;</Link>
         </div>
       </section>
       <section className="py-8">
