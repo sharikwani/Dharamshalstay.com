@@ -58,3 +58,11 @@ export async function notifyPropertySubmitted(id: string) {
     // The listing is saved either way; it still shows in /admin/approvals.
   }
 }
+
+/** fetch() that sends the logged-in user's token, for /api/partner and /api/admin routes. */
+export async function authFetch(input: string, init: RequestInit = {}) {
+  const { data: { session } } = await supabase.auth.getSession();
+  const headers = new Headers(init.headers);
+  if (session) headers.set('Authorization', 'Bearer ' + session.access_token);
+  return fetch(input, { ...init, headers });
+}

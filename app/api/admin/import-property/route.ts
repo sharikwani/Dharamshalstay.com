@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { requireCaller, jsonError } from '@/lib/server-auth';
 
 const PROMPT = `You are extracting hotel data from an Indian OTA page (MakeMyTrip, Agoda, Booking.com, Goibibo, etc).
 
@@ -96,6 +97,11 @@ RULES:
 
 
 export async function POST(req: NextRequest) {
+  try {
+    await requireCaller(req, ['admin']);
+  } catch (e) {
+    return jsonError(e);
+  }
   try {
     const rawKey = process.env.OPENAI_API_KEY || '';
     const openaiKey = rawKey.trim().replace(/^["']|["']$/g, '');
