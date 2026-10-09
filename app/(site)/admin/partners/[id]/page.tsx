@@ -31,13 +31,13 @@ export default function AdminPartnerDetail() {
     setS(data);
   }
 
-  if (!s) return <p className="text-sm text-slate-500">{msg || 'Loading…'}</p>;
+  if (!s) return <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8"><p className="text-slate-500">{msg || 'Loading...'}</p></div>;
   const p = s.profile;
   const owner = (d: any) => d.vehicle_id ? s.vehicles.find((v: any) => v.id === d.vehicle_id)?.registration_no : d.staff_id ? s.staff.find((m: any) => m.id === d.staff_id)?.full_name : '';
 
   return (
-    <div className="max-w-4xl">
-      <AdminPageHeader title={p.legal_name || p.full_name || p.email} description={`${p.partner_type} partner · status: ${p.partner_status} · commission ${p.commission_pct}%`} />
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+      <AdminPageHeader title={p.legal_name || p.full_name || p.email} description={`${p.partner_type.charAt(0).toUpperCase() + p.partner_type.slice(1)} partner · ${String(p.partner_status || '').replace(/_/g, ' ')} · commission ${p.commission_pct}%`} />
       {msg && <p className="bg-red-50 text-red-700 text-sm rounded-lg p-3 mb-4">{msg}</p>}
 
       <section className="bg-white border border-slate-200 rounded-xl p-5 mb-5 grid sm:grid-cols-2 gap-2 text-sm">
