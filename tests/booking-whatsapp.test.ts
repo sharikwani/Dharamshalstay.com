@@ -25,7 +25,7 @@ vi.mock('@/lib/server-auth', () => ({
   }),
 }));
 /** Final state of every whatsapp_messages row, in insert order. */
-const logged = () => [...h.rows.values()];
+const logged = () => Array.from(h.rows.values());
 
 import { cancelledParams, customerParams, newBookingParams, recipientsFor, whatsappCancelled, whatsappNewBooking, whatsappReassignedAway } from '@/lib/booking-whatsapp';
 
