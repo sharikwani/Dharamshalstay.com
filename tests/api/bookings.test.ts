@@ -62,6 +62,7 @@ describe('POST /api/bookings', () => {
     const json = await res.json();
     expect(json.payment_method).toBe('offline');
     expect(inserted[0].payment_method).toBe('offline');
+    expect(inserted[0].commission_status).toBe('pending');
     expect(sendBookingEmails).toHaveBeenCalledTimes(1);
   });
 

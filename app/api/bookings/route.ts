@@ -83,10 +83,10 @@ export async function POST(req: NextRequest) {
         room_name: data.room_name, plan_index: data.plan_index ?? null,
       });
       const commission_amount = Math.round(amount * commission_pct / 100);
-      const commission_status = (data.payment_method === 'offline' || data.payment_method === 'pay_at_hotel') && commission_amount > 0
-        ? 'pending' : 'not_applicable';
       // Online payment needs a price; quote-only bookings are taken as pay-later.
       const payment_method = data.payment_method === 'online' && (amount < 100 || !process.env.STRIPE_SECRET_KEY) ? 'offline' : data.payment_method;
+      const commission_status = (payment_method === 'offline' || payment_method === 'pay_at_hotel') && commission_amount > 0
+        ? 'pending' : 'not_applicable';
       const room_label = data.room_name ? (data.plan_name ? `${data.room_name} - ${data.plan_name}` : data.room_name) : null;
 
       const { data: booking, error } = await sb.from('bookings').insert({
