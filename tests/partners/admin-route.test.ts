@@ -2,7 +2,10 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 let role = 'partner';
 const emailPartnerDecision = vi.fn(async () => {});
-const update = vi.fn();
+let updateError: any = null;
+let partnerType = 'taxi';
+let docStatuses = ['approved', 'pending'];
+const update = vi.fn((_patch: unknown) => ({ eq: async () => ({ error: updateError }) }));
 const sb = { from: () => ({ select: () => ({ in: () => ({ order: async () => ({ data: [], error: null }) }) }), update }) };
 
 vi.mock('@/lib/server-auth', async (orig) => {
@@ -18,8 +21,8 @@ vi.mock('@/lib/server-auth', async (orig) => {
 });
 vi.mock('@/lib/partners/load', () => ({
   loadOnboarding: async () => ({
-    profile: { id: 'p1', email: 'p@x.com', legal_name: 'Partner One', partner_status: 'pending_verification' },
-    documents: [{ id: 'd1', status: 'approved' }, { id: 'd2', status: 'pending' }],
+    profile: { id: 'p1', email: 'p@x.com', legal_name: 'Partner One', partner_status: 'pending_verification', partner_type: partnerType },
+    documents: docStatuses.map((status, i) => ({ id: 'd' + i, status })),
     agreements: [{ id: 'a1' }],
     missing: [],
   }),
@@ -29,7 +32,9 @@ vi.mock('@/lib/partners/emails', () => ({ emailPartnerDecision: (...a: unknown[]
 import { GET } from '@/app/api/admin/partners/route';
 import { POST } from '@/app/api/admin/partners/[id]/route';
 
-beforeEach(() => { role = 'partner'; emailPartnerDecision.mockClear(); update.mockClear(); });
+beforeEach(() => { role = 'partner'; updateError = null; partnerType = 'taxi'; docStatuses = ['approved', 'pending']; emailPartnerDecision.mockClear(); update.mockClear(); });
+
+const post = (body: unknown) => POST(new Request('http://x', { method: 'POST', body: JSON.stringify(body) }), { params: { id: 'p1' } });
 
 describe('admin partner routes', () => {
   it('returns 403 for a non-admin caller on GET /api/admin/partners', async () => {
@@ -47,6 +52,35 @@ describe('admin partner routes', () => {
     expect(res.status).toBe(409);
     expect((await res.json()).error).toBe('Approve every document before verifying.');
     expect(emailPartnerDecision).not.toHaveBeenCalled();
+    expect(update).not.toHaveBeenCalled();
+  });
+
+  it('verifies a ready partner: saves the status, then emails', async () => {
+    role = 'admin';
+    docStatuses = ['approved', 'approved'];
+    const res = await post({ action: 'verify' });
+    expect(res.status).toBe(200);
+    expect(update).toHaveBeenCalledWith(expect.objectContaining({ partner_status: 'verified' }));
+    expect(emailPartnerDecision).toHaveBeenCalledWith('p@x.com', 'Partner One', 'verified');
+  });
+
+  it('returns 500 and sends no email when the save fails', async () => {
+    role = 'admin';
+    docStatuses = ['approved', 'approved'];
+    updateError = { message: 'db down' };
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const res = await post({ action: 'verify' });
+    expect(res.status).toBe(500);
+    expect((await res.json()).error).toBe('Could not save. Please try again.');
+    expect(emailPartnerDecision).not.toHaveBeenCalled();
+    log.mockRestore();
+  });
+
+  it('returns 404 for a profile that is not a partner type', async () => {
+    role = 'admin';
+    partnerType = 'hotel';
+    const res = await post({ action: 'set_commission', commission_pct: 10 });
+    expect(res.status).toBe(404);
     expect(update).not.toHaveBeenCalled();
   });
 });

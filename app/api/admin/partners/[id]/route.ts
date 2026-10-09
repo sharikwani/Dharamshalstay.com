@@ -7,6 +7,9 @@ import { emailPartnerDecision } from '@/lib/partners/emails';
 
 export const dynamic = 'force-dynamic';
 
+const PARTNER_TYPES = ['paragliding', 'taxi', 'trek'];
+const SAVE_FAILED = 'Could not save. Please try again.';
+
 const schema = z.discriminatedUnion('action', [
   z.object({ action: z.literal('approve_doc'), document_id: z.string().uuid() }),
   z.object({ action: z.literal('reject_doc'), document_id: z.string().uuid(), reason: z.string().trim().min(3).max(500) }),
@@ -34,32 +37,39 @@ export async function POST(req: Request, { params }: { params: { id: string } })
     const sb = serviceClient();
     const state = await loadOnboarding(params.id);
     const p = state.profile;
+    if (!PARTNER_TYPES.includes(p.partner_type)) throw new HttpError(404, 'Partner not found.');
     const now = new Date().toISOString();
     const name = p.legal_name || p.full_name || 'Partner';
+    const saveProfile = async (patch: Record<string, unknown>) => {
+      const { error } = await sb.from('profiles').update(patch).eq('id', p.id);
+      if (error) { console.error(error); throw new HttpError(500, SAVE_FAILED); }
+    };
 
     if (a.action === 'approve_doc' || a.action === 'reject_doc') {
-      const { data: d } = await sb.from('partner_documents').select('id').eq('id', a.document_id).eq('partner_id', p.id).single();
+      const { data: d, error: lookupError } = await sb.from('partner_documents').select('id').eq('id', a.document_id).eq('partner_id', p.id).single();
+      if (lookupError && lookupError.code !== 'PGRST116') throw lookupError;
       if (!d) throw new HttpError(404, 'Document not found.');
-      await sb.from('partner_documents').update({
+      const { error } = await sb.from('partner_documents').update({
         status: a.action === 'approve_doc' ? 'approved' : 'rejected',
         rejection_reason: a.action === 'reject_doc' ? a.reason : null,
         reviewed_by: admin.id, reviewed_at: now,
       }).eq('id', d.id);
+      if (error) { console.error(error); throw new HttpError(500, SAVE_FAILED); }
     } else if (a.action === 'verify') {
       const reason = canVerify(state);
       if (reason) throw new HttpError(409, reason);
-      await sb.from('profiles').update({ partner_status: 'verified', verified_at: now, verification_note: null }).eq('id', p.id);
+      await saveProfile({ partner_status: 'verified', verified_at: now, verification_note: null });
       await emailPartnerDecision(p.email, name, 'verified');
     } else if (a.action === 'request_changes' || a.action === 'reject' || a.action === 'suspend') {
       const status = a.action === 'request_changes' ? 'changes_requested' : a.action === 'reject' ? 'rejected' : 'suspended';
-      await sb.from('profiles').update({ partner_status: status, verification_note: a.note }).eq('id', p.id);
+      await saveProfile({ partner_status: status, verification_note: a.note });
       await emailPartnerDecision(p.email, name, status, a.note);
     } else if (a.action === 'reinstate') {
       if (p.partner_status !== 'suspended') throw new HttpError(409, 'Only suspended partners can be reinstated.');
-      await sb.from('profiles').update({ partner_status: 'verified', verification_note: null }).eq('id', p.id);
+      await saveProfile({ partner_status: 'verified', verification_note: null });
       await emailPartnerDecision(p.email, name, 'verified');
     } else if (a.action === 'set_commission') {
-      await sb.from('profiles').update({ commission_pct: a.commission_pct }).eq('id', p.id);
+      await saveProfile({ commission_pct: a.commission_pct });
     }
     return NextResponse.json(await loadOnboarding(params.id));
   } catch (e) { return jsonError(e); }
