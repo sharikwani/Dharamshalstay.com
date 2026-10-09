@@ -88,7 +88,16 @@ describe('admin partner routes', () => {
     role = 'admin';
     const res = await post({ action: 'set_whatsapp', whatsapp_number: '98765 43210', whatsapp_alerts: true });
     expect(res.status).toBe(200);
-    expect(update).toHaveBeenCalledWith(expect.objectContaining({ whatsapp_number: '919876543210', whatsapp_alerts: true, whatsapp_opt_in_at: expect.any(String) }));
+    expect(update).toHaveBeenCalledWith(expect.objectContaining({
+      whatsapp_number: '919876543210', whatsapp_alerts: true, whatsapp_opt_in_at: expect.any(String), whatsapp_opt_in_by: 'admin',
+    }));
+  });
+
+  it('set_whatsapp with alerts off saves without a valid number', async () => {
+    role = 'admin';
+    const res = await post({ action: 'set_whatsapp', whatsapp_number: '123', whatsapp_alerts: false });
+    expect(res.status).toBe(200);
+    expect(update).toHaveBeenCalledWith({ whatsapp_number: null, whatsapp_alerts: false });
   });
 
   it('set_whatsapp requires an admin', async () => {

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { HttpError, jsonError, serviceClient } from '@/lib/server-auth';
 import { requireActivityPartner } from '@/lib/partners/load';
-import { normalizeIndianPhone } from '@/lib/whatsapp';
+import { whatsappProfilePatch } from '@/lib/partners/whatsapp';
 import { isAccountNumber, isIfsc, isPan, isUpi } from '@/lib/partners/validate';
 
 const schema = z.object({
@@ -32,11 +32,11 @@ export async function PATCH(req: Request) {
     }
     if (d.payout_method === 'upi' && !isUpi(d.upi_id)) throw new HttpError(400, 'UPI ID should look like name@bank.');
 
-    const waNumber = normalizeIndianPhone(d.whatsapp_number || d.phone);
-    if ((d.whatsapp_alerts || d.whatsapp_number) && !waNumber) {
-      throw new HttpError(400, 'Enter a valid Indian mobile number for WhatsApp.');
-    }
-    const { data: current } = await serviceClient().from('profiles').select('whatsapp_alerts').eq('id', profile.id).single();
+    const { data: current, error: curErr } = await serviceClient().from('profiles').select('whatsapp_alerts').eq('id', profile.id).single();
+    if (curErr) throw curErr;
+    const whatsapp = whatsappProfilePatch({
+      rawNumber: d.whatsapp_number || d.phone, alerts: d.whatsapp_alerts, wasOn: !!current?.whatsapp_alerts, by: 'partner',
+    });
 
     const payout_details = d.payout_method === 'bank'
       ? { account_holder: d.account_holder, account_number: d.account_number, ifsc: d.ifsc }
@@ -44,8 +44,7 @@ export async function PATCH(req: Request) {
     const { error } = await serviceClient().from('profiles').update({
       legal_name: d.legal_name, business_name: d.business_name, phone: d.phone, pan_number: d.pan_number,
       business_registration_no: d.business_registration_no || null, payout_method: d.payout_method, payout_details,
-      whatsapp_number: waNumber, whatsapp_alerts: d.whatsapp_alerts,
-      ...(d.whatsapp_alerts && !current?.whatsapp_alerts ? { whatsapp_opt_in_at: new Date().toISOString() } : {}),
+      ...whatsapp,
       updated_at: new Date().toISOString(),
     }).eq('id', profile.id);
     if (error) throw error;
