@@ -12,7 +12,7 @@ export async function GET(req: Request) {
     const sb = serviceClient();
 
     let query = sb.from('bookings').select('*');
-    if (caller.profile.partner_type === 'hotel') {
+    if (!caller.profile.partner_type || caller.profile.partner_type === 'hotel') {
       const { data: props, error: propsErr } = await sb.from('properties').select('id').eq('owner_id', caller.profile.id);
       if (propsErr) { console.error('Partner properties load failed:', propsErr); return NextResponse.json({ error: 'Could not load bookings' }, { status: 500 }); }
       const ids = (props || []).map((p: any) => p.id);

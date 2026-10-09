@@ -5,6 +5,7 @@ let partnerType = 'trek';
 let bookingRows: any[] = [];
 let propertyRows: any[] = [];
 let bookingsError: any = null;
+let viewsThrow = false;
 const eqCalls: any[] = [];
 const inCalls: any[] = [];
 
@@ -32,7 +33,7 @@ vi.mock('@/lib/server-auth', async (orig) => {
   };
 });
 vi.mock('@/lib/manual-booking-emails', () => ({
-  toBookingViews: async (rows: any[]) => rows.map((r) => ({ ...r, item_name: 'Trek', date_text: 'd', assignee_text: null, payment_text: 'p', partner_contact: null })),
+  toBookingViews: async (rows: any[]) => { if (viewsThrow) throw new Error('lookup failed'); return rows.map((r) => ({ ...r, item_name: 'Trek', date_text: 'd', assignee_text: null, payment_text: 'p', partner_contact: null })); },
 }));
 
 import { GET } from '@/app/api/partner/bookings/route';
@@ -40,7 +41,7 @@ const get = () => GET(new Request('http://x'));
 
 beforeEach(() => {
   vi.spyOn(console, 'error').mockImplementation(() => {});
-  role = 'partner'; partnerType = 'trek'; bookingsError = null; eqCalls.length = 0; inCalls.length = 0; propertyRows = [];
+  role = 'partner'; partnerType = 'trek'; bookingsError = null; viewsThrow = false; eqCalls.length = 0; inCalls.length = 0; propertyRows = [];
   bookingRows = [
     { id: 'b1', status: 'pending', guest_name: 'A', guest_phone: '111', guest_email: 'a@x.com', commission_pct: 20, created_by: 'admin', list_amount: 5, price_override_reason: 'x', amount: 100, commission_amount: 20, partner_share_amount: 80 },
     { id: 'b2', status: 'confirmed', guest_name: 'B', guest_phone: '222', guest_email: 'b@x.com', amount: 100 },
@@ -83,6 +84,18 @@ describe('GET /api/partner/bookings', () => {
 
   it('returns 500 when the bookings query fails', async () => {
     bookingsError = { message: 'boom' };
+    expect((await get()).status).toBe(500);
+  });
+
+  it('treats a partner with no partner_type as a property owner', async () => {
+    partnerType = null as any; propertyRows = [{ id: 'h1' }];
+    await get();
+    expect(eqCalls).toContainEqual({ table: 'properties', c: 'owner_id', v: 'p1' });
+    expect(eqCalls).not.toContainEqual({ table: 'bookings', c: 'partner_id', v: 'p1' });
+  });
+
+  it('returns 500 when building the views fails', async () => {
+    viewsThrow = true;
     expect((await get()).status).toBe(500);
   });
 });
