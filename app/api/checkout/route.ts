@@ -1,70 +1,42 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getStripe } from '@/lib/stripe';
+import { serviceClient } from '@/lib/server-auth';
+
+const RETURN_PATH: Record<string, string> = { hotel: '/hotels', taxi: '/taxi', trek: '/treks', paragliding: '/paragliding' };
 
 export async function POST(req: NextRequest) {
   try {
-    if (!process.env.STRIPE_SECRET_KEY) {
-      return NextResponse.json({ error: 'Stripe not configured' }, { status: 500 });
+    if (!process.env.STRIPE_SECRET_KEY) return NextResponse.json({ error: 'Online payment is not available yet' }, { status: 503 });
+    const { bookingId } = await req.json().catch(() => ({}));
+    if (typeof bookingId !== 'string' || !bookingId) return NextResponse.json({ error: 'Missing booking' }, { status: 400 });
+
+    const sb = serviceClient();
+    const { data: b } = await sb.from('bookings').select('*').eq('id', bookingId).single();
+    if (!b) return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
+    if (b.payment_status === 'paid') return NextResponse.json({ error: 'This booking is already paid' }, { status: 409 });
+    if (!b.amount || b.amount < 100) return NextResponse.json({ error: 'This booking has no online price' }, { status: 400 });
+
+    let title = 'Dharamshala Stay booking';
+    if (b.property_id) {
+      const { data: p } = await sb.from('properties').select('name').eq('id', b.property_id).single();
+      if (p?.name) title = p.name;
     }
-
-    const body = await req.json();
-    const { bookingId, bookingRef, amount, guestName, guestEmail, hotelName, roomName, checkIn, checkOut } = body;
-
-    if (!amount || amount < 100) {
-      return NextResponse.json({ error: 'Invalid amount' }, { status: 400 });
-    }
-
-    // Amount is in INR, Stripe expects paise (1 INR = 100 paise)
-    const amountInPaise = Math.round(amount * 100);
-
-    const description = [
-      hotelName || 'Dharamshala Stay Booking',
-      roomName ? '- ' + roomName : '',
-      checkIn ? '(' + checkIn + ' to ' + (checkOut || '') + ')' : '',
-    ].filter(Boolean).join(' ');
+    const dates = b.check_in ? `${b.check_in} to ${b.check_out || ''}` : b.activity_date || '';
+    const description = [b.room_name, dates, b.booking_ref].filter(Boolean).join(' · ');
 
     const session = await getStripe().checkout.sessions.create({
-      payment_method_types: ['card'],
       mode: 'payment',
       currency: 'inr',
-      line_items: [{
-        price_data: {
-          currency: 'inr',
-          unit_amount: amountInPaise,
-          product_data: {
-            name: hotelName || 'Booking',
-            description: description.substring(0, 500),
-          },
-        },
-        quantity: 1,
-      }],
-      customer_email: guestEmail || undefined,
-      metadata: {
-        booking_id: bookingId || '',
-        booking_ref: bookingRef || '',
-        guest_name: guestName || '',
-      },
-      success_url: process.env.NEXT_PUBLIC_SITE_URL + '/booking/success?session_id={CHECKOUT_SESSION_ID}&ref=' + (bookingRef || ''),
-      cancel_url: process.env.NEXT_PUBLIC_SITE_URL + '/hotels?payment=cancelled',
+      line_items: [{ quantity: 1, price_data: { currency: 'inr', unit_amount: Math.round(b.amount * 100), product_data: { name: title, description: description.slice(0, 500) || undefined } } }],
+      customer_email: b.guest_email || undefined,
+      metadata: { booking_id: b.id, booking_ref: b.booking_ref || '' },
+      success_url: process.env.NEXT_PUBLIC_SITE_URL + '/booking/success?session_id={CHECKOUT_SESSION_ID}&ref=' + encodeURIComponent(b.booking_ref || ''),
+      cancel_url: process.env.NEXT_PUBLIC_SITE_URL + (RETURN_PATH[b.category] || '/') + '?payment=cancelled',
     });
-
-    // Update booking with stripe session ID
-    if (bookingId) {
-      const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-      const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-      if (url && key) {
-        const { createClient } = await import('@supabase/supabase-js');
-        const sb = createClient(url, key);
-        await sb.from('bookings').update({
-          stripe_session_id: session.id,
-          payment_method: 'online',
-        }).eq('id', bookingId);
-      }
-    }
-
+    await sb.from('bookings').update({ stripe_session_id: session.id, payment_method: 'online' }).eq('id', b.id);
     return NextResponse.json({ url: session.url, sessionId: session.id });
-  } catch (err: any) {
+  } catch (err) {
     console.error('Stripe checkout error:', err);
-    return NextResponse.json({ error: err.message || 'Checkout failed' }, { status: 500 });
+    return NextResponse.json({ error: 'Could not start payment' }, { status: 500 });
   }
 }

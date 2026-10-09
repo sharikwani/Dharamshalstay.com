@@ -20,6 +20,7 @@ interface SelectedRoom {
   roomName: string;
   planName: string;
   pricePerNight: number;
+  planIndex: number;
 }
 
 interface Props {
@@ -34,12 +35,13 @@ export default function HotelBooking({ hotel }: Props) {
     roomName: '',
     planName: '',
     pricePerNight: hotel.price_min ? discountedPrice(hotel.price_min) : 0,
+    planIndex: -1,
   });
   const formRef = useRef<HTMLDivElement>(null);
 
-  function selectRoom(roomName: string, planName: string, price: number) {
+  function selectRoom(roomName: string, planName: string, price: number, planIndex: number) {
     const ourPrice = discountedPrice(price);
-    setSelected({ roomName, planName, pricePerNight: ourPrice });
+    setSelected({ roomName, planName, pricePerNight: ourPrice, planIndex });
     // Scroll to booking form
     if (formRef.current) {
       formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -142,7 +144,7 @@ export default function HotelBooking({ hotel }: Props) {
                                     </div>
                                     <button
                                       type="button"
-                                      onClick={() => selectRoom(room.name, planName, plan.price)}
+                                      onClick={() => selectRoom(room.name, planName, plan.price, pi)}
                                       className={'text-sm font-bold px-5 py-2.5 rounded-xl transition-colors whitespace-nowrap shrink-0 ' + (isSelected ? 'bg-green-700 text-white' : 'bg-orange-600 hover:bg-orange-700 text-white')}>
                                       {isSelected ? b.selected : b.book}
                                     </button>
@@ -184,6 +186,7 @@ export default function HotelBooking({ hotel }: Props) {
 
           <BookingForm
             category="hotel"
+            planIndex={selected.planIndex >= 0 ? selected.planIndex : undefined}
             entityId={hotel.id}
             entityName={hotel.name}
             pricePerNight={selected.pricePerNight || (hotel.price_min ? discountedPrice(hotel.price_min) : undefined)}

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getStripe } from '@/lib/stripe';
 import Stripe from 'stripe';
+import { sendBookingEmails } from '@/lib/booking-emails';
 
 export async function POST(req: NextRequest) {
   try {
@@ -45,16 +46,7 @@ export async function POST(req: NextRequest) {
         if (booking) {
           console.log('Payment confirmed for booking:', booking.booking_ref);
 
-          // Send confirmation email (non-blocking)
-          try {
-            await fetch(process.env.NEXT_PUBLIC_SITE_URL + '/api/email/booking-confirmation', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ bookingId: booking.id }),
-            });
-          } catch (emailErr) {
-            console.error('Email send failed (non-fatal):', emailErr);
-          }
+          await sendBookingEmails(booking.id);
         }
       }
     }
