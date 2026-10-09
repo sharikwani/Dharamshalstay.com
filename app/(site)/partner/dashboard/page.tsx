@@ -19,6 +19,10 @@ export default function PartnerDashboard() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { router.push('/partner/login'); return; }
       setUser(user);
+      const { data: me } = await supabase.from('profiles').select('partner_type, partner_status').eq('id', user.id).single();
+      if (me && me.partner_type && me.partner_type !== 'hotel' && me.partner_status !== 'verified') {
+        router.push('/partner/onboarding'); return;
+      }
 
       const { data: props } = await supabase.from('properties').select('*').eq('owner_id', user.id).order('created_at', { ascending: false });
       setProperties(props || []);
