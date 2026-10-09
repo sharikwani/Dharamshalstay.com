@@ -199,14 +199,14 @@ describe('GET/PATCH /api/admin/bookings/:id', () => {
   it('cancel sets status, reason and waives commission, then emails', async () => {
     const res = await patch({ action: 'cancel', reason: 'Customer changed plans' });
     expect(res.status).toBe(200);
-    expect(updates[0].row).toEqual({ status: 'cancelled', cancel_reason: 'Customer changed plans', commission_status: 'waived' });
+    expect(updates[0].row).toEqual({ status: 'cancelled', cancelled_reason: 'Customer changed plans', commission_status: 'waived' });
     expect(sendCancellationEmails).toHaveBeenCalledWith(ID, 'Customer changed plans');
   });
 
   it('cancel keeps a paid commission', async () => {
     fixtures.bookings = { ...fixtures.bookings, commission_status: 'paid' };
     await patch({ action: 'cancel', reason: 'Customer changed plans', notify: false });
-    expect(updates[0].row).toEqual({ status: 'cancelled', cancel_reason: 'Customer changed plans' });
+    expect(updates[0].row).toEqual({ status: 'cancelled', cancelled_reason: 'Customer changed plans' });
     expect(sendCancellationEmails).not.toHaveBeenCalled();
   });
 

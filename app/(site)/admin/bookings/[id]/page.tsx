@@ -129,7 +129,7 @@ export default function BookingDetailPage() {
         <Row k="When" v={b.date_text} />
         <Row k="People" v={b.num_guests} />
         <Row k="Notes" v={b.special_requests} />
-        {cancelled && <Row k="Cancelled because" v={b.cancel_reason} />}
+        {cancelled && <Row k="Cancelled because" v={b.cancelled_reason} />}
       </section>
 
       <section className={CARD}>

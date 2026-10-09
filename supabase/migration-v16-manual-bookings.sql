@@ -20,8 +20,7 @@ ALTER TABLE bookings
   ADD COLUMN IF NOT EXISTS payment_channel TEXT CHECK (payment_channel IN ('upi','bank','cash','card','stripe')),
   ADD COLUMN IF NOT EXISTS payment_reference TEXT,
   ADD COLUMN IF NOT EXISTS partner_share_amount INT,
-  ADD COLUMN IF NOT EXISTS created_by UUID REFERENCES profiles(id),
-  ADD COLUMN IF NOT EXISTS cancel_reason TEXT;
+  ADD COLUMN IF NOT EXISTS created_by UUID REFERENCES profiles(id);
 CREATE INDEX IF NOT EXISTS idx_bookings_partner ON bookings(partner_id);
 
 -- 3. Booking reference prefix for guide bookings
@@ -41,10 +40,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- 4. Partners read bookings assigned to them
-DROP POLICY IF EXISTS "Partner reads assigned bookings" ON bookings;
-CREATE POLICY "Partner reads assigned bookings" ON bookings
-  FOR SELECT USING (partner_id IS NOT NULL AND partner_id = auth.uid());
+-- 4. (No new RLS policy: partners read assigned bookings through /api/partner/bookings only.)
 
 -- 5. Commission records accept guide bookings (v3 check is unnamed inline, so default name applies)
 ALTER TABLE commission_records DROP CONSTRAINT IF EXISTS commission_records_provider_type_check;

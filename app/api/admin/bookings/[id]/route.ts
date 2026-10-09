@@ -96,7 +96,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
       if (['paid', 'disputed', 'waived'].includes(booking.commission_status)) delete fields.commission_status;
       update = fields;
     } else {
-      update = { status: 'cancelled', cancel_reason: body.reason };
+      update = { status: 'cancelled', cancelled_reason: body.reason };
       if (booking.commission_status !== 'paid') update.commission_status = 'waived';
     }
 
