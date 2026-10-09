@@ -154,6 +154,6 @@ CREATE POLICY "Admin reads agreements" ON partner_agreements FOR SELECT USING (i
 -- 8. Private KYC bucket. No storage.objects policies on purpose: only the
 --    service role (our API) can read or write; people get 5-minute signed URLs.
 INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
-VALUES ('partner-kyc', 'partner-kyc', false, 8388608, ARRAY['image/jpeg','image/png','application/pdf'])
-ON CONFLICT (id) DO UPDATE SET public = false, file_size_limit = 8388608,
+VALUES ('partner-kyc', 'partner-kyc', false, 4194304, ARRAY['image/jpeg','image/png','application/pdf'])
+ON CONFLICT (id) DO UPDATE SET public = false, file_size_limit = 4194304,
   allowed_mime_types = ARRAY['image/jpeg','image/png','application/pdf'];

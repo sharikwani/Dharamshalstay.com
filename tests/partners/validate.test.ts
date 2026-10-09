@@ -22,7 +22,7 @@ describe('checkUpload', () => {
   });
   it('rejects other types and big files', () => {
     expect(checkUpload({ type: 'image/gif', size: 10 })).toMatch(/JPG, PNG or PDF/);
-    expect(checkUpload({ type: 'image/png', size: MAX_UPLOAD_BYTES + 1 })).toMatch(/8 MB/);
+    expect(checkUpload({ type: 'image/png', size: MAX_UPLOAD_BYTES + 1 })).toMatch(/4 MB/);
   });
 });
 

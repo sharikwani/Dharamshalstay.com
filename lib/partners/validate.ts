@@ -1,5 +1,5 @@
 export const ALLOWED_MIME = ['image/jpeg', 'image/png', 'application/pdf'];
-export const MAX_UPLOAD_BYTES = 8 * 1024 * 1024;
+export const MAX_UPLOAD_BYTES = 4 * 1024 * 1024;
 
 export const isPan = (s: string) => /^[A-Z]{5}[0-9]{4}[A-Z]$/.test(s.trim().toUpperCase());
 export const isIfsc = (s: string) => /^[A-Z]{4}0[A-Z0-9]{6}$/.test(s.trim().toUpperCase());
@@ -16,7 +16,7 @@ export function normalizeVehicleReg(s: string): string | null {
 
 export function checkUpload(f: { type: string; size: number }): string | null {
   if (!ALLOWED_MIME.includes(f.type)) return 'Please upload a JPG, PNG or PDF file.';
-  if (f.size > MAX_UPLOAD_BYTES) return 'File is too big. The limit is 8 MB.';
+  if (f.size > MAX_UPLOAD_BYTES) return 'File is too big. The limit is 4 MB.';
   if (f.size <= 0) return 'The file is empty.';
   return null;
 }

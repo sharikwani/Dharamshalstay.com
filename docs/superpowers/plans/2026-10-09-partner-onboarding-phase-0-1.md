@@ -14,7 +14,7 @@
 
 - Commission default for paragliding/taxi/trek partners: **20%** (`profiles.commission_pct`, numeric, default 20).
 - Aadhaar: **masked images only**; never store the Aadhaar number.
-- KYC files: jpg/png/pdf, **max 8 MB**, private bucket `partner-kyc`, signed URLs expire in **300 seconds**.
+- KYC files: jpg/png/pdf, **max 4 MB** (Vercel rejects request bodies over 4.5 MB), private bucket `partner-kyc`, signed URLs expire in **300 seconds**.
 - Agreement acceptance records: version, SHA-256 of the exact text, typed name, timestamp, IP, user agent, PDF copy emailed to partner and admin.
 - Partner editable states: `onboarding`, `changes_requested`. Only `verified` partners may receive bookings (enforced from Phase 2).
 - Existing hotel partners keep their current flow (`partner_type = 'hotel'`, `partner_status` NULL).
@@ -727,7 +727,7 @@ describe('checkUpload', () => {
   });
   it('rejects other types and big files', () => {
     expect(checkUpload({ type: 'image/gif', size: 10 })).toMatch(/JPG, PNG or PDF/);
-    expect(checkUpload({ type: 'image/png', size: MAX_UPLOAD_BYTES + 1 })).toMatch(/8 MB/);
+    expect(checkUpload({ type: 'image/png', size: MAX_UPLOAD_BYTES + 1 })).toMatch(/4 MB/);
   });
 });
 
@@ -802,7 +802,7 @@ export type VehicleType = (typeof VEHICLE_TYPES)[number];
 `lib/partners/validate.ts`:
 ```ts
 export const ALLOWED_MIME = ['image/jpeg', 'image/png', 'application/pdf'];
-export const MAX_UPLOAD_BYTES = 8 * 1024 * 1024;
+export const MAX_UPLOAD_BYTES = 4 * 1024 * 1024;
 
 export const isPan = (s: string) => /^[A-Z]{5}[0-9]{4}[A-Z]$/.test(s.trim().toUpperCase());
 export const isIfsc = (s: string) => /^[A-Z]{4}0[A-Z0-9]{6}$/.test(s.trim().toUpperCase());
@@ -819,7 +819,7 @@ export function normalizeVehicleReg(s: string): string | null {
 
 export function checkUpload(f: { type: string; size: number }): string | null {
   if (!ALLOWED_MIME.includes(f.type)) return 'Please upload a JPG, PNG or PDF file.';
-  if (f.size > MAX_UPLOAD_BYTES) return 'File is too big. The limit is 8 MB.';
+  if (f.size > MAX_UPLOAD_BYTES) return 'File is too big. The limit is 4 MB.';
   if (f.size <= 0) return 'The file is empty.';
   return null;
 }
@@ -1007,8 +1007,8 @@ CREATE POLICY "Admin reads agreements" ON partner_agreements FOR SELECT USING (i
 -- 8. Private KYC bucket. No storage.objects policies on purpose: only the
 --    service role (our API) can read or write; people get 5-minute signed URLs.
 INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
-VALUES ('partner-kyc', 'partner-kyc', false, 8388608, ARRAY['image/jpeg','image/png','application/pdf'])
-ON CONFLICT (id) DO UPDATE SET public = false, file_size_limit = 8388608,
+VALUES ('partner-kyc', 'partner-kyc', false, 4194304, ARRAY['image/jpeg','image/png','application/pdf'])
+ON CONFLICT (id) DO UPDATE SET public = false, file_size_limit = 4194304,
   allowed_mime_types = ARRAY['image/jpeg','image/png','application/pdf'];
 ```
 
@@ -2120,7 +2120,7 @@ export default function PartnerOnboarding() {
 
       <section>
         <h2 className="text-lg font-heading font-semibold mb-1">2. Identity and business documents</h2>
-        <p className="text-sm text-slate-500 mb-3">JPG, PNG or PDF, up to 8 MB each. Only our verification team can see these files.</p>
+        <p className="text-sm text-slate-500 mb-3">JPG, PNG or PDF, up to 4 MB each. Only our verification team can see these files.</p>
         <div className="space-y-2">{PARTNER_DOCS[p.partner_type].map((t) => <DocRow key={t} t={t} />)}</div>
       </section>
 

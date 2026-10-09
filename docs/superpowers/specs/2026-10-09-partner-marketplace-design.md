@@ -158,7 +158,7 @@ a time limit (2 h; taxi 15 min) or the booking is escalated to admin.
 - New **private** bucket `partner-kyc`. Uploads go through an API route
   (service role) that checks the caller owns the record; files are read only
   via short-lived signed URLs generated for admins (and for the owner, their
-  own documents). Max 8 MB; jpg/png/pdf. Storage policies written as SQL in the
+  own documents). Max 4 MB; jpg/png/pdf. Storage policies written as SQL in the
   migration, not set by hand.
 
 ### RLS summary

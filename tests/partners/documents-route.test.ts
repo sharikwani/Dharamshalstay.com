@@ -45,13 +45,13 @@ describe('partner documents routes', () => {
     expect(remove).not.toHaveBeenCalled();
   });
 
-  it('rejects a 9 MB upload with the size message', async () => {
+  it('rejects an upload just over 4 MB with the size message', async () => {
     const form = new FormData();
     form.set('doc_type', 'pan');
-    form.set('file', new File([new Uint8Array(9 * 1024 * 1024)], 'big.pdf', { type: 'application/pdf' }));
+    form.set('file', new File([new Uint8Array(4 * 1024 * 1024 + 1)], 'big.pdf', { type: 'application/pdf' }));
     const res = await POST(new Request('http://x', { method: 'POST', body: form }));
     expect(res.status).toBe(400);
-    expect((await res.json()).error).toBe('File is too big. The limit is 8 MB.');
+    expect((await res.json()).error).toBe('File is too big. The limit is 4 MB.');
   });
 
   it('returns 500 and keeps the stored file when the row delete fails', async () => {
