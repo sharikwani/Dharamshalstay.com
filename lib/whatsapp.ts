@@ -18,6 +18,7 @@ export type ShareBooking = {
 };
 const rs = (n: number) => 'Rs.' + Math.round(n).toLocaleString('en-IN');
 const TYPE: Record<string, string> = { hotel: 'Hotel stay', taxi: 'Taxi', trek: 'Trek', paragliding: 'Paragliding', guide: 'Local guide' };
+const ASSIGNEE_LABEL: Record<string, string> = { taxi: 'driver', paragliding: 'pilot', trek: 'guide', guide: 'guide', hotel: 'host' };
 
 export function bookingShareText(b: ShareBooking, audience: 'partner' | 'customer'): string {
   const lines = [
@@ -27,7 +28,7 @@ export function bookingShareText(b: ShareBooking, audience: 'partner' | 'custome
     `People: ${b.num_guests}`,
   ];
   if (audience === 'partner') lines.push(`Customer: ${b.guest_name}, ${b.guest_phone}`);
-  if (b.assignee_text) lines.push(audience === 'partner' ? `Assigned: ${b.assignee_text}` : `Your ${b.category === 'taxi' ? 'driver' : 'host'}: ${b.assignee_text}`);
+  if (b.assignee_text) lines.push(audience === 'partner' ? `Assigned: ${b.assignee_text}` : `Your ${ASSIGNEE_LABEL[b.category] || 'host'}: ${b.assignee_text}`);
   lines.push(`Price: ${rs(b.amount)}`, `Payment: ${b.payment_text}`);
   if (audience === 'partner' && b.commission_amount) lines.push(`Dharamshala Stay commission: ${rs(b.commission_amount)}`);
   return lines.join('\n');

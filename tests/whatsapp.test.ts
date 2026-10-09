@@ -29,4 +29,9 @@ describe('bookingShareText', () => {
     expect(t).not.toContain('440');
     expect(t).toContain('Driver Sonu');
   });
+  it('customer label depends on category', () => {
+    const para = { ...b, category: 'paragliding', assignee_text: 'Pilot Ravi' };
+    expect(bookingShareText(para, 'customer')).toContain('Your pilot: Pilot Ravi');
+    expect(bookingShareText({ ...b, category: 'trek', assignee_text: 'Guide Dorje' }, 'customer')).toContain('Your guide: Guide Dorje');
+  });
 });

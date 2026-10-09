@@ -45,3 +45,32 @@ $$ LANGUAGE plpgsql;
 DROP POLICY IF EXISTS "Partner reads assigned bookings" ON bookings;
 CREATE POLICY "Partner reads assigned bookings" ON bookings
   FOR SELECT USING (partner_id IS NOT NULL AND partner_id = auth.uid());
+
+-- 5. Commission records accept guide bookings (v3 check is unnamed inline, so default name applies)
+ALTER TABLE commission_records DROP CONSTRAINT IF EXISTS commission_records_provider_type_check;
+ALTER TABLE commission_records ADD CONSTRAINT commission_records_provider_type_check
+  CHECK (provider_type IN ('hotel','taxi','trek','paragliding','guide'));
+
+-- 6. Platform-collected bookings (paid to Dharamshala Stay) owe no commission record.
+--    Website bookings have collected_by NULL, so they behave exactly as in v3.
+CREATE OR REPLACE FUNCTION create_commission_record()
+RETURNS TRIGGER AS $$
+DECLARE
+  v_due DATE;
+BEGIN
+  IF NEW.payment_method IN ('offline', 'pay_at_hotel') AND NEW.commission_amount > 0
+     AND NEW.collected_by IS DISTINCT FROM 'platform' THEN
+    v_due := COALESCE(NEW.check_out, NEW.activity_date, CURRENT_DATE) + INTERVAL '7 days';
+    INSERT INTO commission_records (
+      booking_id, property_id, provider_type,
+      booking_amount, commission_pct, commission_amount,
+      status, due_date
+    ) VALUES (
+      NEW.id, NEW.property_id, NEW.category,
+      NEW.amount, NEW.commission_pct, NEW.commission_amount,
+      'pending', v_due
+    );
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
