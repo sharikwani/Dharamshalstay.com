@@ -1,13 +1,12 @@
 'use client';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { UserPlus, Loader2, Mail, Lock, User, Phone, AlertCircle, Check } from 'lucide-react';
+import { UserPlus, Loader2, Mail, Lock, User, Phone, AlertCircle, Check, MailCheck } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
 export default function UserRegisterPage() {
-  const router = useRouter();
-  const [form, setForm] = useState({ name: '', email: '', phone: '', password: '' });
+  const [form, setForm] = useState({ name: '', email: '', phone: '', password: '', confirmPassword: '' });
+  const [registeredEmail, setRegisteredEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -16,18 +15,38 @@ export default function UserRegisterPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (form.password.length < 6) { setError('Password must be at least 6 characters'); return; }
+    if (form.password !== form.confirmPassword) { setError('Passwords do not match'); return; }
     setLoading(true); setError('');
 
-    const { error: signUpErr } = await supabase.auth.signUp({
-      email: form.email,
+    const email = form.email.trim();
+    const { data, error: signUpErr } = await supabase.auth.signUp({
+      email,
       password: form.password,
-      options: { data: { role: 'user', full_name: form.name, phone: form.phone } },
+      options: {
+        data: { role: 'user', full_name: form.name, phone: form.phone },
+        emailRedirectTo: `${window.location.origin}/auth/login`,
+      },
     });
 
     if (signUpErr) { setError(signUpErr.message); setLoading(false); return; }
-
-    router.push('/account');
+    // Supabase hides "email already registered" behind a fake success whose user has no identities.
+    if (data.user && data.user.identities?.length === 0) {
+      setError('An account with this email already exists. Please sign in instead.'); setLoading(false); return;
+    }
+    setRegisteredEmail(email); setLoading(false);
   }
+
+  if (registeredEmail) return (
+    <div className="min-h-[70vh] flex items-center justify-center px-4 py-12">
+      <div className="max-w-md text-center">
+        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"><MailCheck className="h-8 w-8 text-green-600" /></div>
+        <h1 className="text-2xl font-heading font-bold text-slate-900 mb-2">Confirm your email to continue</h1>
+        <p className="text-slate-600 mb-2">Your account has been created. We sent a confirmation link to <strong>{registeredEmail}</strong>.</p>
+        <p className="text-slate-600 mb-6"><strong>You must click that link before you can sign in.</strong> Check your spam folder if you can&apos;t find it.</p>
+        <Link href="/auth/login" className="bg-brand-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-brand-700 inline-block">Go to Sign In</Link>
+      </div>
+    </div>
+  );
 
   return (
     <div className="min-h-[70vh] flex items-center justify-center px-4 py-12">
@@ -66,6 +85,14 @@ export default function UserRegisterPage() {
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
               <input type="password" value={form.password} onChange={e => u('password', e.target.value)} required placeholder="Min 6 characters"
+                className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-500" />
+            </div>
+          </div>
+          <div>
+            <label className="text-sm font-medium text-slate-700 mb-1 block">Confirm Password</label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+              <input type="password" value={form.confirmPassword} onChange={e => u('confirmPassword', e.target.value)} required placeholder="Re-enter your password"
                 className="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-brand-500" />
             </div>
           </div>
