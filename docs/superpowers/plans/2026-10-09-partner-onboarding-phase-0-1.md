@@ -2581,6 +2581,18 @@ After Vercel deploys: `/partner/register?type=paragliding` shows the type choice
 
 Tell the owner: the agreement in `lib/partners/agreement.ts` is a draft; a lawyer must review it before inviting real partners. Any wording change must bump `AGREEMENT_VERSION`.
 
+
+### Release checklist
+
+Do these in order. Steps 1 to 4 happen BEFORE deploying this code.
+
+- [ ] Confirm v13 is applied (triggers `protect_profile_role` and `protect_property_admin_fields` exist) and `profiles.pan_number` exists.
+- [ ] Run `select policyname, cmd, qual from pg_policies where schemaname='storage';`. Every policy must be limited to `bucket_id = 'property-images'` (or another public bucket). Any unrestricted authenticated/anon policy would expose `partner-kyc`: fix it before continuing.
+- [ ] Run v14 once, then v15. Run them BEFORE deploying this code. Never re-run v14 after v15.
+- [ ] Verify: as a non-admin user JWT, `update profiles set role='admin' where id = auth.uid()` must fail; `update profiles set partner_status='verified' ...` must fail; bookings policies are exactly: Admin full access bookings, Admin update bookings, Customers read own bookings, Partner read own property bookings.
+- [ ] Deploy, then smoke test: customer sign-up gets role `user`; hotel booking stores the selected room price; partner register (taxi) -> onboarding -> sign -> admin verify.
+- [ ] Before adding Stripe keys: fix the webhook to match by `session.metadata.booking_id`, and block checkout for cancelled bookings.
+
 ---
 
 ## Self-Review Notes
