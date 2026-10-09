@@ -2,7 +2,8 @@
 ALTER TABLE profiles
   ADD COLUMN IF NOT EXISTS whatsapp_number TEXT,
   ADD COLUMN IF NOT EXISTS whatsapp_alerts BOOLEAN NOT NULL DEFAULT FALSE,
-  ADD COLUMN IF NOT EXISTS whatsapp_opt_in_at TIMESTAMPTZ;
+  ADD COLUMN IF NOT EXISTS whatsapp_opt_in_at TIMESTAMPTZ,
+  ADD COLUMN IF NOT EXISTS whatsapp_opt_in_by TEXT CHECK (whatsapp_opt_in_by IN ('partner','admin'));
 ALTER TABLE properties ADD COLUMN IF NOT EXISTS whatsapp_alerts BOOLEAN NOT NULL DEFAULT FALSE;
 ALTER TABLE guides ADD COLUMN IF NOT EXISTS whatsapp_alerts BOOLEAN NOT NULL DEFAULT FALSE;
 ALTER TABLE partner_staff ADD COLUMN IF NOT EXISTS whatsapp_alerts BOOLEAN NOT NULL DEFAULT TRUE;
@@ -48,7 +49,8 @@ BEGIN
      OR NEW.verification_note IS DISTINCT FROM OLD.verification_note
      OR NEW.whatsapp_number IS DISTINCT FROM OLD.whatsapp_number
      OR NEW.whatsapp_alerts IS DISTINCT FROM OLD.whatsapp_alerts
-     OR NEW.whatsapp_opt_in_at IS DISTINCT FROM OLD.whatsapp_opt_in_at THEN
+     OR NEW.whatsapp_opt_in_at IS DISTINCT FROM OLD.whatsapp_opt_in_at
+     OR NEW.whatsapp_opt_in_by IS DISTINCT FROM OLD.whatsapp_opt_in_by THEN
     RAISE EXCEPTION 'These partner details can only be changed through the partner portal';
   END IF;
   RETURN NEW;

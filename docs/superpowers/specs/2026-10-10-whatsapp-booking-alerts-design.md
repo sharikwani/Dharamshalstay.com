@@ -36,13 +36,13 @@ backup. Nothing changes until WhatsApp credentials are configured.
 Template parameters never contain newlines or more than 4 consecutive spaces (Meta rule); text is trimmed to 300 chars per parameter.
 
 ## 5. Data — `supabase/migration-v17-whatsapp.sql`
-- `profiles`: `whatsapp_number TEXT`, `whatsapp_alerts BOOLEAN NOT NULL DEFAULT FALSE`, `whatsapp_opt_in_at TIMESTAMPTZ`.
+- `profiles`: `whatsapp_number TEXT`, `whatsapp_alerts BOOLEAN NOT NULL DEFAULT FALSE`, `whatsapp_opt_in_at TIMESTAMPTZ`, `whatsapp_opt_in_by TEXT CHECK (IN ('partner','admin'))` (who switched alerts on; stamped with the time on every off → on change). A valid number is only required to switch alerts on; otherwise the number is stored normalised or null.
 - `properties`: `whatsapp_alerts BOOLEAN NOT NULL DEFAULT FALSE` (uses `contact_phone`).
 - `guides`: `whatsapp_alerts BOOLEAN NOT NULL DEFAULT FALSE` (uses `phone`).
 - `partner_staff`: `whatsapp_alerts BOOLEAN NOT NULL DEFAULT TRUE` (staff alerts only go out when the partner's alerts are on).
 - `bookings`: `partner_response TEXT CHECK (partner_response IN ('accepted','declined'))`, `partner_responded_at TIMESTAMPTZ`.
 - New `whatsapp_messages`: id, booking_id (FK, nullable), recipient_kind (`partner`,`staff`,`hotel`,`guide`,`customer`), to_phone, template, wa_message_id (unique), status (`queued`,`sent`,`delivered`,`read`,`failed`), error, created_at, updated_at. RLS on; admin read only; writes by service role.
-- Protect `whatsapp_alerts`/`whatsapp_opt_in_at` like other partner fields? No — partners may change their own consent through the API only (profiles trigger already blocks direct browser writes to protected fields; add these two to the trigger list so changes go through `/api/partner/profile`).
+- Protect `whatsapp_alerts`/`whatsapp_opt_in_at` like other partner fields? No — partners may change their own consent through the API only (profiles trigger already blocks direct browser writes to protected fields; add the WhatsApp fields to the trigger list so changes go through `/api/partner/profile`, `/api/partner/whatsapp` or the admin API).
 
 ## 6. Server
 - `lib/whatsapp-cloud.ts`: `isWhatsAppConfigured()`, `sendTemplate({ to, template, params, buttons? })` → `{ ok, id?, error? }` (POST `https://graph.facebook.com/v21.0/{PHONE_NUMBER_ID}/messages`), `verifySignature(rawBody, header)` (HMAC-SHA256 with app secret, timing-safe).
