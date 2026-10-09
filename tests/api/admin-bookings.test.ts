@@ -6,6 +6,7 @@ let insertError: any = null;
 const inserts: any[] = [];
 let updateError: any = null;
 const updates: any[] = [];
+const recordOps: any[] = [];
 const sendManualBookingEmails = vi.fn(async (..._a: unknown[]) => {});
 const sendCancellationEmails = vi.fn(async (..._a: unknown[]) => {});
 const sendReassignedAwayEmail = vi.fn(async (..._a: unknown[]) => {});
@@ -15,8 +16,21 @@ function builder(table: string) {
   let inserting = false;
   const b: any = {
     select: () => b, eq: () => b, in: () => b, order: () => b,
-    update: (row: any) => { updates.push({ table, row }); return { eq: async () => ({ error: updateError }) }; },
-    insert: (row: any) => { inserting = true; inserts.push({ table, row }); return b; },
+    update: (row: any) => {
+      if (table === 'commission_records') {
+        recordOps.push({ op: 'update', row });
+        const c: any = { eq: () => c, in: () => c, then: (res: any) => res({ error: null }) };
+        return c;
+      }
+      updates.push({ table, row });
+      return { eq: async () => ({ error: updateError }) };
+    },
+    delete: () => { recordOps.push({ op: 'delete' }); const c: any = { eq: () => c, in: () => c, then: (res: any) => res({ error: null }) }; return c; },
+    limit: () => b,
+    insert: (row: any) => {
+      if (table === 'commission_records') { recordOps.push({ op: 'insert', row }); return { then: (res: any) => res({ error: null }) }; }
+      inserting = true; inserts.push({ table, row }); return b;
+    },
     maybeSingle: async () => ({ data: fixtures[table] ?? null, error: null }),
     single: async () => inserting
       ? (insertError ? { data: null, error: insertError } : { data: { id: 'b1', booking_ref: 'TRK-1' }, error: null })
@@ -56,7 +70,7 @@ const base = {
 const post = (body: unknown) => POST(new Request('http://x', { method: 'POST', body: JSON.stringify(body) }));
 
 beforeEach(() => {
-  role = 'admin'; insertError = null; updateError = null; inserts.length = 0; updates.length = 0;
+  role = 'admin'; insertError = null; updateError = null; inserts.length = 0; updates.length = 0; recordOps.length = 0;
   sendManualBookingEmails.mockClear(); sendCancellationEmails.mockClear(); sendReassignedAwayEmail.mockClear();
   fixtures = {
     treks: { id: 't1', status: 'published', price_per_person: 1500, commission_pct: null },
@@ -201,6 +215,69 @@ describe('GET/PATCH /api/admin/bookings/:id', () => {
     expect(res.status).toBe(200);
     expect(updates[0].row).toEqual({ status: 'cancelled', cancelled_reason: 'Customer changed plans', commission_status: 'waived' });
     expect(sendCancellationEmails).toHaveBeenCalledWith(ID, 'Customer changed plans');
+  });
+
+  it('cancel waives open commission records', async () => {
+    await patch({ action: 'cancel', reason: 'Customer changed plans', notify: false });
+    expect(recordOps).toEqual([{ op: 'update', row: { status: 'waived' } }]);
+  });
+
+  it('cancel leaves commission records alone when commission is paid', async () => {
+    fixtures.bookings = { ...fixtures.bookings, commission_status: 'paid' };
+    await patch({ action: 'cancel', reason: 'Customer changed plans', notify: false });
+    expect(recordOps).toHaveLength(0);
+  });
+
+  it('assign updates open commission records', async () => {
+    fixtures.profiles = { ...fixtures.profiles, commission_pct: 10 };
+    await patch({ action: 'assign', partner_id: '22222222-2222-4222-8222-222222222222', notify: false });
+    expect(recordOps).toEqual([{ op: 'update', row: { commission_amount: 450, commission_pct: 10 } }]);
+  });
+
+  it('payment platform_paid deletes pending commission records (not_applicable)', async () => {
+    await patch({ action: 'payment', choice: 'platform_paid', channel: 'upi' });
+    expect(recordOps).toEqual([{ op: 'delete' }]);
+  });
+
+  it('payment back to partner_collects inserts a commission record when none exists', async () => {
+    fixtures.bookings = { ...fixtures.bookings, commission_amount: 900, partner_share_amount: 3600, property_id: null };
+    await patch({ action: 'payment', choice: 'partner_collects' });
+    expect(recordOps).toHaveLength(1);
+    expect(recordOps[0].op).toBe('insert');
+    expect(recordOps[0].row).toMatchObject({ booking_id: 'b1', provider_type: 'trek', booking_amount: 4500, commission_amount: 900, status: 'pending' });
+  });
+
+  it('payment does not duplicate an existing commission record', async () => {
+    fixtures.bookings = { ...fixtures.bookings, commission_amount: 900, partner_share_amount: 3600 };
+    fixtures.commission_records = { id: 'cr1' };
+    await patch({ action: 'payment', choice: 'partner_collects' });
+    expect(recordOps).toHaveLength(0);
+  });
+
+  it('payment fills missing commission and partner share on a website booking', async () => {
+    fixtures.bookings = { ...fixtures.bookings, commission_amount: null, partner_share_amount: null, commission_pct: 20 };
+    await patch({ action: 'payment', choice: 'platform_paid', channel: 'upi' });
+    expect(updates[0].row).toMatchObject({ commission_amount: 900, partner_share_amount: 3600 });
+  });
+
+  it('payment with zero commission is not_applicable', async () => {
+    fixtures.bookings = { ...fixtures.bookings, commission_amount: 0, partner_share_amount: 4500 };
+    await patch({ action: 'payment', choice: 'partner_collects' });
+    expect(updates[0].row).toMatchObject({ commission_status: 'not_applicable' });
+  });
+
+  it('refuses to mark an online-paid booking unpaid or partner-collected', async () => {
+    for (const stripe of [{ stripe_payment_intent: 'pi_1' }, { payment_status: 'paid', payment_method: 'online' }]) {
+      fixtures.bookings = { ...fixtures.bookings, ...stripe };
+      for (const choice of ['unpaid', 'partner_collects']) {
+        const res = await patch({ action: 'payment', choice });
+        expect(res.status).toBe(409);
+        expect((await res.json()).error).toBe('This booking was paid online; record a refund in Stripe first.');
+      }
+    }
+    expect(updates).toHaveLength(0);
+    fixtures.bookings = { ...fixtures.bookings, stripe_payment_intent: 'pi_1' };
+    expect((await patch({ action: 'payment', choice: 'platform_paid', channel: 'stripe' })).status).toBe(200);
   });
 
   it('cancel keeps a paid commission', async () => {

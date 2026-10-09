@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { quoteBooking } from '@/lib/pricing';
-import { commissionRateFor, splitAmount, paymentFields, checkAssignment, isBeforeToday, todayIst } from '@/lib/manual-booking';
+import { effectiveCollector, commissionRateFor, splitAmount, paymentFields, checkAssignment, isBeforeToday, todayIst } from '@/lib/manual-booking';
 
 describe('guide pricing', () => {
   it('day rate × days', () => expect(quoteBooking('guide', { price_per_day: 2500 }, { num_guests: 3, guide_days: 2 })).toEqual({ amount: 5000, commission_pct: 20 }));
@@ -41,6 +41,30 @@ describe('paymentFields', () => {
   });
   it('unpaid', () => {
     expect(paymentFields('unpaid', 'guide', 2000)).toMatchObject({ payment_method: 'offline', payment_status: 'pending', collected_by: null, commission_status: 'pending', paid_amount: null });
+  });
+});
+
+describe('paymentFields with zero commission', () => {
+  it('is not_applicable for partner_collects and unpaid', () => {
+    expect(paymentFields('partner_collects', 'trek', 4000, { commissionAmount: 0 }).commission_status).toBe('not_applicable');
+    expect(paymentFields('unpaid', 'trek', 4000, { commissionAmount: 0 }).commission_status).toBe('not_applicable');
+    expect(paymentFields('unpaid', 'trek', 4000, { commissionAmount: 100 }).commission_status).toBe('pending');
+  });
+});
+
+describe('effectiveCollector', () => {
+  it('uses collected_by when set', () => {
+    expect(effectiveCollector({ collected_by: 'partner', payment_status: 'paid' })).toBe('partner');
+    expect(effectiveCollector({ collected_by: 'platform', payment_status: 'pending' })).toBe('platform');
+  });
+  it('treats paid or online website bookings as platform-collected', () => {
+    expect(effectiveCollector({ collected_by: null, payment_status: 'paid', payment_method: 'online' })).toBe('platform');
+    expect(effectiveCollector({ collected_by: null, payment_status: 'partially_paid' })).toBe('platform');
+    expect(effectiveCollector({ payment_method: 'online', payment_status: 'pending' })).toBe('platform');
+  });
+  it('defaults other website bookings to partner-collected', () => {
+    expect(effectiveCollector({ collected_by: null, payment_status: 'pending', payment_method: 'pay_at_hotel' })).toBe('partner');
+    expect(effectiveCollector({})).toBe('partner');
   });
 });
 

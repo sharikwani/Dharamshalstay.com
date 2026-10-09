@@ -119,6 +119,7 @@ export async function POST(req: Request) {
     const split = splitAmount(final, pct);
     const pay = paymentFields(body.payment.choice, category, final, {
       amountReceived: body.payment.amount_received, channel: body.payment.channel, reference: body.payment.reference,
+      commissionAmount: split.commission_amount,
     });
 
     // Save

@@ -32,6 +32,44 @@ const schema = z.discriminatedUnion('action', [
 
 const isId = (id: string) => uuid.safeParse(id).success;
 
+const OPEN_RECORD = ['pending', 'due', 'overdue'];
+
+/** Keep commission_records in step with the booking. The booking change already succeeded, so failures are only logged. */
+async function syncCommissionRecords(sb: ReturnType<typeof serviceClient>, booking: Record<string, any>, update: Record<string, unknown>, action: string) {
+  const id = booking.id as string;
+  try {
+    if (action === 'cancel') {
+      if (booking.commission_status === 'paid') return;
+      const { error } = await sb.from('commission_records').update({ status: 'waived' }).eq('booking_id', id).in('status', OPEN_RECORD);
+      if (error) console.error('Commission record waive failed:', error);
+    } else if (action === 'assign') {
+      const { error } = await sb.from('commission_records')
+        .update({ commission_amount: update.commission_amount, commission_pct: update.commission_pct })
+        .eq('booking_id', id).in('status', OPEN_RECORD);
+      if (error) console.error('Commission record update failed:', error);
+    } else if (action === 'payment') {
+      const next = (update.commission_status ?? booking.commission_status) as string;
+      const merged = { ...booking, ...update };
+      if (next === 'not_applicable') {
+        const { error } = await sb.from('commission_records').delete().eq('booking_id', id).in('status', ['pending', 'due']);
+        if (error) console.error('Commission record delete failed:', error);
+      } else if (next === 'pending' && Number(merged.commission_amount) > 0) {
+        const { data: existing, error: findError } = await sb.from('commission_records').select('id').eq('booking_id', id).limit(1).maybeSingle();
+        if (findError) { console.error('Commission record lookup failed:', findError); return; }
+        if (existing) return;
+        const base = new Date(String(merged.check_out || merged.activity_date || new Date().toISOString().slice(0, 10)) + 'T00:00:00Z');
+        base.setUTCDate(base.getUTCDate() + 7);
+        const { error } = await sb.from('commission_records').insert({
+          booking_id: id, property_id: merged.property_id ?? null, provider_type: merged.category,
+          booking_amount: merged.amount, commission_pct: merged.commission_pct, commission_amount: merged.commission_amount,
+          status: 'pending', due_date: base.toISOString().slice(0, 10),
+        });
+        if (error) console.error('Commission record insert failed:', error);
+      }
+    }
+  } catch (e) { console.error('Commission record sync failed:', e); }
+}
+
 export async function GET(req: Request, { params }: { params: { id: string } }) {
   try {
     await requireCaller(req, ['admin']);
@@ -90,11 +128,23 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
         commission_pct: pct, commission_amount: split.commission_amount, partner_share_amount: split.partner_share_amount,
       };
     } else if (body.action === 'payment') {
+      const paidOnline = Boolean(booking.stripe_payment_intent) || (booking.payment_status === 'paid' && booking.payment_method === 'online');
+      if (paidOnline && (body.choice === 'unpaid' || body.choice === 'partner_collects')) {
+        throw new HttpError(409, 'This booking was paid online; record a refund in Stripe first.');
+      }
+      // Website bookings may have no commission/share saved yet; fill both so partners see the right money
+      const fill: Record<string, unknown> = {};
+      if (booking.commission_amount == null || booking.partner_share_amount == null) {
+        const pct = Math.min(99.99, booking.commission_pct != null ? Number(booking.commission_pct) : commissionRateFor(booking.category, {}));
+        Object.assign(fill, splitAmount(Number(booking.amount), pct));
+        if (booking.commission_pct == null) fill.commission_pct = pct;
+      }
       const fields: Record<string, unknown> = paymentFields(body.choice, booking.category, Number(booking.amount), {
         amountReceived: body.amount_received, channel: body.channel, reference: body.reference,
+        commissionAmount: Number((fill.commission_amount ?? booking.commission_amount) ?? 0),
       });
       if (['paid', 'disputed', 'waived'].includes(booking.commission_status)) delete fields.commission_status;
-      update = fields;
+      update = { ...fields, ...fill };
     } else {
       update = { status: 'cancelled', cancelled_reason: body.reason };
       if (booking.commission_status !== 'paid') update.commission_status = 'waived';
@@ -105,6 +155,8 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
       console.error('Booking update failed:', error);
       throw new HttpError(500, 'Could not save the change. Please try again.');
     }
+
+    await syncCommissionRecords(sb, booking, update, body.action);
 
     // Emails never block the save
     try {
