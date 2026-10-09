@@ -82,8 +82,7 @@ ALTER TABLE bookings
   ADD COLUMN IF NOT EXISTS payment_channel TEXT CHECK (payment_channel IN ('upi','bank','cash','card','stripe')),
   ADD COLUMN IF NOT EXISTS payment_reference TEXT,
   ADD COLUMN IF NOT EXISTS partner_share_amount INT,
-  ADD COLUMN IF NOT EXISTS created_by UUID REFERENCES profiles(id),
-  ADD COLUMN IF NOT EXISTS cancel_reason TEXT;
+  ADD COLUMN IF NOT EXISTS created_by UUID REFERENCES profiles(id);
 CREATE INDEX IF NOT EXISTS idx_bookings_partner ON bookings(partner_id);
 
 -- 3. Booking reference prefix for guide bookings
@@ -103,10 +102,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- 4. Partners read bookings assigned to them
-DROP POLICY IF EXISTS "Partner reads assigned bookings" ON bookings;
-CREATE POLICY "Partner reads assigned bookings" ON bookings
-  FOR SELECT USING (partner_id IS NOT NULL AND partner_id = auth.uid());
+-- 4. (No new RLS policy: partners read assigned bookings through /api/partner/bookings only.)
 ```
 
 - [ ] **Step 2: Commit** — `git add supabase/migration-v16-manual-bookings.sql && git commit -m "Add migration v16 for admin manual bookings"` (+ trailer).
@@ -460,12 +456,12 @@ export function bookingShareText(b: ShareBooking, audience: 'partner' | 'custome
 - `PATCH /api/admin/bookings/:id` body (zod discriminated union on `action`):
   - `{ action: 'assign', partner_id: uuid|null, staff_id?: uuid|null, vehicle_id?: uuid|null, notify?: boolean }` — runs `checkAssignment` with the booking's category; recomputes `commission_pct`/`commission_amount`/`partner_share_amount` from the new partner (keeps `amount`); email partner with `subjectPrefix: 'Updated: '` if notify.
   - `{ action: 'payment', choice, amount_received?, channel?, reference?, notify?: boolean }` — applies `paymentFields` with the booking's category and `amount`.
-  - `{ action: 'cancel', reason: string (3–500), notify?: boolean }` — `status 'cancelled'`, `cancel_reason`, `commission_status 'waived'` unless already `'paid'`; email customer and partner "Booking cancelled – {ref}" with the reason if notify.
+  - `{ action: 'cancel', reason: string (3–500), notify?: boolean }` — `status 'cancelled'`, `cancelled_reason` (existing v3 column), `commission_status 'waived'` unless already `'paid'`; email customer and partner "Booking cancelled – {ref}" with the reason if notify.
   - Every update checks `{ error }` → 500; cancelled bookings cannot be reassigned or re-paid (409 "This booking is cancelled.").
   - Returns `{ booking: BookingView }` after the change.
 - Add to `lib/manual-booking-emails.ts`: `sendCancellationEmails(bookingId: string, reason: string): Promise<void>`.
 
-- [ ] **Step 1: Failing tests** (append to `tests/api/admin-bookings.test.ts`): non-admin PATCH 403; assign to a driver of another partner 400; payment `platform_paid` with channel upi sets `payment_status 'paid'`, `collected_by 'platform'`; cancel sets `status 'cancelled'` and `cancel_reason`; PATCH on a cancelled booking 409; update error → 500 with no email.
+- [ ] **Step 1: Failing tests** (append to `tests/api/admin-bookings.test.ts`): non-admin PATCH 403; assign to a driver of another partner 400; payment `platform_paid` with channel upi sets `payment_status 'paid'`, `collected_by 'platform'`; cancel sets `status 'cancelled'` and `cancelled_reason`; PATCH on a cancelled booking 409; update error → 500 with no email.
 - [ ] **Step 2: Implement**, run `npm test` + `npx tsc --noEmit`.
 - [ ] **Step 3: Commit** — "Add admin API to view, reassign, update payment and cancel bookings".
 
@@ -513,5 +509,6 @@ export function bookingShareText(b: ShareBooking, audience: 'partner' | 'custome
 
 ### Task 7: Release
 
-- [ ] Owner runs `supabase/migration-v16-manual-bookings.sql` in the Supabase SQL editor, then verifies: `select conname, pg_get_constraintdef(oid) from pg_constraint where conname='bookings_category_check';` includes 'guide'; `select policyname from pg_policies where tablename='bookings';` includes "Partner reads assigned bookings".
+- [ ] Owner runs `supabase/migration-v16-manual-bookings.sql` in the Supabase SQL editor, then verifies: `select conname, pg_get_constraintdef(oid) from pg_constraint where conname='bookings_category_check';` includes 'guide'. (v16 adds no RLS policy; partners read bookings through `/api/partner/bookings`.)
+- [ ] Before running v16, run `SELECT conname FROM pg_constraint WHERE conname IN ('bookings_category_check','commission_records_provider_type_check');` — it must return both rows (the migration drops and re-adds them by name). After running v16, create a guide booking in the admin panel and confirm its reference starts with `GDE-`.
 - [ ] Push to main (deploys). Then in the admin panel create one booking of each type (assign the activity ones to a test partner if one exists, otherwise leave unassigned), open each detail page, try Change payment and WhatsApp links, then cancel them with reason "test".

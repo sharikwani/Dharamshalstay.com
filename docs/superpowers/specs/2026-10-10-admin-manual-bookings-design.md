@@ -114,7 +114,7 @@ Field mapping for manual bookings:
 `booking_source = 'admin'`, `status = 'confirmed'`.
 
 RLS:
-- New policy "Partner reads assigned bookings": `FOR SELECT USING (partner_id = auth.uid())`.
+- No new policy: partners read their assigned bookings only through `/api/partner/bookings` (service role), so no partner SELECT policy is added.
 - Existing policies unchanged (admins full access; hotel partners read their property's bookings; customers read their own).
 
 ## 5. Server
