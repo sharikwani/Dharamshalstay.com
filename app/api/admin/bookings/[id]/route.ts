@@ -77,12 +77,17 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     if (!isId(params.id)) throw new HttpError(404, 'Booking not found.');
     const booking = await loadBookingView(params.id);
     if (!booking) throw new HttpError(404, 'Booking not found.');
-    const { data: messages, error: msgError } = await serviceClient().from('whatsapp_messages').select('*').eq('booking_id', params.id).order('created_at', { ascending: false });
+    const { data: messages, error: msgError } = await serviceClient().from('whatsapp_messages')
+      .select('id, recipient_kind, to_phone, template, status, error, created_at')
+      .eq('booking_id', params.id).order('created_at', { ascending: false });
     if (msgError) console.error('Could not load WhatsApp messages:', msgError);
-    const { data: resp } = await serviceClient().from('bookings').select('partner_response, partner_responded_at').eq('id', params.id).maybeSingle();
+    // Only the last 4 digits of a number leave the server.
+    const whatsapp_messages = (messages || []).map(({ to_phone, ...m }: any) => ({
+      ...m, to_last4: String(to_phone || '').replace(/\D/g, '').slice(-4),
+    }));
     return NextResponse.json({
-      booking: { ...booking, partner_response: resp?.partner_response ?? null, partner_responded_at: resp?.partner_responded_at ?? null },
-      whatsapp_messages: messages || [],
+      booking: { ...booking, partner_response: booking.partner_response ?? null, partner_responded_at: booking.partner_responded_at ?? null },
+      whatsapp_messages,
     });
   } catch (e) { return jsonError(e); }
 }

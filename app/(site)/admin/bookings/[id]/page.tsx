@@ -19,7 +19,6 @@ const WA_STATUS: Record<string, string> = {
   queued: 'bg-slate-100 text-slate-600', sent: 'bg-blue-100 text-blue-700', delivered: 'bg-green-100 text-green-700',
   read: 'bg-emerald-100 text-emerald-800', failed: 'bg-red-100 text-red-700',
 };
-const lastFour = (n: string) => '**** ' + String(n || '').replace(/\D/g, '').slice(-4);
 
 function Row({ k, v }: { k: string; v: React.ReactNode }) {
   if (v == null || v === '') return null;
@@ -207,7 +206,7 @@ export default function BookingDetailPage() {
             {wa.map((m) => (
               <div key={m.id} className="flex flex-wrap items-center gap-x-3 gap-y-1 py-2 text-sm">
                 <span className="w-20 capitalize text-slate-700">{m.recipient_kind}</span>
-                <span className="text-slate-600">{lastFour(m.to_phone)}</span>
+                <span className="text-slate-600">**** {m.to_last4}</span>
                 <span className="text-slate-500">{m.template}</span>
                 <span className={cn('text-xs font-medium px-2 py-0.5 rounded-full', WA_STATUS[m.status] || WA_STATUS.queued)} title={m.error || undefined}>{m.status}</span>
                 <span className="text-xs text-slate-400 ml-auto">{new Date(m.created_at).toLocaleString('en-IN')}</span>

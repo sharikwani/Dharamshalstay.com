@@ -5,6 +5,7 @@ let fixtures: Record<string, any> = {};
 let insertError: any = null;
 const inserts: any[] = [];
 let updateError: any = null;
+let listError: any = null;
 const updates: any[] = [];
 const recordOps: any[] = [];
 const sendManualBookingEmails = vi.fn(async (..._a: unknown[]) => {});
@@ -18,7 +19,13 @@ const loadBookingView = vi.fn(async (id: string) => ({ id, item_name: 'x' }));
 function builder(table: string) {
   let inserting = false;
   const b: any = {
-    select: () => b, eq: () => b, in: () => b, order: () => b,
+    select: () => b, eq: () => b, in: () => b,
+    // List query (WhatsApp messages): sort the fixture rows the way the database would.
+    order: (col: string, opts: { ascending?: boolean } = {}) => {
+      const rows = [...(fixtures[table + '_list'] || [])].sort((x: any, y: any) =>
+        (x[col] < y[col] ? -1 : x[col] > y[col] ? 1 : 0) * (opts.ascending === false ? -1 : 1));
+      return { then: (res: any) => res(listError ? { data: null, error: listError } : { data: rows, error: null }) };
+    },
     update: (row: any) => {
       if (table === 'commission_records') {
         recordOps.push({ op: 'update', row });
@@ -79,7 +86,7 @@ const base = {
 const post = (body: unknown) => POST(new Request('http://x', { method: 'POST', body: JSON.stringify(body) }));
 
 beforeEach(() => {
-  role = 'admin'; insertError = null; updateError = null; inserts.length = 0; updates.length = 0; recordOps.length = 0;
+  role = 'admin'; insertError = null; updateError = null; listError = null; inserts.length = 0; updates.length = 0; recordOps.length = 0;
   sendManualBookingEmails.mockClear(); sendCancellationEmails.mockClear(); sendReassignedAwayEmail.mockClear();
   whatsappNewBooking.mockClear(); whatsappCancelled.mockClear(); whatsappReassignedAway.mockClear();
   fixtures = {
@@ -189,11 +196,40 @@ describe('GET/PATCH /api/admin/bookings/:id', () => {
   it('GET returns the booking view, 404 when missing, 403 for non-admin', async () => {
     const res = await GET(new Request('http://x'), ctx);
     expect(res.status).toBe(200);
-    expect(await res.json()).toMatchObject({ booking: { id: ID, item_name: 'x', partner_response: null }, whatsapp_messages: [] });
+    expect(await res.json()).toEqual({
+      booking: { id: ID, item_name: 'x', partner_response: null, partner_responded_at: null },
+      whatsapp_messages: [],
+    });
     loadBookingView.mockResolvedValueOnce(null as any);
     expect((await GET(new Request('http://x'), ctx)).status).toBe(404);
     role = 'partner';
     expect((await GET(new Request('http://x'), ctx)).status).toBe(403);
+  });
+
+  it('GET returns the partner response and WhatsApp messages newest first with masked numbers', async () => {
+    loadBookingView.mockResolvedValueOnce({ id: ID, item_name: 'x', partner_response: 'accepted', partner_responded_at: '2026-10-10T10:00:00Z' } as any);
+    const row = (id: string, created_at: string, status: string) => ({
+      id, recipient_kind: 'partner', to_phone: '919816001234', template: 'booking_new_partner', status, error: null, created_at,
+    });
+    fixtures.whatsapp_messages_list = [row('m1', '2026-10-10T09:00:00Z', 'read'), row('m3', '2026-10-10T11:00:00Z', 'sent'), row('m2', '2026-10-10T10:00:00Z', 'failed')];
+    const res = await GET(new Request('http://x'), ctx);
+    const body = await res.json();
+    expect(body.booking).toEqual({ id: ID, item_name: 'x', partner_response: 'accepted', partner_responded_at: '2026-10-10T10:00:00Z' });
+    expect(body.whatsapp_messages.map((m: any) => m.id)).toEqual(['m3', 'm2', 'm1']);
+    expect(body.whatsapp_messages[0]).toEqual({
+      id: 'm3', recipient_kind: 'partner', to_last4: '1234', template: 'booking_new_partner', status: 'sent', error: null, created_at: '2026-10-10T11:00:00Z',
+    });
+    expect(JSON.stringify(body)).not.toContain('919816001234');
+  });
+
+  it('GET still returns the booking and logs when the messages query fails', async () => {
+    listError = { message: 'db down' };
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const res = await GET(new Request('http://x'), ctx);
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ booking: { id: ID, item_name: 'x', partner_response: null, partner_responded_at: null }, whatsapp_messages: [] });
+    expect(spy).toHaveBeenCalledWith('Could not load WhatsApp messages:', listError);
+    spy.mockRestore();
   });
 
   it('rejects a non-admin PATCH with 403', async () => {
