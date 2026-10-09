@@ -16,6 +16,7 @@ import { hiFaqs1, hiFaqsExtra1 } from './faqs-1';
 import { hiFaqsExtra2 } from './faqs-2';
 import { hiHomepageFAQs, hiDestinations, hiHotels } from './misc';
 import { hiTreks } from './treks';
+import { hiEssentials, type HindiEssentialGroup } from './essentials';
 
 export const hiPosts: Record<string, HindiPost> = {
   ...hiBlogG1, ...hiBlogG2, ...hiBlogG3, ...hiBlogG4, ...hiBlogG5, ...hiBlogG6, ...hiBlogG7, ...hiBlogG8,
@@ -26,3 +27,4 @@ export const hiHomepageFAQsData: { question: string; answer: string }[] = hiHome
 export const hiDestinationsData: Record<string, HindiDestination> = hiDestinations;
 export const hiHotelsData: Record<string, HindiHotel> = hiHotels;
 export const hiTreksData: Record<string, HindiTrek> = hiTreks;
+export const hiEssentialsData: Record<string, HindiEssentialGroup> = hiEssentials;

@@ -8,7 +8,7 @@ export const LANGS: Lang[] = ['en', 'hi'];
 export const LANG_COOKIE = 'ds_lang';
 
 /** Public sections that have a Hindi version. */
-const HINDI_SECTIONS = ['/', '/hotels', '/destinations', '/treks', '/taxi', '/paragliding', '/blog', '/faq', '/about', '/contact'];
+const HINDI_SECTIONS = ['/', '/hotels', '/destinations', '/treks', '/taxi', '/paragliding', '/blog', '/faq', '/essentials', '/about', '/contact'];
 
 export function langFromPath(pathname: string | null | undefined): Lang {
   return pathname === '/hi' || pathname?.startsWith('/hi/') ? 'hi' : 'en';

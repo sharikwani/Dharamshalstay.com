@@ -13,7 +13,8 @@ import { placeImage } from '@/lib/place-images';
 import { serverT } from '@/lib/i18n/server';
 import { fmt } from '@/lib/i18n/dict';
 import type { Lang } from '@/lib/i18n/core';
-import { essentialGroups, essentialFaqs, essentialItems, type EssentialIcon } from '@/data/essentials';
+import { getEssentialGroups } from '@/lib/i18n/content';
+import type { EssentialIcon } from '@/data/essentials';
 
 const ICONS: Record<EssentialIcon, typeof Banknote> = {
   money: Banknote,
@@ -48,6 +49,9 @@ export function essentialsMetadata(lang: Lang): Metadata {
 export default function EssentialsView({ lang }: { lang: Lang }) {
   const { t, href } = serverT(lang);
   const e = t.essentials;
+  const essentialGroups = getEssentialGroups(lang);
+  const essentialItems = essentialGroups.flatMap((g) => g.items);
+  const essentialFaqs = essentialItems.map((i) => ({ question: i.q, answer: i.a }));
 
   return (
     <>

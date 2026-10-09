@@ -5,10 +5,11 @@
  */
 import type { BlogPost } from '@/types';
 import type { Lang } from './core';
-import { hiPosts, hiFaqCategories, hiHomepageFAQsData, hiDestinationsData, hiHotelsData, hiTreksData } from '@/data/hi';
+import { hiPosts, hiFaqCategories, hiHomepageFAQsData, hiDestinationsData, hiHotelsData, hiTreksData, hiEssentialsData } from '@/data/hi';
 import { allFaqCategories } from '@/data/faq-all';
 import { homepageFAQs } from '@/data/testimonials';
 import type { FAQCategory } from '@/data/faqs';
+import { essentialGroups, type EssentialGroup } from '@/data/essentials';
 import { localizeUnits } from './units';
 
 export function hasHindiPost(slug: string): boolean {
@@ -86,4 +87,17 @@ export function localizeTrek<T extends { slug: string }>(t: T, lang: Lang): T {
   // Short measurement fields come from the database in English.
   for (const k of ['max_altitude', 'distance', 'duration']) if (base[k]) base[k] = localizeUnits(base[k], lang);
   return base;
+}
+
+/** Essentials hub groups; Hindi items line up with the English by position (hrefs/icons stay English). */
+export function getEssentialGroups(lang: Lang): EssentialGroup[] {
+  if (lang === 'en') return essentialGroups;
+  return essentialGroups.map((g) => {
+    const h = hiEssentialsData[g.id];
+    if (!h) return g;
+    return {
+      ...g, title: h.title, blurb: h.blurb,
+      items: g.items.map((item, i) => (h.items[i] ? { ...item, q: h.items[i].q, a: h.items[i].a } : item)),
+    };
+  });
 }
