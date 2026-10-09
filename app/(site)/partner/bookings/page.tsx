@@ -6,16 +6,80 @@ import { ArrowLeft, Phone, ShoppingBag } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { formatPrice, statusLabel, STATUS_COLORS, cn } from '@/lib/utils';
 
+/** WhatsApp alert settings for activity partners (works after verification too). Hidden if it cannot load. */
+function WhatsAppAlertsCard({ token }: { token: string }) {
+  const [loaded, setLoaded] = useState(false);
+  const [number, setNumber] = useState('');
+  const [alerts, setAlerts] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/partner/whatsapp', { headers: { Authorization: `Bearer ${token}` } })
+      .then(async (r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (cancelled || !d) return;
+        setNumber(String(d.whatsapp_number || d.phone || '').replace(/^91(?=\d{10}$)/, ''));
+        setAlerts(!!d.whatsapp_alerts);
+        setLoaded(true);
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [token]);
+
+  async function save() {
+    setSaving(true); setMsg(null);
+    try {
+      const res = await fetch('/api/partner/whatsapp', {
+        method: 'PATCH',
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ whatsapp_number: number.trim(), whatsapp_alerts: alerts }),
+      });
+      const d = await res.json().catch(() => ({}));
+      if (!res.ok) setMsg({ ok: false, text: d.error || 'Could not save.' });
+      else {
+        setNumber(String(d.whatsapp_number || number).replace(/^91(?=\d{10}$)/, ''));
+        setMsg({ ok: true, text: d.whatsapp_alerts ? 'Saved. New bookings will come to you on WhatsApp.' : 'Saved. WhatsApp alerts are off.' });
+      }
+    } catch { setMsg({ ok: false, text: 'Could not save. Please check your connection.' }); }
+    setSaving(false);
+  }
+
+  if (!loaded) return null;
+  return (
+    <section className="bg-white border border-slate-200 rounded-xl p-4 mb-6">
+      <h2 className="font-semibold text-slate-900 mb-1">WhatsApp alerts</h2>
+      <p className="text-sm text-slate-600 mb-3">Get new and cancelled bookings on WhatsApp, with Accept / Can&apos;t do it buttons.</p>
+      <div className="flex flex-wrap items-center gap-3">
+        <label className="flex items-center gap-2 text-sm text-slate-700">
+          <input type="checkbox" checked={alerts} onChange={(e) => setAlerts(e.target.checked)} /> Send me new bookings on WhatsApp
+        </label>
+        <input
+          type="tel" inputMode="numeric" value={number} onChange={(e) => setNumber(e.target.value)} placeholder="10-digit mobile number"
+          aria-label="WhatsApp number" className="w-48 px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none"
+        />
+        <button onClick={save} disabled={saving} className="bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-50">
+          {saving ? 'Saving…' : 'Save'}
+        </button>
+      </div>
+      {msg && <p className={cn('text-sm mt-2', msg.ok ? 'text-green-700' : 'text-red-600')}>{msg.text}</p>}
+    </section>
+  );
+}
+
 export default function PartnerBookingsPage() {
   const router = useRouter();
   const [bookings, setBookings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [token, setToken] = useState('');
 
   useEffect(() => {
     async function load() {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) { router.push('/partner/login'); return; }
+      setToken(session.access_token);
       try {
         const res = await fetch('/api/partner/bookings', { headers: { Authorization: `Bearer ${session.access_token}` } });
         const json = await res.json().catch(() => ({}));
@@ -34,6 +98,8 @@ export default function PartnerBookingsPage() {
       <Link href="/partner/dashboard" className="inline-flex items-center gap-1 text-sm text-slate-600 hover:text-brand-600 mb-4"><ArrowLeft className="h-4 w-4" /> Dashboard</Link>
       <h1 className="text-2xl font-heading font-bold text-slate-900">Your bookings</h1>
       <p className="text-slate-600 text-sm mb-6">Bookings Dharamshala Stay has assigned to you.</p>
+
+      {token && <WhatsAppAlertsCard token={token} />}
 
       {error && <p className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg mb-4">{error}</p>}
 
