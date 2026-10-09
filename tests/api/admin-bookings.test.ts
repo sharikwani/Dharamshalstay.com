@@ -169,7 +169,7 @@ describe('GET/PATCH /api/admin/bookings/:id', () => {
   it('GET returns the booking view, 404 when missing, 403 for non-admin', async () => {
     const res = await GET(new Request('http://x'), ctx);
     expect(res.status).toBe(200);
-    expect(await res.json()).toEqual({ booking: { id: ID, item_name: 'x' } });
+    expect(await res.json()).toMatchObject({ booking: { id: ID, item_name: 'x', partner_response: null }, whatsapp_messages: [] });
     loadBookingView.mockResolvedValueOnce(null as any);
     expect((await GET(new Request('http://x'), ctx)).status).toBe(404);
     role = 'partner';

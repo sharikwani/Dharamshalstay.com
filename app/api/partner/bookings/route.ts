@@ -25,7 +25,9 @@ export async function GET(req: Request) {
     if (error) { console.error('Partner bookings load failed:', error); return NextResponse.json({ error: 'Could not load bookings' }, { status: 500 }); }
 
     const views = await toBookingViews(rows || []);
+    const responses = new Map((rows || []).map((r: any) => [r.id, r]));
     const bookings = views.map((v) => {
+      const row: any = responses.get(v.id);
       const show = REVEAL_CONTACT.includes(v.status);
       return {
         id: v.id, booking_ref: v.booking_ref, category: v.category, status: v.status,
@@ -34,6 +36,7 @@ export async function GET(req: Request) {
         commission_amount: v.commission_amount, partner_share_amount: v.partner_share_amount,
         special_requests: v.special_requests ?? null, created_at: v.created_at,
         guest_name: v.guest_name,
+        partner_response: row?.partner_response ?? null, partner_responded_at: row?.partner_responded_at ?? null,
         guest_phone: show ? v.guest_phone ?? null : null,
         guest_email: show ? v.guest_email ?? null : null,
       };

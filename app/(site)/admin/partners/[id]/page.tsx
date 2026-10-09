@@ -98,6 +98,12 @@ export default function AdminPartnerDetail() {
           <input type="number" min={0} max={100} step={0.5} defaultValue={p.commission_pct} id="commission" className="w-24 border border-slate-300 rounded px-2 py-1 text-sm" />
           <button onClick={() => act({ action: 'set_commission', commission_pct: Number((document.getElementById('commission') as HTMLInputElement).value) })} className="text-sm text-brand-600 font-semibold">Save</button>
         </div>
+        <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100">
+          <label className="text-sm">WhatsApp number</label>
+          <input type="text" defaultValue={p.whatsapp_number ? p.whatsapp_number.replace(/^91/, '') : p.phone || ''} id="wa-number" className="w-40 border border-slate-300 rounded px-2 py-1 text-sm" />
+          <label className="text-sm flex items-center gap-1.5"><input type="checkbox" defaultChecked={!!p.whatsapp_alerts} id="wa-alerts" />Send booking alerts</label>
+          <button onClick={() => act({ action: 'set_whatsapp', whatsapp_number: (document.getElementById('wa-number') as HTMLInputElement).value, whatsapp_alerts: (document.getElementById('wa-alerts') as HTMLInputElement).checked })} className="text-sm text-brand-600 font-semibold">Save</button>
+        </div>
       </section>
     </div>
   );

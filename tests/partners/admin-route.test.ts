@@ -76,6 +76,26 @@ describe('admin partner routes', () => {
     log.mockRestore();
   });
 
+  it('set_whatsapp rejects an invalid number', async () => {
+    role = 'admin';
+    const res = await post({ action: 'set_whatsapp', whatsapp_number: '123', whatsapp_alerts: true });
+    expect(res.status).toBe(400);
+    expect((await res.json()).error).toBe('Enter a valid Indian mobile number for WhatsApp.');
+    expect(update).not.toHaveBeenCalled();
+  });
+
+  it('set_whatsapp saves a normalised number and sets the opt-in time', async () => {
+    role = 'admin';
+    const res = await post({ action: 'set_whatsapp', whatsapp_number: '98765 43210', whatsapp_alerts: true });
+    expect(res.status).toBe(200);
+    expect(update).toHaveBeenCalledWith(expect.objectContaining({ whatsapp_number: '919876543210', whatsapp_alerts: true, whatsapp_opt_in_at: expect.any(String) }));
+  });
+
+  it('set_whatsapp requires an admin', async () => {
+    const res = await post({ action: 'set_whatsapp', whatsapp_alerts: false });
+    expect(res.status).toBe(403);
+  });
+
   it('returns 404 for a profile that is not a partner type', async () => {
     role = 'admin';
     partnerType = 'hotel';

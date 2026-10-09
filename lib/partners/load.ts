@@ -27,7 +27,7 @@ export async function signedUrl(path: string | null): Promise<string | null> {
 export async function loadOnboarding(partnerId: string) {
   const sb = serviceClient();
   const [{ data: profile }, { data: documents }, { data: staff }, { data: vehicles }, { data: agreements }] = await Promise.all([
-    sb.from('profiles').select('id, email, full_name, phone, business_name, legal_name, pan_number, business_registration_no, partner_type, partner_status, commission_pct, payout_method, payout_details, submitted_at, verified_at, verification_note, created_at').eq('id', partnerId).single(),
+    sb.from('profiles').select('id, email, full_name, phone, business_name, legal_name, pan_number, business_registration_no, partner_type, partner_status, commission_pct, payout_method, payout_details, submitted_at, verified_at, verification_note, created_at, whatsapp_number, whatsapp_alerts').eq('id', partnerId).single(),
     sb.from('partner_documents').select('*').eq('partner_id', partnerId).order('created_at', { ascending: false }),
     sb.from('partner_staff').select('*').eq('partner_id', partnerId).order('created_at'),
     sb.from('vehicles').select('*').eq('partner_id', partnerId).order('created_at'),

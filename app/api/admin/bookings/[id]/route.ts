@@ -77,7 +77,13 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     if (!isId(params.id)) throw new HttpError(404, 'Booking not found.');
     const booking = await loadBookingView(params.id);
     if (!booking) throw new HttpError(404, 'Booking not found.');
-    return NextResponse.json({ booking });
+    const { data: messages, error: msgError } = await serviceClient().from('whatsapp_messages').select('*').eq('booking_id', params.id).order('created_at', { ascending: false });
+    if (msgError) console.error('Could not load WhatsApp messages:', msgError);
+    const { data: resp } = await serviceClient().from('bookings').select('partner_response, partner_responded_at').eq('id', params.id).maybeSingle();
+    return NextResponse.json({
+      booking: { ...booking, partner_response: resp?.partner_response ?? null, partner_responded_at: resp?.partner_responded_at ?? null },
+      whatsapp_messages: messages || [],
+    });
   } catch (e) { return jsonError(e); }
 }
 

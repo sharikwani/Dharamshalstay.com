@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { HttpError, jsonError, serviceClient } from '@/lib/server-auth';
 import { requireActivityPartner } from '@/lib/partners/load';
+import { normalizeIndianPhone } from '@/lib/whatsapp';
 import { isAccountNumber, isIfsc, isPan, isUpi } from '@/lib/partners/validate';
 
 const schema = z.object({
@@ -15,6 +16,8 @@ const schema = z.object({
   account_number: z.string().trim().optional().default(''),
   ifsc: z.string().trim().toUpperCase().optional().default(''),
   upi_id: z.string().trim().optional().default(''),
+  whatsapp_number: z.string().trim().max(20).optional().default(''),
+  whatsapp_alerts: z.preprocess((v) => v === true || v === 'on' || v === 'true', z.boolean()),
 });
 
 export async function PATCH(req: Request) {
@@ -29,12 +32,20 @@ export async function PATCH(req: Request) {
     }
     if (d.payout_method === 'upi' && !isUpi(d.upi_id)) throw new HttpError(400, 'UPI ID should look like name@bank.');
 
+    const waNumber = normalizeIndianPhone(d.whatsapp_number || d.phone);
+    if ((d.whatsapp_alerts || d.whatsapp_number) && !waNumber) {
+      throw new HttpError(400, 'Enter a valid Indian mobile number for WhatsApp.');
+    }
+    const { data: current } = await serviceClient().from('profiles').select('whatsapp_alerts').eq('id', profile.id).single();
+
     const payout_details = d.payout_method === 'bank'
       ? { account_holder: d.account_holder, account_number: d.account_number, ifsc: d.ifsc }
       : { account_holder: d.account_holder, upi_id: d.upi_id };
     const { error } = await serviceClient().from('profiles').update({
       legal_name: d.legal_name, business_name: d.business_name, phone: d.phone, pan_number: d.pan_number,
       business_registration_no: d.business_registration_no || null, payout_method: d.payout_method, payout_details,
+      whatsapp_number: waNumber, whatsapp_alerts: d.whatsapp_alerts,
+      ...(d.whatsapp_alerts && !current?.whatsapp_alerts ? { whatsapp_opt_in_at: new Date().toISOString() } : {}),
       updated_at: new Date().toISOString(),
     }).eq('id', profile.id);
     if (error) throw error;

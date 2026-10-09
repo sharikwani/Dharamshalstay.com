@@ -170,6 +170,7 @@ export default function AdminEditPropertyPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 items-end">
             <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={!!form.featured} onChange={e => u('featured', e.target.checked)} /> Featured</label>
             <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={!!form.is_sponsored} onChange={e => u('is_sponsored', e.target.checked)} /> Sponsored</label>
+            <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={!!form.whatsapp_alerts} onChange={e => u('whatsapp_alerts', e.target.checked)} /> Send booking alerts to this property&apos;s phone on WhatsApp</label>
             {Input({ label: "Priority (higher shows first)", field: "priority_score", type: "number" })}
             {Input({ label: "Commission %", field: "commission_pct", type: "number" })}
           </div>

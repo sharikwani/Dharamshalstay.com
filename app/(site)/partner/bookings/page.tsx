@@ -50,6 +50,8 @@ export default function PartnerBookingsPage() {
                 <span className="font-mono text-sm font-semibold text-brand-600">{b.booking_ref}</span>
                 <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 capitalize">{b.category}</span>
                 <span className={cn('text-xs font-medium px-2 py-0.5 rounded-full', STATUS_COLORS[b.status])}>{statusLabel(b.status)}</span>
+                {b.partner_response === 'accepted' && <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-green-100 text-green-700">You accepted</span>}
+                {b.partner_response === 'declined' && <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-red-100 text-red-700">You declined</span>}
               </div>
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0">
