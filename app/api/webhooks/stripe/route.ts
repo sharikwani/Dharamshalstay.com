@@ -30,8 +30,9 @@ export async function POST(req: NextRequest) {
         const { createClient } = await import('@supabase/supabase-js');
         const sb = createClient(url, key);
 
-        // Update booking payment status
-        const { data: booking } = await sb.from('bookings')
+        // Mark the booking paid. Only rows not already paid are updated, so a Stripe retry of the
+        // same event finds nothing to update and does not send the emails / WhatsApp alerts again.
+        const { data: booking, error } = await sb.from('bookings')
           .update({
             payment_status: 'paid',
             paid_amount: Math.round((session.amount_total || 0) / 100),
@@ -40,12 +41,17 @@ export async function POST(req: NextRequest) {
             status: 'confirmed',
           })
           .eq('stripe_session_id', session.id)
+          .or('payment_status.is.null,payment_status.neq.paid')
           .select()
-          .single();
+          .maybeSingle();
+
+        if (error) {
+          console.error('Stripe webhook: booking update failed:', error);
+          return NextResponse.json({ error: 'Webhook failed' }, { status: 500 });
+        }
 
         if (booking) {
           console.log('Payment confirmed for booking:', booking.booking_ref);
-
           await sendBookingEmails(booking.id);
         }
       }
