@@ -7,7 +7,7 @@ export const en = {
     tagline: 'Local Travel Experts',
     hotels: 'Hotels', treks: 'Treks', paragliding: 'Paragliding', taxi: 'Taxi',
     guides: 'Travel Guides', essentials: 'Essentials', faq: 'FAQ', contact: 'Contact',
-    listProperty: 'List Your Property', myAccount: 'My Account', login: 'Login', loginSignup: 'Login / Sign Up',
+    listProperty: 'Become a Partner', myAccount: 'My Account', login: 'Login', loginSignup: 'Login / Sign Up',
     enquire: 'Enquire Now', menu: 'Menu',
   },
   places: {
@@ -113,7 +113,7 @@ export const en = {
     guidesSubtitle: 'Honest, up-to-date answers to what travellers ask before visiting Dharamshala, McLeod Ganj and the Kangra Valley.',
     allGuides: 'All Travel Guides',
     reviewTitle: 'Travelled with us?', reviewIntro: 'Your review helps other travellers find honest local help in Dharamshala.', reviewCta: 'Leave a Google review',
-    ownerTitle: 'Own a Hotel or Homestay?', ownerIntro: 'List your property for free and reach thousands of travellers searching for Dharamshala stays.', ownerCta: 'List Your Property Free',
+    ownerTitle: 'Run a Hotel, Taxi, Trek or Paragliding Business?', ownerIntro: 'Join Dharamshala Stay as a partner for free and get bookings from thousands of travellers planning their Dharamshala trip.', ownerCta: 'Become a Partner',
     faqTitle: 'Frequently Asked Questions', allQa: 'See all Dharamshala travel questions & answers',
     ctaTitle: 'Ready for Your Dharamshala Trip?', ctaIntro: 'Send your dates and preferences -- our team will build the perfect plan. Free, fast, personal.',
     ctaWhatsApp: 'WhatsApp Us', ctaMsg: 'Hi! Help me plan my Dharamshala trip.',

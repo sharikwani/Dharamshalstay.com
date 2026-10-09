@@ -63,7 +63,7 @@ export default function Header() {
           <div className="flex items-center gap-2 sm:gap-3">
             <LanguageToggle />
             <div className="hidden xl:flex items-center gap-2.5">
-              <Link href="/partner/login" className="text-sm text-brand-200 hover:text-white transition-colors whitespace-nowrap">{t.nav.listProperty}</Link>
+              <Link href="/partner/register" className="text-sm text-brand-200 hover:text-white transition-colors whitespace-nowrap">{t.nav.listProperty}</Link>
               {user ? (
                 <Link href="/account" className="flex items-center gap-1.5 whitespace-nowrap bg-white/10 hover:bg-white/20 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors">
                   <UserCircle className="h-4 w-4" /> {t.nav.myAccount}
@@ -100,7 +100,7 @@ export default function Header() {
                   <LogIn className="h-4 w-4" /> {t.nav.loginSignup}
                 </Link>
               )}
-              <Link href="/partner/login" className="block px-3 py-2.5 text-brand-200 hover:text-white" onClick={() => setOpen(false)}>{t.nav.listProperty}</Link>
+              <Link href="/partner/register" className="block px-3 py-2.5 text-brand-200 hover:text-white" onClick={() => setOpen(false)}>{t.nav.listProperty}</Link>
               <Link href={href('/contact')} className="block bg-orange-600 text-white px-4 py-3 text-center font-semibold rounded-lg" onClick={() => setOpen(false)}>{t.nav.enquire}</Link>
             </div>
           </nav>

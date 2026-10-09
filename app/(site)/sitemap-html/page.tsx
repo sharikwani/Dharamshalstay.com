@@ -30,7 +30,7 @@ export default async function SitemapHTML() {
         <div><h2 className="text-lg font-semibold mb-3">Hotels</h2><ul className="space-y-1 text-sm">{hotels.map((h: any) => <li key={h.slug}><Link href={`/hotels/${h.slug}`} className="text-brand-600 hover:underline">{h.name}</Link></li>)}</ul></div>
         <div><h2 className="text-lg font-semibold mb-3">Treks</h2><ul className="space-y-1 text-sm">{treks.map((t: any) => <li key={t.slug}><Link href={`/treks/${t.slug}`} className="text-brand-600 hover:underline">{t.name}</Link></li>)}</ul></div>
         <div><h2 className="text-lg font-semibold mb-3">Travel Guides</h2><ul className="space-y-1 text-sm">{blogPosts.map(b => <li key={b.slug}><Link href={`/blog/${b.slug}`} className="text-brand-600 hover:underline">{b.title}</Link></li>)}</ul></div>
-        <div><h2 className="text-lg font-semibold mb-3">Portals</h2><ul className="space-y-1 text-sm"><li><Link href="/partner/register" className="text-brand-600 hover:underline">List Your Property</Link></li><li><Link href="/partner/login" className="text-brand-600 hover:underline">Partner Login</Link></li></ul></div>
+        <div><h2 className="text-lg font-semibold mb-3">Portals</h2><ul className="space-y-1 text-sm"><li><Link href="/partner/register" className="text-brand-600 hover:underline">Become a Partner</Link></li><li><Link href="/partner/login" className="text-brand-600 hover:underline">Partner Login</Link></li></ul></div>
       </div>
     </div>
   );
