@@ -8,6 +8,7 @@ let updateError: any = null;
 const updates: any[] = [];
 const sendManualBookingEmails = vi.fn(async (..._a: unknown[]) => {});
 const sendCancellationEmails = vi.fn(async (..._a: unknown[]) => {});
+const sendReassignedAwayEmail = vi.fn(async (..._a: unknown[]) => {});
 const loadBookingView = vi.fn(async (id: string) => ({ id, item_name: 'x' }));
 
 function builder(table: string) {
@@ -39,6 +40,7 @@ vi.mock('@/lib/server-auth', async (orig) => {
 vi.mock('@/lib/manual-booking-emails', () => ({
   sendManualBookingEmails: (...a: unknown[]) => sendManualBookingEmails(...a),
   sendCancellationEmails: (...a: unknown[]) => sendCancellationEmails(...a),
+  sendReassignedAwayEmail: (...a: unknown[]) => sendReassignedAwayEmail(...a),
   loadBookingView: (id: string) => loadBookingView(id),
 }));
 
@@ -55,7 +57,7 @@ const post = (body: unknown) => POST(new Request('http://x', { method: 'POST', b
 
 beforeEach(() => {
   role = 'admin'; insertError = null; updateError = null; inserts.length = 0; updates.length = 0;
-  sendManualBookingEmails.mockClear(); sendCancellationEmails.mockClear();
+  sendManualBookingEmails.mockClear(); sendCancellationEmails.mockClear(); sendReassignedAwayEmail.mockClear();
   fixtures = {
     treks: { id: 't1', status: 'published', price_per_person: 1500, commission_pct: null },
     profiles: { id: 'p1', role: 'partner', partner_type: 'trek', partner_status: 'verified', commission_pct: 20 },
@@ -185,7 +187,7 @@ describe('GET/PATCH /api/admin/bookings/:id', () => {
     fixtures.bookings = { ...fixtures.bookings, category: 'hotel' };
     const res = await patch({ action: 'assign', partner_id: '22222222-2222-4222-8222-222222222222' });
     expect(res.status).toBe(400);
-    expect((await res.json()).error).toMatch(/cannot be assigned/);
+    expect((await res.json()).error).toBe('Hotel and local guide bookings cannot be reassigned here.');
   });
 
   it('payment platform_paid via upi marks it paid to the platform', async () => {
@@ -229,5 +231,32 @@ describe('GET/PATCH /api/admin/bookings/:id', () => {
     expect(res.status).toBe(500);
     expect(sendCancellationEmails).not.toHaveBeenCalled();
     spy.mockRestore();
+  });
+
+  it('assign refuses a booking whose commission is already paid', async () => {
+    fixtures.bookings = { ...fixtures.bookings, commission_status: 'paid' };
+    const res = await patch({ action: 'assign', partner_id: '22222222-2222-4222-8222-222222222222' });
+    expect(res.status).toBe(409);
+    expect((await res.json()).error).toMatch(/already settled/);
+    expect(updates).toHaveLength(0);
+  });
+
+  it('assign emails the previous partner too', async () => {
+    fixtures.bookings = { ...fixtures.bookings, partner_id: 'old' };
+    await patch({ action: 'assign', partner_id: '22222222-2222-4222-8222-222222222222' });
+    expect(sendReassignedAwayEmail).toHaveBeenCalledWith(ID, 'old');
+  });
+
+  it('payment leaves a paid commission_status alone', async () => {
+    fixtures.bookings = { ...fixtures.bookings, commission_status: 'paid' };
+    await patch({ action: 'payment', choice: 'partner_collects' });
+    expect(updates[0].row).not.toHaveProperty('commission_status');
+    expect(updates[0].row).toMatchObject({ payment_status: 'pending', collected_by: 'partner' });
+  });
+
+  it('returns 404 for a malformed id', async () => {
+    const bad = { params: { id: 'nope' } };
+    expect((await GET(new Request('http://x'), bad)).status).toBe(404);
+    expect((await PATCH(new Request('http://x', { method: 'PATCH', body: JSON.stringify({ action: 'cancel', reason: 'abc' }) }), bad)).status).toBe(404);
   });
 });

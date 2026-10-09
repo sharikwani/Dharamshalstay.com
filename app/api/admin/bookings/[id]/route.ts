@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { HttpError, jsonError, requireCaller, serviceClient } from '@/lib/server-auth';
-import { checkAssignment, commissionRateFor, paymentFields, splitAmount } from '@/lib/manual-booking';
-import { loadBookingView, sendCancellationEmails, sendManualBookingEmails } from '@/lib/manual-booking-emails';
+import { ACTIVITY_CATEGORIES, checkAssignment, commissionRateFor, paymentFields, splitAmount } from '@/lib/manual-booking';
+import { loadBookingView, sendCancellationEmails, sendManualBookingEmails, sendReassignedAwayEmail } from '@/lib/manual-booking-emails';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,9 +30,12 @@ const schema = z.discriminatedUnion('action', [
   }),
 ]);
 
+const isId = (id: string) => uuid.safeParse(id).success;
+
 export async function GET(req: Request, { params }: { params: { id: string } }) {
   try {
     await requireCaller(req, ['admin']);
+    if (!isId(params.id)) throw new HttpError(404, 'Booking not found.');
     const booking = await loadBookingView(params.id);
     if (!booking) throw new HttpError(404, 'Booking not found.');
     return NextResponse.json({ booking });
@@ -42,6 +45,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
 export async function PATCH(req: Request, { params }: { params: { id: string } }) {
   try {
     await requireCaller(req, ['admin']);
+    if (!isId(params.id)) throw new HttpError(404, 'Booking not found.');
     const parsed = schema.safeParse(await req.json().catch(() => null));
     if (!parsed.success) {
       const where = parsed.error.issues[0]?.path.join('.');
@@ -58,6 +62,12 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
 
     let update: Record<string, unknown>;
     if (body.action === 'assign') {
+      if (!(ACTIVITY_CATEGORIES as readonly string[]).includes(booking.category)) {
+        throw new HttpError(400, 'Hotel and local guide bookings cannot be reassigned here.');
+      }
+      if (booking.commission_status === 'paid') {
+        throw new HttpError(409, 'Commission for this booking is already settled; it cannot be reassigned.');
+      }
       const load = async (table: string, rowId: string | null | undefined, cols: string) => {
         if (!rowId) return null;
         const { data, error } = await sb.from(table).select(cols).eq('id', rowId).maybeSingle();
@@ -80,9 +90,11 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
         commission_pct: pct, commission_amount: split.commission_amount, partner_share_amount: split.partner_share_amount,
       };
     } else if (body.action === 'payment') {
-      update = paymentFields(body.choice, booking.category, Number(booking.amount), {
+      const fields: Record<string, unknown> = paymentFields(body.choice, booking.category, Number(booking.amount), {
         amountReceived: body.amount_received, channel: body.channel, reference: body.reference,
       });
+      if (['paid', 'disputed', 'waived'].includes(booking.commission_status)) delete fields.commission_status;
+      update = fields;
     } else {
       update = { status: 'cancelled', cancel_reason: body.reason };
       if (booking.commission_status !== 'paid') update.commission_status = 'waived';
@@ -96,7 +108,10 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
 
     // Emails never block the save
     try {
-      if (body.action === 'assign' && body.notify) await sendManualBookingEmails(id, { customer: false, partner: true, subjectPrefix: 'Updated: ' });
+      if (body.action === 'assign' && body.notify) {
+        await sendManualBookingEmails(id, { customer: false, partner: true, subjectPrefix: 'Updated: ' });
+        if (booking.partner_id && booking.partner_id !== update.partner_id) await sendReassignedAwayEmail(id, booking.partner_id);
+      }
       if (body.action === 'payment' && body.notify) await sendManualBookingEmails(id, { customer: true, partner: false, subjectPrefix: 'Updated: ' });
       if (body.action === 'cancel' && body.notify) await sendCancellationEmails(id, body.reason);
     } catch (e) { console.error('Booking update emails failed:', e); }

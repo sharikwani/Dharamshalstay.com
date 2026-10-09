@@ -122,3 +122,18 @@ export async function sendCancellationEmails(bookingId: string, reason: string):
     }
   } catch (e) { console.error('Cancellation emails failed:', e); }
 }
+
+/** Tell the previous partner a booking was moved to someone else. Never throws. */
+export async function sendReassignedAwayEmail(bookingId: string, previousPartnerId: string): Promise<void> {
+  try {
+    const [v, prev] = await Promise.all([
+      loadBookingView(bookingId),
+      one('profiles', previousPartnerId, 'legal_name, business_name, full_name, email'),
+    ]);
+    if (!v || !prev?.email) return;
+    const name = prev.legal_name || prev.business_name || prev.full_name;
+    const html = wrap('Booking reassigned', `<p>Hi ${esc(name)},</p><p>This booking has been reassigned to another partner. You no longer need to take it.</p><table>${[row('Booking reference', v.booking_ref), row('Booking', v.item_name), row('When', v.date_text)].join('')}</table>`);
+    try { await sendEmail({ to: prev.email, subject: `Booking reassigned – ${v.booking_ref}`, html }); }
+    catch (e) { console.error('Reassigned-away email failed:', e); }
+  } catch (e) { console.error('Reassigned-away email failed:', e); }
+}
