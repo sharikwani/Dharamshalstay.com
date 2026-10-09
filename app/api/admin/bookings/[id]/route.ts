@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { HttpError, jsonError, requireCaller, serviceClient } from '@/lib/server-auth';
 import { ACTIVITY_CATEGORIES, checkAssignment, commissionRateFor, paymentFields, splitAmount } from '@/lib/manual-booking';
+import { whatsappCancelled, whatsappNewBooking, whatsappReassignedAway } from '@/lib/booking-whatsapp';
 import { loadBookingView, sendCancellationEmails, sendManualBookingEmails, sendReassignedAwayEmail } from '@/lib/manual-booking-emails';
 
 export const dynamic = 'force-dynamic';
@@ -169,9 +170,14 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
       if (body.action === 'assign' && body.notify) {
         await sendManualBookingEmails(id, { customer: false, partner: true, subjectPrefix: 'Updated: ' });
         if (booking.partner_id && booking.partner_id !== update.partner_id) await sendReassignedAwayEmail(id, booking.partner_id);
+        await whatsappNewBooking(id, { customer: false });
+        if (booking.partner_id && booking.partner_id !== update.partner_id) await whatsappReassignedAway(id, booking.partner_id);
       }
       if (body.action === 'payment' && body.notify) await sendManualBookingEmails(id, { customer: true, partner: false, subjectPrefix: 'Updated: ' });
-      if (body.action === 'cancel' && body.notify) await sendCancellationEmails(id, body.reason);
+      if (body.action === 'cancel' && body.notify) {
+        await sendCancellationEmails(id, body.reason);
+        await whatsappCancelled(id, body.reason);
+      }
     } catch (e) { console.error('Booking update emails failed:', e); }
 
     return NextResponse.json({ booking: await loadBookingView(id) });

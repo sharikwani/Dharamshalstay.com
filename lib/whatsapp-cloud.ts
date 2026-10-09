@@ -18,6 +18,7 @@ export async function sendTemplate(opts: { to: string; template: string; params:
   try {
     const res = await fetch(`${GRAPH}/${process.env.WHATSAPP_PHONE_NUMBER_ID}/messages`, {
       method: 'POST',
+      signal: AbortSignal.timeout(8000),
       headers: { Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         messaging_product: 'whatsapp', to: opts.to, type: 'template',

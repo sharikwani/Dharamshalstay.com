@@ -1,0 +1,113 @@
+import { serviceClient } from '@/lib/server-auth';
+import { loadBookingView, type BookingView } from '@/lib/manual-booking-emails';
+import { cleanParam, isWhatsAppConfigured, sendTemplate } from '@/lib/whatsapp-cloud';
+import { normalizeIndianPhone } from '@/lib/whatsapp';
+
+export type RecipientKind = 'partner' | 'staff' | 'hotel' | 'guide';
+export type Recipient = { kind: RecipientKind; phone: string };
+export type RecipientRows = {
+  partner?: { whatsapp_number?: string | null; whatsapp_alerts?: boolean | null; phone?: string | null } | null;
+  staff?: { phone?: string | null; whatsapp_alerts?: boolean | null } | null;
+  property?: { contact_phone?: string | null; whatsapp_alerts?: boolean | null } | null;
+  guide?: { phone?: string | null; whatsapp_alerts?: boolean | null } | null;
+};
+
+/** Who should get a WhatsApp alert for this booking. Pure: consent, valid number, no duplicates. */
+export function recipientsFor(_view: BookingView, rows: RecipientRows): Recipient[] {
+  const out: Recipient[] = [];
+  const add = (kind: RecipientKind, raw: string | null | undefined) => {
+    const phone = normalizeIndianPhone(raw);
+    if (phone && !out.some((r) => r.phone === phone)) out.push({ kind, phone });
+  };
+  const { partner, staff, property, guide } = rows;
+  if (partner?.whatsapp_alerts) {
+    add('partner', partner.whatsapp_number || partner.phone);
+    if (staff?.whatsapp_alerts) add('staff', staff.phone);
+  }
+  if (property?.whatsapp_alerts) add('hotel', property.contact_phone);
+  if (guide?.whatsapp_alerts) add('guide', guide.phone);
+  return out;
+}
+
+const rupees = (n: unknown) => `Rs.${Number(n || 0).toLocaleString('en-IN')}`;
+
+export const newBookingParams = (v: BookingView): string[] => [
+  v.booking_ref, v.item_name, v.date_text, v.num_guests, v.guest_name, v.guest_phone, rupees(v.amount), v.payment_text,
+].map(cleanParam);
+
+export const cancelledParams = (v: BookingView, reason: string): string[] =>
+  [v.booking_ref, v.item_name, v.date_text, reason].map(cleanParam);
+
+export function customerParams(v: BookingView): string[] {
+  const who = v.category === 'taxi' ? 'Your driver' : v.category === 'paragliding' ? 'Your pilot' : v.category === 'guide' ? 'Your guide' : null;
+  const assignee = v.assignee_text && who ? `${who}: ${v.assignee_text}` : '-';
+  return [v.booking_ref, v.item_name, v.date_text, v.num_guests, assignee, rupees(v.amount), v.payment_text].map(cleanParam);
+}
+
+async function row(table: string, id: string | null | undefined, cols: string): Promise<any | null> {
+  if (!id) return null;
+  const { data, error } = await serviceClient().from(table).select(cols).eq('id', id).maybeSingle();
+  if (error) { console.error(`WhatsApp: could not load ${table}:`, error); return null; }
+  return data ?? null;
+}
+
+async function loadRecipients(v: BookingView): Promise<Recipient[]> {
+  const [partner, staff, property, guide] = await Promise.all([
+    row('profiles', v.partner_id, 'whatsapp_number, whatsapp_alerts, phone'),
+    row('partner_staff', v.staff_id, 'phone, whatsapp_alerts'),
+    row('properties', v.property_id, 'contact_phone, whatsapp_alerts'),
+    row('guides', v.guide_id, 'phone, whatsapp_alerts'),
+  ]);
+  return recipientsFor(v, { partner, staff, property, guide });
+}
+
+/** Send one template and log the attempt. Skipped sends are not logged. Never throws. */
+async function sendAndLog(bookingId: string, kind: RecipientKind | 'customer', to: string, template: string, params: string[]) {
+  try {
+    const r = await sendTemplate({ to, template, params });
+    if (!r.ok && r.skipped) return;
+    const { error } = await serviceClient().from('whatsapp_messages').insert({
+      booking_id: bookingId, recipient_kind: kind, to_phone: to, template,
+      wa_message_id: r.ok ? r.id : null, status: r.ok ? 'sent' : 'failed', error: r.ok ? null : r.error || 'Unknown error',
+    });
+    if (error) console.error('WhatsApp: could not log message:', error);
+  } catch (e) { console.error('WhatsApp send failed:', e); }
+}
+
+/** New-booking alert to partner/staff/hotel/guide, optionally a confirmation to the customer. Never throws. */
+export async function whatsappNewBooking(bookingId: string, opts: { customer: boolean }): Promise<void> {
+  try {
+    if (!isWhatsAppConfigured()) return;
+    const v = await loadBookingView(bookingId);
+    if (!v) return;
+    const params = newBookingParams(v);
+    for (const r of await loadRecipients(v)) await sendAndLog(bookingId, r.kind, r.phone, 'booking_new_partner', params);
+    if (opts.customer) {
+      const to = normalizeIndianPhone(v.guest_phone);
+      if (to) await sendAndLog(bookingId, 'customer', to, 'booking_confirmed_customer', customerParams(v));
+    }
+  } catch (e) { console.error('WhatsApp new booking alert failed:', e); }
+}
+
+/** Cancellation notice to the same recipients as a new booking. Never throws. */
+export async function whatsappCancelled(bookingId: string, reason: string): Promise<void> {
+  try {
+    if (!isWhatsAppConfigured()) return;
+    const v = await loadBookingView(bookingId);
+    if (!v) return;
+    const params = cancelledParams(v, reason);
+    for (const r of await loadRecipients(v)) await sendAndLog(bookingId, r.kind, r.phone, 'booking_cancelled_partner', params);
+  } catch (e) { console.error('WhatsApp cancellation alert failed:', e); }
+}
+
+/** Tell the previous partner a booking moved to someone else. Never throws. */
+export async function whatsappReassignedAway(bookingId: string, previousPartnerId: string): Promise<void> {
+  try {
+    if (!isWhatsAppConfigured()) return;
+    const v = await loadBookingView(bookingId);
+    if (!v) return;
+    const partner = await row('profiles', previousPartnerId, 'whatsapp_number, whatsapp_alerts, phone');
+    const params = cancelledParams(v, 'Reassigned to another partner - you no longer need to take it');
+    for (const r of recipientsFor(v, { partner })) await sendAndLog(bookingId, r.kind, r.phone, 'booking_cancelled_partner', params);
+  } catch (e) { console.error('WhatsApp reassignment alert failed:', e); }
+}

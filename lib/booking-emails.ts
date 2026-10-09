@@ -1,5 +1,6 @@
 import { serviceClient } from '@/lib/server-auth';
 import { sendBookingConfirmation, sendAdminNotification } from '@/lib/email';
+import { whatsappNewBooking } from '@/lib/booking-whatsapp';
 
 /** Guest confirmation + admin alert for one booking. Never throws. */
 export async function sendBookingEmails(bookingId: string): Promise<void> {
@@ -25,6 +26,7 @@ export async function sendBookingEmails(bookingId: string): Promise<void> {
       booking_ref: booking.booking_ref, category: booking.category, amount: booking.amount,
       check_in: booking.check_in, check_out: booking.check_out, property_name: propertyName,
     });
+    await whatsappNewBooking(bookingId, { customer: false });
   } catch (err) {
     console.error('Booking emails failed (non-fatal):', err);
   }
