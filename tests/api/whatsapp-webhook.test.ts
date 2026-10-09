@@ -83,6 +83,11 @@ describe('parse helpers', () => {
     expect(replyAction("Accept? can't do it")).toBe('declined');
     expect(replyAction('hello')).toBeNull();
   });
+  it('collapses whitespace before matching', () => {
+    expect(replyAction("  Can't \t\n  do   it  ")).toBe('declined');
+    expect(replyAction('cant   do it!')).toBe('declined');
+    expect(replyAction('  Accept\n')).toBe('accepted');
+  });
   it('tolerates garbage', () => {
     expect(parseWebhook(null)).toEqual({ statuses: [], replies: [] });
   });
