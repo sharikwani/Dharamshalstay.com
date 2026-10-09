@@ -338,6 +338,21 @@ describe('GET/PATCH /api/admin/bookings/:id', () => {
     expect(updates).toHaveLength(0);
   });
 
+  it('assign to a different partner clears the previous partner response', async () => {
+    fixtures.bookings = { ...fixtures.bookings, partner_id: 'old', partner_response: 'declined', partner_responded_at: '2026-10-10T09:00:00Z' };
+    await patch({ action: 'assign', partner_id: '22222222-2222-4222-8222-222222222222' });
+    expect(updates[0].row).toMatchObject({ partner_id: 'p1', partner_response: null, partner_responded_at: null });
+    expect(whatsappNewBooking).toHaveBeenCalledWith(ID, { customer: false, partners: true });
+    expect(whatsappReassignedAway).toHaveBeenCalledWith(ID, 'old');
+  });
+
+  it('assign to the same partner keeps their response', async () => {
+    fixtures.bookings = { ...fixtures.bookings, partner_id: 'p1', partner_response: 'accepted' };
+    await patch({ action: 'assign', partner_id: '22222222-2222-4222-8222-222222222222' });
+    expect(updates[0].row).not.toHaveProperty('partner_response');
+    expect(whatsappReassignedAway).not.toHaveBeenCalled();
+  });
+
   it('assign emails the previous partner too', async () => {
     fixtures.bookings = { ...fixtures.bookings, partner_id: 'old' };
     await patch({ action: 'assign', partner_id: '22222222-2222-4222-8222-222222222222' });

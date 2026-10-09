@@ -10,10 +10,16 @@ const sendEmail = vi.fn(async (..._a: unknown[]) => {});
 
 function builder(table: string) {
   dbCalls.push(table);
+  const local: Record<string, unknown> = {};
   const b: any = {
-    select: () => b, eq: (col: string, val: unknown) => { eqs.push({ table, col, val }); return b; },
+    select: () => b, gt: () => b, limit: () => b,
+    eq: (col: string, val: unknown) => { local[col] = val; eqs.push({ table, col, val }); return b; },
     update: (row: any) => { updates.push({ table, row }); return { eq: async (col: string, val: unknown) => { eqs.push({ table, col, val }); return { error: dbError }; } }; },
-    maybeSingle: async () => ({ data: fixtures[table] ?? null, error: null }),
+    // The "later cancellation to this number" lookup reads fixtures.laterCancel instead.
+    maybeSingle: async () => ({
+      data: (table === 'whatsapp_messages' && local.template === 'booking_cancelled_partner' ? fixtures.laterCancel : fixtures[table]) ?? null,
+      error: null,
+    }),
   };
   return b;
 }
@@ -43,7 +49,7 @@ const replyPayload = (title: string, from = '919876543210', ctx = 'wamid.1') =>
 beforeEach(() => {
   process.env.WHATSAPP_APP_SECRET = SECRET;
   process.env.WHATSAPP_VERIFY_TOKEN = 'verify-me';
-  fixtures = {}; dbError = null; updates.length = 0; dbCalls.length = 0; eqs.length = 0; sendEmail.mockClear();
+  fixtures = { bookings: { booking_ref: 'TRK-1', partner_response: null, status: 'confirmed' } }; dbError = null; updates.length = 0; dbCalls.length = 0; eqs.length = 0; sendEmail.mockClear();
 });
 
 describe('GET verification', () => {
@@ -147,7 +153,7 @@ describe('POST /api/whatsapp/webhook', () => {
   });
   it('declined reply emails the admin with escaped text', async () => {
     fixtures.whatsapp_messages = { id: 'm1', booking_id: 'b1', to_phone: '919876543210' };
-    fixtures.bookings = { booking_ref: 'TRK-<1>' };
+    fixtures.bookings = { booking_ref: 'TRK-<1>', status: 'confirmed' };
     await send(replyPayload("Can't do it"));
     expect(updates[0].row).toMatchObject({ partner_response: 'declined' });
     expect(sendEmail).toHaveBeenCalledTimes(1);
@@ -159,7 +165,7 @@ describe('POST /api/whatsapp/webhook', () => {
   });
   it('does not re-email when already declined', async () => {
     fixtures.whatsapp_messages = { id: 'm1', booking_id: 'b1', to_phone: '919876543210' };
-    fixtures.bookings = { booking_ref: 'TRK-1', partner_response: 'declined' };
+    fixtures.bookings = { booking_ref: 'TRK-1', partner_response: 'declined', status: 'confirmed' };
     await send(replyPayload("Can't do it"));
     expect(sendEmail).not.toHaveBeenCalled();
   });
@@ -169,6 +175,30 @@ describe('POST /api/whatsapp/webhook', () => {
       interactive: { button_reply: { id: 'x', title: 'Accept' } }, context: { id: 'wamid.1' } }] }));
     expect(res.status).toBe(200);
     expect(updates[0].row).toMatchObject({ partner_response: 'accepted' });
+  });
+  it('after a reassignment, the new partner declining still emails the admin', async () => {
+    // A declined earlier; the reassignment cleared partner_response, so B's decline is new.
+    fixtures.whatsapp_messages = { id: 'm2', booking_id: 'b1', to_phone: '919876543210', created_at: '2026-10-10T10:00:00Z' };
+    fixtures.bookings = { booking_ref: 'TRK-1', partner_response: null, status: 'confirmed' };
+    await send(replyPayload("Can't do it"));
+    expect(updates[0].row).toMatchObject({ partner_response: 'declined' });
+    expect(sendEmail).toHaveBeenCalledTimes(1);
+  });
+  it('ignores a late reply from a partner the booking was reassigned away from', async () => {
+    fixtures.whatsapp_messages = { id: 'm1', booking_id: 'b1', to_phone: '919876543210', created_at: '2026-10-10T09:00:00Z' };
+    fixtures.laterCancel = { id: 'm3' };
+    await send(replyPayload("Can't do it"));
+    expect(updates).toHaveLength(0);
+    expect(sendEmail).not.toHaveBeenCalled();
+    expect(eqs).toContainEqual({ table: 'whatsapp_messages', col: 'template', val: 'booking_cancelled_partner' });
+    expect(eqs).toContainEqual({ table: 'whatsapp_messages', col: 'to_phone', val: '919876543210' });
+  });
+  it('ignores replies on a cancelled booking and sends no email', async () => {
+    fixtures.whatsapp_messages = { id: 'm1', booking_id: 'b1', to_phone: '919876543210' };
+    fixtures.bookings = { booking_ref: 'TRK-1', partner_response: null, status: 'cancelled' };
+    await send(replyPayload("Can't do it"));
+    expect(updates).toHaveLength(0);
+    expect(sendEmail).not.toHaveBeenCalled();
   });
   it('ignores an unknown context', async () => {
     const res = await send(replyPayload('Accept'));

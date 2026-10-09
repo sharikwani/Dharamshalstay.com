@@ -135,6 +135,11 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
         commission_pct: pct, commission_amount: split.commission_amount, partner_share_amount: split.partner_share_amount,
       };
       if (split.commission_amount === 0 && booking.commission_status !== 'paid') update.commission_status = 'not_applicable';
+      // A new partner has not answered yet; drop the previous partner's Accept / Can't do it.
+      if ((booking.partner_id ?? null) !== (update.partner_id ?? null)) {
+        update.partner_response = null;
+        update.partner_responded_at = null;
+      }
     } else if (body.action === 'payment') {
       const paidOnline = Boolean(booking.stripe_payment_intent) || (booking.payment_status === 'paid' && booking.payment_method === 'online');
       if (paidOnline && (body.choice === 'unpaid' || body.choice === 'partner_collects')) {
