@@ -49,6 +49,11 @@ export async function POST(req: NextRequest) {
     const caller = await getCaller(req);
     const userId = caller?.user.id ?? null;
 
+    // Partner accounts run a business on the site; they can't also book as a customer.
+    if (caller?.profile.role === 'partner') {
+      return NextResponse.json({ error: "You're logged in with a partner account. Partner accounts can't make customer bookings — please log out and book with a personal email." }, { status: 403 });
+    }
+
     // Server-side date validation using IST (matches frontend)
     const today = getTodayIST();
     if (data.check_in && data.check_in < today) {
@@ -72,6 +77,15 @@ export async function POST(req: NextRequest) {
     if (url && key) {
       const { createClient } = await import('@supabase/supabase-js');
       const sb = createClient(url, key);
+
+      // Nor can a partner's email be used as the guest email (admins booking on someone's behalf excepted).
+      if (data.guest_email && caller?.profile.role !== 'admin') {
+        const { data: partnerRows } = await sb.from('profiles').select('id')
+          .eq('email', data.guest_email.trim().toLowerCase()).eq('role', 'partner').limit(1);
+        if (partnerRows?.length) {
+          return NextResponse.json({ error: 'This email belongs to a partner account and can\'t be used for customer bookings. Please use a different email.' }, { status: 400 });
+        }
+      }
 
       // Price comes from the database row, never from the browser.
       const TABLE = { hotel: 'properties', taxi: 'taxi_routes', trek: 'treks', paragliding: 'paragliding_packages' } as const;

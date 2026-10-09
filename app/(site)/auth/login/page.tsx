@@ -16,17 +16,23 @@ export default function UserLoginPage() {
   const [resendState, setResendState] = useState<'idle' | 'sending' | 'sent'>('idle');
   const [resendError, setResendError] = useState('');
 
+  // Partners share this login with customers but belong in the partner portal.
+  async function goHome(userId: string) {
+    const { data: prof } = await supabase.from('profiles').select('role').eq('id', userId).single();
+    router.replace(prof?.role === 'partner' ? '/partner/dashboard' : '/account');
+  }
+
   // Arriving from the confirmation link signs the user in; send them on.
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) router.replace('/account');
+      if (data.session) goHome(data.session.user.id);
     });
-  }, [router]);
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true); setError('');
-    const { error: err } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+    const { data, error: err } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     if (err) {
       // Supabase only reports this after the password has been checked,
       // so the credentials are right — the email just needs confirming.
@@ -37,7 +43,7 @@ export default function UserLoginPage() {
       }
       setLoading(false); return;
     }
-    router.push('/account');
+    await goHome(data.user.id);
   }
 
   async function resendConfirmation() {
