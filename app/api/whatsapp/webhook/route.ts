@@ -5,6 +5,7 @@ import { parseWebhook, replyAction, STATUS_RANK } from '@/lib/whatsapp-webhook';
 import { sendEmail, adminEmail } from '@/lib/email';
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
 const esc = (s: unknown) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
 const digits = (s: string) => String(s || '').replace(/\D/g, '');
@@ -29,6 +30,7 @@ async function handleStatus(sb: Sb, s: { id: string; status: string; error?: str
   const { data: row, error } = await sb.from('whatsapp_messages').select('id, status').eq('wa_message_id', s.id).maybeSingle();
   if (error) { console.error('WhatsApp webhook: status lookup failed', error); return; }
   if (!row) return;
+  if (row.status === 'failed' && s.status !== 'failed') return; // failed is terminal
   if (s.status !== 'failed' && (STATUS_RANK[s.status] ?? -1) <= (STATUS_RANK[row.status] ?? -1)) return;
   const patch: Record<string, unknown> = { status: s.status, updated_at: new Date().toISOString() };
   if (s.status === 'failed') patch.error = s.error || 'Delivery failed';
@@ -42,13 +44,13 @@ async function handleReply(sb: Sb, r: { contextId: string; from: string; text: s
   const { data: msg, error } = await sb.from('whatsapp_messages').select('id, booking_id, to_phone').eq('wa_message_id', r.contextId).maybeSingle();
   if (error) { console.error('WhatsApp webhook: reply lookup failed', error); return; }
   if (!msg?.booking_id || !samePhone(r.from, msg.to_phone)) return;
+  const { data: booking, error: bErr } = await sb.from('bookings').select('booking_ref, partner_response').eq('id', msg.booking_id).maybeSingle();
+  if (bErr) console.error('WhatsApp webhook: booking lookup failed', bErr);
   const { error: upErr } = await sb.from('bookings')
     .update({ partner_response: action, partner_responded_at: new Date().toISOString() })
     .eq('id', msg.booking_id);
   if (upErr) { console.error('WhatsApp webhook: booking update failed', upErr); return; }
-  if (action !== 'declined') return;
-  const { data: booking, error: bErr } = await sb.from('bookings').select('booking_ref').eq('id', msg.booking_id).maybeSingle();
-  if (bErr) console.error('WhatsApp webhook: booking lookup failed', bErr);
+  if (action !== 'declined' || booking?.partner_response === 'declined') return;
   const ref = booking?.booking_ref || msg.booking_id;
   await sendEmail({
     to: adminEmail(),

@@ -5,13 +5,14 @@ let fixtures: Record<string, any> = {};
 let dbError: any = null;
 const updates: any[] = [];
 const dbCalls: string[] = [];
+const eqs: { table: string; col: string; val: unknown }[] = [];
 const sendEmail = vi.fn(async (..._a: unknown[]) => {});
 
 function builder(table: string) {
   dbCalls.push(table);
   const b: any = {
-    select: () => b, eq: () => b,
-    update: (row: any) => { updates.push({ table, row }); return { eq: async () => ({ error: dbError }) }; },
+    select: () => b, eq: (col: string, val: unknown) => { eqs.push({ table, col, val }); return b; },
+    update: (row: any) => { updates.push({ table, row }); return { eq: async (col: string, val: unknown) => { eqs.push({ table, col, val }); return { error: dbError }; } }; },
     maybeSingle: async () => ({ data: fixtures[table] ?? null, error: null }),
   };
   return b;
@@ -42,7 +43,7 @@ const replyPayload = (title: string, from = '919876543210', ctx = 'wamid.1') =>
 beforeEach(() => {
   process.env.WHATSAPP_APP_SECRET = SECRET;
   process.env.WHATSAPP_VERIFY_TOKEN = 'verify-me';
-  fixtures = {}; dbError = null; updates.length = 0; dbCalls.length = 0; sendEmail.mockClear();
+  fixtures = {}; dbError = null; updates.length = 0; dbCalls.length = 0; eqs.length = 0; sendEmail.mockClear();
 });
 
 describe('GET verification', () => {
@@ -79,6 +80,7 @@ describe('parse helpers', () => {
     expect(replyAction("Can't do it")).toBe('declined');
     expect(replyAction('cant do it')).toBe('declined');
     expect(replyAction('Cannot')).toBe('declined');
+    expect(replyAction("Accept? can't do it")).toBe('declined');
     expect(replyAction('hello')).toBeNull();
   });
   it('tolerates garbage', () => {
@@ -104,6 +106,12 @@ describe('POST /api/whatsapp/webhook', () => {
     expect(updates[0].table).toBe('whatsapp_messages');
     expect(updates[0].row).toMatchObject({ status: 'delivered' });
     expect(updates[0].row.updated_at).toBeTruthy();
+    expect(eqs).toContainEqual({ table: 'whatsapp_messages', col: 'wa_message_id', val: 'wamid.1' });
+  });
+  it('failed is terminal: a later delivered does not overwrite it', async () => {
+    fixtures.whatsapp_messages = { id: 'm1', status: 'failed' };
+    await send(statusPayload('delivered'));
+    expect(updates).toHaveLength(0);
   });
   it('never moves a status backwards', async () => {
     fixtures.whatsapp_messages = { id: 'm1', status: 'read' };
@@ -128,6 +136,8 @@ describe('POST /api/whatsapp/webhook', () => {
     expect(updates[0].table).toBe('bookings');
     expect(updates[0].row).toMatchObject({ partner_response: 'accepted' });
     expect(updates[0].row.partner_responded_at).toBeTruthy();
+    expect(eqs).toContainEqual({ table: 'bookings', col: 'id', val: 'b1' });
+    expect(eqs).toContainEqual({ table: 'whatsapp_messages', col: 'wa_message_id', val: 'wamid.1' });
     expect(sendEmail).not.toHaveBeenCalled();
   });
   it('declined reply emails the admin with escaped text', async () => {
@@ -141,6 +151,19 @@ describe('POST /api/whatsapp/webhook', () => {
     expect(msg.subject).toBe("Partner can't do booking TRK-<1>");
     expect(msg.html).toContain('TRK-&lt;1&gt;');
     expect(msg.html).not.toContain('TRK-<1>');
+  });
+  it('does not re-email when already declined', async () => {
+    fixtures.whatsapp_messages = { id: 'm1', booking_id: 'b1', to_phone: '919876543210' };
+    fixtures.bookings = { booking_ref: 'TRK-1', partner_response: 'declined' };
+    await send(replyPayload("Can't do it"));
+    expect(sendEmail).not.toHaveBeenCalled();
+  });
+  it('handles an interactive button_reply end to end', async () => {
+    fixtures.whatsapp_messages = { id: 'm1', booking_id: 'b1', to_phone: '919876543210' };
+    const res = await send(wrap({ messages: [{ from: '919876543210', type: 'interactive',
+      interactive: { button_reply: { id: 'x', title: 'Accept' } }, context: { id: 'wamid.1' } }] }));
+    expect(res.status).toBe(200);
+    expect(updates[0].row).toMatchObject({ partner_response: 'accepted' });
   });
   it('ignores an unknown context', async () => {
     const res = await send(replyPayload('Accept'));

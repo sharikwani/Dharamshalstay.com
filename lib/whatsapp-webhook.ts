@@ -34,9 +34,12 @@ export function parseWebhook(payload: any): ParsedWebhook {
 }
 
 export function replyAction(text: string): 'accepted' | 'declined' | null {
-  const t = String(text || '').toLowerCase().replace(/[‘’]/g, "'");
-  if (t.includes('accept')) return 'accepted';
+  const t = String(text || '').toLowerCase().replace(/[‘’]/g, "'").replace(/[^a-z' ]/g, ' ').replace(/s+/g, ' ').trim();
+  if (t === "can't do it" || t === 'cant do it' || t === 'cannot do it') return 'declined';
+  if (t === 'accept') return 'accepted';
+  // Fallback for slightly different wording: decline phrases take priority over accept.
   if (/can'?t do it|cannot/.test(t)) return 'declined';
+  if (t.includes('accept')) return 'accepted';
   return null;
 }
 
