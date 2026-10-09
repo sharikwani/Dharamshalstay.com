@@ -17,7 +17,7 @@ export const treks: Trek[] = [
       { question: 'Is Triund safe for beginners?', answer: 'Yes, considered beginner-friendly though moderately strenuous. Well-marked trail, guides available.' },
       { question: 'Do I need a permit?', answer: 'Yes. The Forest Department charges an entry fee (Rs.100 per person per day as of the 2024 revision) and camping is about Rs.550 per two-person tent including entry; overnight numbers are capped. Fees change, so check locally -- we handle this when you book through us.' },
     ],
-    status: 'published', meta_title: 'Triund Trek: Route, Day-Trek Options & Booking Details', meta_description: 'Book the Triund Trek. Complete guide with itinerary, fees & camping info. Guided treks from ₹1,500/person.',
+    status: 'published', meta_title: 'Triund Trek: Route, Day-Trek Options & Booking Details', meta_description: 'Book a guided Triund trek from ₹1,500/person: route from Gallu Devi or McLeod Ganj, itinerary, inclusions, forest permits and overnight camping with tent, meals and guide.',
     created_at: '2024-01-01', updated_at: '2025-03-01',
   },
   {
