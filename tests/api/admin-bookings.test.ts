@@ -10,6 +10,9 @@ const recordOps: any[] = [];
 const sendManualBookingEmails = vi.fn(async (..._a: unknown[]) => {});
 const sendCancellationEmails = vi.fn(async (..._a: unknown[]) => {});
 const sendReassignedAwayEmail = vi.fn(async (..._a: unknown[]) => {});
+const whatsappNewBooking = vi.fn(async (..._a: unknown[]) => {});
+const whatsappCancelled = vi.fn(async (..._a: unknown[]) => {});
+const whatsappReassignedAway = vi.fn(async (..._a: unknown[]) => {});
 const loadBookingView = vi.fn(async (id: string) => ({ id, item_name: 'x' }));
 
 function builder(table: string) {
@@ -58,6 +61,12 @@ vi.mock('@/lib/manual-booking-emails', () => ({
   loadBookingView: (id: string) => loadBookingView(id),
 }));
 
+vi.mock('@/lib/booking-whatsapp', () => ({
+  whatsappNewBooking: (...a: unknown[]) => whatsappNewBooking(...a),
+  whatsappCancelled: (...a: unknown[]) => whatsappCancelled(...a),
+  whatsappReassignedAway: (...a: unknown[]) => whatsappReassignedAway(...a),
+}));
+
 import { POST } from '@/app/api/admin/bookings/route';
 import { GET, PATCH } from '@/app/api/admin/bookings/[id]/route';
 
@@ -72,6 +81,7 @@ const post = (body: unknown) => POST(new Request('http://x', { method: 'POST', b
 beforeEach(() => {
   role = 'admin'; insertError = null; updateError = null; inserts.length = 0; updates.length = 0; recordOps.length = 0;
   sendManualBookingEmails.mockClear(); sendCancellationEmails.mockClear(); sendReassignedAwayEmail.mockClear();
+  whatsappNewBooking.mockClear(); whatsappCancelled.mockClear(); whatsappReassignedAway.mockClear();
   fixtures = {
     treks: { id: 't1', status: 'published', price_per_person: 1500, commission_pct: null },
     profiles: { id: 'p1', role: 'partner', partner_type: 'trek', partner_status: 'verified', commission_pct: 20 },
@@ -97,6 +107,16 @@ describe('POST /api/admin/bookings', () => {
       collected_by: 'partner',
     });
     expect(sendManualBookingEmails).toHaveBeenCalledWith('b1', { customer: true, partner: true });
+  });
+
+  it('passes notify_partner to the WhatsApp alert so partners are not alerted when it is off', async () => {
+    await post({ ...base, notify_partner: false, notify_customer_whatsapp: true });
+    expect(whatsappNewBooking).toHaveBeenCalledWith('b1', { customer: true, partners: false });
+    whatsappNewBooking.mockClear();
+    await post({ ...base, notify_partner: false });
+    expect(whatsappNewBooking).not.toHaveBeenCalled();
+    await post(base);
+    expect(whatsappNewBooking).toHaveBeenCalledWith('b1', { customer: false, partners: true });
   });
 
   it('records a price override', async () => {

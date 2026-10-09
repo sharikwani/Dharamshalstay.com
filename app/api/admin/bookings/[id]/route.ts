@@ -176,7 +176,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
       if (body.action === 'assign' && body.notify) {
         await sendManualBookingEmails(id, { customer: false, partner: true, subjectPrefix: 'Updated: ' });
         if (booking.partner_id && booking.partner_id !== update.partner_id) await sendReassignedAwayEmail(id, booking.partner_id);
-        await whatsappNewBooking(id, { customer: false });
+        await whatsappNewBooking(id, { customer: false, partners: true });
         if (booking.partner_id && booking.partner_id !== update.partner_id) await whatsappReassignedAway(id, booking.partner_id);
       }
       if (body.action === 'payment' && body.notify) await sendManualBookingEmails(id, { customer: true, partner: false, subjectPrefix: 'Updated: ' });

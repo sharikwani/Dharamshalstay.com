@@ -101,6 +101,19 @@ describe('notifiers', () => {
     expect(h.sendTemplate).toHaveBeenCalledWith({ to: '919816000001', template: 'booking_confirmed_customer', params: customerParams(view) });
     expect(logged()[0]).toMatchObject({ recipient_kind: 'customer', status: 'sent', wa_message_id: 'wamid.c' });
   });
+  it('skips partner/staff/hotel/guide alerts when partners is false but still sends the customer message', async () => {
+    h.tables = { profiles: partnerRow };
+    h.sendTemplate.mockResolvedValue({ ok: true, id: 'wamid.c' });
+    await whatsappNewBooking('b1', { customer: true, partners: false });
+    expect(h.sendTemplate).toHaveBeenCalledTimes(1);
+    expect(h.sendTemplate).toHaveBeenCalledWith(expect.objectContaining({ to: '919816000001', template: 'booking_confirmed_customer' }));
+  });
+  it('alerts partners by default', async () => {
+    h.tables = { profiles: partnerRow };
+    h.sendTemplate.mockResolvedValue({ ok: true, id: 'wamid.p' });
+    await whatsappNewBooking('b1', { customer: false });
+    expect(h.sendTemplate).toHaveBeenCalledWith(expect.objectContaining({ to: '919816000002', template: 'booking_new_partner' }));
+  });
   it('does nothing and logs nothing when not configured', async () => {
     h.configured.mockReturnValue(false);
     h.tables = { profiles: partnerRow };

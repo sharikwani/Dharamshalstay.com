@@ -168,7 +168,9 @@ export async function POST(req: Request) {
     // Emails never block the save
     try {
       await sendManualBookingEmails(saved.id, { customer: body.notify_customer && !!row.guest_email, partner: body.notify_partner });
-      if (body.notify_partner || body.notify_customer_whatsapp) await whatsappNewBooking(saved.id, { customer: body.notify_customer_whatsapp === true });
+      if (body.notify_partner || body.notify_customer_whatsapp) {
+        await whatsappNewBooking(saved.id, { customer: body.notify_customer_whatsapp === true, partners: body.notify_partner });
+      }
     } catch (e) { console.error('Manual booking emails failed:', e); }
 
     return NextResponse.json({ id: saved.id, booking_ref: saved.booking_ref });

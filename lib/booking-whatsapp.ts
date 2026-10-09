@@ -96,8 +96,11 @@ async function sendAll(bookingId: string, recipients: Recipient[], template: str
   await Promise.allSettled(recipients.map((r) => sendAndLog(bookingId, r.kind, r.phone, template, params)));
 }
 
-/** New-booking alert to partner/staff/hotel/guide, optionally a confirmation to the customer. Never throws. */
-export async function whatsappNewBooking(bookingId: string, opts: { customer: boolean }): Promise<void> {
+/**
+ * New-booking alert to partner/staff/hotel/guide (unless `partners` is false), optionally a
+ * confirmation to the customer. Never throws.
+ */
+export async function whatsappNewBooking(bookingId: string, opts: { customer: boolean; partners?: boolean }): Promise<void> {
   try {
     if (!isWhatsAppConfigured()) return;
     const v = await loadBookingView(bookingId);
@@ -105,7 +108,7 @@ export async function whatsappNewBooking(bookingId: string, opts: { customer: bo
     const params = newBookingParams(v);
     const customerTo = opts.customer ? normalizeIndianPhone(v.guest_phone) : null;
     await Promise.allSettled([
-      sendAll(bookingId, await loadRecipients(v), 'booking_new_partner', params),
+      opts.partners === false ? null : sendAll(bookingId, await loadRecipients(v), 'booking_new_partner', params),
       customerTo ? sendAndLog(bookingId, 'customer', customerTo, 'booking_confirmed_customer', customerParams(v)) : null,
     ]);
   } catch (e) { console.error('WhatsApp new booking alert failed:', e); }
