@@ -162,7 +162,10 @@ export default function AdminBookings() {
                 {b.status === 'confirmed' && (
                   <button onClick={() => updateBookingStatus(b.id, 'completed')} className="text-xs px-3 py-1.5 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700">Complete</button>
                 )}
-                {['pending', 'confirmed'].includes(b.status) && (
+                {['pending', 'confirmed'].includes(b.status) && b.booking_source === 'admin' && (
+                  <Link href={`/admin/bookings/${b.id}`} className="text-xs px-3 py-1.5 border border-slate-300 text-slate-700 rounded-lg font-medium hover:bg-slate-50">Open</Link>
+                )}
+                {['pending', 'confirmed'].includes(b.status) && b.booking_source !== 'admin' && (
                   <button onClick={() => updateBookingStatus(b.id, 'cancelled')} className="text-xs px-3 py-1.5 border border-red-300 text-red-600 rounded-lg font-medium hover:bg-red-50 flex items-center gap-1"><X className="h-3 w-3" /> Cancel</button>
                 )}
                 {['pending', 'due', 'overdue'].includes(b.commission_status) && b.commission_amount > 0 && (
