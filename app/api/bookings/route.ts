@@ -31,7 +31,7 @@ const schema = z.object({
   vehicle_type: z.string().optional(),
   plan_index: z.number().int().min(0).max(50).optional().nullable(),
   payment_method: z.enum(['online', 'offline', 'pay_at_hotel', 'partial_online']).default('offline'),
-  booking_source: z.enum(['website', 'whatsapp', 'phone', 'walkin', 'admin']).default('website'),
+  booking_source: z.enum(['website', 'whatsapp', 'phone', 'walkin']).default('website'),
   room_name: z.string().optional(),
   plan_name: z.string().max(200).optional(),
 });

@@ -10,7 +10,7 @@ export type BookingView = Record<string, any> & {
   date_text: string;
   assignee_text: string | null;
   payment_text: string;
-  effective_collector: 'partner' | 'platform';
+  effective_collector: 'partner' | 'platform' | null;
   partner_contact: { name: string; email: string | null; phone: string | null } | null;
 };
 
@@ -52,7 +52,7 @@ function buildView(b: Record<string, any>, r: Related): BookingView {
 
   const effective_collector = effectiveCollector(b);
   const payment_text = effective_collector === 'platform' ? 'Paid to Dharamshala Stay'
-    : b.collected_by === 'partner' || b.booking_source !== 'admin' ? 'Customer pays the partner directly' : 'Payment pending';
+    : effective_collector === 'partner' ? 'Customer pays the partner directly' : 'Payment pending';
 
   let partner_contact: BookingView['partner_contact'] = null;
   if (b.category === 'hotel' && property) partner_contact = { name: property.name, email: property.contact_email || null, phone: property.contact_phone || null };
@@ -123,7 +123,7 @@ export async function sendManualBookingEmails(
   const prefix = opts.subjectPrefix || '';
 
   if (opts.customer && v.guest_email) {
-    const payment = v.effective_collector === 'partner' && v.payment_status !== 'paid' ? 'Pay at the time of service' : v.payment_text;
+    const payment = v.effective_collector === 'partner' ? 'Pay at the time of service' : v.payment_text;
     const html = wrap('Your booking is confirmed', `<p>Hi ${esc(v.guest_name)},</p><p>Thank you for booking with Dharamshala Stay.</p><table>${[
       row('Booking reference', v.booking_ref), row('Booking', v.item_name), row('When', v.date_text),
       row('People', v.num_guests), row(v.category === 'taxi' ? 'Your driver' : v.category === 'paragliding' ? 'Your pilot' : 'Your guide', v.assignee_text), row('Price', rupees(v.amount)), row('Payment', payment),
@@ -135,12 +135,13 @@ export async function sendManualBookingEmails(
   if (opts.partner && v.partner_contact?.email) {
     const money = v.effective_collector === 'platform'
       ? `Your share: ${rupees(v.partner_share_amount)} (we will pay you)`
-      : `Commission due to Dharamshala Stay: ${rupees(v.commission_amount)}`;
+      : v.effective_collector === 'partner' ? `Commission due to Dharamshala Stay: ${rupees(v.commission_amount)}`
+      : null;
     const html = wrap('New booking from Dharamshala Stay', `<p>Hi ${esc(v.partner_contact.name)},</p><table>${[
       row('Booking reference', v.booking_ref), row('Customer', v.guest_name), row('Phone', v.guest_phone), row('Email', v.guest_email),
       row('Booking', v.item_name), row('When', v.date_text), row('People', v.num_guests), row('Assigned', v.assignee_text),
       row('Price', rupees(v.amount)), row('Payment', v.effective_collector === 'partner' ? 'Customer pays you directly' : v.payment_text),
-    ].join('')}</table><p><b>${esc(money)}</b></p>${v.special_requests ? `<p>Notes: ${esc(v.special_requests)}</p>` : ''}`);
+    ].join('')}</table>${money ? `<p><b>${esc(money)}</b></p>` : ''}${v.special_requests ? `<p>Notes: ${esc(v.special_requests)}</p>` : ''}`);
     try { await sendEmail({ to: v.partner_contact.email, subject: `${prefix}New booking from Dharamshala Stay – ${v.booking_ref}`, html }); }
     catch (e) { console.error('Partner booking email failed:', e); }
   }

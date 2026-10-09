@@ -60,7 +60,14 @@ describe('effectiveCollector', () => {
   it('treats paid or online website bookings as platform-collected', () => {
     expect(effectiveCollector({ collected_by: null, payment_status: 'paid', payment_method: 'online' })).toBe('platform');
     expect(effectiveCollector({ collected_by: null, payment_status: 'partially_paid' })).toBe('platform');
-    expect(effectiveCollector({ payment_method: 'online', payment_status: 'pending' })).toBe('platform');
+    expect(effectiveCollector({ payment_method: 'online', payment_status: 'pending', stripe_payment_intent: 'pi_1' })).toBe('platform');
+    expect(effectiveCollector({ payment_status: 'paid', booking_source: 'admin' })).toBe('platform');
+  });
+  it('is null for an unpaid admin booking', () => {
+    expect(effectiveCollector({ collected_by: null, payment_status: 'pending', booking_source: 'admin' })).toBeNull();
+  });
+  it('is null for a website booking whose online checkout is not finished', () => {
+    expect(effectiveCollector({ payment_method: 'online', payment_status: 'pending', booking_source: 'website' })).toBeNull();
   });
   it('defaults other website bookings to partner-collected', () => {
     expect(effectiveCollector({ collected_by: null, payment_status: 'pending', payment_method: 'pay_at_hotel' })).toBe('partner');

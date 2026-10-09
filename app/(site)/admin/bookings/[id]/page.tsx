@@ -53,9 +53,9 @@ export default function BookingDetailPage() {
     setError(''); setReason(''); setPanel(p);
     if (p === 'payment') {
       setNotify(true);
-      // Website bookings have no collected_by; if they were paid online they must not be shown as unpaid
+      // Website bookings have no collected_by; only treat as paid to us once payment is confirmed (online + pending is not paid)
       const paidToUs = b.collected_by === 'platform'
-        || (!b.collected_by && (['paid', 'partially_paid'].includes(b.payment_status) || b.payment_method === 'online'));
+        || (!b.collected_by && (['paid', 'partially_paid'].includes(b.payment_status) || Boolean(b.stripe_payment_intent)));
       setPayment({
         ...EMPTY_PAYMENT,
         choice: paidToUs ? 'platform_paid' : b.collected_by === 'partner' ? 'partner_collects' : 'unpaid',

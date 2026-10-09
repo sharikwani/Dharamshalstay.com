@@ -32,8 +32,9 @@ vi.mock('@/lib/server-auth', async (orig) => {
     },
   };
 });
+import { effectiveCollector } from '@/lib/manual-booking';
 vi.mock('@/lib/manual-booking-emails', () => ({
-  toBookingViews: async (rows: any[]) => { if (viewsThrow) throw new Error('lookup failed'); return rows.map((r) => ({ ...r, item_name: 'Trek', date_text: 'd', assignee_text: null, payment_text: 'p', partner_contact: null })); },
+  toBookingViews: async (rows: any[]) => { if (viewsThrow) throw new Error('lookup failed'); return rows.map((r) => ({ ...r, effective_collector: effectiveCollector(r), item_name: 'Trek', date_text: 'd', assignee_text: null, payment_text: 'p', partner_contact: null })); },
 }));
 
 import { GET } from '@/app/api/partner/bookings/route';
@@ -80,6 +81,12 @@ describe('GET /api/partner/bookings', () => {
     for (const k of ['commission_pct', 'created_by', 'list_amount', 'price_override_reason']) expect(bookings[0]).not.toHaveProperty(k);
     expect(bookings[0].commission_amount).toBe(20);
     expect(bookings[0].partner_share_amount).toBe(80);
+  });
+
+  it('returns collected_by null for an unpaid admin booking', async () => {
+    bookingRows = [{ id: 'b3', status: 'pending', booking_source: 'admin', payment_status: 'pending', collected_by: null, amount: 100, commission_amount: 20 }];
+    const { bookings } = await (await get()).json();
+    expect(bookings[0].collected_by).toBeNull();
   });
 
   it('returns 500 when the bookings query fails', async () => {

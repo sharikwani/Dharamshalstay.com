@@ -51,7 +51,7 @@ async function syncCommissionRecords(sb: ReturnType<typeof serviceClient>, booki
       const next = (update.commission_status ?? booking.commission_status) as string;
       const merged = { ...booking, ...update };
       if (next === 'not_applicable') {
-        const { error } = await sb.from('commission_records').delete().eq('booking_id', id).in('status', ['pending', 'due']);
+        const { error } = await sb.from('commission_records').delete().eq('booking_id', id).in('status', OPEN_RECORD);
         if (error) console.error('Commission record delete failed:', error);
       } else if (next === 'pending' && Number(merged.commission_amount) > 0) {
         const { data: existing, error: findError } = await sb.from('commission_records').select('id').eq('booking_id', id).limit(1).maybeSingle();
@@ -127,6 +127,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
         partner_id: partner?.id ?? null, staff_id: staff?.id ?? null, vehicle_id: vehicle?.id ?? null,
         commission_pct: pct, commission_amount: split.commission_amount, partner_share_amount: split.partner_share_amount,
       };
+      if (split.commission_amount === 0 && booking.commission_status !== 'paid') update.commission_status = 'not_applicable';
     } else if (body.action === 'payment') {
       const paidOnline = Boolean(booking.stripe_payment_intent) || (booking.payment_status === 'paid' && booking.payment_method === 'online');
       if (paidOnline && (body.choice === 'unpaid' || body.choice === 'partner_collects')) {
@@ -135,7 +136,12 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
       // Website bookings may have no commission/share saved yet; fill both so partners see the right money
       const fill: Record<string, unknown> = {};
       if (booking.commission_amount == null || booking.partner_share_amount == null) {
-        const pct = Math.min(99.99, booking.commission_pct != null ? Number(booking.commission_pct) : commissionRateFor(booking.category, {}));
+        let propertyPct: number | null = null;
+        if (booking.category === 'hotel' && booking.property_id) {
+          const { data: prop } = await sb.from('properties').select('commission_pct').eq('id', booking.property_id).maybeSingle();
+          propertyPct = prop?.commission_pct != null ? Number(prop.commission_pct) : null;
+        }
+        const pct = Math.min(99.99, booking.commission_pct != null ? Number(booking.commission_pct) : commissionRateFor(booking.category, { propertyPct }));
         Object.assign(fill, splitAmount(Number(booking.amount), pct));
         if (booking.commission_pct == null) fill.commission_pct = pct;
       }
