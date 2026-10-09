@@ -12,6 +12,7 @@ export default function PartnerDashboard() {
   const [properties, setProperties] = useState<any[]>([]);
   const [bookings, setBookings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [partnerType, setPartnerType] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'properties' | 'bookings' | 'commission'>('properties');
 
   useEffect(() => {
@@ -20,6 +21,7 @@ export default function PartnerDashboard() {
       if (!user) { router.push('/partner/login'); return; }
       setUser(user);
       const { data: me } = await supabase.from('profiles').select('partner_type, partner_status').eq('id', user.id).single();
+      setPartnerType(me?.partner_type ?? null);
       if (me && me.partner_type && me.partner_type !== 'hotel' && me.partner_status !== 'verified') {
         router.push('/partner/onboarding'); return;
       }
@@ -58,9 +60,14 @@ export default function PartnerDashboard() {
           <p className="text-slate-600 text-sm">Welcome, {user?.user_metadata?.full_name || user?.email}</p>
         </div>
         <div className="flex items-center gap-3">
-          <Link href="/partner/properties/new" className="flex items-center gap-2 bg-brand-600 text-white px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-brand-700">
-            <Plus className="h-4 w-4" /> Add Property
+          <Link href="/partner/bookings" className="flex items-center gap-2 border border-brand-200 text-brand-700 px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-brand-50">
+            <ShoppingBag className="h-4 w-4" /> Bookings
           </Link>
+          {(!partnerType || partnerType === 'hotel') && (
+            <Link href="/partner/properties/new" className="flex items-center gap-2 bg-brand-600 text-white px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-brand-700">
+              <Plus className="h-4 w-4" /> Add Property
+            </Link>
+          )}
           <button onClick={handleLogout} className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-red-600"><LogOut className="h-4 w-4" /> Logout</button>
         </div>
       </div>

@@ -22,22 +22,14 @@ async function one(table: string, id: string | null | undefined, cols: string): 
   return (data as any) ?? null;
 }
 
-export async function loadBookingView(bookingId: string): Promise<BookingView | null> {
-  const { data: b, error } = await serviceClient().from('bookings').select('*').eq('id', bookingId).maybeSingle();
-  if (error) { console.error('Could not load booking for email:', error); return null; }
-  if (!b) return null;
+type Related = {
+  property: Record<string, any> | null; route: Record<string, any> | null; trek: Record<string, any> | null;
+  pkg: Record<string, any> | null; guide: Record<string, any> | null; partner: Record<string, any> | null;
+  staff: Record<string, any> | null; vehicle: Record<string, any> | null;
+};
 
-  const [property, route, trek, pkg, guide, partner, staff, vehicle] = await Promise.all([
-    one('properties', b.property_id, 'name, contact_email, contact_phone'),
-    one('taxi_routes', b.taxi_route_id, 'from_location, to_location'),
-    one('treks', b.trek_id, 'name'),
-    one('paragliding_packages', b.paragliding_id, 'name'),
-    one('guides', b.guide_id, 'name, email, phone'),
-    one('profiles', b.partner_id, 'legal_name, business_name, full_name, email, phone'),
-    one('partner_staff', b.staff_id, 'full_name, phone'),
-    one('vehicles', b.vehicle_id, 'registration_no'),
-  ]);
-
+function buildView(b: Record<string, any>, r: Related): BookingView {
+  const { property, route, trek, pkg, guide, partner, staff, vehicle } = r;
   let item_name = '';
   if (b.category === 'hotel') item_name = (property?.name || 'Hotel') + (b.room_name ? ` · ${b.room_name}` : '');
   else if (b.category === 'taxi') item_name = route ? `${route.from_location} → ${route.to_location}` : `${b.pickup_location || ''} → ${b.drop_location || ''}`;
@@ -65,6 +57,55 @@ export async function loadBookingView(bookingId: string): Promise<BookingView | 
   else if (partner) partner_contact = { name: partner.legal_name || partner.business_name || partner.full_name, email: partner.email || null, phone: partner.phone || null };
 
   return { ...b, item_name, date_text, assignee_text, payment_text, partner_contact };
+}
+
+export async function loadBookingView(bookingId: string): Promise<BookingView | null> {
+  const { data: b, error } = await serviceClient().from('bookings').select('*').eq('id', bookingId).maybeSingle();
+  if (error) { console.error('Could not load booking for email:', error); return null; }
+  if (!b) return null;
+
+  const [property, route, trek, pkg, guide, partner, staff, vehicle] = await Promise.all([
+    one('properties', b.property_id, 'name, contact_email, contact_phone'),
+    one('taxi_routes', b.taxi_route_id, 'from_location, to_location'),
+    one('treks', b.trek_id, 'name'),
+    one('paragliding_packages', b.paragliding_id, 'name'),
+    one('guides', b.guide_id, 'name, email, phone'),
+    one('profiles', b.partner_id, 'legal_name, business_name, full_name, email, phone'),
+    one('partner_staff', b.staff_id, 'full_name, phone'),
+    one('vehicles', b.vehicle_id, 'registration_no'),
+  ]);
+  return buildView(b, { property, route, trek, pkg, guide, partner, staff, vehicle });
+}
+
+/** Build views for many bookings with one batched lookup per related table. Throws on a query error. */
+export async function toBookingViews(rows: Record<string, any>[]): Promise<BookingView[]> {
+  if (!rows.length) return [];
+  const ids = (key: string) => Array.from(new Set(rows.map((r) => r[key]).filter(Boolean))) as string[];
+  const load = async (table: string, key: string, cols: string) => {
+    const wanted = ids(key);
+    const map = new Map<string, Record<string, any>>();
+    if (!wanted.length) return map;
+    const { data, error } = await serviceClient().from(table).select('id, ' + cols).in('id', wanted);
+    if (error) throw new Error(`Could not load ${table}: ${error.message}`);
+    for (const d of (data as any[]) || []) map.set(d.id, d);
+    return map;
+  };
+  const [properties, routes, treks, pkgs, guides, partners, staff, vehicles] = await Promise.all([
+    load('properties', 'property_id', 'name, contact_email, contact_phone'),
+    load('taxi_routes', 'taxi_route_id', 'from_location, to_location'),
+    load('treks', 'trek_id', 'name'),
+    load('paragliding_packages', 'paragliding_id', 'name'),
+    load('guides', 'guide_id', 'name, email, phone'),
+    load('profiles', 'partner_id', 'legal_name, business_name, full_name, email, phone'),
+    load('partner_staff', 'staff_id', 'full_name, phone'),
+    load('vehicles', 'vehicle_id', 'registration_no'),
+  ]);
+  return rows.map((b) => buildView(b, {
+    property: properties.get(b.property_id) ?? null, route: routes.get(b.taxi_route_id) ?? null,
+    trek: treks.get(b.trek_id) ?? null, pkg: pkgs.get(b.paragliding_id) ?? null,
+    guide: guides.get(b.guide_id) ?? null, partner: partners.get(b.partner_id) ?? null,
+    staff: staff.get(b.staff_id) ?? null, vehicle: vehicles.get(b.vehicle_id) ?? null,
+  }));
 }
 
 const rupees = (n: unknown) => `Rs.${Number(n || 0).toLocaleString('en-IN')}`;
