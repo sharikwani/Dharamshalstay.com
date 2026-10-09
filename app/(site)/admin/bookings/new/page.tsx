@@ -6,6 +6,7 @@ import { authFetch } from '@/lib/supabase';
 import { AdminPageHeader } from '@/components/admin/AdminShell';
 import { AssignFields, EMPTY_ASSIGN, EMPTY_PAYMENT, INPUT, LABEL, PaymentFields, paymentBody, type AssignValue, type OptionPartner, type PaymentValue } from '@/components/admin/BookingFields';
 import { quoteBooking, nightsBetween, type BookingCategory } from '@/lib/pricing';
+import { VEHICLE_TYPES } from '@/lib/partners/types';
 import { commissionRateFor, splitAmount, type ActivityCategory } from '@/lib/manual-booking';
 import { formatPrice, cn } from '@/lib/utils';
 
@@ -16,7 +17,8 @@ const TYPES: { key: BookingCategory; label: string; icon: any }[] = [
   { key: 'paragliding', label: 'Paragliding', icon: Wind },
   { key: 'guide', label: 'Local guide', icon: User },
 ];
-const VEHICLES = ['Hatchback', 'Sedan', 'SUV', 'Tempo Traveller', 'Other'];
+const VEHICLE_LABEL: Record<string, string> = { sedan: 'Sedan', suv: 'SUV', innova: 'Innova', tempo: 'Tempo Traveller', bus: 'Bus' };
+const MAX_AMOUNT = 10_000_000;
 const CARD = 'bg-white border border-slate-200 rounded-xl p-5 mb-5';
 const H2 = 'font-semibold text-slate-900 mb-3';
 
@@ -103,6 +105,8 @@ export default function NewBookingPage() {
     return q > 0 ? q : null;
   }, [type, item, guestsN, checkIn, checkOut, roomName, planIdx, daysN]);
 
+  useEffect(() => { setEdited(false); }, [itemId, roomName, planIdx, checkIn, checkOut, guests, days]);
+
   useEffect(() => {
     if (!edited) setFinalStr(listPrice != null ? String(listPrice) : '');
   }, [listPrice, edited]);
@@ -118,7 +122,16 @@ export default function NewBookingPage() {
   const isActivity = type === 'taxi' || type === 'trek' || type === 'paragliding';
   const nights = checkIn && checkOut ? nightsBetween(checkIn, checkOut) : 0;
 
+  const receivedN = payment.choice === 'platform_paid' && payment.amount.trim() !== '' ? Number(payment.amount) : null;
+  const guestsRaw = Number(guests);
+  const problem =
+    !Number.isInteger(guestsRaw) || guestsRaw < 1 || guestsRaw > 100 ? 'People must be a whole number from 1 to 100.'
+    : finalStr.trim() !== '' && (!Number.isFinite(Number(finalStr)) || Number(finalStr) < 0 || Number(finalStr) > MAX_AMOUNT) ? 'Final price must be between 0 and 1,00,00,000.'
+    : receivedN != null && (!Number.isFinite(receivedN) || receivedN < 0 || receivedN > MAX_AMOUNT) ? 'Amount received must be between 0 and 1,00,00,000.'
+    : '';
+
   async function submit() {
+    if (problem) return;
     setError('');
     const body: Record<string, any> = {
       category: type,
@@ -166,7 +179,7 @@ export default function NewBookingPage() {
   }
 
   const shownItems = type === 'hotel' && search.trim()
-    ? items.filter((i) => String(i.name).toLowerCase().includes(search.trim().toLowerCase()))
+    ? items.filter((i) => i.id === itemId || String(i.name).toLowerCase().includes(search.trim().toLowerCase()))
     : items;
   const who = type === 'hotel' ? 'hotel' : type === 'guide' ? 'guide' : 'partner';
 
@@ -236,7 +249,7 @@ export default function NewBookingPage() {
                 <div className="sm:col-span-2">
                   <label className={LABEL}>Route</label>
                   <select className={INPUT} value={custom ? 'custom' : itemId} onChange={(e) => {
-                    if (e.target.value === 'custom') { setCustom(true); setItemId(''); } else { setCustom(false); setItemId(e.target.value); }
+                    if (e.target.value === 'custom') { setCustom(true); setItemId(''); } else { setCustom(false); setItemId(e.target.value); const rt = items.find((i) => i.id === e.target.value); const vc = String(rt?.vehicle_category || '').toLowerCase(); setVehicleType((VEHICLE_TYPES as readonly string[]).includes(vc) ? vc : ''); }
                   }}>
                     <option value="">Choose a route</option>
                     {items.map((i) => <option key={i.id} value={i.id}>{i.from_location} → {i.to_location} · {i.vehicle_name || i.vehicle_category}{i.price_type === 'per_km' ? ' · per km' : ` · ${formatPrice(Number(i.price) || 0)}`}</option>)}
@@ -255,7 +268,7 @@ export default function NewBookingPage() {
                   <label className={LABEL}>Vehicle type</label>
                   <select className={INPUT} value={vehicleType} onChange={(e) => setVehicleType(e.target.value)}>
                     <option value="">Any</option>
-                    {VEHICLES.map((v) => <option key={v} value={v}>{v}</option>)}
+                    {VEHICLE_TYPES.map((v) => <option key={v} value={v}>{VEHICLE_LABEL[v]}</option>)}
                   </select>
                 </div>
                 <div><label className={LABEL}>Passengers</label><input type="number" min={1} max={100} className={INPUT} value={guests} onChange={(e) => setGuests(e.target.value)} /></div>
@@ -353,8 +366,9 @@ export default function NewBookingPage() {
           <label className="flex items-center gap-2"><input type="checkbox" checked={notifyPartner} onChange={(e) => setNotifyPartner(e.target.checked)} /> Email the {who}</label>
           <label className="flex items-center gap-2"><input type="checkbox" checked={allowPast} onChange={(e) => setAllowPast(e.target.checked)} /> Allow a past date</label>
         </div>
+        {problem && <p className="text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2 mb-3">{problem}</p>}
         {error && <p className="text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2 mb-3">{error}</p>}
-        <button type="button" onClick={submit} disabled={saving} className="w-full sm:w-auto px-6 py-2.5 bg-brand-600 text-white rounded-lg text-sm font-semibold hover:bg-brand-700 disabled:opacity-50">
+        <button type="button" onClick={submit} disabled={saving || !!problem} className="w-full sm:w-auto px-6 py-2.5 bg-brand-600 text-white rounded-lg text-sm font-semibold hover:bg-brand-700 disabled:opacity-50">
           {saving ? 'Creating...' : 'Create booking'}
         </button>
       </section>

@@ -50,7 +50,7 @@ export default function BookingDetailPage() {
   }, [id]);
 
   function open(p: 'payment' | 'assign' | 'cancel') {
-    setError(''); setPanel(p);
+    setError(''); setReason(''); setPanel(p);
     if (p === 'payment') {
       setNotify(true);
       setPayment({
@@ -200,7 +200,7 @@ export default function BookingDetailPage() {
               {errorBox}
               <div className="flex gap-2 mt-3">
                 <button disabled={saving || reason.trim().length < 3} onClick={() => patch({ action: 'cancel', reason: reason.trim(), notify })} className={cn(BTN, 'bg-red-600 text-white hover:bg-red-700')}>{saving ? 'Cancelling...' : 'Confirm cancellation'}</button>
-                <button disabled={saving} onClick={() => setPanel('')} className={cn(BTN, 'border border-slate-300 text-slate-700')}>Keep booking</button>
+                <button disabled={saving} onClick={() => { setPanel(''); setReason(''); }} className={cn(BTN, 'border border-slate-300 text-slate-700')}>Keep booking</button>
               </div>
             </div>
           )}
