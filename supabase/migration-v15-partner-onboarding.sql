@@ -41,6 +41,7 @@ END;
 $$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 -- 3. Only admins / server code may change verification and money fields.
+--    Deliberately NOT SECURITY DEFINER: see is_trusted_caller() in v14.
 CREATE OR REPLACE FUNCTION protect_profile_role()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -50,6 +51,8 @@ BEGIN
      OR NEW.partner_status IS DISTINCT FROM OLD.partner_status
      OR NEW.commission_pct IS DISTINCT FROM OLD.commission_pct
      OR NEW.legal_name IS DISTINCT FROM OLD.legal_name
+     OR NEW.business_registration_no IS DISTINCT FROM OLD.business_registration_no
+     OR NEW.phone IS DISTINCT FROM OLD.phone
      OR NEW.payout_method IS DISTINCT FROM OLD.payout_method
      OR NEW.payout_details IS DISTINCT FROM OLD.payout_details
      OR NEW.pan_number IS DISTINCT FROM OLD.pan_number
@@ -60,7 +63,7 @@ BEGIN
   END IF;
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
+$$ LANGUAGE plpgsql SET search_path = public;
 
 -- 4. Staff (drivers, pilots, guides) and vehicles ----------------------------
 CREATE TABLE IF NOT EXISTS partner_staff (
