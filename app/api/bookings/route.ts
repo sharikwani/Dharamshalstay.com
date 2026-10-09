@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { quoteBooking } from '@/lib/pricing';
 import { sendBookingEmails } from '@/lib/booking-emails';
+import { getCaller } from '@/lib/server-auth';
 
 /** Get today in IST as YYYY-MM-DD (same logic as client-side getTodayIST) */
 function getTodayIST(): string {
@@ -31,7 +32,6 @@ const schema = z.object({
   plan_index: z.number().int().min(0).max(50).optional().nullable(),
   payment_method: z.enum(['online', 'offline', 'pay_at_hotel', 'partial_online']).default('offline'),
   booking_source: z.enum(['website', 'whatsapp', 'phone', 'walkin', 'admin']).default('website'),
-  user_id: z.string().uuid().optional().nullable(),
   room_name: z.string().optional(),
   plan_name: z.string().max(200).optional(),
 });
@@ -45,6 +45,9 @@ export async function POST(req: NextRequest) {
     }
 
     const data = parsed.data;
+    // Never trust a user_id from the body: derive it from the caller's token.
+    const caller = await getCaller(req);
+    const userId = caller?.user.id ?? null;
 
     // Server-side date validation using IST (matches frontend)
     const today = getTodayIST();
@@ -115,7 +118,7 @@ export async function POST(req: NextRequest) {
         commission_pct,
         commission_amount,
         commission_status,
-        user_id: data.user_id || null,
+        user_id: userId,
         room_name: room_label,
       }).select().single();
 

@@ -28,6 +28,9 @@ vi.mock('@supabase/supabase-js', () => ({
 const sendBookingEmails = vi.fn(async (_id: string) => {});
 vi.mock('@/lib/booking-emails', () => ({ sendBookingEmails: (id: string) => sendBookingEmails(id) }));
 
+const getCaller = vi.fn(async (_req: any): Promise<any> => null);
+vi.mock('@/lib/server-auth', () => ({ getCaller: (r: any) => getCaller(r) }));
+
 import { POST } from '@/app/api/bookings/route';
 
 const payload = (over: Record<string, any> = {}) => ({
@@ -39,7 +42,7 @@ const post = (body: any) => POST(new Request('http://x/api/bookings', { method: 
 
 describe('POST /api/bookings', () => {
   beforeEach(() => {
-    inserted.length = 0; sendBookingEmails.mockClear();
+    inserted.length = 0; sendBookingEmails.mockClear(); getCaller.mockReset(); getCaller.mockResolvedValue(null);
     vi.stubEnv('NEXT_PUBLIC_SUPABASE_URL', 'http://supabase.test');
     vi.stubEnv('SUPABASE_SERVICE_ROLE_KEY', 'service-key');
     vi.stubEnv('STRIPE_SECRET_KEY', '');
@@ -55,6 +58,17 @@ describe('POST /api/bookings', () => {
     expect(inserted[0].room_name).toBe('Deluxe - Breakfast');
     expect(json.amount).toBe(6000);
     expect(sendBookingEmails).toHaveBeenCalledWith('b1');
+  });
+
+  it('ignores a user_id in the body and stores null for anonymous callers', async () => {
+    await post(payload({ user_id: '99999999-9999-4999-8999-999999999999' }));
+    expect(inserted[0].user_id).toBeNull();
+  });
+
+  it('stores the authenticated caller id, not the body user_id', async () => {
+    getCaller.mockResolvedValue({ user: { id: 'caller-1' }, profile: {} });
+    await post(payload({ user_id: '99999999-9999-4999-8999-999999999999' }));
+    expect(inserted[0].user_id).toBe('caller-1');
   });
 
   it('downgrades online to offline when Stripe is not configured, and still sends emails', async () => {

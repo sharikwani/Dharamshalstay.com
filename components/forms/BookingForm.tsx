@@ -4,7 +4,7 @@ import { Send, Check, AlertCircle, CreditCard, Loader2, Building, Moon } from 'l
 import { formatPrice } from '@/lib/utils';
 import { useT } from '@/lib/i18n/client';
 import { fmt } from '@/lib/i18n/dict';
-import { supabase } from '@/lib/supabase';
+import { authFetch } from '@/lib/supabase';
 import { getMinDate, getMinCheckoutDate, validateBookingDates, validateActivityDate, enforceCheckIn, enforceCheckOut, enforceActivityDate } from '@/lib/date-helpers';
 
 interface BookingFormProps {
@@ -101,15 +101,13 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
     setStatus('loading'); setErrorMsg('');
 
     const fd = new FormData(e.currentTarget);
-    let userId: string | null = null;
-    try { const { data: { user } } = await supabase.auth.getUser(); if (user) userId = user.id; } catch {}
 
     const payload: Record<string, any> = {
       category, guest_name: fd.get('guest_name'), guest_email: fd.get('guest_email') || '',
       guest_phone: fd.get('guest_phone'), num_guests: Number(fd.get('num_guests')) || 1,
       special_requests: fd.get('special_requests') || '',
       payment_method: payMethod, booking_source: 'website',
-      user_id: userId, room_name: roomName || '', plan_name: planName || '',
+      room_name: roomName || '', plan_name: planName || '',
       plan_index: typeof planIndex === 'number' ? planIndex : null,
     };
 
@@ -119,7 +117,7 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
     else if (category === 'paragliding') { payload.activity_date = activityDate; payload.paragliding_id = entityId || null; }
 
     try {
-      const res = await fetch('/api/bookings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      const res = await authFetch('/api/bookings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
       const data = await res.json();
       if (!res.ok) { setErrorMsg(data.error || f.bookingFailed); setStatus('error'); return; }
 

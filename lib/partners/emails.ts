@@ -5,12 +5,12 @@ const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&l
 const wrap = (title: string, inner: string) => `<div style="font-family:system-ui,sans-serif;max-width:600px;margin:0 auto;padding:20px"><h2 style="color:#1e3a5f">${title}</h2>${inner}<p style="color:#94a3b8;font-size:12px;margin-top:24px">Dharamshala Stay</p></div>`;
 
 export async function emailAgreementCopy(to: string, name: string, pdf: Uint8Array, version: string) {
-  await sendEmail({
-    to: [to, adminEmail()],
-    subject: `Your signed Dharamshala Stay partner agreement (${version})`,
-    html: wrap('Agreement signed', `<p>Hi ${esc(name)},</p><p>Thank you for signing the Dharamshala Stay partner agreement. A PDF copy is attached for your records.</p><p>Our team is now checking your documents. We will email you as soon as your account is approved.</p>`),
-    attachments: [{ filename: `dharamshala-stay-partner-agreement-${version}.pdf`, content: Buffer.from(pdf) }],
-  });
+  const attachments = [{ filename: `dharamshala-stay-partner-agreement-${version}.pdf`, content: Buffer.from(pdf) }];
+  const subject = `Your signed Dharamshala Stay partner agreement (${version})`;
+  const html = wrap('Agreement signed', `<p>Hi ${esc(name)},</p><p>Thank you for signing the Dharamshala Stay partner agreement. A PDF copy is attached for your records.</p><p>Our team is now checking your documents. We will email you as soon as your account is approved.</p>`);
+  // Separate emails so the partner's address is not shown to the admin recipient and vice versa.
+  await sendEmail({ to, subject, html, attachments });
+  await sendEmail({ to: adminEmail(), subject, html, attachments });
 }
 
 export async function emailAdminPartnerSubmitted(p: { id: string; legal_name: string; partner_type: string; email: string; phone: string }) {
