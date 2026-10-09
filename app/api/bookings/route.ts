@@ -33,6 +33,7 @@ const schema = z.object({
   booking_source: z.enum(['website', 'whatsapp', 'phone', 'walkin', 'admin']).default('website'),
   user_id: z.string().uuid().optional().nullable(),
   room_name: z.string().optional(),
+  plan_name: z.string().max(200).optional(),
 });
 
 export async function POST(req: NextRequest) {
@@ -85,7 +86,8 @@ export async function POST(req: NextRequest) {
       const commission_status = (data.payment_method === 'offline' || data.payment_method === 'pay_at_hotel') && commission_amount > 0
         ? 'pending' : 'not_applicable';
       // Online payment needs a price; quote-only bookings are taken as pay-later.
-      const payment_method = data.payment_method === 'online' && amount < 100 ? 'offline' : data.payment_method;
+      const payment_method = data.payment_method === 'online' && (amount < 100 || !process.env.STRIPE_SECRET_KEY) ? 'offline' : data.payment_method;
+      const room_label = data.room_name ? (data.plan_name ? `${data.room_name} - ${data.plan_name}` : data.room_name) : null;
 
       const { data: booking, error } = await sb.from('bookings').insert({
         category: data.category,
@@ -114,7 +116,7 @@ export async function POST(req: NextRequest) {
         commission_amount,
         commission_status,
         user_id: data.user_id || null,
-        room_name: data.room_name || null,
+        room_name: room_label,
       }).select().single();
 
       if (error) {
@@ -131,7 +133,7 @@ export async function POST(req: NextRequest) {
               type: 'booking_new', recipient_type: 'hotel',
               recipient_email: prop.contact_email, recipient_phone: prop.contact_phone,
               subject: `New Booking: ${data.guest_name} - ${prop.name}`,
-              body: JSON.stringify({ booking_ref: booking.booking_ref, guest: data.guest_name, phone: data.guest_phone, check_in: data.check_in, check_out: data.check_out, guests: data.num_guests, amount, payment: data.payment_method }),
+              body: JSON.stringify({ booking_ref: booking.booking_ref, guest: data.guest_name, phone: data.guest_phone, check_in: data.check_in, check_out: data.check_out, guests: data.num_guests, amount, payment: payment_method }),
               booking_id: booking.id, property_id: data.property_id, status: 'queued',
             });
           }

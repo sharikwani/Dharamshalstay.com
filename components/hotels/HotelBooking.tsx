@@ -190,7 +190,8 @@ export default function HotelBooking({ hotel }: Props) {
             entityId={hotel.id}
             entityName={hotel.name}
             pricePerNight={selected.pricePerNight || (hotel.price_min ? discountedPrice(hotel.price_min) : undefined)}
-            roomName={selected.roomName ? selected.roomName + (selected.planName ? ' - ' + selected.planName : '') : ''}
+            roomName={selected.roomName}
+            planName={selected.planName}
           />
 
           <div className="text-center text-xs text-slate-400">{b.orInquiry}</div>

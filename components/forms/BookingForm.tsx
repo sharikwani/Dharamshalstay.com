@@ -14,6 +14,7 @@ interface BookingFormProps {
   pricePerNight?: number;
   defaultAmount?: number;
   roomName?: string;
+  planName?: string;
   planIndex?: number;
   className?: string;
 }
@@ -26,7 +27,7 @@ function calcNights(checkIn: string, checkOut: string): number {
   return diff > 0 ? diff : 0;
 }
 
-export default function BookingForm({ category, entityId, entityName, pricePerNight, defaultAmount, roomName, planIndex, className = '' }: BookingFormProps) {
+export default function BookingForm({ category, entityId, entityName, pricePerNight, defaultAmount, roomName, planName, planIndex, className = '' }: BookingFormProps) {
   const { t } = useT();
   const f = t.form;
   const [status, setStatus] = useState<'idle' | 'loading' | 'paying' | 'success' | 'error'>('idle');
@@ -108,7 +109,7 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
       guest_phone: fd.get('guest_phone'), num_guests: Number(fd.get('num_guests')) || 1,
       special_requests: fd.get('special_requests') || '',
       payment_method: payMethod, booking_source: 'website',
-      user_id: userId, room_name: roomName || '',
+      user_id: userId, room_name: roomName || '', plan_name: planName || '',
       plan_index: typeof planIndex === 'number' ? planIndex : null,
     };
 
