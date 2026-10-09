@@ -229,9 +229,13 @@ Quick-reply buttons are defined in the template itself, so sends need no button 
 ---
 
 ### Task 5: Release (owner + controller)
-- [ ] Owner/controller runs `supabase/migration-v17-whatsapp.sql` in the Supabase SQL editor.
-- [ ] Controller creates the three templates in WhatsApp Manager (category Utility, language English) with the exact bodies from the spec §4.
-- [ ] Owner: generate a permanent token (Business settings → System users → add system user (admin) → assign the app and WhatsApp account with full control → Generate token with `whatsapp_business_messaging`, `whatsapp_business_management`), copy App Secret (App settings → Basic), choose a verify token; put `WHATSAPP_TOKEN`, `WHATSAPP_APP_SECRET`, `WHATSAPP_VERIFY_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID=1357037027493117`, `WHATSAPP_WABA_ID=1408639064178047` in Vercel → redeploy.
-- [ ] Configure webhook in the app (WhatsApp → Configuration): callback `https://www.dharamshalastay.com/api/whatsapp/webhook`, verify token as above, subscribe to `messages`.
-- [ ] Add up to 5 test recipient numbers (owner verifies OTP), switch alerts on for a test partner, create a manual booking, confirm the WhatsApp arrives and the Accept button updates the booking.
+Run these in order.
+1. [ ] Owner/controller runs `supabase/migration-v17-whatsapp.sql` in the Supabase SQL editor.
+2. [ ] Owner sets the Vercel env vars: generate a permanent token (Business settings → System users → add system user (admin) → assign the app and WhatsApp account with full control → Generate token with `whatsapp_business_messaging`, `whatsapp_business_management`), copy App Secret (App settings → Basic), choose a verify token; put `WHATSAPP_TOKEN`, `WHATSAPP_APP_SECRET`, `WHATSAPP_VERIFY_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID=1357037027493117`, `WHATSAPP_WABA_ID=1408639064178047` in Vercel.
+3. [ ] Deploy (merge to `main` / redeploy so the new env vars are picked up).
+4. [ ] Owner runs `npm run whatsapp:templates` locally with `WHATSAPP_TOKEN` and `WHATSAPP_WABA_ID` in `.env.local` — creates the three templates with the exact bodies from spec §4.
+5. [ ] Wait until all three templates show **Approved** in WhatsApp Manager.
+6. [ ] Configure the webhook in the app (WhatsApp → Configuration): callback URL `https://www.dharamshalastay.com/api/whatsapp/webhook`, verify token as set in Vercel, then subscribe to the `messages` field.
+7. [ ] Add up to 5 test recipient numbers (owner verifies OTP).
+8. [ ] Test: switch alerts on for a test partner, create a manual booking, confirm the WhatsApp arrives, the admin booking page shows its status, and the Accept button updates the booking.
 - [ ] Later: add the real business number, payment method and business verification, then swap `WHATSAPP_PHONE_NUMBER_ID`.

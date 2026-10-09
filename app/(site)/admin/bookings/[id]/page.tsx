@@ -15,6 +15,11 @@ const H2 = 'font-semibold text-slate-900 mb-3';
 const BTN = 'px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-50';
 const CATEGORY_LABEL: Record<string, string> = { hotel: 'Hotel', taxi: 'Taxi', trek: 'Trek', paragliding: 'Paragliding', guide: 'Local guide' };
 
+const WA_STATUS: Record<string, string> = {
+  queued: 'bg-slate-100 text-slate-600', sent: 'bg-blue-100 text-blue-700', delivered: 'bg-green-100 text-green-700',
+  read: 'bg-emerald-100 text-emerald-800', failed: 'bg-red-100 text-red-700',
+};
+
 function Row({ k, v }: { k: string; v: React.ReactNode }) {
   if (v == null || v === '') return null;
   return <div className="flex gap-3 text-sm py-1"><span className="w-32 shrink-0 text-slate-500">{k}</span><span className="text-slate-900 min-w-0 break-words">{v}</span></div>;
@@ -23,6 +28,7 @@ function Row({ k, v }: { k: string; v: React.ReactNode }) {
 export default function BookingDetailPage() {
   const { id } = useParams<{ id: string }>();
   const [b, setB] = useState<any>(null);
+  const [wa, setWa] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
   const [panel, setPanel] = useState<'' | 'payment' | 'assign' | 'cancel'>('');
@@ -42,7 +48,7 @@ export default function BookingDetailPage() {
       .then(async (r) => ({ ok: r.ok, body: await r.json().catch(() => ({})) }))
       .then(({ ok, body }) => {
         if (cancelled) return;
-        if (!ok) setLoadError(body.error || 'Could not load the booking.'); else setB(body.booking);
+        if (!ok) setLoadError(body.error || 'Could not load the booking.'); else { setB(body.booking); setWa(body.whatsapp_messages || []); }
       })
       .catch(() => { if (!cancelled) setLoadError('Could not load the booking.'); })
       .finally(() => { if (!cancelled) setLoading(false); });
@@ -83,7 +89,7 @@ export default function BookingDetailPage() {
       const res = await authFetch(`/api/admin/bookings/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) { setError(data.error || 'Could not save the change.'); return; }
-      setB(data.booking); setPanel('');
+      setB((prev: any) => ({ ...prev, ...data.booking })); setPanel('');
     } catch {
       setError('Could not save the change. Please check your connection and try again.');
     } finally {
@@ -183,6 +189,29 @@ export default function BookingDetailPage() {
               <button disabled={saving || optsLoading} onClick={() => patch({ action: 'assign', partner_id: assign.partner_id || null, staff_id: assign.staff_id || null, vehicle_id: b.category === 'taxi' ? assign.vehicle_id || null : null, notify })} className={cn(BTN, 'bg-brand-600 text-white hover:bg-brand-700')}>{saving ? 'Saving...' : 'Save assignment'}</button>
               <button disabled={saving} onClick={() => setPanel('')} className={cn(BTN, 'border border-slate-300 text-slate-700')}>Close</button>
             </div>
+          </div>
+        )}
+      </section>
+
+      <section className={CARD}>
+        <h2 className={H2}>WhatsApp</h2>
+        {b.partner_response && (
+          <p className="mb-3">
+            <span className={cn('text-xs font-medium px-2 py-0.5 rounded-full', b.partner_response === 'accepted' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700')}>{b.partner_response === 'accepted' ? 'Accepted' : "Can't do it"}</span>
+            {b.partner_responded_at && <span className="ml-2 text-xs text-slate-500">{new Date(b.partner_responded_at).toLocaleString('en-IN')}</span>}
+          </p>
+        )}
+        {wa.length === 0 ? <p className="text-sm text-slate-500">No WhatsApp messages for this booking.</p> : (
+          <div className="divide-y divide-slate-100">
+            {wa.map((m) => (
+              <div key={m.id} className="flex flex-wrap items-center gap-x-3 gap-y-1 py-2 text-sm">
+                <span className="w-20 capitalize text-slate-700">{m.recipient_kind}</span>
+                <span className="text-slate-600">**** {m.to_last4}</span>
+                <span className="text-slate-500">{m.template}</span>
+                <span className={cn('text-xs font-medium px-2 py-0.5 rounded-full', WA_STATUS[m.status] || WA_STATUS.queued)} title={m.error || undefined}>{m.status}</span>
+                <span className="text-xs text-slate-400 ml-auto">{new Date(m.created_at).toLocaleString('en-IN')}</span>
+              </div>
+            ))}
           </div>
         )}
       </section>

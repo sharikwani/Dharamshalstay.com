@@ -181,6 +181,8 @@ export default function PartnerOnboarding() {
           <label className="text-sm">UPI ID (if UPI)<input name="upi_id" defaultValue={pd.upi_id || ''} disabled={!editable} className={field} placeholder="name@bank" /></label>
           <label className="text-sm">Bank account number (if bank)<input name="account_number" defaultValue={pd.account_number || ''} disabled={!editable} className={field} /></label>
           <label className="text-sm">IFSC (if bank)<input name="ifsc" defaultValue={pd.ifsc || ''} disabled={!editable} className={field} placeholder="SBIN0001234" /></label>
+          <label className="text-sm">WhatsApp number<input name="whatsapp_number" defaultValue={p.whatsapp_number || p.phone || ''} disabled={!editable} className={field} placeholder="10-digit mobile number" /></label>
+          <label className="flex items-start gap-2 text-sm sm:self-end sm:pb-2"><input type="checkbox" name="whatsapp_alerts" defaultChecked={!!p.whatsapp_alerts} disabled={!editable} className="mt-1" />Send me new bookings on WhatsApp</label>
           {editable && <div className="sm:col-span-2"><button disabled={!!busy} className="bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-50">{busy === 'details' ? 'Saving…' : 'Save details'}</button></div>}
         </form>
       </section>

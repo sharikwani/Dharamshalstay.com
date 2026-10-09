@@ -4,6 +4,7 @@ import { HttpError, jsonError, requireCaller, serviceClient } from '@/lib/server
 import { quoteBooking, nightsBetween } from '@/lib/pricing';
 import { BOOKABLE_STATUS, checkAssignment, commissionRateFor, isBeforeToday, paymentFields, splitAmount, todayIst } from '@/lib/manual-booking';
 import { sendManualBookingEmails } from '@/lib/manual-booking-emails';
+import { whatsappNewBooking } from '@/lib/booking-whatsapp';
 
 export const dynamic = 'force-dynamic';
 
@@ -44,6 +45,7 @@ const schema = z.object({
   allow_past_date: z.boolean().optional(),
   notify_customer: z.boolean().default(true),
   notify_partner: z.boolean().default(true),
+  notify_customer_whatsapp: z.boolean().default(false),
 });
 
 const PAST = "That date is in the past. Tick 'allow past date' to record an earlier booking.";
@@ -166,6 +168,9 @@ export async function POST(req: Request) {
     // Emails never block the save
     try {
       await sendManualBookingEmails(saved.id, { customer: body.notify_customer && !!row.guest_email, partner: body.notify_partner });
+      if (body.notify_partner || body.notify_customer_whatsapp) {
+        await whatsappNewBooking(saved.id, { customer: body.notify_customer_whatsapp === true, partners: body.notify_partner });
+      }
     } catch (e) { console.error('Manual booking emails failed:', e); }
 
     return NextResponse.json({ id: saved.id, booking_ref: saved.booking_ref });

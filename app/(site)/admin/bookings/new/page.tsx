@@ -60,6 +60,7 @@ export default function NewBookingPage() {
   const [assign, setAssign] = useState<AssignValue>(EMPTY_ASSIGN);
 
   const [notifyCustomer, setNotifyCustomer] = useState(true);
+  const [notifyCustomerWa, setNotifyCustomerWa] = useState(false);
   const [notifyPartner, setNotifyPartner] = useState(true);
   const [allowPast, setAllowPast] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -143,6 +144,7 @@ export default function NewBookingPage() {
       allow_past_date: allowPast,
       notify_customer: notifyCustomer && !!email.trim(),
       notify_partner: notifyPartner,
+      notify_customer_whatsapp: notifyCustomerWa,
     };
     if (finalAmount != null) body.final_amount = finalAmount;
     if (overridden && reason.trim()) body.price_override_reason = reason.trim();
@@ -363,6 +365,7 @@ export default function NewBookingPage() {
         </p>
         <div className="flex flex-col gap-1.5 mb-3 text-sm text-slate-700">
           <label className={cn('flex items-center gap-2', !email.trim() && 'opacity-50')}><input type="checkbox" disabled={!email.trim()} checked={notifyCustomer && !!email.trim()} onChange={(e) => setNotifyCustomer(e.target.checked)} /> Email the customer</label>
+          <label className="flex items-center gap-2"><input type="checkbox" checked={notifyCustomerWa} onChange={(e) => setNotifyCustomerWa(e.target.checked)} /> Send confirmation to the customer on WhatsApp</label>
           <label className="flex items-center gap-2"><input type="checkbox" checked={notifyPartner} onChange={(e) => setNotifyPartner(e.target.checked)} /> Email the {who}</label>
           <label className="flex items-center gap-2"><input type="checkbox" checked={allowPast} onChange={(e) => setAllowPast(e.target.checked)} /> Allow a past date</label>
         </div>

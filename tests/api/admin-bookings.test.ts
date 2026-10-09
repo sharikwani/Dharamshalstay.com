@@ -5,17 +5,27 @@ let fixtures: Record<string, any> = {};
 let insertError: any = null;
 const inserts: any[] = [];
 let updateError: any = null;
+let listError: any = null;
 const updates: any[] = [];
 const recordOps: any[] = [];
 const sendManualBookingEmails = vi.fn(async (..._a: unknown[]) => {});
 const sendCancellationEmails = vi.fn(async (..._a: unknown[]) => {});
 const sendReassignedAwayEmail = vi.fn(async (..._a: unknown[]) => {});
+const whatsappNewBooking = vi.fn(async (..._a: unknown[]) => {});
+const whatsappCancelled = vi.fn(async (..._a: unknown[]) => {});
+const whatsappReassignedAway = vi.fn(async (..._a: unknown[]) => {});
 const loadBookingView = vi.fn(async (id: string) => ({ id, item_name: 'x' }));
 
 function builder(table: string) {
   let inserting = false;
   const b: any = {
-    select: () => b, eq: () => b, in: () => b, order: () => b,
+    select: () => b, eq: () => b, in: () => b,
+    // List query (WhatsApp messages): sort the fixture rows the way the database would.
+    order: (col: string, opts: { ascending?: boolean } = {}) => {
+      const rows = [...(fixtures[table + '_list'] || [])].sort((x: any, y: any) =>
+        (x[col] < y[col] ? -1 : x[col] > y[col] ? 1 : 0) * (opts.ascending === false ? -1 : 1));
+      return { then: (res: any) => res(listError ? { data: null, error: listError } : { data: rows, error: null }) };
+    },
     update: (row: any) => {
       if (table === 'commission_records') {
         recordOps.push({ op: 'update', row });
@@ -58,6 +68,12 @@ vi.mock('@/lib/manual-booking-emails', () => ({
   loadBookingView: (id: string) => loadBookingView(id),
 }));
 
+vi.mock('@/lib/booking-whatsapp', () => ({
+  whatsappNewBooking: (...a: unknown[]) => whatsappNewBooking(...a),
+  whatsappCancelled: (...a: unknown[]) => whatsappCancelled(...a),
+  whatsappReassignedAway: (...a: unknown[]) => whatsappReassignedAway(...a),
+}));
+
 import { POST } from '@/app/api/admin/bookings/route';
 import { GET, PATCH } from '@/app/api/admin/bookings/[id]/route';
 
@@ -70,8 +86,9 @@ const base = {
 const post = (body: unknown) => POST(new Request('http://x', { method: 'POST', body: JSON.stringify(body) }));
 
 beforeEach(() => {
-  role = 'admin'; insertError = null; updateError = null; inserts.length = 0; updates.length = 0; recordOps.length = 0;
+  role = 'admin'; insertError = null; updateError = null; listError = null; inserts.length = 0; updates.length = 0; recordOps.length = 0;
   sendManualBookingEmails.mockClear(); sendCancellationEmails.mockClear(); sendReassignedAwayEmail.mockClear();
+  whatsappNewBooking.mockClear(); whatsappCancelled.mockClear(); whatsappReassignedAway.mockClear();
   fixtures = {
     treks: { id: 't1', status: 'published', price_per_person: 1500, commission_pct: null },
     profiles: { id: 'p1', role: 'partner', partner_type: 'trek', partner_status: 'verified', commission_pct: 20 },
@@ -97,6 +114,16 @@ describe('POST /api/admin/bookings', () => {
       collected_by: 'partner',
     });
     expect(sendManualBookingEmails).toHaveBeenCalledWith('b1', { customer: true, partner: true });
+  });
+
+  it('passes notify_partner to the WhatsApp alert so partners are not alerted when it is off', async () => {
+    await post({ ...base, notify_partner: false, notify_customer_whatsapp: true });
+    expect(whatsappNewBooking).toHaveBeenCalledWith('b1', { customer: true, partners: false });
+    whatsappNewBooking.mockClear();
+    await post({ ...base, notify_partner: false });
+    expect(whatsappNewBooking).not.toHaveBeenCalled();
+    await post(base);
+    expect(whatsappNewBooking).toHaveBeenCalledWith('b1', { customer: false, partners: true });
   });
 
   it('records a price override', async () => {
@@ -169,11 +196,40 @@ describe('GET/PATCH /api/admin/bookings/:id', () => {
   it('GET returns the booking view, 404 when missing, 403 for non-admin', async () => {
     const res = await GET(new Request('http://x'), ctx);
     expect(res.status).toBe(200);
-    expect(await res.json()).toEqual({ booking: { id: ID, item_name: 'x' } });
+    expect(await res.json()).toEqual({
+      booking: { id: ID, item_name: 'x', partner_response: null, partner_responded_at: null },
+      whatsapp_messages: [],
+    });
     loadBookingView.mockResolvedValueOnce(null as any);
     expect((await GET(new Request('http://x'), ctx)).status).toBe(404);
     role = 'partner';
     expect((await GET(new Request('http://x'), ctx)).status).toBe(403);
+  });
+
+  it('GET returns the partner response and WhatsApp messages newest first with masked numbers', async () => {
+    loadBookingView.mockResolvedValueOnce({ id: ID, item_name: 'x', partner_response: 'accepted', partner_responded_at: '2026-10-10T10:00:00Z' } as any);
+    const row = (id: string, created_at: string, status: string) => ({
+      id, recipient_kind: 'partner', to_phone: '919816001234', template: 'booking_new_partner', status, error: null, created_at,
+    });
+    fixtures.whatsapp_messages_list = [row('m1', '2026-10-10T09:00:00Z', 'read'), row('m3', '2026-10-10T11:00:00Z', 'sent'), row('m2', '2026-10-10T10:00:00Z', 'failed')];
+    const res = await GET(new Request('http://x'), ctx);
+    const body = await res.json();
+    expect(body.booking).toEqual({ id: ID, item_name: 'x', partner_response: 'accepted', partner_responded_at: '2026-10-10T10:00:00Z' });
+    expect(body.whatsapp_messages.map((m: any) => m.id)).toEqual(['m3', 'm2', 'm1']);
+    expect(body.whatsapp_messages[0]).toEqual({
+      id: 'm3', recipient_kind: 'partner', to_last4: '1234', template: 'booking_new_partner', status: 'sent', error: null, created_at: '2026-10-10T11:00:00Z',
+    });
+    expect(JSON.stringify(body)).not.toContain('919816001234');
+  });
+
+  it('GET still returns the booking and logs when the messages query fails', async () => {
+    listError = { message: 'db down' };
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const res = await GET(new Request('http://x'), ctx);
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ booking: { id: ID, item_name: 'x', partner_response: null, partner_responded_at: null }, whatsapp_messages: [] });
+    expect(spy).toHaveBeenCalledWith('Could not load WhatsApp messages:', listError);
+    spy.mockRestore();
   });
 
   it('rejects a non-admin PATCH with 403', async () => {
@@ -316,6 +372,21 @@ describe('GET/PATCH /api/admin/bookings/:id', () => {
     expect(res.status).toBe(409);
     expect((await res.json()).error).toMatch(/already settled/);
     expect(updates).toHaveLength(0);
+  });
+
+  it('assign to a different partner clears the previous partner response', async () => {
+    fixtures.bookings = { ...fixtures.bookings, partner_id: 'old', partner_response: 'declined', partner_responded_at: '2026-10-10T09:00:00Z' };
+    await patch({ action: 'assign', partner_id: '22222222-2222-4222-8222-222222222222' });
+    expect(updates[0].row).toMatchObject({ partner_id: 'p1', partner_response: null, partner_responded_at: null });
+    expect(whatsappNewBooking).toHaveBeenCalledWith(ID, { customer: false, partners: true });
+    expect(whatsappReassignedAway).toHaveBeenCalledWith(ID, 'old');
+  });
+
+  it('assign to the same partner keeps their response', async () => {
+    fixtures.bookings = { ...fixtures.bookings, partner_id: 'p1', partner_response: 'accepted' };
+    await patch({ action: 'assign', partner_id: '22222222-2222-4222-8222-222222222222' });
+    expect(updates[0].row).not.toHaveProperty('partner_response');
+    expect(whatsappReassignedAway).not.toHaveBeenCalled();
   });
 
   it('assign emails the previous partner too', async () => {

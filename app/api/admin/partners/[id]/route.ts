@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { HttpError, jsonError, requireCaller, serviceClient } from '@/lib/server-auth';
 import { loadOnboarding } from '@/lib/partners/load';
 import { canVerify } from '@/lib/partners/admin-actions';
+import { whatsappProfilePatch } from '@/lib/partners/whatsapp';
 import { emailPartnerDecision } from '@/lib/partners/emails';
 
 export const dynamic = 'force-dynamic';
@@ -19,6 +20,7 @@ const schema = z.discriminatedUnion('action', [
   z.object({ action: z.literal('suspend'), note: z.string().trim().min(3).max(2000) }),
   z.object({ action: z.literal('reinstate') }),
   z.object({ action: z.literal('set_commission'), commission_pct: z.number().min(0).max(100) }),
+  z.object({ action: z.literal('set_whatsapp'), whatsapp_number: z.string().trim().max(20).optional(), whatsapp_alerts: z.boolean() }),
 ]);
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
@@ -70,6 +72,10 @@ export async function POST(req: Request, { params }: { params: { id: string } })
       await emailPartnerDecision(p.email, name, 'verified');
     } else if (a.action === 'set_commission') {
       await saveProfile({ commission_pct: a.commission_pct });
+    } else if (a.action === 'set_whatsapp') {
+      await saveProfile(whatsappProfilePatch({
+        rawNumber: a.whatsapp_number || p.whatsapp_number || p.phone, alerts: a.whatsapp_alerts, wasOn: !!p.whatsapp_alerts, by: 'admin',
+      }));
     }
     return NextResponse.json(await loadOnboarding(params.id));
   } catch (e) { return jsonError(e); }

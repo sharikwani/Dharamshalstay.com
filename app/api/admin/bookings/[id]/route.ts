@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { HttpError, jsonError, requireCaller, serviceClient } from '@/lib/server-auth';
 import { ACTIVITY_CATEGORIES, checkAssignment, commissionRateFor, paymentFields, splitAmount } from '@/lib/manual-booking';
+import { whatsappCancelled, whatsappNewBooking, whatsappReassignedAway } from '@/lib/booking-whatsapp';
 import { loadBookingView, sendCancellationEmails, sendManualBookingEmails, sendReassignedAwayEmail } from '@/lib/manual-booking-emails';
 
 export const dynamic = 'force-dynamic';
@@ -76,7 +77,18 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
     if (!isId(params.id)) throw new HttpError(404, 'Booking not found.');
     const booking = await loadBookingView(params.id);
     if (!booking) throw new HttpError(404, 'Booking not found.');
-    return NextResponse.json({ booking });
+    const { data: messages, error: msgError } = await serviceClient().from('whatsapp_messages')
+      .select('id, recipient_kind, to_phone, template, status, error, created_at')
+      .eq('booking_id', params.id).order('created_at', { ascending: false });
+    if (msgError) console.error('Could not load WhatsApp messages:', msgError);
+    // Only the last 4 digits of a number leave the server.
+    const whatsapp_messages = (messages || []).map(({ to_phone, ...m }: any) => ({
+      ...m, to_last4: String(to_phone || '').replace(/\D/g, '').slice(-4),
+    }));
+    return NextResponse.json({
+      booking: { ...booking, partner_response: booking.partner_response ?? null, partner_responded_at: booking.partner_responded_at ?? null },
+      whatsapp_messages,
+    });
   } catch (e) { return jsonError(e); }
 }
 
@@ -128,6 +140,11 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
         commission_pct: pct, commission_amount: split.commission_amount, partner_share_amount: split.partner_share_amount,
       };
       if (split.commission_amount === 0 && booking.commission_status !== 'paid') update.commission_status = 'not_applicable';
+      // A new partner has not answered yet; drop the previous partner's Accept / Can't do it.
+      if ((booking.partner_id ?? null) !== (update.partner_id ?? null)) {
+        update.partner_response = null;
+        update.partner_responded_at = null;
+      }
     } else if (body.action === 'payment') {
       const paidOnline = Boolean(booking.stripe_payment_intent) || (booking.payment_status === 'paid' && booking.payment_method === 'online');
       if (paidOnline && (body.choice === 'unpaid' || body.choice === 'partner_collects')) {
@@ -169,9 +186,14 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
       if (body.action === 'assign' && body.notify) {
         await sendManualBookingEmails(id, { customer: false, partner: true, subjectPrefix: 'Updated: ' });
         if (booking.partner_id && booking.partner_id !== update.partner_id) await sendReassignedAwayEmail(id, booking.partner_id);
+        await whatsappNewBooking(id, { customer: false, partners: true });
+        if (booking.partner_id && booking.partner_id !== update.partner_id) await whatsappReassignedAway(id, booking.partner_id);
       }
       if (body.action === 'payment' && body.notify) await sendManualBookingEmails(id, { customer: true, partner: false, subjectPrefix: 'Updated: ' });
-      if (body.action === 'cancel' && body.notify) await sendCancellationEmails(id, body.reason);
+      if (body.action === 'cancel' && body.notify) {
+        await sendCancellationEmails(id, body.reason);
+        await whatsappCancelled(id, body.reason);
+      }
     } catch (e) { console.error('Booking update emails failed:', e); }
 
     return NextResponse.json({ booking: await loadBookingView(id) });
