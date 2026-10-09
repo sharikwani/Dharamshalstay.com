@@ -1,8 +1,8 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { LogIn, Loader2, Mail, Lock, AlertCircle } from 'lucide-react';
+import { LogIn, Loader2, Mail, Lock, AlertCircle, MailCheck } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
 export default function UserLoginPage() {
@@ -11,14 +11,65 @@ export default function UserLoginPage() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  // Set when the email + password were correct but the email isn't confirmed yet
+  const [unconfirmed, setUnconfirmed] = useState(false);
+  const [resendState, setResendState] = useState<'idle' | 'sending' | 'sent'>('idle');
+  const [resendError, setResendError] = useState('');
+
+  // Arriving from the confirmation link signs the user in; send them on.
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session) router.replace('/account');
+    });
+  }, [router]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true); setError('');
-    const { error: err } = await supabase.auth.signInWithPassword({ email, password });
-    if (err) { setError(err.message); setLoading(false); return; }
+    const { error: err } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+    if (err) {
+      // Supabase only reports this after the password has been checked,
+      // so the credentials are right — the email just needs confirming.
+      if (err.code === 'email_not_confirmed') {
+        setUnconfirmed(true); setResendState('idle'); setResendError('');
+      } else {
+        setError(err.message);
+      }
+      setLoading(false); return;
+    }
     router.push('/account');
   }
+
+  async function resendConfirmation() {
+    setResendState('sending'); setResendError('');
+    const { error: err } = await supabase.auth.resend({
+      type: 'signup', email: email.trim(),
+      options: { emailRedirectTo: `${window.location.origin}/auth/login` },
+    });
+    if (err) { setResendError(err.message); setResendState('idle'); return; }
+    setResendState('sent');
+  }
+
+  if (unconfirmed) return (
+    <div className="min-h-[70vh] flex items-center justify-center px-4 py-12">
+      <div className="max-w-md text-center">
+        <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4"><MailCheck className="h-8 w-8 text-amber-600" /></div>
+        <h1 className="text-2xl font-heading font-bold text-slate-900 mb-2">Confirm your email first</h1>
+        <p className="text-slate-600 mb-2">Your email and password are correct, but your email address hasn&apos;t been confirmed yet.</p>
+        <p className="text-slate-600 mb-6">We sent a confirmation link to <strong>{email.trim()}</strong>. Click it to access your account. Check your spam folder if you can&apos;t find it.</p>
+        {resendError && <p className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded-xl mb-4">{resendError}</p>}
+        {resendState === 'sent' && <p className="text-sm text-green-700 bg-green-50 px-3 py-2 rounded-xl mb-4">A new confirmation email is on its way.</p>}
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <button type="button" onClick={resendConfirmation} disabled={resendState !== 'idle'} className="bg-brand-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-brand-700 disabled:opacity-50">
+            {resendState === 'sending' ? 'Sending...' : resendState === 'sent' ? 'Email Sent' : 'Resend Confirmation Email'}
+          </button>
+          <button type="button" onClick={() => setUnconfirmed(false)} className="border border-slate-300 text-slate-700 px-6 py-3 rounded-xl font-semibold hover:bg-slate-50">
+            Back to Sign In
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="min-h-[70vh] flex items-center justify-center px-4 py-12">

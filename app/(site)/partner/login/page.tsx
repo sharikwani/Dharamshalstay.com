@@ -1,8 +1,8 @@
 'use client';
-import { useState, FormEvent } from 'react';
+import { useEffect, useState, FormEvent } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Building, Eye, EyeOff } from 'lucide-react';
+import { Building, Eye, EyeOff, MailCheck } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
 export default function PartnerLogin() {
@@ -10,16 +10,68 @@ export default function PartnerLogin() {
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  // Set when the email + password were correct but the email isn't confirmed yet
+  const [unconfirmedEmail, setUnconfirmedEmail] = useState('');
+  const [resendState, setResendState] = useState<'idle' | 'sending' | 'sent'>('idle');
+  const [resendError, setResendError] = useState('');
+
+  // Arriving from the confirmation link signs the partner in; send them on.
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session) router.replace('/partner/dashboard');
+    });
+  }, [router]);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault(); setLoading(true); setError('');
     const fd = new FormData(e.currentTarget);
+    const email = (fd.get('email') as string).trim();
     const { error: err } = await supabase.auth.signInWithPassword({
-      email: fd.get('email') as string, password: fd.get('password') as string,
+      email, password: fd.get('password') as string,
     });
-    if (err) { setError(err.message); setLoading(false); return; }
+    if (err) {
+      // Supabase only reports this after the password has been checked,
+      // so the credentials are right — the email just needs confirming.
+      if (err.code === 'email_not_confirmed') {
+        setUnconfirmedEmail(email); setResendState('idle'); setResendError('');
+      } else {
+        setError(err.message);
+      }
+      setLoading(false); return;
+    }
     router.push('/partner/dashboard');
   }
+
+  async function resendConfirmation() {
+    setResendState('sending'); setResendError('');
+    const { error: err } = await supabase.auth.resend({
+      type: 'signup', email: unconfirmedEmail,
+      options: { emailRedirectTo: `${window.location.origin}/partner/login` },
+    });
+    if (err) { setResendError(err.message); setResendState('idle'); return; }
+    setResendState('sent');
+  }
+
+  if (unconfirmedEmail) return (
+    <div className="min-h-[70vh] flex items-center justify-center px-4">
+      <div className="max-w-md text-center">
+        <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4"><MailCheck className="h-8 w-8 text-amber-600" /></div>
+        <h1 className="text-2xl font-heading font-bold text-slate-900 mb-2">Confirm your email first</h1>
+        <p className="text-slate-600 mb-2">Your email and password are correct, but your email address hasn't been confirmed yet.</p>
+        <p className="text-slate-600 mb-6">We sent a confirmation link to <strong>{unconfirmedEmail}</strong>. Click it to access your partner account. Check your spam folder if you can't find it.</p>
+        {resendError && <p className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg mb-4">{resendError}</p>}
+        {resendState === 'sent' && <p className="text-sm text-green-700 bg-green-50 px-3 py-2 rounded-lg mb-4">A new confirmation email is on its way.</p>}
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <button type="button" onClick={resendConfirmation} disabled={resendState !== 'idle'} className="bg-brand-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-brand-700 transition-colors disabled:opacity-60">
+            {resendState === 'sending' ? 'Sending...' : resendState === 'sent' ? 'Email Sent' : 'Resend Confirmation Email'}
+          </button>
+          <button type="button" onClick={() => setUnconfirmedEmail('')} className="border border-slate-300 text-slate-700 px-6 py-3 rounded-lg font-semibold hover:bg-slate-50 transition-colors">
+            Back to Login
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
