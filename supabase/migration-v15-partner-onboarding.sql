@@ -17,6 +17,15 @@ ALTER TABLE profiles
   ADD COLUMN IF NOT EXISTS verified_at TIMESTAMPTZ,
   ADD COLUMN IF NOT EXISTS verification_note TEXT;
 
+-- Repair customer sign-ups that were created as 'partner' before v14 (the register
+-- page did not send a role). Only pre-existing accounts (partner_type IS NULL) with
+-- no business name and no listings; must run BEFORE the hotel backfill below.
+UPDATE profiles p SET role = 'user'
+WHERE p.role = 'partner'
+  AND p.partner_type IS NULL
+  AND coalesce(trim(p.business_name), '') = ''
+  AND NOT EXISTS (SELECT 1 FROM properties pr WHERE pr.owner_id = p.id);
+
 -- Existing partners are hotel owners; they keep the listing-review flow.
 UPDATE profiles SET partner_type = 'hotel' WHERE role = 'partner' AND partner_type IS NULL;
 

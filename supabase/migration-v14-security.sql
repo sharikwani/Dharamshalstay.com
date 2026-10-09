@@ -1,5 +1,6 @@
 -- migration-v14: booking privacy + customer sign-up role
--- Safe to re-run. Section 0 can also run on its own as an urgent hotfix.
+-- Run once, before v15. Never re-run after v15 (re-running v15 afterwards restores its guards).
+-- Section 0 can also run on its own as an urgent hotfix.
 
 -- 0. Trusted-caller check and role/listing guards (hotfix for v13).
 --    Problem: protect_profile_role / protect_property_admin_fields were
@@ -75,13 +76,8 @@ CREATE POLICY "Customers read own bookings" ON bookings
 DROP POLICY IF EXISTS "Anyone can insert bookings" ON bookings;
 DROP POLICY IF EXISTS "Public insert bookings" ON bookings;
 
--- 3. Customer sign-ups were created as 'partner' (the register page did not
---    send a role, and its follow-up role change is blocked by v13). Repair
---    accounts that never acted as partners: no business name, no listings.
-UPDATE profiles p SET role = 'user'
-WHERE p.role = 'partner'
-  AND coalesce(trim(p.business_name), '') = ''
-  AND NOT EXISTS (SELECT 1 FROM properties pr WHERE pr.owner_id = p.id);
+-- 3. (Repair of customer accounts wrongly created as 'partner' moved to v15,
+--    where it runs before the hotel backfill and only for pre-existing accounts.)
 
 -- Release check (run as an authenticated NON-admin user, e.g. via the
 -- Supabase client with a normal user's JWT, NOT the SQL editor, which is
