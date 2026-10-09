@@ -49,6 +49,12 @@ describe('POST /api/bookings', () => {
   });
   afterEach(() => vi.unstubAllEnvs());
 
+  it('rejects booking_source admin from the public API', async () => {
+    const res = await post(payload({ booking_source: 'admin' }));
+    expect(res.status).toBe(400);
+    expect(inserted).toHaveLength(0);
+  });
+
   it('prices the selected plan on the server and ignores tampered amounts', async () => {
     const res = await post(payload());
     const json = await res.json();
