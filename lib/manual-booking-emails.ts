@@ -101,3 +101,24 @@ export async function sendManualBookingEmails(
     catch (e) { console.error('Partner booking email failed:', e); }
   }
 }
+
+/** Tell the customer and the partner a booking was cancelled. Never throws. */
+export async function sendCancellationEmails(bookingId: string, reason: string): Promise<void> {
+  try {
+    const v = await loadBookingView(bookingId);
+    if (!v) return;
+    const subject = `Booking cancelled – ${v.booking_ref}`;
+    const details = `<table>${[row('Booking reference', v.booking_ref), row('Booking', v.item_name), row('When', v.date_text)].join('')}</table><p>Reason: ${esc(reason)}</p>`;
+
+    if (v.guest_email) {
+      const html = wrap('Your booking was cancelled', `<p>Hi ${esc(v.guest_name)},</p><p>Your booking with Dharamshala Stay has been cancelled.</p>${details}<p>Need help? Reply to this email.</p>`);
+      try { await sendEmail({ to: v.guest_email, subject, html }); }
+      catch (e) { console.error('Customer cancellation email failed:', e); }
+    }
+    if (v.partner_contact?.email) {
+      const html = wrap('Booking cancelled', `<p>Hi ${esc(v.partner_contact.name)},</p><p>This booking has been cancelled.</p>${details}`);
+      try { await sendEmail({ to: v.partner_contact.email, subject, html }); }
+      catch (e) { console.error('Partner cancellation email failed:', e); }
+    }
+  } catch (e) { console.error('Cancellation emails failed:', e); }
+}

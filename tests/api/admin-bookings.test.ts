@@ -4,12 +4,17 @@ let role = 'admin';
 let fixtures: Record<string, any> = {};
 let insertError: any = null;
 const inserts: any[] = [];
+let updateError: any = null;
+const updates: any[] = [];
 const sendManualBookingEmails = vi.fn(async (..._a: unknown[]) => {});
+const sendCancellationEmails = vi.fn(async (..._a: unknown[]) => {});
+const loadBookingView = vi.fn(async (id: string) => ({ id, item_name: 'x' }));
 
 function builder(table: string) {
   let inserting = false;
   const b: any = {
     select: () => b, eq: () => b, in: () => b, order: () => b,
+    update: (row: any) => { updates.push({ table, row }); return { eq: async () => ({ error: updateError }) }; },
     insert: (row: any) => { inserting = true; inserts.push({ table, row }); return b; },
     maybeSingle: async () => ({ data: fixtures[table] ?? null, error: null }),
     single: async () => inserting
@@ -31,9 +36,14 @@ vi.mock('@/lib/server-auth', async (orig) => {
     },
   };
 });
-vi.mock('@/lib/manual-booking-emails', () => ({ sendManualBookingEmails: (...a: unknown[]) => sendManualBookingEmails(...a) }));
+vi.mock('@/lib/manual-booking-emails', () => ({
+  sendManualBookingEmails: (...a: unknown[]) => sendManualBookingEmails(...a),
+  sendCancellationEmails: (...a: unknown[]) => sendCancellationEmails(...a),
+  loadBookingView: (id: string) => loadBookingView(id),
+}));
 
 import { POST } from '@/app/api/admin/bookings/route';
+import { GET, PATCH } from '@/app/api/admin/bookings/[id]/route';
 
 const base = {
   category: 'trek', item_id: '11111111-1111-4111-8111-111111111111', activity_date: '2099-01-10',
@@ -44,10 +54,12 @@ const base = {
 const post = (body: unknown) => POST(new Request('http://x', { method: 'POST', body: JSON.stringify(body) }));
 
 beforeEach(() => {
-  role = 'admin'; insertError = null; inserts.length = 0; sendManualBookingEmails.mockClear();
+  role = 'admin'; insertError = null; updateError = null; inserts.length = 0; updates.length = 0;
+  sendManualBookingEmails.mockClear(); sendCancellationEmails.mockClear();
   fixtures = {
     treks: { id: 't1', status: 'published', price_per_person: 1500, commission_pct: null },
     profiles: { id: 'p1', role: 'partner', partner_type: 'trek', partner_status: 'verified', commission_pct: 20 },
+    bookings: { id: 'b1', category: 'trek', status: 'confirmed', amount: 4500, commission_status: 'pending', commission_pct: 20, partner_id: null },
   };
 });
 
@@ -130,5 +142,92 @@ describe('POST /api/admin/bookings', () => {
     expect(res.status).toBe(400);
     expect((await res.json()).error).toBe('Enter the price for this booking.');
     expect((await post({ ...base, final_amount: 3000 })).status).toBe(200);
+  });
+});
+
+const ID = '44444444-4444-4444-8444-444444444444';
+const ctx = { params: { id: ID } };
+const patch = (body: unknown) => PATCH(new Request('http://x', { method: 'PATCH', body: JSON.stringify(body) }), ctx);
+
+describe('GET/PATCH /api/admin/bookings/:id', () => {
+  it('GET returns the booking view, 404 when missing, 403 for non-admin', async () => {
+    const res = await GET(new Request('http://x'), ctx);
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ booking: { id: ID, item_name: 'x' } });
+    loadBookingView.mockResolvedValueOnce(null as any);
+    expect((await GET(new Request('http://x'), ctx)).status).toBe(404);
+    role = 'partner';
+    expect((await GET(new Request('http://x'), ctx)).status).toBe(403);
+  });
+
+  it('rejects a non-admin PATCH with 403', async () => {
+    role = 'partner';
+    expect((await patch({ action: 'cancel', reason: 'because' })).status).toBe(403);
+  });
+
+  it('assign rejects a driver of another partner', async () => {
+    fixtures.partner_staff = { id: 's1', partner_id: 'other', role: 'guide', active: true };
+    const res = await patch({ action: 'assign', partner_id: '22222222-2222-4222-8222-222222222222', staff_id: '33333333-3333-4333-8333-333333333333' });
+    expect(res.status).toBe(400);
+    expect((await res.json()).error).toMatch(/does not belong/);
+    expect(updates).toHaveLength(0);
+  });
+
+  it('assign recomputes commission from the new partner and emails with Updated prefix', async () => {
+    fixtures.profiles = { ...fixtures.profiles, commission_pct: 10 };
+    const res = await patch({ action: 'assign', partner_id: '22222222-2222-4222-8222-222222222222' });
+    expect(res.status).toBe(200);
+    expect(updates[0].row).toMatchObject({ partner_id: 'p1', staff_id: null, vehicle_id: null, commission_pct: 10, commission_amount: 450, partner_share_amount: 4050 });
+    expect(sendManualBookingEmails).toHaveBeenCalledWith(ID, { customer: false, partner: true, subjectPrefix: 'Updated: ' });
+  });
+
+  it('assign on a hotel booking is rejected', async () => {
+    fixtures.bookings = { ...fixtures.bookings, category: 'hotel' };
+    const res = await patch({ action: 'assign', partner_id: '22222222-2222-4222-8222-222222222222' });
+    expect(res.status).toBe(400);
+    expect((await res.json()).error).toMatch(/cannot be assigned/);
+  });
+
+  it('payment platform_paid via upi marks it paid to the platform', async () => {
+    const res = await patch({ action: 'payment', choice: 'platform_paid', channel: 'upi', reference: 'U1' });
+    expect(res.status).toBe(200);
+    expect(updates[0].row).toMatchObject({ payment_status: 'paid', collected_by: 'platform', payment_channel: 'upi', paid_amount: 4500 });
+  });
+
+  it('cancel sets status, reason and waives commission, then emails', async () => {
+    const res = await patch({ action: 'cancel', reason: 'Customer changed plans' });
+    expect(res.status).toBe(200);
+    expect(updates[0].row).toEqual({ status: 'cancelled', cancel_reason: 'Customer changed plans', commission_status: 'waived' });
+    expect(sendCancellationEmails).toHaveBeenCalledWith(ID, 'Customer changed plans');
+  });
+
+  it('cancel keeps a paid commission', async () => {
+    fixtures.bookings = { ...fixtures.bookings, commission_status: 'paid' };
+    await patch({ action: 'cancel', reason: 'Customer changed plans', notify: false });
+    expect(updates[0].row).toEqual({ status: 'cancelled', cancel_reason: 'Customer changed plans' });
+    expect(sendCancellationEmails).not.toHaveBeenCalled();
+  });
+
+  it('returns 409 for any change to a cancelled booking', async () => {
+    fixtures.bookings = { ...fixtures.bookings, status: 'cancelled' };
+    for (const body of [
+      { action: 'cancel', reason: 'again please' },
+      { action: 'payment', choice: 'unpaid' },
+      { action: 'assign', partner_id: null },
+    ]) {
+      const res = await patch(body);
+      expect(res.status).toBe(409);
+      expect((await res.json()).error).toBe('This booking is cancelled.');
+    }
+    expect(updates).toHaveLength(0);
+  });
+
+  it('returns 500 and sends no email when the update fails', async () => {
+    updateError = { message: 'db down' };
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const res = await patch({ action: 'cancel', reason: 'Customer changed plans' });
+    expect(res.status).toBe(500);
+    expect(sendCancellationEmails).not.toHaveBeenCalled();
+    spy.mockRestore();
   });
 });
