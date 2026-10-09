@@ -13,7 +13,7 @@ const CHOICES: { key: PaymentChoice; title: string }[] = [
   { key: 'unpaid', title: 'Not paid yet' },
 ];
 const CHANNELS: { key: PaymentChannel; label: string }[] = [
-  { key: 'upi', label: 'UPI' }, { key: 'bank', label: 'Bank transfer' }, { key: 'cash', label: 'Cash' }, { key: 'card', label: 'Card' },
+  { key: 'upi', label: 'UPI' }, { key: 'bank', label: 'Bank transfer' }, { key: 'cash', label: 'Cash' }, { key: 'card', label: 'Card' }, { key: 'stripe', label: 'Card / Stripe' },
 ];
 
 /** Builds the payment part of an API body. */

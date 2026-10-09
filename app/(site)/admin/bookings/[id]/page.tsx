@@ -53,11 +53,14 @@ export default function BookingDetailPage() {
     setError(''); setReason(''); setPanel(p);
     if (p === 'payment') {
       setNotify(true);
+      // Website bookings have no collected_by; if they were paid online they must not be shown as unpaid
+      const paidToUs = b.collected_by === 'platform'
+        || (!b.collected_by && (['paid', 'partially_paid'].includes(b.payment_status) || b.payment_method === 'online'));
       setPayment({
         ...EMPTY_PAYMENT,
-        choice: b.collected_by === 'platform' ? 'platform_paid' : b.collected_by === 'partner' ? 'partner_collects' : 'unpaid',
+        choice: paidToUs ? 'platform_paid' : b.collected_by === 'partner' ? 'partner_collects' : 'unpaid',
         amount: b.paid_amount != null ? String(b.paid_amount) : '',
-        channel: ['upi', 'bank', 'cash', 'card'].includes(b.payment_channel) ? b.payment_channel : 'upi',
+        channel: ['upi', 'bank', 'cash', 'card', 'stripe'].includes(b.payment_channel) ? b.payment_channel : b.payment_method === 'online' ? 'stripe' : 'upi',
         reference: b.payment_reference || '',
       });
     } else {
