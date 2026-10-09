@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { HttpError, jsonError, serviceClient } from '@/lib/server-auth';
+import { HttpError, clientIp, jsonError, serviceClient } from '@/lib/server-auth';
 import { KYC_BUCKET, loadOnboarding, requireActivityPartner } from '@/lib/partners/load';
 import { agreementFor, sha256Hex } from '@/lib/partners/agreement';
 import { renderAgreementPdf } from '@/lib/partners/agreement-pdf';
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
     const a = agreementFor(profile.partner_type);
     const sha256 = sha256Hex(a.body);
     const signedAt = new Date().toISOString();
-    const ip = (req.headers.get('x-forwarded-for') || '').split(',')[0].trim() || 'unknown';
+    const ip = clientIp(req);
     const userAgent = (req.headers.get('user-agent') || '').slice(0, 500);
     const pdf = await renderAgreementPdf({ ...a, signedName: parsed.data.signed_name, signedAt, ip, email: user.email || profile.email, sha256 });
 
@@ -34,10 +34,11 @@ export async function POST(req: Request) {
     const { error: upErr } = await sb.storage.from(KYC_BUCKET).upload(pdfPath, Buffer.from(pdf), { contentType: 'application/pdf' });
     if (upErr) throw upErr;
 
-    const { error: insErr } = await sb.from('partner_agreements').upsert({
+    // Append-only: a re-sign (e.g. after changes_requested) adds a new row; earlier signatures are kept.
+    const { error: insErr } = await sb.from('partner_agreements').insert({
       partner_id: profile.id, version: a.version, body_text: a.body, body_sha256: sha256,
       signed_name: parsed.data.signed_name, signed_at: signedAt, ip, user_agent: userAgent, pdf_path: pdfPath,
-    }, { onConflict: 'partner_id,version' });
+    });
     if (insErr) throw insErr;
 
     const { error: upd } = await sb.from('profiles').update({ partner_status: 'pending_verification', submitted_at: signedAt, verification_note: null }).eq('id', profile.id);

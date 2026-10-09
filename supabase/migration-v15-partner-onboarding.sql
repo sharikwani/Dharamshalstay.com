@@ -121,9 +121,9 @@ CREATE TABLE IF NOT EXISTS partner_agreements (
   signed_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   ip TEXT,
   user_agent TEXT,
-  pdf_path TEXT,
-  UNIQUE (partner_id, version)
+  pdf_path TEXT
 );
+CREATE INDEX IF NOT EXISTS idx_partner_agreements_partner ON partner_agreements(partner_id, signed_at DESC);
 
 -- 7. RLS: partners read their own rows; admins everything; no client writes.
 ALTER TABLE partner_staff ENABLE ROW LEVEL SECURITY;

@@ -43,3 +43,14 @@ export function jsonError(e: unknown): NextResponse {
   console.error(e);
   return NextResponse.json({ error: 'Server error' }, { status: 500 });
 }
+
+/** Client IP for audit records. Prefers headers set by the Vercel edge; the first X-Forwarded-For entry is client-controlled, so use the last. */
+export function clientIp(req: Request): string {
+  const h = req.headers;
+  const vercel = h.get('x-vercel-forwarded-for')?.split(',')[0].trim();
+  if (vercel) return vercel;
+  const real = h.get('x-real-ip')?.trim();
+  if (real) return real;
+  const parts = (h.get('x-forwarded-for') || '').split(',').map((p) => p.trim()).filter(Boolean);
+  return parts.length ? parts[parts.length - 1] : 'unknown';
+}
