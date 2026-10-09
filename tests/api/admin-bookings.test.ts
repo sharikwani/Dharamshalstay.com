@@ -46,7 +46,7 @@ const post = (body: unknown) => POST(new Request('http://x', { method: 'POST', b
 beforeEach(() => {
   role = 'admin'; insertError = null; inserts.length = 0; sendManualBookingEmails.mockClear();
   fixtures = {
-    treks: { id: 't1', price_per_person: 1500, commission_pct: null },
+    treks: { id: 't1', status: 'published', price_per_person: 1500, commission_pct: null },
     profiles: { id: 'p1', role: 'partner', partner_type: 'trek', partner_status: 'verified', commission_pct: 20 },
   };
 });
@@ -109,8 +109,26 @@ describe('POST /api/admin/bookings', () => {
 
   it('returns 500 and sends no email when the insert fails', async () => {
     insertError = { message: 'db down' };
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
     const res = await post(base);
     expect(res.status).toBe(500);
     expect(sendManualBookingEmails).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
+
+  it('rejects an unpublished item', async () => {
+    fixtures.treks = { ...fixtures.treks, status: 'draft' };
+    const res = await post(base);
+    expect(res.status).toBe(400);
+    expect((await res.json()).error).toBe('This item is not available for booking.');
+    expect(inserts).toHaveLength(0);
+  });
+
+  it('requires a price when the catalogue price is 0', async () => {
+    fixtures.treks = { ...fixtures.treks, price_per_person: 0 };
+    const res = await post(base);
+    expect(res.status).toBe(400);
+    expect((await res.json()).error).toBe('Enter the price for this booking.');
+    expect((await post({ ...base, final_amount: 3000 })).status).toBe(200);
   });
 });

@@ -1,15 +1,15 @@
 import { NextResponse } from 'next/server';
 import { HttpError, jsonError, requireCaller, serviceClient } from '@/lib/server-auth';
-import { STAFF_ROLE_FOR, type ActivityCategory } from '@/lib/manual-booking';
+import { BOOKABLE_STATUS, STAFF_ROLE_FOR, type ActivityCategory } from '@/lib/manual-booking';
 
 export const dynamic = 'force-dynamic';
 
-const ITEMS: Record<string, { table: string; cols: string; status: string; statusValue: string; order: string }> = {
-  hotel: { table: 'properties', cols: 'id, name, destination_slug, price_min, rooms, commission_pct, contact_email, contact_phone, listing_type', status: 'status', statusValue: 'published', order: 'name' },
-  taxi: { table: 'taxi_routes', cols: 'id, from_location, to_location, vehicle_category, vehicle_name, price, price_type, commission_pct', status: 'status', statusValue: 'active', order: 'from_location' },
-  trek: { table: 'treks', cols: 'id, name, price_per_person, commission_pct', status: 'status', statusValue: 'published', order: 'name' },
-  paragliding: { table: 'paragliding_packages', cols: 'id, name, destination, price_per_person, commission_pct', status: 'status', statusValue: 'published', order: 'name' },
-  guide: { table: 'guides', cols: 'id, name, phone, email, price_per_day', status: 'status', statusValue: 'active', order: 'name' },
+const ITEMS: Record<string, { table: string; cols: string; order: string }> = {
+  hotel: { table: 'properties', cols: 'id, name, destination_slug, price_min, rooms, commission_pct, contact_email, contact_phone, listing_type', order: 'name' },
+  taxi: { table: 'taxi_routes', cols: 'id, from_location, to_location, vehicle_category, vehicle_name, price, price_type, commission_pct', order: 'from_location' },
+  trek: { table: 'treks', cols: 'id, name, price_per_person, commission_pct', order: 'name' },
+  paragliding: { table: 'paragliding_packages', cols: 'id, name, destination, price_per_person, commission_pct', order: 'name' },
+  guide: { table: 'guides', cols: 'id, name, phone, email, price_per_day', order: 'name' },
 };
 
 export async function GET(req: Request) {
@@ -20,7 +20,7 @@ export async function GET(req: Request) {
     if (!cfg) throw new HttpError(400, 'Choose a booking type.');
     const sb = serviceClient();
 
-    const { data: items, error } = await sb.from(cfg.table).select(cfg.cols).eq(cfg.status, cfg.statusValue).order(cfg.order);
+    const { data: items, error } = await sb.from(cfg.table).select(cfg.cols).eq('status', BOOKABLE_STATUS[type as keyof typeof BOOKABLE_STATUS]).order(cfg.order);
     if (error) throw error;
 
     let partners: any[] = [];

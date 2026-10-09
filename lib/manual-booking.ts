@@ -75,3 +75,6 @@ export function todayIst(now: Date = new Date()): string {
 export function isBeforeToday(dateStr: string, today: string): boolean {
   return dateStr < today;
 }
+
+/** Status an item must have to be bookable, per category. */
+export const BOOKABLE_STATUS: Record<ManualCategory, string> = { hotel: 'published', taxi: 'active', trek: 'published', paragliding: 'published', guide: 'active' };

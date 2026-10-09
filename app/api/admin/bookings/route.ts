@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { HttpError, jsonError, requireCaller, serviceClient } from '@/lib/server-auth';
 import { quoteBooking, nightsBetween } from '@/lib/pricing';
-import { checkAssignment, commissionRateFor, isBeforeToday, paymentFields, splitAmount, todayIst } from '@/lib/manual-booking';
+import { BOOKABLE_STATUS, checkAssignment, commissionRateFor, isBeforeToday, paymentFields, splitAmount, todayIst } from '@/lib/manual-booking';
 import { sendManualBookingEmails } from '@/lib/manual-booking-emails';
 
 export const dynamic = 'force-dynamic';
@@ -14,9 +14,9 @@ const date = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 const schema = z.object({
   category: z.enum(['hotel', 'taxi', 'trek', 'paragliding', 'guide']),
   item_id: z.string().uuid().nullable(),
-  room_name: z.string().max(200).optional(),
+  room_name: z.string().max(120).optional(),
   plan_index: z.number().int().min(0).optional(),
-  plan_name: z.string().max(200).optional(),
+  plan_name: z.string().max(77).optional(),
   check_in: date.optional(),
   check_out: date.optional(),
   activity_date: date.optional(),
@@ -66,6 +66,7 @@ export async function POST(req: Request) {
       const { data, error } = await sb.from(TABLE[category]).select('*').eq('id', body.item_id).maybeSingle();
       if (error) throw new HttpError(500, 'Could not load the chosen item. Please try again.');
       if (!data) throw new HttpError(404, 'The chosen item was not found.');
+      if (data.status !== BOOKABLE_STATUS[category]) throw new HttpError(400, 'This item is not available for booking.');
       item = data;
     } else {
       if (category !== 'taxi') throw new HttpError(400, 'Please choose what is being booked.');
@@ -83,12 +84,13 @@ export async function POST(req: Request) {
       if (!body.activity_date) throw new HttpError(400, 'Choose the date of the booking.');
       if (!body.allow_past_date && isBeforeToday(body.activity_date, today)) throw new HttpError(400, PAST);
     }
-    const list_amount = item
+    const quoted = item
       ? quoteBooking(category, item, {
           num_guests: body.num_guests, check_in: body.check_in, check_out: body.check_out,
           room_name: body.room_name, plan_index: body.plan_index, guide_days: body.guide_days,
         }).amount
       : null;
+    const list_amount = quoted || null; // a catalogue price of 0 means no price on file
 
     // Final price
     const final = body.final_amount ?? list_amount;
@@ -110,10 +112,10 @@ export async function POST(req: Request) {
     if (problem) throw new HttpError(400, problem);
 
     // Commission and payment
-    const pct = commissionRateFor(category, {
+    const pct = Math.min(99.99, commissionRateFor(category, {
       partnerPct: partner?.commission_pct != null ? Number(partner.commission_pct) : null,
       propertyPct: category === 'hotel' && item?.commission_pct != null ? Number(item.commission_pct) : null,
-    });
+    }));
     const split = splitAmount(final, pct);
     const pay = paymentFields(body.payment.choice, category, final, {
       amountReceived: body.payment.amount_received, channel: body.payment.channel, reference: body.payment.reference,
