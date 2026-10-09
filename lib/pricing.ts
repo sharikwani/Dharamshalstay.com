@@ -9,11 +9,11 @@ export const BOOKING_DISCOUNT_NOTE = 'Discount of up to ₹500 on every booking'
 // Booking prices are always computed here, on the server, from database rows.
 // The browser only shows an estimate; it never decides what is charged.
 
-export type BookingCategory = 'hotel' | 'taxi' | 'trek' | 'paragliding';
-export type QuoteInput = { num_guests: number; check_in?: string | null; check_out?: string | null; room_name?: string | null; plan_index?: number | null };
+export type BookingCategory = 'hotel' | 'taxi' | 'trek' | 'paragliding' | 'guide';
+export type QuoteInput = { num_guests: number; check_in?: string | null; check_out?: string | null; room_name?: string | null; plan_index?: number | null; guide_days?: number | null };
 export type HotelLike = { price_min?: number | null; rooms?: any[] | null; commission_pct?: number | null };
 
-const DEFAULT_COMMISSION: Record<BookingCategory, number> = { hotel: 10, taxi: 10, trek: 10, paragliding: 15 };
+const DEFAULT_COMMISSION: Record<BookingCategory, number> = { hotel: 10, taxi: 10, trek: 10, paragliding: 15, guide: 20 };
 
 export function nightsBetween(checkIn: string, checkOut: string): number {
   const a = Date.parse(checkIn + 'T00:00:00Z');
@@ -40,7 +40,7 @@ function pct(entity: Record<string, any> | null, category: BookingCategory): num
 
 export function quoteBooking(category: BookingCategory, entity: Record<string, any> | null, input: QuoteInput) {
   const guests = Math.max(1, Math.floor(input.num_guests || 1));
-  const commission_pct = pct(entity, category);
+  const commission_pct = category === 'guide' ? 20 : pct(entity, category);
   if (!entity) return { amount: 0, commission_pct };
 
   let amount = 0;
@@ -51,6 +51,9 @@ export function quoteBooking(category: BookingCategory, entity: Record<string, a
     amount = (Number(entity.price_per_person) || 0) * guests;
   } else if (category === 'taxi') {
     amount = entity.price_type === 'per_km' ? 0 : Number(entity.price) || 0;
+  } else if (category === 'guide') {
+    const days = Math.min(30, Math.max(1, Math.floor(input.guide_days || 1)));
+    amount = (Number(entity.price_per_day) || 0) * days;
   }
   return { amount: Math.round(amount), commission_pct };
 }
