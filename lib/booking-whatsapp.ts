@@ -42,9 +42,9 @@ export const cancelledParams = (v: BookingView, reason: string): string[] =>
 
 /** Params for booking_confirmed_customer (7, in template order). */
 export function customerParams(v: BookingView): string[] {
-  const who = v.category === 'taxi' ? 'Your driver' : v.category === 'paragliding' ? 'Your pilot' : v.category === 'guide' ? 'Your guide' : null;
-  // Template param {{5}} must read as a full phrase on its own.
-  const assignee = v.assignee_text ? `${who || 'Assigned'}: ${v.assignee_text}` : 'Assigned: Not yet assigned';
+  const who = v.category === 'taxi' ? 'Driver' : v.category === 'paragliding' ? 'Pilot' : v.category === 'guide' || v.category === 'trek' ? 'Guide' : null;
+  // Template text reads "Your contact for this booking: {{5}}".
+  const assignee = v.assignee_text ? (who ? `${who} ${v.assignee_text}` : v.assignee_text) : 'our team, we will share details soon';
   return [v.booking_ref, v.item_name, v.date_text, v.num_guests, assignee, rupees(v.amount), v.payment_text].map(cleanParam);
 }
 

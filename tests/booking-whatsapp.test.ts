@@ -75,11 +75,11 @@ describe('params', () => {
     expect(cancelledParams(view, 'Guest\nasked')).toEqual(['DS-1', 'Hotel · Room', '1 Jan – 2 Jan 2027', 'Guest asked']);
   });
   it('customerParams has 7 values with driver/pilot/guide line', () => {
-    expect(customerParams(view)).toEqual(['DS-1', 'Hotel · Room', '1 Jan – 2 Jan 2027', '2', 'Your driver: Ravi, 98160', 'Rs.12,500', 'Payment pending']);
-    expect(customerParams({ ...view, category: 'paragliding' })[4]).toBe('Your pilot: Ravi, 98160');
-    expect(customerParams({ ...view, category: 'guide' })[4]).toBe('Your guide: Ravi, 98160');
-    expect(customerParams({ ...view, assignee_text: null })[4]).toBe('Assigned: Not yet assigned');
-    expect(customerParams({ ...view, category: 'trek' })[4]).toBe('Assigned: Ravi, 98160');
+    expect(customerParams(view)).toEqual(['DS-1', 'Hotel · Room', '1 Jan – 2 Jan 2027', '2', 'Driver Ravi, 98160', 'Rs.12,500', 'Payment pending']);
+    expect(customerParams({ ...view, category: 'paragliding' })[4]).toBe('Pilot Ravi, 98160');
+    expect(customerParams({ ...view, category: 'guide' })[4]).toBe('Guide Ravi, 98160');
+    expect(customerParams({ ...view, assignee_text: null })[4]).toBe('our team, we will share details soon');
+    expect(customerParams({ ...view, category: 'trek' })[4]).toBe('Guide Ravi, 98160');
   });
 });
 

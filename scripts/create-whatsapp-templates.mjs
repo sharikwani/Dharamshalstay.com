@@ -26,13 +26,13 @@ const templates = [
   },
   {
     name: 'booking_cancelled_partner',
-    body: 'Booking {{1}} ({{2}} on {{3}}) has been cancelled. Reason: {{4}}.',
+    body: 'Hello from Dharamshala Stay. Please note that booking {{1}} for {{2}} scheduled on {{3}} has now been cancelled and you do not need to provide this service. Reason for the cancellation: {{4}}. If you have any questions about this change, please reply to this message or call our team. Thank you.',
     example: ['DS-1042', 'Dharamshala to McLeodganj taxi', '12 Oct 2026, 9:00 AM', 'Guest changed plans'],
   },
   {
     name: 'booking_confirmed_customer',
-    body: 'Your Dharamshala Stay booking {{1}} is confirmed. Service: {{2}}. Date: {{3}}. Guests: {{4}}. {{5}}. Price: {{6}}. Payment: {{7}}. Questions? Reply here.',
-    example: ['DS-1042', 'Dharamshala to McLeodganj taxi', '12 Oct 2026, 9:00 AM', '3', 'Your driver: Ravi, 9816000001', 'Rs.1,500', 'Customer pays the partner directly'],
+    body: 'Thank you for booking with Dharamshala Stay. Your booking {{1}} is now confirmed. Service booked: {{2}}. Date and time: {{3}}. Number of guests: {{4}}. Your contact for this booking: {{5}}. Total price: {{6}}. Payment details: {{7}}. If you need to change anything or have a question, simply reply to this message and our local team will help you.',
+    example: ['DS-1042', 'Dharamshala to McLeodganj taxi', '12 Oct 2026, 9:00 AM', '3', 'Driver Ravi, 9816000001', 'Rs.1,500', 'Customer pays the partner directly'],
   },
 ];
 
