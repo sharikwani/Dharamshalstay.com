@@ -12,6 +12,7 @@ import { hiBlogG5 } from './blog-g5';
 import { hiBlogG6 } from './blog-g6';
 import { hiBlogG7 } from './blog-g7';
 import { hiBlogG8 } from './blog-g8';
+import { hiBlogG9 } from './blog-g9';
 import { hiFaqs1, hiFaqsExtra1 } from './faqs-1';
 import { hiFaqsExtra2 } from './faqs-2';
 import { hiHomepageFAQs, hiDestinations, hiHotels } from './misc';
@@ -19,7 +20,7 @@ import { hiTreks } from './treks';
 import { hiEssentials, type HindiEssentialGroup } from './essentials';
 
 export const hiPosts: Record<string, HindiPost> = {
-  ...hiBlogG1, ...hiBlogG2, ...hiBlogG3, ...hiBlogG4, ...hiBlogG5, ...hiBlogG6, ...hiBlogG7, ...hiBlogG8,
+  ...hiBlogG1, ...hiBlogG2, ...hiBlogG3, ...hiBlogG4, ...hiBlogG5, ...hiBlogG6, ...hiBlogG7, ...hiBlogG8, ...hiBlogG9,
 };
 /** Same order as the English: original set, then expansion 1, then expansion 2. */
 export const hiFaqCategories: FAQCategory[][] = [hiFaqs1, hiFaqsExtra1, hiFaqsExtra2];
