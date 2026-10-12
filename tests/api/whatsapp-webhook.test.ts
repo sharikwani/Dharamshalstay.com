@@ -109,7 +109,7 @@ describe('parse helpers', () => {
     expect(replyAction('  Accept\n')).toBe('accepted');
   });
   it('tolerates garbage', () => {
-    expect(parseWebhook(null)).toEqual({ statuses: [], replies: [] });
+    expect(parseWebhook(null)).toEqual({ statuses: [], replies: [], inbound: [] });
   });
 });
 
