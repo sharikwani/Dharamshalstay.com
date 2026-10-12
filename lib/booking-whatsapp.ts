@@ -30,22 +30,58 @@ export function recipientsFor(_view: BookingView, rows: RecipientRows): Recipien
 }
 
 const rupees = (n: unknown) => `Rs.${Number(n || 0).toLocaleString('en-IN')}`;
+const TBC = 'To be confirmed';
 
-/** Params for booking_new_partner (8, in template order). */
-export const newBookingParams = (v: BookingView): string[] => [
-  v.booking_ref, v.item_name, v.date_text, v.num_guests, v.guest_name, v.guest_phone, rupees(v.amount), v.payment_text,
-].map(cleanParam);
+/** "2026-10-12" -> "Mon, 12 Oct 2026"; '' when missing or invalid. */
+function longDate(d?: string | null): string {
+  if (!d) return '';
+  const t = new Date(String(d).slice(0, 10) + 'T00:00:00Z');
+  if (isNaN(t.getTime())) return '';
+  return t.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+}
 
-/** Params for booking_cancelled_partner (4, in template order). */
-export const cancelledParams = (v: BookingView, reason: string): string[] =>
-  [v.booking_ref, v.item_name, v.date_text, reason].map(cleanParam);
+/** "09:00" / "14:30:00" -> "9:00 AM" / "2:30 PM"; anything else is returned as typed. */
+function clock(t?: string | null): string {
+  const s = String(t ?? '').trim();
+  const m = s.match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);
+  if (!m || Number(m[1]) > 23) return s;
+  const h = Number(m[1]);
+  return `${h % 12 || 12}:${m[2]} ${h < 12 ? 'AM' : 'PM'}`;
+}
 
-/** Params for booking_confirmed_customer (7, in template order). */
+/** Date and time lines for the templates, worded for each booking type. */
+export function bookingWhen(v: BookingView): { date: string; time: string } {
+  if (v.category === 'hotel') {
+    const from = longDate(v.check_in), to = longDate(v.check_out);
+    const nights = from && to ? Math.round((Date.parse(v.check_out.slice(0, 10)) - Date.parse(v.check_in.slice(0, 10))) / 86400000) : 0;
+    const date = from && to ? `${from} to ${to}` + (nights > 0 ? ` (${nights} night${nights === 1 ? '' : 's'})` : '') : from || TBC;
+    const times = [v.property_check_in_time && `Check-in ${clock(v.property_check_in_time)}`, v.property_check_out_time && `Check-out ${clock(v.property_check_out_time)}`].filter(Boolean);
+    return { date, time: times.length ? times.join(' · ') : 'As per hotel check-in and check-out times' };
+  }
+  let date = longDate(v.activity_date) || TBC;
+  if (v.category === 'guide' && v.guide_days && date !== TBC) date += ` (${v.guide_days} day${v.guide_days === 1 ? '' : 's'})`;
+  return { date, time: clock(v.pickup_time) || TBC };
+}
+
+/** Params for booking_new_partner_v2 (9, in template order). */
+export function newBookingParams(v: BookingView): string[] {
+  const { date, time } = bookingWhen(v);
+  return [v.booking_ref, v.item_name, date, time, v.num_guests, v.guest_name, v.guest_phone, rupees(v.amount), v.payment_text].map(cleanParam);
+}
+
+/** Params for booking_cancelled_partner_v2 (5, in template order). */
+export function cancelledParams(v: BookingView, reason: string): string[] {
+  const { date, time } = bookingWhen(v);
+  return [v.booking_ref, v.item_name, date, time, reason].map(cleanParam);
+}
+
+/** Params for booking_confirmed_customer_v2 (8, in template order). */
 export function customerParams(v: BookingView): string[] {
   const who = v.category === 'taxi' ? 'Driver' : v.category === 'paragliding' ? 'Pilot' : v.category === 'guide' || v.category === 'trek' ? 'Guide' : null;
-  // Template text reads "Your contact for this booking: {{5}}".
-  const assignee = v.assignee_text ? (who ? `${who} ${v.assignee_text}` : v.assignee_text) : 'our team, we will share details soon';
-  return [v.booking_ref, v.item_name, v.date_text, v.num_guests, assignee, rupees(v.amount), v.payment_text].map(cleanParam);
+  // Template line reads "Your contact: {{6}}".
+  const assignee = v.assignee_text ? (who ? `${who} ${v.assignee_text}` : v.assignee_text) : 'Our team will share the details soon';
+  const { date, time } = bookingWhen(v);
+  return [v.booking_ref, v.item_name, date, time, v.num_guests, assignee, rupees(v.amount), v.payment_text].map(cleanParam);
 }
 
 async function row(table: string, id: string | null | undefined, cols: string): Promise<any | null> {
@@ -112,8 +148,8 @@ export async function whatsappNewBooking(bookingId: string, opts: { customer: bo
     const params = newBookingParams(v);
     const customerTo = opts.customer ? normalizeIndianPhone(v.guest_phone) : null;
     await Promise.allSettled([
-      opts.partners === false ? null : sendAll(bookingId, await loadRecipients(v), 'booking_new_partner', params),
-      customerTo ? sendAndLog(bookingId, 'customer', customerTo, 'booking_confirmed_customer', customerParams(v)) : null,
+      opts.partners === false ? null : sendAll(bookingId, await loadRecipients(v), 'booking_new_partner_v2', params),
+      customerTo ? sendAndLog(bookingId, 'customer', customerTo, 'booking_confirmed_customer_v2', customerParams(v)) : null,
     ]);
   } catch (e) { console.error('WhatsApp new booking alert failed:', e); }
 }
@@ -125,7 +161,7 @@ export async function whatsappCancelled(bookingId: string, reason: string): Prom
     const v = await loadBookingView(bookingId);
     if (!v) return;
     const params = cancelledParams(v, reason);
-    await sendAll(bookingId, await loadRecipients(v), 'booking_cancelled_partner', params);
+    await sendAll(bookingId, await loadRecipients(v), 'booking_cancelled_partner_v2', params);
   } catch (e) { console.error('WhatsApp cancellation alert failed:', e); }
 }
 
@@ -137,6 +173,6 @@ export async function whatsappReassignedAway(bookingId: string, previousPartnerI
     if (!v) return;
     const partner = await row('profiles', previousPartnerId, 'whatsapp_number, whatsapp_alerts, phone');
     const params = cancelledParams(v, 'Reassigned to another partner - you no longer need to take it');
-    await sendAll(bookingId, recipientsFor(v, { partner }), 'booking_cancelled_partner', params);
+    await sendAll(bookingId, recipientsFor(v, { partner }), 'booking_cancelled_partner_v2', params);
   } catch (e) { console.error('WhatsApp reassignment alert failed:', e); }
 }

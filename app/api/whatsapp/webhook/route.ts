@@ -55,7 +55,7 @@ async function handleReply(sb: Sb, r: { contextId: string; from: string; text: s
   // (reassigned or cancelled); their reply to the older alert no longer counts.
   const { data: later, error: lErr } = await sb.from('whatsapp_messages')
     .select('id').eq('booking_id', msg.booking_id).eq('to_phone', msg.to_phone)
-    .eq('template', 'booking_cancelled_partner').gt('created_at', msg.created_at)
+    .in('template', ['booking_cancelled_partner', 'booking_cancelled_partner_v2']).gt('created_at', msg.created_at)
     .limit(1).maybeSingle();
   if (lErr) { console.error('WhatsApp webhook: reassignment check failed', lErr); return; }
   if (later) return;

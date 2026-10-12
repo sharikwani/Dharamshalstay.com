@@ -14,10 +14,11 @@ function builder(table: string) {
   const b: any = {
     select: () => b, gt: () => b, limit: () => b,
     eq: (col: string, val: unknown) => { local[col] = val; eqs.push({ table, col, val }); return b; },
+    in: (col: string, val: unknown) => { local[col] = val; eqs.push({ table, col, val }); return b; },
     update: (row: any) => { updates.push({ table, row }); return { eq: async (col: string, val: unknown) => { eqs.push({ table, col, val }); return { error: dbError }; } }; },
     // The "later cancellation to this number" lookup reads fixtures.laterCancel instead.
     maybeSingle: async () => ({
-      data: (table === 'whatsapp_messages' && local.template === 'booking_cancelled_partner' ? fixtures.laterCancel : fixtures[table]) ?? null,
+      data: (table === 'whatsapp_messages' && Array.isArray(local.template) ? fixtures.laterCancel : fixtures[table]) ?? null,
       error: null,
     }),
   };
@@ -190,7 +191,7 @@ describe('POST /api/whatsapp/webhook', () => {
     await send(replyPayload("Can't do it"));
     expect(updates).toHaveLength(0);
     expect(sendEmail).not.toHaveBeenCalled();
-    expect(eqs).toContainEqual({ table: 'whatsapp_messages', col: 'template', val: 'booking_cancelled_partner' });
+    expect(eqs).toContainEqual({ table: 'whatsapp_messages', col: 'template', val: ['booking_cancelled_partner', 'booking_cancelled_partner_v2'] });
     expect(eqs).toContainEqual({ table: 'whatsapp_messages', col: 'to_phone', val: '919876543210' });
   });
   it('ignores replies on a cancelled booking and sends no email', async () => {

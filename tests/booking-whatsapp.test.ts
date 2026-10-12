@@ -27,10 +27,11 @@ vi.mock('@/lib/server-auth', () => ({
 /** Final state of every whatsapp_messages row, in insert order. */
 const logged = () => Array.from(h.rows.values());
 
-import { cancelledParams, customerParams, newBookingParams, recipientsFor, whatsappCancelled, whatsappNewBooking, whatsappReassignedAway } from '@/lib/booking-whatsapp';
+import { bookingWhen, cancelledParams, customerParams, newBookingParams, recipientsFor, whatsappCancelled, whatsappNewBooking, whatsappReassignedAway } from '@/lib/booking-whatsapp';
 
 const view: any = {
-  id: 'b1', booking_ref: 'DS-1', item_name: 'Hotel · Room', date_text: '1 Jan – 2 Jan 2027', num_guests: 2,
+  id: 'b1', booking_ref: 'DS-1', item_name: 'Dharamshala → McLeod Ganj', date_text: '12 Oct 2026, 09:00', num_guests: 2,
+  activity_date: '2026-10-12', pickup_time: '09:00',
   guest_name: 'Asha\nK', guest_phone: '9816000001', amount: 12500, payment_text: 'Payment pending',
   assignee_text: 'Ravi, 98160', category: 'taxi', partner_id: 'p1', staff_id: 's1', property_id: null, guide_id: null,
 };
@@ -67,19 +68,46 @@ describe('recipientsFor', () => {
   });
 });
 
+describe('bookingWhen', () => {
+  it('gives weekday date and 12-hour time for activities', () => {
+    expect(bookingWhen(view)).toEqual({ date: 'Mon, 12 Oct 2026', time: '9:00 AM' });
+    expect(bookingWhen({ ...view, pickup_time: '14:30' }).time).toBe('2:30 PM');
+    expect(bookingWhen({ ...view, pickup_time: '00:05' }).time).toBe('12:05 AM');
+    expect(bookingWhen({ ...view, pickup_time: '12:00' }).time).toBe('12:00 PM');
+  });
+  it('says the time is to be confirmed when none is set, and keeps unknown formats as typed', () => {
+    expect(bookingWhen({ ...view, pickup_time: null }).time).toBe('To be confirmed');
+    expect(bookingWhen({ ...view, pickup_time: 'Early morning' }).time).toBe('Early morning');
+  });
+  it('adds the number of days for guides', () => {
+    expect(bookingWhen({ ...view, category: 'guide', guide_days: 3 }).date).toBe('Mon, 12 Oct 2026 (3 days)');
+    expect(bookingWhen({ ...view, category: 'guide', guide_days: 1 }).date).toBe('Mon, 12 Oct 2026 (1 day)');
+  });
+  it('gives the stay and hotel check-in/out times for hotels', () => {
+    const hotel = { ...view, category: 'hotel', check_in: '2027-01-01', check_out: '2027-01-03', property_check_in_time: '13:30', property_check_out_time: '11:00' };
+    expect(bookingWhen(hotel)).toEqual({ date: 'Fri, 1 Jan 2027 to Sun, 3 Jan 2027 (2 nights)', time: 'Check-in 1:30 PM · Check-out 11:00 AM' });
+    expect(bookingWhen({ ...hotel, check_out: '2027-01-02' }).date).toBe('Fri, 1 Jan 2027 to Sat, 2 Jan 2027 (1 night)');
+    expect(bookingWhen({ ...hotel, property_check_out_time: null }).time).toBe('Check-in 1:30 PM');
+    expect(bookingWhen({ ...hotel, property_check_in_time: null, property_check_out_time: null }).time).toBe('As per hotel check-in and check-out times');
+  });
+  it('says the date is to be confirmed when missing', () => {
+    expect(bookingWhen({ ...view, activity_date: null }).date).toBe('To be confirmed');
+  });
+});
+
 describe('params', () => {
-  it('newBookingParams has 8 sanitised values in order', () => {
-    expect(newBookingParams(view)).toEqual(['DS-1', 'Hotel · Room', '1 Jan – 2 Jan 2027', '2', 'Asha K', '9816000001', 'Rs.12,500', 'Payment pending']);
+  it('newBookingParams has 9 sanitised values in order', () => {
+    expect(newBookingParams(view)).toEqual(['DS-1', 'Dharamshala → McLeod Ganj', 'Mon, 12 Oct 2026', '9:00 AM', '2', 'Asha K', '9816000001', 'Rs.12,500', 'Payment pending']);
   });
-  it('cancelledParams has 4 values', () => {
-    expect(cancelledParams(view, 'Guest\nasked')).toEqual(['DS-1', 'Hotel · Room', '1 Jan – 2 Jan 2027', 'Guest asked']);
+  it('cancelledParams has 5 values', () => {
+    expect(cancelledParams(view, 'Guest\nasked')).toEqual(['DS-1', 'Dharamshala → McLeod Ganj', 'Mon, 12 Oct 2026', '9:00 AM', 'Guest asked']);
   });
-  it('customerParams has 7 values with driver/pilot/guide line', () => {
-    expect(customerParams(view)).toEqual(['DS-1', 'Hotel · Room', '1 Jan – 2 Jan 2027', '2', 'Driver Ravi, 98160', 'Rs.12,500', 'Payment pending']);
-    expect(customerParams({ ...view, category: 'paragliding' })[4]).toBe('Pilot Ravi, 98160');
-    expect(customerParams({ ...view, category: 'guide' })[4]).toBe('Guide Ravi, 98160');
-    expect(customerParams({ ...view, assignee_text: null })[4]).toBe('our team, we will share details soon');
-    expect(customerParams({ ...view, category: 'trek' })[4]).toBe('Guide Ravi, 98160');
+  it('customerParams has 8 values with driver/pilot/guide line', () => {
+    expect(customerParams(view)).toEqual(['DS-1', 'Dharamshala → McLeod Ganj', 'Mon, 12 Oct 2026', '9:00 AM', '2', 'Driver Ravi, 98160', 'Rs.12,500', 'Payment pending']);
+    expect(customerParams({ ...view, category: 'paragliding' })[5]).toBe('Pilot Ravi, 98160');
+    expect(customerParams({ ...view, category: 'guide' })[5]).toBe('Guide Ravi, 98160');
+    expect(customerParams({ ...view, assignee_text: null })[5]).toBe('Our team will share the details soon');
+    expect(customerParams({ ...view, category: 'trek' })[5]).toBe('Guide Ravi, 98160');
   });
 });
 
@@ -88,12 +116,12 @@ describe('templates', () => {
     const { readFileSync } = await import('node:fs');
     const src = readFileSync('scripts/create-whatsapp-templates.mjs', 'utf8');
     const count = (name: string) => {
-      const body = src.split(`name: '${name}'`)[1].match(/body: '([^']*)'/)![1];
+      const body = src.split(`name: '${name}'`)[1].split('example:')[0];
       return new Set(body.match(/\{\{\d+\}\}/g)).size;
     };
-    expect(count('booking_new_partner')).toBe(newBookingParams(view).length);
-    expect(count('booking_cancelled_partner')).toBe(cancelledParams(view, 'x').length);
-    expect(count('booking_confirmed_customer')).toBe(customerParams(view).length);
+    expect(count('booking_new_partner_v2')).toBe(newBookingParams(view).length);
+    expect(count('booking_cancelled_partner_v2')).toBe(cancelledParams(view, 'x').length);
+    expect(count('booking_confirmed_customer_v2')).toBe(customerParams(view).length);
   });
 });
 
@@ -103,17 +131,17 @@ describe('notifiers', () => {
     h.tables = { profiles: partnerRow, partner_staff: { whatsapp_alerts: true, phone: '9816000004' } };
     h.sendTemplate.mockResolvedValueOnce({ ok: true, id: 'wamid.1' }).mockResolvedValueOnce({ ok: false, error: 'Template paused' });
     await expect(whatsappNewBooking('b1', { customer: false })).resolves.toBeUndefined();
-    expect(h.sendTemplate).toHaveBeenCalledWith({ to: '919816000002', template: 'booking_new_partner', params: newBookingParams(view) });
+    expect(h.sendTemplate).toHaveBeenCalledWith({ to: '919816000002', template: 'booking_new_partner_v2', params: newBookingParams(view) });
     expect(h.inserts.map((i) => i.row.status)).toEqual(['queued', 'queued']);
     expect(logged()).toEqual([
-      expect.objectContaining({ booking_id: 'b1', recipient_kind: 'partner', to_phone: '919816000002', template: 'booking_new_partner', status: 'sent', wa_message_id: 'wamid.1' }),
+      expect.objectContaining({ booking_id: 'b1', recipient_kind: 'partner', to_phone: '919816000002', template: 'booking_new_partner_v2', status: 'sent', wa_message_id: 'wamid.1' }),
       expect.objectContaining({ recipient_kind: 'staff', status: 'failed', error: 'Template paused' }),
     ]);
   });
   it('sends the customer message when asked and the number is valid', async () => {
     h.sendTemplate.mockResolvedValue({ ok: true, id: 'wamid.c' });
     await whatsappNewBooking('b1', { customer: true });
-    expect(h.sendTemplate).toHaveBeenCalledWith({ to: '919816000001', template: 'booking_confirmed_customer', params: customerParams(view) });
+    expect(h.sendTemplate).toHaveBeenCalledWith({ to: '919816000001', template: 'booking_confirmed_customer_v2', params: customerParams(view) });
     expect(logged()[0]).toMatchObject({ recipient_kind: 'customer', status: 'sent', wa_message_id: 'wamid.c' });
   });
   it('skips partner/staff/hotel/guide alerts when partners is false but still sends the customer message', async () => {
@@ -121,13 +149,13 @@ describe('notifiers', () => {
     h.sendTemplate.mockResolvedValue({ ok: true, id: 'wamid.c' });
     await whatsappNewBooking('b1', { customer: true, partners: false });
     expect(h.sendTemplate).toHaveBeenCalledTimes(1);
-    expect(h.sendTemplate).toHaveBeenCalledWith(expect.objectContaining({ to: '919816000001', template: 'booking_confirmed_customer' }));
+    expect(h.sendTemplate).toHaveBeenCalledWith(expect.objectContaining({ to: '919816000001', template: 'booking_confirmed_customer_v2' }));
   });
   it('alerts partners by default', async () => {
     h.tables = { profiles: partnerRow };
     h.sendTemplate.mockResolvedValue({ ok: true, id: 'wamid.p' });
     await whatsappNewBooking('b1', { customer: false });
-    expect(h.sendTemplate).toHaveBeenCalledWith(expect.objectContaining({ to: '919816000002', template: 'booking_new_partner' }));
+    expect(h.sendTemplate).toHaveBeenCalledWith(expect.objectContaining({ to: '919816000002', template: 'booking_new_partner_v2' }));
   });
   it('does nothing and logs nothing when not configured', async () => {
     h.configured.mockReturnValue(false);
@@ -152,7 +180,7 @@ describe('notifiers', () => {
     let atSend: any[] = [];
     h.sendTemplate.mockImplementation(async () => { atSend = logged(); return { ok: true, id: 'wamid.q' }; });
     await whatsappNewBooking('b1', { customer: false });
-    expect(atSend).toEqual([{ booking_id: 'b1', recipient_kind: 'partner', to_phone: '919816000002', template: 'booking_new_partner', status: 'queued' }]);
+    expect(atSend).toEqual([{ booking_id: 'b1', recipient_kind: 'partner', to_phone: '919816000002', template: 'booking_new_partner_v2', status: 'queued' }]);
     expect(h.sendTemplate).toHaveBeenCalledTimes(1);
     expect(h.updates[0]).toMatchObject({ id: 'row1', patch: { status: 'sent', wa_message_id: 'wamid.q', error: null } });
   });
@@ -179,8 +207,8 @@ describe('notifiers', () => {
     h.tables = { profiles: partnerRow };
     h.sendTemplate.mockResolvedValue({ ok: true, id: 'wamid.r' });
     await whatsappReassignedAway('b1', 'oldp');
-    expect(h.sendTemplate).toHaveBeenCalledWith(expect.objectContaining({ to: '919816000002', template: 'booking_cancelled_partner' }));
-    expect(h.sendTemplate.mock.calls[0][0].params[3]).toMatch(/reassigned/i);
+    expect(h.sendTemplate).toHaveBeenCalledWith(expect.objectContaining({ to: '919816000002', template: 'booking_cancelled_partner_v2' }));
+    expect(h.sendTemplate.mock.calls[0][0].params[4]).toMatch(/reassigned/i);
     expect(logged()[0]).toMatchObject({ recipient_kind: 'partner', status: 'sent' });
   });
 });

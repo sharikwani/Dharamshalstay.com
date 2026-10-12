@@ -1,4 +1,4 @@
-// Creates the three WhatsApp message templates in the Meta WhatsApp Business Account.
+// Creates the three WhatsApp message templates (v2 layout) in the Meta WhatsApp Business Account.
 // Usage: npm run whatsapp:templates   (needs WHATSAPP_TOKEN and WHATSAPP_WABA_ID in the environment or .env.local)
 import { existsSync, readFileSync } from 'node:fs';
 
@@ -17,28 +17,79 @@ if (!token || !wabaId) {
   process.exit(1);
 }
 
+const FOOTER = 'Dharamshala Stay · dharamshalastay.com';
+
 const templates = [
   {
-    name: 'booking_new_partner',
-    body: 'New booking {{1}} from Dharamshala Stay. Service: {{2}}. Date: {{3}}. Guests: {{4}}. Customer name: {{5}}. Customer phone: {{6}}. Price: {{7}}. Payment: {{8}}. Please tap a button below to confirm.',
-    example: ['DS-1042', 'Dharamshala to McLeodganj taxi', '12 Oct 2026, 9:00 AM', '3', 'Asha Sharma', '9816000000', 'Rs.1,500', 'Customer pays the partner directly'],
+    name: 'booking_new_partner_v2',
+    body: [
+      '*🆕 New booking request*',
+      '',
+      'You have a new booking from Dharamshala Stay. Please check the details below.',
+      '',
+      '📋 *Booking ID:* {{1}}',
+      '🛎️ *Service:* {{2}}',
+      '📅 *Date:* {{3}}',
+      '🕘 *Time:* {{4}}',
+      '👥 *Guests:* {{5}}',
+      '',
+      '👤 *Customer:* {{6}}',
+      '📞 *Phone:* {{7}}',
+      '',
+      '💰 *Amount:* {{8}}',
+      '💳 *Payment:* {{9}}',
+      '',
+      "Please tap *Accept* to confirm this booking, or *Can't do it* if you are not available.",
+    ].join('\n'),
+    example: ['DS-1042', 'Dharamshala → McLeod Ganj taxi', 'Sun, 12 Oct 2026', '9:00 AM', '3', 'Asha Sharma', '98160 00000', 'Rs.1,500', 'Customer pays you directly'],
     buttons: ['Accept', "Can't do it"],
   },
   {
-    name: 'booking_cancelled_partner',
-    body: 'Hello from Dharamshala Stay. Please note that booking {{1}} for {{2}} scheduled on {{3}} has now been cancelled and you do not need to provide this service. Reason for the cancellation: {{4}}. If you have any questions about this change, please reply to this message or call our team. Thank you.',
-    example: ['DS-1042', 'Dharamshala to McLeodganj taxi', '12 Oct 2026, 9:00 AM', 'Guest changed plans'],
+    name: 'booking_cancelled_partner_v2',
+    body: [
+      '*❌ Booking cancelled*',
+      '',
+      'Please note that the booking below has been cancelled. You do not need to provide this service.',
+      '',
+      '📋 *Booking ID:* {{1}}',
+      '🛎️ *Service:* {{2}}',
+      '📅 *Date:* {{3}}',
+      '🕘 *Time:* {{4}}',
+      '📝 *Reason:* {{5}}',
+      '',
+      'If you have any questions, simply reply to this message and our team will help you.',
+    ].join('\n'),
+    example: ['DS-1042', 'Dharamshala → McLeod Ganj taxi', 'Sun, 12 Oct 2026', '9:00 AM', 'Guest changed their plans'],
   },
   {
-    name: 'booking_confirmed_customer',
-    body: 'Thank you for booking with Dharamshala Stay. Your booking {{1}} is now confirmed. Service booked: {{2}}. Date and time: {{3}}. Number of guests: {{4}}. Your contact for this booking: {{5}}. Total price: {{6}}. Payment details: {{7}}. If you need to change anything or have a question, simply reply to this message and our local team will help you.',
-    example: ['DS-1042', 'Dharamshala to McLeodganj taxi', '12 Oct 2026, 9:00 AM', '3', 'Driver Ravi, 9816000001', 'Rs.1,500', 'Customer pays the partner directly'],
+    name: 'booking_confirmed_customer_v2',
+    body: [
+      '*✅ Your booking is confirmed*',
+      '',
+      'Thank you for booking with Dharamshala Stay. Here are your booking details.',
+      '',
+      '📋 *Booking ID:* {{1}}',
+      '🛎️ *Service:* {{2}}',
+      '📅 *Date:* {{3}}',
+      '🕘 *Time:* {{4}}',
+      '👥 *Guests:* {{5}}',
+      '👤 *Your contact:* {{6}}',
+      '',
+      '💰 *Total amount:* {{7}}',
+      '💳 *Payment:* {{8}}',
+      '',
+      'Need help or want to change something? Just reply to this message and our local team will help you.',
+    ].join('\n'),
+    example: ['DS-1042', 'Dharamshala → McLeod Ganj taxi', 'Sun, 12 Oct 2026', '9:00 AM', '3', 'Driver Ravi, 98160 00001', 'Rs.1,500', 'Pay the driver directly'],
   },
 ];
 
 let failed = false;
 for (const t of templates) {
-  const components = [{ type: 'BODY', text: t.body, example: { body_text: [t.example] } }];
+  const components = [
+    { type: 'BODY', text: t.body, example: { body_text: [t.example] } },
+    { type: 'FOOTER', text: FOOTER },
+  ];
   if (t.buttons) components.push({ type: 'BUTTONS', buttons: t.buttons.map((text) => ({ type: 'QUICK_REPLY', text })) });
   try {
     const res = await fetch(`https://graph.facebook.com/v21.0/${wabaId}/message_templates`, {
