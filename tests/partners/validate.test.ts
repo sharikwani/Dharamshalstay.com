@@ -24,6 +24,17 @@ describe('checkUpload', () => {
     expect(checkUpload({ type: 'image/gif', size: 10 })).toMatch(/JPG, PNG or PDF/);
     expect(checkUpload({ type: 'image/png', size: MAX_UPLOAD_BYTES + 1 })).toMatch(/4 MB/);
   });
+  it('checks the file really is the declared type when the first bytes are given', () => {
+    const jpg = new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 1]);
+    const png = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d]);
+    const pdf = new Uint8Array([0x25, 0x50, 0x44, 0x46, 0x2d]);
+    expect(checkUpload({ type: 'image/jpeg', size: 5, head: jpg })).toBeNull();
+    expect(checkUpload({ type: 'image/png', size: 5, head: png })).toBeNull();
+    expect(checkUpload({ type: 'application/pdf', size: 5, head: pdf })).toBeNull();
+    expect(checkUpload({ type: 'image/jpeg', size: 5, head: pdf })).toMatch(/does not look like/);
+    expect(checkUpload({ type: 'application/pdf', size: 5, head: png })).toMatch(/does not look like/);
+    expect(checkUpload({ type: 'image/png', size: 2, head: new Uint8Array([0x89, 0x50]) })).toMatch(/does not look like/);
+  });
 });
 
 describe('namesMatch', () => {

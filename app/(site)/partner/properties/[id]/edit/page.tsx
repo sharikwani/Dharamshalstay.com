@@ -5,7 +5,7 @@ import { Building, MapPin, Bed, Camera, Shield, ChevronRight, ChevronLeft, Save,
 import { supabase, notifyPropertySubmitted } from '@/lib/supabase';
 import { PROPERTY_AMENITIES, ROOM_AMENITIES, BATHROOM_AMENITIES, FOOD_OPTIONS, ID_TYPES } from '@/types';
 import { slugify } from '@/lib/utils';
-import { PropertyInput, PropertyCheckbox } from '@/components/forms/PropertyFormFields';
+import { PropertyInput, PropertyCheckbox, normalizePropertyNumbers, missingPropertyFields } from '@/components/forms/PropertyFormFields';
 import ImageUploader from '@/components/forms/ImageUploader';
 
 const STEPS = [
@@ -54,16 +54,19 @@ export default function EditPropertyPage() {
   const removeRoom = (idx: number) => update('rooms', (form.rooms || []).filter((_: any, i: number) => i !== idx));
 
   async function handleSave(submitForReview = false) {
+    const missing = missingPropertyFields(form);
+    if (missing.length) { alert('Please fill in these fields before saving:\n\n- ' + missing.join('\n- ')); return; }
     setSaving(true);
-    const slug = slugify(form.name || 'untitled');
     const rooms = form.rooms || [];
     const prices = rooms.map((r: any) => r.base_price || 0).filter((p: number) => p > 0);
-    const payload: Record<string, any> = {
-      ...form, slug,
+    // The slug (public URL) is fixed at creation, so renaming never changes the link or hits a duplicate slug.
+    const payload: Record<string, any> = normalizePropertyNumbers({
+      ...form,
       price_min: prices.length ? Math.min(...prices) : 0,
       price_max: prices.length ? Math.max(...prices) : 0,
       updated_at: new Date().toISOString(),
-    };
+    });
+    delete payload.slug;
     if (submitForReview) {
       payload.status = 'pending_review';
       payload.submitted_at = new Date().toISOString();
@@ -74,10 +77,12 @@ export default function EditPropertyPage() {
     delete payload.reviewed_by;
     delete payload.reviewed_at;
 
-    const { error } = await supabase.from('properties').update(payload).eq('id', params.id);
-    if (!error && submitForReview) await notifyPropertySubmitted(String(params.id));
+    const { data: saved, error } = await supabase.from('properties').update(payload).eq('id', params.id).select('id');
+    // RLS turns a forbidden update (e.g. the listing is already under review) into "0 rows", not an error.
+    if (error) { setSaving(false); alert('Error saving: ' + error.message); return; }
+    if (!saved?.length) { setSaving(false); alert('This listing can no longer be edited — it may already be under review. Please refresh.'); return; }
+    if (submitForReview) await notifyPropertySubmitted(String(params.id));
     setSaving(false);
-    if (error) { alert('Error saving: ' + error.message); return; }
     router.push('/partner/dashboard');
   }
 

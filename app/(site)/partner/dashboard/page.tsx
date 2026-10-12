@@ -29,11 +29,15 @@ export default function PartnerDashboard() {
       const { data: props } = await supabase.from('properties').select('*').eq('owner_id', user.id).order('created_at', { ascending: false });
       setProperties(props || []);
 
-      // Fetch bookings for this partner's properties
-      const propIds = (props || []).map((p: any) => p.id);
-      if (propIds.length > 0) {
-        const { data: books } = await supabase.from('bookings').select('*').in('property_id', propIds).order('created_at', { ascending: false }).limit(50);
-        setBookings(books || []);
+      // Bookings come from the API, which only reveals guest phone/email once a booking is confirmed.
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        try {
+          const res = await fetch('/api/partner/bookings', { headers: { Authorization: `Bearer ${session.access_token}` } });
+          const json = await res.json().catch(() => ({}));
+          const books: any[] = res.ok ? json.bookings || [] : [];
+          setBookings(books);
+        } catch { setBookings([]); }
       }
       setLoading(false);
     }
@@ -116,8 +120,12 @@ export default function PartnerDashboard() {
             <div className="bg-white border border-slate-200 rounded-xl p-12 text-center">
               <Building className="h-12 w-12 text-slate-300 mx-auto mb-4" />
               <h2 className="text-xl font-heading font-bold text-slate-900 mb-2">No Properties Yet</h2>
-              <p className="text-slate-600 mb-6">Start by adding your first hotel, homestay, or hostel listing.</p>
-              <Link href="/partner/properties/new" className="bg-brand-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-brand-700 inline-flex items-center gap-2"><Plus className="h-4 w-4" /> Add Property</Link>
+              {(!partnerType || partnerType === 'hotel') && (
+                <>
+                  <p className="text-slate-600 mb-6">Start by adding your first hotel, homestay, or hostel listing.</p>
+                  <Link href="/partner/properties/new" className="bg-brand-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-brand-700 inline-flex items-center gap-2"><Plus className="h-4 w-4" /> Add Property</Link>
+                </>
+              )}
             </div>
           ) : (
             <div className="space-y-4">
@@ -188,12 +196,16 @@ export default function PartnerDashboard() {
                       <div className="flex items-center gap-2 mb-1">
                         <span className="font-mono text-sm font-semibold text-brand-600">{b.booking_ref}</span>
                         <span className={cn('text-xs font-medium px-2 py-0.5 rounded-full', STATUS_COLORS[b.status])}>{statusLabel(b.status)}</span>
-                        <span className={cn('text-xs px-2 py-0.5 rounded-full', STATUS_COLORS[b.payment_method])}>{statusLabel(b.payment_method)}</span>
+                        {b.payment_text && <span className="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">{b.payment_text}</span>}
                       </div>
-                      <p className="font-medium text-slate-900">{b.guest_name} · <a href={`tel:${b.guest_phone}`} className="text-brand-600">{b.guest_phone}</a></p>
+                      <p className="font-medium text-slate-900">
+                        {b.guest_name}
+                        {b.guest_phone && <> · <a href={`tel:${b.guest_phone}`} className="text-brand-600">{b.guest_phone}</a></>}
+                      </p>
+                      {!b.guest_phone && <p className="text-xs text-slate-400">Guest contact is shown once the booking is confirmed.</p>}
                       <div className="flex gap-4 text-sm text-slate-500 mt-1">
-                        {b.check_in && <span>Check-in: {b.check_in}</span>}
-                        {b.check_out && <span>Check-out: {b.check_out}</span>}
+                        {b.item_name && <span>{b.item_name}</span>}
+                        {b.date_text && <span>{b.date_text}</span>}
                         <span>{b.num_guests} guest(s)</span>
                       </div>
                       <p className="text-xs text-slate-400 mt-1">{formatDateTime(b.created_at)}</p>
@@ -243,7 +255,7 @@ export default function PartnerDashboard() {
                 <div>
                   <span className="font-mono text-sm text-brand-600">{b.booking_ref}</span>
                   <span className="text-sm text-slate-600 ml-2">{b.guest_name}</span>
-                  <span className="text-xs text-slate-400 ml-2">{b.check_in || b.activity_date}</span>
+                  <span className="text-xs text-slate-400 ml-2">{b.date_text}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-sm font-bold">{formatPrice(b.commission_amount)}</span>

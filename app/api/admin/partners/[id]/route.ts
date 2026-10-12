@@ -58,6 +58,8 @@ export async function POST(req: Request, { params }: { params: { id: string } })
       }).eq('id', d.id);
       if (error) { console.error(error); throw new HttpError(500, SAVE_FAILED); }
     } else if (a.action === 'verify') {
+      // Only a partner who signed and submitted can be verified; suspended partners use reinstate.
+      if (p.partner_status !== 'pending_verification') throw new HttpError(409, 'Only partners waiting for review can be verified.');
       const reason = canVerify(state);
       if (reason) throw new HttpError(409, reason);
       await saveProfile({ partner_status: 'verified', verified_at: now, verification_note: null });

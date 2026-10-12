@@ -29,6 +29,13 @@ export function recipientsFor(_view: BookingView, rows: RecipientRows): Recipien
   return out;
 }
 
+/** Every number currently assigned to the booking, alerts on or off: replies are only accepted from these. */
+export function assigneePhones(rows: RecipientRows): string[] {
+  const { partner, staff, property, guide } = rows;
+  const raw = [partner?.whatsapp_number, partner?.phone, staff?.phone, property?.contact_phone, guide?.phone];
+  return Array.from(new Set(raw.map((r) => normalizeIndianPhone(r)).filter((p): p is string => !!p)));
+}
+
 const rupees = (n: unknown) => `Rs.${Number(n || 0).toLocaleString('en-IN')}`;
 const TBC = 'To be confirmed';
 
@@ -91,14 +98,25 @@ async function row(table: string, id: string | null | undefined, cols: string): 
   return data ?? null;
 }
 
-async function loadRecipients(v: BookingView): Promise<Recipient[]> {
+type Assignment = Record<string, any> & { partner_id?: string | null; staff_id?: string | null; property_id?: string | null; guide_id?: string | null };
+
+async function loadRows(a: Assignment): Promise<RecipientRows> {
   const [partner, staff, property, guide] = await Promise.all([
-    row('profiles', v.partner_id, 'whatsapp_number, whatsapp_alerts, phone'),
-    row('partner_staff', v.staff_id, 'phone, whatsapp_alerts'),
-    row('properties', v.property_id, 'contact_phone, whatsapp_alerts'),
-    row('guides', v.guide_id, 'phone, whatsapp_alerts'),
+    row('profiles', a.partner_id, 'whatsapp_number, whatsapp_alerts, phone'),
+    row('partner_staff', a.staff_id, 'phone, whatsapp_alerts'),
+    row('properties', a.property_id, 'contact_phone, whatsapp_alerts'),
+    row('guides', a.guide_id, 'phone, whatsapp_alerts'),
   ]);
-  return recipientsFor(v, { partner, staff, property, guide });
+  return { partner, staff, property, guide };
+}
+
+async function loadRecipients(v: BookingView): Promise<Recipient[]> {
+  return recipientsFor(v, await loadRows(v));
+}
+
+/** Numbers of whoever is assigned to the booking right now. */
+export async function currentAssigneePhones(a: Assignment): Promise<string[]> {
+  return assigneePhones(await loadRows(a));
 }
 
 /**
@@ -165,14 +183,27 @@ export async function whatsappCancelled(bookingId: string, reason: string): Prom
   } catch (e) { console.error('WhatsApp cancellation alert failed:', e); }
 }
 
-/** Tell the previous partner a booking moved to someone else. Never throws. */
-export async function whatsappReassignedAway(bookingId: string, previousPartnerId: string): Promise<void> {
+/**
+ * Tell whoever the booking was taken from: the previous partner (and their driver/pilot) when the
+ * partner changed, or just the previous driver/pilot when only they changed. Never throws.
+ */
+export async function whatsappReassignedAway(bookingId: string, prev: { partner_id?: string | null; staff_id?: string | null }): Promise<void> {
   try {
     if (!isWhatsAppConfigured()) return;
     const v = await loadBookingView(bookingId);
     if (!v) return;
-    const partner = await row('profiles', previousPartnerId, 'whatsapp_number, whatsapp_alerts, phone');
-    const params = cancelledParams(v, 'Reassigned to another partner - you no longer need to take it');
-    await sendAll(bookingId, recipientsFor(v, { partner }), 'booking_cancelled_partner_v2', params);
+    const partnerChanged = !!prev.partner_id && prev.partner_id !== v.partner_id;
+    const staffChanged = !!prev.staff_id && prev.staff_id !== v.staff_id;
+    if (!partnerChanged && !staffChanged) return;
+    const [current, partner, staff] = await Promise.all([
+      loadRows(v),
+      row('profiles', partnerChanged ? prev.partner_id : v.partner_id, 'whatsapp_number, whatsapp_alerts, phone'),
+      staffChanged ? row('partner_staff', prev.staff_id, 'phone, whatsapp_alerts') : null,
+    ]);
+    const keep = new Set(assigneePhones(current));
+    const to = recipientsFor(v, { partner, staff })
+      .filter((r) => (partnerChanged || r.kind === 'staff') && !keep.has(r.phone));
+    const reason = partnerChanged ? 'Reassigned to another partner - you no longer need to take it' : 'Reassigned to someone else - you no longer need to take it';
+    await sendAll(bookingId, to, 'booking_cancelled_partner_v2', cancelledParams(v, reason));
   } catch (e) { console.error('WhatsApp reassignment alert failed:', e); }
 }

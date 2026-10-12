@@ -5,6 +5,7 @@ const emailPartnerDecision = vi.fn(async () => {});
 let updateError: any = null;
 let partnerType = 'taxi';
 let docStatuses = ['approved', 'pending'];
+let partnerStatus = 'pending_verification';
 const update = vi.fn((_patch: unknown) => ({ eq: async () => ({ error: updateError }) }));
 const sb = { from: () => ({ select: () => ({ in: () => ({ order: async () => ({ data: [], error: null }) }) }), update }) };
 
@@ -21,7 +22,7 @@ vi.mock('@/lib/server-auth', async (orig) => {
 });
 vi.mock('@/lib/partners/load', () => ({
   loadOnboarding: async () => ({
-    profile: { id: 'p1', email: 'p@x.com', legal_name: 'Partner One', partner_status: 'pending_verification', partner_type: partnerType },
+    profile: { id: 'p1', email: 'p@x.com', legal_name: 'Partner One', partner_status: partnerStatus, partner_type: partnerType },
     documents: docStatuses.map((status, i) => ({ id: 'd' + i, status })),
     agreements: [{ id: 'a1' }],
     missing: [],
@@ -32,7 +33,7 @@ vi.mock('@/lib/partners/emails', () => ({ emailPartnerDecision: (...a: unknown[]
 import { GET } from '@/app/api/admin/partners/route';
 import { POST } from '@/app/api/admin/partners/[id]/route';
 
-beforeEach(() => { role = 'partner'; updateError = null; partnerType = 'taxi'; docStatuses = ['approved', 'pending']; emailPartnerDecision.mockClear(); update.mockClear(); });
+beforeEach(() => { role = 'partner'; updateError = null; partnerType = 'taxi'; docStatuses = ['approved', 'pending']; partnerStatus = 'pending_verification'; emailPartnerDecision.mockClear(); update.mockClear(); });
 
 const post = (body: unknown) => POST(new Request('http://x', { method: 'POST', body: JSON.stringify(body) }), { params: { id: 'p1' } });
 
@@ -62,6 +63,19 @@ describe('admin partner routes', () => {
     expect(res.status).toBe(200);
     expect(update).toHaveBeenCalledWith(expect.objectContaining({ partner_status: 'verified' }));
     expect(emailPartnerDecision).toHaveBeenCalledWith('p@x.com', 'Partner One', 'verified');
+  });
+
+  it('only verifies partners waiting for review', async () => {
+    role = 'admin';
+    docStatuses = ['approved', 'approved'];
+    for (const s of ['rejected', 'suspended', 'onboarding', 'changes_requested', 'verified']) {
+      partnerStatus = s;
+      const res = await post({ action: 'verify' });
+      expect(res.status).toBe(409);
+      expect((await res.json()).error).toMatch(/waiting for review/);
+    }
+    expect(update).not.toHaveBeenCalled();
+    expect(emailPartnerDecision).not.toHaveBeenCalled();
   });
 
   it('returns 500 and sends no email when the save fails', async () => {

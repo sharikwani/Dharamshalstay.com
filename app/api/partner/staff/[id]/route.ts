@@ -6,10 +6,11 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
   try {
     const { profile } = await requireActivityPartner(req, { editable: true });
     const sb = serviceClient();
-    const { data: s } = await sb.from('partner_staff').select('id').eq('id', params.id).eq('partner_id', profile.id).single();
+    const { data: s } = await sb.from('partner_staff').select('id, role').eq('id', params.id).eq('partner_id', profile.id).single();
     if (!s) throw new HttpError(404, 'Person not found.');
     const { data: docs } = await sb.from('partner_documents').select('storage_path').eq('staff_id', s.id);
     const { error } = await sb.from('partner_staff').delete().eq('id', s.id); // documents cascade
+    if (error?.code === '23503') throw new HttpError(409, `This ${s.role || 'person'} is assigned to a booking. Ask us to reassign the booking first.`);
     if (error) throw error;
     if (docs?.length) {
       const { error: rmErr } = await sb.storage.from(KYC_BUCKET).remove(docs.map((d: any) => d.storage_path));

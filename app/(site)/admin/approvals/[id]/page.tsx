@@ -1,9 +1,46 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { CheckCircle, XCircle, MessageSquare, ArrowLeft, Building, MapPin, Bed, Camera, Shield } from 'lucide-react';
+import { CheckCircle, XCircle, MessageSquare, ArrowLeft, Building, MapPin, Bed, Camera, Shield, AlertTriangle } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { formatPrice } from '@/lib/utils';
+
+// Hotel commission used when a listing's commission_pct is blank -- keep in step with DEFAULT_COMMISSION.hotel in lib/pricing.ts.
+const HOTEL_DEFAULT_COMMISSION = 10;
+
+/**
+ * Inline field the admin can correct. Defined at module level so the input keeps
+ * focus while typing; it only saves when the admin leaves the field (on blur).
+ */
+function EditableField({ label, field, value, onSave, type = 'text', multiline = false }: { label: string; field: string; value: any; onSave: (field: string, value: any) => void; type?: string; multiline?: boolean }) {
+  const [draft, setDraft] = useState<string>(value == null ? '' : String(value));
+  useEffect(() => { setDraft(value == null ? '' : String(value)); }, [value]);
+
+  function commit() {
+    const original = value == null ? '' : String(value);
+    if (draft === original) return;
+    if (type === 'number') {
+      const n = draft.trim() === '' ? NaN : Number(draft);
+      let next: number | null = Number.isFinite(n) ? n : null;
+      if (field === 'star_rating' && next != null && !(next >= 1 && next <= 5)) next = null;
+      onSave(field, next);
+    } else {
+      onSave(field, draft);
+    }
+  }
+
+  const cls = 'w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none';
+  return (
+    <div className="mb-3">
+      <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">{label}</label>
+      {multiline ? (
+        <textarea value={draft} onChange={e => setDraft(e.target.value)} onBlur={commit} rows={3} className={cls + ' resize-none'} />
+      ) : (
+        <input type={type} value={draft} onChange={e => setDraft(e.target.value)} onBlur={commit} className={cls} />
+      )}
+    </div>
+  );
+}
 
 export default function AdminApprovalDetail() {
   const router = useRouter();
@@ -78,16 +115,12 @@ export default function AdminApprovalDetail() {
   if (!property) return null;
 
   const p = property;
-  const EditableField = ({ label, field, type = 'text', multiline = false }: { label: string; field: string; type?: string; multiline?: boolean }) => (
-    <div className="mb-3">
-      <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">{label}</label>
-      {multiline ? (
-        <textarea value={p[field] || ''} onChange={e => updateField(field, e.target.value)} rows={3} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none resize-none" />
-      ) : (
-        <input type={type} value={p[field] || ''} onChange={e => updateField(field, type === 'number' ? Number(e.target.value) : e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" />
-      )}
-    </div>
+  const editable = (label: string, name: string, opts: { type?: string; multiline?: boolean } = {}) => (
+    <EditableField label={label} field={name} value={p[name]} onSave={updateField} {...opts} />
   );
+  const commissionSet = p.commission_pct != null && p.commission_pct !== '';
+  const commission = commissionSet ? Number(p.commission_pct) : HOTEL_DEFAULT_COMMISSION;
+  const commissionLow = commission < HOTEL_DEFAULT_COMMISSION;
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
@@ -106,28 +139,28 @@ export default function AdminApprovalDetail() {
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-white border border-slate-200 rounded-xl p-6">
             <h2 className="text-lg font-heading font-bold text-slate-900 mb-4 flex items-center gap-2"><Building className="h-5 w-5 text-brand-500" /> Basic Info</h2>
-            <EditableField label="Property Name" field="name" />
+            {editable('Property Name', 'name')}
             <div className="grid grid-cols-2 gap-3">
-              <EditableField label="Type" field="type" />
-              <EditableField label="Star Rating" field="star_rating" type="number" />
+              {editable('Type', 'type')}
+              {editable('Star Rating', 'star_rating', { type: 'number' })}
             </div>
-            <EditableField label="Short Description" field="short_description" multiline />
-            <EditableField label="Full Description" field="description" multiline />
+            {editable('Short Description', 'short_description', { multiline: true })}
+            {editable('Full Description', 'description', { multiline: true })}
             <div className="grid grid-cols-2 gap-3">
-              <EditableField label="Total Rooms" field="total_rooms" type="number" />
-              <EditableField label="Year Established" field="year_established" type="number" />
+              {editable('Total Rooms', 'total_rooms', { type: 'number' })}
+              {editable('Year Established', 'year_established', { type: 'number' })}
             </div>
           </div>
 
           <div className="bg-white border border-slate-200 rounded-xl p-6">
             <h2 className="text-lg font-heading font-bold text-slate-900 mb-4 flex items-center gap-2"><MapPin className="h-5 w-5 text-brand-500" /> Location</h2>
-            <EditableField label="Address" field="address_line1" />
+            {editable('Address', 'address_line1')}
             <div className="grid grid-cols-3 gap-3">
-              <EditableField label="City" field="city" />
-              <EditableField label="Pincode" field="pincode" />
-              <EditableField label="Destination" field="destination_slug" />
+              {editable('City', 'city')}
+              {editable('Pincode', 'pincode')}
+              {editable('Destination', 'destination_slug')}
             </div>
-            <EditableField label="Landmark" field="landmark" />
+            {editable('Landmark', 'landmark')}
           </div>
 
           <div className="bg-white border border-slate-200 rounded-xl p-6">
@@ -188,6 +221,18 @@ export default function AdminApprovalDetail() {
         {/* Admin actions sidebar */}
         <div>
           <div className="sticky top-24 space-y-4">
+            <div className={`border rounded-xl p-4 ${commissionLow ? 'bg-red-50 border-red-200' : 'bg-white border-slate-200'}`}>
+              <p className="text-sm text-slate-700">
+                <strong>Commission:</strong> {commission}%{' '}
+                <span className="text-slate-500">{commissionSet ? '' : `(blank, so the ${HOTEL_DEFAULT_COMMISSION}% default applies)`}</span>
+              </p>
+              {commissionLow && (
+                <p className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold px-2 py-1 rounded-full bg-red-100 text-red-700">
+                  <AlertTriangle className="h-3.5 w-3.5" /> Below the {HOTEL_DEFAULT_COMMISSION}% default -- check before approving
+                </p>
+              )}
+            </div>
+
             <div className="bg-white border border-slate-200 rounded-xl p-6">
               <h3 className="font-heading font-bold text-slate-900 mb-1">Your decision</h3>
               <p className="text-xs text-slate-500 mb-4">Pick one. The owner is told what you decided.</p>

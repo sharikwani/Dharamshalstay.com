@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { HttpError, jsonError, serviceClient } from '@/lib/server-auth';
 import { requireActivityPartner } from '@/lib/partners/load';
+import { normalizeIndianPhone } from '@/lib/whatsapp';
 
 const schema = z.object({
   role: z.enum(['driver', 'pilot', 'guide']),
@@ -16,9 +17,12 @@ export async function POST(req: Request) {
     const { profile } = await requireActivityPartner(req, { editable: true });
     const parsed = schema.safeParse(await req.json().catch(() => ({})));
     if (!parsed.success) throw new HttpError(400, 'Name and a 10-digit phone number are required.');
+    const phone = normalizeIndianPhone(parsed.data.phone);
+    if (!phone) throw new HttpError(400, 'Enter a valid 10-digit Indian mobile number for this person.');
     if (!ALLOWED[profile.partner_type].includes(parsed.data.role)) throw new HttpError(400, 'This kind of team member does not fit your account type.');
+    // WhatsApp alerts stay off until the person themselves agrees to them.
     const { data, error } = await serviceClient().from('partner_staff')
-      .insert({ ...parsed.data, licence_no: parsed.data.licence_no || null, partner_id: profile.id }).select('id').single();
+      .insert({ ...parsed.data, phone, licence_no: parsed.data.licence_no || null, partner_id: profile.id, whatsapp_alerts: false }).select('id').single();
     if (error) throw error;
     return NextResponse.json({ ok: true, id: data.id });
   } catch (e) { return jsonError(e); }

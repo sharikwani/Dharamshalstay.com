@@ -3,14 +3,14 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 const h = vi.hoisted(() => ({
   sendTemplate: vi.fn(), configured: vi.fn(), loadBookingView: vi.fn(),
   tables: {} as Record<string, any>, inserts: [] as any[], updates: [] as any[], deletes: [] as string[],
-  rows: new Map<string, any>(),
+  rows: new Map<string, any>(), byId: {} as Record<string, any>,
 }));
 vi.mock('@/lib/whatsapp-cloud', async (orig) => ({ ...(await orig<any>()), sendTemplate: h.sendTemplate, isWhatsAppConfigured: h.configured }));
 vi.mock('@/lib/manual-booking-emails', () => ({ loadBookingView: h.loadBookingView }));
 vi.mock('@/lib/server-auth', () => ({
   serviceClient: () => ({
     from: (t: string) => ({
-      select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: h.tables[t] ?? null, error: null }) }) }),
+      select: () => ({ eq: (_c: string, id: string) => ({ maybeSingle: async () => ({ data: (id in h.byId ? h.byId[id] : h.tables[t]) ?? null, error: null }) }) }),
       insert: (row: any) => {
         const id = 'row' + (h.inserts.length + 1);
         h.inserts.push({ t, row: { ...row } });
@@ -27,7 +27,7 @@ vi.mock('@/lib/server-auth', () => ({
 /** Final state of every whatsapp_messages row, in insert order. */
 const logged = () => Array.from(h.rows.values());
 
-import { bookingWhen, cancelledParams, customerParams, newBookingParams, recipientsFor, whatsappCancelled, whatsappNewBooking, whatsappReassignedAway } from '@/lib/booking-whatsapp';
+import { assigneePhones, bookingWhen, cancelledParams, customerParams, newBookingParams, recipientsFor, whatsappCancelled, whatsappNewBooking, whatsappReassignedAway } from '@/lib/booking-whatsapp';
 
 const view: any = {
   id: 'b1', booking_ref: 'DS-1', item_name: 'Dharamshala → McLeod Ganj', date_text: '12 Oct 2026, 09:00', num_guests: 2,
@@ -38,7 +38,7 @@ const view: any = {
 const ok = { whatsapp_alerts: true };
 
 beforeEach(() => {
-  vi.clearAllMocks(); h.inserts = []; h.updates = []; h.deletes = []; h.rows = new Map(); h.tables = {};
+  vi.clearAllMocks(); h.inserts = []; h.updates = []; h.deletes = []; h.rows = new Map(); h.tables = {}; h.byId = {};
   h.configured.mockReturnValue(true);
   h.loadBookingView.mockResolvedValue(view);
 });
@@ -65,6 +65,21 @@ describe('recipientsFor', () => {
   it('drops invalid numbers and duplicates', () => {
     expect(recipientsFor(view, { partner: { ...ok, whatsapp_number: '123', phone: '9816000002' } })).toEqual([]);
     expect(recipientsFor(view, { partner: { ...ok, whatsapp_number: '9816000002', phone: null }, staff: { ...ok, phone: '+91 98160 00002' } })).toEqual([{ kind: 'partner', phone: '919816000002' }]);
+  });
+});
+
+describe('assigneePhones', () => {
+  it('lists every current assignee number whether or not alerts are on', () => {
+    expect(assigneePhones({
+      partner: { whatsapp_alerts: false, whatsapp_number: '9816000002', phone: '9816000003' },
+      staff: { whatsapp_alerts: false, phone: '+91 98160 00004' },
+      property: { contact_phone: '09816000005' },
+      guide: { phone: '9816000006' },
+    })).toEqual(['919816000002', '919816000003', '919816000004', '919816000005', '919816000006']);
+  });
+  it('drops invalid numbers and duplicates', () => {
+    expect(assigneePhones({ partner: { whatsapp_number: '123', phone: '9816000002' }, staff: { phone: '9816000002' } })).toEqual(['919816000002']);
+    expect(assigneePhones({})).toEqual([]);
   });
 });
 
@@ -206,9 +221,42 @@ describe('notifiers', () => {
   it('tells the previous partner about a reassignment', async () => {
     h.tables = { profiles: partnerRow };
     h.sendTemplate.mockResolvedValue({ ok: true, id: 'wamid.r' });
-    await whatsappReassignedAway('b1', 'oldp');
+    h.byId = { p1: { whatsapp_alerts: true, whatsapp_number: '9816000009' } };
+    await whatsappReassignedAway('b1', { partner_id: 'oldp' });
     expect(h.sendTemplate).toHaveBeenCalledWith(expect.objectContaining({ to: '919816000002', template: 'booking_cancelled_partner_v2' }));
     expect(h.sendTemplate.mock.calls[0][0].params[4]).toMatch(/reassigned/i);
     expect(logged()[0]).toMatchObject({ recipient_kind: 'partner', status: 'sent' });
+  });
+  it('tells the previous partner and their driver when the partner changes', async () => {
+    h.byId = {
+      oldp: partnerRow, olds: { whatsapp_alerts: true, phone: '9816000007' },
+      p1: { whatsapp_alerts: true, whatsapp_number: '9816000009' }, s1: { whatsapp_alerts: true, phone: '9816000008' },
+    };
+    h.sendTemplate.mockResolvedValue({ ok: true, id: 'wamid.r' });
+    await whatsappReassignedAway('b1', { partner_id: 'oldp', staff_id: 'olds' });
+    expect(h.sendTemplate.mock.calls.map((c) => c[0].to).sort()).toEqual(['919816000002', '919816000007']);
+    expect(logged().map((r) => r.recipient_kind).sort()).toEqual(['partner', 'staff']);
+  });
+  it('does not tell the previous driver when the old partner has alerts off', async () => {
+    h.byId = { oldp: { ...partnerRow, whatsapp_alerts: false }, olds: { whatsapp_alerts: true, phone: '9816000007' }, p1: null, s1: null };
+    await whatsappReassignedAway('b1', { partner_id: 'oldp', staff_id: 'olds' });
+    expect(h.sendTemplate).not.toHaveBeenCalled();
+  });
+  it('tells only the previous driver when the partner stays the same', async () => {
+    h.byId = {
+      p1: partnerRow, olds: { whatsapp_alerts: true, phone: '9816000007' }, s1: { whatsapp_alerts: true, phone: '9816000008' },
+    };
+    h.sendTemplate.mockResolvedValue({ ok: true, id: 'wamid.s' });
+    await whatsappReassignedAway('b1', { partner_id: 'p1', staff_id: 'olds' });
+    expect(h.sendTemplate).toHaveBeenCalledTimes(1);
+    expect(h.sendTemplate).toHaveBeenCalledWith(expect.objectContaining({ to: '919816000007', template: 'booking_cancelled_partner_v2' }));
+    expect(h.sendTemplate.mock.calls[0][0].params[4]).toMatch(/reassigned/i);
+    expect(logged()[0]).toMatchObject({ recipient_kind: 'staff' });
+  });
+  it('never notifies a number that is still assigned, and does nothing when nothing changed', async () => {
+    h.byId = { p1: partnerRow, olds: { whatsapp_alerts: true, phone: '9816000002' }, s1: null };
+    await whatsappReassignedAway('b1', { partner_id: 'p1', staff_id: 'olds' });
+    await whatsappReassignedAway('b1', { partner_id: 'p1', staff_id: 's1' });
+    expect(h.sendTemplate).not.toHaveBeenCalled();
   });
 });

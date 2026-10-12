@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { requireCaller, serviceClient, jsonError } from '@/lib/server-auth';
 import { toBookingViews } from '@/lib/manual-booking-emails';
+import { assertActive } from '@/lib/partners/load';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,6 +10,7 @@ const REVEAL_CONTACT = ['confirmed', 'completed'];
 export async function GET(req: Request) {
   try {
     const caller = await requireCaller(req, ['partner']);
+    assertActive(caller.profile.partner_status);
     const sb = serviceClient();
 
     let query = sb.from('bookings').select('*');
@@ -33,7 +35,7 @@ export async function GET(req: Request) {
         id: v.id, booking_ref: v.booking_ref, category: v.category, status: v.status,
         item_name: v.item_name, date_text: v.date_text, assignee_text: v.assignee_text,
         num_guests: v.num_guests, amount: v.amount, collected_by: v.effective_collector, payment_text: v.payment_text,
-        commission_amount: v.commission_amount, partner_share_amount: v.partner_share_amount,
+        commission_amount: v.commission_amount, commission_status: v.commission_status ?? null, partner_share_amount: v.partner_share_amount,
         special_requests: v.special_requests ?? null, created_at: v.created_at,
         guest_name: v.guest_name,
         partner_response: row?.partner_response ?? null, partner_responded_at: row?.partner_responded_at ?? null,

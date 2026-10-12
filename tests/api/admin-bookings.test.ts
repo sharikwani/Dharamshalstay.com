@@ -286,6 +286,7 @@ describe('GET/PATCH /api/admin/bookings/:id', () => {
 
   it('assign updates open commission records', async () => {
     fixtures.profiles = { ...fixtures.profiles, commission_pct: 10 };
+    fixtures.commission_records = { id: 'cr1' };
     await patch({ action: 'assign', partner_id: '22222222-2222-4222-8222-222222222222', notify: false });
     expect(recordOps).toEqual([{ op: 'update', row: { commission_amount: 450, commission_pct: 10 } }]);
   });
@@ -379,7 +380,7 @@ describe('GET/PATCH /api/admin/bookings/:id', () => {
     await patch({ action: 'assign', partner_id: '22222222-2222-4222-8222-222222222222' });
     expect(updates[0].row).toMatchObject({ partner_id: 'p1', partner_response: null, partner_responded_at: null });
     expect(whatsappNewBooking).toHaveBeenCalledWith(ID, { customer: false, partners: true });
-    expect(whatsappReassignedAway).toHaveBeenCalledWith(ID, 'old');
+    expect(whatsappReassignedAway).toHaveBeenCalledWith(ID, { partner_id: 'old', staff_id: null });
   });
 
   it('assign to the same partner keeps their response', async () => {
@@ -387,6 +388,55 @@ describe('GET/PATCH /api/admin/bookings/:id', () => {
     await patch({ action: 'assign', partner_id: '22222222-2222-4222-8222-222222222222' });
     expect(updates[0].row).not.toHaveProperty('partner_response');
     expect(whatsappReassignedAway).not.toHaveBeenCalled();
+  });
+
+  it('assign to a new driver of the same partner tells the old driver', async () => {
+    fixtures.bookings = { ...fixtures.bookings, partner_id: 'p1', staff_id: 'olds' };
+    fixtures.partner_staff = { id: 's1', partner_id: 'p1', role: 'guide', active: true };
+    await patch({ action: 'assign', partner_id: '22222222-2222-4222-8222-222222222222', staff_id: '33333333-3333-4333-8333-333333333333' });
+    expect(whatsappReassignedAway).toHaveBeenCalledWith(ID, { partner_id: 'p1', staff_id: 'olds' });
+    expect(sendReassignedAwayEmail).not.toHaveBeenCalled();
+  });
+
+  it('assign passes the previous driver when the partner changes', async () => {
+    fixtures.bookings = { ...fixtures.bookings, partner_id: 'old', staff_id: 'olds' };
+    await patch({ action: 'assign', partner_id: '22222222-2222-4222-8222-222222222222' });
+    expect(whatsappReassignedAway).toHaveBeenCalledWith(ID, { partner_id: 'old', staff_id: 'olds' });
+  });
+
+  it('assign moves commission from not_applicable to pending and creates the record when commission becomes owed', async () => {
+    fixtures.bookings = { ...fixtures.bookings, commission_status: 'not_applicable', commission_pct: 0, payment_method: 'offline', collected_by: 'partner', activity_date: '2099-01-10' };
+    await patch({ action: 'assign', partner_id: '22222222-2222-4222-8222-222222222222', notify: false });
+    expect(updates[0].row).toMatchObject({ commission_amount: 900, commission_status: 'pending' });
+    expect(recordOps.map((o) => o.op)).toEqual(['update', 'insert']);
+    expect(recordOps[1].row).toMatchObject({ booking_id: 'b1', provider_type: 'trek', booking_amount: 4500, commission_amount: 900, commission_pct: 20, status: 'pending', due_date: '2099-01-17' });
+  });
+
+  it('assign does not duplicate an existing commission record', async () => {
+    fixtures.bookings = { ...fixtures.bookings, payment_method: 'offline', collected_by: 'partner' };
+    fixtures.commission_records = { id: 'cr1' };
+    await patch({ action: 'assign', partner_id: '22222222-2222-4222-8222-222222222222', notify: false });
+    expect(recordOps.map((o) => o.op)).toEqual(['update']);
+  });
+
+  it('assign with zero commission marks it not_applicable and deletes open records', async () => {
+    fixtures.profiles = { ...fixtures.profiles, commission_pct: 0 };
+    fixtures.bookings = { ...fixtures.bookings, payment_method: 'offline', collected_by: 'partner' };
+    await patch({ action: 'assign', partner_id: '22222222-2222-4222-8222-222222222222', notify: false });
+    expect(updates[0].row).toMatchObject({ commission_amount: 0, commission_status: 'not_applicable' });
+    expect(recordOps).toEqual([{ op: 'delete' }]);
+  });
+
+  it('assign never overwrites a waived commission or touches records for platform-collected bookings', async () => {
+    fixtures.bookings = { ...fixtures.bookings, commission_status: 'waived', payment_method: 'offline', collected_by: 'partner' };
+    await patch({ action: 'assign', partner_id: '22222222-2222-4222-8222-222222222222', notify: false });
+    expect(updates[0].row).not.toHaveProperty('commission_status');
+    expect(recordOps.map((o) => o.op)).not.toContain('insert');
+    updates.length = 0; recordOps.length = 0;
+    fixtures.bookings = { ...fixtures.bookings, commission_status: 'not_applicable', payment_status: 'paid', collected_by: 'platform' };
+    await patch({ action: 'assign', partner_id: '22222222-2222-4222-8222-222222222222', notify: false });
+    expect(updates[0].row).not.toHaveProperty('commission_status');
+    expect(recordOps.map((o) => o.op)).not.toContain('insert');
   });
 
   it('assign emails the previous partner too', async () => {

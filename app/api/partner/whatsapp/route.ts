@@ -34,7 +34,7 @@ export async function GET(req: Request) {
 
 export async function PATCH(req: Request) {
   try {
-    const { profile } = await requireActivityPartner(req);
+    const { profile } = await requireActivityPartner(req, { active: true });
     const parsed = schema.safeParse(await req.json().catch(() => null));
     if (!parsed.success) throw new HttpError(400, 'Please check the WhatsApp details.');
     const d = parsed.data;

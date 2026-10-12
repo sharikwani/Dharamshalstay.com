@@ -14,10 +14,16 @@ export function normalizeVehicleReg(s: string): string | null {
   return null;
 }
 
-export function checkUpload(f: { type: string; size: number }): string | null {
+const MAGIC: Record<string, number[]> = {
+  'image/jpeg': [0xff, 0xd8, 0xff], 'image/png': [0x89, 0x50, 0x4e, 0x47], 'application/pdf': [0x25, 0x50, 0x44, 0x46],
+};
+
+/** Pass `head` (the file's first bytes) to also check the content really is the declared type. */
+export function checkUpload(f: { type: string; size: number; head?: Uint8Array }): string | null {
   if (!ALLOWED_MIME.includes(f.type)) return 'Please upload a JPG, PNG or PDF file.';
   if (f.size > MAX_UPLOAD_BYTES) return 'File is too big. The limit is 4 MB.';
   if (f.size <= 0) return 'The file is empty.';
+  if (f.head && !MAGIC[f.type].every((b, i) => f.head![i] === b)) return 'This file does not look like a real JPG, PNG or PDF. Please upload the original file.';
   return null;
 }
 

@@ -34,6 +34,22 @@ const schema = z.discriminatedUnion('action', [
 const isId = (id: string) => uuid.safeParse(id).success;
 
 const OPEN_RECORD = ['pending', 'due', 'overdue'];
+const SETTLED = ['paid', 'waived', 'disputed'];
+
+/** Add the commission record the database trigger would have made at booking time, unless one exists. */
+async function ensureCommissionRecord(sb: ReturnType<typeof serviceClient>, merged: Record<string, any>) {
+  const { data: existing, error: findError } = await sb.from('commission_records').select('id').eq('booking_id', merged.id).limit(1).maybeSingle();
+  if (findError) { console.error('Commission record lookup failed:', findError); return; }
+  if (existing) return;
+  const base = new Date(String(merged.check_out || merged.activity_date || new Date().toISOString().slice(0, 10)) + 'T00:00:00Z');
+  base.setUTCDate(base.getUTCDate() + 7);
+  const { error } = await sb.from('commission_records').insert({
+    booking_id: merged.id, property_id: merged.property_id ?? null, provider_type: merged.category,
+    booking_amount: merged.amount, commission_pct: merged.commission_pct, commission_amount: merged.commission_amount,
+    status: 'pending', due_date: base.toISOString().slice(0, 10),
+  });
+  if (error) console.error('Commission record insert failed:', error);
+}
 
 /** Keep commission_records in step with the booking. The booking change already succeeded, so failures are only logged. */
 async function syncCommissionRecords(sb: ReturnType<typeof serviceClient>, booking: Record<string, any>, update: Record<string, unknown>, action: string) {
@@ -43,31 +59,22 @@ async function syncCommissionRecords(sb: ReturnType<typeof serviceClient>, booki
       if (booking.commission_status === 'paid') return;
       const { error } = await sb.from('commission_records').update({ status: 'waived' }).eq('booking_id', id).in('status', OPEN_RECORD);
       if (error) console.error('Commission record waive failed:', error);
-    } else if (action === 'assign') {
+      return;
+    }
+    const next = (update.commission_status ?? booking.commission_status) as string;
+    const merged: Record<string, any> = { ...booking, ...update, id };
+    if (next === 'not_applicable') {
+      const { error } = await sb.from('commission_records').delete().eq('booking_id', id).in('status', OPEN_RECORD);
+      if (error) console.error('Commission record delete failed:', error);
+      return;
+    }
+    if (action === 'assign') {
       const { error } = await sb.from('commission_records')
         .update({ commission_amount: update.commission_amount, commission_pct: update.commission_pct })
         .eq('booking_id', id).in('status', OPEN_RECORD);
       if (error) console.error('Commission record update failed:', error);
-    } else if (action === 'payment') {
-      const next = (update.commission_status ?? booking.commission_status) as string;
-      const merged = { ...booking, ...update };
-      if (next === 'not_applicable') {
-        const { error } = await sb.from('commission_records').delete().eq('booking_id', id).in('status', OPEN_RECORD);
-        if (error) console.error('Commission record delete failed:', error);
-      } else if (next === 'pending' && Number(merged.commission_amount) > 0) {
-        const { data: existing, error: findError } = await sb.from('commission_records').select('id').eq('booking_id', id).limit(1).maybeSingle();
-        if (findError) { console.error('Commission record lookup failed:', findError); return; }
-        if (existing) return;
-        const base = new Date(String(merged.check_out || merged.activity_date || new Date().toISOString().slice(0, 10)) + 'T00:00:00Z');
-        base.setUTCDate(base.getUTCDate() + 7);
-        const { error } = await sb.from('commission_records').insert({
-          booking_id: id, property_id: merged.property_id ?? null, provider_type: merged.category,
-          booking_amount: merged.amount, commission_pct: merged.commission_pct, commission_amount: merged.commission_amount,
-          status: 'pending', due_date: base.toISOString().slice(0, 10),
-        });
-        if (error) console.error('Commission record insert failed:', error);
-      }
     }
+    if (next === 'pending' && Number(merged.commission_amount) > 0) await ensureCommissionRecord(sb, merged);
   } catch (e) { console.error('Commission record sync failed:', e); }
 }
 
@@ -139,7 +146,12 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
         partner_id: partner?.id ?? null, staff_id: staff?.id ?? null, vehicle_id: vehicle?.id ?? null,
         commission_pct: pct, commission_amount: split.commission_amount, partner_share_amount: split.partner_share_amount,
       };
-      if (split.commission_amount === 0 && booking.commission_status !== 'paid') update.commission_status = 'not_applicable';
+      // Same rule as the booking-time trigger: commission is owed when the partner collects offline.
+      const owed = booking.collected_by !== 'platform' && ['offline', 'pay_at_hotel'].includes(booking.payment_method);
+      if (!SETTLED.includes(booking.commission_status)) {
+        if (split.commission_amount === 0) update.commission_status = 'not_applicable';
+        else if (owed && (booking.commission_status ?? 'not_applicable') === 'not_applicable') update.commission_status = 'pending';
+      }
       // A new partner has not answered yet; drop the previous partner's Accept / Can't do it.
       if ((booking.partner_id ?? null) !== (update.partner_id ?? null)) {
         update.partner_response = null;
@@ -187,7 +199,10 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
         await sendManualBookingEmails(id, { customer: false, partner: true, subjectPrefix: 'Updated: ' });
         if (booking.partner_id && booking.partner_id !== update.partner_id) await sendReassignedAwayEmail(id, booking.partner_id);
         await whatsappNewBooking(id, { customer: false, partners: true });
-        if (booking.partner_id && booking.partner_id !== update.partner_id) await whatsappReassignedAway(id, booking.partner_id);
+        const partnerChanged = booking.partner_id && booking.partner_id !== update.partner_id;
+        if (partnerChanged || (booking.staff_id && booking.staff_id !== update.staff_id)) {
+          await whatsappReassignedAway(id, { partner_id: booking.partner_id ?? null, staff_id: booking.staff_id ?? null });
+        }
       }
       if (body.action === 'payment' && body.notify) await sendManualBookingEmails(id, { customer: true, partner: false, subjectPrefix: 'Updated: ' });
       if (body.action === 'cancel' && body.notify) {

@@ -68,10 +68,20 @@ describe('partner documents routes', () => {
     const form = new FormData();
     form.set('doc_type', 'pan');
     form.set('expires_on', '2026-13-45');
-    form.set('file', new File([new Uint8Array(10)], 'ok.pdf', { type: 'application/pdf' }));
+    form.set('file', new File([new Uint8Array([0x25, 0x50, 0x44, 0x46, 0x2d, 0, 0, 0, 0, 0])], 'ok.pdf', { type: 'application/pdf' }));
     const res = await POST(new Request('http://x', { method: 'POST', body: form }));
     expect(res.status).toBe(400);
     expect((await res.json()).error).toBe('Expiry date is not valid.');
+    expect(upload).not.toHaveBeenCalled();
+  });
+
+  it('rejects a file whose content does not match its type before uploading anything', async () => {
+    const form = new FormData();
+    form.set('doc_type', 'pan');
+    form.set('file', new File([new TextEncoder().encode('<html>not a pdf</html>')], 'x.pdf', { type: 'application/pdf' }));
+    const res = await POST(new Request('http://x', { method: 'POST', body: form }));
+    expect(res.status).toBe(400);
+    expect((await res.json()).error).toMatch(/does not look like/);
     expect(upload).not.toHaveBeenCalled();
   });
 });

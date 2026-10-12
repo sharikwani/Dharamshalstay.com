@@ -3,6 +3,8 @@ import { serviceClient } from '@/lib/server-auth';
 import { verifySignature } from '@/lib/whatsapp-cloud';
 import { parseWebhook, replyAction, STATUS_RANK } from '@/lib/whatsapp-webhook';
 import { sendEmail, adminEmail } from '@/lib/email';
+import { currentAssigneePhones } from '@/lib/booking-whatsapp';
+import { normalizeIndianPhone } from '@/lib/whatsapp';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -47,9 +49,13 @@ async function handleReply(sb: Sb, r: { contextId: string; from: string; text: s
   if (!msg?.booking_id || !samePhone(r.from, msg.to_phone)) return;
 
   const { data: booking, error: bErr } = await sb.from('bookings')
-    .select('booking_ref, partner_response, status').eq('id', msg.booking_id).maybeSingle();
+    .select('booking_ref, partner_response, status, partner_id, staff_id, property_id, guide_id').eq('id', msg.booking_id).maybeSingle();
   if (bErr) { console.error('WhatsApp webhook: booking lookup failed', bErr); return; }
   if (!booking || booking.status === 'cancelled') return; // nothing to accept or reassign
+
+  // Only whoever is assigned now may answer; alerts may have been switched off since, so that is not checked.
+  const to = normalizeIndianPhone(msg.to_phone);
+  if (!to || !(await currentAssigneePhones(booking)).includes(to)) return;
 
   // A later cancellation notice to this number means the booking was taken away from them
   // (reassigned or cancelled); their reply to the older alert no longer counts.
@@ -60,11 +66,14 @@ async function handleReply(sb: Sb, r: { contextId: string; from: string; text: s
   if (lErr) { console.error('WhatsApp webhook: reassignment check failed', lErr); return; }
   if (later) return;
 
-  const { error: upErr } = await sb.from('bookings')
+  let update = sb.from('bookings')
     .update({ partner_response: action, partner_responded_at: new Date().toISOString() })
     .eq('id', msg.booking_id);
+  // Two quick "Can't do it" taps: only the one that actually flips the value sends the email.
+  if (action === 'declined') update = update.or('partner_response.is.null,partner_response.neq.declined');
+  const { data: changed, error: upErr } = await update.select('id');
   if (upErr) { console.error('WhatsApp webhook: booking update failed', upErr); return; }
-  if (action !== 'declined' || booking.partner_response === 'declined') return;
+  if (action !== 'declined' || booking.partner_response === 'declined' || !changed?.length) return;
   const ref = booking.booking_ref || msg.booking_id;
   await sendEmail({
     to: adminEmail(),

@@ -5,7 +5,7 @@ import { Building, MapPin, Bed, Camera, Shield, ChevronRight, ChevronLeft, Save,
 import { supabase, notifyPropertySubmitted } from '@/lib/supabase';
 import { PROPERTY_AMENITIES, ROOM_AMENITIES, BATHROOM_AMENITIES, FOOD_OPTIONS, ID_TYPES } from '@/types';
 import { slugify } from '@/lib/utils';
-import { PropertyInput, PropertyCheckbox } from '@/components/forms/PropertyFormFields';
+import { PropertyInput, PropertyCheckbox, normalizePropertyNumbers, missingPropertyFields } from '@/components/forms/PropertyFormFields';
 import ImageUploader, { ImageEntry } from '@/components/forms/ImageUploader';
 
 const STEPS = [
@@ -21,6 +21,7 @@ export default function NewPropertyPage() {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [checking, setChecking] = useState(true);
   const [userId, setUserId] = useState('');
   const [form, setForm] = useState<Record<string, any>>({
     type: 'hotel', star_rating: 3, couple_friendly: true, tax_included: false, accepts_online_payment: false,
@@ -31,10 +32,16 @@ export default function NewPropertyPage() {
   });
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
+    async function load() {
+      const { data: { user } } = await supabase.auth.getUser();
       if (!user) { router.push('/partner/login'); return; }
+      // Only hotel partners list properties; everyone else goes back to their dashboard.
+      const { data: me } = await supabase.from('profiles').select('role, partner_type').eq('id', user.id).single();
+      if (me?.role !== 'partner' || me?.partner_type !== 'hotel') { router.push('/partner/dashboard'); return; }
       setUserId(user.id);
-    });
+      setChecking(false);
+    }
+    load();
   }, [router]);
 
   const update = (key: string, val: any) => setForm(prev => ({ ...prev, [key]: val }));
@@ -55,12 +62,12 @@ export default function NewPropertyPage() {
   async function insertProperty(status: 'draft' | 'pending_review') {
     const prices = form.rooms.map((r: any) => r.base_price || 0).filter((p: number) => p > 0);
     const base = slugify(form.name || 'untitled-property');
-    const payload: Record<string, any> = {
+    const payload: Record<string, any> = normalizePropertyNumbers({
       ...form, owner_id: userId, status,
       price_min: prices.length ? Math.min(...prices) : 0,
       price_max: prices.length ? Math.max(...prices) : 0,
       ...(status === 'pending_review' && { submitted_at: new Date().toISOString() }),
-    };
+    });
     let result = await supabase.from('properties').insert({ ...payload, slug: base }).select('id').single();
     if (result.error?.code === '23505') {
       result = await supabase.from('properties').insert({ ...payload, slug: base + '-' + Math.random().toString(36).slice(2, 6) }).select('id').single();
@@ -68,7 +75,15 @@ export default function NewPropertyPage() {
     return result;
   }
 
+  /** The database needs these even for a draft -- tell the partner which ones instead of showing a Postgres error. */
+  function checkRequired(): boolean {
+    const missing = missingPropertyFields(form);
+    if (missing.length) alert('Please fill in these fields before saving:\n\n- ' + missing.join('\n- '));
+    return missing.length === 0;
+  }
+
   async function handleSaveDraft() {
+    if (!checkRequired()) return;
     setLoading(true);
     const { error } = await insertProperty('draft');
     setLoading(false);
@@ -77,6 +92,7 @@ export default function NewPropertyPage() {
   }
 
   async function handleSubmitForReview() {
+    if (!checkRequired()) return;
     setLoading(true);
     const { data, error } = await insertProperty('pending_review');
     if (data?.id) await notifyPropertySubmitted(data.id);
@@ -84,6 +100,8 @@ export default function NewPropertyPage() {
     if (!error) router.push('/partner/dashboard');
     else alert('Error submitting: ' + error.message);
   }
+
+  if (checking) return <div className="min-h-[60vh] flex items-center justify-center"><div className="w-8 h-8 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin" /></div>;
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
@@ -114,7 +132,7 @@ export default function NewPropertyPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Star Rating</label>
-                <select value={form.star_rating || ''} onChange={e => update('star_rating', Number(e.target.value))} className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                <select value={form.star_rating || ''} onChange={e => update('star_rating', Number(e.target.value) || null)} className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none">
                   <option value="">N/A</option><option value="1">1 Star</option><option value="2">2 Star</option><option value="3">3 Star</option><option value="4">4 Star</option><option value="5">5 Star</option>
                 </select>
               </div>

@@ -15,7 +15,17 @@ function builder(table: string) {
     select: () => b, gt: () => b, limit: () => b,
     eq: (col: string, val: unknown) => { local[col] = val; eqs.push({ table, col, val }); return b; },
     in: (col: string, val: unknown) => { local[col] = val; eqs.push({ table, col, val }); return b; },
-    update: (row: any) => { updates.push({ table, row }); return { eq: async (col: string, val: unknown) => { eqs.push({ table, col, val }); return { error: dbError }; } }; },
+    update: (row: any) => {
+      updates.push({ table, row });
+      // Rows the conditional update matched; fixtures.updatedRows = [] simulates a value that was already set.
+      const u: any = {
+        eq: (col: string, val: unknown) => { eqs.push({ table, col, val }); return u; },
+        or: (filter: string) => { eqs.push({ table, col: 'or', val: filter }); return u; },
+        select: () => u,
+        then: (res: any) => res({ data: dbError ? null : fixtures.updatedRows ?? [{ id: 'b1' }], error: dbError }),
+      };
+      return u;
+    },
     // The "later cancellation to this number" lookup reads fixtures.laterCancel instead.
     maybeSingle: async () => ({
       data: (table === 'whatsapp_messages' && Array.isArray(local.template) ? fixtures.laterCancel : fixtures[table]) ?? null,
@@ -50,7 +60,10 @@ const replyPayload = (title: string, from = '919876543210', ctx = 'wamid.1') =>
 beforeEach(() => {
   process.env.WHATSAPP_APP_SECRET = SECRET;
   process.env.WHATSAPP_VERIFY_TOKEN = 'verify-me';
-  fixtures = { bookings: { booking_ref: 'TRK-1', partner_response: null, status: 'confirmed' } }; dbError = null; updates.length = 0; dbCalls.length = 0; eqs.length = 0; sendEmail.mockClear();
+  fixtures = {
+    bookings: { booking_ref: 'TRK-1', partner_response: null, status: 'confirmed', partner_id: 'p1' },
+    profiles: { whatsapp_number: '9876543210', phone: null, whatsapp_alerts: true },
+  }; dbError = null; updates.length = 0; dbCalls.length = 0; eqs.length = 0; sendEmail.mockClear();
 });
 
 describe('GET verification', () => {
@@ -154,7 +167,7 @@ describe('POST /api/whatsapp/webhook', () => {
   });
   it('declined reply emails the admin with escaped text', async () => {
     fixtures.whatsapp_messages = { id: 'm1', booking_id: 'b1', to_phone: '919876543210' };
-    fixtures.bookings = { booking_ref: 'TRK-<1>', status: 'confirmed' };
+    fixtures.bookings = { booking_ref: 'TRK-<1>', status: 'confirmed', partner_id: 'p1' };
     await send(replyPayload("Can't do it"));
     expect(updates[0].row).toMatchObject({ partner_response: 'declined' });
     expect(sendEmail).toHaveBeenCalledTimes(1);
@@ -166,8 +179,16 @@ describe('POST /api/whatsapp/webhook', () => {
   });
   it('does not re-email when already declined', async () => {
     fixtures.whatsapp_messages = { id: 'm1', booking_id: 'b1', to_phone: '919876543210' };
-    fixtures.bookings = { booking_ref: 'TRK-1', partner_response: 'declined', status: 'confirmed' };
+    fixtures.bookings = { booking_ref: 'TRK-1', partner_response: 'declined', status: 'confirmed', partner_id: 'p1' };
     await send(replyPayload("Can't do it"));
+    expect(sendEmail).not.toHaveBeenCalled();
+  });
+  it('only the tap that flips the value to declined emails the admin', async () => {
+    fixtures.whatsapp_messages = { id: 'm1', booking_id: 'b1', to_phone: '919876543210' };
+    fixtures.updatedRows = [];
+    await send(replyPayload("Can't do it"));
+    expect(updates[0].row).toMatchObject({ partner_response: 'declined' });
+    expect(eqs).toContainEqual({ table: 'bookings', col: 'or', val: 'partner_response.is.null,partner_response.neq.declined' });
     expect(sendEmail).not.toHaveBeenCalled();
   });
   it('handles an interactive button_reply end to end', async () => {
@@ -180,7 +201,7 @@ describe('POST /api/whatsapp/webhook', () => {
   it('after a reassignment, the new partner declining still emails the admin', async () => {
     // A declined earlier; the reassignment cleared partner_response, so B's decline is new.
     fixtures.whatsapp_messages = { id: 'm2', booking_id: 'b1', to_phone: '919876543210', created_at: '2026-10-10T10:00:00Z' };
-    fixtures.bookings = { booking_ref: 'TRK-1', partner_response: null, status: 'confirmed' };
+    fixtures.bookings = { booking_ref: 'TRK-1', partner_response: null, status: 'confirmed', partner_id: 'p1' };
     await send(replyPayload("Can't do it"));
     expect(updates[0].row).toMatchObject({ partner_response: 'declined' });
     expect(sendEmail).toHaveBeenCalledTimes(1);
@@ -196,7 +217,7 @@ describe('POST /api/whatsapp/webhook', () => {
   });
   it('ignores replies on a cancelled booking and sends no email', async () => {
     fixtures.whatsapp_messages = { id: 'm1', booking_id: 'b1', to_phone: '919876543210' };
-    fixtures.bookings = { booking_ref: 'TRK-1', partner_response: null, status: 'cancelled' };
+    fixtures.bookings = { booking_ref: 'TRK-1', partner_response: null, status: 'cancelled', partner_id: 'p1' };
     await send(replyPayload("Can't do it"));
     expect(updates).toHaveLength(0);
     expect(sendEmail).not.toHaveBeenCalled();
@@ -215,6 +236,27 @@ describe('POST /api/whatsapp/webhook', () => {
     fixtures.whatsapp_messages = { id: 'm1', booking_id: 'b1', to_phone: '919876543210' };
     await send(replyPayload('Accept', '919111111111'));
     expect(updates).toHaveLength(0);
+  });
+  it('ignores a reply from a number that is no longer assigned to the booking', async () => {
+    fixtures.whatsapp_messages = { id: 'm1', booking_id: 'b1', to_phone: '919876543210', created_at: '2026-10-10T09:00:00Z' };
+    fixtures.profiles = { whatsapp_number: '9816000002', phone: '9816000003', whatsapp_alerts: true };
+    await send(replyPayload("Can't do it"));
+    expect(updates).toHaveLength(0);
+    expect(sendEmail).not.toHaveBeenCalled();
+  });
+  it('accepts a reply from the current partner even after they switched alerts off', async () => {
+    fixtures.whatsapp_messages = { id: 'm1', booking_id: 'b1', to_phone: '919876543210' };
+    fixtures.profiles = { whatsapp_number: null, phone: '09876543210', whatsapp_alerts: false };
+    await send(replyPayload('Accept'));
+    expect(updates[0].row).toMatchObject({ partner_response: 'accepted' });
+  });
+  it('accepts a reply from the currently assigned driver', async () => {
+    fixtures.whatsapp_messages = { id: 'm1', booking_id: 'b1', to_phone: '919876543210' };
+    fixtures.bookings = { ...fixtures.bookings, staff_id: 's1' };
+    fixtures.profiles = { whatsapp_number: '9816000002', phone: null, whatsapp_alerts: true };
+    fixtures.partner_staff = { phone: '9876543210', whatsapp_alerts: false };
+    await send(replyPayload('Accept'));
+    expect(updates[0].row).toMatchObject({ partner_response: 'accepted' });
   });
   it('ignores unrecognised reply text', async () => {
     fixtures.whatsapp_messages = { id: 'm1', booking_id: 'b1', to_phone: '919876543210' };

@@ -24,7 +24,8 @@ export async function POST(req: Request) {
 
     if (!(file instanceof File)) throw new HttpError(400, 'Choose a file to upload.');
     if (!DOC_TYPES.includes(docType)) throw new HttpError(400, 'Unknown document type.');
-    const problem = checkUpload({ type: file.type, size: file.size });
+    const bytes = Buffer.from(await file.arrayBuffer());
+    const problem = checkUpload({ type: file.type, size: bytes.length, head: bytes.subarray(0, 8) });
     if (problem) throw new HttpError(400, problem);
     if (expiresOn && !isRealDate(expiresOn)) throw new HttpError(400, 'Expiry date is not valid.');
 
@@ -52,7 +53,7 @@ export async function POST(req: Request) {
     const replaceable = (prev || []).filter((p: any) => p.status !== 'approved');
 
     const path = `${profile.id}/${docType}-${crypto.randomUUID()}.${EXT[file.type]}`;
-    const { error: upErr } = await sb.storage.from(KYC_BUCKET).upload(path, Buffer.from(await file.arrayBuffer()), { contentType: file.type, upsert: false });
+    const { error: upErr } = await sb.storage.from(KYC_BUCKET).upload(path, bytes, { contentType: file.type, upsert: false });
     if (upErr) throw upErr;
 
     const { data: row, error } = await sb.from('partner_documents').insert({

@@ -37,6 +37,7 @@ describe('/api/partner/whatsapp', () => {
     expect(res.status).toBe(200);
     expect(h.requireActivityPartner).toHaveBeenCalledTimes(1);
     expect(h.requireActivityPartner.mock.calls[0][1]?.editable).toBeFalsy();
+    expect(h.requireActivityPartner.mock.calls[0][1]?.active).toBe(true);
     expect(await res.json()).toEqual({ whatsapp_number: '919876543210', whatsapp_alerts: true, phone: '9876543210' });
   });
 

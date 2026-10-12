@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 let role = 'partner';
 let partnerType = 'trek';
+let partnerStatus: string | null = 'verified';
 let bookingRows: any[] = [];
 let propertyRows: any[] = [];
 let bookingsError: any = null;
@@ -28,7 +29,7 @@ vi.mock('@/lib/server-auth', async (orig) => {
     serviceClient: () => ({ from: (t: string) => builder(t) }),
     requireCaller: async (_req: Request, roles?: string[]) => {
       if (roles && !roles.includes(role)) throw new actual.HttpError(403, 'You do not have access to this');
-      return { user: {}, profile: { id: 'p1', role, partner_type: partnerType } };
+      return { user: {}, profile: { id: 'p1', role, partner_type: partnerType, partner_status: partnerStatus } };
     },
   };
 });
@@ -42,9 +43,9 @@ const get = () => GET(new Request('http://x'));
 
 beforeEach(() => {
   vi.spyOn(console, 'error').mockImplementation(() => {});
-  role = 'partner'; partnerType = 'trek'; bookingsError = null; viewsThrow = false; eqCalls.length = 0; inCalls.length = 0; propertyRows = [];
+  role = 'partner'; partnerType = 'trek'; partnerStatus = 'verified'; bookingsError = null; viewsThrow = false; eqCalls.length = 0; inCalls.length = 0; propertyRows = [];
   bookingRows = [
-    { id: 'b1', status: 'pending', guest_name: 'A', guest_phone: '111', guest_email: 'a@x.com', commission_pct: 20, created_by: 'admin', list_amount: 5, price_override_reason: 'x', amount: 100, commission_amount: 20, partner_share_amount: 80 },
+    { id: 'b1', status: 'pending', guest_name: 'A', guest_phone: '111', guest_email: 'a@x.com', commission_pct: 20, created_by: 'admin', list_amount: 5, price_override_reason: 'x', amount: 100, commission_amount: 20, commission_status: 'pending', partner_share_amount: 80 },
     { id: 'b2', status: 'confirmed', guest_name: 'B', guest_phone: '222', guest_email: 'b@x.com', amount: 100 },
   ];
 });
@@ -53,6 +54,16 @@ describe('GET /api/partner/bookings', () => {
   it('rejects a non-partner with 403', async () => {
     role = 'customer';
     expect((await get()).status).toBe(403);
+  });
+
+  it('blocks suspended and rejected partners with 403 before loading bookings', async () => {
+    for (const s of ['suspended', 'rejected']) {
+      partnerStatus = s;
+      const res = await get();
+      expect(res.status).toBe(403);
+      expect((await res.json()).error).toMatch(/suspended|not approved/);
+    }
+    expect(eqCalls).toHaveLength(0);
   });
 
   it('queries activity partners by partner_id = caller', async () => {
@@ -80,6 +91,7 @@ describe('GET /api/partner/bookings', () => {
     expect(bookings[1].guest_phone).toBe('222');
     for (const k of ['commission_pct', 'created_by', 'list_amount', 'price_override_reason']) expect(bookings[0]).not.toHaveProperty(k);
     expect(bookings[0].commission_amount).toBe(20);
+    expect(bookings[0].commission_status).toBe('pending');
     expect(bookings[0].partner_share_amount).toBe(80);
   });
 

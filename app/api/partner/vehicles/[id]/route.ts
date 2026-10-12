@@ -10,6 +10,7 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
     if (!v) throw new HttpError(404, 'Vehicle not found.');
     const { data: docs } = await sb.from('partner_documents').select('storage_path').eq('vehicle_id', v.id);
     const { error } = await sb.from('vehicles').delete().eq('id', v.id); // documents cascade
+    if (error?.code === '23503') throw new HttpError(409, 'This vehicle is assigned to a booking. Ask us to reassign the booking first.');
     if (error) throw error;
     if (docs?.length) {
       const { error: rmErr } = await sb.storage.from(KYC_BUCKET).remove(docs.map((d: any) => d.storage_path));

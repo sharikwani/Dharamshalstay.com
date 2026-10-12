@@ -11,9 +11,15 @@ export function assertEditable(status: string | null): void {
   }
 }
 
-export async function requireActivityPartner(req: Request, opts: { editable?: boolean } = {}): Promise<Caller> {
+export function assertActive(status: string | null): void {
+  if (status === 'suspended') throw new HttpError(403, 'Your partner account is suspended. Contact us to get it reinstated.');
+  if (status === 'rejected') throw new HttpError(403, 'Your partner application was not approved, so this is not available. Contact us if you think this is wrong.');
+}
+
+export async function requireActivityPartner(req: Request, opts: { editable?: boolean; active?: boolean } = {}): Promise<Caller> {
   const caller = await requireCaller(req, ['partner']);
   if (!ACTIVITY_PARTNER_TYPES.includes(caller.profile.partner_type)) throw new HttpError(403, 'This page is for paragliding, taxi and trek partners');
+  if (opts.active) assertActive(caller.profile.partner_status);
   if (opts.editable) assertEditable(caller.profile.partner_status);
   return caller;
 }

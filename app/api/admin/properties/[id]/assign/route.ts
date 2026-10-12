@@ -29,15 +29,17 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       updates.owner_email = owner_email.trim().toLowerCase() || null;
     }
 
-    // Also link owner_id if a user with this email exists
+    // Link owner_id only to an account that has confirmed this email (profiles.email is not proof of ownership)
     if (updates.owner_email) {
-      const { data: existingUser } = await sbAdmin
-        .from('profiles')
-        .select('id')
-        .eq('email', updates.owner_email)
-        .single();
-      if (existingUser) {
-        updates.owner_id = existingUser.id;
+      for (let page = 1; ; page++) {
+        const { data: list, error: listError } = await sbAdmin.auth.admin.listUsers({ page, perPage: 1000 });
+        if (listError) return NextResponse.json({ error: listError.message }, { status: 500 });
+        const match = list.users.find((u) => u.email?.toLowerCase() === updates.owner_email);
+        if (match) {
+          if (match.email_confirmed_at) updates.owner_id = match.id;
+          break;
+        }
+        if (!list.nextPage) break;
       }
     }
 
