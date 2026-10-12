@@ -1,0 +1,65 @@
+import { describe, expect, it, vi, beforeEach } from 'vitest';
+
+const h = vi.hoisted(() => ({ inserts: [] as any[], emails: [] as any[], statuses: [] as any[] }));
+vi.mock('@/lib/db', () => ({
+  getPublishedProperties: async () => [
+    { slug: 'panchvati-cottages', name: 'Panchvati Cottages', type: 'cottage', destination_slug: 'dharamshala', star_rating: null, price_min: 4000, price_max: 9700, short_description: 'Quiet cottages', locality: 'Kharota' },
+    { slug: 'pine-view', name: 'Pine View', type: 'hotel', destination_slug: 'mcleod-ganj', star_rating: 3, price_min: 2500, price_max: 3500, short_description: 'Valley views' },
+  ],
+  getPropertyBySlug: async (s: string) => s === 'panchvati-cottages' ? {
+    slug: s, name: 'Panchvati Cottages', check_in_time: '12:00', check_out_time: '11:00', amenities: ['Parking'], cancellation_policy: 'Free cancellation',
+    rooms: [{ name: 'Super Deluxe', base_price: 5006, max_adults: 2, is_active: true, rate_plans: [{ name: 'Room Only', price: 4000 }] }],
+  } : null,
+  getPublishedTreks: async () => [{ slug: 'triund-trek', name: 'Triund Trek', duration: '2 days', difficulty: 'moderate', price_per_person: 1500, short_description: 'Classic' }],
+  getParaglidingPackages: async () => [{ slug: 'bir-tandem', name: 'Bir Tandem', destination: 'Bir', duration: '20 min', price_per_person: 3000, includes: ['Video'], description: 'Fly' }],
+}));
+vi.mock('@/lib/taxi', () => ({ getTaxiRouteGroups: async () => [{ slug: 'dharamshala-to-mcleod-ganj', from: 'Dharamshala', to: 'McLeod Ganj', distanceKm: 9, duration: '30 min', minPrice: 500, vehicles: [{ name: 'Sedan', maxPassengers: 4, price: 500 }] }] }));
+vi.mock('@/lib/email', () => ({ sendEmail: async (m: any) => { h.emails.push(m); }, adminEmail: () => 'admin@x' }));
+vi.mock('@/lib/wa-chat/store', () => ({ setStatus: async (...a: any[]) => { h.statuses.push(a); }, history: async () => [{ author: 'customer', body: 'help' }] }));
+vi.mock('@/lib/server-auth', () => ({ serviceClient: () => ({ from: () => ({ insert: (row: any) => { h.inserts.push(row); return { select: () => ({ single: async () => ({ data: { id: 'inq1' }, error: null }) }) }; } }) }) }));
+
+import { runTool, TOOL_DEFS } from '@/lib/wa-chat/tools';
+
+const ctx = () => ({ conversationId: 'c1', phone: '919800000001', profileName: 'Asha', handedOver: false });
+beforeEach(() => { h.inserts = []; h.emails = []; h.statuses = []; });
+
+describe('tools', () => {
+  it('defines every tool', () => {
+    expect(TOOL_DEFS.map((t: any) => t.function.name).sort()).toEqual(
+      ['create_enquiry', 'get_hotel', 'get_trek', 'handover', 'list_paragliding', 'list_taxi_routes', 'list_treks', 'search_hotels']);
+  });
+  it('search_hotels filters by area and budget and links pages', async () => {
+    const r = JSON.parse(await runTool('search_hotels', { area: 'mcleod', budget_max: 3000 }, ctx()));
+    expect(r.hotels.map((x: any) => x.name)).toEqual(['Pine View']);
+    expect(r.hotels[0].link).toBe('https://www.dharamshalastay.com/hotels/pine-view');
+  });
+  it('get_hotel returns rooms with rate plans', async () => {
+    const r = JSON.parse(await runTool('get_hotel', { name: 'panchvati' }, ctx()));
+    expect(r.rooms[0]).toMatchObject({ name: 'Super Deluxe', max_adults: 2, rates: [{ name: 'Room Only', price: 4000 }] });
+    expect(r.check_in_time).toBe('12:00');
+  });
+  it('list_taxi_routes matches either end', async () => {
+    const r = JSON.parse(await runTool('list_taxi_routes', { to: 'mcleod' }, ctx()));
+    expect(r.routes[0].vehicles[0]).toEqual({ name: 'Sedan', seats: 4, price: 500 });
+  });
+  it('create_enquiry saves a whatsapp enquiry and emails the owner', async () => {
+    const r = JSON.parse(await runTool('create_enquiry', { type: 'hotel', name: 'Asha', item: 'Panchvati Cottages', check_in: '2026-10-13', check_out: '2026-10-15', guests: 2 }, ctx()));
+    expect(r).toEqual({ ok: true, enquiry_id: 'inq1' });
+    expect(h.inserts[0]).toMatchObject({ type: 'hotel', name: 'Asha', phone: '919800000001', source: 'whatsapp', whatsapp_conversation_id: 'c1', status: 'new', guests: 2 });
+    expect(h.emails[0].subject).toMatch(/WhatsApp enquiry/);
+  });
+  it('create_enquiry rejects bad dates', async () => {
+    const r = JSON.parse(await runTool('create_enquiry', { type: 'hotel', name: 'A', check_in: 'tomorrow' }, ctx()));
+    expect(r.error).toMatch(/YYYY-MM-DD/);
+  });
+  it('handover flags the chat and emails the owner', async () => {
+    const c = ctx();
+    await runTool('handover', { reason: 'Refund request' }, c);
+    expect(c.handedOver).toBe(true);
+    expect(h.statuses[0]).toEqual(['c1', 'needs_human', 'Refund request']);
+    expect(h.emails[0].subject).toMatch(/needs you/);
+  });
+  it('unknown tool returns an error string', async () => {
+    expect(JSON.parse(await runTool('nope', {}, ctx()))).toEqual({ error: 'Unknown tool' });
+  });
+});
