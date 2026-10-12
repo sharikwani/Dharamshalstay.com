@@ -1,11 +1,11 @@
 // lib/wa-chat/cancellations.ts
 import { cancelBooking } from '@/lib/bookings/cancel';
-import { hoursUntilStart, startsAt } from '@/lib/bookings/timing';
+import { hoursUntilStart } from '@/lib/bookings/timing';
 import { downloadMedia, sendText } from '@/lib/whatsapp-cloud';
 import { sendEmail, adminEmail } from '@/lib/email';
 import { serviceClient } from '@/lib/server-auth';
 import { siteConfig } from '@/lib/config';
-import { findOwnBooking, ownBookings, saveCancellation, updateCancellation, type Cancellation, type OwnBooking } from './booking-store';
+import { claimCancellation, findOwnBooking, ownBookings, saveCancellation, updateCancellation, type Cancellation, type OwnBooking } from './booking-store';
 import { checkProof } from './proof';
 import { saveOutbound, setMessageBody, setStatus } from './store';
 import type { ToolCtx } from './tools';
@@ -80,6 +80,37 @@ export async function requestCancellation(a: { booking_ref: string; reason_code:
 
 /** A document arrived while a cancellation waits for proof: check it, then cancel or send it to the owner. */
 export async function handleProof(c: Conversation, messageId: string, m: Inbound, open: Cancellation): Promise<'cancelled' | 'review'> {
+  try {
+    // Only one proof message per request is processed; a concurrent one stops here.
+    if (!(await claimCancellation(open.id))) return 'review';
+    return await processProof(c, messageId, m, open);
+  } catch (e) {
+    console.error('WhatsApp proof handling failed:', e);
+    return reviewFallback(c, messageId, m, open, e);
+  }
+}
+
+/** Last resort when proof handling threw: hand the request to the owner and answer the customer. */
+async function reviewFallback(c: Conversation, messageId: string, m: Inbound, open: Cancellation, e: unknown): Promise<'review'> {
+  const note = `error: ${e instanceof Error ? e.message : String(e)}`.slice(0, 500);
+  await updateCancellation(open.id, { status: 'needs_review', verdict: 'unclear', verdict_notes: note }).catch(() => {});
+  await setMessageBody(messageId, `${m.mediaLabel || '[document]'} [proof received: sent to the team for review]`).catch(() => {});
+  await setStatus(c.id, 'needs_human', `Cancellation proof to review: ${open.booking_id}`).catch(() => {});
+  try {
+    const r = await sendText(c.phone, PROOF_REVIEW_REPLY);
+    await saveOutbound(c.id, 'ai', PROOF_REVIEW_REPLY, r.ok ? r.id : null, r.ok ? undefined : r.error);
+  } catch (err) { console.error('Proof review reply failed:', err); }
+  const who = c.profile_name || `+${c.phone}`;
+  await sendEmail({
+    to: adminEmail(), subject: `Cancellation to review: ${open.booking_id} (${who})`,
+    html: `<p>${esc(who)} sent a cancellation proof but processing failed.</p><ul><li>Reason: ${esc(LABEL[open.reason_code])} - ${esc(open.reason_text)}</li><li>${esc(note)}</li></ul>`
+      + `<p>No proof link available.</p><p><a href="${siteConfig.url}/admin/whatsapp?c=${c.id}">Open the chat</a></p>`,
+  }).catch((err) => console.error('Proof review email failed:', err));
+  return 'review';
+}
+
+async function processProof(c: Conversation, messageId: string, m: Inbound, open: Cancellation): Promise<'cancelled' | 'review'> {
+  let cancelFailed = false;
   const b = (await ownBookings(c.phone)).find((x) => x.id === open.booking_id) ?? null;
   const media = m.mediaId ? await downloadMedia(m.mediaId) : null;
   let proof_path: string | null = null;
@@ -91,7 +122,7 @@ export async function handleProof(c: Conversation, messageId: string, m: Inbound
   }
   const verdict = !b ? { verdict: 'unclear' as const, notes: 'Booking not found' }
     : !media ? { verdict: 'unclear' as const, notes: 'Could not download the file' }
-    : await checkProof({ data: media.data, mimeType: media.mimeType, guestName: b.guest_name || c.profile_name || '', startDate: startsAt(b)?.toISOString().slice(0, 10) || '', reasonCode: open.reason_code, reasonText: open.reason_text });
+    : await checkProof({ data: media.data, mimeType: media.mimeType, guestName: b.guest_name || c.profile_name || '', startDate: startDay(b), reasonCode: open.reason_code, reasonText: open.reason_text });
 
   if (b && verdict.verdict === 'matches' && blocker(b) === null) {
     const r = await cancelBooking(b, `WhatsApp: ${LABEL[open.reason_code]} - ${open.reason_text} (proof checked)`, { notify: true });
@@ -100,15 +131,16 @@ export async function handleProof(c: Conversation, messageId: string, m: Inbound
       await setMessageBody(messageId, `${m.mediaLabel || '[document]'} [proof for ${b.booking_ref}: checked, booking cancelled]`);
       return 'cancelled';
     }
+    cancelFailed = true;
   }
 
-  const why = !b ? 'booking not found' : blocker(b) ? `booking is now ${blocker(b)}` : `proof ${verdict.verdict}`;
+  const why = cancelFailed ? 'proof matches but cancelling failed' : !b ? 'booking not found' : blocker(b) ? `booking is now ${blocker(b)}` : `proof ${verdict.verdict}`;
   await updateCancellation(open.id, { status: 'needs_review', verdict: verdict.verdict, verdict_notes: `${verdict.notes} (${why})`.slice(0, 500), proof_path });
   await setMessageBody(messageId, `${m.mediaLabel || '[document]'} [proof for ${b?.booking_ref || 'booking'}: sent to the team for review]`);
   await setStatus(c.id, 'needs_human', `Cancellation proof to review: ${b?.booking_ref || open.booking_id}`);
   const r = await sendText(c.phone, PROOF_REVIEW_REPLY);
-  await saveOutbound(c.id, 'ai', PROOF_REVIEW_REPLY, r.ok ? r.id : null, r.ok ? undefined : r.error);
-  const signed = proof_path ? (await serviceClient().storage.from(PROOF_BUCKET).createSignedUrl(proof_path, 7 * 24 * 3600)).data?.signedUrl : null;
+  await saveOutbound(c.id, 'ai', PROOF_REVIEW_REPLY, r.ok ? r.id : null, r.ok ? undefined : r.error).catch((e) => console.error('Proof reply save failed:', e));
+  const signed = proof_path ? (await serviceClient().storage.from(PROOF_BUCKET).createSignedUrl(proof_path, 7 * 24 * 3600).catch(() => null))?.data?.signedUrl : null;
   const who = c.profile_name || `+${c.phone}`;
   await sendEmail({
     to: adminEmail(), subject: `Cancellation to review: ${b?.booking_ref || ''} (${who})`,

@@ -106,3 +106,10 @@ export async function updateCancellation(id: string, patch: Partial<Cancellation
   const { error } = await serviceClient().from('whatsapp_cancellations').update({ ...patch, updated_at: now() }).eq('id', id);
   if (error) console.error('WhatsApp cancellation update failed:', error);
 }
+
+/** Take a waiting cancellation for processing. Only the first caller gets true. */
+export async function claimCancellation(id: string): Promise<boolean> {
+  const { data, error } = await serviceClient().from('whatsapp_cancellations').update({ status: 'needs_review', updated_at: now() }).eq('id', id).eq('status', 'awaiting_proof').select('id');
+  if (error) throw error;
+  return (data || []).length > 0;
+}

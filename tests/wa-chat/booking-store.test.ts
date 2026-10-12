@@ -10,14 +10,14 @@ vi.mock('@/lib/server-auth', () => ({
         ilike: (...a: any[]) => { h.filters.push(['ilike', ...a]); return b; },
         is: () => b,
         update: () => b,
-        then: (res: any) => res(t === 'whatsapp_quotes' ? { data: h.claimRows, error: null } : { data: h.rows, error: null }),
+        then: (res: any) => res((t === 'whatsapp_quotes' || t === 'whatsapp_cancellations') ? { data: h.claimRows, error: null } : { data: h.rows, error: null }),
       };
       return b;
     },
   }),
 }));
 
-import { claimQuote, findOwnBooking, ownBookings, samePhone } from '@/lib/wa-chat/booking-store';
+import { claimCancellation, claimQuote, findOwnBooking, ownBookings, samePhone } from '@/lib/wa-chat/booking-store';
 
 beforeEach(() => { h.rows = []; h.filters = []; h.claimRows = [{ id: 'q1' }]; });
 
@@ -48,5 +48,10 @@ describe('booking-store', () => {
     expect(await claimQuote('q1')).toBe(true);
     h.claimRows = [];
     expect(await claimQuote('q1')).toBe(false);
+  });
+  it('claimCancellation is true only when a row was claimed', async () => {
+    expect(await claimCancellation('x1')).toBe(true);
+    h.claimRows = [];
+    expect(await claimCancellation('x1')).toBe(false);
   });
 });

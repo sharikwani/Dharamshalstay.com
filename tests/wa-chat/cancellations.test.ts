@@ -3,18 +3,19 @@ import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 const h = vi.hoisted(() => ({
   own: [] as any[], saved: [] as any[], updated: [] as any[], cancels: [] as any[], cancelOk: true, verdict: { verdict: 'matches', notes: 'ok' } as any,
-  media: { data: new ArrayBuffer(2), mimeType: 'image/jpeg' } as any, uploads: [] as any[], bodies: [] as any[], statuses: [] as any[], sent: [] as any[], outs: [] as any[], emails: [] as any[],
+  media: { data: new ArrayBuffer(2), mimeType: 'image/jpeg' } as any, claim: true, ownThrows: false, proofArgs: [] as any[], downloads: 0, uploads: [] as any[], bodies: [] as any[], statuses: [] as any[], sent: [] as any[], outs: [] as any[], emails: [] as any[],
 }));
 vi.mock('@/lib/wa-chat/booking-store', () => ({
-  ownBookings: async () => h.own,
+  ownBookings: async () => { if (h.ownThrows) throw new Error('db down'); return h.own; },
+  claimCancellation: async () => h.claim,
   findOwnBooking: async (_p: string, ref: string) => h.own.find((b) => b.booking_ref === String(ref).trim().toUpperCase()) ?? null,
   saveCancellation: async (row: any) => { h.saved.push(row); return { id: 'x1', ...row }; },
   updateCancellation: async (...a: any[]) => { h.updated.push(a); },
 }));
 vi.mock('@/lib/bookings/cancel', () => ({ cancelBooking: async (...a: any[]) => { h.cancels.push(a); return h.cancelOk ? { ok: true } : { ok: false, error: 'x' }; } }));
-vi.mock('@/lib/wa-chat/proof', () => ({ checkProof: async () => h.verdict }));
+vi.mock('@/lib/wa-chat/proof', () => ({ checkProof: async (a: any) => { h.proofArgs.push(a); return h.verdict; } }));
 vi.mock('@/lib/whatsapp-cloud', () => ({
-  downloadMedia: async () => h.media,
+  downloadMedia: async () => { h.downloads++; return h.media; },
   sendText: async (to: string, body: string) => { h.sent.push([to, body]); return { ok: true, id: 'w' }; },
 }));
 vi.mock('@/lib/wa-chat/store', () => ({
@@ -39,7 +40,7 @@ const booking = (over: any = {}) => ({ id: 'b1', booking_ref: 'TRK-1', category:
 const ask = (a: any, c = ctx()) => requestCancellation({ booking_ref: 'TRK-1', reason_text: 'fever', ...a }, c, handover);
 
 beforeEach(() => {
-  Object.assign(h, { own: [booking()], saved: [], updated: [], cancels: [], cancelOk: true, verdict: { verdict: 'matches', notes: 'ok' },
+  Object.assign(h, { claim: true, ownThrows: false, proofArgs: [], downloads: 0, own: [booking()], saved: [], updated: [], cancels: [], cancelOk: true, verdict: { verdict: 'matches', notes: 'ok' },
     media: { data: new ArrayBuffer(2), mimeType: 'image/jpeg' }, uploads: [], bodies: [], statuses: [], sent: [], outs: [], emails: [] });
 });
 
@@ -115,5 +116,31 @@ describe('handleProof', () => {
     h.media = null;
     expect(await handleProof(conv, 'row9', msg, open)).toBe('review');
     expect(h.uploads).toEqual([]);
+  });
+  it('passes the stored start day to the proof check', async () => {
+    h.own = [booking({ activity_date: null, check_in: '2030-01-05' })];
+    await handleProof(conv, 'row9', msg, open);
+    expect(h.proofArgs[0].startDate).toBe('2030-01-05');
+  });
+  it('an error falls back to owner review and never rejects', async () => {
+    h.ownThrows = true;
+    expect(await handleProof(conv, 'row9', msg, open)).toBe('review');
+    expect(h.sent[0][1]).toMatch(/review/i);
+    expect(h.statuses[0][1]).toBe('needs_human');
+    expect(h.updated.at(-1)).toEqual(['x1', expect.objectContaining({ status: 'needs_review', verdict_notes: expect.stringMatching(/^error: db down/) })]);
+    expect(h.emails[0].html).not.toMatch(/signed/);
+  });
+  it('says so when the proof matched but cancelling failed', async () => {
+    h.cancelOk = false;
+    expect(await handleProof(conv, 'row9', msg, open)).toBe('review');
+    expect(h.emails[0].html).toMatch(/cancelling failed/);
+  });
+  it('does nothing when another run already claimed the request', async () => {
+    h.claim = false;
+    expect(await handleProof(conv, 'row9', msg, open)).toBe('review');
+    expect(h.downloads).toBe(0);
+    expect(h.cancels).toEqual([]);
+    expect(h.sent).toEqual([]);
+    expect(h.emails).toEqual([]);
   });
 });
