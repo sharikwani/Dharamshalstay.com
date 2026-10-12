@@ -1,4 +1,5 @@
-import { getPublishedProperties, getPropertyBySlug, getPublishedTreks, getParaglidingPackages } from '@/lib/db';
+import { getPublishedProperties, getPublishedTreks, getParaglidingPackages } from '@/lib/db';
+import { findHotel } from './find';
 import { getTaxiRouteGroups } from '@/lib/taxi';
 import { siteConfig } from '@/lib/config';
 import { sendEmail, adminEmail } from '@/lib/email';
@@ -38,14 +39,6 @@ const lc = (s: unknown) => String(s ?? '').toLowerCase();
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 const esc = (s: unknown) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
 const AREAS: Record<string, string> = { mcleod: 'mcleod-ganj', dharamshala: 'dharamshala', bhagsu: 'bhagsu', dharamkot: 'dharamkot', naddi: 'naddi' };
-
-async function findHotel(name: string) {
-  const direct = await getPropertyBySlug(lc(name).trim().replace(/\s+/g, '-'));
-  if (direct) return direct;
-  const all = await getPublishedProperties();
-  const hit = all.find((p: any) => lc(p.name).includes(lc(name).trim()) || p.slug === lc(name).trim());
-  return hit ? getPropertyBySlug(hit.slug) : null;
-}
 
 async function searchHotels(a: any) {
   const area = Object.entries(AREAS).find(([k]) => lc(a.area).includes(k))?.[1];
