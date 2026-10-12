@@ -1,13 +1,18 @@
 import { NextResponse } from 'next/server';
+import { waitUntil } from '@vercel/functions';
 import { serviceClient } from '@/lib/server-auth';
 import { verifySignature } from '@/lib/whatsapp-cloud';
 import { parseWebhook, replyAction, STATUS_RANK } from '@/lib/whatsapp-webhook';
 import { sendEmail, adminEmail } from '@/lib/email';
 import { currentAssigneePhones } from '@/lib/booking-whatsapp';
 import { normalizeIndianPhone } from '@/lib/whatsapp';
+import { handleInbound } from '@/lib/wa-chat/inbound';
+import { updateChatStatus } from '@/lib/wa-chat/store';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
+// Customer chats are answered in the background after Meta gets its 200.
+export const maxDuration = 60;
 
 const esc = (s: unknown) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
 const digits = (s: string) => String(s || '').replace(/\D/g, '');
@@ -29,6 +34,7 @@ export async function GET(req: Request) {
 type Sb = ReturnType<typeof serviceClient>;
 
 async function handleStatus(sb: Sb, s: { id: string; status: string; error?: string }) {
+  await updateChatStatus(s.id, s.status, s.error);
   const { data: row, error } = await sb.from('whatsapp_messages').select('id, status').eq('wa_message_id', s.id).maybeSingle();
   if (error) { console.error('WhatsApp webhook: status lookup failed', error); return; }
   if (!row) return;
@@ -89,13 +95,19 @@ export async function POST(req: Request) {
   }
   let payload: unknown = null;
   try { payload = JSON.parse(raw); } catch { /* acknowledge anyway */ }
-  const { statuses, replies } = parseWebhook(payload);
+  const { statuses, replies, inbound } = parseWebhook(payload);
   const sb = serviceClient();
   for (const s of statuses) {
     try { await handleStatus(sb, s); } catch (e) { console.error('WhatsApp webhook: status error', e); }
   }
   for (const r of replies) {
     try { await handleReply(sb, r); } catch (e) { console.error('WhatsApp webhook: reply error', e); }
+  }
+  for (const m of inbound) {
+    try {
+      const work = await handleInbound(m);
+      if (work) waitUntil(Promise.resolve(work).catch((e) => console.error('WhatsApp chat: background error', e)));
+    } catch (e) { console.error('WhatsApp webhook: inbound error', e); }
   }
   return NextResponse.json({ ok: true });
 }

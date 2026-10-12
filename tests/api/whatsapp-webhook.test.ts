@@ -34,6 +34,10 @@ function builder(table: string) {
   };
   return b;
 }
+const inbound = vi.hoisted(() => ({ calls: [] as any[], waited: [] as any[] }));
+vi.mock('@/lib/wa-chat/inbound', () => ({ handleInbound: async (m: any) => { inbound.calls.push(m); return Promise.resolve('done'); } }));
+vi.mock('@/lib/wa-chat/store', () => ({ updateChatStatus: async () => {} }));
+vi.mock('@vercel/functions', () => ({ waitUntil: (p: any) => { inbound.waited.push(p); } }));
 vi.mock('@/lib/server-auth', async (orig) => ({
   ...(await orig<typeof import('@/lib/server-auth')>()),
   serviceClient: () => ({ from: (t: string) => builder(t) }),
@@ -271,5 +275,13 @@ describe('POST /api/whatsapp/webhook', () => {
     expect(res.status).toBe(200);
     expect(spy).toHaveBeenCalled();
     spy.mockRestore();
+  });
+  it('stores customer messages and continues in the background', async () => {
+    inbound.calls = []; inbound.waited = [];
+    const payload = { entry: [{ changes: [{ value: { contacts: [{ wa_id: '919800000001', profile: { name: 'A' } }], messages: [{ id: 'w1', from: '919800000001', timestamp: '1', type: 'text', text: { body: 'Hi' } }] } }] }] };
+    const res = await send(payload);
+    expect(res.status).toBe(200);
+    expect(inbound.calls[0]).toMatchObject({ waId: 'w1', text: 'Hi' });
+    expect(inbound.waited).toHaveLength(1);
   });
 });
