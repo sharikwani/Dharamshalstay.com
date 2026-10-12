@@ -17,7 +17,9 @@ export const siteConfig = {
   description: 'Discover the best hotels, homestays, treks, paragliding, and experiences in Dharamshala, McLeod Ganj & the Kangra Valley.',
   phone: process.env.NEXT_PUBLIC_PHONE || '+91-98057-00665',
   email: process.env.NEXT_PUBLIC_EMAIL || 'hello@dharamshalastay.com',
-  whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919805700665',
+  // WhatsApp Cloud API number: wa.me links open a chat with the AI assistant without saving the contact.
+  whatsapp: '19295255894',
+  whatsappDisplay: '+1 929-525-5894',
   address: 'Dharamshala, Kangra District, Himachal Pradesh 176215, India',
   instagram: 'https://www.instagram.com/dharamshala.stay/',
   instagramHandle: 'dharamshala.stay',

@@ -51,7 +51,7 @@ export async function sendBookingConfirmation(booking: {
           <p style="margin:0;font-weight:600;color:#166534">What to bring:</p>
           <p style="margin:4px 0 0;color:#15803d;font-size:14px">Valid ID (Aadhaar/Passport/Driving License) and this booking reference.</p>
         </div>
-        <p style="color:#64748b;font-size:14px">Questions? WhatsApp us at +91-98057-00665 or reply to this email.</p>
+        <p style="color:#64748b;font-size:14px">Questions? WhatsApp us at +1 929-525-5894 or reply to this email.</p>
         <div style="text-align:center;margin-top:24px">
           <a href="https://dharamshalastay.com" style="background:#1e3a5f;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block">Visit Dharamshala Stay</a>
         </div>

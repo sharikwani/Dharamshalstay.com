@@ -107,7 +107,7 @@ export default function CancellationPolicyPage() {
 
         <section>
           <h2 className="text-xl font-heading font-semibold text-slate-900 mb-3">How to Cancel</h2>
-          <p>To cancel a booking, contact us via WhatsApp at +91-{siteConfig.whatsapp?.slice(-10) || '9805700665'}, call {siteConfig.phone}, or email {siteConfig.email}. Please have your booking reference number ready. We aim to confirm cancellation within 2 hours during business hours (9 AM - 9 PM IST).</p>
+          <p>To cancel a booking, contact us via WhatsApp at {siteConfig.whatsappDisplay}, call {siteConfig.phone}, or email {siteConfig.email}. Please have your booking reference number ready. We aim to confirm cancellation within 2 hours during business hours (9 AM - 9 PM IST).</p>
         </section>
 
         <section>
