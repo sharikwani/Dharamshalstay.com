@@ -2,6 +2,8 @@ import { downloadMedia, markReadTyping, sendText } from '@/lib/whatsapp-cloud';
 import { sendEmail, adminEmail } from '@/lib/email';
 import { siteConfig } from '@/lib/config';
 import { transcribe } from './assistant';
+import { openCancellation } from './booking-store';
+import { handleProof } from './cancellations';
 import { aiAllowed, HOLDING_REPLY, processConversation } from './process';
 import { getSettings, saveInbound, saveOutbound, setMessageBody, setStatus } from './store';
 import type { Conversation, Inbound } from './types';
@@ -42,7 +44,14 @@ export async function handleInbound(m: Inbound): Promise<Promise<unknown> | null
   // "Typing…" only when the assistant will actually answer.
   if (served && conversation.status === 'ai') await markReadTyping(m.waId);
   if (!served) return processConversation(conversation.id, message.id, { deadline });
-  if (m.kind === 'media') return handToOwner(conversation, m.mediaLabel || 'a file');
+  if (m.kind === 'media') {
+    const open = conversation.status === 'ai' ? await openCancellation(conversation.id).catch(() => null) : null;
+    if (!open) return handToOwner(conversation, m.mediaLabel || 'a file');
+    return (async () => {
+      const outcome = await handleProof(conversation, message.id, m, open);
+      if (outcome === 'cancelled') return processConversation(conversation.id, message.id, { deadline });
+    })();
+  }
   if (m.kind === 'voice') {
     return (async () => {
       const media = m.mediaId ? await downloadMedia(m.mediaId) : null;

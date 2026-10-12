@@ -3,7 +3,10 @@ import { describe, expect, it, vi, beforeEach } from 'vitest';
 const s = vi.hoisted(() => ({
   allowed: true, typing: [] as string[], saved: [] as any[], bodies: [] as any[], dup: false, status: 'ai', isNew: true, transcript: 'room for two tomorrow' as string | null,
   processed: [] as any[], statuses: [] as any[], sent: [] as any[], out: [] as any[], emails: [] as any[],
+  open: null as any, proofResult: 'cancelled' as string, proofs: [] as any[],
 }));
+vi.mock('@/lib/wa-chat/booking-store', () => ({ openCancellation: async () => s.open }));
+vi.mock('@/lib/wa-chat/cancellations', () => ({ handleProof: async (...a: any[]) => { s.proofs.push(a); return s.proofResult; } }));
 vi.mock('@/lib/wa-chat/store', () => ({
   saveInbound: async (m: any, body: string, kind: string) => {
     s.saved.push([m.waId, body, kind]);
@@ -30,6 +33,7 @@ import { handleInbound } from '@/lib/wa-chat/inbound';
 const base = { waId: 'w1', from: '919800000001', profileName: 'Asha', timestamp: Math.floor(Date.now() / 1000) };
 beforeEach(() => {
   Object.assign(s, { allowed: true, typing: [], saved: [], bodies: [], dup: false, status: 'ai', isNew: true, transcript: 'room for two tomorrow',
+    open: null, proofResult: 'cancelled', proofs: [],
     processed: [], statuses: [], sent: [], out: [], emails: [] });
 });
 
@@ -93,6 +97,23 @@ describe('handleInbound', () => {
     s.dup = true;
     expect(await handleInbound({ ...base, kind: 'text', text: 'Hi' })).toBeNull();
     expect(s.processed).toEqual([]);
+  });
+  it('a document for an open cancellation is checked, then the AI answers', async () => {
+    s.open = { id: 'x1', booking_id: 'b1' };
+    await (await handleInbound({ ...base, kind: 'media', text: '', mediaId: 'm2', mediaLabel: '[photo]' }));
+    expect(s.proofs[0][1]).toBe('row1');
+    expect(s.statuses).toEqual([]);
+    expect(s.processed).toHaveLength(1);
+  });
+  it('a proof sent to review does not trigger an AI reply', async () => {
+    s.open = { id: 'x1', booking_id: 'b1' }; s.proofResult = 'review';
+    await (await handleInbound({ ...base, kind: 'media', text: '', mediaId: 'm2', mediaLabel: '[photo]' }));
+    expect(s.processed).toEqual([]);
+  });
+  it('ignores open cancellations while a person has the chat', async () => {
+    s.open = { id: 'x1', booking_id: 'b1' }; s.status = 'human';
+    await (await handleInbound({ ...base, kind: 'media', text: '', mediaId: 'm2', mediaLabel: '[photo]' }));
+    expect(s.proofs).toEqual([]);
   });
   it('ignores messages older than 24 hours', async () => {
     expect(await handleInbound({ ...base, timestamp: base.timestamp - 90000, kind: 'text', text: 'old' })).toBeNull();
