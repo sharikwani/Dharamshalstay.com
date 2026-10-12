@@ -18,11 +18,22 @@ const link = (id: string) => `${siteConfig.url}/admin/whatsapp?c=${id}`;
 const notify = (subject: string, html: string) =>
   sendEmail({ to: adminEmail(), subject, html }).catch((e) => console.error('WhatsApp chat email failed:', e));
 
+/** Time left for the AI after the debounce, keeping room to send before Vercel's 60 s limit. */
+function withDeadline<T>(work: Promise<T>, deadline: number): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const budget = Math.max(0, deadline - Date.now() - 6000);
+  return Promise.race([
+    work,
+    new Promise<never>((_, reject) => { timer = setTimeout(() => reject(new Error('AI reply took too long')), budget); }),
+  ]).finally(() => clearTimeout(timer));
+}
+
 /**
  * Answer a conversation after a customer message. Waits briefly so a burst of messages gets one
  * reply, and stays silent when AI is off for this number or a person has the chat. Never throws.
  */
-export async function processConversation(conversationId: string, messageId: string, opts: { wait?: (ms: number) => Promise<void>; isNew?: boolean } = {}) {
+export async function processConversation(conversationId: string, messageId: string, opts: { wait?: (ms: number) => Promise<void>; deadline?: number } = {}) {
+  const deadline = opts.deadline ?? Date.now() + 50_000;
   let holdingSent = false;
   let phone = '';
   try {
@@ -32,10 +43,7 @@ export async function processConversation(conversationId: string, messageId: str
     if (!conv) return 'skipped';
     phone = conv.phone;
     const who = conv.profile_name || `+${conv.phone}`;
-    if (!aiAllowed(settings, conv.phone)) {
-      if (opts.isNew) await notify(`New WhatsApp chat from ${who}`, `<p>${esc(who)} started a WhatsApp chat. AI replies are not on for this number.</p><p><a href="${link(conv.id)}">Open the chat</a></p>`);
-      return 'skipped';
-    }
+    if (!aiAllowed(settings, conv.phone)) return 'skipped';
     if (conv.status === 'human' || conv.status === 'needs_human') return 'skipped';
     if (!conv.last_customer_at || Date.now() - Date.parse(conv.last_customer_at) > 24 * HOUR) return 'skipped';
 
@@ -51,8 +59,10 @@ export async function processConversation(conversationId: string, messageId: str
     }
 
     const ctx = { conversationId: conv.id, phone: conv.phone, profileName: conv.profile_name, handedOver: false };
-    let text = await reply(await history(conv.id, 20), ctx);
+    let text = await withDeadline(reply(await history(conv.id, 20), ctx), deadline);
     if ((await latestInboundId(conversationId)) !== messageId) return 'superseded';
+    // The owner may have taken over while the AI was thinking.
+    if ((await getConversation(conv.id))?.status !== 'ai' && !ctx.handedOver) return 'skipped';
     if (!text) {
       if (!ctx.handedOver) throw new Error('Empty AI reply');
       text = HOLDING_REPLY;

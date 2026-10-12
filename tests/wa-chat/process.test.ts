@@ -51,11 +51,22 @@ describe('processConversation', () => {
     expect(await processConversation('c1', 'm1', { wait })).toBe('skipped');
     expect(s.sent).toEqual([]);
   });
-  it('respects AI mode and emails the owner about new chats when off', async () => {
+  it('stays silent when AI mode does not serve this number', async () => {
     s.settings = { ai_mode: 'off', test_numbers: [] };
-    expect(await processConversation('c1', 'm1', { wait, isNew: true })).toBe('skipped');
-    expect(s.emails[0].subject).toMatch(/New WhatsApp chat/);
+    expect(await processConversation('c1', 'm1', { wait })).toBe('skipped');
+    expect(s.sent).toEqual([]);
   });
+  it('does not talk over the owner who took over while the AI was thinking', async () => {
+    s.reply.mockImplementation(async () => { s.conv = { ...s.conv, status: 'human' }; return 'AI text'; });
+    expect(await processConversation('c1', 'm1', { wait })).toBe('skipped');
+    expect(s.sent).toEqual([]);
+  });
+  it('a reply that runs past the deadline falls back to the holding message', async () => {
+    s.reply.mockImplementation(() => new Promise(() => {}));
+    expect(await processConversation('c1', 'm1', { wait, deadline: Date.now() + 6050 })).toBe('failed');
+    expect(s.sent[0][1]).toBe(HOLDING_REPLY);
+    expect(s.statuses[0][1]).toBe('needs_human');
+  }, 10000);
   it('aiAllowed handles test mode', () => {
     expect(aiAllowed({ ai_mode: 'test', test_numbers: ['919800000001'] }, '919800000001')).toBe(true);
     expect(aiAllowed({ ai_mode: 'test', test_numbers: ['919800000001'] }, '919800000002')).toBe(false);

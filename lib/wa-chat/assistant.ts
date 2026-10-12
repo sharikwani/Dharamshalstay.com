@@ -1,4 +1,5 @@
 import { siteConfig } from '@/lib/config';
+import { BOOKING_DISCOUNT_NOTE } from '@/lib/pricing';
 import { runTool, TOOL_DEFS, type ToolCtx } from './tools';
 import type { ChatMessage } from './types';
 
@@ -22,7 +23,7 @@ Facts:
 Bookings:
 - Never confirm a booking or availability yourself, and never say a room or seat is reserved or held.
 - To book: collect what they want (hotel/room, route, trek or package), dates, number of people, pickup point for taxis, and their name. Then call create_enquiry and tell them our team will confirm availability and the final price on WhatsApp shortly.
-- Never offer discounts or special prices, and never promise refunds or compensation.
+- Discounts: the only one is the site-wide "${BOOKING_DISCOUNT_NOTE}" - it is applied by our team when the booking is confirmed, so mention it when price comes up, but never promise an exact amount. Never offer any other discount or special price, and never promise refunds or compensation.
 
 Handing over:
 - Call handover for complaints, refunds, cancelling or changing a paid booking, an angry or upset customer, anyone asking for a person/manager/call, photos or documents you cannot read, payment problems, or whenever you are not sure. After handover, tell the customer a team member will reply here shortly. Do not keep answering that topic.
@@ -85,7 +86,7 @@ export async function transcribe(data: ArrayBuffer, mimeType: string): Promise<s
     form.append('file', new Blob([data], { type: mimeType }), `voice.${ext}`);
     form.append('model', 'whisper-1');
     const res = await fetch('https://api.openai.com/v1/audio/transcriptions', {
-      method: 'POST', signal: AbortSignal.timeout(20000), headers: { Authorization: `Bearer ${process.env.OPENAI_API_KEY}` }, body: form,
+      method: 'POST', signal: AbortSignal.timeout(15000), headers: { Authorization: `Bearer ${process.env.OPENAI_API_KEY}` }, body: form,
     });
     const out: any = await res.json().catch(() => ({}));
     return res.ok && out?.text ? String(out.text).trim().slice(0, 2000) : null;

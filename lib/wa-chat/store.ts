@@ -4,34 +4,48 @@ import type { ChatMessage, ChatSettings, Conversation, ConversationStatus, Inbou
 
 const now = () => new Date().toISOString();
 
-/** Store a customer message and upsert its conversation. Returns null when Meta re-delivers a message we already have. */
+/**
+ * Store a customer message and upsert its conversation. Returns null when Meta re-delivers a message we
+ * already have (and then leaves the conversation untouched). Messages are ordered by server receive time.
+ */
 export async function saveInbound(m: Inbound, body: string, kind: 'text' | 'voice' | 'media') {
   const sb = serviceClient();
   const at = m.timestamp ? new Date(m.timestamp * 1000).toISOString() : now();
-  const { data: found, error: fErr } = await sb.from('whatsapp_conversations').select('*').eq('phone', m.from).maybeSingle();
+  const byPhone = () => sb.from('whatsapp_conversations').select('*').eq('phone', m.from).maybeSingle();
+  const { data: found, error: fErr } = await byPhone();
   if (fErr) throw fErr;
-  let conversation: Conversation;
-  const isNewConversation = !found;
-  if (found) {
-    const { data, error } = await sb.from('whatsapp_conversations').update({
-      profile_name: m.profileName ?? found.profile_name, last_customer_at: at, last_message_at: at,
-      unread_admin: (found.unread_admin || 0) + 1, status: found.status === 'closed' ? 'ai' : found.status, updated_at: now(),
-    }).eq('id', found.id).select('*').single();
-    if (error) throw error;
-    conversation = data;
-  } else {
+  let conv: Conversation | null = found;
+  let isNewConversation = false;
+  if (!conv) {
     const { data, error } = await sb.from('whatsapp_conversations').insert({
-      phone: m.from, profile_name: m.profileName, last_customer_at: at, last_message_at: at, unread_admin: 1,
+      phone: m.from, profile_name: m.profileName, last_customer_at: at, last_message_at: at, unread_admin: 0,
     }).select('*').single();
-    if (error) throw error;
-    conversation = data;
+    if (error?.code === '23505') {
+      // Another webhook call created it a moment ago.
+      const again = await byPhone();
+      if (again.error || !again.data) throw again.error || new Error('Conversation vanished');
+      conv = again.data;
+    } else if (error) throw error;
+    else { conv = data; isNewConversation = true; }
   }
+  const c = conv as Conversation;
   const { data: message, error: mErr } = await sb.from('whatsapp_chat_messages').insert({
-    conversation_id: conversation.id, direction: 'in', author: 'customer', body, kind, wa_message_id: m.waId, status: 'received', created_at: at,
+    conversation_id: c.id, direction: 'in', author: 'customer', body, kind, wa_message_id: m.waId, status: 'received',
   }).select('*').single();
   if (mErr?.code === '23505') return null;
   if (mErr) throw mErr;
-  return { conversation, message: message as ChatMessage, isNewConversation };
+  const { data: conversation, error: uErr } = await sb.from('whatsapp_conversations').update({
+    profile_name: m.profileName ?? c.profile_name, last_customer_at: at, last_message_at: now(),
+    unread_admin: (c.unread_admin || 0) + 1, status: c.status === 'closed' ? 'ai' : c.status, updated_at: now(),
+  }).eq('id', c.id).select('*').single();
+  if (uErr) throw uErr;
+  return { conversation: conversation as Conversation, message: message as ChatMessage, isNewConversation };
+}
+
+/** Replace a stored customer message's text (voice notes are transcribed after the webhook answers). */
+export async function setMessageBody(id: string, body: string) {
+  const { error } = await serviceClient().from('whatsapp_chat_messages').update({ body }).eq('id', id);
+  if (error) console.error('WhatsApp chat: could not update message text:', error);
 }
 
 export async function saveOutbound(conversationId: string, author: 'ai' | 'admin', body: string, waMessageId: string | null, error?: string, adminId?: string) {

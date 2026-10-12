@@ -82,7 +82,7 @@ export async function downloadMedia(mediaId: string): Promise<{ data: ArrayBuffe
     const info: any = await meta.json().catch(() => ({}));
     if (!meta.ok || !info?.url) return null;
     if (Number(info.file_size) > 16 * 1024 * 1024) return null;
-    const file = await fetch(info.url, { headers: auth(), signal: AbortSignal.timeout(15000) });
+    const file = await fetch(info.url, { headers: auth(), signal: AbortSignal.timeout(10000) });
     if (!file.ok) return null;
     return { data: await file.arrayBuffer(), mimeType: info.mime_type || 'application/octet-stream' };
   } catch (e) {

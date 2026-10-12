@@ -15,6 +15,10 @@ describe('assistant', () => {
   it('system prompt carries the hard rules', () => {
     for (const rule of [/never confirm/i, /never invent/i, /discount/i, /human/i, /same language/i, /handover/i]) expect(SYSTEM_PROMPT).toMatch(rule);
   });
+  it('mentions the advertised booking discount instead of denying it', () => {
+    expect(SYSTEM_PROMPT).toContain('Discount of up to ₹500 on every booking');
+    expect(SYSTEM_PROMPT).toMatch(/applied by our team when the booking is confirmed/i);
+  });
   it('maps history roles and labels team messages', () => {
     expect(toOpenAiMessages([msg('customer', 'hi'), msg('ai', 'hello'), msg('admin', 'I can help'), msg('ai', 'x', 'system')])).toEqual([
       { role: 'user', content: 'hi' }, { role: 'assistant', content: 'hello' }, { role: 'assistant', content: '[Team member] I can help' },
