@@ -2,8 +2,10 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { HttpError, jsonError, requireCaller, serviceClient } from '@/lib/server-auth';
 import { ACTIVITY_CATEGORIES, checkAssignment, commissionRateFor, paymentFields, splitAmount } from '@/lib/manual-booking';
-import { whatsappCancelled, whatsappNewBooking, whatsappReassignedAway } from '@/lib/booking-whatsapp';
-import { loadBookingView, sendCancellationEmails, sendManualBookingEmails, sendReassignedAwayEmail } from '@/lib/manual-booking-emails';
+import { whatsappNewBooking, whatsappReassignedAway } from '@/lib/booking-whatsapp';
+import { loadBookingView, sendManualBookingEmails, sendReassignedAwayEmail } from '@/lib/manual-booking-emails';
+
+import { cancelBooking } from '@/lib/bookings/cancel';
 
 export const dynamic = 'force-dynamic';
 
@@ -55,12 +57,6 @@ async function ensureCommissionRecord(sb: ReturnType<typeof serviceClient>, merg
 async function syncCommissionRecords(sb: ReturnType<typeof serviceClient>, booking: Record<string, any>, update: Record<string, unknown>, action: string) {
   const id = booking.id as string;
   try {
-    if (action === 'cancel') {
-      if (booking.commission_status === 'paid') return;
-      const { error } = await sb.from('commission_records').update({ status: 'waived' }).eq('booking_id', id).in('status', OPEN_RECORD);
-      if (error) console.error('Commission record waive failed:', error);
-      return;
-    }
     const next = (update.commission_status ?? booking.commission_status) as string;
     const merged: Record<string, any> = { ...booking, ...update, id };
     if (next === 'not_applicable') {
@@ -117,6 +113,12 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
     if (!booking) throw new HttpError(404, 'Booking not found.');
     if (booking.status === 'cancelled') throw new HttpError(409, 'This booking is cancelled.');
 
+    if (body.action === 'cancel') {
+      const r = await cancelBooking({ id, commission_status: booking.commission_status }, body.reason, { notify: body.notify });
+      if (!r.ok) throw new HttpError(500, r.error);
+      return NextResponse.json({ booking: await loadBookingView(id) });
+    }
+
     let update: Record<string, unknown>;
     if (body.action === 'assign') {
       if (!(ACTIVITY_CATEGORIES as readonly string[]).includes(booking.category)) {
@@ -157,7 +159,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
         update.partner_response = null;
         update.partner_responded_at = null;
       }
-    } else if (body.action === 'payment') {
+    } else {
       const paidOnline = Boolean(booking.stripe_payment_intent) || (booking.payment_status === 'paid' && booking.payment_method === 'online');
       if (paidOnline && (body.choice === 'unpaid' || body.choice === 'partner_collects')) {
         throw new HttpError(409, 'This booking was paid online; record a refund in Stripe first.');
@@ -180,9 +182,6 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
       });
       if (['paid', 'disputed', 'waived'].includes(booking.commission_status)) delete fields.commission_status;
       update = { ...fields, ...fill };
-    } else {
-      update = { status: 'cancelled', cancelled_reason: body.reason };
-      if (booking.commission_status !== 'paid') update.commission_status = 'waived';
     }
 
     const { error } = await sb.from('bookings').update(update).eq('id', id);
@@ -205,10 +204,6 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
         }
       }
       if (body.action === 'payment' && body.notify) await sendManualBookingEmails(id, { customer: true, partner: false, subjectPrefix: 'Updated: ' });
-      if (body.action === 'cancel' && body.notify) {
-        await sendCancellationEmails(id, body.reason);
-        await whatsappCancelled(id, body.reason);
-      }
     } catch (e) { console.error('Booking update emails failed:', e); }
 
     return NextResponse.json({ booking: await loadBookingView(id) });
