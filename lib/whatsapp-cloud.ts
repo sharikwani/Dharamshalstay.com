@@ -44,3 +44,49 @@ export function verifySignature(rawBody: string, header: string | null): boolean
   const got = Buffer.from(header.slice(7));
   return expected.length === got.length && timingSafeEqual(expected, got);
 }
+
+const auth = () => ({ Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}` });
+
+/** Free-form text, allowed within 24 hours of the customer's last message. */
+export async function sendText(to: string, body: string): Promise<SendResult> {
+  if (!isWhatsAppConfigured()) return { ok: false, skipped: true };
+  try {
+    const res = await fetch(`${GRAPH}/${process.env.WHATSAPP_PHONE_NUMBER_ID}/messages`, {
+      method: 'POST', signal: AbortSignal.timeout(5000), headers: { ...auth(), 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messaging_product: 'whatsapp', to, type: 'text', text: { body: body.slice(0, 4096), preview_url: true } }),
+    });
+    const data: any = await res.json().catch(() => ({}));
+    if (!res.ok) return { ok: false, error: data?.error?.message || `HTTP ${res.status}` };
+    const id = data?.messages?.[0]?.id;
+    return id ? { ok: true, id } : { ok: false, error: 'No message id returned' };
+  } catch (e: any) {
+    return { ok: false, error: e?.message || 'Network error' };
+  }
+}
+
+/** Blue ticks plus "typing…" while the reply is prepared. Never throws. */
+export async function markReadTyping(waMessageId: string): Promise<void> {
+  if (!isWhatsAppConfigured()) return;
+  try {
+    await fetch(`${GRAPH}/${process.env.WHATSAPP_PHONE_NUMBER_ID}/messages`, {
+      method: 'POST', signal: AbortSignal.timeout(5000), headers: { ...auth(), 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messaging_product: 'whatsapp', status: 'read', message_id: waMessageId, typing_indicator: { type: 'text' } }),
+    });
+  } catch (e) { console.error('WhatsApp: mark read failed', e); }
+}
+
+export async function downloadMedia(mediaId: string): Promise<{ data: ArrayBuffer; mimeType: string } | null> {
+  if (!isWhatsAppConfigured()) return null;
+  try {
+    const meta = await fetch(`${GRAPH}/${mediaId}`, { headers: auth(), signal: AbortSignal.timeout(5000) });
+    const info: any = await meta.json().catch(() => ({}));
+    if (!meta.ok || !info?.url) return null;
+    if (Number(info.file_size) > 16 * 1024 * 1024) return null;
+    const file = await fetch(info.url, { headers: auth(), signal: AbortSignal.timeout(15000) });
+    if (!file.ok) return null;
+    return { data: await file.arrayBuffer(), mimeType: info.mime_type || 'application/octet-stream' };
+  } catch (e) {
+    console.error('WhatsApp: media download failed', e);
+    return null;
+  }
+}

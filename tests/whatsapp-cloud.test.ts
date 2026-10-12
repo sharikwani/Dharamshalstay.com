@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { createHmac } from 'node:crypto';
-import { cleanParam, isWhatsAppConfigured, sendTemplate, verifySignature } from '@/lib/whatsapp-cloud';
+import { cleanParam, downloadMedia, isWhatsAppConfigured, markReadTyping, sendTemplate, sendText, verifySignature } from '@/lib/whatsapp-cloud';
 
 beforeEach(() => { vi.unstubAllEnvs(); vi.restoreAllMocks(); });
 
@@ -64,5 +64,29 @@ describe('verifySignature', () => {
   it('rejects everything when no app secret is set', () => {
     vi.stubEnv('WHATSAPP_APP_SECRET', '');
     expect(verifySignature('{}', 'sha256=abc')).toBe(false);
+  });
+});
+
+describe('chat helpers', () => {
+  beforeEach(() => { vi.stubEnv('WHATSAPP_TOKEN', 't'); vi.stubEnv('WHATSAPP_PHONE_NUMBER_ID', 'p'); });
+  it('sendText posts a text message', async () => {
+    const f = vi.fn(async (..._a: any[]) => new Response(JSON.stringify({ messages: [{ id: 'wamid.9' }] })));
+    vi.stubGlobal('fetch', f);
+    expect(await sendText('919800000001', 'Hello')).toEqual({ ok: true, id: 'wamid.9' });
+    expect(JSON.parse(f.mock.calls[0][1].body)).toMatchObject({ to: '919800000001', type: 'text', text: { body: 'Hello' } });
+  });
+  it('markReadTyping never throws', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => { throw new Error('down'); }));
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    await expect(markReadTyping('wamid.1')).resolves.toBeUndefined();
+  });
+  it('downloadMedia follows the media url', async () => {
+    const f = vi.fn()
+      .mockResolvedValueOnce(new Response(JSON.stringify({ url: 'https://cdn/x', mime_type: 'audio/ogg' })))
+      .mockResolvedValueOnce(new Response(new Uint8Array([1, 2, 3])));
+    vi.stubGlobal('fetch', f);
+    const r = await downloadMedia('m1');
+    expect(r?.mimeType).toBe('audio/ogg');
+    expect(new Uint8Array(r!.data)).toEqual(new Uint8Array([1, 2, 3]));
   });
 });
