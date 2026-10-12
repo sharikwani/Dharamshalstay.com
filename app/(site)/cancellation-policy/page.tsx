@@ -15,6 +15,7 @@ export default function CancellationPolicyPage() {
         <section>
           <h2 className="text-xl font-heading font-semibold text-slate-900 mb-3">General Policy</h2>
           <p>Cancellation and refund terms depend on the type of service booked and the specific policies of the service provider. {siteConfig.name} will assist with cancellation processing, but final refund decisions rest with the hotel, transport operator, or activity provider.</p>
+          <p className="mt-3 text-sm"><strong>24-hour rule:</strong> bookings of any type cannot be cancelled, and are not refunded, within 24 hours of check-in, pickup or the activity start time.</p>
         </section>
 
         <section>
@@ -51,13 +52,9 @@ export default function CancellationPolicyPage() {
               <span className="font-medium text-slate-800">24+ hours before pickup</span>
               <span className="text-green-700 font-semibold">Full refund</span>
             </div>
-            <div className="flex justify-between items-center py-2 border-b border-slate-200">
-              <span className="font-medium text-slate-800">6-24 hours before pickup</span>
-              <span className="text-amber-700 font-semibold">50% refund</span>
-            </div>
             <div className="flex justify-between items-center py-2">
-              <span className="font-medium text-slate-800">Less than 6 hours / No-show</span>
-              <span className="text-red-700 font-semibold">No refund</span>
+              <span className="font-medium text-slate-800">Less than 24 hours / No-show</span>
+              <span className="text-red-700 font-semibold">No cancellation, no refund</span>
             </div>
           </div>
         </section>
@@ -94,7 +91,7 @@ export default function CancellationPolicyPage() {
             </div>
             <div className="flex justify-between items-center py-2">
               <span className="font-medium text-slate-800">Less than 24 hours</span>
-              <span className="text-red-700 font-semibold">No refund</span>
+              <span className="text-red-700 font-semibold">No cancellation, no refund</span>
             </div>
           </div>
           <p className="mt-3 text-sm">Paragliding is weather-dependent. If a flight is cancelled by the operator due to wind or weather conditions, you will receive a full refund or free rescheduling.</p>
