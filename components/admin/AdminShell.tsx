@@ -2,12 +2,12 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Home, Inbox, Building, PlusCircle, ShoppingBag, MessageSquare, Car, Mountain, Wind, Users, LogOut, ExternalLink, BadgeCheck } from 'lucide-react';
+import { Home, Inbox, Building, PlusCircle, ShoppingBag, MessageSquare, Car, Mountain, Wind, Users, LogOut, ExternalLink, BadgeCheck, MessageCircle } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
 
 // tone = the colour of the item's icon tile, so each section is recognisable at a glance.
-type NavItem = { href: string; label: string; hint: string; icon: any; tone: string; badge?: 'review' | 'inquiries' };
+type NavItem = { href: string; label: string; hint: string; icon: any; tone: string; badge?: 'review' | 'inquiries' | 'whatsapp' };
 
 // One menu for the whole admin, grouped by job so it is obvious where things live.
 export const ADMIN_NAV: { title: string; items: NavItem[] }[] = [
@@ -26,6 +26,7 @@ export const ADMIN_NAV: { title: string; items: NavItem[] }[] = [
   {
     title: 'Customers',
     items: [
+      { href: '/admin/whatsapp', label: 'WhatsApp', hint: 'Customer chats and the AI assistant', icon: MessageCircle, tone: 'bg-green-600', badge: 'whatsapp' },
       { href: '/admin/bookings', label: 'Bookings', hint: 'Paid and pending bookings, commission', icon: ShoppingBag, tone: 'bg-violet-500' },
       { href: '/admin/inquiries', label: 'Inquiries', hint: 'Questions and leads from the website', icon: MessageSquare, tone: 'bg-pink-500', badge: 'inquiries' },
     ],
@@ -50,7 +51,7 @@ export const ADMIN_NAV: { title: string; items: NavItem[] }[] = [
 export default function AdminShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname() || '';
   const router = useRouter();
-  const [counts, setCounts] = useState<{ review: number; inquiries: number }>({ review: 0, inquiries: 0 });
+  const [counts, setCounts] = useState<{ review: number; inquiries: number; whatsapp: number }>({ review: 0, inquiries: 0, whatsapp: 0 });
   const isLogin = pathname.startsWith('/admin/login');
 
   useEffect(() => {
@@ -58,7 +59,8 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
     Promise.all([
       supabase.from('properties').select('id', { count: 'exact', head: true }).eq('status', 'pending_review'),
       supabase.from('inquiries').select('id', { count: 'exact', head: true }).eq('status', 'new'),
-    ]).then(([r, i]) => setCounts({ review: r.count || 0, inquiries: i.count || 0 }));
+      supabase.from('whatsapp_conversations').select('id', { count: 'exact', head: true }).eq('status', 'needs_human'),
+    ]).then(([r, i, w]) => setCounts({ review: r.count || 0, inquiries: i.count || 0, whatsapp: w.count || 0 }));
   }, [pathname, isLogin]);
 
   if (isLogin) return <>{children}</>;
