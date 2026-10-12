@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { LogIn, Loader2, Mail, Lock, AlertCircle, MailCheck } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { accountHome } from '@/lib/account-home';
 
 export default function UserLoginPage() {
   const router = useRouter();
@@ -16,10 +17,10 @@ export default function UserLoginPage() {
   const [resendState, setResendState] = useState<'idle' | 'sending' | 'sent'>('idle');
   const [resendError, setResendError] = useState('');
 
-  // Partners share this login with customers but belong in the partner portal.
+  // Partners and admins share this login with customers but belong in their own portals.
   async function goHome(userId: string) {
     const { data: prof } = await supabase.from('profiles').select('role').eq('id', userId).single();
-    router.replace(prof?.role === 'partner' ? '/partner/dashboard' : '/account');
+    router.replace(accountHome(prof?.role));
   }
 
   // Arriving from the confirmation link signs the user in; send them on.

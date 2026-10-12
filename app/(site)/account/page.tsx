@@ -7,6 +7,7 @@ import { User, LogOut, Calendar, Phone, Mail, Clock, Loader2, Building, MapPin, 
 import { supabase } from '@/lib/supabase';
 import { formatPrice } from '@/lib/utils';
 import { getPrimaryImageUrl } from '@/lib/images';
+import { accountHome } from '@/lib/account-home';
 
 export default function AccountPage() {
   const router = useRouter();
@@ -23,8 +24,9 @@ export default function AccountPage() {
       setUser(u);
 
       const { data: prof } = await supabase.from('profiles').select('*').eq('id', u.id).single();
-      // Partner accounts have their own portal, not a customer account page.
-      if (prof?.role === 'partner') { router.replace('/partner/dashboard'); return; }
+      // Partners and admins have their own portals, not a customer account page.
+      const home = accountHome(prof?.role);
+      if (home !== '/account') { router.replace(home); return; }
       setProfile(prof);
 
       const { data: bk } = await supabase.from('bookings').select('*').eq('user_id', u.id).order('created_at', { ascending: false }).limit(20);
