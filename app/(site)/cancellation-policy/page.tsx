@@ -10,7 +10,7 @@ export default function CancellationPolicyPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
       <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Cancellation & Refund Policy' }]} />
       <h1 className="text-3xl font-heading font-bold text-slate-900 mb-2">Cancellation and Refund Policy</h1>
-      <p className="text-sm text-slate-500 mb-8">Last updated: March 2026</p>
+      <p className="text-sm text-slate-500 mb-8">Last updated: October 2026</p>
       <div className="space-y-8 text-slate-600 leading-relaxed">
         <section>
           <h2 className="text-xl font-heading font-semibold text-slate-900 mb-3">General Policy</h2>

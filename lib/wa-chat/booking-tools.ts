@@ -70,7 +70,7 @@ async function resolve(category: Category, a: any): Promise<Resolved> {
     };
   }
   const routes = ((await getActiveTaxiRoutes()) as any[]).filter((r) =>
-    lc(r.from_location).includes(lc(a.from)) && lc(r.to_location).includes(lc(a.to)) && Number(r.price) > 0);
+    lc(r.from_location).includes(lc(a.from)) && lc(r.to_location).includes(lc(a.to)) && r.price_type !== 'per_km' && Number(r.price) > 0);
   if (!a.from || !a.to || !routes.length) return { error: 'No fixed fare for that route. Offer create_enquiry instead.' };
   const vName = (r: any) => r.vehicle_name || r.vehicle_category;
   const matches = a.vehicle ? routes.filter((r) => lc(vName(r)).includes(lc(a.vehicle)) || lc(r.vehicle_category) === lc(a.vehicle)) : routes;
@@ -98,7 +98,7 @@ async function quoteTool(a: any, ctx: ToolCtx) {
   });
   const online = amount >= 100 && !!process.env.STRIPE_SECRET_KEY;
   const summary = [r.label, r.when, `${r.input.num_guests} ${r.input.num_guests === 1 ? 'person' : 'people'}`,
-    amount > 0 ? `Total ${rupees(amount)}` : 'Price confirmed by our team'].filter(Boolean).join(' · ');
+    amount > 0 ? `Total ${rupees(amount)}` : 'Price confirmed by our team'].filter(Boolean).join(' · ') + ' · Cannot be cancelled within 24 hours of the start';
   const q = await saveQuote({ conversation_id: ctx.conversationId, category, input: r.input, amount, summary });
   return { quote_id: q.id, summary, amount, online_payment_available: online, expires_in_minutes: 30 };
 }

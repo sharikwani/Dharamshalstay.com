@@ -19,6 +19,8 @@ vi.mock('@/lib/db', () => ({
   getActiveTaxiRoutes: async () => [
     { id: '33333333-3333-4333-8333-333333333333', from_location: 'Dharamshala', to_location: 'McLeod Ganj', vehicle_name: 'Sedan', vehicle_category: 'sedan', price: 500 },
     { id: '44444444-4444-4444-8444-444444444444', from_location: 'Dharamshala', to_location: 'McLeod Ganj', vehicle_name: 'SUV', vehicle_category: 'suv', price: 900 },
+    { id: '55555555-5555-4555-8555-555555555555', from_location: 'Dharamshala', to_location: 'McLeod Ganj', vehicle_name: 'Tempo', vehicle_category: 'tempo', price: 30, price_type: 'per_km' },
+    { id: '66666666-6666-4666-8666-666666666666', from_location: 'Dharamshala', to_location: 'Bir Billing', vehicle_name: 'Sedan', vehicle_category: 'sedan', price: 18, price_type: 'per_km' },
   ],
 }));
 vi.mock('@/lib/wa-chat/booking-store', () => ({
@@ -63,6 +65,17 @@ describe('quote_booking', () => {
     const r = await run('quote_booking', { category: 'trek', name: 'triund', date: '2099-10-24', guests: 2 });
     expect(r).toMatchObject({ quote_id: 'q1', amount: 3000, online_payment_available: true });
     expect(h.quotes[0]).toMatchObject({ conversation_id: 'c1', category: 'trek', amount: 3000, input: { category: 'trek', trek_id: TREK_ID, activity_date: '2099-10-24', num_guests: 2 } });
+    expect(r.summary).toBe('Triund Trek · 2099-10-24 · 2 people · Total ₹3,000 · Cannot be cancelled within 24 hours of the start');
+    expect(h.quotes[0].summary).toBe(r.summary);
+  });
+  it('treats per-km taxi routes as having no fixed fare', async () => {
+    const r = await run('quote_booking', { category: 'taxi', from: 'dharamshala', to: 'bir', vehicle: 'sedan', date: '2099-10-24', guests: 2 });
+    expect(r.error).toMatch(/No fixed fare.*create_enquiry/);
+    expect(h.quotes).toEqual([]);
+  });
+  it('leaves per-km rows out of the vehicle choice on a mixed route', async () => {
+    const r = await run('quote_booking', { category: 'taxi', from: 'dharamshala', to: 'mcleod', date: '2099-10-24', guests: 2 });
+    expect(r.vehicles).not.toContain('Tempo');
   });
   it('prices a hotel room and plan by name', async () => {
     const r = await run('quote_booking', { category: 'hotel', name: 'Pine View', check_in: '2099-10-24', check_out: '2099-10-26', guests: 2, room_name: 'deluxe', plan_name: 'breakfast' });

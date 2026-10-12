@@ -47,7 +47,7 @@ function hasDuplicate(b: OwnBooking, all: OwnBooking[]) {
 /** Why the AI may not cancel this booking right now, or null if it may. */
 function blocker(b: OwnBooking): 'already_cancelled' | 'paid' | 'within_24h' | 'no_start' | null {
   if (b.status === 'cancelled') return 'already_cancelled';
-  if (b.payment_status === 'paid') return 'paid';
+  if (b.payment_status === 'paid' || b.payment_status === 'partially_paid' || b.stripe_payment_intent) return 'paid';
   const hours = hoursUntilStart(b);
   if (hours === null) return 'no_start';
   return hours < 24 ? 'within_24h' : null;

@@ -61,6 +61,17 @@ describe('requestCancellation', () => {
     expect(c.handedOver).toBe(true);
     expect(h.cancels).toEqual([]);
   });
+  it('treats partially paid bookings and ones with a Stripe payment as paid', async () => {
+    for (const over of [{ payment_status: 'partially_paid' }, { payment_status: 'pending', stripe_payment_intent: 'pi_1' }]) {
+      h.own = [booking(over)];
+      h.saved = [];
+      const c = ctx();
+      expect(await ask({ reason_code: 'medical' }, c)).toMatchObject({ result: 'handed_over' });
+      expect(c.handedOver).toBe(true);
+      expect(h.saved).toEqual([]);
+      expect(h.cancels).toEqual([]);
+    }
+  });
   it('refuses within 24 hours', async () => {
     h.own = [booking({ activity_date: future(0) })];
     expect(await ask({ reason_code: 'medical' })).toMatchObject({ result: 'not_allowed_within_24h' });
