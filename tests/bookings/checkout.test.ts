@@ -24,7 +24,7 @@ describe('createCheckoutLink', () => {
   it('creates a session and stores it on the booking', async () => {
     expect(await createCheckoutLink('b1')).toEqual({ ok: true, url: 'https://pay/cs_1', sessionId: 'cs_1' });
     expect(h.created[0].line_items[0].price_data.unit_amount).toBe(300000);
-    expect(h.updates[0]).toEqual({ stripe_session_id: 'cs_1', payment_method: 'online' });
+    expect(h.updates[0]).toEqual({ stripe_session_id: 'cs_1' });
   });
   it('refuses paid, missing and unpriced bookings', async () => {
     h.booking.payment_status = 'paid';

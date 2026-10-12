@@ -31,6 +31,6 @@ export async function createCheckoutLink(bookingId: string): Promise<CheckoutRes
     success_url: process.env.NEXT_PUBLIC_SITE_URL + '/booking/success?session_id={CHECKOUT_SESSION_ID}&ref=' + encodeURIComponent(b.booking_ref || ''),
     cancel_url: process.env.NEXT_PUBLIC_SITE_URL + (RETURN_PATH[b.category] || '/') + '?payment=cancelled',
   });
-  await sb.from('bookings').update({ stripe_session_id: session.id, payment_method: 'online' }).eq('id', b.id);
+  await sb.from('bookings').update({ stripe_session_id: session.id }).eq('id', b.id);
   return { ok: true, url: session.url!, sessionId: session.id };
 }
