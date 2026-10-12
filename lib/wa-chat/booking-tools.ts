@@ -136,7 +136,12 @@ async function createTool(a: any, ctx: ToolCtx, handover: Handover) {
   if (link?.ok) return { ...base, payment: 'online', payment_url: link.url };
   // No link: keep the booking as pay later so the usual booking emails still go out.
   const later = laterMethod(q.category);
-  const { error } = await serviceClient().from('bookings').update({ payment_method: later }).eq('id', r.booking.id);
+  const sb = serviceClient();
+  // createBooking marks online bookings commission 'not_applicable'; pay-later ones with commission owe it.
+  const { data: row } = await sb.from('bookings').select('commission_amount').eq('id', r.booking.id).single();
+  const patch: Record<string, unknown> = { payment_method: later };
+  if (Number((row as any)?.commission_amount) > 0) patch.commission_status = 'pending';
+  const { error } = await sb.from('bookings').update(patch).eq('id', r.booking.id);
   if (error) console.error('WhatsApp booking: pay-later fallback failed', error);
   await sendBookingEmails(r.booking.id);
   return { ...base, payment: 'later', payment_link_failed: true };

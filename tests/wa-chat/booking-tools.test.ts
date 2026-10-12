@@ -5,7 +5,7 @@ const HOTEL_ID = '11111111-1111-4111-8111-111111111111';
 const TREK_ID = '22222222-2222-4222-8222-222222222222';
 const h = vi.hoisted(() => ({
   quotes: [] as any[], quote: null as any, claimed: true, spoke: true, own: [] as any[], created: [] as any[], createResult: null as any,
-  checkout: { ok: true, url: 'https://pay/x', sessionId: 's' } as any, released: [] as any[], linked: [] as any[], updates: [] as any[], emails: [] as any[], handovers: [] as any[],
+  checkout: { ok: true, url: 'https://pay/x', sessionId: 's' } as any, released: [] as any[], linked: [] as any[], updates: [] as any[], emails: [] as any[], handovers: [] as any[], commission: 0,
 }));
 vi.mock('@/lib/wa-chat/find', () => ({
   findHotel: async (n: string) => n.toLowerCase().includes('pine') ? {
@@ -37,7 +37,7 @@ vi.mock('@/lib/bookings/create', async (orig) => {
 });
 vi.mock('@/lib/bookings/checkout', () => ({ createCheckoutLink: async () => { if (h.checkout === 'throw') throw new Error('stripe down'); return h.checkout; } }));
 vi.mock('@/lib/booking-emails', () => ({ sendBookingEmails: async (id: string) => { h.emails.push(id); } }));
-vi.mock('@/lib/server-auth', () => ({ serviceClient: () => ({ from: () => ({ update: (row: any) => ({ eq: async () => { h.updates.push(row); return { error: null }; } }) }) }) }));
+vi.mock('@/lib/server-auth', () => ({ serviceClient: () => ({ from: () => ({ select: () => ({ eq: () => ({ single: async () => ({ data: { commission_amount: h.commission } }) }) }), update: (row: any) => ({ eq: async () => { h.updates.push(row); return { error: null }; } }) }) }) }));
 
 import { runBookingTool } from '@/lib/wa-chat/booking-tools';
 
@@ -51,7 +51,7 @@ const goodQuote = (over: any = {}) => ({
 });
 
 beforeEach(() => {
-  Object.assign(h, { quotes: [], quote: goodQuote(), claimed: true, spoke: true, own: [], created: [], released: [], linked: [], updates: [], emails: [], handovers: [],
+  Object.assign(h, { quotes: [], quote: goodQuote(), claimed: true, spoke: true, own: [], created: [], released: [], linked: [], updates: [], emails: [], handovers: [], commission: 0,
     createResult: { ok: true, booking: { id: 'b1', booking_ref: 'TRK-9' }, amount: 3000, payment_method: 'offline' },
     checkout: { ok: true, url: 'https://pay/x', sessionId: 's' } });
   vi.stubEnv('STRIPE_SECRET_KEY', 'sk_test');
@@ -144,12 +144,20 @@ describe('create_booking', () => {
     expect(h.updates[0]).toEqual({ payment_method: 'offline' });
     expect(h.emails).toEqual(['b1']);
   });
+  it('marks commission pending in the fallback when the booking has commission', async () => {
+    h.createResult = { ...h.createResult, payment_method: 'online' };
+    h.checkout = { ok: false, error: 'Stripe down', status: 500 };
+    h.commission = 300;
+    await run('create_booking', { quote_id: 'q1', payment: 'online', guest_name: 'Asha' });
+    expect(h.updates[0]).toEqual({ payment_method: 'offline', commission_status: 'pending' });
+  });
   it('falls back the same way when the checkout call throws', async () => {
     h.createResult = { ...h.createResult, payment_method: 'online' };
     h.checkout = 'throw';
+    h.commission = 300;
     const r = await run('create_booking', { quote_id: 'q1', payment: 'online', guest_name: 'Asha' });
     expect(r).toMatchObject({ payment: 'later', payment_link_failed: true });
-    expect(h.updates[0]).toEqual({ payment_method: 'offline' });
+    expect(h.updates[0]).toEqual({ payment_method: 'offline', commission_status: 'pending' });
     expect(h.emails).toEqual(['b1']);
   });
   it('payment_link returns an error when checkout throws', async () => {
