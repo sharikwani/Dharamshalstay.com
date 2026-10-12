@@ -91,6 +91,30 @@ export function customerParams(v: BookingView): string[] {
   return [v.booking_ref, v.item_name, date, time, v.num_guests, assignee, rupees(v.amount), v.payment_text].map(cleanParam);
 }
 
+/** A v2 template plus the approved v1 template to fall back on while v2 is under review at Meta. */
+type Msg = { template: string; params: string[]; fallback: { template: string; params: string[] } };
+
+// v1 layouts (one-line date_text). Remove once the _v2 templates are approved.
+const v1 = (v: BookingView, ...rest: unknown[]) => [v.booking_ref, v.item_name, v.date_text, ...rest].map(cleanParam);
+function v1Assignee(v: BookingView): string {
+  const who = v.category === 'taxi' ? 'Driver' : v.category === 'paragliding' ? 'Pilot' : v.category === 'guide' || v.category === 'trek' ? 'Guide' : null;
+  return v.assignee_text ? (who ? `${who} ${v.assignee_text}` : v.assignee_text) : 'our team, we will share details soon';
+}
+const newBookingMsg = (v: BookingView): Msg => ({
+  template: 'booking_new_partner_v2', params: newBookingParams(v),
+  fallback: { template: 'booking_new_partner', params: v1(v, v.num_guests, v.guest_name, v.guest_phone, rupees(v.amount), v.payment_text) },
+});
+const cancelledMsg = (v: BookingView, reason: string): Msg => ({
+  template: 'booking_cancelled_partner_v2', params: cancelledParams(v, reason),
+  fallback: { template: 'booking_cancelled_partner', params: v1(v, reason) },
+});
+const customerMsg = (v: BookingView): Msg => ({
+  template: 'booking_confirmed_customer_v2', params: customerParams(v),
+  fallback: { template: 'booking_confirmed_customer', params: v1(v, v.num_guests, v1Assignee(v), rupees(v.amount), v.payment_text) },
+});
+/** Meta's "template does not exist (yet) in this language" error. */
+const NOT_APPROVED = /\(#132001\)/;
+
 async function row(table: string, id: string | null | undefined, cols: string): Promise<any | null> {
   if (!id) return null;
   const { data, error } = await serviceClient().from(table).select(cols).eq('id', id).maybeSingle();
@@ -124,14 +148,19 @@ export async function currentAssigneePhones(a: Assignment): Promise<string[]> {
  * attempt is recorded even if the send never returns; it is then updated to 'sent' or 'failed'.
  * Nothing is logged when WhatsApp is not configured. Never throws.
  */
-async function sendAndLog(bookingId: string, kind: RecipientKind | 'customer', to: string, template: string, params: string[]) {
+async function sendAndLog(bookingId: string, kind: RecipientKind | 'customer', to: string, msg: Msg) {
   try {
     if (!isWhatsAppConfigured()) return;
     const sb = serviceClient();
+    let template = msg.template;
     const base = { booking_id: bookingId, recipient_kind: kind, to_phone: to, template };
     const { data: queued, error: qErr } = await sb.from('whatsapp_messages').insert({ ...base, status: 'queued' }).select('id').single();
     if (qErr) console.error('WhatsApp: could not log queued message:', qErr);
-    const r = await sendTemplate({ to, template, params });
+    let r = await sendTemplate({ to, template, params: msg.params });
+    if (!r.ok && !r.skipped && NOT_APPROVED.test(r.error || '')) {
+      template = msg.fallback.template;
+      r = await sendTemplate({ to, template, params: msg.fallback.params });
+    }
     if (!r.ok && r.skipped) {
       if (queued?.id) {
         const { error } = await sb.from('whatsapp_messages').delete().eq('id', queued.id);
@@ -140,7 +169,7 @@ async function sendAndLog(bookingId: string, kind: RecipientKind | 'customer', t
       return;
     }
     const result = {
-      wa_message_id: r.ok ? r.id : null, status: r.ok ? 'sent' : 'failed', error: r.ok ? null : r.error || 'Unknown error',
+      template, wa_message_id: r.ok ? r.id : null, status: r.ok ? 'sent' : 'failed', error: r.ok ? null : r.error || 'Unknown error',
     };
     const { error } = queued?.id
       ? await sb.from('whatsapp_messages').update({ ...result, updated_at: new Date().toISOString() }).eq('id', queued.id)
@@ -150,8 +179,8 @@ async function sendAndLog(bookingId: string, kind: RecipientKind | 'customer', t
 }
 
 /** Send to every recipient at once so one slow number does not hold up the others. */
-async function sendAll(bookingId: string, recipients: Recipient[], template: string, params: string[]) {
-  await Promise.allSettled(recipients.map((r) => sendAndLog(bookingId, r.kind, r.phone, template, params)));
+async function sendAll(bookingId: string, recipients: Recipient[], msg: Msg) {
+  await Promise.allSettled(recipients.map((r) => sendAndLog(bookingId, r.kind, r.phone, msg)));
 }
 
 /**
@@ -163,11 +192,10 @@ export async function whatsappNewBooking(bookingId: string, opts: { customer: bo
     if (!isWhatsAppConfigured()) return;
     const v = await loadBookingView(bookingId);
     if (!v) return;
-    const params = newBookingParams(v);
     const customerTo = opts.customer ? normalizeIndianPhone(v.guest_phone) : null;
     await Promise.allSettled([
-      opts.partners === false ? null : sendAll(bookingId, await loadRecipients(v), 'booking_new_partner_v2', params),
-      customerTo ? sendAndLog(bookingId, 'customer', customerTo, 'booking_confirmed_customer_v2', customerParams(v)) : null,
+      opts.partners === false ? null : sendAll(bookingId, await loadRecipients(v), newBookingMsg(v)),
+      customerTo ? sendAndLog(bookingId, 'customer', customerTo, customerMsg(v)) : null,
     ]);
   } catch (e) { console.error('WhatsApp new booking alert failed:', e); }
 }
@@ -178,8 +206,7 @@ export async function whatsappCancelled(bookingId: string, reason: string): Prom
     if (!isWhatsAppConfigured()) return;
     const v = await loadBookingView(bookingId);
     if (!v) return;
-    const params = cancelledParams(v, reason);
-    await sendAll(bookingId, await loadRecipients(v), 'booking_cancelled_partner_v2', params);
+    await sendAll(bookingId, await loadRecipients(v), cancelledMsg(v, reason));
   } catch (e) { console.error('WhatsApp cancellation alert failed:', e); }
 }
 
@@ -204,6 +231,6 @@ export async function whatsappReassignedAway(bookingId: string, prev: { partner_
     const to = recipientsFor(v, { partner, staff })
       .filter((r) => (partnerChanged || r.kind === 'staff') && !keep.has(r.phone));
     const reason = partnerChanged ? 'Reassigned to another partner - you no longer need to take it' : 'Reassigned to someone else - you no longer need to take it';
-    await sendAll(bookingId, to, 'booking_cancelled_partner_v2', cancelledParams(v, reason));
+    await sendAll(bookingId, to, cancelledMsg(v, reason));
   } catch (e) { console.error('WhatsApp reassignment alert failed:', e); }
 }

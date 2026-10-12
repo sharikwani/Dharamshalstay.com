@@ -142,6 +142,34 @@ describe('templates', () => {
 
 describe('notifiers', () => {
   const partnerRow = { whatsapp_alerts: true, whatsapp_number: '9816000002', phone: null };
+  it('falls back to the approved v1 template while v2 is still under review', async () => {
+    h.tables = { profiles: partnerRow };
+    h.sendTemplate
+      .mockResolvedValueOnce({ ok: false, error: '(#132001) Template name does not exist in the translation' })
+      .mockResolvedValueOnce({ ok: true, id: 'wamid.v1' });
+    await whatsappNewBooking('b1', { customer: false });
+    expect(h.sendTemplate).toHaveBeenNthCalledWith(2, { to: '919816000002', template: 'booking_new_partner',
+      params: ['DS-1', 'Dharamshala → McLeod Ganj', '12 Oct 2026, 09:00', '2', 'Asha K', '9816000001', 'Rs.12,500', 'Payment pending'] });
+    expect(logged()).toEqual([expect.objectContaining({ template: 'booking_new_partner', status: 'sent', wa_message_id: 'wamid.v1' })]);
+  });
+  it('v1 fallbacks keep the old parameter layout', async () => {
+    const missing = { ok: false, error: '(#132001) Template name does not exist in the translation' };
+    h.tables = { profiles: partnerRow };
+    h.sendTemplate.mockResolvedValueOnce(missing).mockResolvedValueOnce({ ok: true, id: 'w' });
+    await whatsappCancelled('b1', 'Guest left');
+    expect(h.sendTemplate).toHaveBeenLastCalledWith({ to: '919816000002', template: 'booking_cancelled_partner',
+      params: ['DS-1', 'Dharamshala → McLeod Ganj', '12 Oct 2026, 09:00', 'Guest left'] });
+    h.sendTemplate.mockResolvedValueOnce(missing).mockResolvedValueOnce({ ok: true, id: 'w' });
+    await whatsappNewBooking('b1', { customer: true, partners: false });
+    expect(h.sendTemplate).toHaveBeenLastCalledWith({ to: '919816000001', template: 'booking_confirmed_customer',
+      params: ['DS-1', 'Dharamshala → McLeod Ganj', '12 Oct 2026, 09:00', '2', 'Driver Ravi, 98160', 'Rs.12,500', 'Payment pending'] });
+  });
+  it('does not fall back on other errors', async () => {
+    h.tables = { profiles: partnerRow };
+    h.sendTemplate.mockResolvedValueOnce({ ok: false, error: 'Template paused' });
+    await whatsappNewBooking('b1', { customer: false });
+    expect(h.sendTemplate).toHaveBeenCalledTimes(1);
+  });
   it('logs sent and failed attempts and never throws', async () => {
     h.tables = { profiles: partnerRow, partner_staff: { whatsapp_alerts: true, phone: '9816000004' } };
     h.sendTemplate.mockResolvedValueOnce({ ok: true, id: 'wamid.1' }).mockResolvedValueOnce({ ok: false, error: 'Template paused' });
