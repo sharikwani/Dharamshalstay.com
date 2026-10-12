@@ -45,7 +45,7 @@ async function complete(messages: any[]) {
   const res = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST', signal: AbortSignal.timeout(25000),
     headers: { Authorization: `Bearer ${process.env.OPENAI_API_KEY}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ model: process.env.OPENAI_CHAT_MODEL || 'gpt-4o', temperature: 0.4, max_tokens: 500, messages, tools: TOOL_DEFS }),
+    body: JSON.stringify({ model: process.env.OPENAI_CHAT_MODEL || 'gpt-4.1', temperature: 0.4, max_tokens: 500, messages, tools: TOOL_DEFS }),
   });
   const data: any = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(`OpenAI ${res.status}: ${data?.error?.message || 'error'}`);
@@ -69,12 +69,14 @@ export async function reply(msgs: ChatMessage[], ctx: ToolCtx): Promise<string> 
     const calls: any[] = message.tool_calls || [];
     if (!calls.length) return String(message.content || '').trim();
     messages.push({ role: 'assistant', content: message.content ?? null, tool_calls: calls });
-    for (const call of calls) {
-      if (++toolCalls > MAX_TOOL_CALLS) throw new Error('Too many tool calls');
+    toolCalls += calls.length;
+    if (toolCalls > MAX_TOOL_CALLS) throw new Error('Too many tool calls');
+    const results = await Promise.all(calls.map((call) => {
       let args: any = {};
       try { args = JSON.parse(call.function?.arguments || '{}'); } catch { /* keep {} */ }
-      messages.push({ role: 'tool', tool_call_id: call.id, content: await runTool(call.function?.name, args, ctx) });
-    }
+      return runTool(call.function?.name, args, ctx);
+    }));
+    calls.forEach((call, i) => messages.push({ role: 'tool', tool_call_id: call.id, content: results[i] }));
   }
 }
 

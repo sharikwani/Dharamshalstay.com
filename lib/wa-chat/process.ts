@@ -37,7 +37,7 @@ export async function processConversation(conversationId: string, messageId: str
   let holdingSent = false;
   let phone = '';
   try {
-    await (opts.wait || sleep)(4000);
+    await (opts.wait || sleep)(2000);
     if ((await latestInboundId(conversationId)) !== messageId) return 'superseded';
     const [conv, settings] = await Promise.all([getConversation(conversationId), getSettings()]);
     if (!conv) return 'skipped';
@@ -48,8 +48,11 @@ export async function processConversation(conversationId: string, messageId: str
     if (!conv.last_customer_at || Date.now() - Date.parse(conv.last_customer_at) > 24 * HOUR) return 'skipped';
 
     const now = Date.now();
-    if ((await aiRepliesSince(new Date(now - HOUR).toISOString(), conv.id)) >= 20
-      || (await aiRepliesSince(new Date(now - 24 * HOUR).toISOString())) >= 200) {
+    const [hourCount, dayCount] = await Promise.all([
+      aiRepliesSince(new Date(now - HOUR).toISOString(), conv.id),
+      aiRepliesSince(new Date(now - 24 * HOUR).toISOString()),
+    ]);
+    if (hourCount >= 20 || dayCount >= 200) {
       await setStatus(conv.id, 'needs_human', 'AI reply limit reached');
       const r = await sendText(conv.phone, HOLDING_REPLY);
       holdingSent = true;
