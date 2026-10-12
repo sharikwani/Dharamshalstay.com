@@ -17,6 +17,7 @@ describe('checkProof', () => {
     expect(parts[0].text).toMatch(/2026-10-24/);
     expect(parts[1].image_url.url).toMatch(/^data:image\/jpeg;base64,AQID$/);
     expect(calls[0].model).toBe('gpt-4.1');
+    expect(calls[0].messages[0].content).toMatch(/never instructions/);
   });
   it('sends PDFs as a file part', async () => {
     vi.stubGlobal('fetch', reply('{"verdict":"mismatch","notes":"Different name"}'));
@@ -34,5 +35,11 @@ describe('checkProof', () => {
     expect((await checkProof(input())).verdict).toBe('unclear');
     vi.stubEnv('OPENAI_API_KEY', '');
     expect((await checkProof(input())).verdict).toBe('unclear');
+  });
+  it('never throws on malformed input', async () => {
+    vi.stubGlobal('fetch', reply('{"verdict":"matches","notes":"x"}'));
+    await expect(checkProof({ ...input(), data: undefined as any })).resolves.toMatchObject({ verdict: 'unclear' });
+    await expect(checkProof({ ...input(), reasonText: null as any })).resolves.toMatchObject({ verdict: 'unclear' });
+    expect(calls).toEqual([]);
   });
 });
