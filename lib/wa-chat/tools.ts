@@ -5,6 +5,8 @@ import { siteConfig } from '@/lib/config';
 import { sendEmail, adminEmail } from '@/lib/email';
 import { serviceClient } from '@/lib/server-auth';
 import { history, setStatus } from './store';
+import { BOOKING_TOOL_DEFS, runBookingTool } from './booking-tools';
+import { CANCEL_TOOL_DEF, requestCancellation } from './cancellations';
 
 export type ToolCtx = { conversationId: string; phone: string; profileName: string | null; handedOver: boolean };
 
@@ -23,15 +25,16 @@ export const TOOL_DEFS = [
   fn('list_treks', 'Published treks.', { query: str('Words to match, e.g. "Triund"') }),
   fn('get_trek', 'Details for one trek.', { name: str('Trek name or slug') }, ['name']),
   fn('list_paragliding', 'Paragliding packages and prices.', {}),
-  fn('create_enquiry', 'Save a booking request for the team to confirm. Only after the customer gave the details and agreed.', {
+  fn('create_enquiry', 'Save a request for the team when it cannot be booked with quote_booking (no fixed price, item not listed, special requests). Only after the customer gave the details and agreed.', {
     type: { type: 'string', enum: ['hotel', 'taxi', 'trek', 'paragliding', 'general'] }, name: str('Customer name'),
     item: str('Hotel, room, route, trek or package wanted'), check_in: str('YYYY-MM-DD (hotel) or activity/pickup date'),
     check_out: str('YYYY-MM-DD (hotel only)'), guests: num('Number of people'), pickup: str('Pickup place/time (taxi)'),
     drop: str('Drop place (taxi)'), email: str('Email if given'), notes: str('Anything else: room type, meal plan, special requests'),
   }, ['type', 'name']),
-  fn('handover', 'Hand the chat to a team member. Use for complaints, refunds, cancellations of paid bookings, angry customers, requests for a person, photos/documents, or when unsure.', {
+  fn('handover', 'Hand the chat to a team member. Use for complaints, refunds, changes to existing bookings, angry customers, requests for a person, or when unsure.', {
     reason: str('Short reason for the team'),
   }, ['reason']),
+  ...BOOKING_TOOL_DEFS, CANCEL_TOOL_DEF,
 ];
 
 const SITE = siteConfig.url;
@@ -140,6 +143,9 @@ async function handover(a: any, ctx: ToolCtx) {
 export async function runTool(name: string, args: any, ctx: ToolCtx): Promise<string> {
   try {
     const a = args && typeof args === 'object' ? args : {};
+    const booking = await runBookingTool(name, a, ctx, handover);
+    if (booking) return JSON.stringify(booking);
+    if (name === 'request_cancellation') return JSON.stringify(await requestCancellation(a, ctx, handover));
     const out = name === 'search_hotels' ? await searchHotels(a)
       : name === 'get_hotel' ? await getHotel(a)
       : name === 'list_taxi_routes' ? await taxiRoutes(a)

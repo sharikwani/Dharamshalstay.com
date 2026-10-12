@@ -13,7 +13,7 @@ beforeEach(() => { vi.stubEnv('OPENAI_API_KEY', 'k'); runTool.mockClear(); });
 
 describe('assistant', () => {
   it('system prompt carries the hard rules', () => {
-    for (const rule of [/never confirm/i, /never invent/i, /discount/i, /human/i, /same language/i, /handover/i]) expect(SYSTEM_PROMPT).toMatch(rule);
+    for (const rule of [/never say confirmed/i, /never invent/i, /discount/i, /human/i, /same language/i, /handover/i]) expect(SYSTEM_PROMPT).toMatch(rule);
   });
   it('mentions the advertised booking discount instead of denying it', () => {
     expect(SYSTEM_PROMPT).toContain('Discount of up to ₹500 on every booking');
@@ -34,11 +34,11 @@ describe('assistant', () => {
     const second = JSON.parse(f.mock.calls[1][1].body);
     expect(second.messages.at(-1)).toMatchObject({ role: 'tool', tool_call_id: 't1' });
   });
-  it('stops after 5 tool calls', async () => {
+  it('stops after 6 tool calls', async () => {
     const loop = () => completion({ role: 'assistant', content: null, tool_calls: [{ id: 't', type: 'function', function: { name: 'search_hotels', arguments: '{}' } }] });
     vi.stubGlobal('fetch', vi.fn(async () => loop()));
     await expect(reply([msg('customer', 'hi')], ctx())).rejects.toThrow(/tool/);
-    expect(runTool).toHaveBeenCalledTimes(5);
+    expect(runTool).toHaveBeenCalledTimes(6);
   });
   it('throws when OpenAI fails', async () => {
     vi.stubGlobal('fetch', vi.fn(async () => new Response('{}', { status: 500 })));

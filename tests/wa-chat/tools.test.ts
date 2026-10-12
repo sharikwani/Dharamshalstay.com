@@ -18,6 +18,9 @@ vi.mock('@/lib/email', () => ({ sendEmail: async (m: any) => { h.emails.push(m);
 vi.mock('@/lib/wa-chat/store', () => ({ setStatus: async (...a: any[]) => { h.statuses.push(a); }, history: async () => [{ author: 'customer', body: 'help' }] }));
 vi.mock('@/lib/server-auth', () => ({ serviceClient: () => ({ from: () => ({ insert: (row: any) => { h.inserts.push(row); return { select: () => ({ single: async () => ({ data: { id: 'inq1' }, error: null }) }) }; } }) }) }));
 
+vi.mock('@/lib/wa-chat/booking-tools', () => ({ BOOKING_TOOL_DEFS: ['quote_booking', 'create_booking', 'payment_link', 'my_bookings'].map((name) => ({ type: 'function', function: { name } })), runBookingTool: async () => null }));
+vi.mock('@/lib/wa-chat/cancellations', () => ({ CANCEL_TOOL_DEF: { type: 'function', function: { name: 'request_cancellation' } }, requestCancellation: async () => ({ result: 'need_proof' }) }));
+
 import { runTool, TOOL_DEFS } from '@/lib/wa-chat/tools';
 
 const ctx = () => ({ conversationId: 'c1', phone: '919800000001', profileName: 'Asha', handedOver: false });
@@ -26,7 +29,7 @@ beforeEach(() => { h.inserts = []; h.emails = []; h.statuses = []; });
 describe('tools', () => {
   it('defines every tool', () => {
     expect(TOOL_DEFS.map((t: any) => t.function.name).sort()).toEqual(
-      ['create_enquiry', 'get_hotel', 'get_trek', 'handover', 'list_paragliding', 'list_taxi_routes', 'list_treks', 'search_hotels']);
+      ['create_booking', 'create_enquiry', 'get_hotel', 'get_trek', 'handover', 'list_paragliding', 'list_taxi_routes', 'list_treks', 'my_bookings', 'payment_link', 'quote_booking', 'request_cancellation', 'search_hotels']);
   });
   it('search_hotels filters by area and budget and links pages', async () => {
     const r = JSON.parse(await runTool('search_hotels', { area: 'mcleod', budget_max: 3000 }, ctx()));
