@@ -1,6 +1,6 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
-const h = vi.hoisted(() => ({ rows: [] as any[], filters: [] as any[], claimRows: [{ id: 'q1' }] as any[] }));
+const h = vi.hoisted(() => ({ rows: [] as any[], filters: [] as any[], claimRows: [{ id: 'q1' }] as any[], single: null as any }));
 vi.mock('@/lib/server-auth', () => ({
   serviceClient: () => ({
     from: (t: string) => {
@@ -8,7 +8,9 @@ vi.mock('@/lib/server-auth', () => ({
         select: () => b, order: () => b, limit: () => b,
         eq: (...a: any[]) => { h.filters.push(['eq', ...a]); return b; },
         ilike: (...a: any[]) => { h.filters.push(['ilike', ...a]); return b; },
-        is: () => b,
+        is: (...a: any[]) => { h.filters.push(['is', ...a]); return b; },
+        gt: (...a: any[]) => { h.filters.push(['gt', ...a]); return b; },
+        maybeSingle: async () => ({ data: h.single, error: null }),
         update: () => b,
         then: (res: any) => res((t === 'whatsapp_quotes' || t === 'whatsapp_cancellations') ? { data: h.claimRows, error: null } : { data: h.rows, error: null }),
       };
@@ -17,9 +19,9 @@ vi.mock('@/lib/server-auth', () => ({
   }),
 }));
 
-import { claimCancellation, claimQuote, findOwnBooking, ownBookings, samePhone } from '@/lib/wa-chat/booking-store';
+import { claimCancellation, claimQuote, confirmedAfter, confirmedInOrder, findOwnBooking, latestOpenQuote, ownBookings, samePhone } from '@/lib/wa-chat/booking-store';
 
-beforeEach(() => { h.rows = []; h.filters = []; h.claimRows = [{ id: 'q1' }]; });
+beforeEach(() => { h.rows = []; h.filters = []; h.claimRows = [{ id: 'q1' }]; h.single = null; });
 
 describe('booking-store', () => {
   it('samePhone compares the last 10 digits', () => {
@@ -53,5 +55,40 @@ describe('booking-store', () => {
     expect(await claimCancellation('x1')).toBe(true);
     h.claimRows = [];
     expect(await claimCancellation('x1')).toBe(false);
+  });
+  it('latestOpenQuote asks for the newest unused, unexpired quote of the conversation', async () => {
+    h.single = { id: 'q9' };
+    expect((await latestOpenQuote('c1'))?.id).toBe('q9');
+    expect(h.filters).toContainEqual(['eq', 'conversation_id', 'c1']);
+    expect(h.filters).toContainEqual(['is', 'used_at', null]);
+    expect(h.filters.some((f) => f[0] === 'gt' && f[1] === 'expires_at')).toBe(true);
+    h.single = null;
+    expect(await latestOpenQuote('c1')).toBeNull();
+  });
+  describe('confirmedInOrder', () => {
+    const Q = '2026-10-13T10:00:00Z';
+    const at = (s: number) => new Date(Date.parse(Q) + s * 1000).toISOString();
+    it('needs an AI message after the quote and a customer reply after that', () => {
+      expect(confirmedInOrder([{ author: 'ai', status: 'sent', created_at: at(1) }, { author: 'customer', created_at: at(5) }], Q)).toBe(true);
+    });
+    it('is false when the customer spoke but the AI never sent the summary (same-turn yes)', () => {
+      expect(confirmedInOrder([{ author: 'customer', created_at: at(1) }], Q)).toBe(false);
+    });
+    it('is false when the customer message came before the summary was sent', () => {
+      expect(confirmedInOrder([{ author: 'customer', created_at: at(1) }, { author: 'ai', status: 'sent', created_at: at(2) }], Q)).toBe(false);
+    });
+    it('ignores messages before the quote and failed AI sends', () => {
+      expect(confirmedInOrder([{ author: 'ai', status: 'sent', created_at: at(-5) }, { author: 'customer', created_at: at(3) }], Q)).toBe(false);
+      expect(confirmedInOrder([{ author: 'ai', status: 'failed', created_at: at(1) }, { author: 'customer', created_at: at(3) }], Q)).toBe(false);
+    });
+    it('sorts rows itself and ignores admin messages', () => {
+      expect(confirmedInOrder([{ author: 'customer', created_at: at(9) }, { author: 'admin', created_at: at(1) }, { author: 'ai', created_at: at(4) }], Q)).toBe(true);
+    });
+    it('confirmedAfter reads the conversation messages after the quote', async () => {
+      h.rows = [{ author: 'ai', status: 'sent', created_at: at(1) }, { author: 'customer', status: 'received', created_at: at(2) }];
+      expect(await confirmedAfter('c1', Q)).toBe(true);
+      expect(h.filters).toContainEqual(['eq', 'conversation_id', 'c1']);
+      expect(h.filters).toContainEqual(['gt', 'created_at', Q]);
+    });
   });
 });

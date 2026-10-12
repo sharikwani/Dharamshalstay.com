@@ -5,7 +5,7 @@ import { bookingSchema, createBooking, dateProblem } from '@/lib/bookings/create
 import { createCheckoutLink } from '@/lib/bookings/checkout';
 import { sendBookingEmails } from '@/lib/booking-emails';
 import { serviceClient } from '@/lib/server-auth';
-import { claimQuote, customerSpokeSince, findOwnBooking, getQuote, linkQuoteBooking, ownBookings, releaseQuote, saveQuote, type Quote } from './booking-store';
+import { claimQuote, confirmedAfter, findOwnBooking, latestOpenQuote, linkQuoteBooking, ownBookings, releaseQuote, saveQuote, type Quote } from './booking-store';
 import { findHotel } from './find';
 import type { ToolCtx } from './tools';
 
@@ -32,10 +32,10 @@ export const BOOKING_TOOL_DEFS = [
     from: str('Taxi pickup place'), to: str('Taxi drop place'), vehicle: str('Taxi vehicle name, e.g. Sedan, SUV'),
     pickup_time: str('Taxi pickup time HH:MM (24h)'), pickup_location: str('Exact pickup address (taxi)'), drop_location: str('Exact drop address (taxi)'),
   }, ['category', 'guests']),
-  fn('create_booking', 'Create the booking from a quote. Only after the customer replied YES to that quote\'s summary in a later message.', {
-    quote_id: str('quote_id from quote_booking'), payment: { type: 'string', enum: ['online', 'later'] },
+  fn('create_booking', 'Book the most recent quote you showed the customer. Only after the customer replied YES to that quote\'s summary in a later message.', {
+    payment: { type: 'string', enum: ['online', 'later'] },
     guest_name: str('Full name for the booking'), guest_email: str('Email, if the customer gave one'),
-  }, ['quote_id', 'payment', 'guest_name']),
+  }, ['payment', 'guest_name']),
   fn('payment_link', 'A fresh online payment link for one of this customer\'s unpaid bookings.', { booking_ref: str('Booking reference, e.g. TRK-1234') }, ['booking_ref']),
   fn('my_bookings', 'This customer\'s recent bookings (made with this WhatsApp number).', {}),
 ];
@@ -104,11 +104,11 @@ async function quoteTool(a: any, ctx: ToolCtx) {
 }
 
 async function createTool(a: any, ctx: ToolCtx, handover: Handover) {
-  const q = await getQuote(String(a.quote_id || ''));
-  if (!q || q.conversation_id !== ctx.conversationId) return { error: 'Quote not found. Make a new quote with quote_booking.' };
+  const q = await latestOpenQuote(ctx.conversationId);
+  if (!q || q.conversation_id !== ctx.conversationId) return { error: 'No open quote. Make a quote with quote_booking, show it, and wait for YES.' };
   if (q.used_at || q.used_booking_id) return { error: 'This quote was already booked.' };
   if (Date.parse(q.expires_at) < Date.now()) return { error: 'This quote expired. Make a new quote and ask the customer to confirm again.' };
-  if (!(await customerSpokeSince(ctx.conversationId, q.created_at))) return { error: 'Show the summary and wait for the customer to reply YES before booking.' };
+  if (!(await confirmedAfter(ctx.conversationId, q.created_at))) return { error: 'Show the summary and wait for the customer to reply YES before booking.' };
   const name = String(a.guest_name || '').trim().slice(0, 200);
   if (name.length < 2) return { error: 'Ask for the guest\'s full name.' };
   const email = String(a.guest_email || '').trim();

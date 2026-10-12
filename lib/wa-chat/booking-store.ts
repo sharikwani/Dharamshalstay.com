@@ -23,13 +23,6 @@ export async function saveQuote(q: Pick<Quote, 'conversation_id' | 'category' | 
   return data as Quote;
 }
 
-export async function getQuote(id: string): Promise<Quote | null> {
-  if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
-  const { data, error } = await serviceClient().from('whatsapp_quotes').select('*').eq('id', id).maybeSingle();
-  if (error) throw error;
-  return (data as Quote) ?? null;
-}
-
 /** Mark a quote as being booked. Only the first caller gets true, so one quote makes one booking. */
 export async function claimQuote(id: string): Promise<boolean> {
   const { data, error } = await serviceClient().from('whatsapp_quotes').update({ used_at: now() }).eq('id', id).is('used_at', null).select('id');
@@ -47,12 +40,36 @@ export async function linkQuoteBooking(id: string, bookingId: string): Promise<v
   if (error) console.error('WhatsApp quote link failed:', error);
 }
 
-/** True when the customer wrote after `iso` (used to prove they saw the quote before saying yes). */
-export async function customerSpokeSince(conversationId: string, iso: string): Promise<boolean> {
-  const { data, error } = await serviceClient().from('whatsapp_chat_messages').select('id')
-    .eq('conversation_id', conversationId).eq('author', 'customer').gt('created_at', iso).limit(1);
+/** The newest unused, unexpired quote in this conversation (create_booking books this one). */
+export async function latestOpenQuote(conversationId: string): Promise<Quote | null> {
+  const { data, error } = await serviceClient().from('whatsapp_quotes').select('*')
+    .eq('conversation_id', conversationId).is('used_at', null).gt('expires_at', now())
+    .order('created_at', { ascending: false }).limit(1).maybeSingle();
   if (error) throw error;
-  return (data || []).length > 0;
+  return (data as Quote) ?? null;
+}
+
+type ChatRow = { author: string; status?: string | null; created_at: string };
+
+/**
+ * Pure ordering check behind confirmedAfter: some AI message that was actually sent comes after `iso`,
+ * and a customer message comes after that first AI message.
+ */
+export function confirmedInOrder(rows: ChatRow[], iso: string): boolean {
+  const t0 = Date.parse(iso);
+  const after = rows.filter((r) => Date.parse(r.created_at) > t0).sort((a, b) => Date.parse(a.created_at) - Date.parse(b.created_at));
+  const ai = after.find((r) => r.author === 'ai' && r.status !== 'failed');
+  if (!ai) return false;
+  const tAi = Date.parse(ai.created_at);
+  return after.some((r) => r.author === 'customer' && Date.parse(r.created_at) > tAi);
+}
+
+/** True when the AI sent a message after `iso` (the quote summary) and the customer answered it. */
+export async function confirmedAfter(conversationId: string, iso: string): Promise<boolean> {
+  const { data, error } = await serviceClient().from('whatsapp_chat_messages').select('author, status, created_at')
+    .eq('conversation_id', conversationId).gt('created_at', iso).order('created_at', { ascending: true }).limit(200);
+  if (error) throw error;
+  return confirmedInOrder((data as ChatRow[]) || [], iso);
 }
 
 export type OwnBooking = {

@@ -4,7 +4,7 @@ import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 const HOTEL_ID = '11111111-1111-4111-8111-111111111111';
 const TREK_ID = '22222222-2222-4222-8222-222222222222';
 const h = vi.hoisted(() => ({
-  quotes: [] as any[], quote: null as any, claimed: true, spoke: true, own: [] as any[], created: [] as any[], createResult: null as any,
+  quotes: [] as any[], quote: null as any, claimed: true, confirmed: true, useSaved: false, own: [] as any[], confirmCalls: [] as any[], created: [] as any[], createResult: null as any,
   checkout: { ok: true, url: 'https://pay/x', sessionId: 's' } as any, released: [] as any[], linked: [] as any[], updates: [] as any[], emails: [] as any[], handovers: [] as any[], commission: 0,
 }));
 vi.mock('@/lib/wa-chat/find', () => ({
@@ -23,11 +23,11 @@ vi.mock('@/lib/db', () => ({
 }));
 vi.mock('@/lib/wa-chat/booking-store', () => ({
   saveQuote: async (q: any) => { const row = { id: 'q1', created_at: '2026-10-13T10:00:00Z', expires_at: new Date(Date.now() + 60e3).toISOString(), used_at: null, used_booking_id: null, ...q }; h.quotes.push(row); return row; },
-  getQuote: async () => h.quote,
+  latestOpenQuote: async (cid: string) => h.useSaved ? (h.quotes.filter((q) => q.conversation_id === cid && !q.used_at).at(-1) ?? null) : h.quote,
   claimQuote: async () => h.claimed,
   releaseQuote: async (id: string) => { h.released.push(id); },
   linkQuoteBooking: async (...a: any[]) => { h.linked.push(a); },
-  customerSpokeSince: async () => h.spoke,
+  confirmedAfter: async (cid: string, iso: string) => { h.confirmCalls.push([cid, iso]); return h.confirmed; },
   ownBookings: async () => h.own,
   findOwnBooking: async (_p: string, ref: string) => h.own.find((b) => b.booking_ref === ref.toUpperCase()) ?? null,
 }));
@@ -39,7 +39,7 @@ vi.mock('@/lib/bookings/checkout', () => ({ createCheckoutLink: async () => { if
 vi.mock('@/lib/booking-emails', () => ({ sendBookingEmails: async (id: string) => { h.emails.push(id); } }));
 vi.mock('@/lib/server-auth', () => ({ serviceClient: () => ({ from: () => ({ select: () => ({ eq: () => ({ single: async () => ({ data: { commission_amount: h.commission } }) }) }), update: (row: any) => ({ eq: async () => { h.updates.push(row); return { error: null }; } }) }) }) }));
 
-import { runBookingTool } from '@/lib/wa-chat/booking-tools';
+import { BOOKING_TOOL_DEFS, runBookingTool } from '@/lib/wa-chat/booking-tools';
 
 const ctx = () => ({ conversationId: 'c1', phone: '919800000001', profileName: 'Asha', handedOver: false });
 const handover = async (a: any, c: any) => { c.handedOver = true; h.handovers.push(a.reason); return { ok: true }; };
@@ -51,7 +51,7 @@ const goodQuote = (over: any = {}) => ({
 });
 
 beforeEach(() => {
-  Object.assign(h, { quotes: [], quote: goodQuote(), claimed: true, spoke: true, own: [], created: [], released: [], linked: [], updates: [], emails: [], handovers: [], commission: 0,
+  Object.assign(h, { quotes: [], quote: goodQuote(), claimed: true, confirmed: true, useSaved: false, own: [], confirmCalls: [], created: [], released: [], linked: [], updates: [], emails: [], handovers: [], commission: 0,
     createResult: { ok: true, booking: { id: 'b1', booking_ref: 'TRK-9' }, amount: 3000, payment_method: 'offline' },
     checkout: { ok: true, url: 'https://pay/x', sessionId: 's' } });
   vi.stubEnv('STRIPE_SECRET_KEY', 'sk_test');
@@ -89,7 +89,7 @@ describe('quote_booking', () => {
 
 describe('create_booking', () => {
   it('books a confirmed quote with the chat phone and pay-later method', async () => {
-    const r = await run('create_booking', { quote_id: 'q1', payment: 'later', guest_name: 'Asha Rao' });
+    const r = await run('create_booking', { payment: 'later', guest_name: 'Asha Rao' });
     expect(r).toMatchObject({ booking_ref: 'TRK-9', status: 'requested', payment: 'later', amount: 3000 });
     const [data, opts] = h.created[0];
     expect(data).toMatchObject({ category: 'trek', guest_phone: '919800000001', guest_name: 'Asha Rao', payment_method: 'offline', booking_source: 'whatsapp', trek_id: TREK_ID });
@@ -98,48 +98,69 @@ describe('create_booking', () => {
   });
   it('uses pay_at_hotel for hotels', async () => {
     h.quote = goodQuote({ category: 'hotel', input: { category: 'hotel', property_id: HOTEL_ID, check_in: '2099-10-24', check_out: '2099-10-26', num_guests: 2, room_name: 'Deluxe' } });
-    await run('create_booking', { quote_id: 'q1', payment: 'later', guest_name: 'Asha' });
+    await run('create_booking', { payment: 'later', guest_name: 'Asha' });
     expect(h.created[0][0].payment_method).toBe('pay_at_hotel');
   });
-  it('refuses when the customer has not replied since the quote (same-turn yes)', async () => {
-    h.spoke = false;
-    expect((await run('create_booking', { quote_id: 'q1', payment: 'later', guest_name: 'Asha' })).error).toMatch(/reply/i);
+  it('refuses when the summary was not sent and answered after the quote (same-turn yes)', async () => {
+    h.confirmed = false;
+    expect((await run('create_booking', { payment: 'later', guest_name: 'Asha' })).error).toMatch(/reply/i);
+    expect(h.confirmCalls).toEqual([['c1', '2026-10-13T10:00:00Z']]);
     expect(h.created).toEqual([]);
+  });
+  it('refuses when there is no open quote', async () => {
+    h.quote = null;
+    expect((await run('create_booking', { payment: 'later', guest_name: 'Asha' })).error).toMatch(/No open quote/);
+    expect(h.created).toEqual([]);
+  });
+  it('does not take a quote_id argument', () => {
+    const def: any = BOOKING_TOOL_DEFS.find((d) => d.function.name === 'create_booking');
+    expect(def.function.parameters.properties.quote_id).toBeUndefined();
+    expect(def.function.parameters.required).toEqual(['payment', 'guest_name']);
   });
   it('refuses another conversation\'s, expired or already-used quotes', async () => {
     h.quote = goodQuote({ conversation_id: 'other' });
-    expect((await run('create_booking', { quote_id: 'q1', payment: 'later', guest_name: 'Asha' })).error).toMatch(/not found/i);
+    expect((await run('create_booking', { payment: 'later', guest_name: 'Asha' })).error).toMatch(/No open quote/);
     h.quote = goodQuote({ expires_at: '2000-01-01T00:00:00Z' });
-    expect((await run('create_booking', { quote_id: 'q1', payment: 'later', guest_name: 'Asha' })).error).toMatch(/expired/i);
+    expect((await run('create_booking', { payment: 'later', guest_name: 'Asha' })).error).toMatch(/expired/i);
     h.quote = goodQuote(); h.claimed = false;
-    expect((await run('create_booking', { quote_id: 'q1', payment: 'later', guest_name: 'Asha' })).error).toMatch(/already/i);
+    expect((await run('create_booking', { payment: 'later', guest_name: 'Asha' })).error).toMatch(/already/i);
     expect(h.created).toEqual([]);
+  });
+  it('books the quote saved in an earlier turn without a quote_id (two turns)', async () => {
+    h.useSaved = true;
+    const t1 = await run('quote_booking', { category: 'trek', name: 'triund', date: '2099-10-24', guests: 2 });
+    expect(t1.quote_id).toBe('q1');
+    // Turn 2: the AI only sees chat text, so it calls create_booking with no quote_id.
+    const r = await run('create_booking', { payment: 'later', guest_name: 'Asha Rao' });
+    expect(r).toMatchObject({ booking_ref: 'TRK-9', status: 'requested' });
+    expect(h.created[0][0]).toMatchObject({ category: 'trek', trek_id: TREK_ID, activity_date: '2099-10-24', num_guests: 2 });
+    expect(h.linked[0]).toEqual(['q1', 'b1']);
   });
   it('hands over after 3 WhatsApp bookings in 24 hours', async () => {
     const recent = new Date().toISOString();
     h.own = [1, 2, 3].map((i) => ({ booking_ref: `T-${i}`, booking_source: 'whatsapp', created_at: recent }));
     const c = ctx();
-    const r = await run('create_booking', { quote_id: 'q1', payment: 'later', guest_name: 'Asha' }, c);
+    const r = await run('create_booking', { payment: 'later', guest_name: 'Asha' }, c);
     expect(r).toMatchObject({ handed_over: true });
     expect(c.handedOver).toBe(true);
     expect(h.created).toEqual([]);
   });
   it('releases the quote when booking fails', async () => {
     h.createResult = { ok: false, error: 'Activity date cannot be in the past', status: 400 };
-    const r = await run('create_booking', { quote_id: 'q1', payment: 'later', guest_name: 'Asha' });
+    const r = await run('create_booking', { payment: 'later', guest_name: 'Asha' });
     expect(r.error).toMatch(/past/);
     expect(h.released).toEqual(['q1']);
   });
   it('returns a Stripe link for online payment', async () => {
     h.createResult = { ...h.createResult, payment_method: 'online' };
-    const r = await run('create_booking', { quote_id: 'q1', payment: 'online', guest_name: 'Asha' });
+    const r = await run('create_booking', { payment: 'online', guest_name: 'Asha' });
     expect(r).toMatchObject({ payment: 'online', payment_url: 'https://pay/x' });
     expect(h.created[0][0].payment_method).toBe('online');
   });
   it('falls back to pay later and sends booking emails when the link fails', async () => {
     h.createResult = { ...h.createResult, payment_method: 'online' };
     h.checkout = { ok: false, error: 'Stripe down', status: 500 };
-    const r = await run('create_booking', { quote_id: 'q1', payment: 'online', guest_name: 'Asha' });
+    const r = await run('create_booking', { payment: 'online', guest_name: 'Asha' });
     expect(r).toMatchObject({ payment: 'later', payment_link_failed: true });
     expect(h.updates[0]).toEqual({ payment_method: 'offline' });
     expect(h.emails).toEqual(['b1']);
@@ -148,14 +169,14 @@ describe('create_booking', () => {
     h.createResult = { ...h.createResult, payment_method: 'online' };
     h.checkout = { ok: false, error: 'Stripe down', status: 500 };
     h.commission = 300;
-    await run('create_booking', { quote_id: 'q1', payment: 'online', guest_name: 'Asha' });
+    await run('create_booking', { payment: 'online', guest_name: 'Asha' });
     expect(h.updates[0]).toEqual({ payment_method: 'offline', commission_status: 'pending' });
   });
   it('falls back the same way when the checkout call throws', async () => {
     h.createResult = { ...h.createResult, payment_method: 'online' };
     h.checkout = 'throw';
     h.commission = 300;
-    const r = await run('create_booking', { quote_id: 'q1', payment: 'online', guest_name: 'Asha' });
+    const r = await run('create_booking', { payment: 'online', guest_name: 'Asha' });
     expect(r).toMatchObject({ payment: 'later', payment_link_failed: true });
     expect(h.updates[0]).toEqual({ payment_method: 'offline', commission_status: 'pending' });
     expect(h.emails).toEqual(['b1']);
