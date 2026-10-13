@@ -17,6 +17,10 @@ interface BookingFormProps {
   planName?: string;
   planIndex?: number;
   className?: string;
+  /** Hotel only: told whenever the chosen dates change (the hotel page uses it to look up rooms left). */
+  onDatesChange?: (checkIn: string, checkOut: string) => void;
+  /** When set, booking is blocked and this message is shown (e.g. the chosen room is sold out). */
+  blockedMessage?: string;
 }
 
 function calcNights(checkIn: string, checkOut: string): number {
@@ -27,7 +31,7 @@ function calcNights(checkIn: string, checkOut: string): number {
   return diff > 0 ? diff : 0;
 }
 
-export default function BookingForm({ category, entityId, entityName, pricePerNight, defaultAmount, roomName, planName, planIndex, className = '' }: BookingFormProps) {
+export default function BookingForm({ category, entityId, entityName, pricePerNight, defaultAmount, roomName, planName, planIndex, className = '', onDatesChange, blockedMessage }: BookingFormProps) {
   const { t } = useT();
   const f = t.form;
   const [status, setStatus] = useState<'idle' | 'loading' | 'paying' | 'success' | 'error'>('idle');
@@ -66,6 +70,8 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
     if (window.location.hash === '#book') document.getElementById('book')?.scrollIntoView({ block: 'start', behavior: 'instant' });
   }, [category, t, f.packageNote]);
 
+  useEffect(() => { onDatesChange?.(checkIn, checkOut); }, [checkIn, checkOut, onDatesChange]);
+
   // Calculate nights and total
   const nights = useMemo(() => calcNights(checkIn, checkOut), [checkIn, checkOut]);
   const hasPricePerNight = typeof pricePerNight === 'number' && pricePerNight > 0;
@@ -98,6 +104,7 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!validateDates()) return;
+    if (blockedMessage) { setErrorMsg(blockedMessage); setStatus('error'); return; }
     setStatus('loading'); setErrorMsg('');
 
     const fd = new FormData(e.currentTarget);
@@ -249,9 +256,10 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
         </div>
 
         {dateError && <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg"><AlertCircle className="h-4 w-4 shrink-0" />{dateError}</div>}
-        {status === 'error' && <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg"><AlertCircle className="h-4 w-4 shrink-0" />{errorMsg}</div>}
+        {blockedMessage && <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg"><AlertCircle className="h-4 w-4 shrink-0" />{blockedMessage}</div>}
+        {status === 'error' && errorMsg !== blockedMessage && <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg"><AlertCircle className="h-4 w-4 shrink-0" />{errorMsg}</div>}
 
-        <button type="submit" disabled={status === 'loading'}
+        <button type="submit" disabled={status === 'loading' || !!blockedMessage}
           className={'w-full font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-colors disabled:opacity-60 text-white ' + (payMethod === 'online' ? 'bg-green-700 hover:bg-green-800' : 'bg-orange-600 hover:bg-orange-700')}>
           {status === 'loading' ? <><Loader2 className="h-4 w-4 animate-spin" /> {f.processing}</> :
             payMethod === 'online' ? <><CreditCard className="h-4 w-4" /> {f.pay} {totalAmount > 0 ? formatPrice(totalAmount) : f.now}</> :

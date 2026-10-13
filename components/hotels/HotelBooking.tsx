@@ -1,5 +1,5 @@
 'use client';
-import { useState, useRef } from 'react';
+import { useCallback, useState, useRef } from 'react';
 import { MessageCircle, Phone, Shield, CheckCircle, Check, BedDouble, Users, Maximize, UtensilsCrossed } from 'lucide-react';
 import { RoomGallery } from '@/components/ui/PhotoGallery';
 import BookingForm from '@/components/forms/BookingForm';
@@ -10,6 +10,8 @@ import { siteConfig } from '@/lib/config';
 
 import { useT } from '@/lib/i18n/client';
 import { fmt } from '@/lib/i18n/dict';
+import { roomBadge } from '@/lib/availability/calc';
+import { useRoomAvailability } from './useRoomAvailability';
 
 // Rates are shown exactly as listed; the up-to-Rs.500 discount is applied
 // by our team when the booking is confirmed.
@@ -38,6 +40,12 @@ export default function HotelBooking({ hotel }: Props) {
     planIndex: -1,
   });
   const formRef = useRef<HTMLDivElement>(null);
+  const [stay, setStay] = useState({ checkIn: '', checkOut: '' });
+  const onDatesChange = useCallback((checkIn: string, checkOut: string) => {
+    setStay((s) => (s.checkIn === checkIn && s.checkOut === checkOut ? s : { checkIn, checkOut }));
+  }, []);
+  const avail = useRoomAvailability(hotel.id, stay.checkIn, stay.checkOut);
+  const selectedSoldOut = !!selected.roomName && roomBadge(avail?.[selected.roomName])?.kind === 'sold_out';
 
   function selectRoom(roomName: string, planName: string, price: number, planIndex: number) {
     const ourPrice = discountedPrice(price);
@@ -76,6 +84,8 @@ export default function HotelBooking({ hotel }: Props) {
                   ? room.rate_plans
                   : room.base_price > 0 ? [{ meal_plan: 'ep', price: room.base_price }] : [];
                 const amenities: string[] = room.amenities || [];
+                const badge = roomBadge(avail?.[room.name]);
+                const soldOut = badge?.kind === 'sold_out';
 
                 return (
                   <article key={i} className="border border-slate-200 rounded-2xl overflow-hidden bg-white hover:shadow-lg transition-shadow">
@@ -85,6 +95,11 @@ export default function HotelBooking({ hotel }: Props) {
                         <RoomGallery images={roomImages} roomName={roomName} fallbackUrl={roomImg} />
 
                         <h3 className="font-heading font-bold text-lg text-slate-900 mt-4">{roomName}</h3>
+                        {badge && (
+                          <p className={'mt-1 inline-block text-xs font-semibold px-2 py-0.5 rounded-full ' + (soldOut ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-800')}>
+                            {badge.kind === 'sold_out' ? b.soldOut : fmt(b.onlyLeft, { n: badge.left })}
+                          </p>
+                        )}
 
                         {(room.room_size || room.bed_type || room.max_occupancy) && (
                           <ul className="mt-2 space-y-1.5 text-sm text-slate-600">
@@ -144,9 +159,10 @@ export default function HotelBooking({ hotel }: Props) {
                                     </div>
                                     <button
                                       type="button"
+                                      disabled={soldOut}
                                       onClick={() => selectRoom(room.name, planName, plan.price, pi)}
-                                      className={'text-sm font-bold px-5 py-2.5 rounded-xl transition-colors whitespace-nowrap shrink-0 ' + (isSelected ? 'bg-green-700 text-white' : 'bg-orange-600 hover:bg-orange-700 text-white')}>
-                                      {isSelected ? b.selected : b.book}
+                                      className={'text-sm font-bold px-5 py-2.5 rounded-xl transition-colors whitespace-nowrap shrink-0 ' + (soldOut ? 'bg-slate-200 text-slate-500 cursor-not-allowed' : isSelected ? 'bg-green-700 text-white' : 'bg-orange-600 hover:bg-orange-700 text-white')}>
+                                      {soldOut ? b.soldOut : isSelected ? b.selected : b.book}
                                     </button>
                                   </div>
                                 </div>
@@ -192,6 +208,8 @@ export default function HotelBooking({ hotel }: Props) {
             pricePerNight={selected.pricePerNight || (hotel.price_min ? discountedPrice(hotel.price_min) : undefined)}
             roomName={selected.roomName}
             planName={selected.planName}
+            onDatesChange={onDatesChange}
+            blockedMessage={selectedSoldOut ? b.soldOutDates : undefined}
           />
 
           <div className="text-center text-xs text-slate-400">{b.orInquiry}</div>

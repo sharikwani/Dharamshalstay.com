@@ -369,6 +369,8 @@ export const hi: Dict = {
     selectedRoom: 'चुना गया कमरा', selectPrompt: 'बुक करने के लिए नीचे कमरा और प्लान चुनें', selectHint: 'किसी भी कमरे के विकल्प पर "बुक करें" दबाएँ',
     orInquiry: 'या पूछताछ भेजें', quickInquiry: 'झटपट पूछताछ', quickInquirySub: 'अभी बुक नहीं करना? कोई सवाल पूछें।', call: 'कॉल करें',
     pricingOptions: 'कीमत के विकल्प', freeCancellation: 'फ़्री कैंसलेशन', perNightTaxes: 'प्रति रात + टैक्स',
+    soldOut: 'बिक चुका', onlyLeft: 'सिर्फ़ {n} बचे',
+    soldOutDates: 'आपकी तारीखों के लिए यह कमरा बिक चुका है। कृपया कोई दूसरा कमरा चुनें या तारीखें बदलें।',
   },
   form: {
     packageNote: 'पैकेज: {name}',

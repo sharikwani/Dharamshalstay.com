@@ -179,6 +179,8 @@ export const en = {
     selectedRoom: 'Selected Room', selectPrompt: 'Select a room and plan below to book', selectHint: 'Click "Book" on any room option',
     orInquiry: 'or send an inquiry', quickInquiry: 'Quick Inquiry', quickInquirySub: 'Not ready to book? Ask a question.', call: 'Call',
     pricingOptions: 'Pricing Options', freeCancellation: 'Free Cancellation', perNightTaxes: 'per night + taxes',
+    soldOut: 'Sold out', onlyLeft: 'Only {n} left',
+    soldOutDates: 'This room is sold out for your dates. Please choose another room or change your dates.',
   },
   form: {
     packageNote: 'Package: {name}',
