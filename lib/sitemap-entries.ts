@@ -9,7 +9,7 @@ import { siteConfig } from '@/lib/config';
 import { getTaxiRouteGroups } from '@/lib/taxi';
 import { hasHindiVersion, localizePath } from '@/lib/i18n/core';
 import { hasHindiPost } from '@/lib/i18n/content';
-import { normalizeImages } from '@/lib/images';
+import { normalizeImages, roomImageUrls } from '@/lib/images';
 import { placeImage, isStockImage } from '@/lib/place-images';
 
 // Must be the canonical (www) origin -- the bare domain 301s to www, and a
@@ -90,7 +90,7 @@ export async function sitemapEntries(): Promise<SitemapEntry[]> {
       priority: 0.7,
       images: imgs([
         ...normalizeImages(h.images).map((i) => i.url),
-        ...(h.rooms || []).flatMap((r: any) => (Array.isArray(r.images) ? r.images : [])).filter((u: unknown) => typeof u === 'string'),
+        ...(h.rooms || []).filter((r: any) => r?.is_active !== false).flatMap(roomImageUrls),
       ]),
     })),
 
