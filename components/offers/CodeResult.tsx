@@ -13,13 +13,20 @@ const REASONS: Record<string, string> = {
 };
 const when = (s: string) => new Date(s).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' });
 
-/** What staff need at the desk: is it valid, which kind, how much, for whom, until when. */
-export default function CodeResult({ r }: { r: CodeCheck }) {
+/**
+ * What staff need at the desk: is it valid, which kind, how much, for whom, until when.
+ * justUsed: this desk has just marked the code used, so show success instead of "Already used".
+ */
+export default function CodeResult({ r, justUsed = false }: { r: CodeCheck; justUsed?: boolean }) {
   const plans = Object.entries(r.plan_percents || {});
+  const good = r.valid || justUsed;
+  const title = justUsed
+    ? `Used just now – ${r.path === 'paid_booking' ? 'no further discount' : 'apply the discount'}`
+    : r.valid ? 'Valid' : REASONS[r.reason || ''] || 'Not valid';
   return (
-    <div className={cn('rounded-xl border p-4 text-sm', r.valid ? 'border-green-300 bg-green-50' : 'border-red-200 bg-red-50')}>
-      <p className={cn('font-semibold text-base', r.valid ? 'text-green-800' : 'text-red-800')}>
-        {r.code} — {r.valid ? 'Valid' : REASONS[r.reason || ''] || 'Not valid'}
+    <div role="status" className={cn('rounded-xl border p-4 text-sm', good ? 'border-green-300 bg-green-50' : 'border-red-200 bg-red-50')}>
+      <p className={cn('font-semibold text-base', good ? 'text-green-800' : 'text-red-800')}>
+        {r.code} — {title}
       </p>
       {r.reason !== 'not_found' && (
         <dl className="mt-2 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-slate-700">
