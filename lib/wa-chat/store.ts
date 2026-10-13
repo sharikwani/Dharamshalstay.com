@@ -1,6 +1,6 @@
 import { serviceClient } from '@/lib/server-auth';
 import { STATUS_RANK } from '@/lib/whatsapp-webhook';
-import type { ChatMessage, ChatSettings, Conversation, ConversationStatus, Inbound } from './types';
+import { VOICE_PLACEHOLDER, type ChatMessage, type ChatSettings, type Conversation, type ConversationStatus, type Inbound } from './types';
 
 const now = () => new Date().toISOString();
 
@@ -88,6 +88,44 @@ export async function latestInboundId(conversationId: string): Promise<string | 
   return data?.id ?? null;
 }
 
+/**
+ * Take the turn lock: one AI turn per conversation at a time. It is free when processing_until is empty or in the
+ * past, so the lock of a crashed invocation is taken over once it expires. Returns the lock token (its expiry) or
+ * null when another turn holds it. Times come from this server's clock (PostgREST filters cannot use now()).
+ */
+export async function acquireTurnLock(conversationId: string, ms = 55_000): Promise<string | null> {
+  const t = Date.now();
+  const until = new Date(t + ms).toISOString();
+  const { data, error } = await serviceClient().from('whatsapp_conversations').update({ processing_until: until })
+    .eq('id', conversationId).or(`processing_until.is.null,processing_until.lt.${new Date(t).toISOString()}`).select('id');
+  if (error) throw error;
+  return (data || []).length ? until : null;
+}
+
+/** Free the turn lock, unless it expired and another turn has taken it since. */
+export async function releaseTurnLock(conversationId: string, token: string): Promise<void> {
+  const { error } = await serviceClient().from('whatsapp_conversations').update({ processing_until: null })
+    .eq('id', conversationId).eq('processing_until', token);
+  if (error) console.error('WhatsApp chat: could not release the turn lock:', error);
+}
+
+/** A voice note in this chat is still being transcribed (its text is the placeholder). */
+export async function pendingVoice(conversationId: string, withinMs = 60_000): Promise<boolean> {
+  const { data, error } = await serviceClient().from('whatsapp_chat_messages').select('id')
+    .eq('conversation_id', conversationId).eq('kind', 'voice').eq('body', VOICE_PLACEHOLDER)
+    .gte('created_at', new Date(Date.now() - withinMs).toISOString()).limit(1);
+  if (error) { console.error('WhatsApp chat: pending voice check failed:', error); return false; }
+  return (data || []).length > 0;
+}
+
+/** A note for the owner in the inbox (never sent to the customer, never shown to the AI). */
+export async function saveSystemNote(conversationId: string, body: string): Promise<void> {
+  const { error } = await serviceClient().from('whatsapp_chat_messages').insert({
+    conversation_id: conversationId, direction: 'out', author: 'ai', body, kind: 'system', wa_message_id: null, status: 'sent',
+  });
+  if (error) console.error('WhatsApp chat: could not save a system note:', error);
+}
+
 export async function getConversation(id: string): Promise<Conversation | null> {
   const { data, error } = await serviceClient().from('whatsapp_conversations').select('*').eq('id', id).maybeSingle();
   if (error) throw error;
@@ -116,7 +154,7 @@ export async function getSettings(): Promise<ChatSettings> {
 
 export async function aiRepliesSince(sinceIso: string, conversationId?: string): Promise<number> {
   let q = serviceClient().from('whatsapp_chat_messages').select('id', { count: 'exact', head: true })
-    .eq('author', 'ai').gte('created_at', sinceIso);
+    .eq('author', 'ai').neq('kind', 'system').gte('created_at', sinceIso);
   if (conversationId) q = q.eq('conversation_id', conversationId);
   const { count, error } = await q;
   if (error) throw error;

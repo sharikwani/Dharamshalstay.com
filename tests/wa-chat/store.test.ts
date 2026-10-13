@@ -12,7 +12,7 @@ function chain(table: string): any {
 }
 vi.mock('@/lib/server-auth', () => ({ serviceClient: () => ({ from: (t: string) => chain(t) }) }));
 
-import { saveInbound, saveOutbound, getSettings, setStatusIf } from '@/lib/wa-chat/store';
+import { acquireTurnLock, getSettings, pendingVoice, releaseTurnLock, saveInbound, saveOutbound, saveSystemNote, setStatusIf } from '@/lib/wa-chat/store';
 
 beforeEach(() => { db.calls = []; db.results = []; });
 
@@ -91,6 +91,32 @@ describe('store', () => {
     await saveOutbound('c1', 'ai', 'c', null, 'Delivery not confirmed', undefined, 'unknown');
     const rows = db.calls.filter(([t, op]) => t === 'whatsapp_chat_messages' && op === 'insert').map((c) => c[2]);
     expect(rows.map((r) => [r.status, r.error])).toEqual([['sent', null], ['failed', 'Bad number'], ['unknown', 'Delivery not confirmed']]);
+  });
+  it('acquireTurnLock takes a free or expired lock atomically and returns its token', async () => {
+    db.results = [{ data: [{ id: 'c1' }], error: null }, { data: [], error: null }];
+    const token = await acquireTurnLock('c1', 55_000);
+    expect(Date.parse(token!) - Date.now()).toBeGreaterThan(50_000);
+    const update = db.calls.find(([t, op]) => t === 'whatsapp_conversations' && op === 'update');
+    expect(update[2]).toEqual({ processing_until: token });
+    const or = db.calls.find(([, op]) => op === 'or');
+    expect(or[2]).toMatch(/^processing_until\.is\.null,processing_until\.lt\.\d{4}-/);
+    expect(await acquireTurnLock('c1')).toBeNull();
+  });
+  it('releaseTurnLock frees only its own lock', async () => {
+    await releaseTurnLock('c1', '2026-10-13T10:00:55.000Z');
+    expect(db.calls).toContainEqual(['whatsapp_conversations', 'update', { processing_until: null }]);
+    expect(db.calls).toContainEqual(['whatsapp_conversations', 'eq', 'processing_until', '2026-10-13T10:00:55.000Z']);
+  });
+  it('pendingVoice looks for a recent untranscribed voice note', async () => {
+    db.results = [{ data: [{ id: 'v1' }], error: null }, { data: [], error: null }];
+    expect(await pendingVoice('c1')).toBe(true);
+    expect(db.calls).toContainEqual(['whatsapp_chat_messages', 'eq', 'body', '[voice note]']);
+    expect(await pendingVoice('c1')).toBe(false);
+  });
+  it('saveSystemNote stores an owner-only note', async () => {
+    await saveSystemNote('c1', 'AI booked HTL-1');
+    const row = db.calls.find(([t, op]) => t === 'whatsapp_chat_messages' && op === 'insert')[2];
+    expect(row).toMatchObject({ conversation_id: 'c1', kind: 'system', author: 'ai', direction: 'out', body: 'AI booked HTL-1' });
   });
   it('getSettings falls back to off', async () => {
     db.results = [{ data: null, error: { message: 'x' } }];
