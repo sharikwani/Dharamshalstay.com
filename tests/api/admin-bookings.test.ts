@@ -116,6 +116,32 @@ describe('POST /api/admin/bookings', () => {
     expect(sendManualBookingEmails).toHaveBeenCalledWith('b1', { customer: true, partner: true });
   });
 
+  describe('hotel room_key', () => {
+    const hotel = (room_name?: string) => ({
+      category: 'hotel', item_id: '33333333-3333-4333-8333-333333333333', check_in: '2099-01-10', check_out: '2099-01-12',
+      num_guests: 2, guest_name: 'Asha Rao', guest_phone: '9876543210', payment: { choice: 'unpaid' }, final_amount: 6000,
+      ...(room_name ? { room_name, plan_name: 'Breakfast' } : {}),
+    });
+    beforeEach(() => {
+      fixtures.properties = { id: 'h1', status: 'published', commission_pct: null, rooms: [
+        { name: 'Deluxe', base_price: 3000, total_inventory: 1, is_active: true },
+        { name: 'Suite', base_price: 5000, is_active: true },
+      ] };
+    });
+    it('is the room type when the name matches exactly (tracked or not), without an availability check', async () => {
+      expect((await post(hotel('Deluxe'))).status).toBe(200);
+      expect(inserts[0].row).toMatchObject({ room_name: 'Deluxe - Breakfast', room_key: 'Deluxe' });
+      expect((await post(hotel('Suite'))).status).toBe(200);
+      expect(inserts[1].row.room_key).toBe('Suite');
+    });
+    it('is null when the name matches no room type or no room is given', async () => {
+      expect((await post(hotel('deluxe'))).status).toBe(200);
+      expect(inserts[0].row.room_key).toBeNull();
+      expect((await post(hotel())).status).toBe(200);
+      expect(inserts[1].row.room_key).toBeNull();
+    });
+  });
+
   it('passes notify_partner to the WhatsApp alert so partners are not alerted when it is off', async () => {
     await post({ ...base, notify_partner: false, notify_customer_whatsapp: true });
     expect(whatsappNewBooking).toHaveBeenCalledWith('b1', { customer: true, partners: false });

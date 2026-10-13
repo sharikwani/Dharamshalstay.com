@@ -5,6 +5,7 @@ import { quoteBooking, nightsBetween } from '@/lib/pricing';
 import { BOOKABLE_STATUS, checkAssignment, commissionRateFor, isBeforeToday, paymentFields, splitAmount, todayIst } from '@/lib/manual-booking';
 import { sendManualBookingEmails } from '@/lib/manual-booking-emails';
 import { whatsappNewBooking } from '@/lib/booking-whatsapp';
+import { roomSummaries } from '@/lib/availability/calc';
 
 export const dynamic = 'force-dynamic';
 
@@ -126,6 +127,9 @@ export async function POST(req: Request) {
 
     // Save
     const isHotel = category === 'hotel';
+    // Room calendar: same rule as createBooking -- the room type when the name matches one exactly. Admins record
+    // walk-ins and phone bookings, so availability is not checked here.
+    const room_key = isHotel && body.room_name ? roomSummaries(item?.rooms).find((r) => r.key === body.room_name)?.key ?? null : null;
     const row = {
       category,
       guest_name: body.guest_name.trim(),
@@ -144,6 +148,7 @@ export async function POST(req: Request) {
       drop_location: body.drop_location?.trim() || null,
       vehicle_type: body.vehicle_type || null,
       room_name: body.room_name ? (body.plan_name ? `${body.room_name} - ${body.plan_name}` : body.room_name) : null,
+      room_key,
       amount: final,
       list_amount,
       price_overridden,
