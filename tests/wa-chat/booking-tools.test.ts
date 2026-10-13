@@ -306,16 +306,16 @@ describe('create_booking duplicate guard', () => {
   const existing = (over: any = {}) => ({
     id: 'b0', booking_ref: 'HTL-261013-2F2F2', category: 'hotel', status: 'pending', payment_status: 'pending', booking_source: 'whatsapp',
     property_id: HOTEL_ID, trek_id: null, paragliding_id: null, taxi_route_id: null, check_in: '2099-10-24', check_out: '2099-10-26', activity_date: null,
-    room_name: 'Deluxe', created_at: minsAgo(1), ...over,
+    room_name: 'Deluxe', num_guests: 2, guest_name: 'Pallavi', pickup_time: null, payment_method: 'pay_at_hotel', created_at: minsAgo(1), ...over,
   });
-  const NOTE = 'This booking was already made a moment ago – do not book again.';
+  const NOTE = 'This booking was already made a moment ago – do not book it again. If the customer clearly wants an additional identical booking (e.g. a second room), call handover. If the customer wants to pay online and it is unpaid, call payment_link with this booking_ref.';
 
   it('returns the booking made a moment ago instead of booking the same stay again', async () => {
     h.quote = hotelQuote();
     h.own = [existing()];
     const c: any = ctx();
     const r = await run('create_booking', { payment: 'online', guest_name: 'Pallavi' }, c);
-    expect(r).toEqual({ booking_ref: 'HTL-261013-2F2F2', status: 'requested', duplicate: true, note: NOTE });
+    expect(r).toEqual({ booking_ref: 'HTL-261013-2F2F2', status: 'requested, waiting for confirmation', payment_method: 'pay_at_hotel', paid: false, duplicate: true, note: NOTE });
     expect(h.created).toEqual([]);
     expect(h.claimCalls).toEqual([]);
     expect(h.linked).toEqual([]);
@@ -329,9 +329,27 @@ describe('create_booking duplicate guard', () => {
     expect(await run('create_booking', { payment: 'later', guest_name: 'Pallavi' })).toMatchObject({ booking_ref: 'TRK-9' });
   });
   it('catches a duplicate trek on the same date', async () => {
-    h.own = [existing({ booking_ref: 'TRK-1', category: 'trek', property_id: null, trek_id: TREK_ID, check_in: null, check_out: null, activity_date: '2099-10-24', room_name: null })];
+    h.own = [existing({ booking_ref: 'TRK-1', category: 'trek', property_id: null, trek_id: TREK_ID, check_in: null, check_out: null, activity_date: '2099-10-24', room_name: null, guest_name: 'asha ' })];
     expect(await run('create_booking', { payment: 'later', guest_name: 'Asha' })).toMatchObject({ duplicate: true, booking_ref: 'TRK-1' });
     expect(h.created).toEqual([]);
+  });
+  it("reports the existing booking's real status and payment", async () => {
+    h.quote = hotelQuote();
+    h.own = [existing({ status: 'confirmed', payment_method: 'online', payment_status: 'paid' })];
+    const r = await run('create_booking', { payment: 'online', guest_name: ' PALLAVI ' });
+    expect(r).toMatchObject({ booking_ref: 'HTL-261013-2F2F2', duplicate: true, status: 'confirmed by the property/operator', payment_method: 'online', paid: true });
+    expect(r.note).toMatch(/call payment_link with this booking_ref/);
+  });
+  it('treats a taxi at another pickup time as a new booking', async () => {
+    const ROUTE = '44444444-4444-4444-8444-444444444444';
+    h.quote = goodQuote({ category: 'taxi', input: { category: 'taxi', taxi_route_id: ROUTE, activity_date: '2099-10-24', pickup_time: '09:00', num_guests: 2, vehicle_type: 'SUV' } });
+    const taxi = (t: string) => existing({ booking_ref: 'TXI-1', category: 'taxi', property_id: null, taxi_route_id: ROUTE, check_in: null, check_out: null, activity_date: '2099-10-24', room_name: null, pickup_time: t, guest_name: 'Asha' });
+    h.own = [taxi('09:00')];
+    expect(await run('create_booking', { payment: 'later', guest_name: 'Asha' })).toMatchObject({ duplicate: true, booking_ref: 'TXI-1' });
+    h.own = [taxi('15:00')];
+    const r = await run('create_booking', { payment: 'later', guest_name: 'Asha' });
+    expect(r.duplicate).toBeUndefined();
+    expect(h.created).toHaveLength(1);
   });
   it('wins over the daily limit so the customer gets the existing reference', async () => {
     h.quote = hotelQuote();
@@ -348,6 +366,8 @@ describe('create_booking duplicate guard', () => {
     ['other dates', { check_out: '2099-10-27' }],
     ['another room', { room_name: 'Suite' }],
     ['another hotel', { property_id: '99999999-9999-4999-8999-999999999999' }],
+    ['for another guest name', { guest_name: 'Ravi Kumar' }],
+    ['for a different number of guests', { num_guests: 3 }],
   ] as const) {
     it(`books normally when the earlier booking is ${label}`, async () => {
       h.quote = hotelQuote();

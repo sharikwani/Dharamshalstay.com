@@ -155,15 +155,20 @@ const opt = (v: unknown) => (v === undefined || v === '' ? null : v);
 /** The room label createBooking stores: "Room" or "Room - Plan". */
 const roomLabel = (i: Record<string, any>) => (i.room_name ? (i.plan_name ? `${i.room_name} - ${i.plan_name}` : i.room_name) : null);
 
-/** A live WhatsApp booking from the last 30 minutes for exactly what this quote would book. */
-function sameBooking(b: OwnBooking, q: Quote): boolean {
+const DUPLICATE_NOTE = 'This booking was already made a moment ago – do not book it again. If the customer clearly wants an additional identical booking (e.g. a second room), call handover. If the customer wants to pay online and it is unpaid, call payment_link with this booking_ref.';
+
+/** A live WhatsApp booking from the last 30 minutes for exactly what this quote would book, for the same guest. */
+function sameBooking(b: OwnBooking, q: Quote, guestName: string): boolean {
   const i = q.input;
   return b.booking_source === 'whatsapp' && b.status !== 'cancelled' && b.status !== 'failed'
     && Date.now() - Date.parse(b.created_at) <= DUPLICATE_WINDOW
     && b.category === q.category
     && ITEM_KEYS.some((k) => !!i[k]) && ITEM_KEYS.every((k) => opt(b[k]) === opt(i[k]))
     && opt(b.check_in) === opt(i.check_in) && opt(b.check_out) === opt(i.check_out) && opt(b.activity_date) === opt(i.activity_date)
-    && opt(b.room_name) === opt(roomLabel(i));
+    && opt(b.room_name) === opt(roomLabel(i))
+    && Number(b.num_guests) === Number(i.num_guests)
+    && opt(b.pickup_time) === opt(i.pickup_time)
+    && lc(b.guest_name) === lc(guestName);
 }
 
 async function createTool(a: any, ctx: ToolCtx, handover: Handover) {
@@ -178,8 +183,10 @@ async function createTool(a: any, ctx: ToolCtx, handover: Handover) {
 
   const own = await ownBookings(ctx.phone);
   // A turn whose reply never reached the customer may already have booked this quote's stay/activity.
-  const dup = own.find((b) => sameBooking(b, q));
-  if (dup) return { booking_ref: dup.booking_ref, status: 'requested', duplicate: true, note: 'This booking was already made a moment ago – do not book again.' };
+  const dup = own.find((b) => sameBooking(b, q, name));
+  if (dup) {
+    return { booking_ref: dup.booking_ref, status: STATUS_WORDS[dup.status] || dup.status, payment_method: dup.payment_method, paid: dup.payment_status === 'paid', duplicate: true, note: DUPLICATE_NOTE };
+  }
 
   const since = Date.now() - 24 * 3600e3;
   const recent = own.filter((b) => b.booking_source === 'whatsapp' && Date.parse(b.created_at) >= since);
