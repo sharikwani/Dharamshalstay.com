@@ -316,6 +316,24 @@ describe('processConversation', () => {
       expect(await run(voice.id, { force: true, since: NOW() })).toBe('replied');
       expect(s.sent).toEqual([['919800000001', 'Have a lovely stay!']]);
     });
+    it('token plus a sentence keeps the sentence and its paragraph breaks', async () => {
+      s.reply.mockResolvedValue('NOTHING_TO_ADD\n\nHave a lovely stay!\n\nSee you in May.');
+      expect(await run()).toBe('replied');
+      expect(s.sent).toEqual([['919800000001', 'Have a lovely stay!\n\nSee you in May.']]);
+    });
+    for (const legit of [
+      'There is nothing to address here, your booking DS-123 is confirmed.',
+      'I have nothing to add to that.',
+      'Nothing to additionally pay at the hotel.',
+      'Your room is booked.\n\nNothing to add for now — see you soon!\n\nRef DS-123',
+      'Thanks!\n\n*Room* is free on 12 May.',
+    ]) {
+      it(`leaves ordinary text byte-identical: ${JSON.stringify(legit).slice(0, 40)}`, async () => {
+        s.reply.mockResolvedValue(legit);
+        expect(await run()).toBe('replied');
+        expect(s.sent).toEqual([['919800000001', legit]]);
+      });
+    }
     it('in an ordinary turn too', async () => {
       s.reply.mockResolvedValue('Sure! *Room* is free. NOTHING_TO_ADD');
       expect(await run()).toBe('replied');

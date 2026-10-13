@@ -52,17 +52,24 @@ const sendReply = (c: Conversation, text: string) => sendLogged(c, text);
 /** The reply the AI gives when a late voice transcript needs no answer (nothing is sent then). */
 export const NOTHING_TO_ADD = 'NOTHING_TO_ADD';
 
-/** The sentinel in any form: any case, with spaces, dashes or underscores, quoted or code-fenced. */
-const SENTINEL = /(```[a-z]*\s*)?[`*_«»"'“”]*\s*nothing[\s_-]*to[\s_-]*add\s*[`*_«»"'“”]*[.!]?\s*(```)?/gi;
+/**
+ * The sentinel token inside a reply: NOTHING_TO_ADD (any case, underscores or dashes) as a whole word, optionally
+ * quoted, starred or code-fenced and followed by punctuation. Never consumes line breaks outside a fence.
+ */
+const TOKEN = /(?:```[a-z]*[ \t]*\r?\n?)?[ \t]*[`*«»"'“”]*\bnothing[_-]to[_-]add\b[`*«»"'“”]*[.!]?[ \t]*(?:\r?\n?[ \t]*```)?/gi;
+/** Natural-language "nothing to add" counts only as the entire reply (after quotes, fences and punctuation). */
+const WHOLE = /^nothing[ _-]*to[ _-]*add$/i;
 
 /**
- * Remove the NOTHING_TO_ADD sentinel (with the quotes, fences and full stop around it) from an AI reply. `had`: it
- * was there; `rest`: what is left ('' when nothing meaningful is left).
+ * Remove the NOTHING_TO_ADD sentinel from an AI reply. `had`: it was there; `rest`: what is left ('' when nothing
+ * meaningful is left). Replies without the token come back byte-identical.
  */
 export function stripSentinel(text: string): { had: boolean; rest: string } {
-  if (!text.match(SENTINEL)) return { had: false, rest: text };
-  const rest = text.replace(SENTINEL, ' ').replace(/^[\s.,:;!?-]+/, '').replace(/[ \t]{2,}/g, ' ').trim();
-  return { had: true, rest: /[0-9a-zÀ-￿]/i.test(rest) ? rest : '' };
+  const bare = text.replace(/```[a-z]*/gi, ' ').replace(/[`*_«»"'“”.!?,:;\s-]+/g, ' ').trim();
+  if (WHOLE.test(bare)) return { had: true, rest: '' };
+  if (!text.match(TOKEN)) return { had: false, rest: text };
+  const rest = text.replace(TOKEN, (m) => (/\n/.test(m) ? '\n' : ' ')).replace(/^[\s.,:;!?-]+/, '').replace(/ {2,}/g, ' ').trim();
+  return { had: true, rest: /[0-9a-z\u00c0-\uffff]/i.test(rest) ? rest : '' };
 }
 
 type Pending = { hist: ChatMessage[]; pending: ChatMessage[]; note?: string };
