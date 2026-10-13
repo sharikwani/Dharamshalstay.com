@@ -8,6 +8,7 @@ export const dynamic = 'force-dynamic';
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const STORED = ['booked', 'redeemed', 'cancelled'];
+const RECENT_MS = 10 * 60 * 1000;
 
 export async function GET(req: Request) {
   try {
@@ -62,6 +63,13 @@ export async function POST(req: Request) {
     const { data: prop, error: pErr } = await sb.from('properties').select('id, name').eq('id', body.data.property_id).maybeSingle();
     if (pErr) throw pErr;
     if (!prop) throw new HttpError(404, 'Property not found');
+    // A repeated "Add offer" (double click, lost response) gets the inactive offer it just made, not a second one.
+    const since = new Date(Date.now() - RECENT_MS).toISOString();
+    const { data: recent, error: rErr } = await sb.from('offers').select('*')
+      .eq('property_id', prop.id).eq('active', false).gte('created_at', since)
+      .order('created_at', { ascending: false }).limit(1).maybeSingle();
+    if (rErr) throw rErr;
+    if (recent) return NextResponse.json({ offer: recent, duplicate: true });
     const { data, error } = await sb.from('offers')
       .insert({ ...body.data, name: body.data.name || `WhatsApp offer – ${prop.name}`, active: false, plan_percents: {} })
       .select('*').single();

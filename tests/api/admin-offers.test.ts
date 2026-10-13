@@ -67,12 +67,26 @@ describe('GET /api/admin/offers', () => {
 describe('POST /api/admin/offers', () => {
   it('creates an inactive offer for an existing property', async () => {
     fake.queue('properties', { data: { id: PROP_ID, name: 'Panchvati Cottages' } });
-    fake.queue('offers', { data: { id: OFFER_ID } });
+    fake.queue('offers', { data: null }, { data: { id: OFFER_ID } });
     const res = await POST(json('POST', { property_id: PROP_ID, default_percent: 25, valid_hours: 3, code_prefix: 'PNV' }));
     expect(res.status).toBe(200);
     expect(fake.ops('offers', 'insert')[0][0]).toEqual({
       property_id: PROP_ID, default_percent: 25, valid_hours: 3, code_prefix: 'PNV', name: 'WhatsApp offer – Panchvati Cottages', active: false, plan_percents: {},
     });
+  });
+  it('a repeated Add within 10 minutes returns the inactive offer it just made', async () => {
+    fake.queue('properties', { data: { id: PROP_ID, name: 'Panchvati Cottages' } });
+    fake.queue('offers', { data: { id: OFFER_ID, property_id: PROP_ID, active: false } });
+    const before = Date.now();
+    const res = await POST(json('POST', { property_id: PROP_ID, default_percent: 25, valid_hours: 3, code_prefix: 'PNV' }));
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ offer: { id: OFFER_ID, property_id: PROP_ID, active: false }, duplicate: true });
+    expect(fake.ops('offers', 'insert')).toEqual([]);
+    expect(fake.ops('offers', 'eq')).toEqual([['property_id', PROP_ID], ['active', false]]);
+    const [[col, since]] = fake.ops('offers', 'gte') as [string, string][];
+    expect(col).toBe('created_at');
+    expect(before - Date.parse(since)).toBeGreaterThanOrEqual(10 * 60 * 1000 - 50);
+    expect(before - Date.parse(since)).toBeLessThan(10 * 60 * 1000 + 1000);
   });
   it('rejects a bad percent or prefix', async () => {
     expect((await POST(json('POST', { property_id: PROP_ID, default_percent: 95, code_prefix: 'PNV' }))).status).toBe(400);
