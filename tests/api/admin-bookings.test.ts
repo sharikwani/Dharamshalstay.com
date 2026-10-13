@@ -74,6 +74,9 @@ vi.mock('@/lib/booking-whatsapp', () => ({
   whatsappReassignedAway: (...a: unknown[]) => whatsappReassignedAway(...a),
 }));
 
+// Cancelling releases any WhatsApp offer code; that store is not under test here.
+vi.mock('@/lib/offers/store', () => ({ releaseForBooking: async () => {} }));
+
 import { POST } from '@/app/api/admin/bookings/route';
 import { GET, PATCH } from '@/app/api/admin/bookings/[id]/route';
 
