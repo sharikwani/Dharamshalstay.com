@@ -20,9 +20,18 @@ export type Inbound = {
   kind: 'text' | 'voice' | 'media'; text: string; mediaId?: string; mediaLabel?: string;
 };
 
-/** Note that a tool changed state this turn (booking made, code issued...), so its reply must reach the customer. */
-export function markSideEffect(ctx: { sideEffects?: string[] }, what: string): void {
+/**
+ * Note that a tool changed state this turn (booking made, code issued...), so its reply must reach the customer.
+ * `detail` (refs, links, ids) goes to ctx.actions, which the owner sees when the reply cannot be sent.
+ */
+export function markSideEffect(ctx: { sideEffects?: string[]; actions?: string[] }, what: string, detail?: string): void {
   (ctx.sideEffects ??= []).push(what);
+  noteAction(ctx, detail ?? what);
+}
+
+/** Add a line to the owner-facing list of what this turn did (no side-effect marker). */
+export function noteAction(ctx: { actions?: string[] }, detail: string): void {
+  (ctx.actions ??= []).push(detail);
 }
 
 /** Delivery not confirmed (a WhatsApp send timed out after it may have gone out). */

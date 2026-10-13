@@ -125,6 +125,13 @@ describe('create_booking', () => {
     const c: any = ctx();
     await run('create_booking', { payment: 'later', guest_name: 'Asha' }, c);
     expect(c.sideEffects).toEqual(['create_booking']);
+    expect(c.actions).toEqual(['Booking TRK-9 made (pay later)']);
+  });
+  it('lists the booking and its payment link as actions', async () => {
+    h.createResult = { ...h.createResult, payment_method: 'online' };
+    const c: any = ctx();
+    await run('create_booking', { payment: 'online', guest_name: 'Asha' }, c);
+    expect(c.actions).toEqual(['Booking TRK-9 made (pay online)', 'Payment link for TRK-9: https://pay/x']);
   });
   it('records no side effect when create_booking refuses', async () => {
     h.quote = null;
@@ -260,6 +267,7 @@ describe('payment_link and my_bookings', () => {
     const c: any = ctx();
     await run('payment_link', { booking_ref: 'TRK-9' }, c);
     expect(c.sideEffects).toEqual(['payment_link']);
+    expect(c.actions).toEqual(['Payment link for TRK-9: https://pay/x']);
     const c2: any = ctx();
     await run('payment_link', { booking_ref: 'TRK-404' }, c2);
     expect(c2.sideEffects ?? []).toEqual([]);

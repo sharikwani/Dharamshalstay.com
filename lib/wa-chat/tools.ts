@@ -8,9 +8,13 @@ import { history, setStatus } from './store';
 import { BOOKING_TOOL_DEFS, runBookingTool } from './booking-tools';
 import { CANCEL_TOOL_DEF, requestCancellation } from './cancellations';
 import { getOfferCode, OFFER_TOOL_DEF, offerNotes } from './offer-tools';
+import { markSideEffect } from './types';
 
-/** sideEffects: tools that changed state this turn (create_booking, request_cancellation, get_offer_code, payment_link). */
-export type ToolCtx = { conversationId: string; phone: string; profileName: string | null; handedOver: boolean; sideEffects?: string[] };
+/**
+ * sideEffects: tools that changed state this turn (create_booking, request_cancellation, get_offer_code, payment_link,
+ * handover, create_enquiry). actions: the same in words for the owner (refs, links, enquiry ids).
+ */
+export type ToolCtx = { conversationId: string; phone: string; profileName: string | null; handedOver: boolean; sideEffects?: string[]; actions?: string[] };
 
 const fn = (name: string, description: string, properties: Record<string, any>, required: string[] = []) =>
   ({ type: 'function', function: { name, description, parameters: { type: 'object', properties, required, additionalProperties: false } } });
@@ -111,6 +115,8 @@ async function paragliding() {
   return { packages: rows.map((p) => ({ name: p.name, where: p.destination, duration: p.duration, price_per_person: p.price_per_person, includes: p.includes, link: `${SITE}/paragliding` })) };
 }
 
+const ENQUIRY_WINDOW = 30 * 60e3;
+
 async function createEnquiry(a: any, ctx: ToolCtx) {
   for (const k of ['check_in', 'check_out']) if (a[k] && !DATE.test(a[k])) return { error: `${k} must be YYYY-MM-DD` };
   if (a.check_in && a.check_out && a.check_out <= a.check_in) return { error: 'check_out must be after check_in' };
@@ -122,8 +128,19 @@ async function createEnquiry(a: any, ctx: ToolCtx) {
     pickup_location: a.pickup ? String(a.pickup).slice(0, 200) : null, drop_location: a.drop ? String(a.drop).slice(0, 200) : null,
     status: 'new', source: 'whatsapp', whatsapp_conversation_id: ctx.conversationId,
   };
+  // A turn whose reply never arrived may have saved this enquiry already: same chat, type, name and date.
+  let dupQ = serviceClient().from('inquiries').select('id').eq('whatsapp_conversation_id', ctx.conversationId)
+    .eq('type', row.type).eq('name', row.name);
+  dupQ = row.check_in ? dupQ.eq('check_in', row.check_in) : dupQ.is('check_in', null);
+  const { data: dup } = await dupQ.gte('created_at', new Date(Date.now() - ENQUIRY_WINDOW).toISOString())
+    .order('created_at', { ascending: false }).limit(1).maybeSingle();
+  if (dup) {
+    markSideEffect(ctx, 'create_enquiry', `Enquiry ${dup.id} (saved earlier)`);
+    return { ok: true, enquiry_id: dup.id, duplicate: true };
+  }
   const { data, error } = await serviceClient().from('inquiries').insert(row).select('id').single();
   if (error) { console.error('WhatsApp enquiry insert failed:', error); return { error: 'Could not save the enquiry' }; }
+  markSideEffect(ctx, 'create_enquiry', `Enquiry ${data.id} saved`);
   await sendEmail({
     to: adminEmail(), subject: `New WhatsApp enquiry: ${row.type} from ${row.name}`,
     html: `<p><strong>${esc(row.name)}</strong> (+${esc(ctx.phone)}) asked on WhatsApp.</p><ul>${
@@ -137,6 +154,7 @@ async function createEnquiry(a: any, ctx: ToolCtx) {
 async function handover(a: any, ctx: ToolCtx) {
   ctx.handedOver = true;
   const reason = String(a.reason || 'Needs a team member').slice(0, 300);
+  markSideEffect(ctx, 'handover', `Handed to the team: ${reason}`);
   await setStatus(ctx.conversationId, 'needs_human', reason);
   const recent = await history(ctx.conversationId, 6).catch(() => []);
   await sendEmail({

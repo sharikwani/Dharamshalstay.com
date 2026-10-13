@@ -88,6 +88,9 @@ describe('booking-store', () => {
       expect(confirmedInOrder([{ author: 'ai', status: 'sent', created_at: at(-5) }, { author: 'customer', created_at: at(3) }], Q)).toBe(false);
       expect(confirmedInOrder([{ author: 'ai', status: 'failed', created_at: at(1) }, { author: 'customer', created_at: at(3) }], Q)).toBe(false);
     });
+    it('ignores system notes (they never reached the customer)', () => {
+      expect(confirmedInOrder([{ author: 'ai', kind: 'system', status: 'sent', created_at: at(1) }, { author: 'customer', created_at: at(5) }], Q)).toBe(false);
+    });
     it('sorts rows itself and ignores admin messages', () => {
       expect(confirmedInOrder([{ author: 'customer', created_at: at(9) }, { author: 'admin', created_at: at(1) }, { author: 'ai', created_at: at(4) }], Q)).toBe(true);
     });

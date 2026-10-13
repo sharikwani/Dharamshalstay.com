@@ -57,7 +57,7 @@ const ACTED = ['cancelled', 'need_proof', 'handed_over'];
 
 export async function requestCancellation(a: { booking_ref: string; reason_code: string; reason_text?: string }, ctx: ToolCtx, handover: Handover) {
   const r = await decideCancellation(a, ctx, handover);
-  if (ACTED.includes(r.result)) markSideEffect(ctx, 'request_cancellation');
+  if (ACTED.includes(r.result)) markSideEffect(ctx, 'request_cancellation', `Cancellation of ${String(a.booking_ref || '').toUpperCase()}: ${r.result}`);
   return r;
 }
 

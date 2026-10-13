@@ -52,7 +52,7 @@ export async function latestQuote(conversationId: string): Promise<Quote | null>
   return (data as Quote) ?? null;
 }
 
-type ChatRow = { author: string; status?: string | null; created_at: string };
+type ChatRow = { author: string; kind?: string | null; status?: string | null; created_at: string };
 
 /**
  * Pure ordering check behind confirmedAfter: some AI message that was actually sent comes after `iso`,
@@ -61,7 +61,8 @@ type ChatRow = { author: string; status?: string | null; created_at: string };
 export function confirmedInOrder(rows: ChatRow[], iso: string): boolean {
   const t0 = Date.parse(iso);
   const after = rows.filter((r) => Date.parse(r.created_at) > t0).sort((a, b) => Date.parse(a.created_at) - Date.parse(b.created_at));
-  const ai = after.find((r) => r.author === 'ai' && r.status !== 'failed');
+  // System notes are for the owner only; they never reached the customer.
+  const ai = after.find((r) => r.author === 'ai' && r.kind !== 'system' && r.status !== 'failed');
   if (!ai) return false;
   const tAi = Date.parse(ai.created_at);
   return after.some((r) => r.author === 'customer' && Date.parse(r.created_at) > tAi);
@@ -69,7 +70,7 @@ export function confirmedInOrder(rows: ChatRow[], iso: string): boolean {
 
 /** True when the AI sent a message after `iso` (the quote summary) and the customer answered it. */
 export async function confirmedAfter(conversationId: string, iso: string): Promise<boolean> {
-  const { data, error } = await serviceClient().from('whatsapp_chat_messages').select('author, status, created_at')
+  const { data, error } = await serviceClient().from('whatsapp_chat_messages').select('author, kind, status, created_at')
     .eq('conversation_id', conversationId).gt('created_at', iso).order('created_at', { ascending: true }).limit(200);
   if (error) throw error;
   return confirmedInOrder((data as ChatRow[]) || [], iso);

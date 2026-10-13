@@ -1,6 +1,6 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
-const h = vi.hoisted(() => ({ inserts: [] as any[], emails: [] as any[], statuses: [] as any[] }));
+const h = vi.hoisted(() => ({ inserts: [] as any[], emails: [] as any[], statuses: [] as any[], existing: null as any, filters: [] as any[] }));
 vi.mock('@/lib/db', () => ({
   getPublishedProperties: async () => [
     { id: 'p-panch', slug: 'panchvati-cottages', name: 'Panchvati Cottages', type: 'cottage', destination_slug: 'dharamshala', star_rating: null, price_min: 4000, price_max: 9700, short_description: 'Quiet cottages', locality: 'Kharota' },
@@ -16,7 +16,17 @@ vi.mock('@/lib/db', () => ({
 vi.mock('@/lib/taxi', () => ({ getTaxiRouteGroups: async () => [{ slug: 'dharamshala-to-mcleod-ganj', from: 'Dharamshala', to: 'McLeod Ganj', distanceKm: 9, duration: '30 min', minPrice: 500, vehicles: [{ name: 'Sedan', maxPassengers: 4, price: 500 }] }] }));
 vi.mock('@/lib/email', () => ({ sendEmail: async (m: any) => { h.emails.push(m); }, adminEmail: () => 'admin@x' }));
 vi.mock('@/lib/wa-chat/store', () => ({ setStatus: async (...a: any[]) => { h.statuses.push(a); }, history: async () => [{ author: 'customer', body: 'help' }] }));
-vi.mock('@/lib/server-auth', () => ({ serviceClient: () => ({ from: () => ({ insert: (row: any) => { h.inserts.push(row); return { select: () => ({ single: async () => ({ data: { id: 'inq1' }, error: null }) }) }; } }) }) }));
+vi.mock('@/lib/server-auth', () => ({ serviceClient: () => ({ from: () => {
+  const q: any = {
+    select: () => q, order: () => q, limit: () => q,
+    eq: (...a: any[]) => { h.filters.push(['eq', ...a]); return q; },
+    is: (...a: any[]) => { h.filters.push(['is', ...a]); return q; },
+    gte: (...a: any[]) => { h.filters.push(['gte', a[0]]); return q; },
+    maybeSingle: async () => ({ data: h.existing, error: null }),
+    insert: (row: any) => { h.inserts.push(row); return { select: () => ({ single: async () => ({ data: { id: 'inq1' }, error: null }) }) }; },
+  };
+  return q;
+} }) }));
 
 vi.mock('@/lib/wa-chat/booking-tools', () => ({ BOOKING_TOOL_DEFS: ['quote_booking', 'create_booking', 'payment_link', 'my_bookings'].map((name) => ({ type: 'function', function: { name } })), runBookingTool: async () => null }));
 vi.mock('@/lib/wa-chat/cancellations', () => ({ CANCEL_TOOL_DEF: { type: 'function', function: { name: 'request_cancellation' } }, requestCancellation: async () => ({ result: 'need_proof' }) }));
@@ -29,7 +39,7 @@ vi.mock('@/lib/wa-chat/offer-tools', () => ({
 import { runTool, TOOL_DEFS } from '@/lib/wa-chat/tools';
 
 const ctx = () => ({ conversationId: 'c1', phone: '919800000001', profileName: 'Asha', handedOver: false });
-beforeEach(() => { h.inserts = []; h.emails = []; h.statuses = []; });
+beforeEach(() => { h.inserts = []; h.emails = []; h.statuses = []; h.existing = null; h.filters = []; });
 
 describe('tools', () => {
   it('defines every tool', () => {
@@ -56,6 +66,25 @@ describe('tools', () => {
     expect(h.inserts[0]).toMatchObject({ type: 'hotel', name: 'Asha', phone: '919800000001', source: 'whatsapp', whatsapp_conversation_id: 'c1', status: 'new', guests: 2 });
     expect(h.emails[0].subject).toMatch(/WhatsApp enquiry/);
   });
+  it('create_enquiry counts as an action the customer must hear about', async () => {
+    const c: any = ctx();
+    await runTool('create_enquiry', { type: 'hotel', name: 'Asha', check_in: '2099-10-13' }, c);
+    expect(c.sideEffects).toEqual(['create_enquiry']);
+    expect(c.actions).toEqual(['Enquiry inq1 saved']);
+  });
+  it('create_enquiry does not save or email the same enquiry twice within 30 minutes', async () => {
+    h.existing = { id: 'inq0' };
+    const c: any = ctx();
+    const r = JSON.parse(await runTool('create_enquiry', { type: 'hotel', name: 'Asha', check_in: '2099-10-13' }, c));
+    expect(r).toEqual({ ok: true, enquiry_id: 'inq0', duplicate: true });
+    expect(h.inserts).toEqual([]);
+    expect(h.emails).toEqual([]);
+    expect(h.filters).toEqual(expect.arrayContaining([['eq', 'whatsapp_conversation_id', 'c1'], ['eq', 'type', 'hotel'], ['eq', 'name', 'Asha'], ['eq', 'check_in', '2099-10-13'], ['gte', 'created_at']]));
+    expect(c.sideEffects).toEqual(['create_enquiry']);
+    h.filters = [];
+    await runTool('create_enquiry', { type: 'general', name: 'Asha' }, ctx());
+    expect(h.filters).toContainEqual(['is', 'check_in', null]);
+  });
   it('create_enquiry rejects bad dates', async () => {
     const r = JSON.parse(await runTool('create_enquiry', { type: 'hotel', name: 'A', check_in: 'tomorrow' }, ctx()));
     expect(r.error).toMatch(/YYYY-MM-DD/);
@@ -66,6 +95,8 @@ describe('tools', () => {
     expect(c.handedOver).toBe(true);
     expect(h.statuses[0]).toEqual(['c1', 'needs_human', 'Refund request']);
     expect(h.emails[0].subject).toMatch(/needs you/);
+    expect((c as any).sideEffects).toEqual(['handover']);
+    expect((c as any).actions).toEqual(['Handed to the team: Refund request']);
   });
   it('unknown tool returns an error string', async () => {
     expect(JSON.parse(await runTool('nope', {}, ctx()))).toEqual({ error: 'Unknown tool' });

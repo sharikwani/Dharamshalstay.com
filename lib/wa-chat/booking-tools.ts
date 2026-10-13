@@ -14,7 +14,7 @@ import { offerForBooking, type OfferOk } from './offer-tools';
 import { claimQuote, confirmedAfter, findOwnBooking, latestQuote, linkQuoteBooking, ownBookings, releaseQuote, saveQuote, type OwnBooking, type Quote } from './booking-store';
 import { findHotel } from './find';
 import type { ToolCtx } from './tools';
-import { markSideEffect } from './types';
+import { markSideEffect, noteAction } from './types';
 
 type Handover = (a: any, ctx: ToolCtx) => Promise<unknown>;
 type Category = Quote['category'];
@@ -231,23 +231,29 @@ async function createTool(a: any, ctx: ToolCtx, handover: Handover) {
     try { await sendEmail({ to: adminEmail(), subject: text, html: `<p>${text}. Check the code in Admin → Offers.</p>` }); }
     catch (e) { console.error('WhatsApp offer booking: owner email failed', e); }
   }
-  markSideEffect(ctx, 'create_booking');
-  const base = { booking_ref: r.booking.booking_ref, status: 'requested', amount: r.amount, ...(offer ? { offer_code: offer.code, offer_percent: offer.percent } : {}) };
+  const ref = r.booking.booking_ref;
+  markSideEffect(ctx, 'create_booking', `Booking ${ref} made (${r.payment_method === 'online' ? 'pay online' : 'pay later'})`);
+  const base = { booking_ref: ref, status: 'requested', amount: r.amount, ...(offer ? { offer_code: offer.code, offer_percent: offer.percent } : {}) };
   if (r.payment_method !== 'online') return { ...base, payment: 'later' };
 
   let link: Awaited<ReturnType<typeof createCheckoutLink>> | null = null;
   try { link = await createCheckoutLink(r.booking.id); } catch (e) { console.error('WhatsApp booking: checkout link failed', e); }
-  if (link?.ok) return { ...base, payment: 'online', payment_url: link.url };
+  if (link?.ok) {
+    noteAction(ctx, `Payment link for ${ref}: ${link.url}`);
+    return { ...base, payment: 'online', payment_url: link.url };
+  }
   if (offer) {
     // Offer bookings never become pay later (pay later is never discounted): drop this booking and free the code.
     // Its payment_method stays online, so commission_status stays 'not_applicable' (never 'pending').
     const { error } = await serviceClient().from('bookings').update({ status: 'failed', cancelled_reason: 'Offer booking: payment link failed' }).eq('id', r.booking.id);
     if (error) console.error('WhatsApp offer booking: could not mark failed', error);
     await releaseCode(offer.codeId);
+    noteAction(ctx, `Booking ${ref} dropped: payment link failed (offer code ${offer.code} freed)`);
     return { error: `The payment link could not be created. Your code is free again – make a new quote with the same code in a minute, or show code ${offer.code} at reception before ${formatIST(offer.expiresAt)}.` };
   }
   // No link: keep the booking as pay later so the usual booking emails still go out.
   await fallbackToPayLater(r.booking.id, q.category);
+  noteAction(ctx, `Booking ${ref} switched to pay later (payment link failed)`);
   return { ...base, payment: 'later', payment_link_failed: true };
 }
 
@@ -263,7 +269,7 @@ async function paymentLinkTool(a: any, ctx: ToolCtx) {
     return { error: 'Could not create a payment link right now.' };
   }
   if (!link.ok) return { error: link.error };
-  markSideEffect(ctx, 'payment_link');
+  markSideEffect(ctx, 'payment_link', `Payment link for ${b.booking_ref}: ${link.url}`);
   return { booking_ref: b.booking_ref, payment_url: link.url };
 }
 

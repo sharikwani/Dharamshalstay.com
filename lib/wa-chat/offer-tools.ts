@@ -41,7 +41,7 @@ export async function getOfferCode(a: any, ctx: ToolCtx) {
   // The phone is always the chat's own number, never a tool argument.
   const r = await issueCode(offer.id, ctx.phone, ctx.conversationId);
   if (!r.ok) return { error: r.error };
-  if (!r.reused) markSideEffect(ctx, 'get_offer_code');
+  if (!r.reused) markSideEffect(ctx, 'get_offer_code', `Offer code ${r.code.code} issued for ${p.name}`);
   let c = r.code;
   let booked: string | null = null;
   if (c.status === 'booked') {
