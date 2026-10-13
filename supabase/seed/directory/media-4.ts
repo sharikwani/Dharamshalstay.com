@@ -2,22 +2,15 @@ import type { DirectoryMedia } from './types';
 
 /**
  * Hotel photos and listing details for directory batch 2.
- * Photos come from each property's own OTA listing (Trip.com / Hostelworld);
+ * Photos only where the property publishes its own (Hostelworld listings, as in batch 1);
+ * Trip.com photos were removed (OTA-hosted images are not reused);
  * details are included only where those sources state them. Properties with no
  * verified own photos have no images, so the page uses an area photo.
  */
 export const directoryMedia4: Record<string, DirectoryMedia> = {
   'hotel-norbu-house-mcleod-ganj': {
-    images: [
-      { url: 'https://ak-d.tripcdn.com/images/0584l12000cseb13vBCE5_R_960_660_R5_D.jpg', alt: 'Hotel Norbu House building with glazed corner and balconies on the McLeod Ganj ridge', category: 'exterior' },
-      { url: 'https://ak-d.tripcdn.com/images/0584p12000kyiuotf2230_R_960_660_R5_D.jpg', alt: 'Guest room with Tibetan knot headboard and woven rug at Hotel Norbu House', category: 'room' },
-      { url: 'https://ak-d.tripcdn.com/images/0580o12000sxkaokzAE87_R_960_660_R5_D.jpg', alt: 'Spacious room with sitting chair and Tibetan-border ceiling at Hotel Norbu House', category: 'room' },
-      { url: 'https://ak-d.tripcdn.com/images/0582j12000kyiuyfgB6C8_R_960_660_R5_D.jpg', alt: 'Restaurant dining hall with Tibetan murals at Hotel Norbu House', category: 'restaurant' },
-      { url: 'https://ak-d.tripcdn.com/images/0585c12000t1r5hve0855_R_960_660_R5_D.jpg', alt: 'Valley and Dhauladhar hillside view from Hotel Norbu House', category: 'view' },
-      { url: 'https://ak-d.tripcdn.com/images/0583712000i5ib06q9380_R_960_660_R5_D.jpg', alt: 'Upper balcony walkway outside rooms at Hotel Norbu House', category: 'other' },
-      { url: 'https://ak-d.tripcdn.com/images/1ik0c12000nobsfsnF7DE_R_960_660_R5_D.jpg', alt: 'Conference hall with a Potala Palace mural at Hotel Norbu House', category: 'amenity' },
-    ],
-    photo_source: 'https://ph.trip.com/hotels/kangra-hotel-detail-81986949/hotel-norbu-house',
+    images: [],
+    photo_source: '',
     check_in_time: '13:00',
     check_out_time: '12:00',
     room_types: [
@@ -31,16 +24,8 @@ export const directoryMedia4: Record<string, DirectoryMedia> = {
     smoking_policy: 'Rooms are non-smoking; no smoking in public areas.',
   },
   'hotel-woodville-inn-mcleod-ganj': {
-    images: [
-      { url: 'https://ak-d.tripcdn.com/images/0584u12000su8zrsr2543_R_960_660_R5_D.jpg', alt: 'Hotel Woodville Inn building lit up at night', category: 'exterior' },
-      { url: 'https://ak-d.tripcdn.com/images/1ik6r12000nq8qiql1682_R_960_660_R5_D.jpg', alt: 'Wood-panelled reception desk at Hotel Woodville Inn', category: 'lobby' },
-      { url: 'https://ak-d.tripcdn.com/images/0580112000szg0iafF45F_R_960_660_R5_D.jpg', alt: 'Twin guest room with balcony view at Hotel Woodville Inn', category: 'room' },
-      { url: 'https://ak-d.tripcdn.com/images/0581u12000t0f8x4s2884_R_960_660_R5_D.jpg', alt: 'Lounge seating area at Hotel Woodville Inn', category: 'lobby' },
-      { url: 'https://ak-d.tripcdn.com/images/0585l12000tr9i1lyF2A3_R_960_660_R5_D.jpg', alt: 'Restaurant dining hall at Hotel Woodville Inn', category: 'restaurant' },
-      { url: 'https://ak-d.tripcdn.com/images/0586m12000jc6zte9F3D4_R_960_660_R5_D.jpg', alt: 'Terrace with green turf and hill views at Hotel Woodville Inn', category: 'view' },
-      { url: 'https://ak-d.tripcdn.com/images/0224j120009zukzanABA6_R_960_660_R5_D.jpg', alt: 'Guest room corridor at Hotel Woodville Inn', category: 'other' },
-    ],
-    photo_source: 'https://ph.trip.com/hotels/kangra-hotel-detail-104593851/hotel-woodville-inn-mcleodganj',
+    images: [],
+    photo_source: '',
     check_in_time: '12:00',
     check_out_time: '11:00',
     room_types: [
@@ -53,16 +38,8 @@ export const directoryMedia4: Record<string, DirectoryMedia> = {
     smoking_policy: 'No smoking in public areas; the Basic Room is non-smoking, some other rooms permit smoking.',
   },
   'hotel-pawan-regency-jogiwara-road-mcleod-ganj': {
-    images: [
-      { url: 'https://ak-d.tripcdn.com/images/0222912000oc7lhkoA2FB_R_960_660_R5_D.jpg', alt: 'King-bed room with wood-framed windows at Hotel Pawan Regency', category: 'room' },
-      { url: 'https://ak-d.tripcdn.com/images/0584912000stpmee53E73_R_960_660_R5_D.jpg', alt: 'Reception with Pawan Regency sign at Hotel Pawan Regency', category: 'lobby' },
-      { url: 'https://ak-d.tripcdn.com/images/0222x12000o990fix5D25_R_960_660_R5_D.jpg', alt: 'Restaurant with picture window over the hills at Hotel Pawan Regency', category: 'restaurant' },
-      { url: 'https://ak-d.tripcdn.com/images/0225q12000l0sso4nC294_R_960_660_R5_D.jpg', alt: 'Roof terrace seating with town and mountain views at Hotel Pawan Regency', category: 'view' },
-      { url: 'https://ak-d.tripcdn.com/images/0224b12000l0ssi64353D_R_960_660_R5_D.jpg', alt: 'Guest room with balcony door and TV at Hotel Pawan Regency', category: 'room' },
-      { url: 'https://ak-d.tripcdn.com/images/0226012000o990cb4AD5C_R_960_660_R5_D.jpg', alt: 'Dining area beside the terrace at Hotel Pawan Regency', category: 'restaurant' },
-      { url: 'https://ak-d.tripcdn.com/images/0225x12000oah4i9x5636_R_960_660_R5_D.jpg', alt: 'Corridor with paintings at Hotel Pawan Regency', category: 'other' },
-    ],
-    photo_source: 'https://uk.trip.com/hotels/kangra-hotel-detail-106792698/hotel-pawan-regency-best-mountain-view-hotel-in-mcleodganj',
+    images: [],
+    photo_source: '',
     check_in_time: '13:00',
     check_out_time: '11:00',
     room_types: [
@@ -75,16 +52,8 @@ export const directoryMedia4: Record<string, DirectoryMedia> = {
     smoking_policy: 'Rooms are non-smoking; no smoking in public areas.',
   },
   'the-bougainvillea-jogiwara-road-mcleod-ganj': {
-    images: [
-      { url: 'https://ak-d.tripcdn.com/images/0224n12000eq7371m8EAD_R_960_660_R5_D.jpg', alt: 'The Bougainvillea yellow building with balconies on Jogiwara Road', category: 'exterior' },
-      { url: 'https://ak-d.tripcdn.com/images/1ik5512000t5wygvv5C40_R_960_660_R5_D.jpg', alt: 'Wood-panelled room with balcony windows at The Bougainvillea', category: 'room' },
-      { url: 'https://ak-d.tripcdn.com/images/0586o12000jeucdz0792F_R_960_660_R5_D.jpg', alt: 'Covered terrace lounge with sofas and valley views at The Bougainvillea', category: 'lobby' },
-      { url: 'https://ak-d.tripcdn.com/images/0585112000nrtr3nh4007_R_960_660_R5_D.jpg', alt: 'Four-bed dormitory with bunks at The Bougainvillea', category: 'room' },
-      { url: 'https://ak-d.tripcdn.com/images/1ik5j12000t4mhyfc545A_R_960_660_R5_D.jpg', alt: 'Terrace lounge seating at The Bougainvillea', category: 'lobby' },
-      { url: 'https://ak-d.tripcdn.com/images/0220812000en7589m1693_R_960_660_R5_D.jpg', alt: 'The Bougainvillea building seen from below in evening light', category: 'exterior' },
-      { url: 'https://ak-d.tripcdn.com/images/0581t12000hx8q96i4638_R_960_660_R5_D.jpg', alt: 'Corridor at The Bougainvillea', category: 'other' },
-    ],
-    photo_source: 'https://in.trip.com/hotels/kangra-hotel-detail-114121466/the-bougainvillea-mcleodganj/',
+    images: [],
+    photo_source: '',
     check_in_time: '12:00',
     check_out_time: '10:00',
     room_types: [
@@ -97,16 +66,8 @@ export const directoryMedia4: Record<string, DirectoryMedia> = {
     smoking_policy: 'A smoking area is available; most rooms and the dorm are non-smoking.',
   },
   'hotel-akash-jogiwara-road-mcleod-ganj': {
-    images: [
-      { url: 'https://ak-d.tripcdn.com/images/0585x12000ncymfw694AF_R_960_660_R5_D.jpg', alt: 'Hotel Akash building with red railings on Jogiwara Road', category: 'exterior' },
-      { url: 'https://ak-d.tripcdn.com/images/0220912000kxdo3v73CB3_R_960_660_R5_D.jpg', alt: 'Guest room with Tibetan hangings at Hotel Akash', category: 'room' },
-      { url: 'https://ak-d.tripcdn.com/images/0224o12000kxdnteoFC6F_R_960_660_R5_D.jpg', alt: 'Reception with a portrait of the Dalai Lama at Hotel Akash', category: 'lobby' },
-      { url: 'https://ak-d.tripcdn.com/images/0222c12000kxdob3o9316_R_960_660_R5_D.jpg', alt: 'Rooftop restaurant garden terrace at Hotel Akash', category: 'restaurant' },
-      { url: 'https://ak-d.tripcdn.com/images/0580212000ncynaqq70D3_R_960_660_R5_D.jpg', alt: 'Rooftop terrace seating with views at Hotel Akash', category: 'view' },
-      { url: 'https://ak-d.tripcdn.com/images/0580d12000ncynbzv98FC_R_960_660_R5_D.jpg', alt: 'Hotel Akash lit up in the evening', category: 'exterior' },
-      { url: 'https://ak-d.tripcdn.com/images/0220k12000ac7117p5DED_R_960_660_R5_D.jpg', alt: 'Guest floor corridor at Hotel Akash', category: 'other' },
-    ],
-    photo_source: 'https://us.trip.com/hotels/kangra-hotel-detail-61961432/hotel-akash/',
+    images: [],
+    photo_source: '',
     check_in_time: '14:00',
     check_out_time: '11:00',
     room_types: [
@@ -119,15 +80,8 @@ export const directoryMedia4: Record<string, DirectoryMedia> = {
     smoking_policy: 'Rooms are non-smoking.',
   },
   'hotel-lavish-inn-jogiwara-road-mcleod-ganj': {
-    images: [
-      { url: 'https://ak-d.tripcdn.com/images/0222412000jjhfl7wFD25_R_960_660_R5_D.jpg', alt: 'Hotel Lavish Inn illuminated signboard', category: 'exterior' },
-      { url: 'https://ak-d.tripcdn.com/images/0584512000tcabmby5054_R_960_660_R5_D.jpg', alt: 'Double room with sofa and window at Hotel Lavish Inn', category: 'room' },
-      { url: 'https://ak-d.tripcdn.com/images/0224112000j7m7l988954_R_960_660_R5_D.jpg', alt: 'Room with green accent bedding and balcony window at Hotel Lavish Inn', category: 'room' },
-      { url: 'https://ak-d.tripcdn.com/images/0225o12000j7m7r5k539F_R_960_660_R5_D.jpg', alt: 'Restaurant seating at Hotel Lavish Inn', category: 'restaurant' },
-      { url: 'https://ak-d.tripcdn.com/images/0221912000j7m7qfg3699_R_960_660_R5_D.jpg', alt: 'Black Magic Club bar counter at Hotel Lavish Inn', category: 'restaurant' },
-      { url: 'https://ak-d.tripcdn.com/images/0583g12000svs2ies809A_R_960_660_R5_D.jpg', alt: 'Executive room with padded headboard at Hotel Lavish Inn', category: 'room' },
-    ],
-    photo_source: 'https://www.trip.com/hotels/kangra-hotel-detail-84608378/hotel-lavish-inn-and-black-magic-restaurant-and-bar/',
+    images: [],
+    photo_source: '',
     check_in_time: '14:00',
     check_out_time: '12:00',
     room_types: [
@@ -139,15 +93,8 @@ export const directoryMedia4: Record<string, DirectoryMedia> = {
     smoking_policy: 'Smoking is not allowed inside the hotel.',
   },
   'la-riqueza-koala-inn-jogiwara-road-mcleod-ganj': {
-    images: [
-      { url: 'https://ak-d.tripcdn.com/images/0585312000tz20bl98CB5_R_960_660_R5_D.jpg', alt: 'La Riqueza Koala Inn building among trees at dusk', category: 'exterior' },
-      { url: 'https://ak-d.tripcdn.com/images/1ik2w12000nj8tm6750F3_R_960_660_R5_D.jpg', alt: 'La Riqueza Koala Inn building surrounded by deodar trees', category: 'exterior' },
-      { url: 'https://ak-d.tripcdn.com/images/0220812000o1p4jo9C943_R_960_660_R5_D.jpg', alt: 'Room with large TV and balcony doors at La Riqueza Koala Inn', category: 'room' },
-      { url: 'https://ak-d.tripcdn.com/images/0226912000o1p4lrw60E1_R_960_660_R5_D.jpg', alt: 'Balcony room looking over the forested valley at La Riqueza Koala Inn', category: 'room' },
-      { url: 'https://ak-d.tripcdn.com/images/1ik2s12000tvz9sb084AD_R_960_660_R5_D.jpg', alt: 'Rooftop terrace seating at sunset at La Riqueza Koala Inn', category: 'view' },
-      { url: 'https://ak-d.tripcdn.com/images/0226r12000lnal192258C_R_960_660_R5_D.jpg', alt: 'Timber-clad corridor at La Riqueza Koala Inn', category: 'other' },
-    ],
-    photo_source: 'https://www.trip.com/hotels/kangra-hotel-detail-123332711/la-riqueza-koala-inn-mcleod-ganj-mountain-view-rooms-with-balcony-near-to-mall-road',
+    images: [],
+    photo_source: '',
     room_types: [
       { name: 'Deluxe Room with Mountain View and Balcony', bed_type: 'Queen' },
       { name: 'Superior Room with Mountain View and Balcony', bed_type: 'Double' },
@@ -157,16 +104,8 @@ export const directoryMedia4: Record<string, DirectoryMedia> = {
     amenities: ['WiFi', 'Free parking', 'EV charging', 'Restaurant', 'Cafe', 'Bar', 'Laundry service', 'Luggage storage', '24-hour front desk'],
   },
   'zostel-mcleodganj-jogiwara-road': {
-    images: [
-      { url: 'https://ak-d.tripcdn.com/images/1ik5s12000s07lzse50B9_R_960_660_R5_D.jpg', alt: 'Zostel McLeodganj painted building among deodar trees', category: 'exterior' },
-      { url: 'https://ak-d.tripcdn.com/images/0580812000rywiaciB664_R_960_660_R5_D.jpg', alt: 'Private room with balcony and bed at Zostel McLeodganj', category: 'room' },
-      { url: 'https://ak-d.tripcdn.com/images/0224v12000sqbqm3eEBC7_R_960_660_R5_D.jpg', alt: 'Reception desk with Zostel branding at Zostel McLeodganj', category: 'lobby' },
-      { url: 'https://ak-d.tripcdn.com/images/0586p12000ry68hurD0BA_R_960_660_R5_D.jpg', alt: 'Common lounge with red brick wall and mandala art at Zostel McLeodganj', category: 'lobby' },
-      { url: 'https://ak-d.tripcdn.com/images/0585u12000s10gy350303_R_960_660_R5_D.jpg', alt: 'Mural-painted terrace with mountain views at Zostel McLeodganj', category: 'view' },
-      { url: 'https://ak-d.tripcdn.com/images/0587312000swki55aF0AA_R_960_660_R5_D.jpg', alt: 'Superior room at Zostel McLeodganj', category: 'room' },
-      { url: 'https://ak-d.tripcdn.com/images/0583712000ry6954m67E6_R_960_660_R5_D.jpg', alt: 'Lounge with low tables and cushions at Zostel McLeodganj', category: 'lobby' },
-    ],
-    photo_source: 'https://us.trip.com/hotels/kangra-hotel-detail-99542724/zostel-mcleodganj/',
+    images: [],
+    photo_source: '',
     check_in_time: '13:00',
     check_out_time: '10:00',
     room_types: [
@@ -208,29 +147,15 @@ export const directoryMedia4: Record<string, DirectoryMedia> = {
     amenities: ['WiFi', 'Free parking', 'Breakfast included', '24-hour reception', 'Luggage storage', 'Airport transfer'],
   },
   'albela-house-hotel-shivam-marg-mcleod-ganj': {
-    images: [
-      { url: 'https://ak-d.tripcdn.com/images/0222t12000clzk528A1EA_R_960_660_R5_D.jpg', alt: 'Albela House Hotel building among trees', category: 'exterior' },
-      { url: 'https://ak-d.tripcdn.com/images/0226y12000clzk177122B_R_960_660_R5_D.jpg', alt: 'Balcony with table and chairs over the forest at Albela House Hotel', category: 'view' },
-      { url: 'https://ak-d.tripcdn.com/images/0221f12000clzjnr42F61_R_960_660_R5_D.jpg', alt: 'Albela House Hotel lit up at night', category: 'exterior' },
-      { url: 'https://ak-d.tripcdn.com/images/0223712000clzjyj473DC_R_960_660_R5_D.jpg', alt: 'Balcony seating with valley views at Albela House Hotel', category: 'view' },
-      { url: 'https://ak-d.tripcdn.com/images/0223f12000e09dgkyE6D6_R_960_660_R5_D.jpg', alt: 'Cloud over forested hillside seen from Albela House Hotel', category: 'view' },
-    ],
-    photo_source: 'https://us.trip.com/hotels/kangra-hotel-detail-97340873/albela-house-hotel-mcleodganj/',
+    images: [],
+    photo_source: '',
     amenities: ['WiFi', 'Cafe', 'Laundry service', 'Luggage storage', 'Tour and taxi desk'],
     pet_policy: 'Pets (dogs and cats) are listed as allowed for an extra charge.',
     smoking_policy: 'Smoking only in assigned areas.',
   },
   'hotel-asian-plaza-main-square-mcleod-ganj': {
-    images: [
-      { url: 'https://ak-d.tripcdn.com/images/0226x12000l0gzmyb1700_R_960_660_R5_D.jpg', alt: 'Hotel Asian Plaza balconies facing the Main Square', category: 'exterior' },
-      { url: 'https://ak-d.tripcdn.com/images/0222j12000ln25yck9024_R_960_660_R5_D.jpg', alt: 'Spacious suite with king bed and sitting area at Hotel Asian Plaza', category: 'room' },
-      { url: 'https://ak-d.tripcdn.com/images/0226e12000l0gzl25D5D9_R_960_660_R5_D.jpg', alt: 'Reception and lobby at Hotel Asian Plaza', category: 'lobby' },
-      { url: 'https://ak-d.tripcdn.com/images/1ik5q12000o5nci2sE3E1_R_960_660_R5_D.jpg', alt: 'Restaurant seating at Hotel Asian Plaza', category: 'restaurant' },
-      { url: 'https://ak-d.tripcdn.com/images/0224r12000l0gzr51224F_R_960_660_R5_D.jpg', alt: 'Terrace with seating and mountain views at Hotel Asian Plaza', category: 'view' },
-      { url: 'https://ak-d.tripcdn.com/images/0222x12000l0gzmd3D609_R_960_660_R5_D.jpg', alt: 'Lobby staircase at Hotel Asian Plaza', category: 'lobby' },
-      { url: 'https://ak-d.tripcdn.com/images/0223i12000l0gzx6eE45F_R_960_660_R5_D.jpg', alt: 'Hotel Asian Plaza entrance at street level in the evening', category: 'exterior' },
-    ],
-    photo_source: 'https://in.trip.com/hotels/kangra-hotel-detail-3683331/hotel-asian-plaza-mcleodganj/',
+    images: [],
+    photo_source: '',
     check_in_time: '13:00',
     check_out_time: '12:00',
     room_types: [
@@ -242,16 +167,8 @@ export const directoryMedia4: Record<string, DirectoryMedia> = {
     pet_policy: 'Pets are not allowed.',
   },
   'shree-guest-house-main-square-mcleod-ganj': {
-    images: [
-      { url: 'https://ak-d.tripcdn.com/images/0584g12000ncykizlBDBF_R_960_660_R5_D.jpg', alt: 'Shree Guest House green building and courtyard', category: 'exterior' },
-      { url: 'https://ak-d.tripcdn.com/images/1ik2h12000t7jkwghD861_R_960_660_R5_D.jpg', alt: 'Double room with Tibetan rug at Shree Guest House', category: 'room' },
-      { url: 'https://ak-d.tripcdn.com/images/0582n12000hsyzn4nA8EC_R_960_660_R5_D.jpg', alt: 'Room with window onto the trees at Shree Guest House', category: 'room' },
-      { url: 'https://ak-d.tripcdn.com/images/1ik4h12000t7jrhf2A2AC_R_960_660_R5_D.jpg', alt: 'Single bed room with wooden table at Shree Guest House', category: 'room' },
-      { url: 'https://ak-d.tripcdn.com/images/0586k12000twvso0g2492_R_960_660_R5_D.jpg', alt: 'Balcony among tall trees at Shree Guest House', category: 'view' },
-      { url: 'https://ak-d.tripcdn.com/images/0221i12000ap7jyd7F874_R_960_660_R5_D.jpg', alt: 'Landing with desk and Tibetan thangka at Shree Guest House', category: 'lobby' },
-      { url: 'https://ak-d.tripcdn.com/images/0586d12000mcy3nebCD35_R_960_660_R5_D.jpg', alt: 'Corridor at Shree Guest House', category: 'other' },
-    ],
-    photo_source: 'https://uk.trip.com/hotels/kangra-hotel-detail-114516892/shree-guest-house',
+    images: [],
+    photo_source: '',
     check_in_time: '13:00',
     check_out_time: '11:00',
     room_types: [
@@ -262,14 +179,8 @@ export const directoryMedia4: Record<string, DirectoryMedia> = {
     amenities: ['WiFi', 'Cafe', 'Free parking', 'Laundry service', 'Luggage storage', '24-hour front desk'],
   },
   'mcleodganj-bed-and-breakfast-dharamkot-road': {
-    images: [
-      { url: 'https://ak-d.tripcdn.com/images/0584z12000t1fp6qu5D6C_R_960_660_R5_D.jpg', alt: 'Mcleodganj Bed and Breakfast building among deodar trees', category: 'exterior' },
-      { url: 'https://ak-d.tripcdn.com/images/0585t12000svgtrxkDE22_R_960_660_R5_D.jpg', alt: 'Room with balcony windows onto the pines at Mcleodganj Bed and Breakfast', category: 'room' },
-      { url: 'https://ak-d.tripcdn.com/images/0581e12000u2fkjdjF19C_R_960_660_R5_D.jpg', alt: 'Double room with brick wall and bed at Mcleodganj Bed and Breakfast', category: 'room' },
-      { url: 'https://ak-d.tripcdn.com/images/0227112000tn1tf4lCF3A_R_960_660_R5_D.jpg', alt: 'Cottage-style room with sleeping loft at Mcleodganj Bed and Breakfast', category: 'room' },
-      { url: 'https://ak-d.tripcdn.com/images/0226r12000bngx4n987F7_R_960_660_R5_D.jpg', alt: 'Wooden dining terrace with tree views at Mcleodganj Bed and Breakfast', category: 'restaurant' },
-    ],
-    photo_source: 'https://in.trip.com/hotels/kangra-hotel-detail-61945868/mcleodganj-homestay/',
+    images: [],
+    photo_source: '',
     check_in_time: '12:00',
     check_out_time: '11:00',
     room_types: [
@@ -282,16 +193,8 @@ export const directoryMedia4: Record<string, DirectoryMedia> = {
     smoking_policy: 'Smoking only in designated areas.',
   },
   'hotel-bella-heights-temple-road-mcleod-ganj': {
-    images: [
-      { url: 'https://ak-d.tripcdn.com/images/0221212000l18brci2F65_R_960_660_R5_D.jpg', alt: 'Hotel Bella Heights building with Zip signage', category: 'exterior' },
-      { url: 'https://ak-d.tripcdn.com/images/0220w12000p9tpd9qE34D_R_960_660_R5_D.jpg', alt: 'King-bed room with wood floor and sofa at Hotel Bella Heights', category: 'room' },
-      { url: 'https://ak-d.tripcdn.com/images/1ik4c12000o436pzcEDD9_R_960_660_R5_D.jpg', alt: 'Reception and lobby seating at Hotel Bella Heights', category: 'lobby' },
-      { url: 'https://ak-d.tripcdn.com/images/0222z12000j5g8vr49FBE_R_960_660_R5_D.jpg', alt: 'Rooftop restaurant with mountain views at Hotel Bella Heights', category: 'restaurant' },
-      { url: 'https://ak-d.tripcdn.com/images/0200l120008h7ctarE319_R_960_660_R5_D.jpg', alt: 'Lit rooftop walkway with Buddha statue at Hotel Bella Heights', category: 'view' },
-      { url: 'https://ak-d.tripcdn.com/images/0221y12000p9tpfza32D9_R_960_660_R5_D.jpg', alt: 'Guest corridor with Buddha painting at Hotel Bella Heights', category: 'other' },
-      { url: 'https://ak-d.tripcdn.com/images/1ik2s12000nob3byq5ABF_R_960_660_R5_D.jpg', alt: 'Conference hall at Hotel Bella Heights', category: 'amenity' },
-    ],
-    photo_source: 'https://in.trip.com/hotels/kangra-hotel-detail-61933910/zip-by-spree-hotels-bella-heights-mcleodganj/',
+    images: [],
+    photo_source: '',
     check_in_time: '14:00',
     check_out_time: '12:00',
     room_types: [
