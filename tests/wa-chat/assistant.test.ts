@@ -44,4 +44,12 @@ describe('assistant', () => {
     vi.stubGlobal('fetch', vi.fn(async () => new Response('{}', { status: 500 })));
     await expect(reply([msg('customer', 'hi')], ctx())).rejects.toThrow();
   });
+  it('explains WhatsApp offers without exact percents or pay-later discounts', () => {
+    expect(SYSTEM_PROMPT).toMatch(/get_offer_code/);
+    expect(SYSTEM_PROMPT).toMatch(/only through this chat/);
+    expect(SYSTEM_PROMPT).toMatch(/paid online in full/);
+    expect(SYSTEM_PROMPT).toMatch(/pay later gets no offer/i);
+    expect(SYSTEM_PROMPT).toMatch(/Never say an exact percent before quote_booking/);
+    expect(SYSTEM_PROMPT).toMatch(/never offer both/);
+  });
 });
