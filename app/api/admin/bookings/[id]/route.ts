@@ -58,7 +58,8 @@ async function ensureCommissionRecord(sb: ReturnType<typeof serviceClient>, merg
     booking_amount: merged.amount, commission_pct: merged.commission_pct, commission_amount: merged.commission_amount,
     status: 'pending', due_date: base.toISOString().slice(0, 10),
   });
-  if (error) console.error('Commission record insert failed:', error);
+  // 23505: the record already exists (unique booking_id, migration v25) -- one record per booking is the goal.
+  if (error && error.code !== '23505') console.error('Commission record insert failed:', error);
 }
 
 /** Keep commission_records in step with the booking. The booking change already succeeded, so failures are only logged. */

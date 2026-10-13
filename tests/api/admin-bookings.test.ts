@@ -6,6 +6,7 @@ let insertError: any = null;
 const inserts: any[] = [];
 let updateError: any = null;
 let listError: any = null;
+let recordInsertError: any = null;
 const updates: any[] = [];
 const recordOps: any[] = [];
 const sendManualBookingEmails = vi.fn(async (..._a: unknown[]) => {});
@@ -40,7 +41,7 @@ function builder(table: string) {
     delete: () => { recordOps.push({ op: 'delete' }); const c: any = { eq: () => c, in: () => c, then: (res: any) => res({ error: null }) }; return c; },
     limit: () => b,
     insert: (row: any) => {
-      if (table === 'commission_records') { recordOps.push({ op: 'insert', row }); return { then: (res: any) => res({ error: null }) }; }
+      if (table === 'commission_records') { recordOps.push({ op: 'insert', row }); return { then: (res: any) => res({ error: recordInsertError }) }; }
       inserting = true; inserts.push({ table, row }); return b;
     },
     maybeSingle: async () => ({ data: fixtures[table] ?? null, error: null }),
@@ -102,7 +103,7 @@ const post = async (body: unknown) => { const r = await POST(new Request('http:/
 
 beforeEach(() => {
   bg.waited.length = 0;
-  role = 'admin'; insertError = null; updateError = null; listError = null; inserts.length = 0; updates.length = 0; recordOps.length = 0;
+  role = 'admin'; insertError = null; updateError = null; listError = null; recordInsertError = null; inserts.length = 0; updates.length = 0; recordOps.length = 0;
   sendManualBookingEmails.mockClear(); sendCancellationEmails.mockClear(); sendReassignedAwayEmail.mockClear();
   whatsappNewBooking.mockClear(); whatsappCancelled.mockClear(); whatsappReassignedAway.mockClear();
   fixtures = {
@@ -421,6 +422,18 @@ describe('GET/PATCH /api/admin/bookings/:id', () => {
     expect(recordOps).toHaveLength(1);
     expect(recordOps[0].op).toBe('insert');
     expect(recordOps[0].row).toMatchObject({ booking_id: 'b1', provider_type: 'trek', booking_amount: 4500, commission_amount: 900, status: 'pending' });
+  });
+
+  it('a commission record added at the same moment elsewhere (unique booking_id) is not an error', async () => {
+    fixtures.bookings = { ...fixtures.bookings, commission_amount: 900, partner_share_amount: 3600, property_id: null };
+    recordInsertError = { code: '23505', message: 'duplicate key value violates unique constraint "uq_commission_records_booking"' };
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    expect((await patch({ action: 'payment', choice: 'partner_collects' })).status).toBe(200);
+    expect(spy).not.toHaveBeenCalled();
+    recordInsertError = { code: '42P01', message: 'boom' };
+    await patch({ action: 'payment', choice: 'partner_collects' });
+    expect(spy).toHaveBeenCalledWith('Commission record insert failed:', recordInsertError);
+    spy.mockRestore();
   });
 
   it('payment does not duplicate an existing commission record', async () => {
