@@ -10,7 +10,22 @@ const OPEN_RECORD = ['pending', 'due', 'overdue'];
 // Bookings that must not be confirmed by a late payment: cancelled ones, and failed ones (lost the last room).
 const CLOSED = ['cancelled', 'failed'];
 const LOOKUP_COLS = 'id, booking_ref, status, payment_status, commission_status';
+const REREAD_COLS = 'id, booking_ref, status, payment_status, stripe_payment_intent';
+const CONFIRMING_EVENTS = ['checkout.session.completed', 'checkout.session.async_payment_succeeded'];
 const esc = (s: unknown) => String(s ?? '').replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+
+/** The customer paid an already-paid booking again (e.g. an older link): one of the payments must be refunded. */
+async function secondPaymentEmail(b: { booking_ref?: string | null; stripe_payment_intent?: string | null }, session: Stripe.Checkout.Session, paymentIntent: string) {
+  console.error('Stripe webhook: second payment for paid booking', b.booking_ref, paymentIntent);
+  try {
+    await sendEmail({
+      to: adminEmail(), subject: `Second payment received for ${b.booking_ref} – refund one in Stripe`,
+      html: `<p>Booking <b>${esc(b.booking_ref)}</b> was already paid, and a second payment has arrived — refund one of them in Stripe.</p>`
+        + `<p>Amount: ₹${esc(Math.round((session.amount_total || 0) / 100))}<br>New payment intent: ${esc(paymentIntent)}<br>`
+        + `Payment intent on the booking: ${esc(b.stripe_payment_intent || 'none (marked paid another way)')}<br>Checkout session: ${esc(session.id)}</p>`,
+    });
+  } catch (e) { console.error('Stripe webhook: owner email failed:', e); }
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -29,13 +44,22 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
     }
 
-    if (event.type === 'checkout.session.completed') {
+    if (event.type === 'checkout.session.async_payment_failed') {
+      // A delayed payment method (e.g. a bank debit) did not go through: the booking stays unpaid.
+      const failed = event.data.object as Stripe.Checkout.Session;
+      console.error('Stripe webhook: delayed payment failed for session', failed.id, failed.metadata?.booking_ref || '');
+    }
+
+    if (CONFIRMING_EVENTS.includes(event.type)) {
       const session = event.data.object as Stripe.Checkout.Session;
 
       const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
       const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-      if (url && key && session.id) {
+      // A completed session can still be waiting for a delayed payment; async_payment_succeeded follows when it lands.
+      if (session.payment_status !== 'paid') {
+        console.log('Stripe webhook: session not paid yet', session.id, session.payment_status);
+      } else if (url && key && session.id) {
         const { createClient } = await import('@supabase/supabase-js');
         const sb = createClient(url, key);
 
@@ -57,37 +81,71 @@ export async function POST(req: NextRequest) {
           console.error('Stripe webhook: no booking for session', session.id);
           return NextResponse.json({ received: true });
         }
+        const bookingId = found.id;
 
-        const closedStatus = CLOSED.includes(found.status) ? String(found.status) : null;
-        const cancelled = !!closedStatus;
-        const update: Record<string, unknown> = {
+        const paymentIntent = (session.payment_intent as string) || null;
+        const money: Record<string, unknown> = {
           payment_status: 'paid',
           paid_amount: Math.round((session.amount_total || 0) / 100),
-          transaction_id: session.payment_intent as string,
-          stripe_payment_intent: session.payment_intent as string,
+          transaction_id: paymentIntent,
+          stripe_payment_intent: paymentIntent,
         };
-        if (viaMetadata) update.stripe_session_id = session.id;
-        if (!cancelled) {
-          // Paid to the platform online: same fields as the admin "platform paid" (Stripe) path.
-          Object.assign(update, { status: 'confirmed', payment_method: 'online', collected_by: 'platform', payment_channel: 'stripe' });
-          if (!SETTLED_COMMISSION.includes(String(found.commission_status))) update.commission_status = 'not_applicable';
-        }
+        if (viaMetadata) money.stripe_session_id = session.id;
 
         // Only rows not already paid are updated, so a Stripe retry of the same event finds nothing
         // to update and does not send the emails / WhatsApp alerts again.
-        const { data: booking, error } = await sb.from('bookings')
-          .update(update)
-          .eq('id', found.id)
-          .or('payment_status.is.null,payment_status.neq.paid')
-          .select()
-          .maybeSingle();
+        const recordMoney = (update: Record<string, unknown>, open: boolean) => {
+          let q = sb.from('bookings').update(update).eq('id', bookingId).or('payment_status.is.null,payment_status.neq.paid');
+          // Confirm only a booking that is still open now: a cancel that lands meanwhile wins.
+          if (open) q = q.not('status', 'in', '(cancelled,failed)');
+          return q.select().maybeSingle();
+        };
 
-        if (error) {
-          console.error('Stripe webhook: booking update failed:', error);
-          return NextResponse.json({ error: 'Webhook failed' }, { status: 500 });
+        let closedStatus = CLOSED.includes(found.status) ? String(found.status) : null;
+        let booking: any = null;
+        if (!closedStatus) {
+          // Paid to the platform online: same fields as the admin "platform paid" (Stripe) path.
+          const update: Record<string, unknown> = { ...money, status: 'confirmed', payment_method: 'online', collected_by: 'platform', payment_channel: 'stripe' };
+          if (!SETTLED_COMMISSION.includes(String(found.commission_status))) update.commission_status = 'not_applicable';
+          const r = await recordMoney(update, true);
+          if (r.error) {
+            console.error('Stripe webhook: booking update failed:', r.error);
+            return NextResponse.json({ error: 'Webhook failed' }, { status: 500 });
+          }
+          booking = r.data;
+        } else {
+          const r = await recordMoney(money, false);
+          if (r.error) {
+            console.error('Stripe webhook: booking update failed:', r.error);
+            return NextResponse.json({ error: 'Webhook failed' }, { status: 500 });
+          }
+          booking = r.data;
         }
 
-        if (booking && cancelled) {
+        if (!booking) {
+          // Nothing matched: the booking is already paid, or it was cancelled while this payment was processed.
+          const { data: now, error: rereadError } = await sb.from('bookings').select(REREAD_COLS).eq('id', bookingId).maybeSingle();
+          if (rereadError) {
+            console.error('Stripe webhook: booking re-read failed:', rereadError);
+            return NextResponse.json({ error: 'Webhook failed' }, { status: 500 });
+          }
+          if (now?.payment_status === 'paid') {
+            // A redelivery of the event that paid it stays silent; a different payment means the customer paid twice.
+            if (paymentIntent && now.stripe_payment_intent !== paymentIntent) await secondPaymentEmail(now, session, paymentIntent);
+            return NextResponse.json({ received: true });
+          }
+          if (now && !closedStatus && CLOSED.includes(now.status)) {
+            closedStatus = String(now.status);
+            const r = await recordMoney(money, false);
+            if (r.error) {
+              console.error('Stripe webhook: booking update failed:', r.error);
+              return NextResponse.json({ error: 'Webhook failed' }, { status: 500 });
+            }
+            booking = r.data;
+          }
+        }
+
+        if (booking && closedStatus) {
           // Money arrived for a booking that is already cancelled or failed: keep its status and tell the owner.
           console.error(`Stripe webhook: payment for ${closedStatus} booking`, booking.booking_ref);
           const subject = `Payment received for ${closedStatus} booking ${booking.booking_ref} — refund needed in Stripe`;
@@ -95,7 +153,7 @@ export async function POST(req: NextRequest) {
             await sendEmail({
               to: adminEmail(), subject,
               html: `<p>Payment received for ${esc(closedStatus)} booking <b>${esc(booking.booking_ref)}</b> — refund needed in Stripe.</p>`
-                + `<p>Amount: ₹${esc(update.paid_amount)}<br>Payment intent: ${esc(update.stripe_payment_intent)}<br>Checkout session: ${esc(session.id)}</p>`,
+                + `<p>Amount: ₹${esc(money.paid_amount)}<br>Payment intent: ${esc(money.stripe_payment_intent)}<br>Checkout session: ${esc(session.id)}</p>`,
             });
           } catch (e) { console.error('Stripe webhook: owner email failed:', e); }
         } else if (booking) {

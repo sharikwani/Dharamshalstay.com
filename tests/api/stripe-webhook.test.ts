@@ -8,6 +8,8 @@ const h = vi.hoisted(() => ({
   bySession: { data: null as any, error: null as any },
   byId: { data: null as any, error: null as any },
   result: { data: null as any, error: null as any },
+  results: [] as { data: any; error: any }[],
+  reread: { data: null as any, error: null as any },
   recordResult: { error: null as any },
 }));
 
@@ -22,9 +24,10 @@ vi.mock('@supabase/supabase-js', () => ({
       h.calls.push({ table, op: 'from', args: [table] });
       const ops: { op: string; args: unknown[] }[] = [];
       const b: any = {};
-      for (const op of ['update', 'eq', 'or', 'select', 'in']) b[op] = (...args: unknown[]) => { ops.push({ op, args }); h.calls.push({ table, op, args }); return b; };
+      for (const op of ['update', 'eq', 'or', 'select', 'in', 'not']) b[op] = (...args: unknown[]) => { ops.push({ op, args }); h.calls.push({ table, op, args }); return b; };
       b.maybeSingle = async () => {
-        if (ops.some((o) => o.op === 'update')) return h.result;
+        if (ops.some((o) => o.op === 'update')) return h.results.length ? h.results.shift()! : h.result;
+        if (ops.some((o) => o.op === 'select' && String(o.args[0]).includes('stripe_payment_intent'))) return h.reread;
         return ops.some((o) => o.op === 'eq' && o.args[0] === 'stripe_session_id') ? h.bySession : h.byId;
       };
       b.then = (res: any) => res(h.recordResult);
@@ -35,8 +38,8 @@ vi.mock('@supabase/supabase-js', () => ({
 
 import { POST } from '@/app/api/webhooks/stripe/route';
 
-const event = (meta: any = { booking_id: 'b1', booking_ref: 'DS-1' }) =>
-  ({ type: 'checkout.session.completed', data: { object: { id: 'cs_1', amount_total: 450000, payment_intent: 'pi_1', metadata: meta } } });
+const event = (meta: any = { booking_id: 'b1', booking_ref: 'DS-1' }, over: any = {}, type = 'checkout.session.completed') =>
+  ({ type, data: { object: { id: 'cs_1', amount_total: 450000, payment_intent: 'pi_1', payment_status: 'paid', metadata: meta, ...over } } });
 const send = () => POST(new Request('http://x', { method: 'POST', body: '{}', headers: { 'stripe-signature': 'sig' } }) as any);
 const bookingUpdate = () => h.calls.find((c) => c.table === 'bookings' && c.op === 'update')?.args[0] as any;
 const recordUpdate = () => h.calls.find((c) => c.table === 'commission_records' && c.op === 'update');
@@ -50,6 +53,8 @@ beforeEach(() => {
   h.bySession = { data: open(), error: null };
   h.byId = { data: null, error: null };
   h.result = { data: null, error: null };
+  h.results = [];
+  h.reread = { data: null, error: null };
   h.recordResult = { error: null };
   h.sendBookingEmails.mockClear();
   h.sendEmail.mockClear();
@@ -243,5 +248,73 @@ describe('POST /api/webhooks/stripe', () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
     expect((await send()).status).toBe(400);
     expect(h.calls).toHaveLength(0);
+  });
+
+  it('only confirms a booking that is not cancelled or failed at the moment of the update', async () => {
+    h.result = { data: { id: 'b1', booking_ref: 'DS-1' }, error: null };
+    await send();
+    expect(h.calls).toContainEqual({ table: 'bookings', op: 'not', args: ['status', 'in', '(cancelled,failed)'] });
+  });
+
+  it('does not confirm a session that is not paid yet (delayed payment methods)', async () => {
+    h.constructEvent.mockReturnValue(event(undefined, { payment_status: 'unpaid' }));
+    const res = await send();
+    expect(res.status).toBe(200);
+    expect(bookingUpdate()).toBeUndefined();
+    expect(h.sendBookingEmails).not.toHaveBeenCalled();
+  });
+
+  it('confirms a delayed payment when checkout.session.async_payment_succeeded arrives', async () => {
+    h.constructEvent.mockReturnValue(event(undefined, {}, 'checkout.session.async_payment_succeeded'));
+    h.result = { data: { id: 'b1', booking_ref: 'DS-1' }, error: null };
+    await send();
+    expect(bookingUpdate()).toMatchObject({ payment_status: 'paid', status: 'confirmed' });
+    expect(h.sendBookingEmails).toHaveBeenCalledWith('b1');
+  });
+
+  it('only logs checkout.session.async_payment_failed', async () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    h.constructEvent.mockReturnValue(event(undefined, { payment_status: 'unpaid' }, 'checkout.session.async_payment_failed'));
+    const res = await send();
+    expect(res.status).toBe(200);
+    expect(h.calls).toHaveLength(0);
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
+  });
+
+  it('emails the owner when a second, different payment arrives for an already-paid booking', async () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    h.reread = { data: open({ payment_status: 'paid', status: 'confirmed', stripe_payment_intent: 'pi_0' }), error: null };
+    const res = await send();
+    expect(res.status).toBe(200);
+    expect(h.sendBookingEmails).not.toHaveBeenCalled();
+    expect(h.sendEmail).toHaveBeenCalledTimes(1);
+    expect(h.sendEmail.mock.calls[0][0]).toMatchObject({ to: 'owner@x', subject: 'Second payment received for DS-1 – refund one in Stripe' });
+    expect(h.sendEmail.mock.calls[0][0].html).toContain('pi_1');
+    expect(h.sendEmail.mock.calls[0][0].html).toContain('pi_0');
+    spy.mockRestore();
+  });
+
+  it('stays silent when Stripe redelivers the event that already paid the booking', async () => {
+    h.reread = { data: open({ payment_status: 'paid', status: 'confirmed', stripe_payment_intent: 'pi_1' }), error: null };
+    await send();
+    expect(h.sendEmail).not.toHaveBeenCalled();
+    expect(h.sendBookingEmails).not.toHaveBeenCalled();
+  });
+
+  it('a booking cancelled while the payment was processed keeps its status, records the money and asks for a refund', async () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    h.results = [{ data: null, error: null }, { data: { id: 'b1', booking_ref: 'DS-1', status: 'cancelled' }, error: null }];
+    h.reread = { data: open({ status: 'cancelled' }), error: null };
+    await send();
+    const updates = h.calls.filter((c) => c.table === 'bookings' && c.op === 'update').map((c) => c.args[0] as any);
+    expect(updates).toHaveLength(2);
+    expect(updates[1]).toMatchObject({ payment_status: 'paid', paid_amount: 4500, stripe_payment_intent: 'pi_1' });
+    expect(updates[1]).not.toHaveProperty('status');
+    expect(updates[1]).not.toHaveProperty('payment_method');
+    expect(h.sendBookingEmails).not.toHaveBeenCalled();
+    expect(h.sendEmail).toHaveBeenCalledTimes(1);
+    expect(h.sendEmail.mock.calls[0][0]).toMatchObject({ subject: 'Payment received for cancelled booking DS-1 — refund needed in Stripe' });
+    spy.mockRestore();
   });
 });

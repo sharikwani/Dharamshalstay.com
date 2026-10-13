@@ -1,6 +1,6 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 
-const h = vi.hoisted(() => ({ booking: null as any, updates: [] as any[], created: [] as any[], avail: {} as any, availCalls: [] as any[] }));
+const h = vi.hoisted(() => ({ booking: null as any, updates: [] as any[], created: [] as any[], avail: {} as any, availCalls: [] as any[], expired: [] as string[], expireFails: false, order: [] as string[] }));
 vi.mock('@/lib/availability/store', () => ({ availabilityFor: async (...a: any[]) => { h.availCalls.push(a); return h.avail; } }));
 vi.mock('@/lib/server-auth', () => ({
   serviceClient: () => ({
@@ -10,14 +10,17 @@ vi.mock('@/lib/server-auth', () => ({
     }),
   }),
 }));
-vi.mock('@/lib/stripe', () => ({ getStripe: () => ({ checkout: { sessions: { create: async (p: any) => { h.created.push(p); return { id: 'cs_1', url: 'https://pay/cs_1' }; } } } }) }));
+vi.mock('@/lib/stripe', () => ({ getStripe: () => ({ checkout: { sessions: {
+  create: async (p: any) => { h.order.push('create'); h.created.push(p); return { id: 'cs_1', url: 'https://pay/cs_1' }; },
+  expire: async (id: string) => { h.order.push('expire'); h.expired.push(id); if (h.expireFails) throw new Error('session already complete'); return {}; },
+} } }) }));
 
 import { createCheckoutLink } from '@/lib/bookings/checkout';
 import { ONLINE_HOLD_MS } from '@/lib/availability/calc';
 
 beforeEach(() => {
   h.booking = { id: 'b1', booking_ref: 'TRK-1', amount: 3000, category: 'trek', activity_date: '2026-10-24', payment_status: 'pending' };
-  h.updates = []; h.created = []; h.avail = {}; h.availCalls = [];
+  h.updates = []; h.created = []; h.avail = {}; h.availCalls = []; h.expired = []; h.expireFails = false; h.order = [];
   vi.stubEnv('STRIPE_SECRET_KEY', 'sk_test'); vi.stubEnv('NEXT_PUBLIC_SITE_URL', 'https://www.dharamshalastay.com');
 });
 afterEach(() => vi.unstubAllEnvs());
@@ -27,6 +30,21 @@ describe('createCheckoutLink', () => {
     expect(await createCheckoutLink('b1')).toEqual({ ok: true, url: 'https://pay/cs_1', sessionId: 'cs_1' });
     expect(h.created[0].line_items[0].price_data.unit_amount).toBe(300000);
     expect(h.updates[0]).toEqual({ stripe_session_id: 'cs_1' });
+  });
+  it('expires the previous Stripe session of the booking before making a new one', async () => {
+    h.booking.stripe_session_id = 'cs_old';
+    expect(await createCheckoutLink('b1')).toMatchObject({ ok: true, sessionId: 'cs_1' });
+    expect(h.expired).toEqual(['cs_old']);
+    expect(h.order).toEqual(['expire', 'create']);
+  });
+  it('still makes the new link when the old session cannot be expired (completed or already expired)', async () => {
+    h.booking.stripe_session_id = 'cs_old';
+    h.expireFails = true;
+    expect(await createCheckoutLink('b1')).toMatchObject({ ok: true, sessionId: 'cs_1' });
+  });
+  it('expires nothing for a booking without a session', async () => {
+    await createCheckoutLink('b1');
+    expect(h.expired).toEqual([]);
   });
   it('refuses paid, missing and unpriced bookings', async () => {
     h.booking.payment_status = 'paid';

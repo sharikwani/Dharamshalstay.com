@@ -43,7 +43,14 @@ export async function createCheckoutLink(bookingId: string): Promise<CheckoutRes
   const dates = b.check_in ? `${b.check_in} to ${b.check_out || ''}` : b.activity_date || '';
   const description = [b.room_name, dates, b.booking_ref].filter(Boolean).join(' · ');
 
-  const session = await getStripe().checkout.sessions.create({
+  const stripe = getStripe();
+  // Only one open link per booking: a customer holding an older link can no longer pay a second time.
+  // It may already be complete or expired; that is fine (a paid one is caught by the webhook).
+  if (b.stripe_session_id) {
+    try { await stripe.checkout.sessions.expire(b.stripe_session_id); } catch { /* not open any more */ }
+  }
+
+  const session = await stripe.checkout.sessions.create({
     mode: 'payment',
     expires_at: Math.floor((now.getTime() + SESSION_MS) / 1000),
     currency: 'inr',
