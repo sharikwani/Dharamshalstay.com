@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Car, Plus, Pencil, Trash2, Save } from 'lucide-react';
@@ -14,6 +14,11 @@ export default function AdminTaxis() {
   const [routes, setRoutes] = useState<any[]>([]);
   const [editing, setEditing] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  // One save at a time: the ref blocks a second click before React re-renders; errors are shown, not swallowed.
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState('');
+  const savingRef = useRef(false);
+  useEffect(() => { setSaveError(''); }, [editing?.id]);
 
   async function loadRoutes() {
     const { data } = await supabase.from('taxi_routes').select('*').order('route_type').order('from_location');
@@ -29,17 +34,28 @@ export default function AdminTaxis() {
   }, [router]);
 
   async function handleSave() {
+    if (savingRef.current) return;
+    savingRef.current = true; setSaving(true); setSaveError('');
+    try { await saveEditing(); }
+    catch (e: any) { setSaveError('Could not save: ' + (e?.message || 'please try again.')); }
+    finally { savingRef.current = false; setSaving(false); }
+  }
+
+  /** Throws on any failure, so the form stays open with the error. */
+  async function saveEditing() {
     const payload = { ...editing };
     if (typeof payload.includes === 'string') payload.includes = JSON.parse(payload.includes || '[]');
     if (typeof payload.excludes === 'string') payload.excludes = JSON.parse(payload.excludes || '[]');
 
     if (payload.id) {
-      await supabase.from('taxi_routes').update(payload).eq('id', payload.id);
+      const { error } = await supabase.from('taxi_routes').update(payload).eq('id', payload.id);
+      if (error) throw error;
     } else {
       const { data: { user } } = await supabase.auth.getUser();
       payload.created_by = user?.id;
       delete payload.id;
-      await supabase.from('taxi_routes').insert(payload);
+      const { error } = await supabase.from('taxi_routes').insert(payload);
+      if (error) throw error;
     }
     setEditing(null);
     loadRoutes();
@@ -77,8 +93,9 @@ export default function AdminTaxis() {
             <div><label className="block text-xs font-medium text-slate-700 mb-1">Distance (km)</label><input type="number" value={editing.distance_km} onChange={e => setEditing({ ...editing, distance_km: +e.target.value })} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none" /></div>
             <div><label className="block text-xs font-medium text-slate-700 mb-1">Duration</label><input value={editing.duration} onChange={e => setEditing({ ...editing, duration: e.target.value })} placeholder="e.g. 2.5 hrs" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none" /></div>
           </div>
+          {saveError && <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2 mt-4">{saveError}</p>}
           <div className="flex gap-3 mt-4">
-            <button onClick={handleSave} className="flex items-center gap-1.5 bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-brand-700"><Save className="h-4 w-4" /> Save</button>
+            <button onClick={handleSave} disabled={saving} className="flex items-center gap-1.5 bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-brand-700 disabled:opacity-50"><Save className="h-4 w-4" /> {saving ? 'Saving...' : 'Save'}</button>
             <button onClick={() => setEditing(null)} className="text-sm text-slate-600 hover:text-slate-800">Cancel</button>
           </div>
         </div>

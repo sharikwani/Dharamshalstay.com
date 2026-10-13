@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Wind, Plus, Pencil, Trash2, Save } from 'lucide-react';
@@ -12,6 +12,11 @@ export default function AdminParagliding() {
   const [packages, setPackages] = useState<any[]>([]);
   const [editing, setEditing] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  // One save at a time: the ref blocks a second click before React re-renders; errors are shown, not swallowed.
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState('');
+  const savingRef = useRef(false);
+  useEffect(() => { setSaveError(''); }, [editing?.id]);
 
   async function loadPkgs() {
     const { data } = await supabase.from('paragliding_packages').select('*').order('name');
@@ -22,13 +27,24 @@ export default function AdminParagliding() {
   useEffect(() => { supabase.auth.getUser().then(({ data: { user } }) => { if (!user) router.push('/admin/login'); else loadPkgs(); }); }, [router]);
 
   async function handleSave() {
+    if (savingRef.current) return;
+    savingRef.current = true; setSaving(true); setSaveError('');
+    try { await saveEditing(); }
+    catch (e: any) { setSaveError('Could not save: ' + (e?.message || 'please try again.')); }
+    finally { savingRef.current = false; setSaving(false); }
+  }
+
+  /** Throws on any failure, so the form stays open with the error. */
+  async function saveEditing() {
     const payload = { ...editing, slug: slugify(editing.name) };
     if (payload.id && !payload.id.startsWith('new')) {
-      await supabase.from('paragliding_packages').update(payload).eq('id', payload.id);
+      const { error } = await supabase.from('paragliding_packages').update(payload).eq('id', payload.id);
+      if (error) throw error;
     } else {
       const { data: { user } } = await supabase.auth.getUser();
       payload.created_by = user?.id; delete payload.id;
-      await supabase.from('paragliding_packages').insert(payload);
+      const { error } = await supabase.from('paragliding_packages').insert(payload);
+      if (error) throw error;
     }
     setEditing(null); loadPkgs();
   }
@@ -63,8 +79,9 @@ export default function AdminParagliding() {
             <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={editing.featured} onChange={e => setEditing({ ...editing, featured: e.target.checked })} /> Featured</label>
             <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={editing.is_sponsored} onChange={e => setEditing({ ...editing, is_sponsored: e.target.checked })} /> Sponsored</label>
           </div>
+          {saveError && <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2 mb-3">{saveError}</p>}
           <div className="flex gap-3">
-            <button onClick={handleSave} className="flex items-center gap-1.5 bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-brand-700"><Save className="h-4 w-4" /> Save</button>
+            <button onClick={handleSave} disabled={saving} className="flex items-center gap-1.5 bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-brand-700 disabled:opacity-50"><Save className="h-4 w-4" /> {saving ? 'Saving...' : 'Save'}</button>
             <button onClick={() => setEditing(null)} className="text-sm text-slate-600">Cancel</button>
           </div>
         </div>
