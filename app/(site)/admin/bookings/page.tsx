@@ -125,6 +125,7 @@ export default function AdminBookings() {
                     <span className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full capitalize">{b.category === 'guide' ? 'Local guide' : b.category}</span>
                     {b.booking_source === 'admin' && <span className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">Admin</span>}
                     {b.price_overridden && <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">manual price</span>}
+                    {b.offer_code && <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-rose-100 text-rose-700">Offer {b.offer_code} ({b.offer_percent}%) applied – no further discount</span>}
                     <span className={cn('text-xs font-medium px-2 py-0.5 rounded-full', STATUS_COLORS[b.payment_method])}>{statusLabel(b.payment_method)}</span>
                   </div>
                   <h3 className="font-semibold text-slate-900">{b.guest_name}</h3>

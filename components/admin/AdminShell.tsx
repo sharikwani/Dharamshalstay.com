@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Home, Inbox, Building, PlusCircle, ShoppingBag, MessageSquare, Car, Mountain, Wind, Users, LogOut, ExternalLink, BadgeCheck, MessageCircle } from 'lucide-react';
+import { Home, Inbox, Building, PlusCircle, ShoppingBag, MessageSquare, Car, Mountain, Wind, Users, LogOut, ExternalLink, BadgeCheck, MessageCircle, BadgePercent } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
 
@@ -27,6 +27,7 @@ export const ADMIN_NAV: { title: string; items: NavItem[] }[] = [
     title: 'Customers',
     items: [
       { href: '/admin/whatsapp', label: 'WhatsApp', hint: 'Customer chats and the AI assistant', icon: MessageCircle, tone: 'bg-green-600', badge: 'whatsapp' },
+      { href: '/admin/offers', label: 'WhatsApp offers', hint: 'Chat-only discount codes for hotels', icon: BadgePercent, tone: 'bg-rose-500' },
       { href: '/admin/bookings', label: 'Bookings', hint: 'Paid and pending bookings, commission', icon: ShoppingBag, tone: 'bg-violet-500' },
       { href: '/admin/inquiries', label: 'Inquiries', hint: 'Questions and leads from the website', icon: MessageSquare, tone: 'bg-pink-500', badge: 'inquiries' },
     ],

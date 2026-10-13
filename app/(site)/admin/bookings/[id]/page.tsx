@@ -129,6 +129,7 @@ export default function BookingDetailPage() {
             <span className={cn('text-xs font-medium px-2 py-0.5 rounded-full', STATUS_COLORS[b.status])}>{statusLabel(b.status)}</span>
             {b.booking_source === 'admin' && <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">Created by admin</span>}
             {b.price_overridden && <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">manual price</span>}
+            {b.offer_code && <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-rose-100 text-rose-700">Offer {b.offer_code} ({b.offer_percent}%) applied – no further discount</span>}
           </div>
         } />
 
