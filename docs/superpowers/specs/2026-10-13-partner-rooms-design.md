@@ -55,15 +55,17 @@ Per-date prices, approval workflow, bulk import, deleting categories with histor
 
 Also: the hotel page and WhatsApp quotes hide switched-off (`is_active === false`) categories (the hotel page shows all today).
 
+No database migration is needed for this feature (rooms are JSON; `total_rooms` exists).
+
 ## 6. Addition: extra bed
 
 - Each category has `extra_beds_max` (0-3) and `extra_bed_price` (per bed per night).
 - Hotel page: when the chosen room allows it, an "Extra bed" picker (0..max) with the price; the estimate adds
   beds x price x nights. WhatsApp AI: `get_hotel` lists the extra-bed option; `quote_booking` accepts `extra_beds`.
 - Server: `bookingSchema.extra_beds` (int 0-3, default 0); `quoteBooking` adds `extra_beds * extra_bed_price * nights`
-  and refuses more beds than the room allows (400 "This room allows at most N extra bed(s)"). Stored in
-  `bookings.extra_beds` (migration v26) and shown in the room label ("Deluxe - Breakfast + 1 extra bed"), emails,
-  WhatsApp alerts and admin/partner booking pages.
+  and refuses more beds than the room allows (400 "This room allows at most N extra bed(s)"). Recorded in the
+  booking's room label ("Deluxe - Breakfast + 1 extra bed"), so emails, WhatsApp alerts and admin/partner booking
+  pages show it with no database change.
 
 ## 7. Addition: the customer is always told when a booking is confirmed
 
@@ -71,7 +73,7 @@ Today the admin "Confirm" button writes straight to the database (no customer no
 "Accept" never confirms the booking, and pay-later bookings get a "Booking Confirmed!" email while still pending.
 
 - `lib/bookings/confirm.ts` `confirmBooking(id, by: 'admin' | 'partner' | 'payment')`: moves a `pending` booking to
-  `confirmed` (records `confirmed_at`, `confirmed_by`; migration v26), then sends the customer the confirmation
+  `confirmed` (conditional update on `status = 'pending'`, so two confirmers can't both notify), then sends the customer the confirmation
   email (if they gave one) and the `booking_confirmed_customer_v2` WhatsApp template (works outside the 24h window).
   Already confirmed: no-op, no second notice. Cancelled/failed/completed: 409.
 - Who confirms: the hotel by tapping Accept on WhatsApp or a new "Confirm" button in the partner bookings page (pay-later
