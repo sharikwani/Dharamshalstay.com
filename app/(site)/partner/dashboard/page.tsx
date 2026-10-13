@@ -58,12 +58,12 @@ export default function PartnerDashboard() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-8">
         <div>
           <h1 className="text-2xl font-heading font-bold text-slate-900">Partner Dashboard</h1>
           <p className="text-slate-600 text-sm">Welcome, {user?.user_metadata?.full_name || user?.email}</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <Link href="/partner/bookings" className="flex items-center gap-2 border border-brand-200 text-brand-700 px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-brand-50">
             <ShoppingBag className="h-4 w-4" /> Bookings
           </Link>

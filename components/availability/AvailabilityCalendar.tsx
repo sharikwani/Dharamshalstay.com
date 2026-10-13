@@ -1,6 +1,6 @@
 // components/availability/AvailabilityCalendar.tsx
 'use client';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { authFetch } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
@@ -29,19 +29,22 @@ export default function AvailabilityCalendar({ apiUrl, propertyId, rooms, untrac
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
   const room = rooms.find((r) => r.key === roomKey);
+  const reqId = useRef(0);
 
   useEffect(() => { setRoomKey(rooms[0]?.key ?? ''); setFrom(''); setTo(''); setMsg(null); }, [propertyId, rooms]);
 
   const load = useCallback(async () => {
-    if (!roomKey || !room?.tracked) { setGrid(null); return; }
+    const id = ++reqId.current;
+    if (!roomKey || !room?.tracked) { setGrid(null); setLoading(false); return; }
     setLoading(true); setError('');
     try {
       const q = new URLSearchParams({ property_id: propertyId, room_key: roomKey, month });
       const res = await authFetch(`${apiUrl}?${q}`);
       const d = await res.json().catch(() => ({}));
+      if (id !== reqId.current) return;
       if (!res.ok) { setError(d.error || 'Could not load the calendar'); setGrid(null); }
       else setGrid(d.grid);
-    } catch { setError('Could not load the calendar'); }
+    } catch { if (id !== reqId.current) return; setError('Could not load the calendar'); }
     setLoading(false);
   }, [apiUrl, propertyId, roomKey, month, room?.tracked]);
   useEffect(() => { load(); }, [load]);
@@ -113,6 +116,8 @@ export default function AvailabilityCalendar({ apiUrl, propertyId, rooms, untrac
               const past = date < today;
               return (
                 <button key={date} type="button" disabled={past || loading} onClick={() => pick(date)}
+                  aria-pressed={inRange(date)}
+                  aria-label={c && !past ? `${Number(date.slice(8))} ${monthLabel(date.slice(0, 7)).split(' ')[0].slice(0, 3)}: ${c.open} open, ${c.booked} booked, ${Math.max(0, c.left)} left` : date}
                   className={cn('rounded-lg border p-1 sm:p-2 text-left min-h-[64px] transition-colors',
                     past ? 'bg-slate-50 text-slate-300 border-slate-100'
                       : inRange(date) ? 'border-brand-500 ring-1 ring-brand-500 bg-brand-50'

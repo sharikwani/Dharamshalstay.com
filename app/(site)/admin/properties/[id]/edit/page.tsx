@@ -126,12 +126,12 @@ export default function AdminEditPropertyPage() {
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
       <Link href="/admin/properties" className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-slate-800 mb-4"><ArrowLeft className="h-4 w-4" /> All Properties</Link>
 
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
         <div>
           <h1 className="text-2xl font-heading font-bold text-slate-900">Edit: {form.name}</h1>
           <p className="text-sm text-slate-500">Status: <span className="font-medium capitalize">{form.status?.replace(/_/g, ' ')}</span></p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <Link href={`/admin/properties/${params.id}/availability`} className="flex items-center gap-2 border border-brand-200 text-brand-700 px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-brand-50">
             <CalendarDays className="h-4 w-4" /> Room availability
           </Link>
