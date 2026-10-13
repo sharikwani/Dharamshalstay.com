@@ -12,7 +12,7 @@ function chain(table: string): any {
 }
 vi.mock('@/lib/server-auth', () => ({ serviceClient: () => ({ from: (t: string) => chain(t) }) }));
 
-import { saveInbound, saveOutbound, getSettings } from '@/lib/wa-chat/store';
+import { saveInbound, saveOutbound, getSettings, setStatusIf } from '@/lib/wa-chat/store';
 
 beforeEach(() => { db.calls = []; db.results = []; });
 
@@ -46,6 +46,36 @@ describe('store', () => {
     const r = await saveInbound(m, 'Hi', 'text');
     expect(r?.message.id).toBe('m2');
     expect(r?.isNewConversation).toBe(false);
+  });
+  it('saveInbound never writes the status it read (the owner may have taken over meanwhile)', async () => {
+    db.results = [
+      { data: { id: 'c1', unread_admin: 0, status: 'ai' }, error: null },
+      { data: { id: 'm1', conversation_id: 'c1' }, error: null },
+      { data: { id: 'c1', unread_admin: 1, status: 'human' }, error: null },
+    ];
+    const r = await saveInbound(m, 'Hi', 'text');
+    expect(r?.conversation.status).toBe('human');
+    const updates = db.calls.filter(([t, op]) => t === 'whatsapp_conversations' && op === 'update');
+    expect(updates).toHaveLength(1);
+    expect(updates[0][2]).not.toHaveProperty('status');
+  });
+  it('saveInbound reopens a closed chat only with a conditional update', async () => {
+    db.results = [
+      { data: { id: 'c1', unread_admin: 0, status: 'closed' }, error: null },
+      { data: { id: 'm1', conversation_id: 'c1' }, error: null },
+      { data: [{ id: 'c1' }], error: null },
+      { data: { id: 'c1', unread_admin: 1, status: 'ai' }, error: null },
+    ];
+    expect((await saveInbound(m, 'Hi', 'text'))?.conversation.status).toBe('ai');
+    const i = db.calls.findIndex(([t, op, row]) => t === 'whatsapp_conversations' && op === 'update' && row?.status === 'ai');
+    expect(i).toBeGreaterThan(-1);
+    expect(db.calls.slice(i + 1, i + 3)).toEqual([['whatsapp_conversations', 'eq', 'id', 'c1'], ['whatsapp_conversations', 'eq', 'status', 'closed']]);
+  });
+  it('setStatusIf changes the status only from the expected one and says whether it did', async () => {
+    db.results = [{ data: [{ id: 'c1' }], error: null }, { data: [], error: null }];
+    expect(await setStatusIf('c1', 'ai', 'needs_human', 'why')).toBe(true);
+    expect(await setStatusIf('c1', 'ai', 'needs_human', 'why')).toBe(false);
+    expect(db.calls).toContainEqual(['whatsapp_conversations', 'eq', 'status', 'ai']);
   });
   it('saveInbound ignores duplicates without touching the conversation', async () => {
     db.results = [

@@ -34,9 +34,17 @@ export async function saveInbound(m: Inbound, body: string, kind: 'text' | 'voic
   }).select('*').single();
   if (mErr?.code === '23505') return null;
   if (mErr) throw mErr;
+  // A closed chat opens again for the AI; the conditional update never reverts a status set meanwhile (for
+  // example the owner taking over), and the status read above is never written back.
+  if (c.status === 'closed') {
+    const { error: rErr } = await sb.from('whatsapp_conversations').update({ status: 'ai', updated_at: now() })
+      .eq('id', c.id).eq('status', 'closed').select('id');
+    if (rErr) console.error('WhatsApp chat: could not reopen conversation:', rErr);
+  }
+  // unread_admin is read-then-incremented: two messages at the same instant may count once (badge only).
   const { data: conversation, error: uErr } = await sb.from('whatsapp_conversations').update({
     profile_name: m.profileName ?? c.profile_name, last_customer_at: at, last_message_at: now(),
-    unread_admin: (c.unread_admin || 0) + 1, status: c.status === 'closed' ? 'ai' : c.status, updated_at: now(),
+    unread_admin: (c.unread_admin || 0) + 1, updated_at: now(),
   }).eq('id', c.id).select('*').single();
   if (uErr) throw uErr;
   return { conversation: conversation as Conversation, message: message as ChatMessage, isNewConversation };
@@ -90,6 +98,14 @@ export async function setStatus(id: string, status: ConversationStatus, reason: 
   const { error } = await serviceClient().from('whatsapp_conversations')
     .update({ status, handover_reason: reason, updated_at: now() }).eq('id', id);
   if (error) console.error('WhatsApp chat: could not set status:', error);
+}
+
+/** Change the status only if it is still `from`. True when this call changed it (so only one caller acts on it). */
+export async function setStatusIf(id: string, from: ConversationStatus, to: ConversationStatus, reason: string | null = null): Promise<boolean> {
+  const { data, error } = await serviceClient().from('whatsapp_conversations')
+    .update({ status: to, handover_reason: reason, updated_at: now() }).eq('id', id).eq('status', from).select('id');
+  if (error) { console.error('WhatsApp chat: could not set status:', error); return false; }
+  return (data || []).length > 0;
 }
 
 export async function getSettings(): Promise<ChatSettings> {

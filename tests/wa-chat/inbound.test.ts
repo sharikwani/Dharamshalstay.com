@@ -3,7 +3,7 @@ import { describe, expect, it, vi, beforeEach } from 'vitest';
 const s = vi.hoisted(() => ({
   allowed: true, typing: [] as string[], saved: [] as any[], bodies: [] as any[], dup: false, status: 'ai', isNew: true, transcript: 'room for two tomorrow' as string | null,
   processed: [] as any[], statuses: [] as any[], sent: [] as any[], out: [] as any[], emails: [] as any[],
-  open: null as any, proofResult: 'cancelled' as string, proofs: [] as any[], hold: null as Promise<void> | null,
+  open: null as any, proofResult: 'cancelled' as string, proofs: [] as any[], hold: null as Promise<void> | null, flip: true,
 }));
 vi.mock('@/lib/wa-chat/booking-store', () => ({ openCancellation: async () => s.open }));
 vi.mock('@/lib/wa-chat/cancellations', () => ({ handleProof: async (...a: any[]) => { s.proofs.push(a); return s.proofResult; } }));
@@ -14,6 +14,7 @@ vi.mock('@/lib/wa-chat/store', () => ({
   },
   setMessageBody: async (...a: any[]) => { s.bodies.push(a); },
   setStatus: async (...a: any[]) => { s.statuses.push(a); },
+  setStatusIf: async (id: string, from: string, to: string, why: string) => { if (s.status !== from || !s.flip) return false; s.statuses.push([id, to, why]); return true; },
   saveOutbound: async (...a: any[]) => { s.out.push(a); },
   getSettings: async () => ({ ai_mode: 'test', test_numbers: [] }),
 }));
@@ -36,7 +37,7 @@ const runIn = async (m: any) => { const r = await handleInbound(m); await r?.wor
 const base = { waId: 'w1', from: '919800000001', profileName: 'Asha', timestamp: Math.floor(Date.now() / 1000) };
 beforeEach(() => {
   Object.assign(s, { allowed: true, typing: [], saved: [], bodies: [], dup: false, status: 'ai', isNew: true, transcript: 'room for two tomorrow',
-    open: null, proofResult: 'cancelled', proofs: [], hold: null,
+    open: null, proofResult: 'cancelled', proofs: [], hold: null, flip: true,
     processed: [], statuses: [], sent: [], out: [], emails: [] });
 });
 
@@ -71,6 +72,14 @@ describe('handleInbound', () => {
     await runIn({ ...base, kind: 'voice', text: '', mediaId: 'm1' });
     expect(s.statuses[0]).toEqual(['c1', 'needs_human', 'Customer sent a voice note']);
     expect(s.processed).toEqual([]);
+    // The placeholder is replaced, so a turn waiting for transcriptions does not wait for this one.
+    expect(s.bodies).toEqual([['row1', '🎤 [voice note – could not be transcribed]']]);
+  });
+  it('sends the holding reply only when it moved the chat from AI to the owner itself', async () => {
+    s.flip = false; // another message flagged the chat a moment ago
+    await runIn({ ...base, kind: 'media', text: '', mediaId: 'm2', mediaLabel: '[photo]' });
+    expect(s.sent).toEqual([]);
+    expect(s.emails).toEqual([]);
   });
   it('hands media to the owner with one holding reply and an email', async () => {
     await runIn({ ...base, kind: 'media', text: 'this room?', mediaId: 'm2', mediaLabel: '[photo]' });

@@ -5,8 +5,8 @@ import { transcribe } from './assistant';
 import { openCancellation } from './booking-store';
 import { handleProof } from './cancellations';
 import { aiAllowed, HOLDING_REPLY, processConversation } from './process';
-import { getSettings, saveInbound, saveOutbound, setMessageBody, setStatus } from './store';
-import type { Conversation, Inbound } from './types';
+import { getSettings, saveInbound, saveOutbound, setMessageBody, setStatusIf } from './store';
+import { VOICE_FAILED, VOICE_PLACEHOLDER, type Conversation, type Inbound } from './types';
 
 const esc = (s: unknown) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
 const notify = (subject: string, html: string) =>
@@ -17,7 +17,8 @@ const chatLink = (c: Conversation) => `<p><a href="${siteConfig.url}/admin/whats
 async function handToOwner(c: Conversation, what: string) {
   // The owner is already chatting or already flagged; don't repeat the holding reply.
   if (c.status === 'human' || c.status === 'needs_human') return;
-  await setStatus(c.id, 'needs_human', `Customer sent ${what}`);
+  // Only the call that actually moves the chat from the AI to the owner sends the holding reply and email.
+  if (!(await setStatusIf(c.id, 'ai', 'needs_human', `Customer sent ${what}`))) return;
   const r = await sendText(c.phone, HOLDING_REPLY);
   await saveOutbound(c.id, 'ai', HOLDING_REPLY, r.ok ? r.id : null, r.ok ? undefined : r.error);
   const who = c.profile_name || `+${c.phone}`;
@@ -32,7 +33,7 @@ async function handToOwner(c: Conversation, what: string) {
 export async function handleInbound(m: Inbound): Promise<{ work: Promise<unknown> } | null> {
   const deadline = Date.now() + 50_000;
   if (m.timestamp && Date.now() / 1000 - m.timestamp > 24 * 3600) return null;
-  const body = m.kind === 'voice' ? '[voice note]' : m.kind === 'media' ? [m.mediaLabel, m.text].filter(Boolean).join(' ') : m.text;
+  const body = m.kind === 'voice' ? VOICE_PLACEHOLDER : m.kind === 'media' ? [m.mediaLabel, m.text].filter(Boolean).join(' ') : m.text;
   const saved = await saveInbound(m, body, m.kind);
   if (!saved) return null;
   const { conversation, message, isNewConversation } = saved;
@@ -60,7 +61,11 @@ async function answer(m: Inbound, conversation: Conversation, messageId: string,
   if (m.kind === 'voice') {
     const media = m.mediaId ? await downloadMedia(m.mediaId) : null;
     const text = media ? await transcribe(media.data, media.mimeType) : null;
-    if (!text) return handToOwner(conversation, 'a voice note');
+    if (!text) {
+      // Replace the placeholder so a turn waiting for pending transcriptions does not wait for this one.
+      await setMessageBody(messageId, `🎤 ${VOICE_FAILED}`);
+      return handToOwner(conversation, 'a voice note');
+    }
     await setMessageBody(messageId, `🎤 ${text}`);
   }
   return processConversation(conversation.id, messageId, { deadline });

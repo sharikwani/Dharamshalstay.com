@@ -27,3 +27,7 @@ export function markSideEffect(ctx: { sideEffects?: string[] }, what: string): v
 
 /** Delivery not confirmed (a WhatsApp send timed out after it may have gone out). */
 export const UNCONFIRMED = 'Delivery not confirmed – check the chat before resending';
+
+/** Stored text of a voice note until it is transcribed (the AI turn waits while one is pending). */
+export const VOICE_PLACEHOLDER = '[voice note]';
+export const VOICE_FAILED = '[voice note – could not be transcribed]';
