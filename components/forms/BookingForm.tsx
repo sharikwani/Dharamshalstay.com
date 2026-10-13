@@ -72,6 +72,9 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
 
   useEffect(() => { onDatesChange?.(checkIn, checkOut); }, [checkIn, checkOut, onDatesChange]);
 
+  // A stale error (e.g. an earlier sold-out refusal) should not linger once the guest changes dates or room.
+  useEffect(() => { setStatus((s) => (s === 'error' ? 'idle' : s)); }, [checkIn, checkOut, roomName, planName, blockedMessage]);
+
   // Calculate nights and total
   const nights = useMemo(() => calcNights(checkIn, checkOut), [checkIn, checkOut]);
   const hasPricePerNight = typeof pricePerNight === 'number' && pricePerNight > 0;
@@ -126,7 +129,7 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
     try {
       const res = await authFetch('/api/bookings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
       const data = await res.json();
-      if (!res.ok) { setErrorMsg(data.error || f.bookingFailed); setStatus('error'); return; }
+      if (!res.ok) { setErrorMsg(res.status === 409 ? t.booking.soldOutDates : (data.error || f.bookingFailed)); setStatus('error'); return; }
 
       if (payMethod === 'online' && data.payment_method === 'online' && data.amount >= 100) {
         setStatus('paying');
