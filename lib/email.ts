@@ -131,7 +131,7 @@ export async function sendAdminNotification(booking: {
   }
 }
 
-const escHtml = (s: unknown) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
+export const escHtml = (s: unknown) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
 
 /** Tells the admin a partner has submitted (or resubmitted) a listing for approval. */
 export async function sendPropertySubmittedNotification(p: {
