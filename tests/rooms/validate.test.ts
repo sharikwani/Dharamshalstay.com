@@ -33,6 +33,12 @@ describe('normaliseRooms', () => {
   it('refuses duplicate names case-insensitively', () => {
     expect(normaliseRooms([room(), room({ name: 'deluxe ' })], { newId, defaultExtraBedPrice: 0 })).toEqual({ error: 'Two rooms are called "deluxe". Each room type needs its own name.' });
   });
+  it('refuses duplicate ids and replaces unusable ids', () => {
+    const id = '11111111-1111-4111-8111-111111111111';
+    expect(normaliseRooms([room({ id }), room({ name: 'Suite', id })], { newId, defaultExtraBedPrice: 0 })).toEqual({ error: 'Two rooms share the same id. Reload the page and try again.' });
+    const rooms = ok([room({ id: 'x'.repeat(65) }), room({ name: 'Suite', id: 42 }), room({ name: 'Family', id: '' })]);
+    expect(rooms.every((r) => /^0{8}-0000-4000-8000-\d{12}$/.test(r.id))).toBe(true);
+  });
   it('refuses a non-array and more than 30 categories', () => {
     expect(normaliseRooms({}, { newId, defaultExtraBedPrice: 0 })).toEqual({ error: 'Rooms must be a list.' });
     expect(normaliseRooms(Array.from({ length: 31 }, (_, i) => room({ name: `Room ${i}` })), { newId, defaultExtraBedPrice: 0 })).toEqual({ error: 'At most 30 room types.' });
@@ -65,6 +71,16 @@ describe('diffRooms', () => {
   it('matches id-less old rooms by name (no rename, no removal)', () => {
     const d = diffRooms([{ name: 'Deluxe', base_price: 3000, total_inventory: 5 }], ok([room()]));
     expect(d).toMatchObject({ renamed: [], removed: [], added: [] });
+  });
+  it('ignores rate plan key order and string numbers, but reports real plan, price and extra bed changes', () => {
+    const plan = { name: 'CP', meal_plan: 'cp', price: 3600, cancellation: 'Free' };
+    const reordered = { cancellation: 'Free', price: 3600, meal_plan: 'cp', name: 'CP' };
+    const same = diffRooms([room({ id: A, base_price: '3000', total_inventory: '5', rate_plans: [reordered] })], ok([room({ id: A, rate_plans: [plan] })]));
+    if ('error' in same) throw new Error(same.error);
+    expect(same.lines).toEqual([]);
+    const changed = diffRooms([room({ id: A, rate_plans: [reordered] })], ok([room({ id: A, extra_beds_max: 2, rate_plans: [{ ...plan, price: 3900 }] })]));
+    if ('error' in changed) throw new Error(changed.error);
+    expect(changed.lines).toEqual(['Deluxe: rate plans changed', 'Deluxe: extra beds 0 → 2']);
   });
   it('refuses a swap', () => {
     expect(diffRooms([room({ id: A, name: 'X1' }), room({ id: B, name: 'X2' })], ok([room({ id: A, name: 'X2' }), room({ id: B, name: 'X1' })]))).toEqual({ error: 'Rename one room at a time.' });

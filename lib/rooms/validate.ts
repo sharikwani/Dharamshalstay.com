@@ -40,6 +40,7 @@ export function normaliseRooms(
 
   const rooms: RoomCategory[] = [];
   const seen = new Set<string>();
+  const seenIds = new Set<string>();
 
   for (const raw of input) {
     if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return { error: 'Each room must be an object.' };
@@ -94,7 +95,9 @@ export function normaliseRooms(
     const bed_type = str(r.bed_type);
     if (bed_type.length > 40) return { error: `${name}: bed type is too long (40 characters max).` };
 
-    const id = typeof r.id === 'string' && r.id.trim() ? r.id : opts.newId();
+    const id = typeof r.id === 'string' && r.id.trim() && r.id.length <= 64 ? r.id : opts.newId();
+    if (seenIds.has(id)) return { error: 'Two rooms share the same id. Reload the page and try again.' };
+    seenIds.add(id);
 
     rooms.push({
       ...r,
@@ -134,6 +137,14 @@ export type RoomDiff = {
   switchedOn: string[];
   lines: string[];
 };
+
+function samePlans(before: any, after: RatePlan[]): boolean {
+  const b: any[] = Array.isArray(before) ? before : [];
+  return (
+    b.length === after.length &&
+    b.every((p, i) => p?.name === after[i].name && p?.meal_plan === after[i].meal_plan && Number(p?.price) === after[i].price && (p?.cancellation ?? '') === after[i].cancellation)
+  );
+}
 
 export function diffRooms(before: any[], after: RoomCategory[]): RoomDiff | { error: string } {
   const nm = (r: any) => (typeof r?.name === 'string' ? r.name.trim() : '');
@@ -176,10 +187,10 @@ export function diffRooms(before: any[], after: RoomCategory[]): RoomDiff | { er
   for (const { b, a } of pairs) {
     const rn = renamed.find((x) => x.id === a.id);
     if (rn) lines.push(`Renamed "${rn.from}" to "${rn.to}"`);
-    if (b.total_inventory != null && b.total_inventory !== a.total_inventory) lines.push(`${a.name}: rooms ${b.total_inventory} → ${a.total_inventory}`);
-    if (b.base_price != null && b.base_price !== a.base_price) lines.push(`${a.name}: price ${inr(Number(b.base_price))} → ${inr(a.base_price)}`);
-    if (JSON.stringify(b.rate_plans ?? []) !== JSON.stringify(a.rate_plans)) lines.push(`${a.name}: rate plans changed`);
-    if ((b.extra_beds_max ?? 0) !== a.extra_beds_max) lines.push(`${a.name}: extra beds ${b.extra_beds_max ?? 0} → ${a.extra_beds_max}`);
+    if (b.total_inventory != null && Number(b.total_inventory) !== a.total_inventory) lines.push(`${a.name}: rooms ${Number(b.total_inventory)} → ${a.total_inventory}`);
+    if (b.base_price != null && Number(b.base_price) !== a.base_price) lines.push(`${a.name}: price ${inr(Number(b.base_price))} → ${inr(a.base_price)}`);
+    if (!samePlans(b.rate_plans, a.rate_plans)) lines.push(`${a.name}: rate plans changed`);
+    if (Number(b.extra_beds_max ?? 0) !== a.extra_beds_max) lines.push(`${a.name}: extra beds ${Number(b.extra_beds_max ?? 0)} → ${a.extra_beds_max}`);
     const wasActive = b.is_active !== false;
     if (wasActive && !a.is_active) { switchedOff.push(a.name); lines.push(`Switched off "${a.name}"`); }
     if (!wasActive && a.is_active) { switchedOn.push(a.name); lines.push(`Switched on "${a.name}"`); }
