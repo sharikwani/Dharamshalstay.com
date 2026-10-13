@@ -56,7 +56,25 @@ export async function POST(req: Request, { params }: { params: { id: string } })
      * click or two admins at once make one change and send one email. The email goes out after the response.
      */
     const decide = async (target: Decision, patch: Record<string, unknown>, note?: string) => {
-      if (p.partner_status === target) return; // already in place: nothing to change, nobody to email again
+      if (p.partner_status === target) {
+        // Already in place: nothing to change and nobody to email again, except "send back for changes" with a new
+        // note, which saves the note and emails the partner again (only if the note read here is still stored, so
+        // two identical resends at once email once).
+        const before = (p as any).verification_note ?? null;
+        if (target !== 'changes_requested' || !note || note === before) return;
+        let q = sb.from('profiles').update({ verification_note: note }).eq('id', p.id).eq('partner_status', target);
+        q = before === null ? q.is('verification_note', null) : q.eq('verification_note', before);
+        const { data: changed, error } = await q.select('id');
+        if (error) { console.error(error); throw new HttpError(500, SAVE_FAILED); }
+        if (!changed?.length) {
+          const current = await loadOnboarding(params.id);
+          if (current.profile.partner_status === target && (current.profile as any).verification_note === note) return;
+          throw new HttpError(409, "This partner's status changed meanwhile. Reload the page and try again.");
+        }
+        committed = true;
+        inBackground('Partner decision email', () => emailPartnerDecision(p.email, name, target, note));
+        return;
+      }
       const { data: changed, error } = await sb.from('profiles').update({ ...patch, partner_status: target })
         .eq('id', p.id).eq('partner_status', p.partner_status).select('id');
       if (error) { console.error(error); throw new HttpError(500, SAVE_FAILED); }

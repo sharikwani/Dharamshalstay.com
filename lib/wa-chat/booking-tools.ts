@@ -252,7 +252,12 @@ async function createTool(a: any, ctx: ToolCtx, handover: Handover) {
     return { error: `The payment link could not be created. Your code is free again – make a new quote with the same code in a minute, or show code ${offer.code} at reception before ${formatIST(offer.expiresAt)}.` };
   }
   // No link: keep the booking as pay later so the usual booking emails still go out.
-  await fallbackToPayLater(r.booking.id, q.category);
+  if (!(await fallbackToPayLater(r.booking.id, q.category))) {
+    // Neither a link nor pay later: never tell the customer it is pay later; a person checks the booking.
+    noteAction(ctx, `Booking ${ref}: payment link failed and it could not be switched to pay later`);
+    await handover({ reason: `Booking ${ref}: the payment link failed and it could not be switched to pay later` }, ctx);
+    return { booking_ref: ref, error: 'The payment link failed and the booking could not be switched to pay later; a team member will check it.' };
+  }
   noteAction(ctx, `Booking ${ref} switched to pay later (payment link failed)`);
   return { ...base, payment: 'later', payment_link_failed: true };
 }

@@ -108,6 +108,16 @@ describe('handleInbound', () => {
     expect(s.emails[0].html).toMatch(/Also unanswered:[\s\S]*Room for 2 on Friday\?/);
     expect(s.emails[0].html).not.toMatch(/Hello!/);
   });
+  it('an auto-cancel after an unanswered text: the turn is forced to answer that text', async () => {
+    s.open = { id: 'x1', booking_id: 'b1' };
+    s.hist = [
+      { id: 'a1', author: 'ai', kind: 'text', status: 'sent', body: 'Please send the proof.' },
+      { id: 't1', author: 'customer', kind: 'text', status: 'received', body: 'Also, can I rebook for May?' },
+      { id: 'row1', author: 'customer', kind: 'media', status: 'received', body: '[photo]' },
+    ];
+    await runIn({ ...base, kind: 'media', text: '', mediaId: 'm2', mediaLabel: '[photo]' });
+    expect(s.processed).toEqual([['c1', 'row1', { deadline: expect.any(Number), force: true, answer: ['t1'] }]]);
+  });
   it('a document that lost the race for an open cancellation still gets a normal turn', async () => {
     s.open = { id: 'x1', booking_id: 'b1' }; s.proofResult = 'busy';
     await runIn({ ...base, kind: 'media', text: '', mediaId: 'm2', mediaLabel: '[photo]' });

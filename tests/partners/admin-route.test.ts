@@ -6,12 +6,14 @@ let updateError: any = null;
 let partnerType = 'taxi';
 let docStatuses = ['approved', 'pending'];
 let partnerStatus = 'pending_verification';
+let verificationNote: string | null = null;
 // Conditional updates: .eq() filters are recorded; .select('id') returns the rows that changed.
 let changedRows: any[] = [{ id: 'p1' }];
 const updateFilters: unknown[][] = [];
 const update = vi.fn((_patch: unknown) => {
   const c: any = {
     eq: (...a: unknown[]) => { updateFilters.push(a); return c; },
+    is: (...a: unknown[]) => { updateFilters.push(['is', ...a]); return c; },
     select: async () => ({ data: updateError ? null : changedRows, error: updateError }),
     then: (res: any) => res({ error: updateError }),
   };
@@ -38,7 +40,7 @@ vi.mock('@/lib/partners/load', () => ({
     const next = statusQueue.length > 1 ? statusQueue.shift()! : statusQueue[0];
     if (next === 'throw') throw new Error('slow database');
     return {
-    profile: { id: 'p1', email: 'p@x.com', legal_name: 'Partner One', partner_status: next ?? partnerStatus, partner_type: partnerType },
+    profile: { id: 'p1', email: 'p@x.com', legal_name: 'Partner One', partner_status: next ?? partnerStatus, partner_type: partnerType, verification_note: verificationNote },
     documents: docStatuses.map((status, i) => ({ id: 'd' + i, status })),
     agreements: [{ id: 'a1' }],
     missing: [],
@@ -51,7 +53,7 @@ vi.mock('@/lib/partners/emails', () => ({ emailPartnerDecision: (...a: unknown[]
 import { GET } from '@/app/api/admin/partners/route';
 import { POST } from '@/app/api/admin/partners/[id]/route';
 
-beforeEach(() => { changedRows = [{ id: 'p1' }]; updateFilters.length = 0; statusQueue = []; emailWaits = []; role = 'partner'; updateError = null; partnerType = 'taxi'; docStatuses = ['approved', 'pending']; partnerStatus = 'pending_verification'; emailPartnerDecision.mockClear(); update.mockClear(); });
+beforeEach(() => { changedRows = [{ id: 'p1' }]; updateFilters.length = 0; statusQueue = []; emailWaits = []; role = 'partner'; updateError = null; partnerType = 'taxi'; docStatuses = ['approved', 'pending']; partnerStatus = 'pending_verification'; verificationNote = null; emailPartnerDecision.mockClear(); update.mockClear(); });
 
 const post = async (body: unknown) => {
   const r = await POST(new Request('http://x', { method: 'POST', body: JSON.stringify(body) }), { params: { id: 'p1' } });
@@ -139,11 +141,32 @@ describe('admin partner routes', () => {
     expect(emailPartnerDecision).not.toHaveBeenCalled();
   });
 
-  it('repeating a decision already in place changes nothing and sends no email', async () => {
+  it('repeating a decision already in place with the same note changes nothing and sends no email', async () => {
     role = 'admin';
     partnerStatus = 'changes_requested';
+    verificationNote = 'Upload the RC again';
     const res = await post({ action: 'request_changes', note: 'Upload the RC again' });
     expect(res.status).toBe(200);
+    expect(update).not.toHaveBeenCalled();
+    expect(emailPartnerDecision).not.toHaveBeenCalled();
+  });
+
+  it('sending back for changes again with a different note saves it and emails the partner again', async () => {
+    role = 'admin';
+    partnerStatus = 'changes_requested';
+    verificationNote = 'Upload the RC again';
+    const res = await post({ action: 'request_changes', note: 'The RC photo is blurry, please retake it' });
+    expect(res.status).toBe(200);
+    expect(update).toHaveBeenCalledWith({ verification_note: 'The RC photo is blurry, please retake it' });
+    expect(updateFilters).toEqual([['id', 'p1'], ['partner_status', 'changes_requested'], ['verification_note', 'Upload the RC again']]);
+    expect(emailPartnerDecision).toHaveBeenCalledWith('p@x.com', 'Partner One', 'changes_requested', 'The RC photo is blurry, please retake it');
+  });
+
+  it('a repeated reject or suspend stays a no-op even with another note', async () => {
+    role = 'admin';
+    partnerStatus = 'rejected';
+    verificationNote = 'Not a real company';
+    expect((await post({ action: 'reject', note: 'Fake documents' })).status).toBe(200);
     expect(update).not.toHaveBeenCalled();
     expect(emailPartnerDecision).not.toHaveBeenCalled();
   });

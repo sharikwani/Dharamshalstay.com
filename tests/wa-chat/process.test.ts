@@ -286,6 +286,51 @@ describe('processConversation', () => {
     expect(await run(voice.id, { force: true, since: NOW() })).toBe('already_answered');
     expect(s.sent).toEqual([]);
   });
+  it('earlier messages a cancellation notice was sent after are answered when asked for', async () => {
+    const text = addMsg('customer', 'Also, can I rebook for May?');
+    const photo = addMsg('customer', '[photo] [proof for TRK-1: checked, booking cancelled]', 'media');
+    addMsg('ai', 'Your booking TRK-1 is cancelled. No payment was taken.');
+    s.reply.mockResolvedValue('Yes, May has rooms. Shall I quote?');
+    expect(await run(photo.id, { force: true, answer: [text.id] })).toBe('replied');
+    expect(s.reply.mock.calls[0][2]).toMatch(/not been answered yet.*«Also, can I rebook for May\?»/);
+    expect(s.sent.map((x) => x[1])).toEqual(['Yes, May has rooms. Shall I quote?']);
+  });
+  describe('NOTHING_TO_ADD in any form never reaches the customer', () => {
+    const lateVoice = () => {
+      const voice = addMsg('customer', '🎤 room for two tomorrow', 'voice');
+      addMsg('customer', 'hello?');
+      addMsg('ai', 'A room for two: ₹3,000. Anything else?');
+      return voice;
+    };
+    for (const variant of ['NOTHING_TO_ADD.', '"NOTHING_TO_ADD"', '«NOTHING_TO_ADD»', '```\nNOTHING_TO_ADD\n```', 'nothing_to_add', 'Nothing to add', ' `NOTHING_TO_ADD` ', '*NOTHING_TO_ADD*!']) {
+      it(`alone (${JSON.stringify(variant)}): nothing is sent`, async () => {
+        const voice = lateVoice();
+        s.reply.mockResolvedValue(variant);
+        expect(await run(voice.id, { force: true, since: NOW() })).toBe('already_answered');
+        expect(s.sent).toEqual([]);
+      });
+    }
+    it('with a sentence: only the sentence is sent', async () => {
+      const voice = lateVoice();
+      s.reply.mockResolvedValue('NOTHING_TO_ADD. Have a lovely stay!');
+      expect(await run(voice.id, { force: true, since: NOW() })).toBe('replied');
+      expect(s.sent).toEqual([['919800000001', 'Have a lovely stay!']]);
+    });
+    it('in an ordinary turn too', async () => {
+      s.reply.mockResolvedValue('Sure! *Room* is free. NOTHING_TO_ADD');
+      expect(await run()).toBe('replied');
+      expect(s.sent).toEqual([['919800000001', 'Sure! *Room* is free.']]);
+    });
+    it('after an action with no other words: nothing invented is sent; the owner is told with the actions', async () => {
+      const voice = lateVoice();
+      s.reply.mockImplementation(async (_h: any, ctx: any) => { ctx.sideEffects.push('payment_link'); ctx.actions.push('Payment link for HTL-1: https://pay/x'); return 'NOTHING_TO_ADD'; });
+      expect(await run(voice.id, { force: true, since: NOW() })).toBe('handed_over');
+      expect(s.sent).toEqual([]);
+      expect(s.statuses[0]).toEqual(['c1', 'needs_human', 'AI acted but gave no reply']);
+      expect(s.notes[0][1]).toMatch(/Payment link for HTL-1/);
+      expect(s.emails[0].html).toMatch(/Payment link for HTL-1/);
+    });
+  });
   it('a late voice transcript that is the newest message: answered unless answered after its text was written', async () => {
     const voice = addMsg('customer', '🎤 room for two tomorrow', 'voice');
     const before = new Date(Date.now() - 1000).toISOString();

@@ -57,9 +57,14 @@ async function answer(m: Inbound, conversation: Conversation, messageId: string,
   if (m.kind === 'media') {
     const open = conversation.status === 'ai' ? await openCancellation(conversation.id).catch(() => null) : null;
     if (!open) return handToOwner(conversation, m.mediaLabel || 'a file', messageId);
+    // Texts sent just before this document (their turns gave way to it) would look answered once the
+    // cancellation notice goes out, so note them now and have the turn answer them explicitly.
+    const earlier = unanswered(await history(conversation.id, 20).catch(() => [])).filter((x) => x.id !== messageId);
     const outcome = await handleProof(conversation, messageId, m, open);
-    // handleProof already told the customer the booking is cancelled; the normal turn answers anything else.
-    if (outcome === 'cancelled') return processConversation(conversation.id, messageId, { deadline });
+    // handleProof already told the customer the booking is cancelled; the turn answers anything else.
+    if (outcome === 'cancelled') {
+      return processConversation(conversation.id, messageId, earlier.length ? { deadline, force: true, answer: earlier.map((x) => x.id) } : { deadline });
+    }
     // Another photo is being checked for this request: this message still gets a normal turn, so a text sent
     // before it (whose own turn gave way to this newer message) is answered.
     if (outcome === 'busy') return processConversation(conversation.id, messageId, { deadline });

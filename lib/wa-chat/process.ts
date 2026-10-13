@@ -52,6 +52,19 @@ const sendReply = (c: Conversation, text: string) => sendLogged(c, text);
 /** The reply the AI gives when a late voice transcript needs no answer (nothing is sent then). */
 export const NOTHING_TO_ADD = 'NOTHING_TO_ADD';
 
+/** The sentinel in any form: any case, with spaces, dashes or underscores, quoted or code-fenced. */
+const SENTINEL = /(```[a-z]*\s*)?[`*_«»"'“”]*\s*nothing[\s_-]*to[\s_-]*add\s*[`*_«»"'“”]*[.!]?\s*(```)?/gi;
+
+/**
+ * Remove the NOTHING_TO_ADD sentinel (with the quotes, fences and full stop around it) from an AI reply. `had`: it
+ * was there; `rest`: what is left ('' when nothing meaningful is left).
+ */
+export function stripSentinel(text: string): { had: boolean; rest: string } {
+  if (!text.match(SENTINEL)) return { had: false, rest: text };
+  const rest = text.replace(SENTINEL, ' ').replace(/^[\s.,:;!?-]+/, '').replace(/[ \t]{2,}/g, ' ').trim();
+  return { had: true, rest: /[0-9a-zÀ-￿]/i.test(rest) ? rest : '' };
+}
+
 type Pending = { hist: ChatMessage[]; pending: ChatMessage[]; note?: string };
 
 /**
@@ -61,8 +74,17 @@ type Pending = { hist: ChatMessage[]; pending: ChatMessage[]; note?: string };
  *   note naming it and the AI judges whether its earlier replies already addressed it;
  * - if it is the newest customer message, it is unanswered unless something was answered after its text was written.
  */
-function pendingFor(all: ChatMessage[], messageId: string, since?: string): Pending {
+function pendingFor(all: ChatMessage[], messageId: string, { since, answer }: Extra = {}): Pending {
   const pending = unanswered(all);
+  if (answer?.length) {
+    // Earlier messages a direct notice (e.g. "your booking is cancelled") was sent after, so they look answered.
+    const extra = all.filter((m) => answer.includes(m.id) && !pending.includes(m));
+    if (!extra.length) return { hist: all, pending };
+    return {
+      hist: all, pending: [...extra, ...pending],
+      note: `These earlier customer messages have not been answered yet (another notice was sent in between): ${extra.map((m) => `«${m.body}»`).join(' ')}. Answer them now. If your replies already answered them and nothing else is unanswered, reply with exactly ${NOTHING_TO_ADD}.`,
+    };
+  }
   if (!since || pending.some((m) => m.id === messageId)) return { hist: all, pending };
   const own = all.find((m) => m.id === messageId);
   if (!own) return { hist: all, pending };
@@ -110,7 +132,12 @@ async function giveUp(c: Conversation, pending: ChatMessage[], why: string): Pro
 const UNLOCKED = 'unlocked';
 
 type Outcome = 'replied' | 'handed_over' | 'skipped' | 'failed' | 'superseded' | 'already_answered' | 'deferred';
-type Opts = { wait?: (ms: number) => Promise<void>; deadline?: number; minTurnMs?: number; force?: boolean; since?: string };
+/**
+ * since: a forced voice-note turn, when its transcript was written. answer: ids of earlier customer messages this
+ * turn must answer although a direct notice was sent after them.
+ */
+type Extra = { since?: string; answer?: string[] };
+type Opts = { wait?: (ms: number) => Promise<void>; deadline?: number; minTurnMs?: number; force?: boolean } & Extra;
 
 /** "Column does not exist" (Postgres) or "not in the schema cache" (PostgREST): migration v25 is not applied yet. */
 const NO_LOCK_COLUMN = ['42703', 'PGRST204'];
@@ -144,8 +171,8 @@ export async function processConversation(conversationId: string, messageId: str
         // Another turn kept the lock until our own deadline (slow or stuck): if our message is still unanswered,
         // the owner takes over; never leave it silently unanswered.
         const c = await answerable(conversationId);
-        const { pending } = c ? pendingFor(await history(conversationId, 20), messageId, opts.since) : { pending: [] as ChatMessage[] };
-        if (!c || !pending.some((m) => m.id === messageId)) return 'already_answered';
+        const { pending } = c ? pendingFor(await history(conversationId, 20), messageId, opts) : { pending: [] as ChatMessage[] };
+        if (!c || !pending.some((m) => m.id === messageId || opts.answer?.includes(m.id))) return 'already_answered';
         return await giveUp(c, pending, 'AI ran out of time (another reply was still in progress)');
       }
       await wait(POLL_MS);
@@ -157,14 +184,14 @@ export async function processConversation(conversationId: string, messageId: str
   }
   const held = token;
   try {
-    return await turns(conversationId, messageId, opts.since, deadline, minTurn, wait);
+    return await turns(conversationId, messageId, { since: opts.since, answer: opts.answer }, deadline, minTurn, wait);
   } finally {
     if (held !== UNLOCKED) await releaseTurnLock(conversationId, held).catch((e) => console.error('WhatsApp chat: lock release failed', e));
   }
 }
 
 /** The lock holder's loop: one turn per batch of unanswered customer messages. */
-async function turns(conversationId: string, messageId: string, since: string | undefined, deadline: number, minTurn: number,
+async function turns(conversationId: string, messageId: string, extra: Extra, deadline: number, minTurn: number,
   wait: (ms: number) => Promise<void>): Promise<Outcome> {
   let result: Outcome = 'already_answered';
   let answeredId: string | null = null;
@@ -180,7 +207,7 @@ async function turns(conversationId: string, messageId: string, since: string | 
       // A voice note sent just before is still being transcribed: wait, so the turn does not answer "[voice note]".
       for (let i = 0; i < VOICE_POLLS && Date.now() < deadline - minTurn && (await pendingVoice(conversationId)); i++) await wait(POLL_MS);
       all = await history(conversationId, 20);
-      ({ hist, pending, note } = answeredId ? afterAnswered(all, answeredId) : pendingFor(all, messageId, since));
+      ({ hist, pending, note } = answeredId ? afterAnswered(all, answeredId) : pendingFor(all, messageId, extra));
     } catch (e: any) {
       console.error('WhatsApp AI processing failed:', e);
       await notify('WhatsApp chat needs you (AI error)', `<p>The assistant could not read the chat: ${esc(e?.message || e)}</p><p><a href="${link(conversationId)}">Open the chat</a></p>`);
@@ -191,7 +218,8 @@ async function turns(conversationId: string, messageId: string, since: string | 
     const left = deadline - Date.now();
     // Not enough time for a full turn on a message that is not ours: its own invocation is polling for the lock
     // and has more time, so release the lock to it.
-    if (left < LOOP_TURN_MS && pending[pending.length - 1].id !== messageId) return result === 'already_answered' ? 'deferred' : result;
+    const lastId = pending[pending.length - 1].id;
+    if (left < LOOP_TURN_MS && lastId !== messageId && !extra.answer?.includes(lastId)) return result === 'already_answered' ? 'deferred' : result;
     if (left < minTurn) return giveUp(conv, pending, 'AI ran out of time');
     const outcome = await turn(conv, hist, deadline, note);
     if (outcome !== 'replied') return outcome;
@@ -230,8 +258,19 @@ async function turn(conv: Conversation, hist: ChatMessage[], deadline: number, n
 
     text = await withDeadline(reply(hist, ctx, note), deadline);
     const acted = (ctx.sideEffects?.length ?? 0) > 0;
-    // A late voice transcript the earlier replies already covered: nothing to send.
-    if (note && !acted && text.trim() === NOTHING_TO_ADD) return 'already_answered';
+    // The sentinel (asked for with a late voice transcript) is never sent, in whatever form it comes back.
+    const stripped = stripSentinel(text);
+    if (stripped.had) {
+      text = stripped.rest;
+      if (!text && !acted) return 'already_answered';
+      if (!text) {
+        // It acted but gave no words for the customer: send nothing invented; a person tells them.
+        await setStatusIf(conv.id, 'ai', 'needs_human', 'AI acted but gave no reply');
+        await saveSystemNote(conv.id, `AI reply not sent (it gave no text). It had already: ${(ctx.actions ?? []).join('; ')}`);
+        await notify(`WhatsApp chat needs you: ${who(conv)}`, `<p>The assistant acted for ${esc(who(conv))} but gave no reply, so nothing was sent. Please tell the customer:</p>${list(ctx.actions ?? [])}<p><a href="${link(conv.id)}">Open the chat</a></p>`);
+        return 'handed_over';
+      }
+    }
     const status = (await getConversation(conv.id))?.status;
     // The owner took over while the AI was thinking: never talk over them; what the AI already did goes into the
     // chat as a note for the owner. A chat only flagged for the owner (needs_human) still hears about actions.

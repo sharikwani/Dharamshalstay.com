@@ -6,7 +6,7 @@ const TREK_ID = '22222222-2222-4222-8222-222222222222';
 const h = vi.hoisted(() => ({
   quotes: [] as any[], quote: null as any, claimed: true, claimCalls: [] as any[], confirmed: true, useSaved: false, own: [] as any[], confirmCalls: [] as any[], created: [] as any[], createResult: null as any,
   avail: {} as any, availCalls: [] as any[],
-  checkout: { ok: true, url: 'https://pay/x', sessionId: 's' } as any, released: [] as any[], linked: [] as any[], updates: [] as any[], emails: [] as any[], handovers: [] as any[], commission: 0,
+  checkout: { ok: true, url: 'https://pay/x', sessionId: 's' } as any, switchRows: [{ id: 'b1' }] as any[], released: [] as any[], linked: [] as any[], updates: [] as any[], emails: [] as any[], handovers: [] as any[], commission: 0,
 }));
 vi.mock('@/lib/wa-chat/find', () => ({
   findHotel: async (n: string) => n.toLowerCase().includes('pine') ? {
@@ -49,7 +49,7 @@ vi.mock('@/lib/bookings/checkout', () => ({ createCheckoutLink: async () => { if
 vi.mock('@/lib/booking-emails', () => ({ sendBookingEmails: async (id: string) => { h.emails.push(id); } }));
 vi.mock('@/lib/server-auth', () => ({ serviceClient: () => ({ from: () => ({
   select: () => ({ eq: () => ({ single: async () => ({ data: { commission_amount: h.commission } }), maybeSingle: async () => ({ data: null }) }) }),
-  update: (row: any) => { h.updates.push(row); const u: any = { eq: () => u, or: () => u, select: () => u, then: (res: any) => res({ data: [{ id: 'b1' }], error: null }) }; return u; },
+  update: (row: any) => { h.updates.push(row); const u: any = { eq: () => u, or: () => u, select: () => u, then: (res: any) => res({ data: h.switchRows, error: null }) }; return u; },
 }) }) }));
 vi.mock('@/lib/availability/store', () => ({ availabilityFor: async (...a: any[]) => { h.availCalls.push(a); return h.avail; } }));
 
@@ -67,7 +67,7 @@ const goodQuote = (over: any = {}) => ({
 beforeEach(() => {
   Object.assign(h, { claimCalls: [], avail: {}, availCalls: [], quotes: [], quote: goodQuote(), claimed: true, confirmed: true, useSaved: false, own: [], confirmCalls: [], created: [], released: [], linked: [], updates: [], emails: [], handovers: [], commission: 0,
     createResult: { ok: true, booking: { id: 'b1', booking_ref: 'TRK-9' }, amount: 3000, payment_method: 'offline' },
-    checkout: { ok: true, url: 'https://pay/x', sessionId: 's' } });
+    checkout: { ok: true, url: 'https://pay/x', sessionId: 's' }, switchRows: [{ id: 'b1' }] });
   vi.stubEnv('STRIPE_SECRET_KEY', 'sk_test');
 });
 afterEach(() => vi.unstubAllEnvs());
@@ -230,6 +230,17 @@ describe('create_booking', () => {
     expect(r).toMatchObject({ payment: 'later', payment_link_failed: true });
     expect(h.updates[0]).toEqual({ payment_method: 'offline' });
     expect(h.emails).toEqual(['b1']);
+  });
+  it('never claims pay later when the booking could not be switched: error to the AI and a handover', async () => {
+    h.createResult = { ...h.createResult, payment_method: 'online' };
+    h.checkout = { ok: false, error: 'Stripe down', status: 500 };
+    h.switchRows = []; // the conditional switch changed nothing (and the re-read shows it is not pay later)
+    const c: any = ctx();
+    const r = await run('create_booking', { payment: 'online', guest_name: 'Asha' }, c);
+    expect(r).toEqual({ booking_ref: 'TRK-9', error: 'The payment link failed and the booking could not be switched to pay later; a team member will check it.' });
+    expect(r).not.toHaveProperty('payment');
+    expect(h.handovers[0]).toMatch(/TRK-9.*could not be switched to pay later/);
+    expect(h.emails).toEqual([]);
   });
   it('marks commission pending in the fallback when the booking has commission', async () => {
     h.createResult = { ...h.createResult, payment_method: 'online' };
