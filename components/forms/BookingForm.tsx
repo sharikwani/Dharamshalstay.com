@@ -1,5 +1,5 @@
 'use client';
-import { useState, useMemo, useEffect, FormEvent } from 'react';
+import { useState, useMemo, useEffect, useRef, FormEvent } from 'react';
 import { Send, Check, AlertCircle, CreditCard, Loader2, Building, Moon } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
 import { useT } from '@/lib/i18n/client';
@@ -23,6 +23,15 @@ interface BookingFormProps {
   blockedMessage?: string;
 }
 
+/** A v4 uuid; crypto.randomUUID needs a secure context, so fall back to getRandomValues. */
+function newRequestId(): string {
+  if (typeof crypto.randomUUID === 'function') return crypto.randomUUID();
+  const b = crypto.getRandomValues(new Uint8Array(16));
+  b[6] = (b[6] & 0x0f) | 0x40; b[8] = (b[8] & 0x3f) | 0x80;
+  const h = Array.from(b, (x) => x.toString(16).padStart(2, '0')).join('');
+  return `${h.slice(0, 8)}-${h.slice(8, 12)}-${h.slice(12, 16)}-${h.slice(16, 20)}-${h.slice(20)}`;
+}
+
 function calcNights(checkIn: string, checkOut: string): number {
   if (!checkIn || !checkOut) return 0;
   const d1 = new Date(checkIn);
@@ -37,6 +46,10 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
   const [status, setStatus] = useState<'idle' | 'loading' | 'paying' | 'success' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
   const [bookingRef, setBookingRef] = useState('');
+  const [payNote, setPayNote] = useState('');
+  // One id per booking attempt: a retry after a lost response returns the booking the server already made.
+  // It is replaced only after a confirmed success or a definite refusal (4xx), never after an unreadable reply.
+  const requestId = useRef('');
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
   const [activityDate, setActivityDate] = useState('');
@@ -108,7 +121,7 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
     e.preventDefault();
     if (!validateDates()) return;
     if (blockedMessage) { setErrorMsg(blockedMessage); setStatus('error'); return; }
-    setStatus('loading'); setErrorMsg('');
+    setStatus('loading'); setErrorMsg(''); setPayNote('');
 
     const fd = new FormData(e.currentTarget);
 
@@ -126,22 +139,39 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
     else if (category === 'trek') { payload.activity_date = activityDate; payload.trek_id = entityId || null; }
     else if (category === 'paragliding') { payload.activity_date = activityDate; payload.paragliding_id = entityId || null; }
 
+    if (!requestId.current) requestId.current = newRequestId();
+    payload.client_request_id = requestId.current;
+
+    // The request may have reached us even when no readable answer comes back: say so, and keep the
+    // same request id so trying again cannot make a second booking.
+    const maybeReceived = () => { setErrorMsg(f.maybeReceived); setStatus('error'); };
+    let res: Response; let data: any;
     try {
-      const res = await authFetch('/api/bookings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-      const data = await res.json();
-      if (!res.ok) { setErrorMsg(res.status === 409 && data.error === 'Sold out for these dates' ? t.booking.soldOutDates : (data.error || f.bookingFailed)); setStatus('error'); return; }
+      res = await authFetch('/api/bookings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      data = await res.json();
+    } catch { maybeReceived(); return; }
+    if (!res.ok) {
+      if (res.status >= 400 && res.status < 500) requestId.current = '';
+      setErrorMsg(res.status === 409 && data.error === 'Sold out for these dates' ? t.booking.soldOutDates : (data.error || f.bookingFailed)); setStatus('error'); return;
+    }
 
-      if (payMethod === 'online' && data.payment_method === 'online' && data.amount >= 100) {
-        setStatus('paying');
-        const cr = await fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ bookingId: data.booking_id }) });
-        const cd = await cr.json();
-        if (cd.url) { window.location.href = cd.url; return; }
-        setErrorMsg(f.paymentFailed); setBookingRef(data.booking_ref || ''); setStatus('success'); return;
-      }
+    if (payMethod === 'online' && data.payment_method === 'online' && data.amount >= 100) {
+      setStatus('paying');
+      let cr: Response; let cd: any;
+      try {
+        cr = await fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ bookingId: data.booking_id, payLaterIfUnavailable: true }) });
+        cd = await cr.json();
+      } catch { maybeReceived(); return; }
+      if (cd.url) { window.location.href = cd.url; return; }
+      requestId.current = '';
+      // No payment link: the server switched a fresh booking to pay later, or (already paid) there is nothing to pay.
+      setPayNote(cd.pay_later ? f.onlinePayUnavailable : cr.status === 409 && cd.error === 'This booking is already paid' ? '' : f.paymentFailed);
+      setBookingRef(data.booking_ref || ''); setStatus('success'); return;
+    }
 
-      setBookingRef(data.booking_ref || '');
-      setStatus('success');
-    } catch { setErrorMsg(f.networkError); setStatus('error'); }
+    requestId.current = '';
+    setBookingRef(data.booking_ref || '');
+    setStatus('success');
   }
 
   if (status === 'success') return (
@@ -149,6 +179,7 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
       <Check className="h-10 w-10 text-green-600 mx-auto mb-3" />
       <h3 className="text-xl font-heading font-bold text-slate-900 mb-1">{f.bookingSubmitted}</h3>
       {bookingRef && <p className="text-sm text-green-700 font-mono font-semibold mb-2">Ref: {bookingRef}</p>}
+      {payNote && <p className="text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-2">{payNote}</p>}
       <p className="text-sm text-slate-600">{f.bookingConfirmNote}</p>
     </div>
   );

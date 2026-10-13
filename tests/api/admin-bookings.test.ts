@@ -82,6 +82,11 @@ vi.mock('@/lib/offers/store', () => ({
 }));
 vi.mock('@/lib/email', () => ({ adminEmail: () => 'owner@x', sendEmail: async (m: any) => { offer.emails.push(m); } }));
 
+// Notices run after the response (waitUntil); tests wait for them so assertions stay deterministic.
+const bg = vi.hoisted(() => ({ waited: [] as Promise<unknown>[] }));
+vi.mock('@vercel/functions', () => ({ waitUntil: (p: Promise<unknown>) => { bg.waited.push(p); } }));
+const settle = async () => { while (bg.waited.length) await bg.waited.shift(); };
+
 import { POST } from '@/app/api/admin/bookings/route';
 import { GET, PATCH } from '@/app/api/admin/bookings/[id]/route';
 
@@ -91,9 +96,10 @@ const base = {
   payment: { choice: 'partner_collects' },
   partner_id: '22222222-2222-4222-8222-222222222222',
 };
-const post = (body: unknown) => POST(new Request('http://x', { method: 'POST', body: JSON.stringify(body) }));
+const post = async (body: unknown) => { const r = await POST(new Request('http://x', { method: 'POST', body: JSON.stringify(body) })); await settle(); return r; };
 
 beforeEach(() => {
+  bg.waited.length = 0;
   role = 'admin'; insertError = null; updateError = null; listError = null; inserts.length = 0; updates.length = 0; recordOps.length = 0;
   sendManualBookingEmails.mockClear(); sendCancellationEmails.mockClear(); sendReassignedAwayEmail.mockClear();
   whatsappNewBooking.mockClear(); whatsappCancelled.mockClear(); whatsappReassignedAway.mockClear();
@@ -202,6 +208,34 @@ describe('POST /api/admin/bookings', () => {
     const res = await post(base);
     expect(res.status).toBe(500);
     expect(sendManualBookingEmails).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
+
+  it('stores the form request id and answers a repeated submit with the booking it already made, sending nothing', async () => {
+    const rid = '55555555-5555-4555-8555-555555555555';
+    insertError = { code: '23505', message: 'duplicate key value violates unique constraint "uq_bookings_client_request_id"' };
+    fixtures.bookings = { id: 'b0', booking_ref: 'TRK-0' };
+    const res = await post({ ...base, client_request_id: rid });
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ id: 'b0', booking_ref: 'TRK-0', duplicate: true });
+    expect(inserts[0].row.client_request_id).toBe(rid);
+    expect(sendManualBookingEmails).not.toHaveBeenCalled();
+    expect(whatsappNewBooking).not.toHaveBeenCalled();
+  });
+
+  it('leaves the request id out when the form sends none', async () => {
+    await post(base);
+    expect(inserts[0].row).not.toHaveProperty('client_request_id');
+  });
+
+  it('sends the notices after the response, and a failing notice never fails the saved booking', async () => {
+    sendManualBookingEmails.mockImplementationOnce(async () => { throw new Error('smtp down'); });
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const res = await POST(new Request('http://x', { method: 'POST', body: JSON.stringify(base) }));
+    expect(res.status).toBe(200);
+    expect(bg.waited).toHaveLength(1);
+    await settle();
+    expect(spy).toHaveBeenCalled();
     spy.mockRestore();
   });
 

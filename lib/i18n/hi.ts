@@ -376,6 +376,8 @@ export const hi: Dict = {
     packageNote: 'पैकेज: {name}',
     pickupDateRequired: 'पिकअप की तारीख ज़रूरी है', activityDateRequired: 'एक्टिविटी की तारीख ज़रूरी है', bookingFailed: 'बुकिंग नहीं हो पाई',
     paymentFailed: 'पेमेंट शुरू नहीं हो पाया। बुकिंग सेव हो गई है -- हमसे संपर्क करें।', networkError: 'नेटवर्क में दिक्कत है। फिर से कोशिश करें या हमें WhatsApp करें।',
+    maybeReceived: 'हो सकता है आपकी बुकिंग हमें मिल गई हो – दोबारा कोशिश करने से पहले अपना ईमेल/WhatsApp देखें।',
+    onlinePayUnavailable: 'ऑनलाइन पेमेंट अभी उपलब्ध नहीं है, इसलिए आपकी बुकिंग "बाद में भुगतान" के रूप में सेव हुई है – प्रॉपर्टी या ऑपरेटर को भुगतान करें। कोई पैसा नहीं कटा।',
     bookingSubmitted: 'बुकिंग भेज दी गई!', bookingConfirmNote: 'हम 2 घंटे के अंदर कन्फ़र्म करेंगे। अपना ईमेल देखें या हमें WhatsApp करें।',
     redirecting: 'पेमेंट पेज पर ले जा रहे हैं...', bookProperty: 'यह प्रॉपर्टी बुक करें', bookTaxi: 'टैक्सी बुक करें', bookParagliding: 'पैराग्लाइडिंग बुक करें', bookTrek: 'यह ट्रेक बुक करें',
     fullName: 'पूरा नाम *', phone: 'फ़ोन *', emailConfirm: 'ईमेल (कन्फ़र्मेशन के लिए)', checkInReq: 'चेक-इन *', checkOutReq: 'चेक-आउट *',

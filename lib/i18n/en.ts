@@ -186,6 +186,8 @@ export const en = {
     packageNote: 'Package: {name}',
     pickupDateRequired: 'Pickup date is required', activityDateRequired: 'Activity date is required', bookingFailed: 'Booking failed',
     paymentFailed: 'Payment setup failed. Booking saved -- contact us.', networkError: 'Network error. Please try again or WhatsApp us.',
+    maybeReceived: 'We may have received your booking – please check your email/WhatsApp before trying again.',
+    onlinePayUnavailable: 'Online payment isn't available right now, so your booking is saved as pay later – pay at the property or to the operator. Nothing was charged.',
     bookingSubmitted: 'Booking Submitted!', bookingConfirmNote: "We'll confirm within 2 hours. Check your email or WhatsApp us.",
     redirecting: 'Redirecting to Payment...', bookProperty: 'Book This Property', bookTaxi: 'Book Taxi', bookParagliding: 'Book Paragliding', bookTrek: 'Book This Trek',
     fullName: 'Full Name *', phone: 'Phone *', emailConfirm: 'Email (for confirmation)', checkInReq: 'Check-in *', checkOutReq: 'Check-out *',

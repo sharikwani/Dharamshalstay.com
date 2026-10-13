@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 const inserted: Record<string, any>[] = [];
+const earlier = { row: null as any };
 const hotel = {
   id: '11111111-1111-4111-8111-111111111111', name: 'Test Hotel', price_min: 1000, commission_pct: 12,
   rooms: [
@@ -13,7 +14,7 @@ vi.mock('@supabase/supabase-js', () => ({
   createClient: () => ({
     from: (table: string) => ({
       select: () => ({
-        eq: () => ({ single: async () => ({ data: table === 'properties' ? hotel : null }) }),
+        eq: () => ({ single: async () => ({ data: table === 'properties' ? hotel : null }), maybeSingle: async () => ({ data: earlier.row, error: null }) }),
       }),
       insert: (row: Record<string, any>) => {
         if (table === 'bookings') inserted.push(row);
@@ -42,7 +43,7 @@ const post = (body: any) => POST(new Request('http://x/api/bookings', { method: 
 
 describe('POST /api/bookings', () => {
   beforeEach(() => {
-    inserted.length = 0; sendBookingEmails.mockClear(); getCaller.mockReset(); getCaller.mockResolvedValue(null);
+    inserted.length = 0; earlier.row = null; sendBookingEmails.mockClear(); getCaller.mockReset(); getCaller.mockResolvedValue(null);
     vi.stubEnv('NEXT_PUBLIC_SUPABASE_URL', 'http://supabase.test');
     vi.stubEnv('SUPABASE_SERVICE_ROLE_KEY', 'service-key');
     vi.stubEnv('STRIPE_SECRET_KEY', '');
@@ -90,6 +91,19 @@ describe('POST /api/bookings', () => {
     vi.stubEnv('STRIPE_SECRET_KEY', 'sk_test_x');
     const json = await (await post(payload({ payment_method: 'online' }))).json();
     expect(json.payment_method).toBe('online');
+    expect(sendBookingEmails).not.toHaveBeenCalled();
+  });
+
+  it('passes the request id through and answers a retried submit with the same shape, sending nothing', async () => {
+    const rid = '44444444-4444-4444-8444-444444444444';
+    const first = await (await post(payload({ client_request_id: rid }))).json();
+    expect(inserted[0].client_request_id).toBe(rid);
+    sendBookingEmails.mockClear();
+    earlier.row = { id: 'b1', booking_ref: 'BKG-1', amount: 6000, payment_method: 'offline', status: 'pending' };
+    const res = await post(payload({ client_request_id: rid }));
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual(first);
+    expect(inserted).toHaveLength(1);
     expect(sendBookingEmails).not.toHaveBeenCalled();
   });
 });

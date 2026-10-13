@@ -6,6 +6,7 @@ import { BOOKABLE_STATUS, checkAssignment, commissionRateFor, isBeforeToday, pay
 import { sendManualBookingEmails } from '@/lib/manual-booking-emails';
 import { whatsappNewBooking } from '@/lib/booking-whatsapp';
 import { roomSummaries } from '@/lib/availability/calc';
+import { inBackground } from '@/lib/background';
 
 export const dynamic = 'force-dynamic';
 
@@ -47,6 +48,8 @@ const schema = z.object({
   notify_customer: z.boolean().default(true),
   notify_partner: z.boolean().default(true),
   notify_customer_whatsapp: z.boolean().default(false),
+  /** One id per form, so a repeated submit (lost response, double click) returns the booking it already made. */
+  client_request_id: z.string().uuid().optional(),
 });
 
 const PAST = "That date is in the past. Tick 'allow past date' to record an earlier booking.";
@@ -163,20 +166,26 @@ export async function POST(req: Request) {
       booking_source: 'admin',
       status: 'confirmed',
       created_by: admin.id,
+      ...(body.client_request_id ? { client_request_id: body.client_request_id } : {}),
     };
     const { data: saved, error } = await sb.from('bookings').insert(row).select('id, booking_ref').single();
+    if (error?.code === '23505' && body.client_request_id) {
+      // This form was already submitted: return that booking and send no second emails / WhatsApp.
+      const { data: earlier } = await sb.from('bookings').select('id, booking_ref').eq('client_request_id', body.client_request_id).maybeSingle();
+      if (earlier) return NextResponse.json({ id: earlier.id, booking_ref: earlier.booking_ref, duplicate: true });
+    }
     if (error || !saved) {
       console.error('Manual booking insert failed:', error);
       throw new HttpError(500, 'Could not save the booking. Please try again.');
     }
 
-    // Emails never block the save
-    try {
+    // Emails never block the save: they are sent after the response.
+    inBackground('Manual booking emails', async () => {
       await sendManualBookingEmails(saved.id, { customer: body.notify_customer && !!row.guest_email, partner: body.notify_partner });
       if (body.notify_partner || body.notify_customer_whatsapp) {
         await whatsappNewBooking(saved.id, { customer: body.notify_customer_whatsapp === true, partners: body.notify_partner });
       }
-    } catch (e) { console.error('Manual booking emails failed:', e); }
+    });
 
     return NextResponse.json({ id: saved.id, booking_ref: saved.booking_ref });
   } catch (e) { return jsonError(e); }

@@ -21,6 +21,7 @@ const VEHICLE_LABEL: Record<string, string> = { sedan: 'Sedan', suv: 'SUV', inno
 const MAX_AMOUNT = 10_000_000;
 const CARD = 'bg-white border border-slate-200 rounded-xl p-5 mb-5';
 const H2 = 'font-semibold text-slate-900 mb-3';
+const MAYBE_SAVED = 'The booking may have been saved. Check the bookings list before trying again.';
 
 type Item = Record<string, any>;
 const planLabel = (p: any) => p?.name || p?.meal_plan || 'Rate plan';
@@ -65,6 +66,8 @@ export default function NewBookingPage() {
   const [allowPast, setAllowPast] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  // One id per form: a repeated submit (lost response, double click) returns the booking already made.
+  const [requestId] = useState(() => crypto.randomUUID());
 
   function changeType(t: BookingCategory) {
     if (t === type) return;
@@ -145,6 +148,7 @@ export default function NewBookingPage() {
       notify_customer: notifyCustomer && !!email.trim(),
       notify_partner: notifyPartner,
       notify_customer_whatsapp: notifyCustomerWa,
+      client_request_id: requestId,
     };
     if (finalAmount != null) body.final_amount = finalAmount;
     if (overridden && reason.trim()) body.price_override_reason = reason.trim();
@@ -173,9 +177,10 @@ export default function NewBookingPage() {
       const res = await authFetch('/api/admin/bookings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) { setError(data.error || 'Could not create the booking.'); setSaving(false); return; }
+      if (!data.id) { setError(MAYBE_SAVED); setSaving(false); return; }
       router.push('/admin/bookings/' + data.id);
     } catch {
-      setError('Could not create the booking. Please check your connection and try again.');
+      setError(MAYBE_SAVED);
       setSaving(false);
     }
   }
