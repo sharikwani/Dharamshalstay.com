@@ -2,7 +2,7 @@ import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 const h = vi.hoisted(() => ({
   updates: [] as any[], filters: [] as any[], recordUpdates: [] as any[], updateError: null as any, changed: true,
-  current: null as any, emails: [] as any[], wa: [] as any[],
+  current: null as any, emails: [] as any[], wa: [] as any[], waCustomer: [] as any[],
 }));
 vi.mock('@/lib/server-auth', () => ({
   serviceClient: () => ({
@@ -20,14 +20,17 @@ vi.mock('@/lib/server-auth', () => ({
   }),
 }));
 vi.mock('@/lib/manual-booking-emails', () => ({ sendCancellationEmails: async (...a: any[]) => { h.emails.push(a); } }));
-vi.mock('@/lib/booking-whatsapp', () => ({ whatsappCancelled: async (...a: any[]) => { h.wa.push(a); } }));
+vi.mock('@/lib/booking-whatsapp', () => ({
+  whatsappCancelled: async (...a: any[]) => { h.wa.push(a); },
+  whatsappCancelledCustomer: async (...a: any[]) => { h.waCustomer.push(a); },
+}));
 const off = vi.hoisted(() => ({ released: [] as string[] }));
 vi.mock('@/lib/offers/store', () => ({ releaseForBooking: async (id: string) => { off.released.push(id); } }));
 
 import { cancelBooking } from '@/lib/bookings/cancel';
 
 beforeEach(() => {
-  Object.assign(h, { updates: [], filters: [], recordUpdates: [], updateError: null, changed: true, current: null, emails: [], wa: [] });
+  Object.assign(h, { updates: [], filters: [], recordUpdates: [], updateError: null, changed: true, current: null, emails: [], wa: [], waCustomer: [] });
   off.released = [];
 });
 
@@ -38,6 +41,16 @@ describe('cancelBooking', () => {
     expect(h.recordUpdates[0]).toEqual({ status: 'waived' });
     expect(h.emails[0]).toEqual(['b1', 'Sick']);
     expect(h.wa[0]).toEqual(['b1', 'Sick']);
+    expect(h.waCustomer[0]).toEqual(['b1', 'Sick']);
+  });
+  it('skips the customer WhatsApp notice when customerWhatsApp is false', async () => {
+    await cancelBooking({ id: 'b1', commission_status: 'pending' }, 'Sick', { notify: true, customerWhatsApp: false });
+    expect(h.wa).toHaveLength(1);
+    expect(h.waCustomer).toEqual([]);
+  });
+  it('sends no customer WhatsApp notice when notify is false', async () => {
+    await cancelBooking({ id: 'b1', commission_status: 'pending' }, 'Sick', { notify: false });
+    expect(h.waCustomer).toEqual([]);
   });
   it('keeps paid commission and can stay quiet', async () => {
     await cancelBooking({ id: 'b1', commission_status: 'paid' }, 'Sick', { notify: false });

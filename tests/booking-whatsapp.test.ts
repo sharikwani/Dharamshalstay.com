@@ -27,7 +27,7 @@ vi.mock('@/lib/server-auth', () => ({
 /** Final state of every whatsapp_messages row, in insert order. */
 const logged = () => Array.from(h.rows.values());
 
-import { assigneePhones, bookingWhen, cancelledParams, customerParams, newBookingParams, recipientsFor, whatsappCancelled, whatsappNewBooking, whatsappReassignedAway } from '@/lib/booking-whatsapp';
+import { assigneePhones, bookingWhen, cancelledCustomerParams, cancelledParams, customerParams, newBookingParams, recipientsFor, whatsappCancelled, whatsappCancelledCustomer, whatsappNewBooking, whatsappReassignedAway } from '@/lib/booking-whatsapp';
 
 const view: any = {
   id: 'b1', booking_ref: 'DS-1', item_name: 'Dharamshala → McLeod Ganj', date_text: '12 Oct 2026, 09:00', num_guests: 2,
@@ -117,6 +117,9 @@ describe('params', () => {
   it('cancelledParams has 5 values', () => {
     expect(cancelledParams(view, 'Guest\nasked')).toEqual(['DS-1', 'Dharamshala → McLeod Ganj', 'Mon, 12 Oct 2026', '9:00 AM', 'Guest asked']);
   });
+  it('cancelledCustomerParams is [ref, item, date, reason]', () => {
+    expect(cancelledCustomerParams(view, 'Cancelled\nat your request')).toEqual(['DS-1', 'Dharamshala → McLeod Ganj', 'Mon, 12 Oct 2026', 'Cancelled at your request']);
+  });
   it('customerParams has 8 values with driver/pilot/guide line', () => {
     expect(customerParams(view)).toEqual(['DS-1', 'Dharamshala → McLeod Ganj', 'Mon, 12 Oct 2026', '9:00 AM', '2', 'Driver Ravi, 98160', 'Rs.12,500', 'Payment pending']);
     expect(customerParams({ ...view, category: 'paragliding' })[5]).toBe('Pilot Ravi, 98160');
@@ -137,6 +140,7 @@ describe('templates', () => {
     expect(count('booking_new_partner_v2')).toBe(newBookingParams(view).length);
     expect(count('booking_cancelled_partner_v2')).toBe(cancelledParams(view, 'x').length);
     expect(count('booking_confirmed_customer_v2')).toBe(customerParams(view).length);
+    expect(count('booking_cancelled_customer')).toBe(cancelledCustomerParams(view, 'x').length);
   });
 });
 
@@ -163,6 +167,13 @@ describe('notifiers', () => {
     await whatsappNewBooking('b1', { customer: true, partners: false });
     expect(h.sendTemplate).toHaveBeenLastCalledWith({ to: '919816000001', template: 'booking_confirmed_customer',
       params: ['DS-1', 'Dharamshala → McLeod Ganj', '12 Oct 2026, 09:00', '2', 'Driver Ravi, 98160', 'Rs.12,500', 'Payment pending'] });
+  });
+  it('sends the customer cancellation notice, with no v1 fallback', async () => {
+    h.sendTemplate.mockResolvedValue({ ok: false, error: '(#132001) Template name does not exist in the translation' });
+    await whatsappCancelledCustomer('b1', 'Guest asked');
+    expect(h.sendTemplate).toHaveBeenCalledTimes(1);
+    expect(h.sendTemplate).toHaveBeenCalledWith({ to: '919816000001', template: 'booking_cancelled_customer', params: cancelledCustomerParams(view, 'Guest asked') });
+    expect(logged()[0]).toMatchObject({ recipient_kind: 'customer', template: 'booking_cancelled_customer', status: 'failed' });
   });
   it('does not fall back on other errors', async () => {
     h.tables = { profiles: partnerRow };

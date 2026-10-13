@@ -82,6 +82,24 @@ const templates = [
     ].join('\n'),
     example: ['DS-1042', 'Dharamshala → McLeod Ganj taxi', 'Sun, 12 Oct 2026', '9:00 AM', '3', 'Driver Ravi, 98160 00001', 'Rs.1,500', 'Pay the driver directly'],
   },
+  {
+    name: 'booking_cancelled_customer',
+    body: [
+      '*❌ Your booking is cancelled*',
+      '',
+      'Your Dharamshala Stay booking below has been cancelled.',
+      '',
+      '📋 *Booking ID:* {{1}}',
+      '🛎️ *Service:* {{2}}',
+      '📅 *Date:* {{3}}',
+      '📝 *Reason:* {{4}}',
+      '',
+      'If a refund is due, our team will contact you about it.',
+      '',
+      'Want to book again or need help? Just reply to this message. 🙏',
+    ].join('\n'),
+    example: ['DS-AB12CD', 'Hotel Snow View - Deluxe', 'Mon, 12 Oct 2026 to Wed, 14 Oct 2026 (2 nights)', 'Cancelled at your request'],
+  },
 ];
 
 let failed = false;

@@ -1,5 +1,5 @@
 import { serviceClient } from '@/lib/server-auth';
-import { sendBookingConfirmation, sendAdminNotification } from '@/lib/email';
+import { sendBookingConfirmation, sendBookingRequestReceived, sendAdminNotification } from '@/lib/email';
 import { whatsappNewBooking } from '@/lib/booking-whatsapp';
 
 /**
@@ -18,7 +18,8 @@ export async function sendBookingEmails(bookingId: string, stage: 'requested' | 
       propertyName = prop?.name || '';
     }
     if (booking.guest_email) {
-      await sendBookingConfirmation({
+      // A pay-later request is not confirmed yet: only the confirmed stage says "Booking Confirmed".
+      await (stage === 'confirmed' ? sendBookingConfirmation : sendBookingRequestReceived)({
         guest_name: booking.guest_name, guest_email: booking.guest_email, booking_ref: booking.booking_ref,
         check_in: booking.check_in, check_out: booking.check_out, activity_date: booking.activity_date,
         amount: booking.amount, category: booking.category, room_name: booking.room_name,

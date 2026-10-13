@@ -1,5 +1,5 @@
 import { serviceClient } from '@/lib/server-auth';
-import { whatsappCancelled } from '@/lib/booking-whatsapp';
+import { whatsappCancelled, whatsappCancelledCustomer } from '@/lib/booking-whatsapp';
 import { sendCancellationEmails } from '@/lib/manual-booking-emails';
 import { releaseForBooking } from '@/lib/offers/store';
 
@@ -11,10 +11,11 @@ export const PAID_MEANWHILE = 'This booking was paid meanwhile';
 /**
  * Cancel a booking: save the reason, waive unpaid commission, and optionally tell the customer and partner.
  * Only a booking that is not cancelled yet changes, so a repeated cancel sends nothing again ({ already: true }).
+ * The customer also gets a WhatsApp notice unless customerWhatsApp is false (their own WhatsApp chat already replies).
  * With requireUnpaid (customer-initiated WhatsApp cancels), a booking paid in the meantime is not cancelled.
  */
 export async function cancelBooking(booking: { id: string; commission_status?: string | null }, reason: string,
-  opts: { notify: boolean; requireUnpaid?: boolean }): Promise<CancelResult> {
+  opts: { notify: boolean; requireUnpaid?: boolean; customerWhatsApp?: boolean }): Promise<CancelResult> {
   const sb = serviceClient();
   const keepCommission = booking.commission_status === 'paid';
   const update: Record<string, unknown> = { status: 'cancelled', cancelled_reason: reason };
@@ -46,6 +47,7 @@ export async function cancelBooking(booking: { id: string; commission_status?: s
     try {
       await sendCancellationEmails(booking.id, reason);
       await whatsappCancelled(booking.id, reason);
+      if (opts.customerWhatsApp !== false) await whatsappCancelledCustomer(booking.id, reason);
     } catch (e) { console.error('Cancellation notices failed:', e); }
   }
   return { ok: true };

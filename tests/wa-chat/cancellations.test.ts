@@ -104,7 +104,7 @@ describe('requestCancellation', () => {
     h.own = [booking(), booking({ id: 'b0', booking_ref: 'TRK-0' })];
     expect(await ask({ reason_code: 'duplicate_or_mistake' })).toMatchObject({ result: 'cancelled' });
     expect(h.cancels[0][0].id).toBe('b1');
-    expect(h.cancels[0][2]).toEqual({ notify: true, requireUnpaid: true });
+    expect(h.cancels[0][2]).toEqual({ notify: true, requireUnpaid: true, customerWhatsApp: false });
   });
   it('a duplicate re-reads the bookings right before cancelling', async () => {
     // findOwnBooking saw both; the read right before cancelling shows the other one cancelled meanwhile.
@@ -144,7 +144,7 @@ describe('handleProof', () => {
     expect(h.cancels[0][1]).toMatch(/WhatsApp: Illness or medical emergency - fever \(proof checked\)/);
     expect(h.updated.at(-1)).toEqual(['x1', expect.objectContaining({ status: 'cancelled', verdict: 'matches', proof_path: 'c1/x1.jpg' })]);
     expect(h.bodies[0][1]).toMatch(/TRK-1.*cancelled/);
-    expect(h.cancels[0][2]).toEqual({ notify: true, requireUnpaid: true });
+    expect(h.cancels[0][2]).toEqual({ notify: true, requireUnpaid: true, customerWhatsApp: false });
   });
   it('always tells the customer the booking is cancelled, without waiting for the AI', async () => {
     expect(await handleProof(conv, 'row9', msg, open)).toBe('cancelled');

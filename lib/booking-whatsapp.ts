@@ -82,6 +82,11 @@ export function cancelledParams(v: BookingView, reason: string): string[] {
   return [v.booking_ref, v.item_name, date, time, reason].map(cleanParam);
 }
 
+/** Params for booking_cancelled_customer (4, in template order). */
+export function cancelledCustomerParams(v: BookingView, reason: string): string[] {
+  return [v.booking_ref, v.item_name, bookingWhen(v).date, reason].map(cleanParam);
+}
+
 /** Params for booking_confirmed_customer_v2 (8, in template order). */
 export function customerParams(v: BookingView): string[] {
   const who = v.category === 'taxi' ? 'Driver' : v.category === 'paragliding' ? 'Pilot' : v.category === 'guide' || v.category === 'trek' ? 'Guide' : null;
@@ -91,8 +96,8 @@ export function customerParams(v: BookingView): string[] {
   return [v.booking_ref, v.item_name, date, time, v.num_guests, assignee, rupees(v.amount), v.payment_text].map(cleanParam);
 }
 
-/** A v2 template plus the approved v1 template to fall back on while v2 is under review at Meta. */
-type Msg = { template: string; params: string[]; fallback: { template: string; params: string[] } };
+/** A template plus, where one exists, the approved v1 template to fall back on while v2 is under review at Meta. */
+type Msg = { template: string; params: string[]; fallback?: { template: string; params: string[] } };
 
 // v1 layouts (one-line date_text). Remove once the _v2 templates are approved.
 const v1 = (v: BookingView, ...rest: unknown[]) => [v.booking_ref, v.item_name, v.date_text, ...rest].map(cleanParam);
@@ -112,6 +117,7 @@ const customerMsg = (v: BookingView): Msg => ({
   template: 'booking_confirmed_customer_v2', params: customerParams(v),
   fallback: { template: 'booking_confirmed_customer', params: v1(v, v.num_guests, v1Assignee(v), rupees(v.amount), v.payment_text) },
 });
+const cancelledCustomerMsg = (v: BookingView, reason: string): Msg => ({ template: 'booking_cancelled_customer', params: cancelledCustomerParams(v, reason) });
 /** Meta's "template does not exist (yet) in this language" error. */
 const NOT_APPROVED = /\(#132001\)/;
 
@@ -157,7 +163,7 @@ async function sendAndLog(bookingId: string, kind: RecipientKind | 'customer', t
     const { data: queued, error: qErr } = await sb.from('whatsapp_messages').insert({ ...base, status: 'queued' }).select('id').single();
     if (qErr) console.error('WhatsApp: could not log queued message:', qErr);
     let r = await sendTemplate({ to, template, params: msg.params });
-    if (!r.ok && !r.skipped && NOT_APPROVED.test(r.error || '')) {
+    if (!r.ok && !r.skipped && msg.fallback && NOT_APPROVED.test(r.error || '')) {
       template = msg.fallback.template;
       r = await sendTemplate({ to, template, params: msg.fallback.params });
     }
@@ -208,6 +214,17 @@ export async function whatsappCancelled(bookingId: string, reason: string): Prom
     if (!v) return;
     await sendAll(bookingId, await loadRecipients(v), cancelledMsg(v, reason));
   } catch (e) { console.error('WhatsApp cancellation alert failed:', e); }
+}
+
+/** Cancellation notice to the customer. Never throws. */
+export async function whatsappCancelledCustomer(bookingId: string, reason: string): Promise<void> {
+  try {
+    if (!isWhatsAppConfigured()) return;
+    const v = await loadBookingView(bookingId);
+    if (!v) return;
+    const to = normalizeIndianPhone(v.guest_phone);
+    if (to) await sendAndLog(bookingId, 'customer', to, cancelledCustomerMsg(v, reason));
+  } catch (e) { console.error('WhatsApp customer cancellation notice failed:', e); }
 }
 
 /**
