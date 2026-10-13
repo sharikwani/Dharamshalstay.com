@@ -23,6 +23,8 @@ export async function POST(req: Request) {
     // WhatsApp alerts stay off until the person themselves agrees to them.
     const { data, error } = await serviceClient().from('partner_staff')
       .insert({ ...parsed.data, phone, licence_no: parsed.data.licence_no || null, partner_id: profile.id, whatsapp_alerts: false }).select('id').single();
+    // A double submit (or re-adding someone) hits the unique (partner_id, role, phone) index.
+    if (error?.code === '23505') throw new HttpError(409, 'This person is already on your team');
     if (error) throw error;
     return NextResponse.json({ ok: true, id: data.id });
   } catch (e) { return jsonError(e); }

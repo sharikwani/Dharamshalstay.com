@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 const h = vi.hoisted(() => ({
-  inserts: [] as any[], deleteError: null as any, row: { id: 'x1' } as any, remove: vi.fn(async () => ({ error: null })),
+  inserts: [] as any[], insertError: null as any, deleteError: null as any, row: { id: 'x1' } as any, remove: vi.fn(async () => ({ error: null })),
 }));
 
 vi.mock('@/lib/server-auth', async (orig) => {
@@ -10,7 +10,7 @@ vi.mock('@/lib/server-auth', async (orig) => {
     select: () => builder, eq: () => builder,
     single: async () => ({ data: h.row, error: null }),
     then: (res: any) => res({ data: [], error: null }),
-    insert: (row: any) => { h.inserts.push(row); return { select: () => ({ single: async () => ({ data: { id: 'new1' }, error: null }) }) }; },
+    insert: (row: any) => { h.inserts.push(row); return { select: () => ({ single: async () => (h.insertError ? { data: null, error: h.insertError } : { data: { id: 'new1' }, error: null }) }) }; },
     delete: () => ({ eq: async () => ({ error: h.deleteError }) }),
   };
   return { ...actual, serviceClient: () => ({ from: () => builder, storage: { from: () => ({ remove: h.remove }) } }) };
@@ -27,7 +27,7 @@ import { DELETE as deleteVehicle } from '@/app/api/partner/vehicles/[id]/route';
 const post = (body: unknown) => POST(new Request('http://x', { method: 'POST', body: JSON.stringify(body) }));
 const del = (fn: typeof deleteStaff) => fn(new Request('http://x', { method: 'DELETE' }), { params: { id: 'x1' } });
 
-beforeEach(() => { h.inserts.length = 0; h.deleteError = null; h.row = { id: 'x1', role: 'driver' }; h.remove.mockClear(); });
+beforeEach(() => { h.inserts.length = 0; h.insertError = null; h.deleteError = null; h.row = { id: 'x1', role: 'driver' }; h.remove.mockClear(); });
 
 describe('POST /api/partner/staff', () => {
   it('stores a normalised phone with WhatsApp alerts off', async () => {
@@ -42,6 +42,12 @@ describe('POST /api/partner/staff', () => {
       expect((await res.json()).error).toBe('Enter a valid 10-digit Indian mobile number for this person.');
     }
     expect(h.inserts).toHaveLength(0);
+  });
+  it('returns 409 when this person is already on the team (unique partner, role, phone)', async () => {
+    h.insertError = { code: '23505', message: 'duplicate key value violates unique constraint "uq_partner_staff_partner_role_phone"' };
+    const res = await post({ role: 'driver', full_name: 'Ravi Kumar', phone: '9816000001' });
+    expect(res.status).toBe(409);
+    expect((await res.json()).error).toBe('This person is already on your team');
   });
   it('ignores any attempt to switch WhatsApp alerts on', async () => {
     await post({ role: 'driver', full_name: 'Ravi Kumar', phone: '9816000001', whatsapp_alerts: true });
