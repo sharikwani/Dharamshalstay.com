@@ -6,6 +6,7 @@ import { whatsappNewBooking, whatsappReassignedAway } from '@/lib/booking-whatsa
 import { loadBookingView, sendManualBookingEmails, sendReassignedAwayEmail } from '@/lib/manual-booking-emails';
 
 import { cancelBooking } from '@/lib/bookings/cancel';
+import { settlePaidOffer } from '@/lib/offers/paid';
 
 export const dynamic = 'force-dynamic';
 
@@ -191,6 +192,11 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
     }
 
     await syncCommissionRecords(sb, booking, update, body.action);
+
+    // Paid to the platform: a WhatsApp offer booking takes its code back, or the owner is told (never blocks the save).
+    if (body.action === 'payment' && body.choice === 'platform_paid' && booking.offer_code) {
+      await settlePaidOffer({ id, booking_ref: booking.booking_ref }, 'Admin booking payment');
+    }
 
     // Emails never block the save
     try {

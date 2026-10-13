@@ -75,7 +75,12 @@ vi.mock('@/lib/booking-whatsapp', () => ({
 }));
 
 // Cancelling releases any WhatsApp offer code; that store is not under test here.
-vi.mock('@/lib/offers/store', () => ({ releaseForBooking: async () => {} }));
+const offer = vi.hoisted(() => ({ result: 'none' as string, calls: [] as string[], emails: [] as any[] }));
+vi.mock('@/lib/offers/store', () => ({
+  releaseForBooking: async () => {},
+  attachPaidOffer: async (id: string) => { offer.calls.push(id); if (offer.result === 'throw') throw new Error('db down'); return offer.result; },
+}));
+vi.mock('@/lib/email', () => ({ adminEmail: () => 'owner@x', sendEmail: async (m: any) => { offer.emails.push(m); } }));
 
 import { POST } from '@/app/api/admin/bookings/route';
 import { GET, PATCH } from '@/app/api/admin/bookings/[id]/route';
@@ -293,6 +298,30 @@ describe('GET/PATCH /api/admin/bookings/:id', () => {
     const res = await patch({ action: 'payment', choice: 'platform_paid', channel: 'upi', reference: 'U1' });
     expect(res.status).toBe(200);
     expect(updates[0].row).toMatchObject({ payment_status: 'paid', collected_by: 'platform', payment_channel: 'upi', paid_amount: 4500 });
+  });
+
+  it('payment platform_paid on an offer booking ties the offer code back, or emails the owner', async () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    Object.assign(offer, { result: 'attached', calls: [], emails: [] });
+    fixtures.bookings = { ...fixtures.bookings, category: 'hotel', booking_ref: 'HTL-5', offer_code: 'PNV-7K3Q9' };
+    expect((await patch({ action: 'payment', choice: 'platform_paid', channel: 'upi' })).status).toBe(200);
+    expect(offer.calls).toEqual(['44444444-4444-4444-8444-444444444444']);
+    expect(offer.emails).toEqual([]);
+    offer.result = 'conflict';
+    expect((await patch({ action: 'payment', choice: 'platform_paid', channel: 'upi' })).status).toBe(200);
+    expect(offer.emails[0]).toMatchObject({ to: 'owner@x', subject: 'Offer code conflict on paid booking HTL-5' });
+    offer.result = 'throw';
+    expect((await patch({ action: 'payment', choice: 'platform_paid', channel: 'upi' })).status).toBe(200);
+    expect(offer.emails[1]).toMatchObject({ subject: 'Offer code check failed for paid booking HTL-5' });
+    spy.mockRestore();
+  });
+
+  it('payment without an offer code or not platform_paid leaves offer codes alone', async () => {
+    Object.assign(offer, { result: 'attached', calls: [], emails: [] });
+    await patch({ action: 'payment', choice: 'platform_paid', channel: 'upi' });
+    fixtures.bookings = { ...fixtures.bookings, offer_code: 'PNV-7K3Q9' };
+    await patch({ action: 'payment', choice: 'unpaid' });
+    expect(offer.calls).toEqual([]);
   });
 
   it('cancel sets status, reason and waives commission, then emails', async () => {

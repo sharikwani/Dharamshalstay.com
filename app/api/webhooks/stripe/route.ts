@@ -3,7 +3,7 @@ import { getStripe } from '@/lib/stripe';
 import Stripe from 'stripe';
 import { sendBookingEmails } from '@/lib/booking-emails';
 import { adminEmail, sendEmail } from '@/lib/email';
-import { attachPaidOffer } from '@/lib/offers/store';
+import { settlePaidOffer } from '@/lib/offers/paid';
 
 const SETTLED_COMMISSION = ['paid', 'waived', 'disputed'];
 const OPEN_RECORD = ['pending', 'due', 'overdue'];
@@ -105,14 +105,7 @@ export async function POST(req: NextRequest) {
           if (recErr) console.error('Stripe webhook: commission record waive failed:', recErr);
           await sendBookingEmails(booking.id);
           // A WhatsApp offer booking paid late (after its code was released) takes its code back, or the owner is told.
-          try {
-            if ((await attachPaidOffer(booking.id)) === 'conflict') {
-              await sendEmail({
-                to: adminEmail(), subject: `Offer code conflict on paid booking ${booking.booking_ref}`,
-                html: `<p>Booking <b>${esc(booking.booking_ref)}</b> was paid at the WhatsApp offer price, but its offer code was already used, cancelled or linked to another booking. Check it in Admin → WhatsApp offers.</p>`,
-              });
-            }
-          } catch (e) { console.error('Stripe webhook: offer code attach failed:', e); }
+          await settlePaidOffer(booking, 'Stripe webhook');
         }
       }
     }

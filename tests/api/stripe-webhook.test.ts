@@ -14,8 +14,8 @@ const h = vi.hoisted(() => ({
 vi.mock('@/lib/stripe', () => ({ getStripe: () => ({ webhooks: { constructEvent: h.constructEvent } }) }));
 vi.mock('@/lib/booking-emails', () => ({ sendBookingEmails: (id: string) => h.sendBookingEmails(id) }));
 vi.mock('@/lib/email', () => ({ adminEmail: () => 'owner@x', sendEmail: (m: any) => h.sendEmail(m) }));
-const o = vi.hoisted(() => ({ result: 'none' as 'none' | 'attached' | 'conflict', calls: [] as string[] }));
-vi.mock('@/lib/offers/store', () => ({ attachPaidOffer: async (id: string) => { o.calls.push(id); return o.result; } }));
+const o = vi.hoisted(() => ({ result: 'none' as 'none' | 'attached' | 'conflict' | 'throw', calls: [] as string[] }));
+vi.mock('@/lib/offers/store', () => ({ attachPaidOffer: async (id: string) => { o.calls.push(id); if (o.result === 'throw') throw new Error('db down'); return o.result; } }));
 vi.mock('@supabase/supabase-js', () => ({
   createClient: () => ({
     from: (table: string) => {
@@ -200,6 +200,18 @@ describe('POST /api/webhooks/stripe', () => {
     expect(res.status).toBe(200);
     expect(h.sendEmail).toHaveBeenCalledTimes(1);
     expect(h.sendEmail.mock.calls[0][0]).toMatchObject({ to: 'owner@x', subject: 'Offer code conflict on paid booking DS-1' });
+  });
+
+  it('emails the owner when the offer code check itself fails', async () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    h.result = { data: { id: 'b1', booking_ref: 'DS-1' }, error: null };
+    o.result = 'throw';
+    const res = await send();
+    expect(res.status).toBe(200);
+    expect(h.sendEmail).toHaveBeenCalledTimes(1);
+    expect(h.sendEmail.mock.calls[0][0]).toMatchObject({ to: 'owner@x', subject: 'Offer code check failed for paid booking DS-1' });
+    expect(h.sendEmail.mock.calls[0][0].html).toContain('check the code in Admin → Offers');
+    spy.mockRestore();
   });
 
   it('does not touch offer codes for a cancelled booking', async () => {
