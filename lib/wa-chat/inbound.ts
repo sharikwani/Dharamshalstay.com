@@ -20,9 +20,10 @@ async function handToOwner(c: Conversation, what: string, messageId: string) {
   if (c.status === 'human' || c.status === 'needs_human') return;
   // Only the call that actually moves the chat from the AI to the owner sends the holding reply and email.
   if (!(await setStatusIf(c.id, 'ai', 'needs_human', `Customer sent ${what}`))) return;
-  await sendLogged(c, HOLDING_REPLY);
   // Earlier texts may be unanswered too (their turns gave way to this newer message): list them for the owner.
+  // Read before the holding reply is logged, which would otherwise count as their answer.
   const earlier = unanswered(await history(c.id, 20).catch(() => [])).filter((m) => m.id !== messageId);
+  await sendLogged(c, HOLDING_REPLY);
   const who = c.profile_name || `+${c.phone}`;
   await notify(`WhatsApp chat needs you: ${who}`, `<p>${esc(who)} sent ${esc(what)} on WhatsApp.</p>`
     + (earlier.length ? `<p>Also unanswered:</p><ul>${earlier.map((m) => `<li>${esc(m.body)}</li>`).join('')}</ul>` : '') + chatLink(c));
@@ -59,6 +60,9 @@ async function answer(m: Inbound, conversation: Conversation, messageId: string,
     const outcome = await handleProof(conversation, messageId, m, open);
     // handleProof already told the customer the booking is cancelled; the normal turn answers anything else.
     if (outcome === 'cancelled') return processConversation(conversation.id, messageId, { deadline });
+    // Another photo is being checked for this request: this message still gets a normal turn, so a text sent
+    // before it (whose own turn gave way to this newer message) is answered.
+    if (outcome === 'busy') return processConversation(conversation.id, messageId, { deadline });
     return outcome;
   }
   if (m.kind === 'voice') {

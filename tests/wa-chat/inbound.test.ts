@@ -16,7 +16,8 @@ vi.mock('@/lib/wa-chat/store', () => ({
   setStatus: async (...a: any[]) => { s.statuses.push(a); },
   setStatusIf: async (id: string, from: string, to: string, why: string) => { if (s.status !== from || !s.flip) return false; s.statuses.push([id, to, why]); return true; },
   saveOutbound: async (...a: any[]) => { s.out.push(a); },
-  history: async () => s.hist,
+  // Rows logged meanwhile (the holding reply) are part of the history, as in the database.
+  history: async () => [...s.hist, ...s.out.map((a, i) => ({ id: `out${i}`, author: a[1], kind: 'text', status: a[3] ? 'sent' : a[6] ?? 'failed', body: a[2] }))],
   getSettings: async () => ({ ai_mode: 'test', test_numbers: [] }),
 }));
 vi.mock('@/lib/whatsapp-cloud', () => ({
@@ -106,6 +107,11 @@ describe('handleInbound', () => {
     await runIn({ ...base, kind: 'media', text: '', mediaId: 'm2', mediaLabel: '[photo]' });
     expect(s.emails[0].html).toMatch(/Also unanswered:[\s\S]*Room for 2 on Friday\?/);
     expect(s.emails[0].html).not.toMatch(/Hello!/);
+  });
+  it('a document that lost the race for an open cancellation still gets a normal turn', async () => {
+    s.open = { id: 'x1', booking_id: 'b1' }; s.proofResult = 'busy';
+    await runIn({ ...base, kind: 'media', text: '', mediaId: 'm2', mediaLabel: '[photo]' });
+    expect(s.processed).toEqual([['c1', 'row1', { deadline: expect.any(Number) }]]);
   });
   it('a holding reply that may have gone out is logged as unknown', async () => {
     s.sendResult = { ok: false, unknown: true, error: 'timeout' };

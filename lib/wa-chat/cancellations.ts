@@ -103,10 +103,11 @@ async function decideCancellation(a: { booking_ref: string; reason_code: string;
 }
 
 /** A document arrived while a cancellation waits for proof: check it, then cancel or send it to the owner. */
-export async function handleProof(c: Conversation, messageId: string, m: Inbound, open: Cancellation): Promise<'cancelled' | 'review'> {
+/** 'busy': another proof message for this request is being processed (this one was not). */
+export async function handleProof(c: Conversation, messageId: string, m: Inbound, open: Cancellation): Promise<'cancelled' | 'review' | 'busy'> {
   try {
     // Only one proof message per request is processed; a concurrent one stops here.
-    if (!(await claimCancellation(open.id))) return 'review';
+    if (!(await claimCancellation(open.id))) return 'busy';
     return await processProof(c, messageId, m, open);
   } catch (e) {
     console.error('WhatsApp proof handling failed:', e);

@@ -13,14 +13,14 @@ export async function logSend(conversationId: string, text: string, r: SendResul
 }
 
 /**
- * Send an AI-authored text and log the outcome. A definite failure is retried once; an unknown one is never
- * retried (it may have been delivered). Never throws.
+ * Send an AI-authored text and log the outcome. Retried once only when the request never reached Meta (no
+ * connection); never after any HTTP answer or a timeout (it may have been delivered). Never throws.
  */
 export async function sendLogged(c: { id: string; phone: string }, text: string): Promise<SendResult> {
   let r: SendResult;
   try {
     r = await sendText(c.phone, text);
-    if (!r.ok && !r.unknown && !r.skipped) r = await sendText(c.phone, text);
+    if (!r.ok && r.notSent) r = await sendText(c.phone, text);
   } catch (e: any) {
     r = { ok: false, unknown: true, error: e?.message || 'Send failed' };
   }

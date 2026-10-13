@@ -44,7 +44,14 @@ describe('sendTemplate', () => {
   it('a connection that never opened is a plain failure (nothing was sent)', async () => {
     vi.stubEnv('WHATSAPP_TOKEN', 'tok'); vi.stubEnv('WHATSAPP_PHONE_NUMBER_ID', '123');
     vi.spyOn(globalThis, 'fetch').mockRejectedValue(Object.assign(new TypeError('fetch failed'), { cause: { code: 'ENOTFOUND' } }));
-    expect(await sendTemplate({ to: '919816000005', template: 'x', params: [] })).toEqual({ ok: false, error: 'fetch failed' });
+    expect(await sendTemplate({ to: '919816000005', template: 'x', params: [] })).toEqual({ ok: false, error: 'fetch failed', notSent: true });
+  });
+  it('an HTTP 5xx may still have been accepted: unknown, not failed', async () => {
+    vi.stubEnv('WHATSAPP_TOKEN', 'tok'); vi.stubEnv('WHATSAPP_PHONE_NUMBER_ID', '123');
+    for (const status of [500, 503, 504]) {
+      vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify({ error: { message: 'Service unavailable' } }), { status }));
+      expect(await sendTemplate({ to: '919816000005', template: 'x', params: [] })).toEqual({ ok: false, unknown: true, error: 'Service unavailable' });
+    }
   });
   it('a rejection from Meta is not unknown', async () => {
     vi.stubEnv('WHATSAPP_TOKEN', 'tok'); vi.stubEnv('WHATSAPP_PHONE_NUMBER_ID', '123');

@@ -152,9 +152,9 @@ describe('handleProof', () => {
     expect(h.outs[0]).toEqual(['c1', 'ai', 'Your booking TRK-1 is cancelled. No payment was taken.', 'w', undefined]);
   });
   it('a cancellation notice that cannot be sent goes to the owner by email', async () => {
-    h.sendQueue = [{ ok: false, error: 'Meta 500' }, { ok: false, error: 'Meta 500' }];
+    h.sendQueue = [{ ok: false, error: 'Meta 400' }];
     expect(await handleProof(conv, 'row9', msg, open)).toBe('cancelled');
-    expect(h.sent).toHaveLength(2); // retried once
+    expect(h.sent).toHaveLength(1); // an HTTP refusal is never retried
     expect(h.emails[0].subject).toMatch(/could not tell/);
     expect(h.emails[0].html).toMatch(/Your booking TRK-1 is cancelled/);
   });
@@ -226,7 +226,7 @@ describe('handleProof', () => {
   });
   it('does nothing when another run already claimed the request', async () => {
     h.claim = false;
-    expect(await handleProof(conv, 'row9', msg, open)).toBe('review');
+    expect(await handleProof(conv, 'row9', msg, open)).toBe('busy');
     expect(h.downloads).toBe(0);
     expect(h.cancels).toEqual([]);
     expect(h.sent).toEqual([]);

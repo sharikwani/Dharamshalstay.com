@@ -49,25 +49,40 @@ function withDeadline<T>(work: Promise<T>, deadline: number): Promise<T> {
 
 const sendReply = (c: Conversation, text: string) => sendLogged(c, text);
 
+/** The reply the AI gives when a late voice transcript needs no answer (nothing is sent then). */
+export const NOTHING_TO_ADD = 'NOTHING_TO_ADD';
+
+type Pending = { hist: ChatMessage[]; pending: ChatMessage[]; note?: string };
+
 /**
- * What is unanswered for this invocation. Normally the customer messages after the last answer. A voice note
- * transcribed late (`since` = when its text was written) is also unanswered when nothing was answered after that
- * moment, even if a later message was answered meanwhile without it; it is then moved to the end for the AI.
+ * What is unanswered for this invocation: normally the customer messages after the last answer. For a voice note
+ * transcribed late (`since` = when its text was written) that is not unanswered in that sense:
+ * - if a later customer message exists, replies may have been written without the transcript, so a turn runs with a
+ *   note naming it and the AI judges whether its earlier replies already addressed it;
+ * - if it is the newest customer message, it is unanswered unless something was answered after its text was written.
  */
-function pendingFor(all: ChatMessage[], messageId: string, since?: string): { hist: ChatMessage[]; pending: ChatMessage[] } {
+function pendingFor(all: ChatMessage[], messageId: string, since?: string): Pending {
   const pending = unanswered(all);
-  if (pending.length || !since) return { hist: all, pending };
-  const t = Date.parse(since);
-  const answeredSince = all.some((m) => isAnswer(m) && Date.parse(m.created_at) > t);
+  if (!since || pending.some((m) => m.id === messageId)) return { hist: all, pending };
   const own = all.find((m) => m.id === messageId);
-  return !answeredSince && own ? { hist: [...all.filter((m) => m !== own), own], pending: [own] } : { hist: all, pending };
+  if (!own) return { hist: all, pending };
+  const newest = [...all].reverse().find((m) => m.author === 'customer');
+  if (newest && newest.id !== own.id) {
+    return {
+      hist: all, pending: pending.length ? pending : [own],
+      note: `The customer's earlier voice note was just transcribed: «${own.body.replace(/^🎤\s*/, '')}». Answer it now if your earlier replies did not already address it. If they did and nothing else is unanswered, reply with exactly ${NOTHING_TO_ADD}.`,
+    };
+  }
+  if (pending.length) return { hist: all, pending };
+  const answeredSince = all.some((m) => isAnswer(m) && Date.parse(m.created_at) > Date.parse(since));
+  return answeredSince ? { hist: all, pending } : { hist: [...all.filter((m) => m !== own), own], pending: [own] };
 }
 
 /**
  * After a turn, the customer messages that came after the one it answered. They may be stored before that turn's
  * reply (they arrived while it was thinking), so they are moved after it: the AI sees them in the order it answers.
  */
-function afterAnswered(hist: ChatMessage[], answeredId: string): { hist: ChatMessage[]; pending: ChatMessage[] } {
+function afterAnswered(hist: ChatMessage[], answeredId: string): Pending {
   const i = hist.findIndex((m) => m.id === answeredId);
   if (i < 0) return { hist, pending: unanswered(hist) };
   const later = hist.slice(i + 1);
@@ -97,8 +112,8 @@ const UNLOCKED = 'unlocked';
 type Outcome = 'replied' | 'handed_over' | 'skipped' | 'failed' | 'superseded' | 'already_answered' | 'deferred';
 type Opts = { wait?: (ms: number) => Promise<void>; deadline?: number; minTurnMs?: number; force?: boolean; since?: string };
 
-/** Postgres "column does not exist": migration v25 (processing_until) is not applied yet. */
-const NO_LOCK_COLUMN = '42703';
+/** "Column does not exist" (Postgres) or "not in the schema cache" (PostgREST): migration v25 is not applied yet. */
+const NO_LOCK_COLUMN = ['42703', 'PGRST204'];
 
 /**
  * Answer a conversation after a customer message. Waits briefly so a burst of messages gets one reply, then takes
@@ -122,7 +137,7 @@ export async function processConversation(conversationId: string, messageId: str
     // error counts as "not acquired" and the turn keeps waiting.
     const lock = () => acquireTurnLock(conversationId).catch((e: any) => {
       console.error('WhatsApp chat: turn lock failed', e);
-      return e?.code === NO_LOCK_COLUMN ? UNLOCKED : null;
+      return NO_LOCK_COLUMN.includes(e?.code) ? UNLOCKED : null;
     });
     while (!(token = await lock())) {
       if (Date.now() > deadline - GIVE_UP_MS) {
@@ -157,6 +172,7 @@ async function turns(conversationId: string, messageId: string, since: string | 
     let conv: Conversation | null;
     let hist: ChatMessage[];
     let pending: ChatMessage[];
+    let note: string | undefined;
     let all: ChatMessage[];
     try {
       conv = await answerable(conversationId);
@@ -164,7 +180,7 @@ async function turns(conversationId: string, messageId: string, since: string | 
       // A voice note sent just before is still being transcribed: wait, so the turn does not answer "[voice note]".
       for (let i = 0; i < VOICE_POLLS && Date.now() < deadline - minTurn && (await pendingVoice(conversationId)); i++) await wait(POLL_MS);
       all = await history(conversationId, 20);
-      ({ hist, pending } = answeredId ? afterAnswered(all, answeredId) : pendingFor(all, messageId, since));
+      ({ hist, pending, note } = answeredId ? afterAnswered(all, answeredId) : pendingFor(all, messageId, since));
     } catch (e: any) {
       console.error('WhatsApp AI processing failed:', e);
       await notify('WhatsApp chat needs you (AI error)', `<p>The assistant could not read the chat: ${esc(e?.message || e)}</p><p><a href="${link(conversationId)}">Open the chat</a></p>`);
@@ -177,7 +193,7 @@ async function turns(conversationId: string, messageId: string, since: string | 
     // and has more time, so release the lock to it.
     if (left < LOOP_TURN_MS && pending[pending.length - 1].id !== messageId) return result === 'already_answered' ? 'deferred' : result;
     if (left < minTurn) return giveUp(conv, pending, 'AI ran out of time');
-    const outcome = await turn(conv, hist, deadline);
+    const outcome = await turn(conv, hist, deadline, note);
     if (outcome !== 'replied') return outcome;
     result = outcome;
     // The newest customer message this turn saw (for a late voice note, a later message answered earlier).
@@ -193,7 +209,7 @@ async function turns(conversationId: string, messageId: string, since: string | 
 }
 
 /** One AI turn: think, then send the reply unless a person has the chat. */
-async function turn(conv: Conversation, hist: ChatMessage[], deadline: number): Promise<Outcome> {
+async function turn(conv: Conversation, hist: ChatMessage[], deadline: number, note?: string): Promise<Outcome> {
   const ctx: ToolCtx = { conversationId: conv.id, phone: conv.phone, profileName: conv.profile_name, handedOver: false, sideEffects: [], actions: [] };
   let text: string | null = null;
   let sent = false;
@@ -212,8 +228,10 @@ async function turn(conv: Conversation, hist: ChatMessage[], deadline: number): 
       return 'handed_over';
     }
 
-    text = await withDeadline(reply(hist, ctx), deadline);
+    text = await withDeadline(reply(hist, ctx, note), deadline);
     const acted = (ctx.sideEffects?.length ?? 0) > 0;
+    // A late voice transcript the earlier replies already covered: nothing to send.
+    if (note && !acted && text.trim() === NOTHING_TO_ADD) return 'already_answered';
     const status = (await getConversation(conv.id))?.status;
     // The owner took over while the AI was thinking: never talk over them; what the AI already did goes into the
     // chat as a note for the owner. A chat only flagged for the owner (needs_human) still hears about actions.

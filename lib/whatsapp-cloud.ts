@@ -15,21 +15,25 @@ export function cleanParam(v: unknown): string {
  * unknown: the request may have reached Meta (timeout, connection lost after sending, or an accepted reply we could
  * not read), so the message may have been delivered. Callers must not resend it blindly.
  */
-export type SendResult = { ok: true; id: string } | { ok: false; error?: string; skipped?: true; unknown?: true };
+export type SendResult = { ok: true; id: string } | { ok: false; error?: string; skipped?: true; unknown?: true; notSent?: true };
 
 /** Errors that happen before anything is sent (no connection was made), so the message surely was not sent. */
 const NOT_SENT = ['ENOTFOUND', 'EAI_AGAIN', 'ECONNREFUSED', 'ERR_INVALID_URL'];
 
-/** A fetch that threw: unknown delivery, unless the connection was never made. */
+/** A fetch that threw: unknown delivery, unless the connection was never made (notSent: safe to retry). */
 function thrown(e: any): SendResult {
   const error = e?.message || 'Network error';
   const code = e?.cause?.code || e?.code;
-  return NOT_SENT.includes(code) ? { ok: false, error } : { ok: false, unknown: true, error };
+  return NOT_SENT.includes(code) ? { ok: false, error, notSent: true } : { ok: false, unknown: true, error };
 }
 
-/** Meta's answer: a rejection (HTTP error) is a failure; an accepted request without a message id is unknown. */
+/**
+ * Meta's answer: a 4xx is a rejection (failure); a 5xx may still have been accepted, so it is unknown, as is an
+ * accepted request without a message id.
+ */
 async function answer(res: Response): Promise<SendResult> {
   const data: any = await res.json().catch(() => ({}));
+  if (res.status >= 500) return { ok: false, unknown: true, error: data?.error?.message || `HTTP ${res.status}` };
   if (!res.ok) return { ok: false, error: data?.error?.message || `HTTP ${res.status}` };
   const id = data?.messages?.[0]?.id;
   return id ? { ok: true, id } : { ok: false, unknown: true, error: 'No message id returned' };

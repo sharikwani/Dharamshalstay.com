@@ -234,22 +234,30 @@ describe('processConversation', () => {
     expect(await run()).toBe('failed');
     expect(s.emails).toHaveLength(1);
   });
-  it('a refused send is retried once', async () => {
-    s.sendQueue = [{ ok: false, error: 'Meta 500' }];
+  it('a send that never reached Meta (no connection) is retried once', async () => {
+    s.sendQueue = [{ ok: false, error: 'fetch failed', notSent: true }];
     expect(await run()).toBe('replied');
     expect(s.sent).toHaveLength(2);
     expect(s.outbound).toEqual([['c1', 'ai', 'Hello Asha!', 'wamid.out', undefined]]);
   });
-  it('a reply WhatsApp refuses twice goes to the owner with its text, and does not count as an answer', async () => {
-    s.sendQueue = [{ ok: false, error: 'Meta 500' }, { ok: false, error: 'Meta 500' }];
+  it('a reply WhatsApp refuses is not retried: it goes to the owner with its text, and does not count as an answer', async () => {
+    s.sendQueue = [{ ok: false, error: 'Meta 400' }];
     expect(await run()).toBe('failed');
+    expect(s.sent).toHaveLength(1);
     expect(s.statuses[0]).toEqual(['c1', 'needs_human', 'AI reply could not be sent']);
     expect(s.emails[0].html).toMatch(/Hello Asha!/);
-    expect(s.outbound[0]).toEqual(['c1', 'ai', 'Hello Asha!', null, 'Meta 500']);
+    expect(s.outbound[0]).toEqual(['c1', 'ai', 'Hello Asha!', null, 'Meta 400']);
     // Back with the AI later: the message is still unanswered and gets a turn.
     s.conv = { ...s.conv, status: 'ai' };
     expect(await run()).toBe('replied');
     expect(s.reply).toHaveBeenCalledTimes(2);
+  });
+  it('PostgREST\'s unknown-column error (PGRST204) also runs unlocked', async () => {
+    const store: any = await import('@/lib/wa-chat/store');
+    const spy = vi.spyOn(store, 'acquireTurnLock').mockRejectedValueOnce(Object.assign(new Error('schema cache'), { code: 'PGRST204' }));
+    expect(await run()).toBe('replied');
+    expect(s.releases).toEqual([]);
+    spy.mockRestore();
   });
   it('a lock error other than a missing column counts as not acquired', async () => {
     const store: any = await import('@/lib/wa-chat/store');
@@ -259,22 +267,34 @@ describe('processConversation', () => {
     expect(s.releases).toEqual([['c1', 'token']]);
     spy.mockRestore();
   });
-  it('a late voice transcription is answered even though a newer message was answered without it', async () => {
+  it('a late voice transcript followed by a newer message: the AI gets a note naming it and judges', async () => {
     const voice = addMsg('customer', '🎤 room for two tomorrow', 'voice');
     addMsg('customer', 'hello?');
     addMsg('ai', 'Hi! How can I help?');
-    const since = new Date(Date.now() + 1000).toISOString(); // the transcription was written after that reply
-    s.reply.mockImplementation(async (h: any[]) => { expect(h.at(-1).id).toBe(voice.id); return 'A room for two: ₹3,000.'; });
+    // Timing alone would call it answered: the reply was saved after the transcript was written.
+    const since = new Date(Date.now() - 1000).toISOString();
+    s.reply.mockResolvedValue('A room for two: ₹3,000.');
     expect(await run(voice.id, { force: true, since })).toBe('replied');
+    expect(s.reply.mock.calls[0][2]).toBe("The customer's earlier voice note was just transcribed: «room for two tomorrow». Answer it now if your earlier replies did not already address it. If they did and nothing else is unanswered, reply with exactly NOTHING_TO_ADD.");
     expect(s.sent.map((x) => x[1])).toEqual(['A room for two: ₹3,000.']);
   });
-  it('a late voice transcription answered after it was written is not answered again', async () => {
+  it('the AI may say a late transcript was already addressed: nothing is sent', async () => {
     const voice = addMsg('customer', '🎤 room for two tomorrow', 'voice');
     addMsg('customer', 'hello?');
-    const since = new Date(Date.now() - 1000).toISOString();
     addMsg('ai', 'A room for two: ₹3,000. Anything else?');
-    expect(await run(voice.id, { force: true, since })).toBe('already_answered');
+    s.reply.mockResolvedValue('NOTHING_TO_ADD');
+    expect(await run(voice.id, { force: true, since: NOW() })).toBe('already_answered');
+    expect(s.sent).toEqual([]);
+  });
+  it('a late voice transcript that is the newest message: answered unless answered after its text was written', async () => {
+    const voice = addMsg('customer', '🎤 room for two tomorrow', 'voice');
+    const before = new Date(Date.now() - 1000).toISOString();
+    addMsg('ai', 'A room for two: ₹3,000.');
+    expect(await run(voice.id, { force: true, since: before })).toBe('already_answered');
     expect(s.reply).not.toHaveBeenCalled();
+    const after = new Date(Date.now() + 1000).toISOString();
+    expect(await run(voice.id, { force: true, since: after })).toBe('replied');
+    expect(s.reply.mock.calls[0][2]).toBeUndefined();
   });
   it('an unconfirmed send is logged as unknown and never resent', async () => {
     s.sendResult = { ok: false, unknown: true, error: 'timeout' };

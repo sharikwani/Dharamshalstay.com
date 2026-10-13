@@ -103,13 +103,15 @@ export async function recentBookingsNote(phone: string): Promise<string> {
 }
 
 /** The assistant's next WhatsApp reply for this conversation. Throws if OpenAI fails. */
-export async function reply(msgs: ChatMessage[], ctx: ToolCtx): Promise<string> {
+/** `note`: an extra instruction for this turn only (e.g. a voice note transcribed after later replies). */
+export async function reply(msgs: ChatMessage[], ctx: ToolCtx, note?: string): Promise<string> {
   if (!process.env.OPENAI_API_KEY) throw new Error('OPENAI_API_KEY is not set');
   const today = new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' });
   const recent = await recentBookingsNote(ctx.phone);
   const messages: any[] = [
     { role: 'system', content: `${SYSTEM_PROMPT}\n\nToday is ${today} (India time). Customer's WhatsApp name: ${ctx.profileName || 'unknown'}.${recent}` },
     ...toOpenAiMessages(msgs),
+    ...(note ? [{ role: 'system', content: note }] : []),
     { role: 'system', content: REMINDER },
   ];
   let toolCalls = 0;
