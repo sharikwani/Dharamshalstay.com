@@ -101,6 +101,12 @@ describe('GET /api/partner/bookings', () => {
     expect(bookings[0].collected_by).toBeNull();
   });
 
+  it('passes the offer code through so the partner sees no further discount applies', async () => {
+    bookingRows = [{ id: 'b4', status: 'pending', amount: 6000, offer_code: 'PNV-7K3Q9', offer_percent: 25 }];
+    const { bookings } = await (await get()).json();
+    expect(bookings[0]).toMatchObject({ offer_code: 'PNV-7K3Q9', offer_percent: 25 });
+  });
+
   it('returns 500 when the bookings query fails', async () => {
     bookingsError = { message: 'boom' };
     expect((await get()).status).toBe(500);

@@ -39,6 +39,7 @@ export async function GET(req: Request) {
         special_requests: v.special_requests ?? null, created_at: v.created_at,
         guest_name: v.guest_name,
         partner_response: row?.partner_response ?? null, partner_responded_at: row?.partner_responded_at ?? null,
+        offer_code: row?.offer_code ?? null, offer_percent: row?.offer_percent ?? null,
         guest_phone: show ? v.guest_phone ?? null : null,
         guest_email: show ? v.guest_email ?? null : null,
       };
