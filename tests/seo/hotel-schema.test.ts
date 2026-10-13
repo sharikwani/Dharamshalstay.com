@@ -97,3 +97,9 @@ describe('hotelSchemaFull', () => {
     expect(JSON.parse(out).review[0].reviewBody).toBe(body);
   });
 });
+
+describe('hotelSchemaFull area', () => {
+  it('title-cases a hyphenated destination slug in addressLocality', () => {
+    expect((hotelSchemaFull(hotel() as any) as any).address.addressLocality).toBe('Mcleod Ganj');
+  });
+});

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { generateHotelSEO } from '@/lib/seo';
+import { generateHotelSEO, ratedPhrase } from '@/lib/seo';
 
 const base = {
   name: 'Snow View', slug: 'snow-view', destination_slug: 'bhagsu', type: 'hotel', price_min: 2500,
@@ -40,5 +40,18 @@ describe('generateHotelSEO', () => {
   it('adds the approved rating to the Hindi title only when there are reviews', () => {
     expect(title(generateHotelSEO(base, 'hi', { count: 3, average: 4.7 }))).toContain('4.7/5 रेटिंग (3 मेहमान)');
     expect(title(generateHotelSEO(base, 'hi'))).not.toContain('/5');
+  });
+});
+
+describe('area and ratedPhrase', () => {
+  it('title-cases a hyphenated destination slug in the title', () => {
+    expect(title(generateHotelSEO({ ...base, destination_slug: 'mcleod-ganj' }))).toContain('Snow View, Mcleod Ganj');
+  });
+
+  it('ratedPhrase is empty without reviews and pluralises guests', () => {
+    expect(ratedPhrase()).toBe('');
+    expect(ratedPhrase({ count: 0, average: 0 })).toBe('');
+    expect(ratedPhrase({ count: 1, average: 5 })).toBe('Rated 5/5 by 1 guest');
+    expect(ratedPhrase({ count: 3, average: 4.7 })).toBe('Rated 4.7/5 by 3 guests');
   });
 });
