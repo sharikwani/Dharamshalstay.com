@@ -44,6 +44,15 @@ describe('get_offer_code', () => {
     expect(r.rules).toMatch(/pay online in full/);
     expect(r.rules).toMatch(/Not valid with pay later/);
   });
+  it('records a side effect only when a new code is issued', async () => {
+    const c1: any = ctx();
+    await getOfferCode({ hotel_name: 'Panchvati' }, c1);
+    expect(c1.sideEffects).toEqual(['get_offer_code']);
+    h.issued = { ok: true, code: code(), reused: true };
+    const c2: any = ctx();
+    await getOfferCode({ hotel_name: 'Panchvati' }, c2);
+    expect(c2.sideEffects ?? []).toEqual([]);
+  });
   it('sends the customer to reception when online payment is off', async () => {
     vi.stubEnv('STRIPE_SECRET_KEY', '');
     const r: any = await getOfferCode({ hotel_name: 'Panchvati' }, ctx());

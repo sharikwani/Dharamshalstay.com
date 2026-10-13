@@ -9,7 +9,7 @@ import { claimCancellation, findOwnBooking, ownBookings, saveCancellation, updat
 import { checkProof } from './proof';
 import { saveOutbound, setMessageBody, setStatus } from './store';
 import type { ToolCtx } from './tools';
-import type { Conversation, Inbound } from './types';
+import { markSideEffect, type Conversation, type Inbound } from './types';
 
 type Handover = (a: any, ctx: ToolCtx) => Promise<unknown>;
 
@@ -53,7 +53,15 @@ function blocker(b: OwnBooking): 'already_cancelled' | 'paid' | 'within_24h' | '
   return hours < 24 ? 'within_24h' : null;
 }
 
+const ACTED = ['cancelled', 'need_proof', 'handed_over'];
+
 export async function requestCancellation(a: { booking_ref: string; reason_code: string; reason_text?: string }, ctx: ToolCtx, handover: Handover) {
+  const r = await decideCancellation(a, ctx, handover);
+  if (ACTED.includes(r.result)) markSideEffect(ctx, 'request_cancellation');
+  return r;
+}
+
+async function decideCancellation(a: { booking_ref: string; reason_code: string; reason_text?: string }, ctx: ToolCtx, handover: Handover) {
   const b = await findOwnBooking(ctx.phone, a.booking_ref);
   if (!b) return { result: 'not_found' as const, message: 'No booking with that reference for this WhatsApp number.' };
   const code = (REASON_CODES as readonly string[]).includes(a.reason_code) ? a.reason_code : 'other';

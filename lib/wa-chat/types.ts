@@ -19,3 +19,8 @@ export type Inbound = {
   waId: string; from: string; profileName: string | null; timestamp: number;
   kind: 'text' | 'voice' | 'media'; text: string; mediaId?: string; mediaLabel?: string;
 };
+
+/** Note that a tool changed state this turn (booking made, code issued...), so its reply must reach the customer. */
+export function markSideEffect(ctx: { sideEffects?: string[] }, what: string): void {
+  (ctx.sideEffects ??= []).push(what);
+}

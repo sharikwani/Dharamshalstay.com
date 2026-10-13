@@ -14,6 +14,7 @@ import { offerForBooking, type OfferOk } from './offer-tools';
 import { claimQuote, confirmedAfter, findOwnBooking, latestOpenQuote, linkQuoteBooking, ownBookings, releaseQuote, saveQuote, type Quote } from './booking-store';
 import { findHotel } from './find';
 import type { ToolCtx } from './tools';
+import { markSideEffect } from './types';
 
 type Handover = (a: any, ctx: ToolCtx) => Promise<unknown>;
 type Category = Quote['category'];
@@ -199,6 +200,7 @@ async function createTool(a: any, ctx: ToolCtx, handover: Handover) {
     try { await sendEmail({ to: adminEmail(), subject: text, html: `<p>${text}. Check the code in Admin → Offers.</p>` }); }
     catch (e) { console.error('WhatsApp offer booking: owner email failed', e); }
   }
+  markSideEffect(ctx, 'create_booking');
   const base = { booking_ref: r.booking.booking_ref, status: 'requested', amount: r.amount, ...(offer ? { offer_code: offer.code, offer_percent: offer.percent } : {}) };
   if (r.payment_method !== 'online') return { ...base, payment: 'later' };
 
@@ -237,7 +239,9 @@ async function paymentLinkTool(a: any, ctx: ToolCtx) {
     console.error('WhatsApp payment_link failed', e);
     return { error: 'Could not create a payment link right now.' };
   }
-  return link.ok ? { booking_ref: b.booking_ref, payment_url: link.url } : { error: link.error };
+  if (!link.ok) return { error: link.error };
+  markSideEffect(ctx, 'payment_link');
+  return { booking_ref: b.booking_ref, payment_url: link.url };
 }
 
 const STATUS_WORDS: Record<string, string> = {

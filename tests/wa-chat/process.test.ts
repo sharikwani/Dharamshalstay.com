@@ -46,6 +46,16 @@ describe('processConversation', () => {
     expect(await processConversation('c1', 'm1', { wait })).toBe('superseded');
     expect(s.sent).toEqual([]);
   });
+  it('still sends the reply when the turn booked something, even if a newer message arrived', async () => {
+    s.reply.mockImplementation(async (_h: any, ctx: any) => { ctx.sideEffects = ['create_booking']; s.latest = 'm2'; return 'Booked! Ref HTL-1'; });
+    expect(await processConversation('c1', 'm1', { wait })).toBe('replied');
+    expect(s.sent).toEqual([['919800000001', 'Booked! Ref HTL-1']]);
+    expect(s.outbound[0]).toEqual(['c1', 'ai', 'Booked! Ref HTL-1', 'wamid.out', undefined]);
+  });
+  it('passes a fresh side-effect list to the assistant', async () => {
+    await processConversation('c1', 'm1', { wait });
+    expect(s.reply.mock.calls[0][1]).toMatchObject({ sideEffects: [] });
+  });
   it('no reply while a human has the chat', async () => {
     s.conv.status = 'human';
     expect(await processConversation('c1', 'm1', { wait })).toBe('skipped');

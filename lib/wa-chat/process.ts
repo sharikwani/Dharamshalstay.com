@@ -4,6 +4,7 @@ import { siteConfig } from '@/lib/config';
 import { reply } from './assistant';
 import { aiRepliesSince, getConversation, getSettings, history, latestInboundId, saveOutbound, setStatus } from './store';
 import type { ChatSettings } from './types';
+import type { ToolCtx } from './tools';
 
 export const HOLDING_REPLY = 'Thank you for your message! A member of our team will reply here shortly. 🙏';
 const HOUR = 3600e3;
@@ -61,9 +62,12 @@ export async function processConversation(conversationId: string, messageId: str
       return 'handed_over';
     }
 
-    const ctx = { conversationId: conv.id, phone: conv.phone, profileName: conv.profile_name, handedOver: false };
+    const ctx: ToolCtx = { conversationId: conv.id, phone: conv.phone, profileName: conv.profile_name, handedOver: false, sideEffects: [] };
     let text = await withDeadline(reply(await history(conv.id, 20), ctx), deadline);
-    if ((await latestInboundId(conversationId)) !== messageId) return 'superseded';
+    // A newer message gets its own turn. Drop this reply only if nothing happened: once a tool booked, cancelled,
+    // issued a code or made a payment link, the customer must hear about it (the newer turn answers its own message).
+    const acted = (ctx.sideEffects?.length ?? 0) > 0;
+    if (!acted && (await latestInboundId(conversationId)) !== messageId) return 'superseded';
     // The owner may have taken over while the AI was thinking.
     if ((await getConversation(conv.id))?.status !== 'ai' && !ctx.handedOver) return 'skipped';
     if (!text) {

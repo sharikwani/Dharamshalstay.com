@@ -49,6 +49,21 @@ describe('requestCancellation', () => {
     expect(await ask({ reason_code: 'medical' })).toMatchObject({ result: 'need_proof' });
     expect(h.saved[0]).toEqual({ conversation_id: 'c1', booking_id: 'b1', reason_code: 'medical', reason_text: 'fever', status: 'awaiting_proof' });
   });
+  it('records a side effect for need_proof, cancelled and handed_over, none for refusals', async () => {
+    const c1: any = ctx();
+    await ask({ reason_code: 'medical' }, c1);
+    expect(c1.sideEffects).toEqual(['request_cancellation']);
+    const c2: any = ctx();
+    await ask({ reason_code: 'other' }, c2);
+    expect(c2.sideEffects).toEqual(['request_cancellation']);
+    const c3: any = ctx();
+    await ask({ booking_ref: 'TRK-404', reason_code: 'medical' }, c3);
+    expect(c3.sideEffects ?? []).toEqual([]);
+    h.own = [booking(), booking({ id: 'b2', booking_ref: 'TRK-2' })];
+    const c4: any = ctx();
+    expect(await ask({ reason_code: 'duplicate_or_mistake' }, c4)).toMatchObject({ result: 'cancelled' });
+    expect(c4.sideEffects).toEqual(['request_cancellation']);
+  });
   it('not found / already cancelled', async () => {
     expect(await ask({ booking_ref: 'TRK-404', reason_code: 'medical' })).toMatchObject({ result: 'not_found' });
     h.own = [booking({ status: 'cancelled' })];

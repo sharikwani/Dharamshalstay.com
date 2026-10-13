@@ -9,7 +9,8 @@ import { BOOKING_TOOL_DEFS, runBookingTool } from './booking-tools';
 import { CANCEL_TOOL_DEF, requestCancellation } from './cancellations';
 import { getOfferCode, OFFER_TOOL_DEF, offerNotes } from './offer-tools';
 
-export type ToolCtx = { conversationId: string; phone: string; profileName: string | null; handedOver: boolean };
+/** sideEffects: tools that changed state this turn (create_booking, request_cancellation, get_offer_code, payment_link). */
+export type ToolCtx = { conversationId: string; phone: string; profileName: string | null; handedOver: boolean; sideEffects?: string[] };
 
 const fn = (name: string, description: string, properties: Record<string, any>, required: string[] = []) =>
   ({ type: 'function', function: { name, description, parameters: { type: 'object', properties, required, additionalProperties: false } } });

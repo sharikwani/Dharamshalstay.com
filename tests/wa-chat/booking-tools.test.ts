@@ -118,6 +118,17 @@ describe('create_booking', () => {
     expect(opts).toEqual({ userId: null, callerRole: null });
     expect(h.linked[0]).toEqual(['q1', 'b1']);
   });
+  it('records a side effect on the context when a booking is made', async () => {
+    const c: any = ctx();
+    await run('create_booking', { payment: 'later', guest_name: 'Asha' }, c);
+    expect(c.sideEffects).toEqual(['create_booking']);
+  });
+  it('records no side effect when create_booking refuses', async () => {
+    h.quote = null;
+    const c: any = ctx();
+    await run('create_booking', { payment: 'later', guest_name: 'Asha' }, c);
+    expect(c.sideEffects ?? []).toEqual([]);
+  });
   it('uses pay_at_hotel for hotels', async () => {
     h.quote = goodQuote({ category: 'hotel', input: { category: 'hotel', property_id: HOTEL_ID, check_in: '2099-10-24', check_out: '2099-10-26', num_guests: 2, room_name: 'Deluxe' } });
     await run('create_booking', { payment: 'later', guest_name: 'Asha' });
@@ -217,6 +228,15 @@ describe('payment_link and my_bookings', () => {
     expect((await run('payment_link', { booking_ref: 'TRK-1' })).error).toMatch(/not found/i);
     h.own[0].payment_status = 'paid';
     expect((await run('payment_link', { booking_ref: 'TRK-9' })).error).toMatch(/already paid/i);
+  });
+  it('records a side effect when a payment link is made', async () => {
+    h.own = [{ id: 'b1', booking_ref: 'TRK-9', status: 'pending', payment_status: 'pending' }];
+    const c: any = ctx();
+    await run('payment_link', { booking_ref: 'TRK-9' }, c);
+    expect(c.sideEffects).toEqual(['payment_link']);
+    const c2: any = ctx();
+    await run('payment_link', { booking_ref: 'TRK-404' }, c2);
+    expect(c2.sideEffects ?? []).toEqual([]);
   });
   it('refuses failed bookings and passes checkout refusals through', async () => {
     h.own = [{ id: 'b1', booking_ref: 'TRK-9', status: 'failed', payment_status: 'pending' }];

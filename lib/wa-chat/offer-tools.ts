@@ -4,6 +4,7 @@ import { formatIST, heldByUnpaidText, isExpired, normalizeCode, planPercent, rul
 import { samePhone } from './booking-store';
 import { findHotel } from './find';
 import type { ToolCtx } from './tools';
+import { markSideEffect } from './types';
 
 export type OfferOk = { ok: true; codeId: string; code: string; percent: number; expiresAt: string };
 export type OfferCheck = OfferOk | { error: string };
@@ -40,6 +41,7 @@ export async function getOfferCode(a: any, ctx: ToolCtx) {
   // The phone is always the chat's own number, never a tool argument.
   const r = await issueCode(offer.id, ctx.phone, ctx.conversationId);
   if (!r.ok) return { error: r.error };
+  if (!r.reused) markSideEffect(ctx, 'get_offer_code');
   let c = r.code;
   let booked: string | null = null;
   if (c.status === 'booked') {
