@@ -92,7 +92,8 @@ export async function redeemCode(input: string, by: Viewer): Promise<RedeemResul
   if (!before.valid) return { ok: false, error: REASON_TEXT[before.reason!], status: 409, result: before };
   const at = new Date().toISOString();
   let q = serviceClient().from('offer_codes').update({ status: 'redeemed', redeemed_at: at, redeemed_by: by.id }).eq('id', f.c.id);
-  q = before.path === 'walk_in' ? q.eq('status', 'issued').gt('expires_at', at) : q.eq('status', 'booked');
+  // A paid-booking code must still belong to the booking that was checked.
+  q = before.path === 'walk_in' ? q.eq('status', 'issued').gt('expires_at', at) : q.eq('status', 'booked').eq('booking_id', f.c.booking_id!);
   const { data, error } = await q.select('id');
   if (error) throw error;
   if (!data?.length) return { ok: false, error: 'This code was just used or changed. Check it again.', status: 409 };

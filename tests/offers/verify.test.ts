@@ -110,7 +110,7 @@ describe('redeemCode', () => {
     world();
     fake.queue('offer_codes', { data: [{ id: 'c1' }] });
     expect((await redeemCode('PNV-7K3Q9', OWNER)).ok).toBe(true);
-    expect(fake.ops('offer_codes', 'eq')).toEqual([['id', 'c1'], ['status', 'booked']]);
+    expect(fake.ops('offer_codes', 'eq')).toEqual([['id', 'c1'], ['status', 'booked'], ['booking_id', 'b1']]);
   });
   it('is not found for a partner of another hotel', async () => {
     world();
