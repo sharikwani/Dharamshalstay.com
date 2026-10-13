@@ -4,7 +4,7 @@ import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 const HOTEL_ID = '11111111-1111-4111-8111-111111111111';
 const TREK_ID = '22222222-2222-4222-8222-222222222222';
 const h = vi.hoisted(() => ({
-  quotes: [] as any[], quote: null as any, claimed: true, confirmed: true, useSaved: false, own: [] as any[], confirmCalls: [] as any[], created: [] as any[], createResult: null as any,
+  quotes: [] as any[], quote: null as any, claimed: true, claimCalls: [] as any[], confirmed: true, useSaved: false, own: [] as any[], confirmCalls: [] as any[], created: [] as any[], createResult: null as any,
   avail: {} as any, availCalls: [] as any[],
   checkout: { ok: true, url: 'https://pay/x', sessionId: 's' } as any, released: [] as any[], linked: [] as any[], updates: [] as any[], emails: [] as any[], handovers: [] as any[], commission: 0,
 }));
@@ -34,7 +34,7 @@ vi.mock('@/lib/db', () => ({
 vi.mock('@/lib/wa-chat/booking-store', () => ({
   saveQuote: async (q: any) => { const row = { id: 'q1', created_at: '2026-10-13T10:00:00Z', expires_at: new Date(Date.now() + 60e3).toISOString(), used_at: null, used_booking_id: null, ...q }; h.quotes.push(row); return row; },
   latestOpenQuote: async (cid: string) => h.useSaved ? (h.quotes.filter((q) => q.conversation_id === cid && !q.used_at).at(-1) ?? null) : h.quote,
-  claimQuote: async () => h.claimed,
+  claimQuote: async (id: string) => { h.claimCalls.push(id); return h.claimed; },
   releaseQuote: async (id: string) => { h.released.push(id); },
   linkQuoteBooking: async (...a: any[]) => { h.linked.push(a); },
   confirmedAfter: async (cid: string, iso: string) => { h.confirmCalls.push([cid, iso]); return h.confirmed; },
@@ -62,7 +62,7 @@ const goodQuote = (over: any = {}) => ({
 });
 
 beforeEach(() => {
-  Object.assign(h, { avail: {}, availCalls: [], quotes: [], quote: goodQuote(), claimed: true, confirmed: true, useSaved: false, own: [], confirmCalls: [], created: [], released: [], linked: [], updates: [], emails: [], handovers: [], commission: 0,
+  Object.assign(h, { claimCalls: [], avail: {}, availCalls: [], quotes: [], quote: goodQuote(), claimed: true, confirmed: true, useSaved: false, own: [], confirmCalls: [], created: [], released: [], linked: [], updates: [], emails: [], handovers: [], commission: 0,
     createResult: { ok: true, booking: { id: 'b1', booking_ref: 'TRK-9' }, amount: 3000, payment_method: 'offline' },
     checkout: { ok: true, url: 'https://pay/x', sessionId: 's' } });
   vi.stubEnv('STRIPE_SECRET_KEY', 'sk_test');
@@ -292,4 +292,64 @@ describe('quote_booking room availability', () => {
     expect(h.availCalls).toEqual([]);
     expect(h.quotes).toHaveLength(1);
   });
+});
+
+describe('create_booking duplicate guard', () => {
+  const minsAgo = (m: number) => new Date(Date.now() - m * 60e3).toISOString();
+  const hotelQuote = (input: any = {}) => goodQuote({ category: 'hotel', input: { category: 'hotel', property_id: HOTEL_ID, check_in: '2099-10-24', check_out: '2099-10-26', num_guests: 2, room_name: 'Deluxe', ...input } });
+  const existing = (over: any = {}) => ({
+    id: 'b0', booking_ref: 'HTL-261013-2F2F2', category: 'hotel', status: 'pending', payment_status: 'pending', booking_source: 'whatsapp',
+    property_id: HOTEL_ID, trek_id: null, paragliding_id: null, taxi_route_id: null, check_in: '2099-10-24', check_out: '2099-10-26', activity_date: null,
+    room_name: 'Deluxe', created_at: minsAgo(1), ...over,
+  });
+  const NOTE = 'This booking was already made a moment ago – do not book again.';
+
+  it('returns the booking made a moment ago instead of booking the same stay again', async () => {
+    h.quote = hotelQuote();
+    h.own = [existing()];
+    const c: any = ctx();
+    const r = await run('create_booking', { payment: 'online', guest_name: 'Pallavi' }, c);
+    expect(r).toEqual({ booking_ref: 'HTL-261013-2F2F2', status: 'requested', duplicate: true, note: NOTE });
+    expect(h.created).toEqual([]);
+    expect(h.claimCalls).toEqual([]);
+    expect(h.linked).toEqual([]);
+    expect(c.sideEffects ?? []).toEqual([]);
+  });
+  it('matches the stored room label "Room - Plan"', async () => {
+    h.quote = hotelQuote({ plan_name: 'Breakfast', plan_index: 1 });
+    h.own = [existing({ room_name: 'Deluxe - Breakfast' })];
+    expect(await run('create_booking', { payment: 'later', guest_name: 'Pallavi' })).toMatchObject({ duplicate: true, booking_ref: 'HTL-261013-2F2F2' });
+    h.own = [existing({ room_name: 'Deluxe' })];
+    expect(await run('create_booking', { payment: 'later', guest_name: 'Pallavi' })).toMatchObject({ booking_ref: 'TRK-9' });
+  });
+  it('catches a duplicate trek on the same date', async () => {
+    h.own = [existing({ booking_ref: 'TRK-1', category: 'trek', property_id: null, trek_id: TREK_ID, check_in: null, check_out: null, activity_date: '2099-10-24', room_name: null })];
+    expect(await run('create_booking', { payment: 'later', guest_name: 'Asha' })).toMatchObject({ duplicate: true, booking_ref: 'TRK-1' });
+    expect(h.created).toEqual([]);
+  });
+  it('wins over the daily limit so the customer gets the existing reference', async () => {
+    h.quote = hotelQuote();
+    h.own = [existing(), existing({ booking_ref: 'X-1', property_id: 'other' }), existing({ booking_ref: 'X-2', property_id: 'other' })];
+    const c = ctx();
+    expect(await run('create_booking', { payment: 'later', guest_name: 'Pallavi' }, c)).toMatchObject({ duplicate: true });
+    expect(c.handedOver).toBe(false);
+  });
+  for (const [label, over] of [
+    ['older than 30 minutes', { created_at: minsAgo(31) }],
+    ['cancelled', { status: 'cancelled' }],
+    ['failed', { status: 'failed' }],
+    ['not from WhatsApp', { booking_source: 'website' }],
+    ['other dates', { check_out: '2099-10-27' }],
+    ['another room', { room_name: 'Suite' }],
+    ['another hotel', { property_id: '99999999-9999-4999-8999-999999999999' }],
+  ] as const) {
+    it(`books normally when the earlier booking is ${label}`, async () => {
+      h.quote = hotelQuote();
+      h.own = [existing(over)];
+      const r = await run('create_booking', { payment: 'later', guest_name: 'Pallavi' });
+      expect(r).toMatchObject({ booking_ref: 'TRK-9', status: 'requested' });
+      expect(r.duplicate).toBeUndefined();
+      expect(h.created).toHaveLength(1);
+    });
+  }
 });

@@ -11,7 +11,7 @@ import { availabilityFor } from '@/lib/availability/store';
 import { claimCode, linkCodeBooking, releaseCode } from '@/lib/offers/store';
 import { discounted, formatIST, OFFER_NEEDS_ONLINE, offerNeedsOnline } from '@/lib/offers/rules';
 import { offerForBooking, type OfferOk } from './offer-tools';
-import { claimQuote, confirmedAfter, findOwnBooking, latestOpenQuote, linkQuoteBooking, ownBookings, releaseQuote, saveQuote, type Quote } from './booking-store';
+import { claimQuote, confirmedAfter, findOwnBooking, latestOpenQuote, linkQuoteBooking, ownBookings, releaseQuote, saveQuote, type OwnBooking, type Quote } from './booking-store';
 import { findHotel } from './find';
 import type { ToolCtx } from './tools';
 import { markSideEffect } from './types';
@@ -148,6 +148,24 @@ async function quoteTool(a: any, ctx: ToolCtx) {
   return { quote_id: q.id, summary, amount, online_payment_available: online, expires_in_minutes: 30, ...(offer ? { offer, payment: 'online only' } : {}) };
 }
 
+const DUPLICATE_WINDOW = 30 * 60e3;
+const ITEM_KEYS = ['property_id', 'trek_id', 'paragliding_id', 'taxi_route_id'] as const;
+const opt = (v: unknown) => (v === undefined || v === '' ? null : v);
+
+/** The room label createBooking stores: "Room" or "Room - Plan". */
+const roomLabel = (i: Record<string, any>) => (i.room_name ? (i.plan_name ? `${i.room_name} - ${i.plan_name}` : i.room_name) : null);
+
+/** A live WhatsApp booking from the last 30 minutes for exactly what this quote would book. */
+function sameBooking(b: OwnBooking, q: Quote): boolean {
+  const i = q.input;
+  return b.booking_source === 'whatsapp' && b.status !== 'cancelled' && b.status !== 'failed'
+    && Date.now() - Date.parse(b.created_at) <= DUPLICATE_WINDOW
+    && b.category === q.category
+    && ITEM_KEYS.some((k) => !!i[k]) && ITEM_KEYS.every((k) => opt(b[k]) === opt(i[k]))
+    && opt(b.check_in) === opt(i.check_in) && opt(b.check_out) === opt(i.check_out) && opt(b.activity_date) === opt(i.activity_date)
+    && opt(b.room_name) === opt(roomLabel(i));
+}
+
 async function createTool(a: any, ctx: ToolCtx, handover: Handover) {
   const q = await latestOpenQuote(ctx.conversationId);
   if (!q || q.conversation_id !== ctx.conversationId) return { error: 'No open quote. Make a quote with quote_booking, show it, and wait for YES.' };
@@ -158,8 +176,13 @@ async function createTool(a: any, ctx: ToolCtx, handover: Handover) {
   if (name.length < 2) return { error: 'Ask for the guest\'s full name.' };
   const email = String(a.guest_email || '').trim();
 
+  const own = await ownBookings(ctx.phone);
+  // A turn whose reply never reached the customer may already have booked this quote's stay/activity.
+  const dup = own.find((b) => sameBooking(b, q));
+  if (dup) return { booking_ref: dup.booking_ref, status: 'requested', duplicate: true, note: 'This booking was already made a moment ago – do not book again.' };
+
   const since = Date.now() - 24 * 3600e3;
-  const recent = (await ownBookings(ctx.phone)).filter((b) => b.booking_source === 'whatsapp' && Date.parse(b.created_at) >= since);
+  const recent = own.filter((b) => b.booking_source === 'whatsapp' && Date.parse(b.created_at) >= since);
   if (recent.length >= DAILY_LIMIT) {
     await handover({ reason: `More than ${DAILY_LIMIT} WhatsApp bookings in 24 hours` }, ctx);
     return { handed_over: true, reason: 'Daily WhatsApp booking limit reached; a team member will help.' };
