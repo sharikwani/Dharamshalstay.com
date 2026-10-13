@@ -8,10 +8,10 @@ import DirectoryListing from '@/components/hotels/DirectoryListing';
 import JsonLd from '@/components/seo/JsonLd';
 import { isDirectoryListing, areaName } from '@/lib/listing';
 import { getPropertyBySlug, getPropertiesByDestination } from '@/lib/db';
-import { generateHotelSEO, generateSEO, hotelSchemaFull, breadcrumbSchema, faqSchema } from '@/lib/seo';
+import { generateHotelSEO, generateSEO, ratedPhrase, hotelSchemaFull, breadcrumbSchema, faqSchema } from '@/lib/seo';
 import { formatPrice } from '@/lib/utils';
 import { normalizeImages } from '@/lib/images';
-import { loadReviewBundle } from '@/lib/reviews/store';
+import { loadReviewBundle, loadSummary } from '@/lib/reviews/store';
 import { serverT } from '@/lib/i18n/server';
 import { fmt } from '@/lib/i18n/dict';
 import { localizeHotel } from '@/lib/i18n/content';
@@ -21,11 +21,12 @@ export async function hotelMetadata(slug: string, lang: Lang): Promise<Metadata>
   const raw = await getPropertyBySlug(slug);
   if (!raw) return {};
   const h = localizeHotel(raw, lang);
-  if (lang === 'hi') return generateHotelSEO(h, 'hi');
+  const summary = await loadSummary(raw.id);
+  if (lang === 'hi') return generateHotelSEO(h, 'hi', summary);
   if (isDirectoryListing(h)) {
     const typeLabel = h.type.charAt(0).toUpperCase() + h.type.slice(1);
     return generateSEO({
-      title: h.meta_title || (h.name + ', ' + areaName(h.destination_slug) + ' - ' + typeLabel + ' Guide & Enquiries'),
+      title: h.meta_title || [h.name + ', ' + areaName(h.destination_slug) + ' - ' + typeLabel + ' Guide & Enquiries', ratedPhrase(summary)].filter(Boolean).join(' · '),
       description: h.meta_description || ((h.short_description || '') + ' Location, photos, nearby sights and who it suits. Enquire for rates.').trim().slice(0, 158),
       path: '/hotels/' + h.slug,
       image: (h.images?.[0] as any)?.url,
@@ -34,7 +35,7 @@ export async function hotelMetadata(slug: string, lang: Lang): Promise<Metadata>
       keywords: [h.name, h.name + ' ' + areaName(h.destination_slug), typeLabel.toLowerCase() + ' in ' + areaName(h.destination_slug), 'where to stay in ' + areaName(h.destination_slug)],
     });
   }
-  return generateHotelSEO(h);
+  return generateHotelSEO(h, 'en', summary);
 }
 
 export default async function HotelDetailView({ slug, lang }: { slug: string; lang: Lang }) {

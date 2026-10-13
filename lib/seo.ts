@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { siteConfig } from './config';
 import { hasHindiVersion, localizePath, type Lang } from './i18n/core';
 import { normalizeImages, roomImageUrls } from './images';
-import type { PublicReview, ReviewFeed } from './reviews/types';
+import type { PublicReview, ReviewFeed, ReviewSummary } from './reviews/types';
 
 interface SEOProps {
   title: string;
@@ -117,9 +117,18 @@ export function generateSEO({
   };
 }
 
+type RatingSummary = Pick<ReviewSummary, 'count' | 'average'>;
+
+/** "Rated 4.7/5 by 3 guests" from approved reviews, or '' when there are none. */
+export function ratedPhrase(reviews?: RatingSummary): string {
+  const n = reviews?.count ?? 0;
+  return n >= 1 ? 'Rated ' + reviews!.average + '/5 by ' + n + (n === 1 ? ' guest' : ' guests') : '';
+}
+
 /**
- * Auto-generated SEO for hotel pages. Uses meta_title/meta_description when
- * set, otherwise builds keyword-rich defaults from property data.
+ * Auto-generated SEO for hotel pages. meta_title/meta_description win when set. Otherwise:
+ * "<Name>, <Area> · Rated <x>/5 by <n> guests · Rooms from ₹<min>" (rating only from approved
+ * reviews, n >= 1), falling back to the older keyword text when there is no rating and no price.
  */
 export function generateHotelSEO(hotel: {
   name: string; meta_title?: string; meta_description?: string;
@@ -128,16 +137,26 @@ export function generateHotelSEO(hotel: {
   price_min?: number; price_max?: number;
   star_rating?: number; rating?: number; review_count?: number;
   slug: string; images?: any[];
-}, lang: Lang = 'en'): Metadata {
-  if (lang === 'hi') return generateHotelSEOHindi(hotel);
+}, lang: Lang = 'en', reviews?: RatingSummary): Metadata {
+  if (lang === 'hi') return generateHotelSEOHindi(hotel, reviews);
   const area = hotel.destination_slug?.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()) || hotel.city || 'Dharamshala';
   const typeLabel = hotel.type ? hotel.type.charAt(0).toUpperCase() + hotel.type.slice(1) : 'Hotel';
   const starText = hotel.star_rating ? hotel.star_rating + '-Star ' : '';
-  const priceText = hotel.price_min ? ' from \u20B9' + hotel.price_min + '/night' : '';
-  const ratingText = hotel.rating ? ' \u00B7 Rated ' + hotel.rating + '/5' : '';
+  const priceText = hotel.price_min ? ' from ₹' + hotel.price_min + '/night' : '';
 
-  const autoTitle = hotel.name + ' \u2013 ' + starText + typeLabel + ' in ' + area + priceText;
-  const autoDescription = ('Book ' + hotel.name + ', a ' + starText.toLowerCase() + typeLabel.toLowerCase() + ' in ' + area + priceText + '.' + ratingText + ' ' + (hotel.short_description || '') + ' Direct booking, best prices, local support.').trim().substring(0, 160);
+  const parts = [
+    hotel.name + ', ' + area,
+    ratedPhrase(reviews),
+    hotel.price_min && hotel.price_min > 0 ? 'Rooms from ₹' + hotel.price_min.toLocaleString('en-IN') : '',
+  ].filter(Boolean);
+  const templated = parts.length > 1 ? parts.join(' · ') : null;
+  const tail = ' ' + (hotel.short_description || '') + ' Direct booking, best prices, local support.';
+
+  const autoTitle = templated || hotel.name + ' – ' + starText + typeLabel + ' in ' + area + priceText;
+  const autoDescription = ((templated
+    ? templated + '.'
+    : 'Book ' + hotel.name + ', a ' + starText.toLowerCase() + typeLabel.toLowerCase() + ' in ' + area + priceText + '.'
+  ) + tail).replace(/\s+/g, ' ').trim().substring(0, 160);
 
   const title = hotel.meta_title || autoTitle;
   const description = hotel.meta_description || autoDescription;
@@ -164,14 +183,16 @@ export function generateHotelSEO(hotel: {
 const HI_AREAS: Record<string, string> = { dharamshala: 'धर्मशाला', 'mcleod-ganj': 'मैक्लोडगंज', bhagsu: 'भागसू', dharamkot: 'धर्मकोट', naddi: 'नड्डी' };
 const HI_TYPES: Record<string, string> = { hotel: 'होटल', homestay: 'होमस्टे', hostel: 'हॉस्टल', guesthouse: 'गेस्टहाउस', resort: 'रिसॉर्ट', villa: 'विला', camp: 'कैंप' };
 
-function generateHotelSEOHindi(hotel: { name: string; short_description?: string; type?: string; destination_slug?: string; price_min?: number; slug: string; images?: any[] }): Metadata {
+function generateHotelSEOHindi(hotel: { name: string; short_description?: string; type?: string; destination_slug?: string; price_min?: number; slug: string; images?: any[] }, reviews?: RatingSummary): Metadata {
   const area = HI_AREAS[hotel.destination_slug || ''] || 'धर्मशाला';
   const type = HI_TYPES[hotel.type || ''] || 'होटल';
   const price = hotel.price_min ? ' -- ₹' + hotel.price_min.toLocaleString('en-IN') + '/रात से' : '';
+  const n = reviews?.count ?? 0;
+  const rated = n >= 1 ? ' · ' + reviews!.average + '/5 रेटिंग (' + n + ' मेहमान)' : '';
   const primaryImage = hotel.images?.[0]?.url || hotel.images?.[0];
   return generateSEO({
-    title: hotel.name + ' -- ' + area + ' में ' + type + price,
-    description: (hotel.name + ', ' + area + ' में ' + type + '। ' + (hotel.short_description || '') + ' लोकेशन, फ़ोटो, आसपास की जगहें और बुकिंग में मदद।').slice(0, 158),
+    title: hotel.name + ' -- ' + area + ' में ' + type + price + rated,
+    description: (hotel.name + ', ' + area + ' में ' + type + '।' + (n >= 1 ? ' मेहमानों की रेटिंग ' + reviews!.average + '/5 (' + n + ' रिव्यू)।' : '') + ' ' + (hotel.short_description || '') + ' लोकेशन, फ़ोटो, आसपास की जगहें और बुकिंग में मदद।').slice(0, 158),
     path: '/hotels/' + hotel.slug,
     image: typeof primaryImage === 'string' ? primaryImage : undefined,
     keywords: [hotel.name, area + ' में ' + type, area + ' होटल'],
@@ -229,7 +250,7 @@ export function hotelSchemaFull(h: {
   amenities?: string[]; images?: any[]; total_rooms?: number;
   rooms?: any[]; contact_phone?: string; contact_email?: string;
 }, reviews?: ReviewFeed) {
-  const area = h.destination_slug?.replace(/-/g, ' ').replace(/\w/g, (c: string) => c.toUpperCase()) || h.city || 'Dharamshala';
+  const area = h.destination_slug?.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()) || h.city || 'Dharamshala';
   const images = hotelImageUrls(h);
   const activeRooms = (h.rooms || []).filter((r: any) => r?.name && r.is_active !== false);
   const s = reviews?.summary;
