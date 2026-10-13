@@ -35,6 +35,8 @@ function Inbox() {
   const [settings, setSettings] = useState<{ ai_mode: string; test_numbers: string[] } | null>(null);
   const [numbers, setNumbers] = useState('');
   const bottom = useRef<HTMLDivElement>(null);
+  // Set synchronously, so a second Enter or click before React re-renders cannot send the reply twice.
+  const sending = useRef(false);
 
   const loadList = useCallback(async () => {
     try {
@@ -57,7 +59,8 @@ function Inbox() {
   }, []);
 
   async function send() {
-    if (!openId || !text.trim()) return;
+    if (sending.current || !openId || !text.trim()) return;
+    sending.current = true;
     setBusy(true); setError('');
     try {
       const r = await api(`/api/admin/whatsapp/conversations/${openId}/messages`, { method: 'POST', body: JSON.stringify({ text }) });
@@ -66,7 +69,7 @@ function Inbox() {
       if (r?.unknown) setError(r.error);
       await loadThread();
     }
-    catch (e: any) { setError(e.message); } finally { setBusy(false); }
+    catch (e: any) { setError(e.message); } finally { sending.current = false; setBusy(false); }
   }
   async function setStatus(status: 'ai' | 'human' | 'closed') {
     if (!openId) return;
@@ -173,9 +176,9 @@ function Inbox() {
               <div className="p-3 border-t border-slate-200">
                 {windowOpen ? (
                   <div className="flex gap-2">
-                    <textarea value={text} onChange={(e) => setText(e.target.value)} rows={2} placeholder="Type a reply (this takes the chat over from the AI)"
+                    <textarea value={text} onChange={(e) => setText(e.target.value)} rows={2} disabled={busy} placeholder="Type a reply (this takes the chat over from the AI)"
                       onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } }}
-                      className="flex-1 px-3 py-2 border border-slate-300 rounded-lg text-sm resize-none" />
+                      className="flex-1 px-3 py-2 border border-slate-300 rounded-lg text-sm resize-none disabled:bg-slate-50" />
                     <button onClick={send} disabled={busy || !text.trim()} aria-label="Send" className="px-4 rounded-lg bg-green-600 text-white disabled:opacity-50">
                       {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
                     </button>
