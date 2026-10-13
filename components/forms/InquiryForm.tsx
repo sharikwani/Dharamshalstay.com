@@ -1,8 +1,9 @@
 'use client';
-import { useState, FormEvent } from 'react';
+import { useState, useRef, FormEvent } from 'react';
 import { Send, Check, AlertCircle } from 'lucide-react';
 import { getMinDate, getMinCheckoutDate, enforceCheckIn, enforceCheckOut } from '@/lib/date-helpers';
 import { useT } from '@/lib/i18n/client';
+import { newClientId } from '@/lib/client-id';
 
 export default function InquiryForm({ type, propertyId, trekId, paraglidingId, contextNote, title, subtitle, className = '' }: {
   type: 'hotel' | 'taxi' | 'trek' | 'paragliding' | 'general'; propertyId?: string; trekId?: string; paraglidingId?: string;
@@ -15,6 +16,8 @@ export default function InquiryForm({ type, propertyId, trekId, paraglidingId, c
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
+  // One id per form: a retried submit (lost response, double click) cannot save the enquiry twice.
+  const inquiryId = useRef('');
   const minDate = getMinDate();
   const minCheckout = getMinCheckoutDate(checkIn);
 
@@ -29,10 +32,13 @@ export default function InquiryForm({ type, propertyId, trekId, paraglidingId, c
   }
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault(); setStatus('loading');
+    e.preventDefault();
+    if (status === 'loading') return;
+    setStatus('loading');
+    if (!inquiryId.current) inquiryId.current = newClientId();
     const fd = new FormData(e.currentTarget);
     try {
-      const res = await fetch('/api/inquiries', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type, name: fd.get('name'), email: fd.get('email'), phone: fd.get('phone'), message: contextNote ? '[' + contextNote + '] ' + (fd.get('message') || '') : fd.get('message'), check_in: checkIn || undefined, check_out: checkOut || undefined, guests: fd.get('guests') ? Number(fd.get('guests')) : undefined, property_id: propertyId, trek_id: trekId, paragliding_id: paraglidingId, pickup_location: fd.get('pickup_location') || undefined, drop_location: fd.get('drop_location') || undefined }) });
+      const res = await fetch('/api/inquiries', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: inquiryId.current, type, name: fd.get('name'), email: fd.get('email'), phone: fd.get('phone'), message: contextNote ? '[' + contextNote + '] ' + (fd.get('message') || '') : fd.get('message'), check_in: checkIn || undefined, check_out: checkOut || undefined, guests: fd.get('guests') ? Number(fd.get('guests')) : undefined, property_id: propertyId, trek_id: trekId, paragliding_id: paraglidingId, pickup_location: fd.get('pickup_location') || undefined, drop_location: fd.get('drop_location') || undefined }) });
       if (!res.ok) throw new Error(); setStatus('success');
     } catch { setStatus('error'); }
   }

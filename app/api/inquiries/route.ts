@@ -8,6 +8,8 @@ function getTodayIST(): string {
 }
 
 const schema = z.object({
+  /** Made once per enquiry form, so a retried submit (lost response, double click) saves only one enquiry. */
+  id: z.string().uuid().optional(),
   type: z.enum(['hotel', 'taxi', 'trek', 'paragliding', 'general']),
   name: z.string().min(2), email: z.string().email().optional().or(z.literal('')),
   phone: z.string().min(10), message: z.string().optional(),
@@ -37,11 +39,17 @@ export async function POST(req: NextRequest) {
     if (url && key) {
       const { createClient } = await import('@supabase/supabase-js');
       const sb = createClient(url, key);
-      await sb.from('inquiries').insert({
+      const { error } = await sb.from('inquiries').insert({
         ...data,
         status: 'new',
         created_at: new Date().toISOString(),
       });
+      if (error) {
+        // The same form sent this enquiry before and it was saved: that is a success, not a second enquiry.
+        if (data.id && error.code === '23505') return NextResponse.json({ success: true });
+        console.error('Inquiry insert failed:', error);
+        return NextResponse.json({ error: 'Could not send your enquiry. Please try again.' }, { status: 500 });
+      }
     } else {
       console.log('📩 Inquiry:', JSON.stringify(data, null, 2));
     }
