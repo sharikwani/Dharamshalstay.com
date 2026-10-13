@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 const HOTEL_ID = '11111111-1111-4111-8111-111111111111';
 const h = vi.hoisted(() => ({
-  inserted: [] as any[], updates: [] as any[], emails: [] as string[],
+  inserted: [] as any[], updates: [] as any[], waives: [] as any[], emails: [] as string[],
   avail: [] as any[], availCalls: [] as any[], throwOnCall: 0,
   hotel: {
     id: '11111111-1111-4111-8111-111111111111', name: 'Cedar Lodge', price_min: 500, commission_pct: 10,
@@ -24,7 +24,10 @@ vi.mock('@supabase/supabase-js', () => ({
           then: (r: any) => r({ error: null }),
         };
       },
-      update: (patch: any) => ({ eq: async (_c: string, id: string) => { h.updates.push({ table, patch, id }); return { error: null }; } }),
+      update: (patch: any) => ({ eq: (_c: string, id: string) => {
+        h.updates.push({ table, patch, id });
+        return { in: async (_col: string, vals: string[]) => { h.waives.push({ id, vals }); return { error: null }; }, then: (r: any) => r({ error: null }) };
+      } }),
     }),
   }),
 }));
@@ -46,7 +49,7 @@ const input = (over: Record<string, any> = {}) => bookingSchema.parse({
 const book = (over: Record<string, any> = {}) => createBooking(input(over), { userId: null });
 
 beforeEach(() => {
-  Object.assign(h, { inserted: [], updates: [], emails: [], avail: [], availCalls: [], throwOnCall: 0 });
+  Object.assign(h, { inserted: [], updates: [], waives: [], emails: [], avail: [], availCalls: [], throwOnCall: 0 });
   vi.spyOn(console, 'error').mockImplementation(() => {});
   vi.stubEnv('NEXT_PUBLIC_SUPABASE_URL', 'http://supabase.test');
   vi.stubEnv('SUPABASE_SERVICE_ROLE_KEY', 'service-key');
@@ -76,7 +79,9 @@ describe('createBooking room availability', () => {
   it('marks the new booking failed when the re-check finds a night oversold, and sends no emails', async () => {
     h.avail = [{ Standard: { tracked: true, left: 1 } }, { Standard: { tracked: true, left: -1 } }];
     expect(await book()).toEqual({ ok: false, error: 'Sold out for these dates', status: 409 });
-    expect(h.updates).toEqual([{ table: 'bookings', patch: { status: 'failed', cancelled_reason: 'Sold out (race)' }, id: 'b1' }]);
+    expect(h.updates).toEqual([{ table: 'bookings', patch: { status: 'failed', cancelled_reason: 'Sold out (race)', commission_status: 'waived' }, id: 'b1' },
+      { table: 'commission_records', patch: { status: 'waived' }, id: 'b1' }]);
+    expect(h.waives).toEqual([{ id: 'b1', vals: ['pending', 'due', 'overdue'] }]);
     expect(h.emails).toEqual([]);
   });
 

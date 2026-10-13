@@ -147,8 +147,13 @@ export async function createBooking(data: BookingInput, opts: { userId: string |
           sb, excludeAfter: { id: booking.id, created_at: booking.created_at },
         }))[room_key];
         if (after?.tracked && after.left < 0) {
-          const { error: failErr } = await sb.from('bookings').update({ status: 'failed', cancelled_reason: 'Sold out (race)' }).eq('id', booking.id);
+          const { error: failErr } = await sb.from('bookings').update({ status: 'failed', cancelled_reason: 'Sold out (race)', commission_status: 'waived' }).eq('id', booking.id);
           if (failErr) console.error('Sold-out race: could not mark booking failed', booking.id, failErr);
+          // The auto_commission trigger already created a pending record for pay-later bookings; waive it.
+          try {
+            const { error: wErr } = await sb.from('commission_records').update({ status: 'waived' }).eq('booking_id', booking.id).in('status', ['pending', 'due', 'overdue']);
+            if (wErr) console.error('Sold-out race: commission waive failed', booking.id, wErr);
+          } catch (we) { console.error('Sold-out race: commission waive failed', booking.id, we); }
           return { ok: false, error: SOLD_OUT, status: 409 };
         }
       } catch (e) {
