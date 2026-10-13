@@ -14,7 +14,10 @@ import { essentialGroups } from '@/data/essentials';
 import { getPublishedProperties, getPropertyBySlug, getDestinations, getDestinationBySlug, getPublishedTreks, getTrekBySlug, getParaglidingPackages } from './db';
 import { getTaxiRouteGroups, type TaxiRouteGroup } from './taxi';
 import { isDirectoryListing, areaName } from './listing';
-import { normalizeImages } from './images';
+import { normalizeImages, roomImageUrls } from './images';
+import { loadReviewBundle } from './reviews/store';
+import { initialName, monthLabel, shortQuote } from './reviews/summary';
+import { CATEGORIES, type Category, type ReviewFeed } from './reviews/types';
 
 const B = siteConfig.url;
 const rs = (n: number) => 'Rs.' + Math.round(n).toLocaleString('en-IN');
@@ -99,12 +102,40 @@ export function trekMarkdown(t: Trek): string {
   );
 }
 
-export function hotelMarkdown(h: Property): string {
+const CATEGORY_LABELS: Record<Category, string> = { cleanliness: 'Cleanliness', location: 'Location', staff: 'Staff', value: 'Value for money' };
+const outOf5 = (n: number) => Number(n).toFixed(1) + '/5';
+const plural = (n: number, word: string) => n + ' ' + word + (n === 1 ? '' : 's');
+
+/** Approved reviews only: summary, category averages and up to 5 short quotes (initial + month). */
+function reviewsBlock(reviews?: ReviewFeed): string {
+  const s = reviews?.summary;
+  if (!s || s.count === 0) return '';
+  const cats = CATEGORIES.filter((c) => s.categories[c] !== null).map((c) => '- ' + CATEGORY_LABELS[c] + ': ' + outOf5(s.categories[c]!));
+  const quotes = reviews!.latest.slice(0, 5).map((r) =>
+    '> "' + shortQuote(r.body, 200) + '" -- ' + initialName(r.name) + ', ' + monthLabel(r.stay_month) + (r.verified_stay ? ' (verified stay)' : ''));
+  return join(
+    '## Guest reviews',
+    'Rated ' + outOf5(s.average) + ' from ' + plural(s.count, 'approved review') + ' on ' + siteConfig.name + '.',
+    cats.join('\n'),
+    quotes.join('\n\n'),
+  );
+}
+
+export function hotelMarkdown(h: Property, reviews?: ReviewFeed): string {
   const directory = isDirectoryListing(h);
   const area = areaName(h.destination_slug);
   const images = normalizeImages(h.images);
   const rooms = (h.rooms || []).filter((r: any) => r?.name && r.is_active !== false);
   const extra = h as any;
+  // With a review feed use it; otherwise properties.rating/review_count (derived from approved reviews since v23).
+  const rating = reviews ? reviews.summary : { count: Number(h.review_count) || 0, average: Number(h.rating) || 0 };
+  const roomLine = (r: any) => {
+    const img = roomImageUrls(r)[0];
+    return '- **' + r.name + '**' + (!directory && r.base_price > 0 ? ' -- from ' + rs(r.base_price) + '/night' : '') +
+      (r.bed_type ? ', ' + r.bed_type + ' bed' : '') + (r.max_occupancy ? ', sleeps ' + r.max_occupancy : '') +
+      (r.description ? '. ' + r.description : '') +
+      (img ? '. Photo: ' + abs(img) + ' -- ' + r.name + ' at ' + h.name : '');
+  };
   return join(
     '# ' + h.name + ' (' + (h.type || 'hotel') + ' in ' + area + ')',
     h.short_description && '> ' + h.short_description,
@@ -115,7 +146,7 @@ export function hotelMarkdown(h: Property): string {
       ['Landmark', h.landmark],
       ['Star rating', h.star_rating],
       ['Price', !directory && h.price_min > 0 ? rs(h.price_min) + (h.price_max > h.price_min ? ' - ' + rs(h.price_max) : '') + ' per night' : extra.price_band],
-      ['Guest rating', !directory && h.rating > 0 && h.review_count > 0 ? h.rating + '/5 from ' + h.review_count + ' reviews' : ''],
+      ['Guest rating', rating.count > 0 && rating.average > 0 ? outOf5(rating.average) + ' from ' + plural(rating.count, 'review') : ''],
       ['Check-in / check-out', h.check_in_time && h.check_out_time ? h.check_in_time + ' / ' + h.check_out_time : ''],
       ['From bus stand', h.distance_from_bus_stand],
       ['From airport', h.distance_from_airport],
@@ -125,15 +156,13 @@ export function hotelMarkdown(h: Property): string {
     h.description && absolutize(h.description.trim()),
     extra.highlights?.length && '## Highlights\n\n' + list(extra.highlights),
     extra.good_for?.length && '## Good for\n\n' + list(extra.good_for),
-    rooms.length > 0 && '## Rooms\n\n' + rooms.map((r: any) =>
-      '- **' + r.name + '**' + (!directory && r.base_price > 0 ? ' -- from ' + rs(r.base_price) + '/night' : '') +
-      (r.bed_type ? ', ' + r.bed_type + ' bed' : '') + (r.max_occupancy ? ', sleeps ' + r.max_occupancy : '') +
-      (r.description ? '. ' + r.description : '')).join('\n'),
+    rooms.length > 0 && '## Rooms\n\n' + rooms.map(roomLine).join('\n'),
     h.amenities?.length && '## Amenities\n\n' + list([...h.amenities, ...(h.room_amenities || [])]),
     (h.nearby_attractions?.length || extra.nearby?.length) && '## Nearby\n\n' + list([...(h.nearby_attractions || []), ...(extra.nearby || [])]),
     (h.cancellation_policy || h.child_policy || h.pet_policy) && '## Policies\n\n' + facts([
       ['Cancellation', h.cancellation_policy], ['Children', h.child_policy], ['Pets', h.pet_policy], ['Smoking', h.smoking_policy],
     ]),
+    reviewsBlock(reviews),
     images.length > 0 && '## Photos\n\n' + images.slice(0, 12).map((i) => '- ' + abs(i.url) + (i.alt ? ' -- ' + i.alt : '')).join('\n'),
     faqBlock(h.faqs),
   );
@@ -200,7 +229,11 @@ export async function llmsIndex(): Promise<string> {
     treks.length > 0 && '## Treks\n\n' + treks.map((t: any) => link(t.name, '/treks/' + t.slug, [t.difficulty, t.duration, t.max_altitude, t.price_per_person > 0 && 'from ' + rs(t.price_per_person)].filter(Boolean).join(', ') + '. ' + (t.short_description || ''))).join('\n'),
     taxis.length > 0 && '## Taxi routes\n\n' + taxis.map((g) => link(g.from + ' to ' + g.to + ' taxi', '/taxi/' + g.slug, 'from ' + rs(g.minPrice) + (g.distanceKm ? ', ' + g.distanceKm + ' km' : '') + (g.duration ? ', ' + g.duration : ''))).join('\n'),
     hotels.length > 0 && '## Hotels & homestays\n\n' + hotels.map((h) => link(h.name, '/hotels/' + h.slug,
-      [h.type, areaName(h.destination_slug), !isDirectoryListing(h) && h.price_min > 0 && 'from ' + rs(h.price_min) + '/night'].filter(Boolean).join(', ') + '. ' + (h.short_description || ''))).join('\n'),
+      [
+        h.type, areaName(h.destination_slug),
+        !isDirectoryListing(h) && h.price_min > 0 && 'from ' + rs(h.price_min) + '/night',
+        h.review_count > 0 && h.rating > 0 && 'rated ' + outOf5(h.rating) + ' (' + plural(h.review_count, 'review') + ')',
+      ].filter(Boolean).join(', ') + '. ' + (h.short_description || ''))).join('\n'),
     ...categories.map((c) => '## Guides: ' + c + '\n\n' + blogPosts.filter((p) => p.category === c).map((p) => link(p.title, '/blog/' + p.slug, p.excerpt)).join('\n')),
     '## Optional\n\n' + [
       link('Full site text for AI (one file)', '/llms-full.txt'),
@@ -245,7 +278,12 @@ export async function pageMarkdown(path: string): Promise<string | null> {
     case 'blog': { const p = getBlogBySlug(slug); return p ? blogMarkdown(p) + footer : null; }
     case 'destinations': { const d = await getDestinationBySlug(slug); return d ? destinationMarkdown(d) + footer : null; }
     case 'treks': { const t = await getTrekBySlug(slug); return t ? trekMarkdown(t as Trek) + footer : null; }
-    case 'hotels': { const h = await getPropertyBySlug(slug); return h ? hotelMarkdown(h) + footer : null; }
+    case 'hotels': {
+      const h = await getPropertyBySlug(slug);
+      if (!h) return null;
+      const b = await loadReviewBundle(h.id);
+      return hotelMarkdown(h, { summary: b.summary, latest: b.reviews.slice(0, 5) }) + footer;
+    }
     default: return null;
   }
 }
