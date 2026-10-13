@@ -2,6 +2,8 @@ import { z } from 'zod';
 import { quoteBooking } from '@/lib/pricing';
 import { sendBookingEmails } from '@/lib/booking-emails';
 import { todayIST } from './timing';
+import { roomSummaries } from '@/lib/availability/calc';
+import type { RoomAvailability } from '@/lib/availability/store';
 
 export const bookingSchema = z.object({
   category: z.enum(['hotel', 'taxi', 'trek', 'paragliding']),
@@ -32,6 +34,8 @@ export type BookingInput = z.infer<typeof bookingSchema>;
 export type CreateResult =
   | { ok: true; booking: { id: string; booking_ref: string }; amount: number; payment_method: string; demo?: true }
   | { ok: false; error: string; status: number };
+
+const SOLD_OUT = 'Sold out for these dates';
 
 /** The same date rules the booking form uses, in IST. Null when the dates are fine. */
 export function dateProblem(d: Pick<BookingInput, 'category' | 'check_in' | 'check_out' | 'activity_date'>, today = todayIST()): string | null {
@@ -81,6 +85,24 @@ export async function createBooking(data: BookingInput, opts: { userId: string |
       ? 'pending' : 'not_applicable';
     const room_label = data.room_name ? (data.plan_name ? `${data.room_name} - ${data.plan_name}` : data.room_name) : null;
 
+    // Room calendar (spec 2026-10-13-room-availability, section 7). Only room types with a room count are checked;
+    // the store is loaded only then, so untracked hotels make exactly the same queries as before.
+    const roomInfo = data.category === 'hotel' && data.property_id && data.room_name
+      ? roomSummaries(entity?.rooms).find((r) => r.key === data.room_name) : undefined;
+    const room_key = roomInfo ? roomInfo.key : null;
+    const availability = roomInfo?.tracked ? await import('@/lib/availability/store') : null;
+    const stay = { propertyId: data.property_id || '', checkIn: data.check_in || '', checkOut: data.check_out || '' };
+    if (availability && room_key) {
+      let before: RoomAvailability | undefined;
+      try {
+        before = (await availability.availabilityFor(stay.propertyId, stay.checkIn, stay.checkOut, { sb }))[room_key];
+      } catch (e) {
+        console.error('Availability check failed:', e);
+        return { ok: false, error: 'Could not check room availability. Please try again in a minute.', status: 503 };
+      }
+      if (before?.tracked && before.left < 1) return { ok: false, error: SOLD_OUT, status: 409 };
+    }
+
     const { data: booking, error } = await sb.from('bookings').insert({
       category: data.category,
       guest_name: data.guest_name,
@@ -109,11 +131,29 @@ export async function createBooking(data: BookingInput, opts: { userId: string |
       commission_status,
       user_id: opts.userId,
       room_name: room_label,
+      room_key,
     }).select().single();
 
     if (error) {
       console.error('Booking insert error:', error);
       return { ok: false, error: 'Failed to create booking', status: 500 };
+    }
+
+    // Re-check now that this booking exists. Bookings made after it are ignored, so when two people take the
+    // last room at once only the later one loses. If only the re-check itself fails, the booking stands.
+    if (availability && room_key) {
+      try {
+        const after = (await availability.availabilityFor(stay.propertyId, stay.checkIn, stay.checkOut, {
+          sb, excludeAfter: { id: booking.id, created_at: booking.created_at },
+        }))[room_key];
+        if (after?.tracked && after.left < 0) {
+          const { error: failErr } = await sb.from('bookings').update({ status: 'failed', cancelled_reason: 'Sold out (race)' }).eq('id', booking.id);
+          if (failErr) console.error('Sold-out race: could not mark booking failed', booking.id, failErr);
+          return { ok: false, error: SOLD_OUT, status: 409 };
+        }
+      } catch (e) {
+        console.error('Availability re-check failed (booking kept):', e);
+      }
     }
 
     // Notification logging (non-blocking -- don't fail booking if this errors)
