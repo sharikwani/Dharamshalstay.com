@@ -135,12 +135,17 @@ export async function removeUploads(paths: string[]): Promise<void> {
   if (error) console.error('Review upload cleanup failed:', error);
 }
 
-/** Copy approved photos from the private bucket to the public one (same paths). */
+export const MISSING_PHOTO = 'A photo for this review is missing. Hide it or ask the guest to resend.';
+
+/** Copy approved photos from the private bucket to the public one (same paths). A missing upload is a 409. */
 export async function publishPhotos(paths: string[]): Promise<void> {
   const sb = serviceClient();
   for (const p of paths) {
     const { data, error } = await sb.storage.from(UPLOAD_BUCKET).download(p);
-    if (error || !data) throw error || new Error('Review photo missing: ' + p);
+    if (error || !data) {
+      console.error('Review photo download failed:', p, error);
+      throw new HttpError(409, MISSING_PHOTO);
+    }
     const { error: upErr } = await sb.storage.from(PUBLIC_BUCKET).upload(p, data, { contentType: contentTypeFor(p), upsert: true });
     if (upErr) throw upErr;
   }

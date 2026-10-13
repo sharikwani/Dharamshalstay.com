@@ -106,13 +106,21 @@ const CATEGORY_LABELS: Record<Category, string> = { cleanliness: 'Cleanliness', 
 const outOf5 = (n: number) => Number(n).toFixed(1) + '/5';
 const plural = (n: number, word: string) => n + ' ' + word + (n === 1 ? '' : 's');
 
+/**
+ * Guest text inside a Markdown quote must stay plain text: brackets become parentheses (no links or
+ * images), backticks and inner double quotes become ', and < becomes ‹ (no HTML or autolinks).
+ */
+export function plainQuoteText(text: string): string {
+  return text.replace(/\[/g, '(').replace(/\]/g, ')').replace(/[`"]/g, "'").replace(/</g, '‹');
+}
+
 /** Approved reviews only: summary, category averages and up to 5 short quotes (initial + month). */
 function reviewsBlock(reviews?: ReviewFeed): string {
   const s = reviews?.summary;
   if (!s || s.count === 0) return '';
   const cats = CATEGORIES.filter((c) => s.categories[c] !== null).map((c) => '- ' + CATEGORY_LABELS[c] + ': ' + outOf5(s.categories[c]!));
   const quotes = reviews!.latest.slice(0, 5).map((r) =>
-    '> "' + shortQuote(r.body, 200) + '" -- ' + initialName(r.name) + ', ' + monthLabel(r.stay_month) + (r.verified_stay ? ' (verified stay)' : ''));
+    '> "' + plainQuoteText(shortQuote(r.body, 200)) + '" -- ' + plainQuoteText(initialName(r.name)) + ', ' + monthLabel(r.stay_month) + (r.verified_stay ? ' (verified stay)' : ''));
   return join(
     '## Guest reviews',
     'Rated ' + outOf5(s.average) + ' from ' + plural(s.count, 'approved review') + ' on ' + siteConfig.name + '.',

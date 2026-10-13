@@ -9,7 +9,7 @@ import {
   countRecentByIp, hadVerifiedStay, insertReview, loadApprovedPage, loadSummary,
   phoneAlreadyReviewed, propertyRef, removeUploads, uploadReviewPhoto,
 } from '@/lib/reviews/store';
-import { PHOTO_TYPES, REVIEWS_PAGE_SIZE, type ReviewInput } from '@/lib/reviews/types';
+import { PHOTO_TYPES, REVIEWS_PAGE_SIZE, emptySummary, type ReviewInput } from '@/lib/reviews/types';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -97,7 +97,11 @@ export async function GET(req: Request) {
   const propertyId = url.searchParams.get('property_id') || '';
   if (!z.string().uuid().safeParse(propertyId).success) return NextResponse.json({ error: 'Unknown property.' }, { status: 400 });
   const page = Math.min(1000, Math.max(1, Number.parseInt(url.searchParams.get('page') || '1', 10) || 1));
-  const [summary, { reviews, total }] = await Promise.all([loadSummary(propertyId), loadApprovedPage(propertyId, page)]);
+  // Reviews of a draft, hidden or unknown property stay private: answer as if it had none.
+  const property = await propertyRef(propertyId).catch((e) => { console.error('Review property lookup failed:', e); return null; });
+  const [summary, { reviews, total }] = property?.status === 'published'
+    ? await Promise.all([loadSummary(propertyId), loadApprovedPage(propertyId, page)])
+    : [emptySummary(), { reviews: [], total: 0 }];
   return NextResponse.json(
     { summary, reviews, total, page, has_more: page * REVIEWS_PAGE_SIZE < total },
     { headers: { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300' } },

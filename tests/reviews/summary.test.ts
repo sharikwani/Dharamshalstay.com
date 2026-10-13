@@ -53,6 +53,7 @@ describe('labels', () => {
   it('initialName gives the first initial', () => {
     expect(initialName('ravi kumar')).toBe('R.');
     expect(initialName('   ')).toBe('Guest');
+    expect(initialName(' 😀 Ravi')).toBe('😀.');
   });
   it('shortQuote cuts long text at a word with an ellipsis', () => {
     expect(shortQuote('Short and sweet.')).toBe('Short and sweet.');

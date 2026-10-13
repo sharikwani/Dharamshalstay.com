@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { siteConfig } from './config';
 import { hasHindiVersion, localizePath, type Lang } from './i18n/core';
 import { normalizeImages, roomImageUrls } from './images';
+import { isDirectoryListing } from './listing';
 import type { PublicReview, ReviewFeed, ReviewSummary } from './reviews/types';
 
 interface SEOProps {
@@ -210,7 +211,7 @@ export function hotelImageUrls(h: { images?: any[]; rooms?: any[] }, max = 10): 
   return Array.from(new Set(all)).slice(0, max);
 }
 
-function hotelRoomSchema(r: any) {
+function hotelRoomSchema(r: any, priced = true) {
   const image = roomImageUrls(r)[0];
   return {
     '@type': 'HotelRoom',
@@ -219,7 +220,7 @@ function hotelRoomSchema(r: any) {
     ...(image ? { image: absUrl(image) } : {}),
     ...(r.max_occupancy > 0 ? { occupancy: { '@type': 'QuantitativeValue', maxValue: r.max_occupancy, unitCode: 'C62' } } : {}),
     ...(r.bed_type ? { bed: { '@type': 'BedDetails', typeOfBed: r.bed_type } } : {}),
-    ...(r.base_price > 0 ? { offers: { '@type': 'Offer', price: r.base_price, priceCurrency: 'INR', availability: 'https://schema.org/InStock' } } : {}),
+    ...(priced && r.base_price > 0 ? { offers: { '@type': 'Offer', price: r.base_price, priceCurrency: 'INR', availability: 'https://schema.org/InStock' } } : {}),
   };
 }
 
@@ -237,6 +238,7 @@ function reviewSchema(r: PublicReview) {
 /**
  * Full Hotel schema: photos, rooms (HotelRoom + Offer), amenities and, only when there are
  * approved reviews, aggregateRating and the latest 5 reviews. properties.rating is never used.
+ * A directory listing shows no prices on its page, so its schema carries no offers or price range.
  */
 export function hotelSchemaFull(h: {
   name: string; description?: string; short_description?: string;
@@ -248,15 +250,16 @@ export function hotelSchemaFull(h: {
   slug: string; type?: string; star_rating?: number;
   check_in_time?: string; check_out_time?: string;
   amenities?: string[]; images?: any[]; total_rooms?: number;
-  rooms?: any[]; contact_phone?: string; contact_email?: string;
+  rooms?: any[]; contact_phone?: string; contact_email?: string; listing_type?: string;
 }, reviews?: ReviewFeed) {
+  const priced = !isDirectoryListing(h);
   const area = h.destination_slug?.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()) || h.city || 'Dharamshala';
   const images = hotelImageUrls(h);
   const activeRooms = (h.rooms || []).filter((r: any) => r?.name && r.is_active !== false);
   const s = reviews?.summary;
   const rated = !!s && s.count > 0;
 
-  const roomOffers = (h.rooms || []).filter((r: any) => r.base_price > 0).map((r: any) => ({
+  const roomOffers = (priced ? h.rooms || [] : []).filter((r: any) => r.base_price > 0).map((r: any) => ({
     '@type': 'Offer',
     name: r.name || 'Room',
     description: r.description || '',
@@ -289,7 +292,7 @@ export function hotelSchemaFull(h: {
       aggregateRating: { '@type': 'AggregateRating', ratingValue: s!.average, ratingCount: s!.count, reviewCount: s!.count, bestRating: 5, worstRating: 1 },
     } : {}),
     ...(rated && reviews!.latest.length > 0 ? { review: reviews!.latest.slice(0, 5).map(reviewSchema) } : {}),
-    ...(h.price_min && h.price_max && {
+    ...(priced && h.price_min && h.price_max && {
       priceRange: '₹' + h.price_min + '–₹' + h.price_max,
     }),
     ...(h.check_in_time && { checkinTime: h.check_in_time }),
@@ -302,7 +305,7 @@ export function hotelSchemaFull(h: {
     }),
     ...(h.contact_phone && { telephone: h.contact_phone }),
     ...(h.contact_email && { email: h.contact_email }),
-    ...(activeRooms.length > 0 ? { containsPlace: activeRooms.map(hotelRoomSchema) } : {}),
+    ...(activeRooms.length > 0 ? { containsPlace: activeRooms.map((r: any) => hotelRoomSchema(r, priced)) } : {}),
     ...(roomOffers.length > 0 && { makesOffer: roomOffers }),
   };
 }

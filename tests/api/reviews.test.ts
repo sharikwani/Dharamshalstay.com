@@ -151,4 +151,13 @@ describe('GET /api/reviews', () => {
     const junk = await (await get('property_id=' + PID + '&page=x')).json();
     expect(junk.page).toBe(1);
   });
+  it('shows nothing for an unpublished or unknown property', async () => {
+    h.page = { reviews: [{ id: 'r1' }], total: 25 };
+    h.prop.status = 'draft';
+    const draft = await (await get('property_id=' + PID)).json();
+    expect(draft).toMatchObject({ reviews: [], total: 0, has_more: false });
+    expect(draft.summary.count).toBe(0);
+    h.prop = null;
+    expect(await (await get('property_id=' + PID)).json()).toMatchObject({ reviews: [], total: 0 });
+  });
 });

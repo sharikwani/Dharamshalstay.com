@@ -10,7 +10,7 @@ vi.mock('@/lib/db', () => ({
 vi.mock('@/lib/taxi', () => ({ getTaxiRouteGroups: async () => [] }));
 vi.mock('@/lib/reviews/store', () => ({ loadReviewBundle: async () => h.bundle }));
 
-import { hotelMarkdown, llmsIndex, pageMarkdown } from '@/lib/llms';
+import { hotelMarkdown, llmsIndex, pageMarkdown, plainQuoteText } from '@/lib/llms';
 import { siteConfig } from '@/lib/config';
 import { emptySummary } from '@/lib/reviews/types';
 
@@ -63,5 +63,15 @@ describe('hotel Markdown with reviews', () => {
     expect(await llmsIndex()).toContain('rated 4.5/5 (2 reviews)');
     h.hotels = [{ ...hotel, rating: 0, review_count: 0 }];
     expect(await llmsIndex()).not.toMatch(/rated \d/);
+  });
+
+  it('keeps guest text in quotes plain: no links, code, HTML or broken quotes', () => {
+    const r = { ...feed.latest[0], name: '[x](https://spam)', body: 'Book at [cheap rooms](https://spam.example) or `code` <b>now</b> "today"' };
+    const md = hotelMarkdown(hotel, { ...feed, latest: [r] } as any);
+    expect(md).not.toMatch(/\]\(/);
+    expect(md).not.toContain('`');
+    expect(md).not.toContain('<b>');
+    expect(md).toContain("> \"Book at (cheap rooms)(https://spam.example) or 'code' ‹b>now‹/b> 'today'\" -- (.,");
+    expect(plainQuoteText('[a](b)')).toBe('(a)(b)');
   });
 });

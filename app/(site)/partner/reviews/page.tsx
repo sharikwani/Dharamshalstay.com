@@ -42,7 +42,7 @@ export default function PartnerReviewsPage() {
       const json = await res.json().catch(() => ({}));
       if (!res.ok) setError(json.error || 'Could not save your reply');
       else {
-        setReviews((list) => list.map((r) => (r.id === x.id ? { ...r, partner_reply: text } : r)));
+        setReviews((list) => list.map((r) => (r.id === x.id ? { ...r, partner_reply: text || null } : r)));
         setDrafts((d) => { const n = { ...d }; delete n[x.id]; return n; });
         setSaved(x.id);
       }
@@ -69,7 +69,9 @@ export default function PartnerReviewsPage() {
           {reviews.map((x) => {
             const draft = (drafts[x.id] ?? x.partner_reply ?? '').trim();
             const changed = drafts[x.id] !== undefined && draft !== (x.partner_reply ?? '');
-            const valid = draft.length >= 2 && draft.length <= 1000;
+            // An empty box removes an existing reply.
+            const removing = changed && draft === '' && !!x.partner_reply;
+            const valid = removing || (draft.length >= 2 && draft.length <= 1000);
             return (
               <li key={x.id} className="bg-white border border-slate-200 rounded-xl p-4">
                 <p className="text-xs font-semibold text-brand-700 mb-1">{x.property_name}</p>
@@ -90,10 +92,10 @@ export default function PartnerReviewsPage() {
                     className="flex-1 px-3 py-2 border border-slate-300 rounded-lg text-sm" />
                   <button disabled={busy === x.id || !changed || !valid} onClick={() => reply(x)}
                     className="self-start flex items-center gap-1 bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-50">
-                    {busy === x.id && <Loader2 className="h-4 w-4 animate-spin" />}Save
+                    {busy === x.id && <Loader2 className="h-4 w-4 animate-spin" />}{removing ? 'Remove reply' : 'Save'}
                   </button>
                 </div>
-                {saved === x.id && <p className="text-sm text-green-700 mt-2">Saved. Your reply now shows on the hotel page.</p>}
+                {saved === x.id && <p className="text-sm text-green-700 mt-2">{x.partner_reply ? 'Saved. Your reply now shows on the hotel page.' : 'Your reply has been removed.'}</p>}
               </li>
             );
           })}

@@ -112,3 +112,9 @@ export const STATUS_COLORS: Record<string, string> = {
 export function statusLabel(s: string): string {
   return (s || '').replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 }
+
+/** tel: link: a 10-digit number is Indian (+91); anything else is dialled as written, with a +. */
+export function telHref(phone: string): string {
+  const digits = String(phone || '').replace(/\D/g, '');
+  return 'tel:+' + (digits.length === 10 ? '91' + digits : digits);
+}

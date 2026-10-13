@@ -8,6 +8,7 @@ const h = vi.hoisted(() => ({
   updates: [] as any[][],
   storage: [] as any[][],
   throwOnClient: false,
+  missing: '' as string,
 }));
 
 vi.mock('@/lib/server-auth', async (orig) => {
@@ -33,7 +34,10 @@ vi.mock('@/lib/server-auth', async (orig) => {
         from: builder,
         storage: {
           from: (bucket: string) => ({
-            download: async (p: string) => { h.storage.push(['download', bucket, p]); return { data: new Blob(['img']), error: null }; },
+            download: async (p: string) => {
+              h.storage.push(['download', bucket, p]);
+              return p === h.missing ? { data: null, error: { message: 'Object not found' } } : { data: new Blob(['img']), error: null };
+            },
             upload: async (p: string, _b: unknown, o: any) => { h.storage.push(['upload', bucket, p, o?.contentType, o?.upsert]); return { error: null }; },
             remove: async (l: string[]) => { h.storage.push(['remove', bucket, l]); return { error: null }; },
             createSignedUrls: async (l: string[]) => ({ data: l.map((p) => ({ signedUrl: 'https://signed/' + p })), error: null }),
@@ -52,7 +56,7 @@ import {
 const rating = (r: number, c: number | null = null) => ({ rating: r, rating_cleanliness: c, rating_location: null, rating_staff: null, rating_value: null });
 
 beforeEach(() => {
-  h.calls = []; h.results = {}; h.inserts = []; h.updates = []; h.storage = []; h.throwOnClient = false;
+  h.calls = []; h.results = {}; h.inserts = []; h.updates = []; h.storage = []; h.throwOnClient = false; h.missing = '';
   process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://sb.test';
   process.env.SUPABASE_SERVICE_ROLE_KEY = 'service';
   vi.spyOn(console, 'error').mockImplementation(() => {});
@@ -137,6 +141,14 @@ describe('review store', () => {
     expect(h.storage).toEqual([]);
     await unpublishPhotos(['p1/r1/1.jpg']);
     expect(h.storage).toEqual([['remove', 'review-photos', ['p1/r1/1.jpg']]]);
+  });
+
+  it('publishPhotos turns a missing upload into a 409 and copies nothing after it', async () => {
+    h.missing = 'p1/r1/1.jpg';
+    await expect(publishPhotos(['p1/r1/1.jpg', 'p1/r1/2.webp'])).rejects.toMatchObject({
+      status: 409, message: 'A photo for this review is missing. Hide it or ask the guest to resend.',
+    });
+    expect(h.storage).toEqual([['download', 'review-uploads', 'p1/r1/1.jpg']]);
   });
 
   it('listAdminReviews shows pending photos through short-lived signed links', async () => {

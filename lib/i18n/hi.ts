@@ -370,7 +370,7 @@ export const hi: Dict = {
     categories: { cleanliness: 'साफ़-सफ़ाई', location: 'लोकेशन', staff: 'स्टाफ़', value: 'पैसे की वसूली' } as Record<string, string>,
     trips: { family: 'परिवार', couple: 'कपल', solo: 'अकेले', friends: 'दोस्त', business: 'बिज़नेस' } as Record<string, string>,
     verified: 'वेरिफ़ाइड स्टे', stayed: '{month} में रुके', ownerReply: 'Dharamshala Stay का जवाब', partnerReply: 'प्रॉपर्टी का जवाब',
-    photos: 'मेहमानों की फ़ोटो', showMore: 'और रिव्यू देखें',
+    photos: 'मेहमानों की फ़ोटो', showMore: 'और रिव्यू देखें', loadFailed: 'और रिव्यू लोड नहीं हो सके। कृपया फिर से कोशिश करें।',
     form: {
       title: '{name} का रिव्यू लिखें', name: 'आपका नाम', phone: 'मोबाइल नंबर',
       phoneHint: 'यह कभी नहीं दिखाया जाता। सिर्फ़ यह जाँचने के लिए कि आप हमारे साथ रुके थे।',
@@ -383,6 +383,7 @@ export const hi: Dict = {
       pickRating: 'कृपया कुल रेटिंग चुनें।', tooManyPhotos: 'आप ज़्यादा से ज़्यादा 3 फ़ोटो जोड़ सकते हैं।',
       photosTooBig: 'ये फ़ोटो मिलाकर बहुत बड़ी हैं। कृपया कम या छोटी फ़ोटो चुनें।',
       failed: 'रिव्यू नहीं भेजा जा सका। कृपया फिर से कोशिश करें।',
+      discardTitle: 'अपना रिव्यू छोड़ दें?', discard: 'छोड़ दें', keepWriting: 'लिखना जारी रखें',
     },
   },
   booking: {

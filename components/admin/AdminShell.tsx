@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Home, Inbox, Building, PlusCircle, ShoppingBag, MessageSquare, Car, Mountain, Wind, Users, LogOut, ExternalLink, BadgeCheck, MessageCircle, BadgePercent, Star } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { authFetch, supabase } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
 
 // tone = the colour of the item's icon tile, so each section is recognisable at a glance.
@@ -62,8 +62,10 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
       supabase.from('properties').select('id', { count: 'exact', head: true }).eq('status', 'pending_review'),
       supabase.from('inquiries').select('id', { count: 'exact', head: true }).eq('status', 'new'),
       supabase.from('whatsapp_conversations').select('id', { count: 'exact', head: true }).eq('status', 'needs_human'),
-      supabase.from('hotel_reviews').select('id', { count: 'exact', head: true }).eq('status', 'pending'),
-    ]).then(([r, i, w, v]) => setCounts({ review: r.count || 0, inquiries: i.count || 0, whatsapp: w.count || 0, reviews: v.count || 0 }));
+      // hotel_reviews is service-role only, so its count comes from an admin API route.
+      authFetch('/api/admin/reviews/count').then(res => (res.ok ? res.json() : null)).catch(() => null),
+    ]).then(([r, i, w, v]) => setCounts({ review: r.count || 0, inquiries: i.count || 0, whatsapp: w.count || 0, reviews: Number(v?.pending) || 0 }))
+      .catch(() => {});
   }, [pathname, isLogin]);
 
   if (isLogin) return <>{children}</>;

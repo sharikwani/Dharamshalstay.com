@@ -103,3 +103,17 @@ describe('hotelSchemaFull area', () => {
     expect((hotelSchemaFull(hotel() as any) as any).address.addressLocality).toBe('Mcleod Ganj');
   });
 });
+
+describe('hotelSchemaFull directory listing', () => {
+  it('carries rooms but no price offers or price range for a directory listing', () => {
+    const ld: any = hotelSchemaFull(hotel({ listing_type: 'directory', price_min: 1500, price_max: 4000 }));
+    expect(ld.makesOffer).toBeUndefined();
+    expect(ld.priceRange).toBeUndefined();
+    expect(ld.containsPlace.map((r: any) => r.name)).toEqual(['Deluxe', 'Dorm bed']);
+    expect(ld.containsPlace.every((r: any) => r.offers === undefined)).toBe(true);
+    const partner: any = hotelSchemaFull(hotel({ price_min: 1500, price_max: 4000 }));
+    expect(partner.makesOffer.length).toBeGreaterThan(0);
+    expect(partner.containsPlace[0].offers.price).toBe(2500);
+    expect(partner.priceRange).toBe('₹1500–₹4000');
+  });
+});

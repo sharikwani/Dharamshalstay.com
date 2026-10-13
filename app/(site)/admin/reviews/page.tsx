@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { BadgeCheck, Ban, Check, EyeOff, Loader2, Star } from 'lucide-react';
 import { authFetch } from '@/lib/supabase';
-import { cn } from '@/lib/utils';
+import { cn, telHref } from '@/lib/utils';
 import { AdminPageHeader } from '@/components/admin/AdminShell';
 import type { AdminReview } from '@/lib/reviews/store';
 import type { ReviewStatus } from '@/lib/reviews/types';
@@ -44,12 +44,14 @@ export default function AdminReviewsPage() {
     setBusy(null);
   }
 
+  // Saving an empty box removes the reply.
   async function saveReply(x: AdminReview) {
-    const owner_reply = drafts[x.id] ?? x.owner_reply ?? '';
+    const owner_reply = (drafts[x.id] ?? x.owner_reply ?? '').trim();
     setBusy(x.id); setError('');
     try {
       await api('/api/admin/reviews/' + x.id, { method: 'PATCH', body: JSON.stringify({ owner_reply }) });
-      setRows((list) => list.map((r) => (r.id === x.id ? { ...r, owner_reply: owner_reply.trim() } : r)));
+      setRows((list) => list.map((r) => (r.id === x.id ? { ...r, owner_reply: owner_reply || null } : r)));
+      setDrafts((d) => { const n = { ...d }; delete n[x.id]; return n; });
     } catch (e: any) { setError(e.message); }
     setBusy(null);
   }
@@ -89,7 +91,7 @@ export default function AdminReviewsPage() {
               <p className="text-sm text-slate-700 whitespace-pre-line mb-2">{x.body}</p>
               <p className="text-xs text-slate-500 mb-3 flex flex-wrap gap-x-3">
                 <span>{x.name}</span>
-                <a href={'tel:+91' + x.phone} className="underline">{x.phone}</a>
+                <a href={telHref(x.phone)} className="underline">{x.phone}</a>
                 <span>stayed {x.stay_month}</span>
                 <span>{x.trip_type}</span>
                 {x.verified_stay && <span className="inline-flex items-center gap-1 text-green-700 font-medium"><BadgeCheck className="h-3.5 w-3.5" />Verified stay</span>}
@@ -124,7 +126,16 @@ export default function AdminReviewsPage() {
               <div className="flex gap-2">
                 <textarea rows={2} value={drafts[x.id] ?? x.owner_reply ?? ''} onChange={(e) => setDrafts((d) => ({ ...d, [x.id]: e.target.value }))}
                   className="flex-1 px-3 py-2 border border-slate-300 rounded-lg text-sm" />
-                <button disabled={busy === x.id || !(drafts[x.id] ?? '').trim()} onClick={() => saveReply(x)} className={cn(button, 'bg-brand-600 text-white self-start')}>Save reply</button>
+                {(() => {
+                  const draft = drafts[x.id];
+                  const removing = draft !== undefined && !draft.trim() && !!x.owner_reply;
+                  return (
+                    <button disabled={busy === x.id || !(draft?.trim() || removing)} onClick={() => saveReply(x)}
+                      className={cn(button, removing ? 'bg-red-600 text-white self-start' : 'bg-brand-600 text-white self-start')}>
+                      {removing ? 'Remove reply' : 'Save reply'}
+                    </button>
+                  );
+                })()}
               </div>
             </li>
           ))}

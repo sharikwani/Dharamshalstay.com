@@ -27,11 +27,14 @@ async function encode(canvas: AnyCanvas, type: string, quality: number): Promise
   return new Promise((resolve) => (canvas as HTMLCanvasElement).toBlob((b) => resolve(b), type, quality));
 }
 
-/** Resize a photo to fit within max px and re-encode as WebP (JPEG if WebP is unsupported). */
-export async function shrinkImage(file: File, max = 1600, quality = 0.82): Promise<Blob> {
+/**
+ * Resize a photo to fit within max px and re-encode as WebP (JPEG if WebP is unsupported).
+ * A small photo is returned as it is unless `alwaysReencode` (re-encoding strips camera metadata).
+ */
+export async function shrinkImage(file: File, max = 1600, quality = 0.82, alwaysReencode = false): Promise<Blob> {
   const bitmap = await createImageBitmap(file);
   try {
-    if (file.size < SMALL_ENOUGH && bitmap.width <= max && bitmap.height <= max) return file;
+    if (!alwaysReencode && file.size < SMALL_ENOUGH && bitmap.width <= max && bitmap.height <= max) return file;
     const { width, height } = fitWithin(bitmap.width, bitmap.height, max);
     const canvas = makeCanvas(width, height);
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D | null;

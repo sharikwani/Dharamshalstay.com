@@ -180,7 +180,7 @@ export const en = {
     categories: { cleanliness: 'Cleanliness', location: 'Location', staff: 'Staff', value: 'Value for money' } as Record<string, string>,
     trips: { family: 'Family', couple: 'Couple', solo: 'Solo', friends: 'Friends', business: 'Business' } as Record<string, string>,
     verified: 'Verified stay', stayed: 'Stayed {month}', ownerReply: 'Reply from Dharamshala Stay', partnerReply: 'Reply from the property',
-    photos: 'Guest photos', showMore: 'Show more reviews',
+    photos: 'Guest photos', showMore: 'Show more reviews', loadFailed: 'Could not load more reviews. Please try again.',
     form: {
       title: 'Review {name}', name: 'Your name', phone: 'Mobile number',
       phoneHint: 'Never shown. Used only to check whether you stayed with us.',
@@ -193,6 +193,7 @@ export const en = {
       pickRating: 'Please choose an overall rating.', tooManyPhotos: 'You can add up to 3 photos.',
       photosTooBig: 'These photos are too large together. Please choose fewer or smaller photos.',
       failed: 'Could not send your review. Please try again.',
+      discardTitle: 'Discard your review?', discard: 'Discard', keepWriting: 'Keep writing',
     },
   },
   booking: {

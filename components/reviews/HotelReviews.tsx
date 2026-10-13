@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { BadgeCheck, Loader2, MessageSquare, Pencil, Star } from 'lucide-react';
 import { useT } from '@/lib/i18n/client';
 import { fmt } from '@/lib/i18n/dict';
@@ -10,7 +10,7 @@ import ReviewForm from './ReviewForm';
 
 function Stars({ value, size = 'h-4 w-4' }: { value: number; size?: string }) {
   return (
-    <span className="inline-flex" aria-label={value + '/5'}>
+    <span className="inline-flex" role="img" aria-label={value.toFixed(1) + '/5'}>
       {[1, 2, 3, 4, 5].map((n) => (
         <Star key={n} className={cn(size, n <= Math.round(value) ? 'fill-amber-400 text-amber-400' : 'text-slate-300')} />
       ))}
@@ -36,17 +36,22 @@ export default function HotelReviews({ propertyId, hotelName, initial }: { prope
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [loadError, setLoadError] = useState(false);
+  const writeRef = useRef<HTMLButtonElement>(null);
   const photos = reviews.flatMap((x) => x.photos.map((url) => ({ url, alt: x.title }))).slice(0, 12);
 
   async function loadMore() {
     setLoading(true);
+    setLoadError(false);
     try {
       const res = await fetch('/api/reviews?property_id=' + encodeURIComponent(propertyId) + '&page=' + (page + 1));
       const d = await res.json().catch(() => null);
-      if (res.ok && d) {
-        setReviews((prev) => prev.concat((d.reviews as PublicReview[]).filter((x) => !prev.some((p) => p.id === x.id))));
-        setPage(page + 1);
-      }
+      if (!res.ok || !d || !Array.isArray(d.reviews)) throw new Error('Could not load reviews');
+      const more = d.reviews as PublicReview[];
+      setReviews((prev) => prev.concat(more.filter((x) => !prev.some((p) => p.id === x.id))));
+      setPage(page + 1);
+    } catch {
+      setLoadError(true);
     } finally {
       setLoading(false);
     }
@@ -56,7 +61,7 @@ export default function HotelReviews({ propertyId, hotelName, initial }: { prope
     <section id="reviews" className="mb-10 scroll-mt-24">
       <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
         <h2 className="text-xl font-heading font-bold text-slate-900">{r.heading}</h2>
-        <button type="button" onClick={() => setOpen(true)} className="flex items-center gap-2 bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-brand-700">
+        <button ref={writeRef} type="button" onClick={() => setOpen(true)} className="flex items-center gap-2 bg-brand-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-brand-700">
           <Pencil className="h-4 w-4" /> {r.write}
         </button>
       </div>
@@ -124,8 +129,9 @@ export default function HotelReviews({ propertyId, hotelName, initial }: { prope
           {loading && <Loader2 className="h-4 w-4 animate-spin" />}{r.showMore}
         </button>
       )}
+      {loadError && <p className="mt-2 text-sm text-red-700" role="alert">{r.loadFailed}</p>}
 
-      {open && <ReviewForm propertyId={propertyId} hotelName={hotelName} onClose={() => setOpen(false)} />}
+      {open && <ReviewForm propertyId={propertyId} hotelName={hotelName} onClose={() => { setOpen(false); writeRef.current?.focus(); }} />}
     </section>
   );
 }

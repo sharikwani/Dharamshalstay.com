@@ -45,7 +45,8 @@ export function monthLabel(ym: string, lang: 'en' | 'hi' = 'en'): string {
 }
 
 export function initialName(name: string): string {
-  const first = name.trim().charAt(0).toUpperCase();
+  // Array.from splits by code point, so an emoji or other astral character is not cut in half.
+  const first = (Array.from(name.trim())[0] ?? '').toUpperCase();
   return first ? first + '.' : 'Guest';
 }
 
