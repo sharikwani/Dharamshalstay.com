@@ -128,7 +128,10 @@ export interface RoomType {
   peak_price?: number;
   meal_plan: MealPlan;
   amenities: string[];
-  images: string[];
+  images: (string | { url: string; alt?: string })[];
+  rate_plans?: { name: string; meal_plan: MealPlan; price: number; cancellation: string }[];
+  extra_beds_max?: number;
+  extra_bed_price?: number;
   /** Rooms of this type; empty/null = availability not tracked. */
   total_inventory?: number | null;
   is_active: boolean;
