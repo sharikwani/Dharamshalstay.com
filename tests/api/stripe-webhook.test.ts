@@ -1,7 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 const h = vi.hoisted(() => ({
-  sendBookingEmails: vi.fn(async (_id: string) => {}),
+  sendBookingEmails: vi.fn(async (_id: string, _stage?: string) => {}),
+  availabilityFor: vi.fn(async (..._a: any[]): Promise<any> => ({})),
   sendEmail: vi.fn(async (_m: any) => {}),
   constructEvent: vi.fn(),
   calls: [] as { table: string; op: string; args: unknown[] }[],
@@ -14,7 +15,8 @@ const h = vi.hoisted(() => ({
 }));
 
 vi.mock('@/lib/stripe', () => ({ getStripe: () => ({ webhooks: { constructEvent: h.constructEvent } }) }));
-vi.mock('@/lib/booking-emails', () => ({ sendBookingEmails: (id: string) => h.sendBookingEmails(id) }));
+vi.mock('@/lib/booking-emails', () => ({ sendBookingEmails: (id: string, stage?: string) => h.sendBookingEmails(id, stage) }));
+vi.mock('@/lib/availability/store', () => ({ availabilityFor: (...a: any[]) => h.availabilityFor(...a) }));
 vi.mock('@/lib/email', () => ({ adminEmail: () => 'owner@x', sendEmail: (m: any) => h.sendEmail(m) }));
 const o = vi.hoisted(() => ({ result: 'none' as 'none' | 'attached' | 'conflict' | 'throw', calls: [] as string[] }));
 vi.mock('@/lib/offers/store', () => ({ attachPaidOffer: async (id: string) => { o.calls.push(id); if (o.result === 'throw') throw new Error('db down'); return o.result; } }));
@@ -58,6 +60,7 @@ beforeEach(() => {
   h.recordResult = { error: null };
   h.sendBookingEmails.mockClear();
   h.sendEmail.mockClear();
+  h.availabilityFor.mockReset().mockResolvedValue({});
   h.constructEvent.mockReset().mockReturnValue(event());
   vi.spyOn(console, 'log').mockImplementation(() => {});
   o.result = 'none';
@@ -73,7 +76,7 @@ describe('POST /api/webhooks/stripe', () => {
     expect(h.calls).toContainEqual({ table: 'bookings', op: 'eq', args: ['stripe_session_id', 'cs_1'] });
     expect(h.calls).toContainEqual({ table: 'bookings', op: 'eq', args: ['id', 'b1'] });
     expect(h.calls).toContainEqual({ table: 'bookings', op: 'or', args: ['payment_status.is.null,payment_status.neq.paid'] });
-    expect(h.sendBookingEmails).toHaveBeenCalledWith('b1');
+    expect(h.sendBookingEmails).toHaveBeenCalledWith('b1', 'confirmed');
     expect(h.sendEmail).not.toHaveBeenCalled();
   });
 
@@ -104,7 +107,7 @@ describe('POST /api/webhooks/stripe', () => {
     h.recordResult = { error: { message: 'db' } };
     const res = await send();
     expect(res.status).toBe(200);
-    expect(h.sendBookingEmails).toHaveBeenCalledWith('b1');
+    expect(h.sendBookingEmails).toHaveBeenCalledWith('b1', 'confirmed');
     spy.mockRestore();
   });
 
@@ -116,7 +119,7 @@ describe('POST /api/webhooks/stripe', () => {
     expect(res.status).toBe(200);
     expect(bookingUpdate()).toMatchObject({ payment_status: 'paid', status: 'confirmed', stripe_session_id: 'cs_1' });
     expect(h.calls).toContainEqual({ table: 'bookings', op: 'eq', args: ['id', 'b1'] });
-    expect(h.sendBookingEmails).toHaveBeenCalledWith('b1');
+    expect(h.sendBookingEmails).toHaveBeenCalledWith('b1', 'confirmed');
   });
 
   it('does nothing when neither the session nor the metadata finds a booking', async () => {
@@ -269,7 +272,7 @@ describe('POST /api/webhooks/stripe', () => {
     h.result = { data: { id: 'b1', booking_ref: 'DS-1' }, error: null };
     await send();
     expect(bookingUpdate()).toMatchObject({ payment_status: 'paid', status: 'confirmed' });
-    expect(h.sendBookingEmails).toHaveBeenCalledWith('b1');
+    expect(h.sendBookingEmails).toHaveBeenCalledWith('b1', 'confirmed');
   });
 
   it('only logs checkout.session.async_payment_failed', async () => {
@@ -336,5 +339,43 @@ describe('POST /api/webhooks/stripe', () => {
     expect(h.sendEmail).toHaveBeenCalledTimes(1);
     expect(h.sendEmail.mock.calls[0][0]).toMatchObject({ subject: 'Payment received for cancelled booking DS-1 — refund needed in Stripe' });
     spy.mockRestore();
+  });
+
+  describe('overbooking alert', () => {
+    const hotel = { id: 'b1', booking_ref: 'DS-1', category: 'hotel', property_id: 'p1', room_key: 'deluxe', room_name: 'Deluxe', check_in: '2026-11-01', check_out: '2026-11-03' };
+    beforeEach(() => { h.result = { data: hotel, error: null }; });
+    const alerts = () => h.sendEmail.mock.calls.filter((c) => String(c[0].subject).startsWith('Possible overbooking'));
+
+    it('emails the owner when the paid room is oversold', async () => {
+      h.availabilityFor.mockResolvedValue({ deluxe: { tracked: true, left: -1 } });
+      const res = await send();
+      expect(res.status).toBe(200);
+      expect(bookingUpdate()).toMatchObject({ payment_status: 'paid' });
+      expect(alerts()).toHaveLength(1);
+      expect(alerts()[0][0]).toMatchObject({ to: 'owner@x', subject: 'Possible overbooking: DS-1' });
+      expect(h.availabilityFor.mock.calls[0].slice(0, 3)).toEqual(['p1', '2026-11-01', '2026-11-03']);
+    });
+    it('sends no alert when no room is over', async () => {
+      h.availabilityFor.mockResolvedValue({ deluxe: { tracked: true, left: 0 } });
+      expect((await send()).status).toBe(200);
+      expect(alerts()).toHaveLength(0);
+    });
+    it('sends no alert for an untracked room', async () => {
+      h.availabilityFor.mockResolvedValue({ deluxe: { tracked: false, left: null } });
+      expect((await send()).status).toBe(200);
+      expect(alerts()).toHaveLength(0);
+    });
+    it('still answers 200 with no alert when the availability check throws', async () => {
+      h.availabilityFor.mockRejectedValue(new Error('db down'));
+      const err = vi.spyOn(console, 'error').mockImplementation(() => {});
+      expect((await send()).status).toBe(200);
+      expect(alerts()).toHaveLength(0);
+      err.mockRestore();
+    });
+    it('does not check availability for a non-hotel booking', async () => {
+      h.result = { data: { ...hotel, category: 'taxi' }, error: null };
+      expect((await send()).status).toBe(200);
+      expect(h.availabilityFor).not.toHaveBeenCalled();
+    });
   });
 });

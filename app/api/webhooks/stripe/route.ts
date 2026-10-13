@@ -4,6 +4,8 @@ import Stripe from 'stripe';
 import { sendBookingEmails } from '@/lib/booking-emails';
 import { adminEmail, sendEmail } from '@/lib/email';
 import { settlePaidOffer } from '@/lib/offers/paid';
+import { availabilityFor } from '@/lib/availability/store';
+import { matchesRoom } from '@/lib/availability/calc';
 
 const SETTLED_COMMISSION = ['paid', 'waived', 'disputed'];
 const OPEN_RECORD = ['pending', 'due', 'overdue'];
@@ -13,6 +15,23 @@ const LOOKUP_COLS = 'id, booking_ref, status, payment_status, commission_status'
 const REREAD_COLS = 'id, booking_ref, status, payment_status, stripe_payment_intent, transaction_id, payment_reference';
 const CONFIRMING_EVENTS = ['checkout.session.completed', 'checkout.session.async_payment_succeeded'];
 const esc = (s: unknown) => String(s ?? '').replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
+
+/** A paid hotel booking already counts itself, so a negative count left means its room type is now oversold: tell the owner. Never throws. */
+async function overbookingAlert(sb: any, b: any) {
+  try {
+    if (b.category !== 'hotel' || !b.property_id || !b.check_in || !b.check_out) return;
+    const avail = await availabilityFor(b.property_id, b.check_in, b.check_out, { sb, now: new Date() });
+    const key = b.room_key && avail[b.room_key] ? b.room_key : Object.keys(avail).find((k) => matchesRoom(b, k));
+    const room = key ? avail[key] : undefined;
+    if (!room?.tracked || room.left === null || room.left >= 0) return;
+    await sendEmail({
+      to: adminEmail(),
+      subject: `Possible overbooking: ${b.booking_ref}`,
+      html: `<p>Booking <b>${esc(b.booking_ref)}</b> was paid online, and ${esc(b.room_name || 'its room type')} is now oversold for ${esc(b.check_in)} to ${esc(b.check_out)} (${esc(Math.abs(room.left))} over).</p>`
+        + `<p>Check the calendar and move or refund a booking.</p>`,
+    });
+  } catch (e) { console.error('Stripe webhook: overbooking check failed:', e); }
+}
 
 /**
  * The customer paid an already-paid booking again (e.g. an older link): one of the payments must be refunded.
@@ -173,7 +192,8 @@ export async function POST(req: NextRequest) {
           const { error: recErr } = await sb.from('commission_records').update({ status: 'waived' })
             .eq('booking_id', booking.id).in('status', OPEN_RECORD);
           if (recErr) console.error('Stripe webhook: commission record waive failed:', recErr);
-          await sendBookingEmails(booking.id);
+          await sendBookingEmails(booking.id, 'confirmed');
+          await overbookingAlert(sb, booking);
           // A WhatsApp offer booking paid late (after its code was released) takes its code back, or the owner is told.
           await settlePaidOffer(booking, 'Stripe webhook');
         }

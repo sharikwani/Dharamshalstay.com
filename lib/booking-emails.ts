@@ -2,8 +2,12 @@ import { serviceClient } from '@/lib/server-auth';
 import { sendBookingConfirmation, sendAdminNotification } from '@/lib/email';
 import { whatsappNewBooking } from '@/lib/booking-whatsapp';
 
-/** Guest confirmation + admin alert for one booking. Never throws. */
-export async function sendBookingEmails(bookingId: string): Promise<void> {
+/**
+ * Guest email + admin alert + partner WhatsApp for one booking. Never throws.
+ * 'requested' (default): the booking is awaiting confirmation, so the guest gets no WhatsApp.
+ * 'confirmed': the booking is confirmed, so the guest also gets the WhatsApp confirmation.
+ */
+export async function sendBookingEmails(bookingId: string, stage: 'requested' | 'confirmed' = 'requested'): Promise<void> {
   try {
     const sb = serviceClient();
     const { data: booking } = await sb.from('bookings').select('*').eq('id', bookingId).single();
@@ -26,7 +30,7 @@ export async function sendBookingEmails(bookingId: string): Promise<void> {
       booking_ref: booking.booking_ref, category: booking.category, amount: booking.amount,
       check_in: booking.check_in, check_out: booking.check_out, property_name: propertyName,
     });
-    await whatsappNewBooking(bookingId, { customer: false, partners: true });
+    await whatsappNewBooking(bookingId, { customer: stage === 'confirmed', partners: true });
   } catch (err) {
     console.error('Booking emails failed (non-fatal):', err);
   }
