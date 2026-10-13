@@ -152,16 +152,17 @@ export async function unpublishPhotos(paths: string[]): Promise<void> {
   if (error) throw error;
 }
 
-async function signedUploadUrls(paths: string[]): Promise<string[]> {
+async function signedUploadUrls(paths: string[]): Promise<(string | null)[]> {
   if (!paths.length) return [];
   const { data, error } = await serviceClient().storage.from(UPLOAD_BUCKET).createSignedUrls(paths, SIGNED_URL_SECONDS);
-  if (error) { console.error('Review photo links failed:', error); return []; }
-  return ((data as any[]) || []).map((d) => d.signedUrl).filter(Boolean);
+  if (error) { console.error('Review photo links failed:', error); return paths.map(() => null); }
+  const urls = (data as any[]) || [];
+  return paths.map((_, i) => urls[i]?.signedUrl || null);
 }
 
 // ---------- Admin and partner lists ----------
 
-export type AdminReview = ReviewRow & { property_name: string; property_slug: string; photo_urls: string[] };
+export type AdminReview = ReviewRow & { property_name: string; property_slug: string; photo_urls: (string | null)[] };
 
 export async function listAdminReviews(status: ReviewStatus, limit = 100): Promise<AdminReview[]> {
   const { data, error } = await serviceClient().from('hotel_reviews')

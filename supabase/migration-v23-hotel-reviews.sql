@@ -36,6 +36,8 @@ CREATE INDEX IF NOT EXISTS idx_hotel_reviews_ip ON hotel_reviews(ip_hash, create
 ALTER TABLE hotel_reviews ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Admin full access hotel reviews" ON hotel_reviews;
 CREATE POLICY "Admin full access hotel reviews" ON hotel_reviews FOR ALL USING (is_admin());
+-- Supabase grants anon/authenticated table rights by default; only the service role (our API routes) may touch this table.
+REVOKE ALL ON hotel_reviews FROM anon, authenticated;
 
 -- Approved reviews without private columns. A plain view runs as its owner, so anon can read it
 -- even though hotel_reviews itself has no public policy.
@@ -45,6 +47,9 @@ SELECT id, property_id, name, rating, rating_cleanliness, rating_location, ratin
        owner_reply, owner_reply_at, partner_reply, partner_reply_at, created_at
 FROM hotel_reviews
 WHERE status = 'approved';
+-- Auto-updatable view owned by postgres: without the REVOKE, anon could UPDATE/DELETE approved reviews through it.
+-- Supabase's linter flags this as a security-definer view. That is on purpose (anon has no policy on the table); do NOT "fix" it with security_invoker.
+REVOKE ALL ON public_hotel_reviews FROM anon, authenticated;
 GRANT SELECT ON public_hotel_reviews TO anon, authenticated;
 
 -- Uploads land in a private bucket; approved photos are copied to the public one.
@@ -59,6 +64,8 @@ ON CONFLICT (id) DO UPDATE SET public = true, file_size_limit = 5242880,
 
 -- Keep the old imported / hand-typed numbers so they can be restored. Created once; a re-run never overwrites it.
 CREATE TABLE IF NOT EXISTS properties_rating_backup_v23 AS SELECT id, rating, review_count FROM properties;
+ALTER TABLE properties_rating_backup_v23 ENABLE ROW LEVEL SECURITY;
+REVOKE ALL ON properties_rating_backup_v23 FROM anon, authenticated;
 
 -- Ratings now come only from approved reviews. This replaces imported or hand-typed numbers
 -- (0 / 0 until real reviews are approved). Re-running recomputes the same values.
@@ -71,3 +78,6 @@ FROM (
   GROUP BY pr.id
 ) s
 WHERE s.id = p.id;
+
+-- Verify (optional): anon/authenticated should show only SELECT on public_hotel_reviews and nothing on the other two.
+-- SELECT grantee, privilege_type FROM information_schema.role_table_grants WHERE table_name IN ('public_hotel_reviews','hotel_reviews','properties_rating_backup_v23');
