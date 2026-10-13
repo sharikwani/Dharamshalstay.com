@@ -17,7 +17,9 @@ export default function InquiryForm({ type, propertyId, trekId, paraglidingId, c
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
   // One id per form: a retried submit (lost response, double click) cannot save the enquiry twice.
+  // After an error, editing any field makes it a new enquiry with a new id (the edited one is a different request).
   const inquiryId = useRef('');
+  const failed = useRef(false);
   const minDate = getMinDate();
   const minCheckout = getMinCheckoutDate(checkIn);
 
@@ -40,14 +42,14 @@ export default function InquiryForm({ type, propertyId, trekId, paraglidingId, c
     try {
       const res = await fetch('/api/inquiries', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: inquiryId.current, type, name: fd.get('name'), email: fd.get('email'), phone: fd.get('phone'), message: contextNote ? '[' + contextNote + '] ' + (fd.get('message') || '') : fd.get('message'), check_in: checkIn || undefined, check_out: checkOut || undefined, guests: fd.get('guests') ? Number(fd.get('guests')) : undefined, property_id: propertyId, trek_id: trekId, paragliding_id: paraglidingId, pickup_location: fd.get('pickup_location') || undefined, drop_location: fd.get('drop_location') || undefined }) });
       if (!res.ok) throw new Error(); setStatus('success');
-    } catch { setStatus('error'); }
+    } catch { failed.current = true; setStatus('error'); }
   }
   if (status === 'success') return <div className={`bg-green-50 border border-green-200 rounded-xl p-8 text-center ${className}`}><Check className="h-8 w-8 text-green-600 mx-auto mb-3" /><h3 className="text-lg font-heading font-bold text-slate-900 mb-1">{f.inquirySent}</h3><p className="text-sm text-slate-600">{f.inquirySentNote}</p></div>;
   return (
     <div className={`bg-white border border-slate-200 rounded-xl p-6 ${className}`}>
       <h3 className="text-lg font-heading font-bold text-slate-900 mb-1">{title || f.sendInquiry}</h3>
       <p className="text-sm text-slate-500 mb-5">{subtitle || f.replyWithin}</p>
-      <form onSubmit={handleSubmit} className="space-y-3">
+      <form onSubmit={handleSubmit} onChange={() => { if (failed.current) { failed.current = false; inquiryId.current = ''; } }} className="space-y-3">
         <div className="grid grid-cols-2 gap-3">
           <input name="name" required placeholder={f.fullName} className="col-span-2 sm:col-span-1 w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none" />
           <input name="phone" type="tel" required placeholder={f.phone} className="col-span-2 sm:col-span-1 w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none" />
