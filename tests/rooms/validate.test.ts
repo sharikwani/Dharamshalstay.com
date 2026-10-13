@@ -82,6 +82,13 @@ describe('diffRooms', () => {
     if ('error' in changed) throw new Error(changed.error);
     expect(changed.lines).toEqual(['Deluxe: rate plans changed', 'Deluxe: extra beds 0 → 2']);
   });
+  it('reports detail-only edits (one field, two fields) and nothing when unchanged', () => {
+    const lines = (before: any, after: any) => { const d = diffRooms([before], ok([after])); if ('error' in d) throw new Error(d.error); return d.lines; };
+    const base = room({ id: A, description: 'Nice', images: ['https://x.test/1.jpg'] });
+    expect(lines(base, { ...base, description: 'Nicer' })).toEqual(['Deluxe: details updated (description)']);
+    expect(lines(base, { ...base, max_adults: 3, images: ['https://x.test/2.jpg'] })).toEqual(['Deluxe: details updated (adults, photos)']);
+    expect(lines(base, { ...base, bed_type: ' Double ', max_adults: '2', images: [{ url: 'https://x.test/1.jpg' }] })).toEqual([]);
+  });
   it('refuses a swap', () => {
     expect(diffRooms([room({ id: A, name: 'X1' }), room({ id: B, name: 'X2' })], ok([room({ id: A, name: 'X2' }), room({ id: B, name: 'X1' })]))).toEqual({ error: 'Rename one room at a time.' });
   });

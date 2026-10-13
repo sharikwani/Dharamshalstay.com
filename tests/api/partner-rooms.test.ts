@@ -138,6 +138,12 @@ describe('PUT /api/partner/rooms', () => {
     h.props[OWN].rooms = [room(), room({ id: 'r2', name: 'Suite' })];
     expect((await put(valid())).status).toBe(200);
   });
+  it('emails for a photos-only change', async () => {
+    const res = await put(valid({ total_rooms: 20, rooms: [room({ images: ['https://x.test/a.jpg'] })] }));
+    expect(res.status).toBe(200);
+    expect(h.emails).toHaveLength(1);
+    expect(h.emails[0].diff.lines).toEqual(['Deluxe: details updated (photos)']);
+  });
   it('passes a store conflict through and sends no email', async () => {
     h.saveResult = { ok: false, status: 409, error: 'Someone else changed these rooms. Reload to see the latest.' };
     const res = await put(valid());

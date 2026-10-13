@@ -1,4 +1,3 @@
-import { NextResponse } from 'next/server';
 import { HttpError, jsonError, requireCaller } from '@/lib/server-auth';
 import { isUuid } from '@/lib/availability/validate';
 import { loadRoomsProperty } from '@/lib/rooms/store';

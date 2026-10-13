@@ -194,6 +194,16 @@ export function diffRooms(before: any[], after: RoomCategory[]): RoomDiff | { er
     const wasActive = b.is_active !== false;
     if (wasActive && !a.is_active) { switchedOff.push(a.name); lines.push(`Switched off "${a.name}"`); }
     if (!wasActive && a.is_active) { switchedOn.push(a.name); lines.push(`Switched on "${a.name}"`); }
+    const urls = (x: any): string[] => (Array.isArray(x) ? x : []).map((i) => (typeof i === 'string' ? i : i?.url));
+    const sstr = (x: any) => (typeof x === 'string' ? x.trim() : '');
+    const detail: string[] = [];
+    if (sstr(b.bed_type) !== a.bed_type) detail.push('bed type');
+    if (b.max_adults != null && Number(b.max_adults) !== a.max_adults) detail.push('adults');
+    if (Number(b.max_children ?? 0) !== a.max_children) detail.push('children');
+    if (b.extra_bed_price != null && Number(b.extra_bed_price) !== a.extra_bed_price) detail.push('extra bed price');
+    if (sstr(b.description) !== a.description) detail.push('description');
+    if (JSON.stringify(urls(b.images)) !== JSON.stringify(a.images)) detail.push('photos');
+    if (detail.length) lines.push(`${a.name}: details updated (${detail.join(', ')})`);
   }
   for (const r of removed) lines.push(`Removed "${r.name}"`);
   for (const n of added) lines.push(`Added "${n}"`);
