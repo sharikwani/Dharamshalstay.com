@@ -2,12 +2,12 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Home, Inbox, Building, PlusCircle, ShoppingBag, MessageSquare, Car, Mountain, Wind, Users, LogOut, ExternalLink, BadgeCheck, MessageCircle, BadgePercent } from 'lucide-react';
+import { Home, Inbox, Building, PlusCircle, ShoppingBag, MessageSquare, Car, Mountain, Wind, Users, LogOut, ExternalLink, BadgeCheck, MessageCircle, BadgePercent, Star } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
 
 // tone = the colour of the item's icon tile, so each section is recognisable at a glance.
-type NavItem = { href: string; label: string; hint: string; icon: any; tone: string; badge?: 'review' | 'inquiries' | 'whatsapp' };
+type NavItem = { href: string; label: string; hint: string; icon: any; tone: string; badge?: 'review' | 'inquiries' | 'whatsapp' | 'reviews' };
 
 // One menu for the whole admin, grouped by job so it is obvious where things live.
 export const ADMIN_NAV: { title: string; items: NavItem[] }[] = [
@@ -19,6 +19,7 @@ export const ADMIN_NAV: { title: string; items: NavItem[] }[] = [
     title: 'Hotels & stays',
     items: [
       { href: '/admin/approvals', label: 'To review', hint: 'New listings from owners waiting for your OK', icon: Inbox, tone: 'bg-amber-500', badge: 'review' },
+      { href: '/admin/reviews', label: 'Guest reviews', hint: 'Approve, hide and reply to hotel reviews', icon: Star, tone: 'bg-yellow-500', badge: 'reviews' },
       { href: '/admin/properties', label: 'All properties', hint: 'Edit, publish, hide or delete any listing', icon: Building, tone: 'bg-sky-500' },
       { href: '/admin/import', label: 'Add a property', hint: 'Copy a hotel in from its website', icon: PlusCircle, tone: 'bg-emerald-500' },
     ],
@@ -52,7 +53,7 @@ export const ADMIN_NAV: { title: string; items: NavItem[] }[] = [
 export default function AdminShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname() || '';
   const router = useRouter();
-  const [counts, setCounts] = useState<{ review: number; inquiries: number; whatsapp: number }>({ review: 0, inquiries: 0, whatsapp: 0 });
+  const [counts, setCounts] = useState<{ review: number; inquiries: number; whatsapp: number; reviews: number }>({ review: 0, inquiries: 0, whatsapp: 0, reviews: 0 });
   const isLogin = pathname.startsWith('/admin/login');
 
   useEffect(() => {
@@ -61,7 +62,8 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
       supabase.from('properties').select('id', { count: 'exact', head: true }).eq('status', 'pending_review'),
       supabase.from('inquiries').select('id', { count: 'exact', head: true }).eq('status', 'new'),
       supabase.from('whatsapp_conversations').select('id', { count: 'exact', head: true }).eq('status', 'needs_human'),
-    ]).then(([r, i, w]) => setCounts({ review: r.count || 0, inquiries: i.count || 0, whatsapp: w.count || 0 }));
+      supabase.from('hotel_reviews').select('id', { count: 'exact', head: true }).eq('status', 'pending'),
+    ]).then(([r, i, w, v]) => setCounts({ review: r.count || 0, inquiries: i.count || 0, whatsapp: w.count || 0, reviews: v.count || 0 }));
   }, [pathname, isLogin]);
 
   if (isLogin) return <>{children}</>;

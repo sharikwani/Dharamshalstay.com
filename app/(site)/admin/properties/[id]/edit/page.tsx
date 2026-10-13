@@ -75,6 +75,9 @@ export default function AdminEditPropertyPage() {
     const payload = { ...form, slug, updated_at: new Date().toISOString() };
     for (const key of ROOMS_PAGE_FIELDS) delete payload[key];
     delete payload.created_at;
+    // Rating and review count are recomputed from approved guest reviews (lib/reviews/store.ts).
+    delete payload.rating;
+    delete payload.review_count;
     if (form.status === 'published' && !form.published_at) payload.published_at = new Date().toISOString();
     const { error: e } = await supabase.from('properties').update(payload).eq('id', params.id);
     setSaving(false);
@@ -186,8 +189,6 @@ export default function AdminEditPropertyPage() {
             {Input({ label: "Landmark", field: "landmark" })}
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {Input({ label: "Rating", field: "rating", type: "number" })}
-            {Input({ label: "Reviews", field: "review_count", type: "number" })}
             {Input({ label: "Check-in", field: "check_in_time" })}
             {Input({ label: "Check-out", field: "check_out_time" })}
           </div>

@@ -82,8 +82,6 @@ Return ONLY valid JSON:
   "images": [
     {"url": "https://property-photo.jpg", "alt": "Hotel exterior", "category": "exterior", "is_primary": true, "sort_order": 0}
   ],
-  "rating": 4.2,
-  "review_count": 150,
   "nearby_attractions": [],
   "faqs": [{"question": "Q", "answer": "A"}],
   "meta_title": "SEO title with hotel name and area",
@@ -231,7 +229,7 @@ export async function POST(req: NextRequest) {
         category: typeof img === 'string' ? 'exterior' : (img.category || 'exterior'),
         is_primary: i === 0, sort_order: i,
       })).filter((img: any) => img.url) : [],
-      rating: prop.rating || 0, review_count: prop.review_count || 0,
+      rating: 0, review_count: 0, // only approved reviews on our site count (migration v23)
       nearby_attractions: Array.isArray(prop.nearby_attractions) ? prop.nearby_attractions : [],
       faqs: Array.isArray(prop.faqs) ? prop.faqs : [],
       meta_title: prop.meta_title || '', meta_description: prop.meta_description || '',
