@@ -3,7 +3,7 @@ import { getActiveTaxiRoutes, getParaglidingPackages, getPublishedTreks } from '
 import { quoteBooking } from '@/lib/pricing';
 import { bookingSchema, createBooking, dateProblem } from '@/lib/bookings/create';
 import { createCheckoutLink } from '@/lib/bookings/checkout';
-import { sendBookingEmails } from '@/lib/booking-emails';
+import { fallbackToPayLater, laterMethod } from '@/lib/bookings/pay-later';
 import { adminEmail, sendEmail } from '@/lib/email';
 import { serviceClient } from '@/lib/server-auth';
 import { roomSummaries } from '@/lib/availability/calc';
@@ -27,7 +27,6 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 const DAILY_LIMIT = 3;
 const rupees = (n: number) => `₹${n.toLocaleString('en-IN')}`;
-const laterMethod = (c: string) => (c === 'hotel' ? 'pay_at_hotel' : 'offline');
 
 export const BOOKING_TOOL_DEFS = [
   fn('quote_booking', 'Price a booking from live data and save a quote. Use once you know the item, dates and number of people. Show the returned summary to the customer and ask them to reply YES and choose pay online or pay later.', {
@@ -246,15 +245,7 @@ async function createTool(a: any, ctx: ToolCtx, handover: Handover) {
     return { error: `The payment link could not be created. Your code is free again – make a new quote with the same code in a minute, or show code ${offer.code} at reception before ${formatIST(offer.expiresAt)}.` };
   }
   // No link: keep the booking as pay later so the usual booking emails still go out.
-  const later = laterMethod(q.category);
-  const sb = serviceClient();
-  // createBooking marks online bookings commission 'not_applicable'; pay-later ones with commission owe it.
-  const { data: row } = await sb.from('bookings').select('commission_amount').eq('id', r.booking.id).single();
-  const patch: Record<string, unknown> = { payment_method: later };
-  if (Number((row as any)?.commission_amount) > 0) patch.commission_status = 'pending';
-  const { error } = await sb.from('bookings').update(patch).eq('id', r.booking.id);
-  if (error) console.error('WhatsApp booking: pay-later fallback failed', error);
-  await sendBookingEmails(r.booking.id);
+  await fallbackToPayLater(r.booking.id, q.category);
   return { ...base, payment: 'later', payment_link_failed: true };
 }
 
