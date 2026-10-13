@@ -63,16 +63,18 @@ export async function POST(req: Request) {
     const { data: prop, error: pErr } = await sb.from('properties').select('id, name').eq('id', body.data.property_id).maybeSingle();
     if (pErr) throw pErr;
     if (!prop) throw new HttpError(404, 'Property not found');
+    const row = { ...body.data, name: body.data.name || `WhatsApp offer – ${prop.name}`, active: false, plan_percents: {} };
     // A repeated "Add offer" (double click, lost response) gets the inactive offer it just made, not a second one.
+    // Only the same offer counts: same name, percent, hours and prefix, and no per-plan percents set since.
     const since = new Date(Date.now() - RECENT_MS).toISOString();
     const { data: recent, error: rErr } = await sb.from('offers').select('*')
       .eq('property_id', prop.id).eq('active', false).gte('created_at', since)
-      .order('created_at', { ascending: false }).limit(1).maybeSingle();
+      .order('created_at', { ascending: false }).limit(10);
     if (rErr) throw rErr;
-    if (recent) return NextResponse.json({ offer: recent, duplicate: true });
-    const { data, error } = await sb.from('offers')
-      .insert({ ...body.data, name: body.data.name || `WhatsApp offer – ${prop.name}`, active: false, plan_percents: {} })
-      .select('*').single();
+    const same = (recent || []).find((o: any) => o.name === row.name && Number(o.default_percent) === row.default_percent
+      && Number(o.valid_hours) === row.valid_hours && o.code_prefix === row.code_prefix && !Object.keys(o.plan_percents || {}).length);
+    if (same) return NextResponse.json({ offer: same, duplicate: true });
+    const { data, error } = await sb.from('offers').insert(row).select('*').single();
     if (error) throw error;
     return NextResponse.json({ offer: data });
   } catch (e) { return jsonError(e); }

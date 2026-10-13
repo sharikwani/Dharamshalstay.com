@@ -67,7 +67,7 @@ describe('GET /api/admin/offers', () => {
 describe('POST /api/admin/offers', () => {
   it('creates an inactive offer for an existing property', async () => {
     fake.queue('properties', { data: { id: PROP_ID, name: 'Panchvati Cottages' } });
-    fake.queue('offers', { data: null }, { data: { id: OFFER_ID } });
+    fake.queue('offers', { data: [] }, { data: { id: OFFER_ID } });
     const res = await POST(json('POST', { property_id: PROP_ID, default_percent: 25, valid_hours: 3, code_prefix: 'PNV' }));
     expect(res.status).toBe(200);
     expect(fake.ops('offers', 'insert')[0][0]).toEqual({
@@ -76,17 +76,33 @@ describe('POST /api/admin/offers', () => {
   });
   it('a repeated Add within 10 minutes returns the inactive offer it just made', async () => {
     fake.queue('properties', { data: { id: PROP_ID, name: 'Panchvati Cottages' } });
-    fake.queue('offers', { data: { id: OFFER_ID, property_id: PROP_ID, active: false } });
+    const made = { id: OFFER_ID, property_id: PROP_ID, active: false, name: 'WhatsApp offer – Panchvati Cottages', default_percent: 25, valid_hours: 3, code_prefix: 'PNV', plan_percents: {} };
+    fake.queue('offers', { data: [made] });
     const before = Date.now();
     const res = await POST(json('POST', { property_id: PROP_ID, default_percent: 25, valid_hours: 3, code_prefix: 'PNV' }));
     expect(res.status).toBe(200);
-    expect(await res.json()).toEqual({ offer: { id: OFFER_ID, property_id: PROP_ID, active: false }, duplicate: true });
+    expect(await res.json()).toEqual({ offer: made, duplicate: true });
     expect(fake.ops('offers', 'insert')).toEqual([]);
     expect(fake.ops('offers', 'eq')).toEqual([['property_id', PROP_ID], ['active', false]]);
     const [[col, since]] = fake.ops('offers', 'gte') as [string, string][];
     expect(col).toBe('created_at');
     expect(before - Date.parse(since)).toBeGreaterThanOrEqual(10 * 60 * 1000 - 50);
     expect(before - Date.parse(since)).toBeLessThan(10 * 60 * 1000 + 1000);
+  });
+  it('a recent inactive offer with a different name or percent does not stop a new one', async () => {
+    const recent = { id: 'o-old', property_id: PROP_ID, active: false, name: 'WhatsApp offer – Panchvati Cottages', default_percent: 20, valid_hours: 3, code_prefix: 'PNV', plan_percents: {} };
+    for (const [over, body] of [
+      [{}, { default_percent: 25 }],
+      [{ name: 'Diwali' }, { default_percent: 20 }],
+      [{ plan_percents: { 'Super Deluxe|Breakfast': 30 } }, { default_percent: 20 }],
+    ] as const) {
+      fake.reset();
+      fake.queue('properties', { data: { id: PROP_ID, name: 'Panchvati Cottages' } });
+      fake.queue('offers', { data: [{ ...recent, ...over }] }, { data: { id: OFFER_ID } });
+      const res = await POST(json('POST', { property_id: PROP_ID, valid_hours: 3, code_prefix: 'PNV', ...body }));
+      expect(await res.json()).toEqual({ offer: { id: OFFER_ID } });
+      expect(fake.ops('offers', 'insert')).toHaveLength(1);
+    }
   });
   it('rejects a bad percent or prefix', async () => {
     expect((await POST(json('POST', { property_id: PROP_ID, default_percent: 95, code_prefix: 'PNV' }))).status).toBe(400);
