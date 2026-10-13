@@ -89,6 +89,8 @@ async function handleReply(sb: Sb, r: { contextId: string; from: string; text: s
 }
 
 export async function POST(req: Request) {
+  // The AI's time budget counts from when Meta's request arrived (maxDuration is 60 s).
+  const deadline = Date.now() + 50_000;
   const raw = await req.text();
   if (!verifySignature(raw, req.headers.get('x-hub-signature-256'))) {
     return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });
@@ -106,7 +108,7 @@ export async function POST(req: Request) {
   for (const m of inbound) {
     try {
       // Only storing the message is awaited; the answer runs after Meta has its 200.
-      const r = await handleInbound(m);
+      const r = await handleInbound(m, deadline);
       if (r) waitUntil(r.work.catch((e) => console.error('WhatsApp chat: background error', e)));
     } catch (e) { console.error('WhatsApp webhook: inbound error', e); }
   }

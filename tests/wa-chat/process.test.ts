@@ -7,11 +7,11 @@ const s = vi.hoisted(() => ({
   lockHeld: false, lockFreeAfter: 0, acquires: 0, releases: [] as any[],
   voicePending: 0, convThrowsOnRead: 0, convReads: 0, flagFails: false,
   outbound: [] as any[], statuses: [] as any[], sent: [] as any[], emails: [] as any[], notes: [] as any[],
-  sendResult: null as any, waits: 0,
+  sendResult: null as any, sendQueue: [] as any[], waits: 0, onAcquire: null as null | ((n: number) => void),
   reply: vi.fn(async (..._a: any[]) => 'Hello Asha!'),
 }));
-const addMsg = (author: string, body: string, kind = 'text') => {
-  const m = { id: `${author === 'customer' ? 'm' : 'o'}${++s.seq}`, author, body, kind, direction: author === 'customer' ? 'in' : 'out', created_at: NOW() };
+const addMsg = (author: string, body: string, kind = 'text', status = author === 'customer' ? 'received' : 'sent') => {
+  const m = { id: `${author === 'customer' ? 'm' : 'o'}${++s.seq}`, author, body, kind, status, direction: author === 'customer' ? 'in' : 'out', created_at: NOW() };
   s.msgs.push(m);
   return m;
 };
@@ -30,10 +30,11 @@ vi.mock('@/lib/wa-chat/store', () => ({
     if (s.flagFails || s.conv.status !== from) return false;
     s.statuses.push([id, to, why]); s.conv = { ...s.conv, status: to }; return true;
   },
-  saveOutbound: async (...a: any[]) => { s.outbound.push(a); addMsg('ai', a[2]); },
+  saveOutbound: async (...a: any[]) => { s.outbound.push(a); addMsg('ai', a[2], 'text', a[3] ? 'sent' : a[6] ?? 'failed'); },
   saveSystemNote: async (...a: any[]) => { s.notes.push(a); },
   acquireTurnLock: async () => {
     s.acquires++;
+    s.onAcquire?.(s.acquires);
     if (s.lockHeld && s.acquires > s.lockFreeAfter) s.lockHeld = false;
     if (s.lockHeld) return null;
     s.lockHeld = true;
@@ -42,7 +43,10 @@ vi.mock('@/lib/wa-chat/store', () => ({
   releaseTurnLock: async (...a: any[]) => { s.releases.push(a); s.lockHeld = false; },
   pendingVoice: async () => (s.voicePending-- > 0),
 }));
-vi.mock('@/lib/whatsapp-cloud', () => ({ sendText: async (to: string, body: string) => { s.sent.push([to, body]); return s.sendResult ?? { ok: true, id: 'wamid.out' }; } }));
+vi.mock('@/lib/whatsapp-cloud', () => ({ sendText: async (to: string, body: string) => {
+  s.sent.push([to, body]);
+  return s.sendQueue.length ? s.sendQueue.shift() : s.sendResult ?? { ok: true, id: 'wamid.out' };
+} }));
 vi.mock('@/lib/wa-chat/assistant', () => ({ reply: s.reply }));
 vi.mock('@/lib/email', () => ({ sendEmail: async (m: any) => { s.emails.push(m); }, adminEmail: () => 'a@x' }));
 
@@ -55,7 +59,7 @@ beforeEach(() => {
     conv: { id: 'c1', phone: '919800000001', profile_name: 'Asha', status: 'ai', last_customer_at: NOW() },
     settings: { ai_mode: 'on', test_numbers: [] }, hourCount: 0, dayCount: 0, msgs: [], seq: 0,
     lockHeld: false, lockFreeAfter: 0, acquires: 0, releases: [], voicePending: 0, convThrowsOnRead: 0, convReads: 0, flagFails: false,
-    outbound: [], statuses: [], sent: [], emails: [], notes: [], sendResult: null, waits: 0,
+    outbound: [], statuses: [], sent: [], emails: [], notes: [], sendResult: null, sendQueue: [], waits: 0, onAcquire: null,
   });
   addMsg('customer', 'hi');
   s.reply.mockReset(); s.reply.mockResolvedValue('Hello Asha!');
@@ -124,17 +128,31 @@ describe('processConversation', () => {
     expect(s.emails[0].html).toMatch(/hi/);
     expect(s.releases).toEqual([]);
   });
-  it('the deadline with a message still unanswered: holding reply plus an owner email listing it', async () => {
+  it('too little time for another turn on a newer message: the lock goes to that message\'s own invocation', async () => {
     s.reply.mockImplementationOnce(async () => { addMsg('customer', 'what about parking?'); return 'Room booked.'; });
     let t = Date.now();
-    const deadline = t + 24_000;
+    const deadline = t + 40_000; // first turn starts with > 25 s left, the second check has < 25 s
     const spy = vi.spyOn(Date, 'now').mockImplementation(() => (t += 2000));
     try {
-      expect(await run('m1', { deadline })).toBe('handed_over');
+      expect(await run('m1', { deadline })).toBe('replied');
     } finally { spy.mockRestore(); }
-    expect(s.sent.map((x) => x[1])).toEqual(['Room booked.', HOLDING_REPLY]);
-    expect(s.emails[0].html).toMatch(/what about parking\?/);
+    expect(s.sent.map((x) => x[1])).toEqual(['Room booked.']);
+    expect(s.statuses).toEqual([]);
     expect(s.releases).toHaveLength(1);
+  });
+  it('too little time for its own message: holding reply plus an owner email listing it', async () => {
+    expect(await run('m1', { deadline: Date.now() + 10_000 })).toBe('handed_over');
+    expect(s.reply).not.toHaveBeenCalled();
+    expect(s.sent.map((x) => x[1])).toEqual([HOLDING_REPLY]);
+    expect(s.emails[0].html).toMatch(/hi/);
+    expect(s.releases).toHaveLength(1);
+  });
+  it('a waiter does not give up while the lock holder is still answering its message', async () => {
+    s.lockHeld = true; s.lockFreeAfter = 3;
+    s.onAcquire = (n) => { if (n === 3) addMsg('ai', 'Answer from the holder'); };
+    expect(await run('m1', { deadline: Date.now() + 10_000 })).toBe('already_answered');
+    expect(s.sent).toEqual([]);
+    expect(s.statuses).toEqual([]);
   });
   it('an acted turn stays silent when the owner has taken over, and leaves the owner a note of the actions', async () => {
     s.reply.mockImplementation(async (_h: any, ctx: any) => {
@@ -144,6 +162,16 @@ describe('processConversation', () => {
     expect(await run()).toBe('skipped');
     expect(s.sent).toEqual([]);
     expect(s.notes[0]).toEqual(['c1', expect.stringContaining('Booking HTL-1 made (pay later)')]);
+  });
+  it('a handover during the turn of a chat the owner took over keeps it human and sends nothing', async () => {
+    s.reply.mockImplementation(async (_h: any, ctx: any) => {
+      s.conv = { ...s.conv, status: 'human' }; // the owner took over while the AI was thinking
+      ctx.handedOver = true; ctx.sideEffects.push('handover'); ctx.actions.push('Handed to the team: refund'); // setStatusIf(ai→needs_human) changes nothing
+      return 'A team member will help you.';
+    });
+    expect(await run()).toBe('skipped');
+    expect(s.conv.status).toBe('human');
+    expect(s.sent).toEqual([]);
   });
   it('an acted turn still replies when the chat was flagged for the owner (needs_human)', async () => {
     s.reply.mockImplementation(async (_h: any, ctx: any) => {
@@ -194,9 +222,9 @@ describe('processConversation', () => {
     expect(s.sent).toEqual([['919800000001', 'Booked! Ref HTL-1']]);
     expect(s.emails[0].html).toMatch(/Booking HTL-1 made/);
   });
-  it('answers without the lock when the lock cannot be read, rather than not at all', async () => {
+  it('answers without the lock when the lock column is missing (migration not applied), rather than not at all', async () => {
     const store: any = await import('@/lib/wa-chat/store');
-    const spy = vi.spyOn(store, 'acquireTurnLock').mockRejectedValueOnce(new Error('column missing'));
+    const spy = vi.spyOn(store, 'acquireTurnLock').mockRejectedValueOnce(Object.assign(new Error('column missing'), { code: '42703' }));
     expect(await run()).toBe('replied');
     expect(s.releases).toEqual([]);
     spy.mockRestore();
@@ -205,6 +233,48 @@ describe('processConversation', () => {
     s.convThrowsOnRead = 1;
     expect(await run()).toBe('failed');
     expect(s.emails).toHaveLength(1);
+  });
+  it('a refused send is retried once', async () => {
+    s.sendQueue = [{ ok: false, error: 'Meta 500' }];
+    expect(await run()).toBe('replied');
+    expect(s.sent).toHaveLength(2);
+    expect(s.outbound).toEqual([['c1', 'ai', 'Hello Asha!', 'wamid.out', undefined]]);
+  });
+  it('a reply WhatsApp refuses twice goes to the owner with its text, and does not count as an answer', async () => {
+    s.sendQueue = [{ ok: false, error: 'Meta 500' }, { ok: false, error: 'Meta 500' }];
+    expect(await run()).toBe('failed');
+    expect(s.statuses[0]).toEqual(['c1', 'needs_human', 'AI reply could not be sent']);
+    expect(s.emails[0].html).toMatch(/Hello Asha!/);
+    expect(s.outbound[0]).toEqual(['c1', 'ai', 'Hello Asha!', null, 'Meta 500']);
+    // Back with the AI later: the message is still unanswered and gets a turn.
+    s.conv = { ...s.conv, status: 'ai' };
+    expect(await run()).toBe('replied');
+    expect(s.reply).toHaveBeenCalledTimes(2);
+  });
+  it('a lock error other than a missing column counts as not acquired', async () => {
+    const store: any = await import('@/lib/wa-chat/store');
+    const spy = vi.spyOn(store, 'acquireTurnLock').mockRejectedValueOnce(Object.assign(new Error('timeout'), { code: '57014' }));
+    expect(await run()).toBe('replied');
+    expect(s.waits).toBe(2); // debounce + one poll
+    expect(s.releases).toEqual([['c1', 'token']]);
+    spy.mockRestore();
+  });
+  it('a late voice transcription is answered even though a newer message was answered without it', async () => {
+    const voice = addMsg('customer', '🎤 room for two tomorrow', 'voice');
+    addMsg('customer', 'hello?');
+    addMsg('ai', 'Hi! How can I help?');
+    const since = new Date(Date.now() + 1000).toISOString(); // the transcription was written after that reply
+    s.reply.mockImplementation(async (h: any[]) => { expect(h.at(-1).id).toBe(voice.id); return 'A room for two: ₹3,000.'; });
+    expect(await run(voice.id, { force: true, since })).toBe('replied');
+    expect(s.sent.map((x) => x[1])).toEqual(['A room for two: ₹3,000.']);
+  });
+  it('a late voice transcription answered after it was written is not answered again', async () => {
+    const voice = addMsg('customer', '🎤 room for two tomorrow', 'voice');
+    addMsg('customer', 'hello?');
+    const since = new Date(Date.now() - 1000).toISOString();
+    addMsg('ai', 'A room for two: ₹3,000. Anything else?');
+    expect(await run(voice.id, { force: true, since })).toBe('already_answered');
+    expect(s.reply).not.toHaveBeenCalled();
   });
   it('an unconfirmed send is logged as unknown and never resent', async () => {
     s.sendResult = { ok: false, unknown: true, error: 'timeout' };

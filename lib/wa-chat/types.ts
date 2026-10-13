@@ -40,3 +40,17 @@ export const UNCONFIRMED = 'Delivery not confirmed – check the chat before res
 /** Stored text of a voice note until it is transcribed (the AI turn waits while one is pending). */
 export const VOICE_PLACEHOLDER = '[voice note]';
 export const VOICE_FAILED = '[voice note – could not be transcribed]';
+
+/** A message that answers the customer: ours (AI or owner), not a system note, and not a send that surely failed. */
+export const isAnswer = (m: Pick<ChatMessage, 'author' | 'kind' | 'status'>) => m.author !== 'customer' && m.kind !== 'system' && m.status !== 'failed';
+
+/** Customer messages after the last answer (oldest first). */
+export function unanswered<T extends Pick<ChatMessage, 'author' | 'kind' | 'status'>>(hist: T[]): T[] {
+  const out: T[] = [];
+  for (let i = hist.length - 1; i >= 0; i--) {
+    const m = hist[i];
+    if (m.author === 'customer') out.unshift(m);
+    else if (isAnswer(m)) break;
+  }
+  return out;
+}

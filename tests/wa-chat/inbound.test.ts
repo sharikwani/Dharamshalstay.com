@@ -3,7 +3,7 @@ import { describe, expect, it, vi, beforeEach } from 'vitest';
 const s = vi.hoisted(() => ({
   allowed: true, typing: [] as string[], saved: [] as any[], bodies: [] as any[], dup: false, status: 'ai', isNew: true, transcript: 'room for two tomorrow' as string | null,
   processed: [] as any[], statuses: [] as any[], sent: [] as any[], out: [] as any[], emails: [] as any[],
-  open: null as any, proofResult: 'cancelled' as string, proofs: [] as any[], hold: null as Promise<void> | null, flip: true,
+  open: null as any, proofResult: 'cancelled' as string, proofs: [] as any[], hold: null as Promise<void> | null, flip: true, hist: [] as any[], sendResult: null as any,
 }));
 vi.mock('@/lib/wa-chat/booking-store', () => ({ openCancellation: async () => s.open }));
 vi.mock('@/lib/wa-chat/cancellations', () => ({ handleProof: async (...a: any[]) => { s.proofs.push(a); return s.proofResult; } }));
@@ -16,12 +16,13 @@ vi.mock('@/lib/wa-chat/store', () => ({
   setStatus: async (...a: any[]) => { s.statuses.push(a); },
   setStatusIf: async (id: string, from: string, to: string, why: string) => { if (s.status !== from || !s.flip) return false; s.statuses.push([id, to, why]); return true; },
   saveOutbound: async (...a: any[]) => { s.out.push(a); },
+  history: async () => s.hist,
   getSettings: async () => ({ ai_mode: 'test', test_numbers: [] }),
 }));
 vi.mock('@/lib/whatsapp-cloud', () => ({
   markReadTyping: async (id: string) => { s.typing.push(id); },
   downloadMedia: async () => ({ data: new ArrayBuffer(1), mimeType: 'audio/ogg' }),
-  sendText: async (to: string, b: string) => { s.sent.push([to, b]); return { ok: true, id: 'w' }; },
+  sendText: async (to: string, b: string) => { s.sent.push([to, b]); return s.sendResult ?? { ok: true, id: 'w' }; },
 }));
 vi.mock('@/lib/wa-chat/assistant', () => ({ transcribe: async () => s.transcript }));
 vi.mock('@/lib/wa-chat/process', () => ({
@@ -37,7 +38,7 @@ const runIn = async (m: any) => { const r = await handleInbound(m); await r?.wor
 const base = { waId: 'w1', from: '919800000001', profileName: 'Asha', timestamp: Math.floor(Date.now() / 1000) };
 beforeEach(() => {
   Object.assign(s, { allowed: true, typing: [], saved: [], bodies: [], dup: false, status: 'ai', isNew: true, transcript: 'room for two tomorrow',
-    open: null, proofResult: 'cancelled', proofs: [], hold: null, flip: true,
+    open: null, proofResult: 'cancelled', proofs: [], hold: null, flip: true, hist: [], sendResult: null,
     processed: [], statuses: [], sent: [], out: [], emails: [] });
 });
 
@@ -66,6 +67,8 @@ describe('handleInbound', () => {
     await r?.work;
     expect(s.bodies).toEqual([['row1', '🎤 room for two tomorrow']]);
     expect(s.processed).toHaveLength(1);
+    // Forced: a later text may have been answered while this was transcribed.
+    expect(s.processed[0][2]).toMatchObject({ force: true, since: expect.any(String), deadline: expect.any(Number) });
   });
   it('an unreadable voice note goes to the owner', async () => {
     s.transcript = null;
@@ -88,6 +91,27 @@ describe('handleInbound', () => {
     expect(s.sent).toEqual([['919800000001', 'HOLD']]);
     expect(s.emails[0].subject).toMatch(/needs you/);
     expect(s.processed).toEqual([]);
+  });
+  it('uses the deadline the webhook computed when the request arrived', async () => {
+    const r = await handleInbound({ ...base, kind: 'text', text: 'Hi' }, 12345);
+    await r?.work;
+    expect(s.processed[0][2]).toEqual({ deadline: 12345 });
+  });
+  it('a photo handed to the owner lists earlier unanswered texts in the email', async () => {
+    s.hist = [
+      { id: 'a1', author: 'ai', kind: 'text', status: 'sent', body: 'Hello!' },
+      { id: 't1', author: 'customer', kind: 'text', status: 'received', body: 'Room for 2 on Friday?' },
+      { id: 'row1', author: 'customer', kind: 'media', status: 'received', body: '[photo]' },
+    ];
+    await runIn({ ...base, kind: 'media', text: '', mediaId: 'm2', mediaLabel: '[photo]' });
+    expect(s.emails[0].html).toMatch(/Also unanswered:[\s\S]*Room for 2 on Friday\?/);
+    expect(s.emails[0].html).not.toMatch(/Hello!/);
+  });
+  it('a holding reply that may have gone out is logged as unknown', async () => {
+    s.sendResult = { ok: false, unknown: true, error: 'timeout' };
+    await runIn({ ...base, kind: 'media', text: '', mediaId: 'm2', mediaLabel: '[photo]' });
+    expect(s.sent).toHaveLength(1);
+    expect(s.out[0]).toEqual(['c1', 'ai', 'HOLD', null, 'Delivery not confirmed – check the chat before resending', undefined, 'unknown']);
   });
   it('a second photo while waiting for the owner gets no second holding reply', async () => {
     s.status = 'needs_human';

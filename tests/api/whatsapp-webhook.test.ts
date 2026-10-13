@@ -34,8 +34,8 @@ function builder(table: string) {
   };
   return b;
 }
-const inbound = vi.hoisted(() => ({ calls: [] as any[], waited: [] as any[], work: Promise.resolve('done') as Promise<unknown> }));
-vi.mock('@/lib/wa-chat/inbound', () => ({ handleInbound: async (m: any) => { inbound.calls.push(m); return { work: inbound.work }; } }));
+const inbound = vi.hoisted(() => ({ calls: [] as any[], deadlines: [] as any[], waited: [] as any[], work: Promise.resolve('done') as Promise<unknown> }));
+vi.mock('@/lib/wa-chat/inbound', () => ({ handleInbound: async (m: any, deadline: number) => { inbound.calls.push(m); inbound.deadlines.push(deadline); return { work: inbound.work }; } }));
 vi.mock('@/lib/wa-chat/store', () => ({ updateChatStatus: async () => {} }));
 vi.mock('@vercel/functions', () => ({ waitUntil: (p: any) => { inbound.waited.push(p); } }));
 vi.mock('@/lib/server-auth', async (orig) => ({
@@ -282,6 +282,9 @@ describe('POST /api/whatsapp/webhook', () => {
     const res = await send(payload);
     expect(res.status).toBe(200);
     expect(inbound.calls[0]).toMatchObject({ waId: 'w1', text: 'Hi' });
+    // The AI's deadline counts from when the request arrived.
+    expect(inbound.deadlines.at(-1)).toBeGreaterThan(Date.now() + 45_000);
+    expect(inbound.deadlines.at(-1)).toBeLessThanOrEqual(Date.now() + 50_000);
     expect(inbound.waited).toHaveLength(1);
   });
   it('answers Meta at once without waiting for the AI turn', async () => {

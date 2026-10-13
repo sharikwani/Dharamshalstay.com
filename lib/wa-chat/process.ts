@@ -1,12 +1,12 @@
-import { sendText, type SendResult } from '@/lib/whatsapp-cloud';
 import { sendEmail, adminEmail } from '@/lib/email';
 import { siteConfig } from '@/lib/config';
 import { reply } from './assistant';
 import {
   acquireTurnLock, aiRepliesSince, getConversation, getSettings, history, latestInboundId, pendingVoice, releaseTurnLock,
-  saveOutbound, saveSystemNote, setStatusIf,
+  saveSystemNote, setStatusIf,
 } from './store';
-import { UNCONFIRMED, type ChatMessage, type ChatSettings, type Conversation } from './types';
+import { definitelyFailed, sendLogged } from './send';
+import { isAnswer, unanswered, type ChatMessage, type ChatSettings, type Conversation } from './types';
 import type { ToolCtx } from './tools';
 
 export const HOLDING_REPLY = 'Thank you for your message! A member of our team will reply here shortly. 🙏';
@@ -15,8 +15,15 @@ const HOUR = 3600e3;
 const POLL_MS = 1500;
 /** Time one AI turn needs (thinking + sending) before the invocation deadline; with less left, the owner takes over. */
 const MIN_TURN_MS = 15_000;
-/** At most this many polls for a voice note that is still being transcribed. */
-const VOICE_POLLS = 14;
+/**
+ * A further turn for a message that is not this invocation's own needs this much time (the AI gets the time left
+ * minus 6 s); with less, the lock is released for that message's own invocation, which is polling for it.
+ */
+const LOOP_TURN_MS = 25_000;
+/** A turn waiting for the lock keeps waiting until this close to its deadline (it only needs to send a holding reply). */
+const GIVE_UP_MS = 6_000;
+/** At most this many polls (about 30 s) for a voice note that is still being transcribed. */
+const VOICE_POLLS = 20;
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 const esc = (s: unknown) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
 
@@ -40,28 +47,20 @@ function withDeadline<T>(work: Promise<T>, deadline: number): Promise<T> {
   ]).finally(() => clearTimeout(timer));
 }
 
-/** Log what we sent; a send that may have gone out (unknown) is logged as such and never resent. */
-async function logReply(conversationId: string, text: string, r: SendResult) {
-  if (r.ok) return saveOutbound(conversationId, 'ai', text, r.id, undefined);
-  if (r.unknown) return saveOutbound(conversationId, 'ai', text, null, UNCONFIRMED, undefined, 'unknown');
-  return saveOutbound(conversationId, 'ai', text, null, r.error);
-}
+const sendReply = (c: Conversation, text: string) => sendLogged(c, text);
 
-async function sendReply(c: Conversation, text: string) {
-  const r = await sendText(c.phone, text);
-  await logReply(c.id, text, r);
-}
-
-/** Customer messages after the last message we (AI or owner) sent; system notes do not count as answers. */
-function unanswered(hist: ChatMessage[]): ChatMessage[] {
-  const out: ChatMessage[] = [];
-  for (let i = hist.length - 1; i >= 0; i--) {
-    const m = hist[i];
-    if (m.kind === 'system') continue;
-    if (m.author !== 'customer') break;
-    out.unshift(m);
-  }
-  return out;
+/**
+ * What is unanswered for this invocation. Normally the customer messages after the last answer. A voice note
+ * transcribed late (`since` = when its text was written) is also unanswered when nothing was answered after that
+ * moment, even if a later message was answered meanwhile without it; it is then moved to the end for the AI.
+ */
+function pendingFor(all: ChatMessage[], messageId: string, since?: string): { hist: ChatMessage[]; pending: ChatMessage[] } {
+  const pending = unanswered(all);
+  if (pending.length || !since) return { hist: all, pending };
+  const t = Date.parse(since);
+  const answeredSince = all.some((m) => isAnswer(m) && Date.parse(m.created_at) > t);
+  const own = all.find((m) => m.id === messageId);
+  return !answeredSince && own ? { hist: [...all.filter((m) => m !== own), own], pending: [own] } : { hist: all, pending };
 }
 
 /**
@@ -95,7 +94,11 @@ async function giveUp(c: Conversation, pending: ChatMessage[], why: string): Pro
 
 const UNLOCKED = 'unlocked';
 
-type Outcome = 'replied' | 'handed_over' | 'skipped' | 'failed' | 'superseded' | 'already_answered';
+type Outcome = 'replied' | 'handed_over' | 'skipped' | 'failed' | 'superseded' | 'already_answered' | 'deferred';
+type Opts = { wait?: (ms: number) => Promise<void>; deadline?: number; minTurnMs?: number; force?: boolean; since?: string };
+
+/** Postgres "column does not exist": migration v25 (processing_until) is not applied yet. */
+const NO_LOCK_COLUMN = '42703';
 
 /**
  * Answer a conversation after a customer message. Waits briefly so a burst of messages gets one reply, then takes
@@ -104,25 +107,31 @@ type Outcome = 'replied' | 'handed_over' | 'skipped' | 'failed' | 'superseded' |
  * over with a holding reply). A turn that waited for the lock exits when its message was answered meanwhile.
  * Stays silent when AI is off for this number or a person has the chat. Never throws.
  */
-export async function processConversation(conversationId: string, messageId: string,
-  opts: { wait?: (ms: number) => Promise<void>; deadline?: number; minTurnMs?: number } = {}): Promise<Outcome> {
+export async function processConversation(conversationId: string, messageId: string, opts: Opts = {}): Promise<Outcome> {
   const deadline = opts.deadline ?? Date.now() + 50_000;
   const minTurn = opts.minTurnMs ?? MIN_TURN_MS;
   const wait = opts.wait || sleep;
   let token: string | null = null;
   try {
     await wait(2000);
-    // A newer message has its own invocation, which answers everything (this message included).
-    if ((await latestInboundId(conversationId)) !== messageId) return 'superseded';
+    // A newer message has its own invocation, which answers everything (this message included). A late voice
+    // transcription (force) still checks after taking the lock whether its text was answered.
+    if (!opts.force && (await latestInboundId(conversationId)) !== messageId) return 'superseded';
     if (!(await answerable(conversationId))) return 'skipped';
-    // If the lock itself cannot be read (database trouble), answer unlocked rather than not at all.
-    const lock = () => acquireTurnLock(conversationId).catch((e) => { console.error('WhatsApp chat: turn lock failed', e); return UNLOCKED; });
+    // Without the lock column (migration not applied) answer unlocked rather than not at all; any other lock
+    // error counts as "not acquired" and the turn keeps waiting.
+    const lock = () => acquireTurnLock(conversationId).catch((e: any) => {
+      console.error('WhatsApp chat: turn lock failed', e);
+      return e?.code === NO_LOCK_COLUMN ? UNLOCKED : null;
+    });
     while (!(token = await lock())) {
-      if (Date.now() > deadline - minTurn) {
-        // Another turn kept the lock all along (slow or stuck): never leave the message silently unanswered.
+      if (Date.now() > deadline - GIVE_UP_MS) {
+        // Another turn kept the lock until our own deadline (slow or stuck): if our message is still unanswered,
+        // the owner takes over; never leave it silently unanswered.
         const c = await answerable(conversationId);
-        const pending = c ? unanswered(await history(conversationId, 20)) : [];
-        return c && pending.length ? await giveUp(c, pending, 'AI ran out of time (another reply was still in progress)') : 'skipped';
+        const { pending } = c ? pendingFor(await history(conversationId, 20), messageId, opts.since) : { pending: [] as ChatMessage[] };
+        if (!c || !pending.some((m) => m.id === messageId)) return 'already_answered';
+        return await giveUp(c, pending, 'AI ran out of time (another reply was still in progress)');
       }
       await wait(POLL_MS);
     }
@@ -133,27 +142,29 @@ export async function processConversation(conversationId: string, messageId: str
   }
   const held = token;
   try {
-    return await turns(conversationId, deadline, minTurn, wait);
+    return await turns(conversationId, messageId, opts.since, deadline, minTurn, wait);
   } finally {
     if (held !== UNLOCKED) await releaseTurnLock(conversationId, held).catch((e) => console.error('WhatsApp chat: lock release failed', e));
   }
 }
 
 /** The lock holder's loop: one turn per batch of unanswered customer messages. */
-async function turns(conversationId: string, deadline: number, minTurn: number, wait: (ms: number) => Promise<void>): Promise<Outcome> {
+async function turns(conversationId: string, messageId: string, since: string | undefined, deadline: number, minTurn: number,
+  wait: (ms: number) => Promise<void>): Promise<Outcome> {
   let result: Outcome = 'already_answered';
   let answeredId: string | null = null;
   for (;;) {
     let conv: Conversation | null;
     let hist: ChatMessage[];
     let pending: ChatMessage[];
+    let all: ChatMessage[];
     try {
       conv = await answerable(conversationId);
       if (!conv) return result === 'already_answered' ? 'skipped' : result;
       // A voice note sent just before is still being transcribed: wait, so the turn does not answer "[voice note]".
       for (let i = 0; i < VOICE_POLLS && Date.now() < deadline - minTurn && (await pendingVoice(conversationId)); i++) await wait(POLL_MS);
-      const all = await history(conversationId, 20);
-      ({ hist, pending } = answeredId ? afterAnswered(all, answeredId) : { hist: all, pending: unanswered(all) });
+      all = await history(conversationId, 20);
+      ({ hist, pending } = answeredId ? afterAnswered(all, answeredId) : pendingFor(all, messageId, since));
     } catch (e: any) {
       console.error('WhatsApp AI processing failed:', e);
       await notify('WhatsApp chat needs you (AI error)', `<p>The assistant could not read the chat: ${esc(e?.message || e)}</p><p><a href="${link(conversationId)}">Open the chat</a></p>`);
@@ -161,11 +172,16 @@ async function turns(conversationId: string, deadline: number, minTurn: number, 
     }
     // Answered already (by the turn that held the lock before this one, or by the owner).
     if (!pending.length) return result;
-    if (Date.now() > deadline - minTurn) return giveUp(conv, pending, 'AI ran out of time');
+    const left = deadline - Date.now();
+    // Not enough time for a full turn on a message that is not ours: its own invocation is polling for the lock
+    // and has more time, so release the lock to it.
+    if (left < LOOP_TURN_MS && pending[pending.length - 1].id !== messageId) return result === 'already_answered' ? 'deferred' : result;
+    if (left < minTurn) return giveUp(conv, pending, 'AI ran out of time');
     const outcome = await turn(conv, hist, deadline);
     if (outcome !== 'replied') return outcome;
     result = outcome;
-    answeredId = pending[pending.length - 1].id;
+    // The newest customer message this turn saw (for a late voice note, a later message answered earlier).
+    answeredId = [...all].reverse().find((m) => m.author === 'customer')?.id ?? pending[pending.length - 1].id;
     try {
       // Another message arrived while this turn was thinking: answer it too (its own invocation waits for the lock).
       if ((await latestInboundId(conversationId)) === answeredId) return result;
@@ -210,7 +226,16 @@ async function turn(conv: Conversation, hist: ChatMessage[], deadline: number): 
       text = HOLDING_REPLY;
     }
     sent = true; // from here an error must not send the reply (or a holding reply) again
-    await sendReply(conv, text);
+    const r = await sendReply(conv, text);
+    if (definitelyFailed(r)) {
+      // WhatsApp refused it twice: the customer has nothing. The failed row does not count as an answer.
+      await setStatusIf(conv.id, 'ai', 'needs_human', 'AI reply could not be sent');
+      if (ctx.actions?.length) await saveSystemNote(conv.id, `AI reply could not be sent. It had already: ${ctx.actions.join('; ')}`);
+      await notify(`WhatsApp chat needs you: ${who(conv)}`,
+        `<p>The AI reply to ${esc(who(conv))} could not be sent (${esc(!r.ok ? r.error : '')}). Please send it yourself:</p><blockquote>${esc(text)}</blockquote>`
+        + (ctx.actions?.length ? `<p>It had already:</p>${list(ctx.actions)}` : '') + `<p><a href="${link(conv.id)}">Open the chat</a></p>`);
+      return 'failed';
+    }
     return ctx.handedOver ? 'handed_over' : 'replied';
   } catch (e) {
     return fail(conv, e, ctx, text, sent);
