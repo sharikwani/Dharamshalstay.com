@@ -12,10 +12,19 @@ const MAX_BYTES = 5 * 1024 * 1024;
 const BAD_FILE = 'Photos must be JPEG, PNG or WebP, up to 5 MB.';
 const EXT: Record<string, string> = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' };
 
-type Props = { images: string[]; onChange: (images: string[]) => void; userId: string; folder: string };
+type Props = {
+  images: string[];
+  /** Remove/reorder: the full new list. */
+  onChange: (images: string[]) => void;
+  /** Finished uploads: the parent appends them to its current list (re-applying the cap). */
+  onAdd: (urls: string[]) => void;
+  onUploadingChange?: (uploading: boolean) => void;
+  userId: string;
+  folder: string;
+};
 
 /** Room-type photos: upload (shrunk first), remove, reorder. Up to LIMITS.images. */
-export default function RoomPhotos({ images, onChange, folder }: Props) {
+export default function RoomPhotos({ images, onChange, onAdd, onUploadingChange, folder }: Props) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
   const fileRef = useRef<HTMLInputElement>(null);
@@ -32,6 +41,7 @@ export default function RoomPhotos({ images, onChange, folder }: Props) {
     const batch = ok.slice(0, Math.max(0, room));
 
     setUploading(true);
+    onUploadingChange?.(true);
     const added: string[] = [];
     for (const file of batch) {
       try {
@@ -47,15 +57,16 @@ export default function RoomPhotos({ images, onChange, folder }: Props) {
         problem = `Could not read ${file.name}. Try a different photo.`;
       }
     }
-    if (added.length) onChange([...images, ...added]);
+    if (added.length) onAdd(added);
     if (problem) setError(problem);
     setUploading(false);
+    onUploadingChange?.(false);
     if (fileRef.current) fileRef.current.value = '';
   }
 
   function move(i: number, by: -1 | 1) {
     const j = i + by;
-    if (j < 0 || j >= images.length) return;
+    if (uploading || j < 0 || j >= images.length) return;
     const next = [...images];
     [next[i], next[j]] = [next[j], next[i]];
     onChange(next);
@@ -73,12 +84,12 @@ export default function RoomPhotos({ images, onChange, folder }: Props) {
           <div key={`${url}-${i}`} className="relative aspect-[4/3] rounded-lg overflow-hidden border border-slate-200 bg-slate-100">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={url} alt={`Room photo ${i + 1}`} className="w-full h-full object-cover" />
-            <button type="button" aria-label="Remove photo" onClick={() => onChange(images.filter((_, k) => k !== i))}
-              className="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white rounded-full p-1"><X className="h-3 w-3" /></button>
+            <button type="button" aria-label="Remove photo" disabled={uploading} onClick={() => onChange(images.filter((_, k) => k !== i))}
+              className="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 disabled:opacity-40"><X className="h-3 w-3" /></button>
             <div className="absolute bottom-1 inset-x-1 flex justify-between">
-              <button type="button" aria-label="Move photo left" disabled={i === 0} onClick={() => move(i, -1)}
+              <button type="button" aria-label="Move photo left" disabled={uploading || i === 0} onClick={() => move(i, -1)}
                 className="bg-white/90 rounded-full p-0.5 text-slate-700 disabled:opacity-0"><ChevronLeft className="h-3.5 w-3.5" /></button>
-              <button type="button" aria-label="Move photo right" disabled={i === images.length - 1} onClick={() => move(i, 1)}
+              <button type="button" aria-label="Move photo right" disabled={uploading || i === images.length - 1} onClick={() => move(i, 1)}
                 className="bg-white/90 rounded-full p-0.5 text-slate-700 disabled:opacity-0"><ChevronRight className="h-3.5 w-3.5" /></button>
             </div>
           </div>

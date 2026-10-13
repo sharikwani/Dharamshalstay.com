@@ -73,7 +73,7 @@ function problemWith(total: number | null, rooms: ReturnType<typeof payloadRooms
   for (const r of rooms) {
     if (r.name.length < 2 || r.name.length > 60) return 'Each room type needs a name of 2-60 characters.';
     const k = r.name.toLowerCase();
-    if (seen.has(k)) return `Two rooms are called "${k}". Each room type needs its own name.`;
+    if (seen.has(k)) return `Two rooms are called "${r.name}". Each room type needs its own name.`;
     seen.add(k);
     if (r.total_inventory == null) return `${r.name}: enter how many rooms of this type you have.`;
   }
@@ -93,6 +93,8 @@ export default function RoomsEditor({ apiUrl, propertyId, userId }: Props) {
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState<{ ok: boolean; text: string; stale?: boolean } | null>(null);
   const [confirmDelete, setConfirmDelete] = useState('');
+  const [uploadingKeys, setUploadingKeys] = useState<string[]>([]);
+  const uploading = uploadingKeys.length > 0;
   const reqId = useRef(0);
 
   const snapshot = (t: number | string, d: Draft[]) => JSON.stringify([num(t), payloadRooms(d)]);
@@ -140,8 +142,17 @@ export default function RoomsEditor({ apiUrl, propertyId, userId }: Props) {
       : d)));
   }
 
+  function addPhotos(key: string, urls: string[]) {
+    setDrafts((ds) => ds.map((d) => (d.key === key
+      ? { ...d, room: { ...d.room, images: [...d.room.images, ...urls].slice(0, LIMITS.images) } }
+      : d)));
+  }
+  function markUploading(key: string, on: boolean) {
+    setUploadingKeys((ks) => (on ? [...ks.filter((k) => k !== key), key] : ks.filter((k) => k !== key)));
+  }
+
   async function save() {
-    if (!prop) return;
+    if (!prop || uploading) return;
     const rooms = payloadRooms(drafts);
     const t = num(total);
     const problem = problemWith(t, rooms);
@@ -162,9 +173,9 @@ export default function RoomsEditor({ apiUrl, propertyId, userId }: Props) {
   if (loading) return <div className="py-12 flex justify-center"><Loader2 className="h-6 w-6 text-brand-600 animate-spin" /></div>;
   if (loadError || !prop) return <p className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg">{loadError || 'Could not load the rooms'}</p>;
 
-  const totalNum = num(total) ?? 0;
+  const totalNum = num(total);
   const assigned = drafts.filter((d) => d.room.is_active).reduce((s, d) => s + (num(d.room.total_inventory) ?? 0), 0);
-  const over = assigned - totalNum;
+  const over = totalNum == null ? 0 : assigned - totalNum;
 
   return (
     <div className="space-y-4">
@@ -176,7 +187,7 @@ export default function RoomsEditor({ apiUrl, propertyId, userId }: Props) {
             className={cn(INPUT, 'mt-1 w-32')} />
         </label>
         <p className={cn('text-sm py-2', over > 0 ? 'text-red-600 font-semibold' : 'text-slate-700')}>
-          Rooms assigned: {assigned} of {totalNum}{over > 0 && ` · Over by ${over}`}
+          Rooms assigned: {assigned} of {totalNum ?? '—'}{over > 0 && ` · Over by ${over}`}
         </p>
       </div>
 
@@ -266,7 +277,8 @@ export default function RoomsEditor({ apiUrl, propertyId, userId }: Props) {
               )}
             </div>
 
-            <RoomPhotos images={room.images} onChange={(images) => edit(key, { images })} userId={userId} folder={`${userId}/${propertyId}/rooms`} />
+            <RoomPhotos images={room.images} onChange={(images) => edit(key, { images })} onAdd={(urls) => addPhotos(key, urls)}
+              onUploadingChange={(on) => markUploading(key, on)} userId={userId} folder={`${userId}/${propertyId}/rooms`} />
 
             <div className="flex justify-end">
               {confirmDelete === key ? (
@@ -304,9 +316,9 @@ export default function RoomsEditor({ apiUrl, propertyId, userId }: Props) {
         <div className="flex flex-wrap items-center justify-end gap-3">
           {msg?.ok && <span className="text-sm text-green-700">{msg.text}</span>}
           {dirty && !msg && <span className="text-sm text-slate-500">You have unsaved changes.</span>}
-          <button type="button" onClick={save} disabled={saving}
+          <button type="button" onClick={save} disabled={saving || uploading}
             className="flex items-center gap-2 bg-brand-600 text-white px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-brand-700 disabled:opacity-50">
-            {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />} Save changes
+            {saving || uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />} {uploading ? 'Uploading photos…' : 'Save changes'}
           </button>
         </div>
       </div>
