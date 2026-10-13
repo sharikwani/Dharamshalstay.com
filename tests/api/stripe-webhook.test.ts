@@ -302,6 +302,26 @@ describe('POST /api/webhooks/stripe', () => {
     expect(h.sendBookingEmails).not.toHaveBeenCalled();
   });
 
+  it('stays silent when the payment was already recorded under transaction_id or payment_reference', async () => {
+    h.reread = { data: open({ payment_status: 'paid', status: 'confirmed', stripe_payment_intent: null, transaction_id: 'pi_1' }), error: null };
+    await send();
+    h.reread = { data: open({ payment_status: 'paid', status: 'confirmed', stripe_payment_intent: 'pi_0', payment_reference: 'pi_1' }), error: null };
+    await send();
+    expect(h.sendEmail).not.toHaveBeenCalled();
+    const reread = h.calls.find((c) => c.op === 'select' && String(c.args[0]).includes('stripe_payment_intent'));
+    expect(String(reread?.args[0])).toContain('transaction_id');
+    expect(String(reread?.args[0])).toContain('payment_reference');
+  });
+
+  it('uses softer wording when the booking was marked paid by hand (no payment intent stored)', async () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    h.reread = { data: open({ payment_status: 'paid', status: 'confirmed', stripe_payment_intent: null, transaction_id: 'UPI-77', payment_reference: null }), error: null };
+    await send();
+    expect(h.sendEmail).toHaveBeenCalledTimes(1);
+    expect(h.sendEmail.mock.calls[0][0].subject).toBe('Possible second payment for DS-1 – check Stripe before refunding; it may be the payment already recorded by hand');
+    spy.mockRestore();
+  });
+
   it('a booking cancelled while the payment was processed keeps its status, records the money and asks for a refund', async () => {
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
     h.results = [{ data: null, error: null }, { data: { id: 'b1', booking_ref: 'DS-1', status: 'cancelled' }, error: null }];

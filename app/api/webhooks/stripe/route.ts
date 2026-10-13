@@ -10,17 +10,27 @@ const OPEN_RECORD = ['pending', 'due', 'overdue'];
 // Bookings that must not be confirmed by a late payment: cancelled ones, and failed ones (lost the last room).
 const CLOSED = ['cancelled', 'failed'];
 const LOOKUP_COLS = 'id, booking_ref, status, payment_status, commission_status';
-const REREAD_COLS = 'id, booking_ref, status, payment_status, stripe_payment_intent';
+const REREAD_COLS = 'id, booking_ref, status, payment_status, stripe_payment_intent, transaction_id, payment_reference';
 const CONFIRMING_EVENTS = ['checkout.session.completed', 'checkout.session.async_payment_succeeded'];
 const esc = (s: unknown) => String(s ?? '').replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
-/** The customer paid an already-paid booking again (e.g. an older link): one of the payments must be refunded. */
+/**
+ * The customer paid an already-paid booking again (e.g. an older link): one of the payments must be refunded.
+ * When the booking was marked paid by hand (no payment intent stored), the hand-recorded payment may be this very
+ * one, so the owner is asked to check before refunding.
+ */
 async function secondPaymentEmail(b: { booking_ref?: string | null; stripe_payment_intent?: string | null }, session: Stripe.Checkout.Session, paymentIntent: string) {
   console.error('Stripe webhook: second payment for paid booking', b.booking_ref, paymentIntent);
+  const byHand = !b.stripe_payment_intent;
   try {
     await sendEmail({
-      to: adminEmail(), subject: `Second payment received for ${b.booking_ref} – refund one in Stripe`,
-      html: `<p>Booking <b>${esc(b.booking_ref)}</b> was already paid, and a second payment has arrived — refund one of them in Stripe.</p>`
+      to: adminEmail(),
+      subject: byHand
+        ? `Possible second payment for ${b.booking_ref} – check Stripe before refunding; it may be the payment already recorded by hand`
+        : `Second payment received for ${b.booking_ref} – refund one in Stripe`,
+      html: (byHand
+        ? `<p>Booking <b>${esc(b.booking_ref)}</b> was already marked paid by hand, and a Stripe payment has arrived. It may be the same payment — check Stripe before refunding.</p>`
+        : `<p>Booking <b>${esc(b.booking_ref)}</b> was already paid, and a second payment has arrived — refund one of them in Stripe.</p>`)
         + `<p>Amount: ₹${esc(Math.round((session.amount_total || 0) / 100))}<br>New payment intent: ${esc(paymentIntent)}<br>`
         + `Payment intent on the booking: ${esc(b.stripe_payment_intent || 'none (marked paid another way)')}<br>Checkout session: ${esc(session.id)}</p>`,
     });
@@ -131,7 +141,9 @@ export async function POST(req: NextRequest) {
           }
           if (now?.payment_status === 'paid') {
             // A redelivery of the event that paid it stays silent; a different payment means the customer paid twice.
-            if (paymentIntent && now.stripe_payment_intent !== paymentIntent) await secondPaymentEmail(now, session, paymentIntent);
+            // The payment may also have been recorded under transaction_id / payment_reference (e.g. by the admin).
+            const known = [now.stripe_payment_intent, now.transaction_id, now.payment_reference].includes(paymentIntent);
+            if (paymentIntent && !known) await secondPaymentEmail(now, session, paymentIntent);
             return NextResponse.json({ received: true });
           }
           if (now && !closedStatus && CLOSED.includes(now.status)) {
