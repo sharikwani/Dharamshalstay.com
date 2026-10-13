@@ -21,6 +21,9 @@ describe('assistant', () => {
     expect(SYSTEM_PROMPT).toContain('Discount of up to ₹500 on every booking');
     expect(SYSTEM_PROMPT).toMatch(/applied by our team when the booking is confirmed/i);
   });
+  it('only books once the customer chose the payment themselves', () => {
+    expect(SYSTEM_PROMPT).toContain('Only call create_booking after the customer has explicitly chosen pay online or pay later in their own words; if they have not, ask which they prefer. Never choose the payment for them.');
+  });
   it('maps history roles and labels team messages', () => {
     expect(toOpenAiMessages([msg('customer', 'hi'), msg('ai', 'hello'), msg('admin', 'I can help'), msg('ai', 'x', 'system')])).toEqual([
       { role: 'user', content: 'hi' }, { role: 'assistant', content: 'hello' }, { role: 'assistant', content: '[Team member] I can help' },

@@ -159,6 +159,12 @@ describe('create_booking', () => {
     expect((await run('create_booking', { payment: 'later', guest_name: 'Asha' })).error).toMatch(/already/i);
     expect(h.created).toEqual([]);
   });
+  it("describes payment as the customer's explicit choice", () => {
+    const def: any = BOOKING_TOOL_DEFS.find((d) => d.function.name === 'create_booking');
+    expect(def.function.parameters.required).toContain('payment');
+    expect(def.function.parameters.properties.payment.description).toMatch(/the customer's explicit choice/);
+    expect(def.function.description).toMatch(/explicitly chose/);
+  });
   it('books the quote saved in an earlier turn without a quote_id (two turns)', async () => {
     h.useSaved = true;
     const t1 = await run('quote_booking', { category: 'trek', name: 'triund', date: '2099-10-24', guests: 2 });

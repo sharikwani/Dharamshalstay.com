@@ -40,8 +40,8 @@ export const BOOKING_TOOL_DEFS = [
     pickup_time: str('Taxi pickup time HH:MM (24h)'), pickup_location: str('Exact pickup address (taxi)'), drop_location: str('Exact drop address (taxi)'),
     offer_code: str('WhatsApp offer code from get_offer_code, only if the customer wants to use it (hotels only)'),
   }, ['category', 'guests']),
-  fn('create_booking', 'Book the most recent quote you showed the customer. Only after the customer replied YES to that quote\'s summary in a later message.', {
-    payment: { type: 'string', enum: ['online', 'later'] },
+  fn('create_booking', 'Book the most recent quote you showed the customer. Only after the customer replied YES to that quote\'s summary in a later message and explicitly chose pay online or pay later themselves.', {
+    payment: { type: 'string', enum: ['online', 'later'], description: 'Payment, as the customer\'s explicit choice in their own words: online (pay now by link) or later. If they have not chosen, ask; never pick for them.' },
     guest_name: str('Full name for the booking'), guest_email: str('Email, if the customer gave one'),
   }, ['payment', 'guest_name']),
   fn('payment_link', 'A fresh online payment link for one of this customer\'s unpaid bookings.', { booking_ref: str('Booking reference, e.g. TRK-1234') }, ['booking_ref']),
