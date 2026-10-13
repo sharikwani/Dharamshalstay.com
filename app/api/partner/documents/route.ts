@@ -62,11 +62,16 @@ export async function POST(req: Request) {
     }).select('id').single();
     if (error) { await sb.storage.from(KYC_BUCKET).remove([path]); throw error; }
 
+    // The new upload is saved from here on: a failed clean-up of the replaced one is logged, never reported as an
+    // error (a retry would only upload the same document again). Its file is kept while its row still exists.
     if (replaceable.length) {
       const { error: delErr } = await sb.from('partner_documents').delete().in('id', replaceable.map((p: any) => p.id));
-      if (delErr) throw delErr;
-      const { error: rmErr } = await sb.storage.from(KYC_BUCKET).remove(replaceable.map((p: any) => p.storage_path));
-      if (rmErr) console.error('KYC file cleanup failed', rmErr);
+      if (delErr) {
+        console.error('Replaced KYC document rows could not be deleted', replaceable.map((p: any) => p.id), delErr);
+      } else {
+        const { error: rmErr } = await sb.storage.from(KYC_BUCKET).remove(replaceable.map((p: any) => p.storage_path));
+        if (rmErr) console.error('KYC file cleanup failed', rmErr);
+      }
     }
     return NextResponse.json({ ok: true, id: row.id });
   } catch (e) { return jsonError(e); }
