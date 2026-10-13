@@ -1,6 +1,6 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
-const h = vi.hoisted(() => ({ inserts: [] as any[], emails: [] as any[], statuses: [] as any[], existing: null as any, filters: [] as any[] }));
+const h = vi.hoisted(() => ({ inserts: [] as any[], emails: [] as any[], statuses: [] as any[], existing: null as any, filters: [] as any[], status: 'ai' }));
 vi.mock('@/lib/db', () => ({
   getPublishedProperties: async () => [
     { id: 'p-panch', slug: 'panchvati-cottages', name: 'Panchvati Cottages', type: 'cottage', destination_slug: 'dharamshala', star_rating: null, price_min: 4000, price_max: 9700, short_description: 'Quiet cottages', locality: 'Kharota' },
@@ -15,7 +15,10 @@ vi.mock('@/lib/db', () => ({
 }));
 vi.mock('@/lib/taxi', () => ({ getTaxiRouteGroups: async () => [{ slug: 'dharamshala-to-mcleod-ganj', from: 'Dharamshala', to: 'McLeod Ganj', distanceKm: 9, duration: '30 min', minPrice: 500, vehicles: [{ name: 'Sedan', maxPassengers: 4, price: 500 }] }] }));
 vi.mock('@/lib/email', () => ({ sendEmail: async (m: any) => { h.emails.push(m); }, adminEmail: () => 'admin@x' }));
-vi.mock('@/lib/wa-chat/store', () => ({ setStatus: async (...a: any[]) => { h.statuses.push(a); }, history: async () => [{ author: 'customer', body: 'help' }] }));
+vi.mock('@/lib/wa-chat/store', () => ({
+  setStatusIf: async (id: string, from: string, to: string, why: string) => { if (h.status !== from) return false; h.statuses.push([id, to, why]); return true; },
+  history: async () => [{ author: 'customer', body: 'help' }],
+}));
 vi.mock('@/lib/server-auth', () => ({ serviceClient: () => ({ from: () => {
   const q: any = {
     select: () => q, order: () => q, limit: () => q,
@@ -39,7 +42,7 @@ vi.mock('@/lib/wa-chat/offer-tools', () => ({
 import { runTool, TOOL_DEFS } from '@/lib/wa-chat/tools';
 
 const ctx = () => ({ conversationId: 'c1', phone: '919800000001', profileName: 'Asha', handedOver: false });
-beforeEach(() => { h.inserts = []; h.emails = []; h.statuses = []; h.existing = null; h.filters = []; });
+beforeEach(() => { h.inserts = []; h.emails = []; h.statuses = []; h.existing = null; h.filters = []; h.status = 'ai'; });
 
 describe('tools', () => {
   it('defines every tool', () => {
@@ -97,6 +100,13 @@ describe('tools', () => {
     expect(h.emails[0].subject).toMatch(/needs you/);
     expect((c as any).sideEffects).toEqual(['handover']);
     expect((c as any).actions).toEqual(['Handed to the team: Refund request']);
+  });
+  it('handover never takes a chat back from an owner who took it over, but still emails them', async () => {
+    h.status = 'human';
+    const c = ctx();
+    await runTool('handover', { reason: 'Refund request' }, c);
+    expect(h.statuses).toEqual([]);
+    expect(h.emails[0].subject).toMatch(/needs you/);
   });
   it('unknown tool returns an error string', async () => {
     expect(JSON.parse(await runTool('nope', {}, ctx()))).toEqual({ error: 'Unknown tool' });

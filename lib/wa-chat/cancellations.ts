@@ -1,13 +1,14 @@
 // lib/wa-chat/cancellations.ts
 import { cancelBooking, PAID_MEANWHILE } from '@/lib/bookings/cancel';
 import { hoursUntilStart } from '@/lib/bookings/timing';
-import { downloadMedia, sendText } from '@/lib/whatsapp-cloud';
+import { downloadMedia } from '@/lib/whatsapp-cloud';
 import { sendEmail, adminEmail } from '@/lib/email';
 import { serviceClient } from '@/lib/server-auth';
 import { siteConfig } from '@/lib/config';
 import { claimCancellation, findOwnBooking, ownBookings, saveCancellation, updateCancellation, type Cancellation, type OwnBooking } from './booking-store';
 import { checkProof } from './proof';
-import { saveOutbound, setMessageBody, setStatus } from './store';
+import { setMessageBody, setStatusIf } from './store';
+import { definitelyFailed, sendLogged } from './send';
 import type { ToolCtx } from './tools';
 import { markSideEffect, type Conversation, type Inbound } from './types';
 
@@ -118,11 +119,9 @@ async function reviewFallback(c: Conversation, messageId: string, m: Inbound, op
   const note = `error: ${e instanceof Error ? e.message : String(e)}`.slice(0, 500);
   await updateCancellation(open.id, { status: 'needs_review', verdict: 'unclear', verdict_notes: note }).catch(() => {});
   await setMessageBody(messageId, `${m.mediaLabel || '[document]'} [proof received: sent to the team for review]`).catch(() => {});
-  await setStatus(c.id, 'needs_human', `Cancellation proof to review: ${open.booking_id}`).catch(() => {});
-  try {
-    const r = await sendText(c.phone, PROOF_REVIEW_REPLY);
-    await saveOutbound(c.id, 'ai', PROOF_REVIEW_REPLY, r.ok ? r.id : null, r.ok ? undefined : r.error);
-  } catch (err) { console.error('Proof review reply failed:', err); }
+  // Never over an owner who has taken the chat: only the call that flags it answers the customer.
+  const moved = await setStatusIf(c.id, 'ai', 'needs_human', `Cancellation proof to review: ${open.booking_id}`).catch(() => false);
+  if (moved) await sendLogged(c, PROOF_REVIEW_REPLY);
   const who = c.profile_name || `+${c.phone}`;
   await sendEmail({
     to: adminEmail(), subject: `Cancellation to review: ${open.booking_id} (${who})`,
@@ -132,12 +131,16 @@ async function reviewFallback(c: Conversation, messageId: string, m: Inbound, op
   return 'review';
 }
 
-/** Tell the customer directly (not through the AI turn, which may be busy or silenced). */
+/** Tell the customer directly (not through the AI turn, which may be busy or silenced); if that fails, the owner. */
 async function tell(c: Conversation, text: string) {
-  try {
-    const r = await sendText(c.phone, text);
-    await saveOutbound(c.id, 'ai', text, r.ok ? r.id : null, r.ok ? undefined : r.error);
-  } catch (e) { console.error('WhatsApp cancellation reply failed:', e); }
+  const r = await sendLogged(c, text);
+  if (!definitelyFailed(r)) return;
+  const who = c.profile_name || `+${c.phone}`;
+  await sendEmail({
+    to: adminEmail(), subject: `WhatsApp: could not tell ${who} about their cancellation`,
+    html: `<p>This message to ${esc(who)} could not be sent (${esc(!r.ok ? r.error : '')}). Please tell them yourself:</p><blockquote>${esc(text)}</blockquote>`
+      + `<p><a href="${siteConfig.url}/admin/whatsapp?c=${c.id}">Open the chat</a></p>`,
+  }).catch((e) => console.error('Cancellation notice email failed:', e));
 }
 
 async function processProof(c: Conversation, messageId: string, m: Inbound, open: Cancellation): Promise<'cancelled' | 'review'> {
@@ -175,9 +178,8 @@ async function processProof(c: Conversation, messageId: string, m: Inbound, open
     : cancelFailed ? 'proof matches but cancelling failed' : !b ? 'booking not found' : blocker(b) ? `booking is now ${blocker(b)}` : `proof ${verdict.verdict}`;
   await updateCancellation(open.id, { status: 'needs_review', verdict: verdict.verdict, verdict_notes: `${verdict.notes} (${why})`.slice(0, 500), proof_path });
   await setMessageBody(messageId, `${m.mediaLabel || '[document]'} [proof for ${b?.booking_ref || 'booking'}: sent to the team for review]`);
-  await setStatus(c.id, 'needs_human', `Cancellation proof to review: ${b?.booking_ref || open.booking_id}`);
-  const r = await sendText(c.phone, PROOF_REVIEW_REPLY);
-  await saveOutbound(c.id, 'ai', PROOF_REVIEW_REPLY, r.ok ? r.id : null, r.ok ? undefined : r.error).catch((e) => console.error('Proof reply save failed:', e));
+  // Never over an owner who has taken the chat: only the call that flags it answers the customer.
+  if (await setStatusIf(c.id, 'ai', 'needs_human', `Cancellation proof to review: ${b?.booking_ref || open.booking_id}`)) await sendLogged(c, PROOF_REVIEW_REPLY);
   const signed = proof_path ? (await serviceClient().storage.from(PROOF_BUCKET).createSignedUrl(proof_path, 7 * 24 * 3600).catch(() => null))?.data?.signedUrl : null;
   const who = c.profile_name || `+${c.phone}`;
   await sendEmail({

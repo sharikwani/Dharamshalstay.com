@@ -2,7 +2,7 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 const h = vi.hoisted(() => ({
-  own: [] as any[], ownSeq: [] as any[][], cancelResult: null as any, saved: [] as any[], updated: [] as any[], cancels: [] as any[], cancelOk: true, verdict: { verdict: 'matches', notes: 'ok' } as any,
+  own: [] as any[], ownSeq: [] as any[][], status: 'ai', sendQueue: [] as any[], cancelResult: null as any, saved: [] as any[], updated: [] as any[], cancels: [] as any[], cancelOk: true, verdict: { verdict: 'matches', notes: 'ok' } as any,
   media: { data: new ArrayBuffer(2), mimeType: 'image/jpeg' } as any, claim: true, ownThrows: false, proofArgs: [] as any[], downloads: 0, uploads: [] as any[], bodies: [] as any[], statuses: [] as any[], sent: [] as any[], outs: [] as any[], emails: [] as any[],
 }));
 vi.mock('@/lib/wa-chat/booking-store', () => ({
@@ -19,11 +19,11 @@ vi.mock('@/lib/bookings/cancel', () => ({
 vi.mock('@/lib/wa-chat/proof', () => ({ checkProof: async (a: any) => { h.proofArgs.push(a); return h.verdict; } }));
 vi.mock('@/lib/whatsapp-cloud', () => ({
   downloadMedia: async () => { h.downloads++; return h.media; },
-  sendText: async (to: string, body: string) => { h.sent.push([to, body]); return { ok: true, id: 'w' }; },
+  sendText: async (to: string, body: string) => { h.sent.push([to, body]); return h.sendQueue.length ? h.sendQueue.shift() : { ok: true, id: 'w' }; },
 }));
 vi.mock('@/lib/wa-chat/store', () => ({
   setMessageBody: async (...a: any[]) => { h.bodies.push(a); },
-  setStatus: async (...a: any[]) => { h.statuses.push(a); },
+  setStatusIf: async (id: string, from: string, to: string, why: string) => { if (h.status !== from) return false; h.statuses.push([id, to, why]); h.status = to; return true; },
   saveOutbound: async (...a: any[]) => { h.outs.push(a); },
 }));
 vi.mock('@/lib/email', () => ({ sendEmail: async (m: any) => { h.emails.push(m); }, adminEmail: () => 'a@x' }));
@@ -43,7 +43,7 @@ const booking = (over: any = {}) => ({ id: 'b1', booking_ref: 'TRK-1', category:
 const ask = (a: any, c = ctx()) => requestCancellation({ booking_ref: 'TRK-1', reason_text: 'fever', ...a }, c, handover);
 
 beforeEach(() => {
-  Object.assign(h, { ownSeq: [], cancelResult: null, claim: true, ownThrows: false, proofArgs: [], downloads: 0, own: [booking()], saved: [], updated: [], cancels: [], cancelOk: true, verdict: { verdict: 'matches', notes: 'ok' },
+  Object.assign(h, { ownSeq: [], status: 'ai', sendQueue: [], cancelResult: null, claim: true, ownThrows: false, proofArgs: [], downloads: 0, own: [booking()], saved: [], updated: [], cancels: [], cancelOk: true, verdict: { verdict: 'matches', notes: 'ok' },
     media: { data: new ArrayBuffer(2), mimeType: 'image/jpeg' }, uploads: [], bodies: [], statuses: [], sent: [], outs: [], emails: [] });
 });
 
@@ -150,6 +150,21 @@ describe('handleProof', () => {
     expect(await handleProof(conv, 'row9', msg, open)).toBe('cancelled');
     expect(h.sent).toEqual([['919800000001', 'Your booking TRK-1 is cancelled. No payment was taken.']]);
     expect(h.outs[0]).toEqual(['c1', 'ai', 'Your booking TRK-1 is cancelled. No payment was taken.', 'w', undefined]);
+  });
+  it('a cancellation notice that cannot be sent goes to the owner by email', async () => {
+    h.sendQueue = [{ ok: false, error: 'Meta 500' }, { ok: false, error: 'Meta 500' }];
+    expect(await handleProof(conv, 'row9', msg, open)).toBe('cancelled');
+    expect(h.sent).toHaveLength(2); // retried once
+    expect(h.emails[0].subject).toMatch(/could not tell/);
+    expect(h.emails[0].html).toMatch(/Your booking TRK-1 is cancelled/);
+  });
+  it('a proof review does not answer over an owner who has the chat', async () => {
+    h.status = 'human';
+    h.verdict = { verdict: 'mismatch', notes: 'Name differs' };
+    expect(await handleProof(conv, 'row9', msg, open)).toBe('review');
+    expect(h.status).toBe('human');
+    expect(h.sent).toEqual([]);
+    expect(h.emails).toHaveLength(1);
   });
   it('a booking cancelled meanwhile is reported as already cancelled', async () => {
     h.cancelResult = { ok: true, already: true };

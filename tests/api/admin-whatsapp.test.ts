@@ -1,6 +1,6 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
-const h = vi.hoisted(() => ({ role: 'admin', send: { ok: true, id: 'w9' } as any, conv: null as any, sent: [] as any[], out: [] as any[], statuses: [] as any[], settingsUpdate: null as any }));
+const h = vi.hoisted(() => ({ order: [] as string[], role: 'admin', send: { ok: true, id: 'w9' } as any, conv: null as any, sent: [] as any[], out: [] as any[], statuses: [] as any[], settingsUpdate: null as any }));
 vi.mock('@/lib/server-auth', async (orig) => {
   const real = await orig<any>();
   return {
@@ -22,9 +22,9 @@ vi.mock('@/lib/server-auth', async (orig) => {
     }),
   };
 });
-vi.mock('@/lib/whatsapp-cloud', () => ({ sendText: async (to: string, b: string) => { h.sent.push([to, b]); return h.send; } }));
+vi.mock('@/lib/whatsapp-cloud', () => ({ sendText: async (to: string, b: string) => { h.order.push('send'); h.sent.push([to, b]); return h.send; } }));
 vi.mock('@/lib/wa-chat/store', () => ({
-  saveOutbound: async (...a: any[]) => { h.out.push(a); }, setStatus: async (...a: any[]) => { h.statuses.push(a); }, history: async () => [],
+  saveOutbound: async (...a: any[]) => { h.out.push(a); }, setStatus: async (...a: any[]) => { h.order.push('status'); h.statuses.push(a); }, history: async () => [],
 }));
 
 import { POST as sendMsg } from '@/app/api/admin/whatsapp/conversations/[id]/messages/route';
@@ -34,7 +34,7 @@ import { PATCH as patchConv } from '@/app/api/admin/whatsapp/conversations/[id]/
 const id = '11111111-1111-4111-8111-111111111111';
 const req = (body: any) => new Request('http://x', { method: 'POST', body: JSON.stringify(body), headers: { Authorization: 'Bearer t' } });
 beforeEach(() => {
-  h.role = 'admin'; h.send = { ok: true, id: 'w9' }; h.sent = []; h.out = []; h.statuses = []; h.settingsUpdate = null;
+  h.order = []; h.role = 'admin'; h.send = { ok: true, id: 'w9' }; h.sent = []; h.out = []; h.statuses = []; h.settingsUpdate = null;
   h.conv = { id, phone: '919800000001', status: 'needs_human', last_customer_at: new Date().toISOString() };
 });
 
@@ -50,6 +50,7 @@ describe('admin whatsapp api', () => {
     expect(h.sent).toEqual([['919800000001', 'Hi, Sharik here']]);
     expect(h.out[0]).toEqual([id, 'admin', 'Hi, Sharik here', 'w9', undefined, 'admin1']);
     expect(h.statuses[0]).toEqual([id, 'human', null]);
+    expect(h.order).toEqual(['status', 'send']); // taken over before sending
   });
   it('an unconfirmed send is logged as unknown and the owner is told to check before resending', async () => {
     h.send = { ok: false, unknown: true, error: 'The operation was aborted due to timeout' };

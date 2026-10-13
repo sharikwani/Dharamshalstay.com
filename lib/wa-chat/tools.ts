@@ -4,7 +4,7 @@ import { getTaxiRouteGroups } from '@/lib/taxi';
 import { siteConfig } from '@/lib/config';
 import { sendEmail, adminEmail } from '@/lib/email';
 import { serviceClient } from '@/lib/server-auth';
-import { history, setStatus } from './store';
+import { history, setStatusIf } from './store';
 import { BOOKING_TOOL_DEFS, runBookingTool } from './booking-tools';
 import { CANCEL_TOOL_DEF, requestCancellation } from './cancellations';
 import { getOfferCode, OFFER_TOOL_DEF, offerNotes } from './offer-tools';
@@ -155,7 +155,8 @@ async function handover(a: any, ctx: ToolCtx) {
   ctx.handedOver = true;
   const reason = String(a.reason || 'Needs a team member').slice(0, 300);
   markSideEffect(ctx, 'handover', `Handed to the team: ${reason}`);
-  await setStatus(ctx.conversationId, 'needs_human', reason);
+  // Only a chat the AI has is flagged; an owner who took over keeps it (the owner is still emailed).
+  await setStatusIf(ctx.conversationId, 'ai', 'needs_human', reason);
   const recent = await history(ctx.conversationId, 6).catch(() => []);
   await sendEmail({
     to: adminEmail(), subject: `WhatsApp chat needs you: ${ctx.profileName || '+' + ctx.phone}`,

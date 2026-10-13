@@ -157,7 +157,14 @@ function Inbox() {
                 </div>
               )}
               <div className="flex-1 overflow-y-auto p-4 space-y-2 bg-slate-50 max-h-[60vh]">
-                {thread!.messages.map((m) => (
+                {thread!.messages.map((m) => m.kind === 'system' ? (
+                  // An owner-only note (what the AI did when its reply was not sent); the customer never saw it.
+                  <div key={m.id} className="flex justify-center">
+                    <div className="max-w-[90%] rounded-lg border border-dashed border-slate-300 bg-slate-100 px-3 py-1.5 text-xs text-slate-600 whitespace-pre-wrap">
+                      <span className="font-semibold">Note for you · {time(m.created_at)}:</span> {m.body}
+                    </div>
+                  </div>
+                ) : (
                   <div key={m.id} className={cn('flex', m.author === 'customer' ? 'justify-start' : 'justify-end')}>
                     <div className={cn('max-w-[80%] rounded-2xl px-3 py-2 text-sm whitespace-pre-wrap shadow-sm',
                       m.author === 'customer' ? 'bg-white text-slate-900' : m.author === 'ai' ? 'bg-sky-100 text-slate-900' : 'bg-green-100 text-slate-900')}>
