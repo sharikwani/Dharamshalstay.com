@@ -11,6 +11,7 @@ import { getPropertyBySlug, getPropertiesByDestination } from '@/lib/db';
 import { generateHotelSEO, generateSEO, hotelSchemaFull, breadcrumbSchema, faqSchema } from '@/lib/seo';
 import { formatPrice } from '@/lib/utils';
 import { normalizeImages } from '@/lib/images';
+import { loadReviewBundle } from '@/lib/reviews/store';
 import { serverT } from '@/lib/i18n/server';
 import { fmt } from '@/lib/i18n/dict';
 import { localizeHotel } from '@/lib/i18n/content';
@@ -42,6 +43,10 @@ export default async function HotelDetailView({ slug, lang }: { slug: string; la
   const hotel = localizeHotel(raw, lang);
   const { t } = serverT(lang);
 
+  // Approved reviews only. Never throws: before migration v23 this is just "no reviews".
+  const reviews = await loadReviewBundle(raw.id);
+  const reviewLd = { summary: reviews.summary, latest: reviews.reviews.slice(0, 5) };
+
   const related = (await getPropertiesByDestination(hotel.destination_slug))
     .filter(h => h.slug !== hotel.slug).slice(0, 3)
     .map((h) => localizeHotel(h, lang));
@@ -56,7 +61,7 @@ export default async function HotelDetailView({ slug, lang }: { slug: string; la
     return (
       <>
         <JsonLd data={[
-          hotelSchemaFull({ ...hotel, rating: 0, review_count: 0 }),
+          hotelSchemaFull(hotel, reviewLd),
           breadcrumbSchema(crumbs, lang),
           ...(hotel.faqs?.length ? [faqSchema(hotel.faqs)] : []),
         ]} />
@@ -83,7 +88,7 @@ export default async function HotelDetailView({ slug, lang }: { slug: string; la
   return (
     <>
       <JsonLd data={[
-        hotelSchemaFull(hotel),
+        hotelSchemaFull(hotel, reviewLd),
         breadcrumbSchema(crumbs, lang),
         ...(hotel.faqs?.length ? [faqSchema(hotel.faqs)] : []),
       ]} />

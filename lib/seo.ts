@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
 import { siteConfig } from './config';
 import { hasHindiVersion, localizePath, type Lang } from './i18n/core';
+import { normalizeImages, roomImageUrls } from './images';
+import type { PublicReview, ReviewFeed } from './reviews/types';
 
 interface SEOProps {
   title: string;
@@ -178,9 +180,42 @@ function generateHotelSEOHindi(hotel: { name: string; short_description?: string
   });
 }
 
+const absUrl = (u: string) => (/^https?:\/\//.test(u) ? u : siteConfig.url + (u.startsWith('/') ? u : '/' + u));
+
+/** Up to `max` absolute photo URLs: property photos first, then photos of active rooms, no duplicates. */
+export function hotelImageUrls(h: { images?: any[]; rooms?: any[] }, max = 10): string[] {
+  const roomUrls = (h.rooms || []).filter((r: any) => r?.is_active !== false).map(roomImageUrls);
+  const all = normalizeImages(h.images).map((i) => i.url).concat(...roomUrls).map(absUrl);
+  return Array.from(new Set(all)).slice(0, max);
+}
+
+function hotelRoomSchema(r: any) {
+  const image = roomImageUrls(r)[0];
+  return {
+    '@type': 'HotelRoom',
+    name: r.name,
+    ...(r.description ? { description: r.description } : {}),
+    ...(image ? { image: absUrl(image) } : {}),
+    ...(r.max_occupancy > 0 ? { occupancy: { '@type': 'QuantitativeValue', maxValue: r.max_occupancy, unitCode: 'C62' } } : {}),
+    ...(r.bed_type ? { bed: { '@type': 'BedDetails', typeOfBed: r.bed_type } } : {}),
+    ...(r.base_price > 0 ? { offers: { '@type': 'Offer', price: r.base_price, priceCurrency: 'INR', availability: 'https://schema.org/InStock' } } : {}),
+  };
+}
+
+function reviewSchema(r: PublicReview) {
+  return {
+    '@type': 'Review',
+    author: { '@type': 'Person', name: r.name },
+    datePublished: r.created_at.slice(0, 10),
+    name: r.title,
+    reviewRating: { '@type': 'Rating', ratingValue: r.rating, bestRating: 5, worstRating: 1 },
+    reviewBody: r.body.length > 500 ? r.body.slice(0, 499).trimEnd() + '…' : r.body,
+  };
+}
+
 /**
- * Full Hotel schema markup with rooms as Offers.
- * This is what makes properties eligible for rich snippets with prices.
+ * Full Hotel schema: photos, rooms (HotelRoom + Offer), amenities and, only when there are
+ * approved reviews, aggregateRating and the latest 5 reviews. properties.rating is never used.
  */
 export function hotelSchemaFull(h: {
   name: string; description?: string; short_description?: string;
@@ -191,11 +226,14 @@ export function hotelSchemaFull(h: {
   latitude?: number; longitude?: number;
   slug: string; type?: string; star_rating?: number;
   check_in_time?: string; check_out_time?: string;
-  amenities?: string[]; images?: any[];
+  amenities?: string[]; images?: any[]; total_rooms?: number;
   rooms?: any[]; contact_phone?: string; contact_email?: string;
-}) {
-  const area = h.destination_slug?.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()) || h.city || 'Dharamshala';
-  const primaryImage = h.images?.[0]?.url || (typeof h.images?.[0] === 'string' ? h.images[0] : undefined);
+}, reviews?: ReviewFeed) {
+  const area = h.destination_slug?.replace(/-/g, ' ').replace(/\w/g, (c: string) => c.toUpperCase()) || h.city || 'Dharamshala';
+  const images = hotelImageUrls(h);
+  const activeRooms = (h.rooms || []).filter((r: any) => r?.name && r.is_active !== false);
+  const s = reviews?.summary;
+  const rated = !!s && s.count > 0;
 
   const roomOffers = (h.rooms || []).filter((r: any) => r.base_price > 0).map((r: any) => ({
     '@type': 'Offer',
@@ -213,7 +251,7 @@ export function hotelSchemaFull(h: {
     name: h.name,
     description: h.description || h.short_description || '',
     url: siteConfig.url + '/hotels/' + h.slug,
-    ...(primaryImage && { image: primaryImage }),
+    ...(images.length > 0 ? { image: images } : {}),
     ...(h.star_rating && { starRating: { '@type': 'Rating', ratingValue: h.star_rating } }),
     address: {
       '@type': 'PostalAddress',
@@ -226,20 +264,16 @@ export function hotelSchemaFull(h: {
     ...(h.latitude && h.longitude && {
       geo: { '@type': 'GeoCoordinates', latitude: h.latitude, longitude: h.longitude },
     }),
-    ...(h.rating && h.rating > 0 && h.review_count && h.review_count > 0 && {
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: h.rating,
-        reviewCount: h.review_count,
-        bestRating: 5,
-        worstRating: 1,
-      },
-    }),
+    ...(rated ? {
+      aggregateRating: { '@type': 'AggregateRating', ratingValue: s!.average, ratingCount: s!.count, reviewCount: s!.count, bestRating: 5, worstRating: 1 },
+    } : {}),
+    ...(rated && reviews!.latest.length > 0 ? { review: reviews!.latest.slice(0, 5).map(reviewSchema) } : {}),
     ...(h.price_min && h.price_max && {
-      priceRange: '\u20B9' + h.price_min + '\u2013\u20B9' + h.price_max,
+      priceRange: '₹' + h.price_min + '–₹' + h.price_max,
     }),
     ...(h.check_in_time && { checkinTime: h.check_in_time }),
     ...(h.check_out_time && { checkoutTime: h.check_out_time }),
+    ...(h.total_rooms && h.total_rooms > 0 ? { numberOfRooms: h.total_rooms } : {}),
     ...(h.amenities?.length && {
       amenityFeature: h.amenities.map((a: string) => ({
         '@type': 'LocationFeatureSpecification', name: a, value: true,
@@ -247,6 +281,7 @@ export function hotelSchemaFull(h: {
     }),
     ...(h.contact_phone && { telephone: h.contact_phone }),
     ...(h.contact_email && { email: h.contact_email }),
+    ...(activeRooms.length > 0 ? { containsPlace: activeRooms.map(hotelRoomSchema) } : {}),
     ...(roomOffers.length > 0 && { makesOffer: roomOffers }),
   };
 }

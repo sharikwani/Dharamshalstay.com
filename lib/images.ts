@@ -95,4 +95,12 @@ export function countRoomImages(roomImages: any): number {
   }).length;
 }
 
+/** Photo URLs of one room type (room images are plain strings or { url } objects). */
+export function roomImageUrls(room: any): string[] {
+  if (!room || !Array.isArray(room.images)) return [];
+  return room.images
+    .map((i: any) => (typeof i === 'string' ? i : i?.url))
+    .filter((u: unknown): u is string => typeof u === 'string' && u.trim() !== '');
+}
+
 export { FALLBACK_IMG };
