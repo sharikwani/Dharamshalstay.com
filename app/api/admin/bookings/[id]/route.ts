@@ -36,6 +36,13 @@ const schema = z.discriminatedUnion('action', [
 
 const isId = (id: string) => uuid.safeParse(id).success;
 
+/** Same stored value? Null and undefined match, and numbers match across types (the database may send "4500.00"). */
+function sameValue(a: unknown, b: unknown): boolean {
+  if (a == null || b == null) return a == null && b == null;
+  if (typeof a === 'number' || typeof b === 'number') return Number(a) === Number(b);
+  return String(a) === String(b);
+}
+
 const OPEN_RECORD = ['pending', 'due', 'overdue'];
 const SETTLED = ['paid', 'waived', 'disputed'];
 
@@ -121,6 +128,8 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
     }
 
     let update: Record<string, unknown>;
+    // Notices go out only when this change actually changes something the partner or customer sees.
+    let changed = false;
     if (body.action === 'assign') {
       if (!(ACTIVITY_CATEGORIES as readonly string[]).includes(booking.category)) {
         throw new HttpError(400, 'Hotel and local guide bookings cannot be reassigned here.');
@@ -145,6 +154,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
         partnerPct: partner?.commission_pct != null ? Number(partner.commission_pct) : null,
       }));
       const split = splitAmount(Number(booking.amount), pct);
+      changed = !sameValue(booking.partner_id, partner?.id) || !sameValue(booking.staff_id, staff?.id) || !sameValue(booking.vehicle_id, vehicle?.id);
       update = {
         partner_id: partner?.id ?? null, staff_id: staff?.id ?? null, vehicle_id: vehicle?.id ?? null,
         commission_pct: pct, commission_amount: split.commission_amount, partner_share_amount: split.partner_share_amount,
@@ -182,6 +192,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
         commissionAmount: Number((fill.commission_amount ?? booking.commission_amount) ?? 0),
       });
       if (['paid', 'disputed', 'waived'].includes(booking.commission_status)) delete fields.commission_status;
+      changed = Object.entries(fields).some(([k, v]) => !sameValue(booking[k], v));
       update = { ...fields, ...fill };
     }
 
@@ -200,7 +211,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
 
     // Emails never block the save
     try {
-      if (body.action === 'assign' && body.notify) {
+      if (body.action === 'assign' && body.notify && changed) {
         await sendManualBookingEmails(id, { customer: false, partner: true, subjectPrefix: 'Updated: ' });
         if (booking.partner_id && booking.partner_id !== update.partner_id) await sendReassignedAwayEmail(id, booking.partner_id);
         await whatsappNewBooking(id, { customer: false, partners: true });
@@ -209,7 +220,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
           await whatsappReassignedAway(id, { partner_id: booking.partner_id ?? null, staff_id: booking.staff_id ?? null });
         }
       }
-      if (body.action === 'payment' && body.notify) await sendManualBookingEmails(id, { customer: true, partner: false, subjectPrefix: 'Updated: ' });
+      if (body.action === 'payment' && body.notify && changed) await sendManualBookingEmails(id, { customer: true, partner: false, subjectPrefix: 'Updated: ' });
     } catch (e) { console.error('Booking update emails failed:', e); }
 
     return NextResponse.json({ booking: await loadBookingView(id) });

@@ -336,6 +336,31 @@ describe('GET/PATCH /api/admin/bookings/:id', () => {
     expect(updates[0].row).toMatchObject({ payment_status: 'paid', collected_by: 'platform', payment_channel: 'upi', paid_amount: 4500 });
   });
 
+  it('assign that keeps the same partner, person and vehicle sends no notices', async () => {
+    fixtures.bookings = { ...fixtures.bookings, partner_id: 'p1', staff_id: null, vehicle_id: null };
+    const res = await patch({ action: 'assign', partner_id: '22222222-2222-4222-8222-222222222222' });
+    expect(res.status).toBe(200);
+    expect(sendManualBookingEmails).not.toHaveBeenCalled();
+    expect(whatsappNewBooking).not.toHaveBeenCalled();
+    expect(whatsappReassignedAway).not.toHaveBeenCalled();
+    expect(sendReassignedAwayEmail).not.toHaveBeenCalled();
+  });
+
+  it('payment that changes nothing sends no Updated email, a real change does', async () => {
+    const paid = { payment_method: 'offline', payment_status: 'paid', collected_by: 'platform', commission_status: 'not_applicable', paid_amount: 4500, payment_channel: 'upi', payment_reference: 'U1' };
+    fixtures.bookings = { ...fixtures.bookings, ...paid };
+    expect((await patch({ action: 'payment', choice: 'platform_paid', channel: 'upi', reference: 'U1', notify: true })).status).toBe(200);
+    expect(sendManualBookingEmails).not.toHaveBeenCalled();
+    await patch({ action: 'payment', choice: 'platform_paid', channel: 'upi', reference: 'U2', notify: true });
+    expect(sendManualBookingEmails).toHaveBeenCalledWith(ID, { customer: true, partner: false, subjectPrefix: 'Updated: ' });
+  });
+
+  it('payment that changes nothing compares numbers as numbers (database "4500.00" equals 4500)', async () => {
+    fixtures.bookings = { ...fixtures.bookings, payment_method: 'offline', payment_status: 'paid', collected_by: 'platform', commission_status: 'not_applicable', paid_amount: '4500.00', payment_channel: 'upi', payment_reference: null };
+    await patch({ action: 'payment', choice: 'platform_paid', channel: 'upi', notify: true });
+    expect(sendManualBookingEmails).not.toHaveBeenCalled();
+  });
+
   it('payment platform_paid on an offer booking ties the offer code back, or emails the owner', async () => {
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
     Object.assign(offer, { result: 'attached', calls: [], emails: [] });
