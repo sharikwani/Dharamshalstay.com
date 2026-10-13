@@ -144,7 +144,8 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
 
     // The request may have reached us even when no readable answer comes back: say so, and keep the
     // same request id so trying again cannot make a second booking.
-    const maybeReceived = () => { setErrorMsg(f.maybeReceived); setStatus('error'); };
+    // Once the booking is known to be saved (only the payment step was lost), the message carries its ref.
+    const maybeReceived = (ref?: string) => { setErrorMsg(ref ? `${f.maybeReceived} Ref: ${ref}` : f.maybeReceived); setStatus('error'); };
     let res: Response; let data: any;
     try {
       res = await authFetch('/api/bookings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
@@ -161,7 +162,7 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
       try {
         cr = await fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ bookingId: data.booking_id, payLaterIfUnavailable: true }) });
         cd = await cr.json();
-      } catch { maybeReceived(); return; }
+      } catch { maybeReceived(data.booking_ref || undefined); return; }
       if (cd.url) { window.location.href = cd.url; return; }
       requestId.current = '';
       // No payment link: the server switched a fresh booking to pay later, or (already paid) there is nothing to pay.

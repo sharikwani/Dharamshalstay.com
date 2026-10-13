@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Building, Car, Mountain, Wind, User } from 'lucide-react';
 import { authFetch } from '@/lib/supabase';
@@ -67,7 +67,18 @@ export default function NewBookingPage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   // One id per form: a repeated submit (lost response, double click) returns the booking already made.
-  const [requestId] = useState(() => crypto.randomUUID());
+  // After a failed or lost submit, editing any field makes it a new request with a new id (the server
+  // refuses a different booking under the old id).
+  const requestId = useRef('');
+  if (!requestId.current) requestId.current = crypto.randomUUID();
+  const submitFailed = useRef(false);
+  const inFlight = useRef(false);
+  useEffect(() => {
+    if (!submitFailed.current) return;
+    submitFailed.current = false;
+    requestId.current = crypto.randomUUID();
+  }, [type, itemId, roomName, planIdx, custom, pickup, drop, checkIn, checkOut, date, time, vehicleType, guests, days,
+      name, phone, email, notes, finalStr, reason, payment, assign, notifyCustomer, notifyCustomerWa, notifyPartner, allowPast]);
 
   function changeType(t: BookingCategory) {
     if (t === type) return;
@@ -135,7 +146,7 @@ export default function NewBookingPage() {
     : '';
 
   async function submit() {
-    if (problem) return;
+    if (problem || inFlight.current) return;
     setError('');
     const body: Record<string, any> = {
       category: type,
@@ -148,7 +159,7 @@ export default function NewBookingPage() {
       notify_customer: notifyCustomer && !!email.trim(),
       notify_partner: notifyPartner,
       notify_customer_whatsapp: notifyCustomerWa,
-      client_request_id: requestId,
+      client_request_id: requestId.current,
     };
     if (finalAmount != null) body.final_amount = finalAmount;
     if (overridden && reason.trim()) body.price_override_reason = reason.trim();
@@ -173,15 +184,16 @@ export default function NewBookingPage() {
       body.vehicle_id = type === 'taxi' ? assign.vehicle_id || null : null;
     }
     setSaving(true);
+    inFlight.current = true;
+    const fail = (msg: string) => { setError(msg); setSaving(false); inFlight.current = false; submitFailed.current = true; };
     try {
       const res = await authFetch('/api/admin/bookings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
       const data = await res.json().catch(() => ({}));
-      if (!res.ok) { setError(data.error || 'Could not create the booking.'); setSaving(false); return; }
-      if (!data.id) { setError(MAYBE_SAVED); setSaving(false); return; }
+      if (!res.ok) { fail(data.error || 'Could not create the booking.'); return; }
+      if (!data.id) { fail(MAYBE_SAVED); return; }
       router.push('/admin/bookings/' + data.id);
     } catch {
-      setError(MAYBE_SAVED);
-      setSaving(false);
+      fail(MAYBE_SAVED);
     }
   }
 
