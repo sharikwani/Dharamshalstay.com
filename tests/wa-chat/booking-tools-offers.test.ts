@@ -6,6 +6,7 @@ const h = vi.hoisted(() => ({
   quotes: [] as any[], quote: null as any, created: [] as any[], createResult: null as any, checkout: null as any,
   released: [] as any[], linked: [] as any[], updates: [] as any[], emails: [] as any[],
   offer: null as any, offerCalls: [] as any[], claims: [] as any[], codeClaimed: true, codeReleased: [] as any[], codeLinked: [] as any[],
+  codeLinkOk: true, ownerMails: [] as any[],
 }));
 vi.mock('@/lib/wa-chat/find', () => ({
   findHotel: async (n: string) => n.toLowerCase().includes('pine') ? {
@@ -39,8 +40,9 @@ vi.mock('@/lib/wa-chat/offer-tools', () => ({ offerForBooking: async (i: any) =>
 vi.mock('@/lib/offers/store', () => ({
   claimCode: async (...a: any[]) => { h.claims.push(a); return h.codeClaimed; },
   releaseCode: async (id: string) => { h.codeReleased.push(id); },
-  linkCodeBooking: async (...a: any[]) => { h.codeLinked.push(a); },
+  linkCodeBooking: async (...a: any[]) => { h.codeLinked.push(a); return h.codeLinkOk; },
 }));
+vi.mock('@/lib/email', () => ({ adminEmail: () => 'owner@x', sendEmail: async (m: any) => { h.ownerMails.push(m); } }));
 vi.mock('@/lib/availability/store', () => ({ availabilityFor: async () => ({}) }));
 
 import { runBookingTool } from '@/lib/wa-chat/booking-tools';
@@ -59,7 +61,7 @@ const hotelArgs = { category: 'hotel', name: 'Pine View', check_in: '2099-10-24'
 beforeEach(() => {
   Object.assign(h, {
     quotes: [], quote: hotelQuote(), created: [], released: [], linked: [], updates: [], emails: [],
-    offerCalls: [], claims: [], codeClaimed: true, codeReleased: [], codeLinked: [],
+    offerCalls: [], claims: [], codeClaimed: true, codeReleased: [], codeLinked: [], codeLinkOk: true, ownerMails: [],
     offer: { ok: true, codeId: 'k1', code: 'PNV-7K3Q9', percent: 20, expiresAt: expiresIn3h() },
     createResult: { ok: true, booking: { id: 'b1', booking_ref: 'HTL-9' }, amount: 4800, payment_method: 'online' },
     checkout: { ok: true, url: 'https://pay/x', sessionId: 's' },
@@ -118,6 +120,14 @@ describe('create_booking with an offer code', () => {
     expect(opts).toEqual({ userId: null, callerRole: null, offer: { code: 'PNV-7K3Q9', percent: 20 } });
     expect(h.codeLinked).toEqual([['k1', 'b1']]);
     expect(r).toMatchObject({ booking_ref: 'HTL-9', payment: 'online', payment_url: 'https://pay/x', offer_code: 'PNV-7K3Q9', offer_percent: 20 });
+    expect(h.ownerMails).toEqual([]);
+  });
+  it('emails the owner when the code cannot be linked to the new booking, and still books', async () => {
+    h.codeLinkOk = false;
+    const r = await run('create_booking', { payment: 'online', guest_name: 'Asha Rao' });
+    expect(r).toMatchObject({ booking_ref: 'HTL-9', payment_url: 'https://pay/x' });
+    expect(h.ownerMails).toHaveLength(1);
+    expect(h.ownerMails[0]).toMatchObject({ to: 'owner@x', subject: 'Offer code PNV-7K3Q9 could not be linked to booking HTL-9' });
   });
   it('keeps the percent the customer said yes to', async () => {
     h.offer = { ...h.offer, percent: 15 };
@@ -161,7 +171,7 @@ describe('create_booking with an offer code', () => {
   it('does not fall back to pay later when the payment link fails', async () => {
     h.checkout = { ok: false, error: 'Stripe down', status: 500 };
     const r = await run('create_booking', { payment: 'online', guest_name: 'Asha Rao' });
-    expect(r.error).toMatch(/Could not create the payment link/);
+    expect(r.error).toMatch(/^The payment link could not be created\. Your code is free again – make a new quote with the same code in a minute, or show code PNV-7K3Q9 at reception before /);
     expect(h.updates).toEqual([{ status: 'failed', cancelled_reason: 'Offer booking: payment link failed' }]);
     expect(h.codeReleased).toEqual(['k1']);
     expect(h.emails).toEqual([]);
@@ -171,7 +181,7 @@ describe('create_booking with an offer code', () => {
     h.checkout = 'throw';
     const r = await run('create_booking', { payment: 'online', guest_name: 'Asha Rao' });
     spy.mockRestore();
-    expect(r.error).toMatch(/booking was not made.*PNV-7K3Q9/);
+    expect(r.error).toMatch(/could not be created.*code is free again.*PNV-7K3Q9 at reception/);
     expect(r).not.toHaveProperty('payment_link_failed');
     expect(h.updates).toEqual([{ status: 'failed', cancelled_reason: 'Offer booking: payment link failed' }]);
     expect(h.updates.some((u) => 'commission_status' in u || 'payment_method' in u)).toBe(false);

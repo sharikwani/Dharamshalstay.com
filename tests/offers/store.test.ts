@@ -7,7 +7,7 @@ vi.mock('@/lib/server-auth', async () => {
   return { serviceClient: () => m.fake.client };
 });
 
-import { attachPaidOffer, claimCode, issueCode, offerFor, releaseCode, releaseForBooking, settle } from '@/lib/offers/store';
+import { attachPaidOffer, claimCode, issueCode, linkCodeBooking, offerFor, releaseCode, releaseForBooking, settle } from '@/lib/offers/store';
 
 const OFFER = { id: 'o1', property_id: 'p1', name: 'Panchvati', active: true, default_percent: 20, plan_percents: { 'Deluxe|Breakfast': 25 }, valid_hours: 3, code_prefix: 'PNV' };
 const code = (over: any = {}): any => ({
@@ -105,6 +105,14 @@ describe('claim and release', () => {
     await releaseCode('c1');
     expect(fake.ops('offer_codes', 'update')[0]).toEqual([{ status: 'issued', booking_id: null, booked_percent: null }]);
     expect(fake.ops('offer_codes', 'eq')).toEqual([['id', 'c1'], ['status', 'booked']]);
+  });
+  it('reports whether the code could be linked to its booking', async () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    fake.queue('offer_codes', {}, { error: { message: 'db down' } });
+    expect(await linkCodeBooking('c1', 'b1')).toBe(true);
+    expect(await linkCodeBooking('c1', 'b1')).toBe(false);
+    expect(fake.ops('offer_codes', 'update')[0]).toEqual([{ booking_id: 'b1' }]);
+    spy.mockRestore();
   });
   it('releases the code of a cancelled booking', async () => {
     await releaseForBooking('b1');

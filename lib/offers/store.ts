@@ -86,9 +86,11 @@ export async function claimCode(id: string, percent: number): Promise<boolean> {
   return (data || []).length > 0;
 }
 
-export async function linkCodeBooking(id: string, bookingId: string): Promise<void> {
+/** False when the link could not be saved (logged here). */
+export async function linkCodeBooking(id: string, bookingId: string): Promise<boolean> {
   const { error } = await serviceClient().from('offer_codes').update({ booking_id: bookingId }).eq('id', id);
   if (error) console.error('Offer code link failed:', error);
+  return !error;
 }
 
 export async function releaseCode(id: string): Promise<void> {

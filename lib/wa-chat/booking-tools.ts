@@ -4,6 +4,7 @@ import { quoteBooking } from '@/lib/pricing';
 import { bookingSchema, createBooking, dateProblem } from '@/lib/bookings/create';
 import { createCheckoutLink } from '@/lib/bookings/checkout';
 import { sendBookingEmails } from '@/lib/booking-emails';
+import { adminEmail, sendEmail } from '@/lib/email';
 import { serviceClient } from '@/lib/server-auth';
 import { roomSummaries } from '@/lib/availability/calc';
 import { availabilityFor } from '@/lib/availability/store';
@@ -193,7 +194,11 @@ async function createTool(a: any, ctx: ToolCtx, handover: Handover) {
     return { error: offer && r.error === OFFER_NEEDS_ONLINE ? offerNeedsOnline(offer.expiresAt) : r.error };
   }
   await linkQuoteBooking(q.id, r.booking.id);
-  if (offer) await linkCodeBooking(offer.codeId, r.booking.id);
+  if (offer && !(await linkCodeBooking(offer.codeId, r.booking.id))) {
+    const text = `Offer code ${offer.code} could not be linked to booking ${r.booking.booking_ref}`;
+    try { await sendEmail({ to: adminEmail(), subject: text, html: `<p>${text}. Check the code in Admin → Offers.</p>` }); }
+    catch (e) { console.error('WhatsApp offer booking: owner email failed', e); }
+  }
   const base = { booking_ref: r.booking.booking_ref, status: 'requested', amount: r.amount, ...(offer ? { offer_code: offer.code, offer_percent: offer.percent } : {}) };
   if (r.payment_method !== 'online') return { ...base, payment: 'later' };
 
@@ -206,7 +211,7 @@ async function createTool(a: any, ctx: ToolCtx, handover: Handover) {
     const { error } = await serviceClient().from('bookings').update({ status: 'failed', cancelled_reason: 'Offer booking: payment link failed' }).eq('id', r.booking.id);
     if (error) console.error('WhatsApp offer booking: could not mark failed', error);
     await releaseCode(offer.codeId);
-    return { error: `Could not create the payment link, so the booking was not made. Try again in a minute, or show code ${offer.code} at the hotel reception before ${formatIST(offer.expiresAt)}.` };
+    return { error: `The payment link could not be created. Your code is free again – make a new quote with the same code in a minute, or show code ${offer.code} at reception before ${formatIST(offer.expiresAt)}.` };
   }
   // No link: keep the booking as pay later so the usual booking emails still go out.
   const later = laterMethod(q.category);
