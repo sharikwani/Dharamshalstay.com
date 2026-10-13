@@ -33,7 +33,9 @@ function builder(table: string) {
         return c;
       }
       updates.push({ table, row });
-      return { eq: async () => ({ error: updateError }) };
+      // Plain updates are awaited after .eq(); the cancel update adds .neq() and reads back the changed rows.
+      const u: any = { eq: () => u, neq: () => u, or: () => u, select: async () => ({ data: updateError ? null : [{ id: 'b1' }], error: updateError }), then: (res: any) => res({ error: updateError }) };
+      return u;
     },
     delete: () => { recordOps.push({ op: 'delete' }); const c: any = { eq: () => c, in: () => c, then: (res: any) => res({ error: null }) }; return c; },
     limit: () => b,
