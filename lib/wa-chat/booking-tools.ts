@@ -7,6 +7,9 @@ import { sendBookingEmails } from '@/lib/booking-emails';
 import { serviceClient } from '@/lib/server-auth';
 import { roomSummaries } from '@/lib/availability/calc';
 import { availabilityFor } from '@/lib/availability/store';
+import { claimCode, linkCodeBooking, releaseCode } from '@/lib/offers/store';
+import { discounted, formatIST, OFFER_NEEDS_ONLINE, offerNeedsOnline } from '@/lib/offers/rules';
+import { offerForBooking, type OfferOk } from './offer-tools';
 import { claimQuote, confirmedAfter, findOwnBooking, latestOpenQuote, linkQuoteBooking, ownBookings, releaseQuote, saveQuote, type Quote } from './booking-store';
 import { findHotel } from './find';
 import type { ToolCtx } from './tools';
@@ -33,6 +36,7 @@ export const BOOKING_TOOL_DEFS = [
     date: str('Trek, paragliding or taxi date YYYY-MM-DD'), guests: { type: 'number', description: 'Number of people' },
     from: str('Taxi pickup place'), to: str('Taxi drop place'), vehicle: str('Taxi vehicle name, e.g. Sedan, SUV'),
     pickup_time: str('Taxi pickup time HH:MM (24h)'), pickup_location: str('Exact pickup address (taxi)'), drop_location: str('Exact drop address (taxi)'),
+    offer_code: str('WhatsApp offer code from get_offer_code, only if the customer wants to use it (hotels only)'),
   }, ['category', 'guests']),
   fn('create_booking', 'Book the most recent quote you showed the customer. Only after the customer replied YES to that quote\'s summary in a later message.', {
     payment: { type: 'string', enum: ['online', 'later'] },
@@ -117,14 +121,29 @@ async function quoteTool(a: any, ctx: ToolCtx) {
     const sold = await soldOutCheck(r.entity, r.input);
     if (sold) return sold;
   }
-  const { amount } = quoteBooking(category, r.entity, {
+  const { amount: listAmount } = quoteBooking(category, r.entity, {
     num_guests: r.input.num_guests, check_in: r.input.check_in, check_out: r.input.check_out, room_name: r.input.room_name, plan_index: r.input.plan_index,
   });
+  let amount = listAmount;
+  let offer: { code: string; percent: number; full_price: number } | null = null;
+  if (a.offer_code) {
+    if (category !== 'hotel') return { error: 'Offer codes are only for hotels.' };
+    // The phone is always this chat's own number (WhatsApp-only codes).
+    const o = await offerForBooking({ code: a.offer_code, phone: ctx.phone, propertyId: r.input.property_id, room: r.input.room_name, plan: r.input.plan_name });
+    if ('error' in o) return o;
+    amount = discounted(listAmount, o.percent);
+    if (amount < 100 || !process.env.STRIPE_SECRET_KEY) return { error: offerNeedsOnline(o.expiresAt) };
+    offer = { code: o.code, percent: o.percent, full_price: listAmount };
+  }
   const online = amount >= 100 && !!process.env.STRIPE_SECRET_KEY;
-  const summary = [r.label, r.when, `${r.input.num_guests} ${r.input.num_guests === 1 ? 'person' : 'people'}`,
-    amount > 0 ? `Total ${rupees(amount)}` : 'Price confirmed by our team'].filter(Boolean).join(' · ') + ' · Cannot be cancelled within 24 hours of the start';
-  const q = await saveQuote({ conversation_id: ctx.conversationId, category, input: r.input, amount, summary });
-  return { quote_id: q.id, summary, amount, online_payment_available: online, expires_in_minutes: 30 };
+  const total = amount <= 0 ? 'Price confirmed by our team'
+    : offer ? `Total ${rupees(amount)} (${offer.percent}% WhatsApp offer off ${rupees(offer.full_price)}, code ${offer.code}) · Pay online only`
+    : `Total ${rupees(amount)}`;
+  const summary = [r.label, r.when, `${r.input.num_guests} ${r.input.num_guests === 1 ? 'person' : 'people'}`, total]
+    .filter(Boolean).join(' · ') + ' · Cannot be cancelled within 24 hours of the start';
+  const input = offer ? { ...r.input, offer_code: offer.code, offer_percent: offer.percent } : r.input;
+  const q = await saveQuote({ conversation_id: ctx.conversationId, category, input, amount, summary });
+  return { quote_id: q.id, summary, amount, online_payment_available: online, expires_in_minutes: 30, ...(offer ? { offer, payment: 'online only' } : {}) };
 }
 
 async function createTool(a: any, ctx: ToolCtx, handover: Handover) {
@@ -144,20 +163,51 @@ async function createTool(a: any, ctx: ToolCtx, handover: Handover) {
     return { handed_over: true, reason: 'Daily WhatsApp booking limit reached; a team member will help.' };
   }
 
+  const offerCode = typeof q.input.offer_code === 'string' ? q.input.offer_code : null;
+  if (offerCode && a.payment !== 'online') {
+    return { error: 'This quote uses an offer code, which needs online payment in full. Ask the customer to pay online, or make a new quote without the code (pay later, no offer).' };
+  }
   const payment_method = a.payment === 'online' ? 'online' : laterMethod(q.category);
-  const parsed = bookingSchema.safeParse({ ...q.input, category: q.category, guest_name: name, guest_email: email, guest_phone: ctx.phone, payment_method, booking_source: 'whatsapp' });
+  // offer_code / offer_percent are not booking form fields; the offer reaches createBooking only through opts.offer.
+  const { offer_code: _code, offer_percent: _pct, ...quoteInput } = q.input as Record<string, unknown>;
+  const parsed = bookingSchema.safeParse({ ...quoteInput, category: q.category, guest_name: name, guest_email: email, guest_phone: ctx.phone, payment_method, booking_source: 'whatsapp' });
   if (!parsed.success) return { error: parsed.error.issues.some((i) => i.path[0] === 'guest_email') ? 'That email looks wrong; ask again or leave it out.' : 'Some details are missing; make a new quote.' };
+  let offer: OfferOk | null = null;
+  if (offerCode) {
+    const o = await offerForBooking({ code: offerCode, phone: ctx.phone, propertyId: q.input.property_id, room: q.input.room_name, plan: q.input.plan_name });
+    if ('error' in o) return { error: `${o.error} Make a new quote.` };
+    // Keep the percent the customer said YES to in the quote.
+    offer = { ...o, percent: Number(q.input.offer_percent) || o.percent };
+  }
   if (!(await claimQuote(q.id))) return { error: 'This quote was already booked.' };
+  if (offer && !(await claimCode(offer.codeId, offer.percent))) {
+    await releaseQuote(q.id);
+    return { error: 'This offer code was just used or has expired. Make a new quote.' };
+  }
 
-  const r = await createBooking(parsed.data, { userId: null, callerRole: null });
-  if (!r.ok) { await releaseQuote(q.id); return { error: r.error }; }
+  const r = await createBooking(parsed.data, { userId: null, callerRole: null, ...(offer ? { offer: { code: offer.code, percent: offer.percent } } : {}) });
+  if (!r.ok) {
+    // Any failure (sold out, lost race, 503, no online payment) frees the quote and the code for another try.
+    await releaseQuote(q.id);
+    if (offer) await releaseCode(offer.codeId);
+    return { error: offer && r.error === OFFER_NEEDS_ONLINE ? offerNeedsOnline(offer.expiresAt) : r.error };
+  }
   await linkQuoteBooking(q.id, r.booking.id);
-  const base = { booking_ref: r.booking.booking_ref, status: 'requested', amount: r.amount };
+  if (offer) await linkCodeBooking(offer.codeId, r.booking.id);
+  const base = { booking_ref: r.booking.booking_ref, status: 'requested', amount: r.amount, ...(offer ? { offer_code: offer.code, offer_percent: offer.percent } : {}) };
   if (r.payment_method !== 'online') return { ...base, payment: 'later' };
 
   let link: Awaited<ReturnType<typeof createCheckoutLink>> | null = null;
   try { link = await createCheckoutLink(r.booking.id); } catch (e) { console.error('WhatsApp booking: checkout link failed', e); }
   if (link?.ok) return { ...base, payment: 'online', payment_url: link.url };
+  if (offer) {
+    // Offer bookings never become pay later (pay later is never discounted): drop this booking and free the code.
+    // Its payment_method stays online, so commission_status stays 'not_applicable' (never 'pending').
+    const { error } = await serviceClient().from('bookings').update({ status: 'failed', cancelled_reason: 'Offer booking: payment link failed' }).eq('id', r.booking.id);
+    if (error) console.error('WhatsApp offer booking: could not mark failed', error);
+    await releaseCode(offer.codeId);
+    return { error: `Could not create the payment link, so the booking was not made. Try again in a minute, or show code ${offer.code} at the hotel reception before ${formatIST(offer.expiresAt)}.` };
+  }
   // No link: keep the booking as pay later so the usual booking emails still go out.
   const later = laterMethod(q.category);
   const sb = serviceClient();
