@@ -4,6 +4,7 @@ import { sendBookingEmails } from '@/lib/booking-emails';
 import { todayIST } from './timing';
 import { roomSummaries } from '@/lib/availability/calc';
 import type { RoomAvailability } from '@/lib/availability/store';
+import { discounted, OFFER_NEEDS_ONLINE } from '@/lib/offers/rules';
 
 export const bookingSchema = z.object({
   category: z.enum(['hotel', 'taxi', 'trek', 'paragliding']),
@@ -30,6 +31,8 @@ export const bookingSchema = z.object({
   plan_name: z.string().max(200).optional(),
 });
 export type BookingInput = z.infer<typeof bookingSchema>;
+/** A WhatsApp offer code already validated and claimed by the caller (never taken from the website form). */
+export type BookingOffer = { code: string; percent: number };
 
 export type CreateResult =
   | { ok: true; booking: { id: string; booking_ref: string }; amount: number; payment_method: string; demo?: true }
@@ -46,7 +49,7 @@ export function dateProblem(d: Pick<BookingInput, 'category' | 'check_in' | 'che
   return null;
 }
 
-export async function createBooking(data: BookingInput, opts: { userId: string | null; callerRole?: string | null }): Promise<CreateResult> {
+export async function createBooking(data: BookingInput, opts: { userId: string | null; callerRole?: string | null; offer?: BookingOffer }): Promise<CreateResult> {
   const problem = dateProblem(data);
   if (problem) return { ok: false, error: problem, status: 400 };
 
@@ -74,10 +77,15 @@ export async function createBooking(data: BookingInput, opts: { userId: string |
       const { data: row } = await sb.from(TABLE[data.category]).select('*').eq('id', entityId).single();
       entity = row || null;
     }
-    const { amount, commission_pct } = quoteBooking(data.category, entity, {
+    const { amount: listAmount, commission_pct } = quoteBooking(data.category, entity, {
       num_guests: data.num_guests, check_in: data.check_in, check_out: data.check_out,
       room_name: data.room_name, plan_index: data.plan_index ?? null,
     });
+    // A WhatsApp offer lowers the database price by its percent and must be paid online in full (pay later is never discounted).
+    const amount = opts.offer ? discounted(listAmount, opts.offer.percent) : listAmount;
+    if (opts.offer && (data.payment_method !== 'online' || amount < 100 || !process.env.STRIPE_SECRET_KEY)) {
+      return { ok: false, error: OFFER_NEEDS_ONLINE, status: 400 };
+    }
     const commission_amount = Math.round(amount * commission_pct / 100);
     // Online payment needs a price; quote-only bookings are taken as pay-later.
     const payment_method = data.payment_method === 'online' && (amount < 100 || !process.env.STRIPE_SECRET_KEY) ? 'offline' : data.payment_method;
@@ -132,6 +140,7 @@ export async function createBooking(data: BookingInput, opts: { userId: string |
       user_id: opts.userId,
       room_name: room_label,
       room_key,
+      ...(opts.offer ? { offer_code: opts.offer.code, offer_percent: opts.offer.percent } : {}),
     }).select().single();
 
     if (error) {
