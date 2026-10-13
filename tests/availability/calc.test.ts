@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { addDays, createdAfter, dayCount, holdsRoom, isDate, matchesRoom, nightsOf } from '@/lib/availability/calc';
+import { addDays, createdAfter, dayCount, holdsRoom, isDate, matchesRoom, nightsOf, ONLINE_HOLD_MS, roomCount } from '@/lib/availability/calc';
 
 const NOW = new Date('2026-10-13T12:00:00Z');
 const bk = (over: Record<string, any> = {}) => ({
@@ -77,5 +77,14 @@ describe('createdAfter', () => {
     expect(createdAfter({ id: 'c', created_at: '2026-10-13T10:00:00Z' }, ref)).toBe(true);
     expect(createdAfter({ id: 'a', created_at: '2026-10-13T10:00:00Z' }, ref)).toBe(false);
     expect(createdAfter(ref, ref)).toBe(false);
+  });
+});
+
+describe('roomCount', () => {
+  it('keeps only positive whole numbers; anything else means not tracked (no default of 1)', () => {
+    expect(roomCount(4)).toBe(4);
+    expect(roomCount('3')).toBe(3);
+    expect(roomCount(1)).toBe(1);
+    for (const v of [undefined, null, '', '  ', 0, '0', -2, 2.5, '2.5', 'abc', NaN, true, [3], {}]) expect(roomCount(v)).toBeNull();
   });
 });

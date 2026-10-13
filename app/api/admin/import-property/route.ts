@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireCaller, jsonError } from '@/lib/server-auth';
+import { roomCount } from '@/lib/availability/calc';
+
+/** total_inventory only when the source gives a positive whole number; otherwise the room is left untracked. */
+const importedRoomCount = (v: unknown) => { const n = roomCount(v); return n ? { total_inventory: n } : {}; };
 
 const PROMPT = `You are extracting hotel data from an Indian OTA page (MakeMyTrip, Agoda, Booking.com, Goibibo, etc).
 
@@ -64,7 +68,7 @@ Return ONLY valid JSON:
       "max_occupancy": 3,
       "amenities": ["WiFi", "TV", "AC"],
       "images": ["https://room-photo-1.jpg", "https://room-photo-2.jpg"],
-      "total_inventory": 1,
+      "total_inventory": null,
       "is_active": true,
       "rate_plans": [
         {"name": "Room Only - Free Cancellation", "meal_plan": "ep", "price": 2500, "cancellation": "Free cancellation", "includes": []},
@@ -93,7 +97,8 @@ RULES:
 - Extract EVERY room type and EVERY rate plan
 - For images: categorize as exterior/room/bathroom/view/restaurant/lobby/pool/other
 - Generate 6 relevant FAQs
-- If price shows crossed-out and discounted, use discounted price`;
+- If price shows crossed-out and discounted, use discounted price
+- total_inventory = how many rooms of this type the property has, ONLY if the page states it; otherwise null (never guess)`;
 
 
 export async function POST(req: NextRequest) {
@@ -217,7 +222,7 @@ export async function POST(req: NextRequest) {
           weekend_price: 0, peak_price: 0, meal_plan: r.meal_plan || 'ep',
           amenities: Array.isArray(r.amenities) ? r.amenities : [],
           images: Array.isArray(r.images) ? r.images.filter((img: any) => img) : [],
-          total_inventory: r.total_inventory || 1, is_active: true, rate_plans: rps,
+          ...importedRoomCount(r.total_inventory), is_active: true, rate_plans: rps,
         };
       }) : [],
       images: Array.isArray(prop.images) ? prop.images.map((img: any, i: number) => ({

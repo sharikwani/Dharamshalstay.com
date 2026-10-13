@@ -70,6 +70,14 @@ export function createdAfter(b: { id?: string; created_at: string }, ref: { id: 
   return String(b.id ?? '') > ref.id;
 }
 
+/** A room count typed by a person or given by an import source: a positive whole number, else null (not tracked). */
+export function roomCount(v: unknown): number | null {
+  if (typeof v !== 'number' && typeof v !== 'string') return null;
+  if (typeof v === 'string' && !v.trim()) return null;
+  const n = Number(v);
+  return Number.isInteger(n) && n > 0 ? n : null;
+}
+
 export type RoomSummary = { key: string; tracked: boolean; total: number };
 
 /** Room types of a property row's `rooms` JSON. Tracked only when it has a room count (total_inventory > 0). */

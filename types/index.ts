@@ -129,7 +129,8 @@ export interface RoomType {
   meal_plan: MealPlan;
   amenities: string[];
   images: string[];
-  total_inventory: number;
+  /** Rooms of this type; empty/null = availability not tracked. */
+  total_inventory?: number | null;
   is_active: boolean;
 }
 

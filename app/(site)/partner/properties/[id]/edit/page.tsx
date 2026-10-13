@@ -5,6 +5,7 @@ import { Building, MapPin, Bed, Camera, Shield, ChevronRight, ChevronLeft, Save,
 import { supabase, notifyPropertySubmitted } from '@/lib/supabase';
 import { PROPERTY_AMENITIES, ROOM_AMENITIES, BATHROOM_AMENITIES, FOOD_OPTIONS, ID_TYPES } from '@/types';
 import { slugify } from '@/lib/utils';
+import { roomCount } from '@/lib/availability/calc';
 import { PropertyInput, PropertyCheckbox, normalizePropertyNumbers, missingPropertyFields } from '@/components/forms/PropertyFormFields';
 import ImageUploader from '@/components/forms/ImageUploader';
 
@@ -45,7 +46,7 @@ export default function EditPropertyPage() {
     update(key, arr.includes(val) ? arr.filter((v: string) => v !== val) : [...arr, val]);
   };
 
-  const addRoom = () => update('rooms', [...(form.rooms || []), { name: '', description: '', bed_type: 'Double', room_size: '', max_adults: 2, max_children: 1, max_occupancy: 3, base_price: 0, meal_plan: 'ep', amenities: [], total_inventory: 1, is_active: true }]);
+  const addRoom = () => update('rooms', [...(form.rooms || []), { name: '', description: '', bed_type: 'Double', room_size: '', max_adults: 2, max_children: 1, max_occupancy: 3, base_price: 0, meal_plan: 'ep', amenities: [], is_active: true }]);
   const updateRoom = (idx: number, key: string, val: any) => {
     const rooms = [...(form.rooms || [])];
     rooms[idx] = { ...rooms[idx], [key]: val };
@@ -193,7 +194,7 @@ export default function EditPropertyPage() {
                   <div><label className="block text-xs font-medium mb-1">Size</label><input value={room.room_size || ''} onChange={e => updateRoom(idx, 'room_size', e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none" /></div>
                   <div><label className="block text-xs font-medium mb-1">Max Adults</label><input type="number" value={room.max_adults} onChange={e => updateRoom(idx, 'max_adults', +e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none" /></div>
                   <div><label className="block text-xs font-medium mb-1">Max Children</label><input type="number" value={room.max_children} onChange={e => updateRoom(idx, 'max_children', +e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none" /></div>
-                  <div><label className="block text-xs font-medium mb-1">Inventory</label><input type="number" value={room.total_inventory} onChange={e => updateRoom(idx, 'total_inventory', +e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none" /></div>
+                  <div><label className="block text-xs font-medium mb-1">Rooms of this type (leave empty to not track availability)</label><input type="number" min={1} step={1} value={room.total_inventory ?? ''} onChange={e => updateRoom(idx, 'total_inventory', roomCount(e.target.value))} placeholder="Not tracked" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none" /></div>
                 </div>
                 <div className="grid grid-cols-3 gap-3">
                   <div><label className="block text-xs font-medium mb-1">Base Price *</label><input type="number" value={room.base_price || ''} onChange={e => updateRoom(idx, 'base_price', +e.target.value)} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none" /></div>
