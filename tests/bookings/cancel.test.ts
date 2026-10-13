@@ -13,10 +13,12 @@ vi.mock('@/lib/server-auth', () => ({
 }));
 vi.mock('@/lib/manual-booking-emails', () => ({ sendCancellationEmails: async (...a: any[]) => { h.emails.push(a); } }));
 vi.mock('@/lib/booking-whatsapp', () => ({ whatsappCancelled: async (...a: any[]) => { h.wa.push(a); } }));
+const off = vi.hoisted(() => ({ released: [] as string[] }));
+vi.mock('@/lib/offers/store', () => ({ releaseForBooking: async (id: string) => { off.released.push(id); } }));
 
 import { cancelBooking } from '@/lib/bookings/cancel';
 
-beforeEach(() => { Object.assign(h, { updates: [], recordUpdates: [], updateError: null, emails: [], wa: [] }); });
+beforeEach(() => { Object.assign(h, { updates: [], recordUpdates: [], updateError: null, emails: [], wa: [] }); off.released = []; });
 
 describe('cancelBooking', () => {
   it('cancels, waives open commission and notifies', async () => {
@@ -36,5 +38,14 @@ describe('cancelBooking', () => {
     h.updateError = { message: 'boom' };
     expect(await cancelBooking({ id: 'b1' }, 'Sick', { notify: true })).toEqual({ ok: false, error: 'Could not save the change. Please try again.' });
     expect(h.emails).toEqual([]);
+  });
+  it('gives the booking\'s offer code back after cancelling', async () => {
+    await cancelBooking({ id: 'b1', commission_status: 'pending' }, 'Sick', { notify: false });
+    expect(off.released).toEqual(['b1']);
+  });
+  it('keeps the offer code when the cancel could not be saved', async () => {
+    h.updateError = { message: 'boom' };
+    await cancelBooking({ id: 'b1' }, 'Sick', { notify: false });
+    expect(off.released).toEqual([]);
   });
 });

@@ -1,6 +1,7 @@
 import { serviceClient } from '@/lib/server-auth';
 import { whatsappCancelled } from '@/lib/booking-whatsapp';
 import { sendCancellationEmails } from '@/lib/manual-booking-emails';
+import { releaseForBooking } from '@/lib/offers/store';
 
 const OPEN_RECORD = ['pending', 'due', 'overdue'];
 
@@ -22,6 +23,8 @@ export async function cancelBooking(booking: { id: string; commission_status?: s
       if (e) console.error('Commission record waive failed:', e);
     } catch (e) { console.error('Commission record waive failed:', e); }
   }
+  // A cancelled booking gives its WhatsApp offer code back (it works again while still inside its window).
+  try { await releaseForBooking(booking.id); } catch (e) { console.error('Offer code release failed:', e); }
   if (opts.notify) {
     try {
       await sendCancellationEmails(booking.id, reason);

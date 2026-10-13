@@ -14,6 +14,8 @@ const h = vi.hoisted(() => ({
 vi.mock('@/lib/stripe', () => ({ getStripe: () => ({ webhooks: { constructEvent: h.constructEvent } }) }));
 vi.mock('@/lib/booking-emails', () => ({ sendBookingEmails: (id: string) => h.sendBookingEmails(id) }));
 vi.mock('@/lib/email', () => ({ adminEmail: () => 'owner@x', sendEmail: (m: any) => h.sendEmail(m) }));
+const o = vi.hoisted(() => ({ result: 'none' as 'none' | 'attached' | 'conflict', calls: [] as string[] }));
+vi.mock('@/lib/offers/store', () => ({ attachPaidOffer: async (id: string) => { o.calls.push(id); return o.result; } }));
 vi.mock('@supabase/supabase-js', () => ({
   createClient: () => ({
     from: (table: string) => {
@@ -53,6 +55,8 @@ beforeEach(() => {
   h.sendEmail.mockClear();
   h.constructEvent.mockReset().mockReturnValue(event());
   vi.spyOn(console, 'log').mockImplementation(() => {});
+  o.result = 'none';
+  o.calls.length = 0;
 });
 
 describe('POST /api/webhooks/stripe', () => {
@@ -179,6 +183,47 @@ describe('POST /api/webhooks/stripe', () => {
     expect((await send()).status).toBe(500);
     expect(bookingUpdate()).toBeUndefined();
     spy.mockRestore();
+  });
+
+  it('ties the offer code to the paid booking', async () => {
+    h.result = { data: { id: 'b1', booking_ref: 'DS-1' }, error: null };
+    o.result = 'attached';
+    await send();
+    expect(o.calls).toEqual(['b1']);
+    expect(h.sendEmail).not.toHaveBeenCalled();
+  });
+
+  it('emails the owner when a paid booking\'s offer code was used elsewhere', async () => {
+    h.result = { data: { id: 'b1', booking_ref: 'DS-1' }, error: null };
+    o.result = 'conflict';
+    const res = await send();
+    expect(res.status).toBe(200);
+    expect(h.sendEmail).toHaveBeenCalledTimes(1);
+    expect(h.sendEmail.mock.calls[0][0]).toMatchObject({ to: 'owner@x', subject: 'Offer code conflict on paid booking DS-1' });
+  });
+
+  it('does not touch offer codes for a cancelled booking', async () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    h.bySession = { data: open({ status: 'cancelled', commission_status: 'waived' }), error: null };
+    h.result = { data: { id: 'b1', booking_ref: 'DS-1', status: 'cancelled' }, error: null };
+    await send();
+    expect(o.calls).toEqual([]);
+    spy.mockRestore();
+  });
+
+  it('does not touch offer codes for a failed booking (lost the last room)', async () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    h.bySession = { data: open({ status: 'failed' }), error: null };
+    h.result = { data: { id: 'b1', booking_ref: 'DS-1', status: 'failed' }, error: null };
+    await send();
+    expect(o.calls).toEqual([]);
+    spy.mockRestore();
+  });
+
+  it('a retried event for an already-paid booking does not re-attach the offer code', async () => {
+    h.result = { data: null, error: null };
+    await send();
+    expect(o.calls).toEqual([]);
   });
 
   it('rejects a bad signature', async () => {
