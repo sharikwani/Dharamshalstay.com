@@ -23,7 +23,7 @@ export default function CancellationPolicyPage() {
           <div className="bg-slate-50 rounded-xl p-5 space-y-3">
             <div className="flex justify-between items-center py-2 border-b border-slate-200">
               <span className="font-medium text-slate-800">Free Cancellation bookings</span>
-              <span className="text-green-700 font-semibold">Full refund if cancelled before check-in date</span>
+              <span className="text-green-700 font-semibold">Full refund if cancelled 24+ hours before check-in</span>
             </div>
             <div className="flex justify-between items-center py-2 border-b border-slate-200">
               <span className="font-medium text-slate-800">7+ days before check-in</span>
