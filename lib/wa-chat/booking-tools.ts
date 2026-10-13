@@ -112,6 +112,8 @@ async function soldOutCheck(hotel: Record<string, any>, input: Record<string, an
     : { error: `${hotel.name} is fully booked for ${when}. Ask the customer for other dates.`, rooms_available: [] as string[] };
 }
 
+const QUOTE_ICON: Record<string, string> = { hotel: '🏨', taxi: '🚕', trek: '🥾', paragliding: '🪂' };
+
 async function quoteTool(a: any, ctx: ToolCtx) {
   const category = a.category as Category;
   if (!['hotel', 'taxi', 'trek', 'paragliding'].includes(category)) return { error: 'Unknown category' };
@@ -141,11 +143,16 @@ async function quoteTool(a: any, ctx: ToolCtx) {
     offer = { code: o.code, percent: o.percent, full_price: listAmount };
   }
   const online = amount >= 100 && !!process.env.STRIPE_SECRET_KEY;
-  const total = amount <= 0 ? 'Price confirmed by our team'
-    : offer ? `Total ${rupees(amount)} (${offer.percent}% WhatsApp offer off ${rupees(offer.full_price)}, code ${offer.code}) · Pay online only`
-    : `Total ${rupees(amount)}`;
-  const summary = [r.label, r.when, `${r.input.num_guests} ${r.input.num_guests === 1 ? 'person' : 'people'}`, total]
-    .filter(Boolean).join(' · ') + ' · Cannot be cancelled within 24 hours of the start';
+  const n = Number(r.input.num_guests);
+  const lines = [
+    `${QUOTE_ICON[category] || '🛎️'} *${r.label}*`,
+    r.when ? `📅 ${r.when}` : null,
+    `👥 ${n} ${n === 1 ? 'person' : 'people'}`,
+    amount <= 0 ? '💰 Price confirmed by our team' : `💰 *Total: ${rupees(amount)}*`,
+    offer ? `🎁 ${offer.percent}% WhatsApp offer applied (was ${rupees(offer.full_price)}) · code *${offer.code}* · pay online only` : null,
+    '⚠️ Cannot be cancelled within 24 hours of the start',
+  ];
+  const summary = lines.filter(Boolean).join('\n');
   const input = offer ? { ...r.input, offer_code: offer.code, offer_percent: offer.percent } : r.input;
   const q = await saveQuote({ conversation_id: ctx.conversationId, category, input, amount, summary });
   return { quote_id: q.id, summary, amount, online_payment_available: online, expires_in_minutes: 30, ...(offer ? { offer, payment: 'online only' } : {}) };

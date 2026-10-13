@@ -21,7 +21,7 @@ const LABEL: Record<string, string> = {
 };
 const PROOF_BUCKET = 'whatsapp-proofs';
 const EXT: Record<string, string> = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp', 'application/pdf': 'pdf' };
-export const PROOF_REVIEW_REPLY = 'Thank you, we have received your document. A team member will review your cancellation request and reply here shortly. 🙏';
+export const PROOF_REVIEW_REPLY = 'Thank you, we have received your document. 📄\n\nA team member will review your cancellation request and reply here shortly. 🙏';
 const esc = (s: unknown) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
 
 export const CANCEL_TOOL_DEF = {
@@ -169,7 +169,7 @@ async function processProof(c: Conversation, messageId: string, m: Inbound, open
     if (r.ok) {
       await updateCancellation(open.id, { status: 'cancelled', verdict: verdict.verdict, verdict_notes: verdict.notes, proof_path });
       await setMessageBody(messageId, `${m.mediaLabel || '[document]'} [proof for ${b.booking_ref}: checked, booking cancelled]`);
-      await tell(c, r.already ? `Your booking ${b.booking_ref} is already cancelled.` : `Your booking ${b.booking_ref} is cancelled. No payment was taken.`);
+      await tell(c, r.already ? `Your booking *${b.booking_ref}* is already cancelled.` : `✅ Your booking *${b.booking_ref}* is cancelled.\n\nNo payment was taken, so nothing is owed.`);
       return 'cancelled';
     }
     if (r.error === PAID_MEANWHILE) paidMeanwhile = true; else cancelFailed = true;

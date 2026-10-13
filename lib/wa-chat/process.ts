@@ -8,8 +8,9 @@ import {
 import { definitelyFailed, sendLogged } from './send';
 import { isAnswer, unanswered, type ChatMessage, type ChatSettings, type Conversation } from './types';
 import type { ToolCtx } from './tools';
+import { tidyWhatsApp } from '@/lib/whatsapp-format';
 
-export const HOLDING_REPLY = 'Thank you for your message! A member of our team will reply here shortly. 🙏';
+export const HOLDING_REPLY = 'Thank you for your message! 🙏\n\nA member of our team will reply here shortly.';
 const HOUR = 3600e3;
 /** How often a turn that is waiting for the lock (or for a voice transcription) looks again. */
 const POLL_MS = 1500;
@@ -268,7 +269,7 @@ async function turn(conv: Conversation, hist: ChatMessage[], deadline: number, n
     // The sentinel (asked for with a late voice transcript) is never sent, in whatever form it comes back.
     const stripped = stripSentinel(text);
     if (stripped.had) {
-      text = stripped.rest;
+      text = tidyWhatsApp(stripped.rest);
       if (!text && !acted) return 'already_answered';
       if (!text) {
         // It acted but gave no words for the customer: send nothing invented; a person tells them.
@@ -278,6 +279,7 @@ async function turn(conv: Conversation, hist: ChatMessage[], deadline: number, n
         return 'handed_over';
       }
     }
+    else text = tidyWhatsApp(text);
     const status = (await getConversation(conv.id))?.status;
     // The owner took over while the AI was thinking: never talk over them; what the AI already did goes into the
     // chat as a note for the owner. A chat only flagged for the owner (needs_human) still hears about actions.

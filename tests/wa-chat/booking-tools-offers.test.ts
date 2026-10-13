@@ -75,7 +75,7 @@ describe('quote_booking with an offer code', () => {
     const r = await run('quote_booking', { ...hotelArgs, offer_code: 'pnv-7k3q9' });
     expect(h.offerCalls[0]).toEqual({ code: 'pnv-7k3q9', phone: '919800000001', propertyId: HOTEL_ID, room: 'Deluxe', plan: 'Breakfast' });
     expect(r).toMatchObject({ amount: 4800, online_payment_available: true, payment: 'online only', offer: { code: 'PNV-7K3Q9', percent: 20, full_price: 6000 } });
-    expect(r.summary).toBe('Pine View – Deluxe (Breakfast) · 2099-10-24 to 2099-10-26 · 2 people · Total ₹4,800 (20% WhatsApp offer off ₹6,000, code PNV-7K3Q9) · Pay online only · Cannot be cancelled within 24 hours of the start');
+    expect(r.summary).toBe('🏨 *Pine View – Deluxe (Breakfast)*\n📅 2099-10-24 to 2099-10-26\n👥 2 people\n💰 *Total: ₹4,800*\n🎁 20% WhatsApp offer applied (was ₹6,000) · code *PNV-7K3Q9* · pay online only\n⚠️ Cannot be cancelled within 24 hours of the start');
     expect(h.quotes[0]).toMatchObject({ amount: 4800, input: { offer_code: 'PNV-7K3Q9', offer_percent: 20, room_name: 'Deluxe' } });
   });
   it('sends the customer to reception when online payment is off', async () => {

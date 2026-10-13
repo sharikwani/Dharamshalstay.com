@@ -148,15 +148,15 @@ describe('handleProof', () => {
   });
   it('always tells the customer the booking is cancelled, without waiting for the AI', async () => {
     expect(await handleProof(conv, 'row9', msg, open)).toBe('cancelled');
-    expect(h.sent).toEqual([['919800000001', 'Your booking TRK-1 is cancelled. No payment was taken.']]);
-    expect(h.outs[0]).toEqual(['c1', 'ai', 'Your booking TRK-1 is cancelled. No payment was taken.', 'w', undefined]);
+    expect(h.sent).toEqual([['919800000001', '✅ Your booking *TRK-1* is cancelled.\n\nNo payment was taken, so nothing is owed.']]);
+    expect(h.outs[0]).toEqual(['c1', 'ai', '✅ Your booking *TRK-1* is cancelled.\n\nNo payment was taken, so nothing is owed.', 'w', undefined]);
   });
   it('a cancellation notice that cannot be sent goes to the owner by email', async () => {
     h.sendQueue = [{ ok: false, error: 'Meta 400' }];
     expect(await handleProof(conv, 'row9', msg, open)).toBe('cancelled');
     expect(h.sent).toHaveLength(1); // an HTTP refusal is never retried
     expect(h.emails[0].subject).toMatch(/could not tell/);
-    expect(h.emails[0].html).toMatch(/Your booking TRK-1 is cancelled/);
+    expect(h.emails[0].html).toMatch(/Your booking \*TRK-1\* is cancelled/);
   });
   it('a proof review does not answer over an owner who has the chat', async () => {
     h.status = 'human';
@@ -169,7 +169,7 @@ describe('handleProof', () => {
   it('a booking cancelled meanwhile is reported as already cancelled', async () => {
     h.cancelResult = { ok: true, already: true };
     expect(await handleProof(conv, 'row9', msg, open)).toBe('cancelled');
-    expect(h.sent).toEqual([['919800000001', 'Your booking TRK-1 is already cancelled.']]);
+    expect(h.sent).toEqual([['919800000001', 'Your booking *TRK-1* is already cancelled.']]);
   });
   it('a booking paid meanwhile is not cancelled: the customer hears it is reviewed and the owner is emailed', async () => {
     h.cancelResult = { ok: false, error: 'This booking was paid meanwhile' };

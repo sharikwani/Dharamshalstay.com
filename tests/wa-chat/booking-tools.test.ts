@@ -77,7 +77,7 @@ describe('quote_booking', () => {
     const r = await run('quote_booking', { category: 'trek', name: 'triund', date: '2099-10-24', guests: 2 });
     expect(r).toMatchObject({ quote_id: 'q1', amount: 3000, online_payment_available: true });
     expect(h.quotes[0]).toMatchObject({ conversation_id: 'c1', category: 'trek', amount: 3000, input: { category: 'trek', trek_id: TREK_ID, activity_date: '2099-10-24', num_guests: 2 } });
-    expect(r.summary).toBe('Triund Trek · 2099-10-24 · 2 people · Total ₹3,000 · Cannot be cancelled within 24 hours of the start');
+    expect(r.summary).toBe('🥾 *Triund Trek*\n📅 2099-10-24\n👥 2 people\n💰 *Total: ₹3,000*\n⚠️ Cannot be cancelled within 24 hours of the start');
     expect(h.quotes[0].summary).toBe(r.summary);
   });
   it('treats per-km taxi routes as having no fixed fare', async () => {

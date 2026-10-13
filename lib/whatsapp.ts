@@ -22,14 +22,16 @@ const ASSIGNEE_LABEL: Record<string, string> = { taxi: 'driver', paragliding: 'p
 
 export function bookingShareText(b: ShareBooking, audience: 'partner' | 'customer'): string {
   const lines = [
-    audience === 'partner' ? `New booking from Dharamshala Stay (${b.booking_ref})` : `Your Dharamshala Stay booking is confirmed (${b.booking_ref})`,
-    `${TYPE[b.category] || b.category}: ${b.item_name}`,
-    `When: ${b.date_text}`,
-    `People: ${b.num_guests}`,
+    audience === 'partner' ? '*🆕 New booking from Dharamshala Stay*' : '*✅ Your Dharamshala Stay booking is confirmed*',
+    '',
+    `📋 *Booking ID:* ${b.booking_ref}`,
+    `🛎️ *${TYPE[b.category] || b.category}:* ${b.item_name}`,
+    `📅 *When:* ${b.date_text}`,
+    `👥 *People:* ${b.num_guests}`,
   ];
-  if (audience === 'partner') lines.push(`Customer: ${b.guest_name}, ${b.guest_phone}`);
-  if (b.assignee_text) lines.push(audience === 'partner' ? `Assigned: ${b.assignee_text}` : `Your ${ASSIGNEE_LABEL[b.category] || 'host'}: ${b.assignee_text}`);
-  lines.push(`Price: ${rs(b.amount)}`, `Payment: ${b.payment_text}`);
-  if (audience === 'partner' && b.commission_amount) lines.push(`Dharamshala Stay commission: ${rs(b.commission_amount)}`);
+  if (audience === 'partner') lines.push(`👤 *Customer:* ${b.guest_name}, ${b.guest_phone}`);
+  if (b.assignee_text) lines.push(audience === 'partner' ? `🧑‍✈️ *Assigned:* ${b.assignee_text}` : `🧑‍✈️ *Your ${ASSIGNEE_LABEL[b.category] || 'host'}:* ${b.assignee_text}`);
+  lines.push('', `💰 *Price:* ${rs(b.amount)}`, `💳 *Payment:* ${b.payment_text}`);
+  if (audience === 'partner' && b.commission_amount) lines.push(`🏷️ *Dharamshala Stay commission:* ${rs(b.commission_amount)}`);
   return lines.join('\n');
 }

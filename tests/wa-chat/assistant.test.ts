@@ -15,7 +15,7 @@ beforeEach(() => { vi.stubEnv('OPENAI_API_KEY', 'k'); runTool.mockClear(); Objec
 
 describe('assistant', () => {
   it('system prompt carries the hard rules', () => {
-    for (const rule of [/never say confirmed/i, /never invent/i, /discount/i, /human/i, /same language/i, /handover/i]) expect(SYSTEM_PROMPT).toMatch(rule);
+    for (const rule of [/never say confirmed/i, /never invent/i, /discount/i, /human/i, /customer's language/i, /handover/i]) expect(SYSTEM_PROMPT).toMatch(rule);
   });
   it('mentions the advertised booking discount instead of denying it', () => {
     expect(SYSTEM_PROMPT).toContain('Discount of up to ₹500 on every booking');

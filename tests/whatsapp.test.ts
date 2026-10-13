@@ -24,6 +24,9 @@ describe('bookingShareText', () => {
     expect(t).toContain('Rs.2,200');
     expect(t).toContain('Rs.440');
   });
+  it('lays out a clean partner message', () => {
+    expect(bookingShareText(b, 'partner')).toBe('*🆕 New booking from Dharamshala Stay*\n\n📋 *Booking ID:* TXI-261010-ABCDE\n🛎️ *Taxi:* Gaggal Airport to McLeod Ganj\n📅 *When:* 12 Oct 2026, 10:00\n👥 *People:* 3\n👤 *Customer:* Asha, 9816000005\n🧑‍✈️ *Assigned:* Driver Sonu · HP39A1234\n\n💰 *Price:* Rs.2,200\n💳 *Payment:* Customer pays you directly\n🏷️ *Dharamshala Stay commission:* Rs.440');
+  });
   it('customer message omits commission and includes assignee', () => {
     const t = bookingShareText(b, 'customer');
     expect(t).not.toContain('440');
@@ -31,7 +34,7 @@ describe('bookingShareText', () => {
   });
   it('customer label depends on category', () => {
     const para = { ...b, category: 'paragliding', assignee_text: 'Pilot Ravi' };
-    expect(bookingShareText(para, 'customer')).toContain('Your pilot: Pilot Ravi');
-    expect(bookingShareText({ ...b, category: 'trek', assignee_text: 'Guide Dorje' }, 'customer')).toContain('Your guide: Guide Dorje');
+    expect(bookingShareText(para, 'customer')).toContain('Your pilot:* Pilot Ravi');
+    expect(bookingShareText({ ...b, category: 'trek', assignee_text: 'Guide Dorje' }, 'customer')).toContain('Your guide:* Guide Dorje');
   });
 });
