@@ -1,10 +1,12 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Building, MapPin, Bed, Camera, Shield, ChevronRight, ChevronLeft, Save, Send, Check } from 'lucide-react';
 import { supabase, notifyPropertySubmitted } from '@/lib/supabase';
 import { PROPERTY_AMENITIES, ROOM_AMENITIES, BATHROOM_AMENITIES, FOOD_OPTIONS, ID_TYPES } from '@/types';
 import { slugify } from '@/lib/utils';
+import { newClientId } from '@/lib/client-id';
+import { insertNewProperty } from '@/lib/partners/new-property';
 import { roomCount } from '@/lib/availability/calc';
 import { PropertyInput, PropertyCheckbox, normalizePropertyNumbers, missingPropertyFields } from '@/components/forms/PropertyFormFields';
 import ImageUploader, { ImageEntry } from '@/components/forms/ImageUploader';
@@ -22,6 +24,11 @@ export default function NewPropertyPage() {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
+  // The listing's id is made once per wizard, so a retried save (lost response, double click) finds the
+  // listing it already made instead of creating a second one. `busy` blocks a click before React re-renders.
+  const propertyId = useRef('');
+  const busy = useRef(false);
+  const notified = useRef(false);
   const [checking, setChecking] = useState(true);
   const [userId, setUserId] = useState('');
   const [form, setForm] = useState<Record<string, any>>({
@@ -59,8 +66,9 @@ export default function NewPropertyPage() {
   };
   const removeRoom = (idx: number) => update('rooms', form.rooms.filter((_: any, i: number) => i !== idx));
 
-  /** Insert the listing; if another property already uses the slug, add a short suffix. */
+  /** Insert the listing under this wizard's id; if another property already uses the slug, add a short suffix. */
   async function insertProperty(status: 'draft' | 'pending_review') {
+    if (!propertyId.current) propertyId.current = newClientId();
     const prices = form.rooms.map((r: any) => r.base_price || 0).filter((p: number) => p > 0);
     const base = slugify(form.name || 'untitled-property');
     const payload: Record<string, any> = normalizePropertyNumbers({
@@ -69,11 +77,7 @@ export default function NewPropertyPage() {
       price_max: prices.length ? Math.max(...prices) : 0,
       ...(status === 'pending_review' && { submitted_at: new Date().toISOString() }),
     });
-    let result = await supabase.from('properties').insert({ ...payload, slug: base }).select('id').single();
-    if (result.error?.code === '23505') {
-      result = await supabase.from('properties').insert({ ...payload, slug: base + '-' + Math.random().toString(36).slice(2, 6) }).select('id').single();
-    }
-    return result;
+    return insertNewProperty(supabase, propertyId.current, payload, base);
   }
 
   /** The database needs these even for a draft -- tell the partner which ones instead of showing a Postgres error. */
@@ -83,24 +87,23 @@ export default function NewPropertyPage() {
     return missing.length === 0;
   }
 
-  async function handleSaveDraft() {
-    if (!checkRequired()) return;
-    setLoading(true);
-    const { error } = await insertProperty('draft');
-    setLoading(false);
-    if (!error) router.push('/partner/dashboard');
-    else alert('Error saving: ' + error.message);
+  async function save(status: 'draft' | 'pending_review') {
+    if (busy.current || !checkRequired()) return;
+    busy.current = true; setLoading(true);
+    try {
+      const { data, error } = await insertProperty(status);
+      // The admin is told once per listing, and only when it is (now) waiting for review.
+      if (data?.status === 'pending_review' && !notified.current) { notified.current = true; await notifyPropertySubmitted(data.id); }
+      if (!error) { router.push('/partner/dashboard'); return; }
+      alert((status === 'draft' ? 'Error saving: ' : 'Error submitting: ') + error.message);
+    } catch {
+      alert('Network problem. Your listing may have been saved - press the button again; it will not be added twice.');
+    } finally {
+      busy.current = false; setLoading(false);
+    }
   }
-
-  async function handleSubmitForReview() {
-    if (!checkRequired()) return;
-    setLoading(true);
-    const { data, error } = await insertProperty('pending_review');
-    if (data?.id) await notifyPropertySubmitted(data.id);
-    setLoading(false);
-    if (!error) router.push('/partner/dashboard');
-    else alert('Error submitting: ' + error.message);
-  }
+  const handleSaveDraft = () => save('draft');
+  const handleSubmitForReview = () => save('pending_review');
 
   if (checking) return <div className="min-h-[60vh] flex items-center justify-center"><div className="w-8 h-8 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin" /></div>;
 

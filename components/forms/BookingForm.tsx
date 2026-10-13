@@ -5,6 +5,7 @@ import { formatPrice } from '@/lib/utils';
 import { useT } from '@/lib/i18n/client';
 import { fmt } from '@/lib/i18n/dict';
 import { authFetch } from '@/lib/supabase';
+import { newClientId } from '@/lib/client-id';
 import { getMinDate, getMinCheckoutDate, validateBookingDates, validateActivityDate, enforceCheckIn, enforceCheckOut, enforceActivityDate } from '@/lib/date-helpers';
 
 interface BookingFormProps {
@@ -24,13 +25,6 @@ interface BookingFormProps {
 }
 
 /** A v4 uuid; crypto.randomUUID needs a secure context, so fall back to getRandomValues. */
-function newRequestId(): string {
-  if (typeof crypto.randomUUID === 'function') return crypto.randomUUID();
-  const b = crypto.getRandomValues(new Uint8Array(16));
-  b[6] = (b[6] & 0x0f) | 0x40; b[8] = (b[8] & 0x3f) | 0x80;
-  const h = Array.from(b, (x) => x.toString(16).padStart(2, '0')).join('');
-  return `${h.slice(0, 8)}-${h.slice(8, 12)}-${h.slice(12, 16)}-${h.slice(16, 20)}-${h.slice(20)}`;
-}
 
 function calcNights(checkIn: string, checkOut: string): number {
   if (!checkIn || !checkOut) return 0;
@@ -139,7 +133,7 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
     else if (category === 'trek') { payload.activity_date = activityDate; payload.trek_id = entityId || null; }
     else if (category === 'paragliding') { payload.activity_date = activityDate; payload.paragliding_id = entityId || null; }
 
-    if (!requestId.current) requestId.current = newRequestId();
+    if (!requestId.current) requestId.current = newClientId();
     payload.client_request_id = requestId.current;
 
     // The request may have reached us even when no readable answer comes back: say so, and keep the
