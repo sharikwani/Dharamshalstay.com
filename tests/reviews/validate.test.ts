@@ -1,5 +1,5 @@
 // tests/reviews/validate.test.ts
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { checkPhotoCount, checkReviewPhoto, currentMonthIST, hashIp, normalizeReviewPhone, parseReview } from '@/lib/reviews/validate';
 
 const PID = '11111111-1111-4111-8111-111111111111';
@@ -26,6 +26,15 @@ describe('normalizeReviewPhone', () => {
     expect(normalizeReviewPhone('98057')).toBeNull();
     expect(normalizeReviewPhone('1234567890123456')).toBeNull();
     expect(normalizeReviewPhone(undefined)).toBeNull();
+  });
+});
+
+describe('missing fields', () => {
+  it('give the same friendly message as too-short values', () => {
+    expect(err({ name: undefined })).toBe(err({ name: 'a' }));
+    expect(err({ phone: undefined })).toBe('Please enter a valid mobile number.');
+    expect(err({ title: undefined })).toBe(err({ title: 'abc' }));
+    expect(err({ body: undefined })).toBe(err({ body: 'short' }));
   });
 });
 
@@ -87,6 +96,11 @@ describe('photos', () => {
     expect(checkReviewPhoto({ type: 'image/jpeg', size: 5 * 1024 * 1024 + 1, head: jpg })).toBe('Each photo must be 5 MB or smaller.');
     expect(checkReviewPhoto({ type: 'image/png', size: 100, head: jpg })).toMatch(/does not look like a real image/);
   });
+  it('refuses inherited property names as a type', () => {
+    for (const type of ['constructor', 'toString', '__proto__', 'hasOwnProperty']) {
+      expect(checkReviewPhoto({ type, size: 100, head: jpg })).toBe('Photos must be JPG, PNG or WebP.');
+    }
+  });
   it('allows at most 3 photos', () => {
     expect(checkPhotoCount(3)).toBeNull();
     expect(checkPhotoCount(4)).toBe('You can add up to 3 photos.');
@@ -98,5 +112,21 @@ describe('hashIp', () => {
     expect(hashIp('1.2.3.4')).toBe(hashIp('1.2.3.4'));
     expect(hashIp('1.2.3.4')).not.toBe(hashIp('1.2.3.5'));
     expect(hashIp('1.2.3.4')).toMatch(/^[a-f0-9]{64}$/);
+  });
+  describe('salt', () => {
+    afterEach(() => vi.unstubAllEnvs());
+    it('falls back to the service role key, and the output never contains the IP', () => {
+      vi.stubEnv('REVIEW_IP_SALT', '');
+      vi.stubEnv('SUPABASE_SERVICE_ROLE_KEY', '');
+      const unsalted = hashIp('1.2.3.4');
+      vi.stubEnv('SUPABASE_SERVICE_ROLE_KEY', 'service-key');
+      const fallback = hashIp('1.2.3.4');
+      expect(fallback).not.toBe(unsalted);
+      expect(fallback).not.toContain('1.2.3.4');
+      vi.stubEnv('REVIEW_IP_SALT', 'own-salt');
+      const own = hashIp('1.2.3.4');
+      expect(own).not.toBe(fallback);
+      expect(own).not.toContain('1.2.3.4');
+    });
   });
 });
