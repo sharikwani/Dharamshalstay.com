@@ -45,9 +45,11 @@ function OfferCard({ offer, onChanged, onError }: { offer: OfferView; onChanged:
     try { await api(`/api/admin/offers/${offer.id}`, { method: 'PATCH', body: JSON.stringify(body) }); onChanged(); }
     catch (e: any) { onError(e.message); } finally { setBusy(false); }
   }
+  const known = new Set(offer.rooms.flatMap((r) => r.plans.map((p) => `${r.room}|${p}`)));
+  const staleDropped = Object.keys(offer.plan_percents).some((k) => !known.has(k));
   const saveAll = () => save({
     name: name.trim(), default_percent: Number(percent), valid_hours: Number(hours), code_prefix: prefix.trim().toUpperCase(),
-    plan_percents: Object.fromEntries(Object.entries(plans).filter(([, v]) => v.trim() !== '').map(([k, v]) => [k, Number(v)])),
+    plan_percents: Object.fromEntries(Object.entries(plans).filter(([k, v]) => known.has(k) && v.trim() !== '').map(([k, v]) => [k, Number(v)])),
   });
   const input = 'mt-1 w-full px-3 py-2 border border-slate-300 rounded-lg';
 
@@ -56,7 +58,9 @@ function OfferCard({ offer, onChanged, onError }: { offer: OfferView; onChanged:
       <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
         <div>
           <p className="font-semibold text-slate-900">{offer.property_name}</p>
-          <p className="text-sm text-slate-500">Customers see: “Up to {offer.up_to}% off, only through this WhatsApp chat”</p>
+          {offer.active
+            ? <p className="text-sm text-slate-500">Customers see: “Up to {offer.up_to}% off, only through this WhatsApp chat”</p>
+            : <p className="text-sm text-slate-500">Currently Off – customers are not offered a code</p>}
         </div>
         <button onClick={() => save({ active: !offer.active })} disabled={busy}
           className={cn('px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-50', offer.active ? 'bg-green-600 text-white' : 'bg-slate-200 text-slate-700')}>
@@ -89,6 +93,7 @@ function OfferCard({ offer, onChanged, onError }: { offer: OfferView; onChanged:
       <button onClick={saveAll} disabled={busy} className="mt-4 px-4 py-2 rounded-lg bg-brand-600 text-white text-sm font-semibold disabled:opacity-50">
         {busy ? 'Saving…' : 'Save changes'}
       </button>
+      {staleDropped && <p className="text-xs text-amber-700 mt-2">Removed percents for rooms or plans that no longer exist. Save to clear them.</p>}
       <p className="text-xs text-slate-500 mt-2">Changes apply to new codes straight away. Codes already sent keep working until they expire.</p>
     </div>
   );
@@ -108,6 +113,7 @@ export default function AdminOffersPage() {
   const [newProp, setNewProp] = useState('');
   const [newPrefix, setNewPrefix] = useState('');
   const [newPercent, setNewPercent] = useState('20');
+  const [creating, setCreating] = useState(false);
 
   const load = useCallback(async () => {
     try {
@@ -138,12 +144,13 @@ export default function AdminOffersPage() {
   }
 
   async function createOffer() {
-    setError('');
+    if (creating) return;
+    setCreating(true); setError('');
     try {
       await api('/api/admin/offers', { method: 'POST', body: JSON.stringify({ property_id: newProp, default_percent: Number(newPercent), valid_hours: 3, code_prefix: newPrefix.trim().toUpperCase() }) });
       setNewProp(''); setNewPrefix('');
       await load();
-    } catch (e: any) { setError(e.message); }
+    } catch (e: any) { setError(e.message); } finally { setCreating(false); }
   }
 
   return (
@@ -168,7 +175,7 @@ export default function AdminOffersPage() {
         <h2 className="font-semibold text-slate-900 mb-2">Offers</h2>
         {loading ? <p className="text-slate-500 text-sm">Loading…</p> : (
           <div className="space-y-3">
-            {offers.map((o) => <OfferCard key={`${o.id}-${o.updated_at}`} offer={o} onChanged={load} onError={setError} />)}
+            {offers.map((o) => <OfferCard key={o.id} offer={o} onChanged={load} onError={setError} />)}
             {offers.length === 0 && <p className="text-sm text-slate-500">No offers yet.</p>}
           </div>
         )}
@@ -181,7 +188,7 @@ export default function AdminOffersPage() {
           </label>
           <label>Default %<input type="number" min={1} max={90} value={newPercent} onChange={(e) => setNewPercent(e.target.value)} className="mt-1 block w-20 px-3 py-2 border border-slate-300 rounded-lg" /></label>
           <label>Code prefix<input value={newPrefix} maxLength={5} onChange={(e) => setNewPrefix(e.target.value.toUpperCase())} placeholder="PNV" className="mt-1 block w-24 px-3 py-2 border border-slate-300 rounded-lg uppercase" /></label>
-          <button onClick={createOffer} disabled={!newProp || !newPrefix} className="px-4 py-2 rounded-lg bg-brand-600 text-white font-semibold disabled:opacity-50">Add offer (starts off)</button>
+          <button onClick={createOffer} disabled={!newProp || !newPrefix || creating} className="px-4 py-2 rounded-lg bg-brand-600 text-white font-semibold disabled:opacity-50">Add offer (starts off)</button>
         </div>
       </section>
 
