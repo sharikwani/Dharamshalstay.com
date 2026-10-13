@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Building, Eye, Pencil, ToggleLeft, ToggleRight, Trash2, Loader2, Mail, Check, X, Search, ShieldCheck, ShieldAlert } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { notifyHotelChanged } from '@/lib/indexnow-client';
 import { AdminPageHeader } from '@/components/admin/AdminShell';
 import { formatPrice, statusLabel, STATUS_COLORS, cn } from '@/lib/utils';
 
@@ -62,6 +63,7 @@ export default function AdminProperties() {
     if (newStatus === 'published') updates.published_at = new Date().toISOString();
     const { error } = await supabase.from('properties').update(updates).eq('id', id);
     if (error) alert('Failed: ' + error.message);
+    else if (newStatus === 'published') void notifyHotelChanged(allProperties.find((p) => p.id === id)?.slug);
     load();
   }
 

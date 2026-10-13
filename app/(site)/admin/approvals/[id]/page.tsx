@@ -4,6 +4,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { CheckCircle, XCircle, MessageSquare, ArrowLeft, Building, MapPin, Bed, Camera, Shield, AlertTriangle } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { formatPrice } from '@/lib/utils';
+import { notifyHotelChanged } from '@/lib/indexnow-client';
 
 // Hotel commission used when a listing's commission_pct is blank -- keep in step with DEFAULT_COMMISSION.hotel in lib/pricing.ts.
 const HOTEL_DEFAULT_COMMISSION = 10;
@@ -75,6 +76,7 @@ export default function AdminApprovalDetail() {
     }).eq('id', params.id).select('id');
     // RLS turns a forbidden update into "0 rows", not an error.
     if (error || !saved?.length) { alert('Could not save: ' + (error?.message || 'no permission to update this listing')); setAction(null); return; }
+    void notifyHotelChanged(property?.slug);
     router.push('/admin/approvals');
   }
 

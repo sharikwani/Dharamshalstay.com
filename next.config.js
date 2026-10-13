@@ -18,6 +18,8 @@ const nextConfig = {
   async rewrites() {
     return [
       { source: '/:section(blog|destinations|treks|hotels)/:slug([a-z0-9-]+).md', destination: '/md/:section/:slug' },
+      // IndexNow key file: /<32 hex chars>.txt -> app/indexnow-key/[key] (lib/indexnow.ts).
+      { source: '/:key([a-f0-9]{32}).txt', destination: '/indexnow-key/:key' },
     ];
   },
   async redirects() {

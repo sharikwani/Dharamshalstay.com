@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ArrowLeft, Save, Loader2, Trash2, Plus, X, LinkIcon, Check, Eye, ShieldCheck, ArrowUp, ArrowDown, Star, CalendarDays, BedDouble } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { slugify } from '@/lib/utils';
+import { notifyHotelChanged } from '@/lib/indexnow-client';
 
 export default function AdminEditPropertyPage() {
   const router = useRouter();
@@ -78,7 +79,10 @@ export default function AdminEditPropertyPage() {
     const { error: e } = await supabase.from('properties').update(payload).eq('id', params.id);
     setSaving(false);
     if (e) setError('Error: ' + e.message);
-    else setSuccess('Saved successfully!');
+    else {
+      setSuccess('Saved successfully!');
+      if (form.status === 'published') void notifyHotelChanged(slug);
+    }
   }
 
   if (loading) return <div className="min-h-[60vh] flex items-center justify-center"><Loader2 className="h-8 w-8 text-brand-600 animate-spin" /></div>;
