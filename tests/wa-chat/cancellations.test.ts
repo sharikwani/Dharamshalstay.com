@@ -2,17 +2,20 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 const h = vi.hoisted(() => ({
-  own: [] as any[], saved: [] as any[], updated: [] as any[], cancels: [] as any[], cancelOk: true, verdict: { verdict: 'matches', notes: 'ok' } as any,
+  own: [] as any[], ownSeq: [] as any[][], cancelResult: null as any, saved: [] as any[], updated: [] as any[], cancels: [] as any[], cancelOk: true, verdict: { verdict: 'matches', notes: 'ok' } as any,
   media: { data: new ArrayBuffer(2), mimeType: 'image/jpeg' } as any, claim: true, ownThrows: false, proofArgs: [] as any[], downloads: 0, uploads: [] as any[], bodies: [] as any[], statuses: [] as any[], sent: [] as any[], outs: [] as any[], emails: [] as any[],
 }));
 vi.mock('@/lib/wa-chat/booking-store', () => ({
-  ownBookings: async () => { if (h.ownThrows) throw new Error('db down'); return h.own; },
+  ownBookings: async () => { if (h.ownThrows) throw new Error('db down'); return h.ownSeq.length ? h.ownSeq.shift()! : h.own; },
   claimCancellation: async () => h.claim,
   findOwnBooking: async (_p: string, ref: string) => h.own.find((b) => b.booking_ref === String(ref).trim().toUpperCase()) ?? null,
   saveCancellation: async (row: any) => { h.saved.push(row); return { id: 'x1', ...row }; },
   updateCancellation: async (...a: any[]) => { h.updated.push(a); },
 }));
-vi.mock('@/lib/bookings/cancel', () => ({ cancelBooking: async (...a: any[]) => { h.cancels.push(a); return h.cancelOk ? { ok: true } : { ok: false, error: 'x' }; } }));
+vi.mock('@/lib/bookings/cancel', () => ({
+  PAID_MEANWHILE: 'This booking was paid meanwhile',
+  cancelBooking: async (...a: any[]) => { h.cancels.push(a); return h.cancelResult ?? (h.cancelOk ? { ok: true } : { ok: false, error: 'x' }); },
+}));
 vi.mock('@/lib/wa-chat/proof', () => ({ checkProof: async (a: any) => { h.proofArgs.push(a); return h.verdict; } }));
 vi.mock('@/lib/whatsapp-cloud', () => ({
   downloadMedia: async () => { h.downloads++; return h.media; },
@@ -40,7 +43,7 @@ const booking = (over: any = {}) => ({ id: 'b1', booking_ref: 'TRK-1', category:
 const ask = (a: any, c = ctx()) => requestCancellation({ booking_ref: 'TRK-1', reason_text: 'fever', ...a }, c, handover);
 
 beforeEach(() => {
-  Object.assign(h, { claim: true, ownThrows: false, proofArgs: [], downloads: 0, own: [booking()], saved: [], updated: [], cancels: [], cancelOk: true, verdict: { verdict: 'matches', notes: 'ok' },
+  Object.assign(h, { ownSeq: [], cancelResult: null, claim: true, ownThrows: false, proofArgs: [], downloads: 0, own: [booking()], saved: [], updated: [], cancels: [], cancelOk: true, verdict: { verdict: 'matches', notes: 'ok' },
     media: { data: new ArrayBuffer(2), mimeType: 'image/jpeg' }, uploads: [], bodies: [], statuses: [], sent: [], outs: [], emails: [] });
 });
 
@@ -101,7 +104,28 @@ describe('requestCancellation', () => {
     h.own = [booking(), booking({ id: 'b0', booking_ref: 'TRK-0' })];
     expect(await ask({ reason_code: 'duplicate_or_mistake' })).toMatchObject({ result: 'cancelled' });
     expect(h.cancels[0][0].id).toBe('b1');
-    expect(h.cancels[0][2]).toEqual({ notify: true });
+    expect(h.cancels[0][2]).toEqual({ notify: true, requireUnpaid: true });
+  });
+  it('a duplicate re-reads the bookings right before cancelling', async () => {
+    // findOwnBooking saw both; the read right before cancelling shows the other one cancelled meanwhile.
+    h.own = [booking(), booking({ id: 'b0', booking_ref: 'TRK-0' })];
+    h.ownSeq = [[booking(), booking({ id: 'b0', booking_ref: 'TRK-0', status: 'cancelled' })]];
+    expect(await ask({ reason_code: 'duplicate_or_mistake' })).toMatchObject({ result: 'handed_over' });
+    // This booking was paid meanwhile.
+    h.ownSeq = [[booking({ payment_status: 'paid' }), booking({ id: 'b0', booking_ref: 'TRK-0' })]];
+    const c = ctx();
+    expect(await ask({ reason_code: 'duplicate_or_mistake' }, c)).toMatchObject({ result: 'handed_over' });
+    expect(c.handedOver).toBe(true);
+    expect(h.cancels).toEqual([]);
+  });
+  it('a duplicate cancelled or paid between the check and the cancel is reported, not claimed', async () => {
+    h.own = [booking(), booking({ id: 'b0', booking_ref: 'TRK-0' })];
+    h.cancelResult = { ok: true, already: true };
+    expect(await ask({ reason_code: 'duplicate_or_mistake' })).toMatchObject({ result: 'already_cancelled' });
+    h.cancelResult = { ok: false, error: 'This booking was paid meanwhile' };
+    const c = ctx();
+    expect(await ask({ reason_code: 'duplicate_or_mistake' }, c)).toMatchObject({ result: 'handed_over' });
+    expect(c.handedOver).toBe(true);
   });
   it('hands over a "mistake" with no duplicate', async () => {
     expect(await ask({ reason_code: 'duplicate_or_mistake' })).toMatchObject({ result: 'handed_over' });
@@ -120,6 +144,30 @@ describe('handleProof', () => {
     expect(h.cancels[0][1]).toMatch(/WhatsApp: Illness or medical emergency - fever \(proof checked\)/);
     expect(h.updated.at(-1)).toEqual(['x1', expect.objectContaining({ status: 'cancelled', verdict: 'matches', proof_path: 'c1/x1.jpg' })]);
     expect(h.bodies[0][1]).toMatch(/TRK-1.*cancelled/);
+    expect(h.cancels[0][2]).toEqual({ notify: true, requireUnpaid: true });
+  });
+  it('always tells the customer the booking is cancelled, without waiting for the AI', async () => {
+    expect(await handleProof(conv, 'row9', msg, open)).toBe('cancelled');
+    expect(h.sent).toEqual([['919800000001', 'Your booking TRK-1 is cancelled. No payment was taken.']]);
+    expect(h.outs[0]).toEqual(['c1', 'ai', 'Your booking TRK-1 is cancelled. No payment was taken.', 'w', undefined]);
+  });
+  it('a booking cancelled meanwhile is reported as already cancelled', async () => {
+    h.cancelResult = { ok: true, already: true };
+    expect(await handleProof(conv, 'row9', msg, open)).toBe('cancelled');
+    expect(h.sent).toEqual([['919800000001', 'Your booking TRK-1 is already cancelled.']]);
+  });
+  it('a booking paid meanwhile is not cancelled: the customer hears it is reviewed and the owner is emailed', async () => {
+    h.cancelResult = { ok: false, error: 'This booking was paid meanwhile' };
+    expect(await handleProof(conv, 'row9', msg, open)).toBe('review');
+    expect(h.sent[0][1]).toMatch(/review/i);
+    expect(h.emails[0].html).toMatch(/paid meanwhile/);
+    expect(h.statuses[0][1]).toBe('needs_human');
+  });
+  it('re-reads the booking right before cancelling', async () => {
+    h.ownSeq = [[booking()], [booking({ payment_status: 'paid' })]];
+    expect(await handleProof(conv, 'row9', msg, open)).toBe('review');
+    expect(h.cancels).toEqual([]);
+    expect(h.emails[0].html).toMatch(/booking is now paid/);
   });
   it('sends anything else to the owner for review', async () => {
     h.verdict = { verdict: 'mismatch', notes: 'Name differs' };

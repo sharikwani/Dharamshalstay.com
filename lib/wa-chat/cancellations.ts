@@ -1,5 +1,5 @@
 // lib/wa-chat/cancellations.ts
-import { cancelBooking } from '@/lib/bookings/cancel';
+import { cancelBooking, PAID_MEANWHILE } from '@/lib/bookings/cancel';
 import { hoursUntilStart } from '@/lib/bookings/timing';
 import { downloadMedia, sendText } from '@/lib/whatsapp-cloud';
 import { sendEmail, adminEmail } from '@/lib/email';
@@ -74,12 +74,27 @@ async function decideCancellation(a: { booking_ref: string; reason_code: string;
     return { result: 'handed_over' as const };
   }
   if (code === 'duplicate_or_mistake') {
-    if (!hasDuplicate(b, await ownBookings(ctx.phone))) {
+    // Re-read right before cancelling: the other booking may have been cancelled, or this one paid, meanwhile.
+    const all = await ownBookings(ctx.phone);
+    const now = all.find((x) => x.id === b.id);
+    if (!now || now.status === 'cancelled') return { result: 'already_cancelled' as const };
+    const again = blocker(now);
+    if (again === 'within_24h') return { result: 'not_allowed_within_24h' as const, message: 'Bookings cannot be cancelled or refunded within 24 hours of the start time.' };
+    if (again) {
+      await handover({ reason: `Cancellation request ${b.booking_ref}: booked twice, but the booking is now ${again} - ${text}` }, ctx);
+      return { result: 'handed_over' as const };
+    }
+    if (!hasDuplicate(now, all)) {
       await handover({ reason: `Cancellation request ${b.booking_ref}: booked by mistake, no duplicate found - ${text}` }, ctx);
       return { result: 'handed_over' as const };
     }
-    const r = await cancelBooking(b, `WhatsApp: duplicate booking - ${text}`, { notify: true });
-    if (!r.ok) { await handover({ reason: `Could not cancel duplicate ${b.booking_ref}` }, ctx); return { result: 'handed_over' as const }; }
+    const r = await cancelBooking(now, `WhatsApp: duplicate booking - ${text}`, { notify: true, requireUnpaid: true });
+    if (r.ok && r.already) return { result: 'already_cancelled' as const };
+    if (!r.ok) {
+      const why = r.error === PAID_MEANWHILE ? `paid meanwhile, not cancelled (check for a refund) - ${text}` : 'could not cancel the duplicate';
+      await handover({ reason: `Cancellation request ${b.booking_ref}: ${why}` }, ctx);
+      return { result: 'handed_over' as const };
+    }
     return { result: 'cancelled' as const };
   }
   await saveCancellation({ conversation_id: ctx.conversationId, booking_id: b.id, reason_code: code, reason_text: text, status: 'awaiting_proof' });
@@ -117,9 +132,18 @@ async function reviewFallback(c: Conversation, messageId: string, m: Inbound, op
   return 'review';
 }
 
+/** Tell the customer directly (not through the AI turn, which may be busy or silenced). */
+async function tell(c: Conversation, text: string) {
+  try {
+    const r = await sendText(c.phone, text);
+    await saveOutbound(c.id, 'ai', text, r.ok ? r.id : null, r.ok ? undefined : r.error);
+  } catch (e) { console.error('WhatsApp cancellation reply failed:', e); }
+}
+
 async function processProof(c: Conversation, messageId: string, m: Inbound, open: Cancellation): Promise<'cancelled' | 'review'> {
   let cancelFailed = false;
-  const b = (await ownBookings(c.phone)).find((x) => x.id === open.booking_id) ?? null;
+  let paidMeanwhile = false;
+  let b = (await ownBookings(c.phone)).find((x) => x.id === open.booking_id) ?? null;
   const media = m.mediaId ? await downloadMedia(m.mediaId) : null;
   let proof_path: string | null = null;
   if (media) {
@@ -133,16 +157,22 @@ async function processProof(c: Conversation, messageId: string, m: Inbound, open
     : await checkProof({ data: media.data, mimeType: media.mimeType, guestName: b.guest_name || c.profile_name || '', startDate: startDay(b), reasonCode: open.reason_code, reasonText: open.reason_text });
 
   if (b && verdict.verdict === 'matches' && blocker(b) === null) {
-    const r = await cancelBooking(b, `WhatsApp: ${LABEL[open.reason_code]} - ${open.reason_text} (proof checked)`, { notify: true });
+    // The download and the AI check take a while: re-read the booking right before cancelling.
+    b = (await ownBookings(c.phone)).find((x) => x.id === open.booking_id) ?? null;
+  }
+  if (b && verdict.verdict === 'matches' && blocker(b) === null) {
+    const r = await cancelBooking(b, `WhatsApp: ${LABEL[open.reason_code]} - ${open.reason_text} (proof checked)`, { notify: true, requireUnpaid: true });
     if (r.ok) {
       await updateCancellation(open.id, { status: 'cancelled', verdict: verdict.verdict, verdict_notes: verdict.notes, proof_path });
       await setMessageBody(messageId, `${m.mediaLabel || '[document]'} [proof for ${b.booking_ref}: checked, booking cancelled]`);
+      await tell(c, r.already ? `Your booking ${b.booking_ref} is already cancelled.` : `Your booking ${b.booking_ref} is cancelled. No payment was taken.`);
       return 'cancelled';
     }
-    cancelFailed = true;
+    if (r.error === PAID_MEANWHILE) paidMeanwhile = true; else cancelFailed = true;
   }
 
-  const why = cancelFailed ? 'proof matches but cancelling failed' : !b ? 'booking not found' : blocker(b) ? `booking is now ${blocker(b)}` : `proof ${verdict.verdict}`;
+  const why = paidMeanwhile ? 'proof matches but the booking was paid meanwhile, so it was not cancelled'
+    : cancelFailed ? 'proof matches but cancelling failed' : !b ? 'booking not found' : blocker(b) ? `booking is now ${blocker(b)}` : `proof ${verdict.verdict}`;
   await updateCancellation(open.id, { status: 'needs_review', verdict: verdict.verdict, verdict_notes: `${verdict.notes} (${why})`.slice(0, 500), proof_path });
   await setMessageBody(messageId, `${m.mediaLabel || '[document]'} [proof for ${b?.booking_ref || 'booking'}: sent to the team for review]`);
   await setStatus(c.id, 'needs_human', `Cancellation proof to review: ${b?.booking_ref || open.booking_id}`);

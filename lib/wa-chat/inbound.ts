@@ -55,6 +55,7 @@ async function answer(m: Inbound, conversation: Conversation, messageId: string,
     const open = conversation.status === 'ai' ? await openCancellation(conversation.id).catch(() => null) : null;
     if (!open) return handToOwner(conversation, m.mediaLabel || 'a file');
     const outcome = await handleProof(conversation, messageId, m, open);
+    // handleProof already told the customer the booking is cancelled; the normal turn answers anything else.
     if (outcome === 'cancelled') return processConversation(conversation.id, messageId, { deadline });
     return outcome;
   }
