@@ -7,17 +7,26 @@ export const laterMethod = (category: string) => (category === 'hotel' ? 'pay_at
 /**
  * An online booking whose payment link could not be created becomes pay later, so the usual booking emails go out.
  * createBooking marks online bookings commission 'not_applicable'; pay-later ones with commission owe it.
+ * The switch is conditional (still online and unpaid), so of two concurrent callers only the one that changed the
+ * row sends the emails. Returns the pay-later method when the booking is now pay later, or null when it was left
+ * alone (paid or changed meanwhile, or the update failed).
  */
-export async function fallbackToPayLater(bookingId: string, category: string): Promise<string> {
+export async function fallbackToPayLater(bookingId: string, category: string): Promise<string | null> {
   const later = laterMethod(category);
   const sb = serviceClient();
   const { data: row } = await sb.from('bookings').select('commission_amount').eq('id', bookingId).single();
   const patch: Record<string, unknown> = { payment_method: later };
   if (Number((row as any)?.commission_amount) > 0) patch.commission_status = 'pending';
-  const { error } = await sb.from('bookings').update(patch).eq('id', bookingId);
-  if (error) console.error('Pay-later fallback failed', bookingId, error);
-  await sendBookingEmails(bookingId);
-  return later;
+  const { data: changed, error } = await sb.from('bookings').update(patch).eq('id', bookingId).eq('payment_method', 'online')
+    .or('payment_status.is.null,payment_status.not.in.(paid,partially_paid)').select('id');
+  if (error) { console.error('Pay-later fallback failed', bookingId, error); return null; }
+  if (changed?.length) {
+    await sendBookingEmails(bookingId);
+    return later;
+  }
+  // Nothing changed: another caller switched it already (it sent the emails), or it was paid meanwhile.
+  const { data: now } = await sb.from('bookings').select('payment_method').eq('id', bookingId).maybeSingle();
+  return (now as any)?.payment_method === later ? later : null;
 }
 
 /** How long after booking the website form may still switch a booking to pay later. */

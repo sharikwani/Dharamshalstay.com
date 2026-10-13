@@ -10,7 +10,7 @@ vi.mock('@/lib/server-auth', () => ({
   serviceClient: () => ({
     from: () => ({
       select: (cols: string) => ({ eq: () => ({ single: async () => ({ data: cols === 'commission_amount' ? { commission_amount: h.commission } : h.booking }) }) }),
-      update: (row: any) => ({ eq: async () => { h.updates.push(row); return { error: null }; } }),
+      update: (row: any) => { h.updates.push(row); const u: any = { eq: () => u, or: () => u, select: () => u, then: (res: any) => res({ data: [{ id: 'b1' }], error: null }) }; return u; },
     }),
   }),
 }));

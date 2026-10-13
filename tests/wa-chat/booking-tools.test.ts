@@ -47,7 +47,10 @@ vi.mock('@/lib/bookings/create', async (orig) => {
 });
 vi.mock('@/lib/bookings/checkout', () => ({ createCheckoutLink: async () => { if (h.checkout === 'throw') throw new Error('stripe down'); return h.checkout; } }));
 vi.mock('@/lib/booking-emails', () => ({ sendBookingEmails: async (id: string) => { h.emails.push(id); } }));
-vi.mock('@/lib/server-auth', () => ({ serviceClient: () => ({ from: () => ({ select: () => ({ eq: () => ({ single: async () => ({ data: { commission_amount: h.commission } }) }) }), update: (row: any) => ({ eq: async () => { h.updates.push(row); return { error: null }; } }) }) }) }));
+vi.mock('@/lib/server-auth', () => ({ serviceClient: () => ({ from: () => ({
+  select: () => ({ eq: () => ({ single: async () => ({ data: { commission_amount: h.commission } }), maybeSingle: async () => ({ data: null }) }) }),
+  update: (row: any) => { h.updates.push(row); const u: any = { eq: () => u, or: () => u, select: () => u, then: (res: any) => res({ data: [{ id: 'b1' }], error: null }) }; return u; },
+}) }) }));
 vi.mock('@/lib/availability/store', () => ({ availabilityFor: async (...a: any[]) => { h.availCalls.push(a); return h.avail; } }));
 
 import { BOOKING_TOOL_DEFS, runBookingTool } from '@/lib/wa-chat/booking-tools';
