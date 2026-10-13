@@ -45,11 +45,10 @@ export function makeCode(prefix: string, randomIndex: (n: number) => number): st
   return `${prefix}-${s}`;
 }
 
-/** "pnv 7k3q9", "PNV7K3Q9" and "pnv-7k3q9" all become "PNV-7K3Q9". */
+/** "pnv 7k3q9", "PNV7K3Q9", "pnv-7k3q9" and "pnv–7k3q9" (any dash or space) all become "PNV-7K3Q9". */
 export function normalizeCode(input: unknown): string {
-  const t = String(input ?? '').toUpperCase().replace(/[\s_]/g, '');
-  const m = /^([A-Z]{2,5})-?([A-Z0-9]{5})$/.exec(t);
-  return m ? `${m[1]}-${m[2]}` : t;
+  const t = String(input ?? '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+  return t.length > CODE_LENGTH ? `${t.slice(0, -CODE_LENGTH)}-${t.slice(-CODE_LENGTH)}` : t;
 }
 
 export const planKey = (room: string, plan: string) => `${room}|${plan}`;
@@ -70,6 +69,12 @@ export function cappedPlanPercents(o: Pick<Offer, 'plan_percents'>, cap: number)
 
 export const discounted = (amount: number, percent: number) => Math.round((amount * (100 - percent)) / 100);
 export const isExpired = (c: Pick<OfferCode, 'expires_at'>, now = Date.now()) => Date.parse(c.expires_at) <= now;
+/** Minutes until an unpaid online booking made at createdAt stops holding its code (at least 1). */
+export const holdMinutesLeft = (createdAt: string, now = Date.now()) =>
+  Math.max(1, Math.ceil((ONLINE_HOLD_MS - (now - Date.parse(createdAt))) / 60e3));
+export const heldByUnpaidText = (code: string, ref: string, createdAt: string, now = Date.now()) =>
+  `Code ${code} is held by your unpaid booking ${ref}. Pay it with payment_link, or the code frees up in about ${holdMinutesLeft(createdAt, now)} minutes (${ONLINE_HOLD_MS / 60e3} minutes after that booking was made).`;
+export const usedForBookingText = (code: string, ref: string) => `Your code ${code} is already used for booking ${ref}.`;
 export const hoursLeft = (expiresAt: string, now = Date.now()) => Math.max(1, Math.ceil((Date.parse(expiresAt) - now) / 3600e3));
 
 /** A booked code goes back to 'issued' when its booking is dead, or online and still unpaid past ONLINE_HOLD_MS. */

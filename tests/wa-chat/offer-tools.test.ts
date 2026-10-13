@@ -1,7 +1,7 @@
 // tests/wa-chat/offer-tools.test.ts
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 
-const h = vi.hoisted(() => ({ offer: null as any, issued: null as any, issueCalls: [] as any[], code: null as any, offerById: null as any, active: [] as any }));
+const h = vi.hoisted(() => ({ offer: null as any, issued: null as any, issueCalls: [] as any[], code: null as any, offerById: null as any, active: [] as any, booking: null as any }));
 vi.mock('@/lib/wa-chat/find', () => ({
   findHotel: async (n: string) => (n.toLowerCase().includes('panch') ? { id: 'h1', name: 'Panchvati Cottages', slug: 'panchvati-cottages' } : null),
 }));
@@ -9,7 +9,7 @@ vi.mock('@/lib/offers/store', () => ({
   offerFor: async () => h.offer,
   issueCode: async (...a: any[]) => { h.issueCalls.push(a); return h.issued; },
   findCode: async (c: string) => (h.code && h.code.code === c ? h.code : null),
-  settle: async (c: any) => ({ code: c, booking: null }),
+  settle: async (c: any) => ({ code: c, booking: h.booking }),
   getOffer: async () => h.offerById,
   activeOffers: async () => { if (h.active === 'throw') throw new Error('db down'); return h.active; },
 }));
@@ -25,7 +25,7 @@ const code = (over: any = {}) => ({
 });
 
 beforeEach(() => {
-  Object.assign(h, { offer: OFFER, issued: { ok: true, code: code(), reused: false }, issueCalls: [], code: code(), offerById: OFFER, active: [OFFER] });
+  Object.assign(h, { offer: OFFER, issued: { ok: true, code: code(), reused: false }, issueCalls: [], code: code(), offerById: OFFER, active: [OFFER], booking: null });
   vi.stubEnv('STRIPE_SECRET_KEY', 'sk_test');
 });
 afterEach(() => vi.unstubAllEnvs());
@@ -49,6 +49,18 @@ describe('get_offer_code', () => {
     const r: any = await getOfferCode({ hotel_name: 'Panchvati' }, ctx());
     expect(r.rules).toMatch(/reception/);
     expect(r.rules).not.toMatch(/pay online in full/);
+  });
+  it('says a reused code is already used when its booking is paid', async () => {
+    h.issued = { ok: true, code: code({ status: 'booked', booking_id: 'b9' }), reused: true };
+    h.booking = { id: 'b9', booking_ref: 'HTL-9', status: 'confirmed', payment_status: 'paid', created_at: new Date().toISOString(), guest_name: null, guest_phone: '919800000001' };
+    const r: any = await getOfferCode({ hotel_name: 'Panchvati' }, ctx());
+    expect(r.rules).toBe('Your code PNV-7K3Q9 is already used for booking HTL-9.');
+  });
+  it('points a reused code held by this phone’s unpaid booking to payment_link', async () => {
+    h.issued = { ok: true, code: code({ status: 'booked', booking_id: 'b9' }), reused: true };
+    h.booking = { id: 'b9', booking_ref: 'HTL-9', status: 'pending', payment_status: 'pending', created_at: new Date(Date.now() - 10 * 60e3).toISOString(), guest_name: null, guest_phone: '+91 98000 00001' };
+    const r: any = await getOfferCode({ hotel_name: 'Panchvati' }, ctx());
+    expect(r.rules).toMatch(/^Code PNV-7K3Q9 is held by your unpaid booking HTL-9\. Pay it with payment_link, or the code frees up in about 25 minutes/);
   });
   it('errors when the hotel has no offer or is unknown', async () => {
     h.offer = null;
@@ -81,6 +93,19 @@ describe('offerForBooking', () => {
     expect(((await offerForBooking(base)) as any).error).toMatch(/already used/);
     h.code = code({ status: 'redeemed' });
     expect(((await offerForBooking(base)) as any).error).toMatch(/can no longer be used/);
+  });
+  it('tells the customer their own unpaid booking holds the code, with the minutes left (at least 1)', async () => {
+    h.code = code({ status: 'booked', booking_id: 'b9' });
+    h.booking = { id: 'b9', booking_ref: 'HTL-9', status: 'pending', payment_status: 'pending', created_at: new Date(Date.now() - 20 * 60e3).toISOString(), guest_name: null, guest_phone: '919800000001' };
+    expect(((await offerForBooking(base)) as any).error).toBe(
+      'Code PNV-7K3Q9 is held by your unpaid booking HTL-9. Pay it with payment_link, or the code frees up in about 15 minutes (35 minutes after that booking was made).');
+    h.booking = { ...h.booking, created_at: new Date(Date.now() - 34.99 * 60e3).toISOString() };
+    expect(((await offerForBooking(base)) as any).error).toMatch(/about 1 minutes/);
+  });
+  it('says which paid booking already used the code', async () => {
+    h.code = code({ status: 'booked', booking_id: 'b9' });
+    h.booking = { id: 'b9', booking_ref: 'HTL-9', status: 'confirmed', payment_status: 'paid', created_at: new Date().toISOString(), guest_name: null, guest_phone: '919800000001' };
+    expect(((await offerForBooking(base)) as any).error).toBe('Your code PNV-7K3Q9 is already used for booking HTL-9.');
   });
 });
 

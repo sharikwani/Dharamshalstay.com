@@ -28,6 +28,9 @@ describe('codes', () => {
     expect(normalizeCode('pnv-7k3q9')).toBe('PNV-7K3Q9');
     expect(normalizeCode('hello')).toBe('HELLO');
     expect(normalizeCode(null)).toBe('');
+    expect(normalizeCode('pnv–7k3q9')).toBe('PNV-7K3Q9'); // en dash
+    expect(normalizeCode('PNV—7K3Q9')).toBe('PNV-7K3Q9'); // em dash
+    expect(normalizeCode('pnv 7k3q9.')).toBe('PNV-7K3Q9'); // no-break space, stray dot
   });
 });
 

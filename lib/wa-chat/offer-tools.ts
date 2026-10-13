@@ -1,6 +1,6 @@
 // lib/wa-chat/offer-tools.ts
 import { activeOffers, findCode, getOffer, issueCode, offerFor, settle } from '@/lib/offers/store';
-import { formatIST, isExpired, normalizeCode, planPercent, rulesLine, upToText } from '@/lib/offers/rules';
+import { formatIST, heldByUnpaidText, isExpired, normalizeCode, planPercent, rulesLine, upToText, usedForBookingText, type CodeBooking, type OfferCode } from '@/lib/offers/rules';
 import { samePhone } from './booking-store';
 import { findHotel } from './find';
 import type { ToolCtx } from './tools';
@@ -22,6 +22,16 @@ export const OFFER_TOOL_DEF = {
   },
 };
 
+const PAID = ['paid', 'partially_paid'];
+
+/** Why a booked code cannot be used again by this phone: paid booking, or this phone's own unpaid booking (null = neither). */
+function bookedCodeText(c: Pick<OfferCode, 'code'>, b: CodeBooking | null, phone: string): string | null {
+  if (!b) return null;
+  if (PAID.includes(String(b.payment_status))) return usedForBookingText(c.code, b.booking_ref);
+  if (samePhone(b.guest_phone || '', phone)) return heldByUnpaidText(c.code, b.booking_ref, b.created_at);
+  return null;
+}
+
 export async function getOfferCode(a: any, ctx: ToolCtx) {
   const p: any = await findHotel(String(a.hotel_name || ''));
   if (!p) return { error: 'Hotel not found. Use search_hotels first.' };
@@ -30,9 +40,16 @@ export async function getOfferCode(a: any, ctx: ToolCtx) {
   // The phone is always the chat's own number, never a tool argument.
   const r = await issueCode(offer.id, ctx.phone, ctx.conversationId);
   if (!r.ok) return { error: r.error };
+  let c = r.code;
+  let booked: string | null = null;
+  if (c.status === 'booked') {
+    const s = await settle(c);
+    c = s.code;
+    if (c.status === 'booked') booked = bookedCodeText(c, s.booking, ctx.phone);
+  }
   return {
-    hotel: p.name, code: r.code.code, expires_at_india_time: formatIST(r.code.expires_at), up_to_percent: r.code.percent,
-    rules: rulesLine(r.code, !!process.env.STRIPE_SECRET_KEY),
+    hotel: p.name, code: c.code, expires_at_india_time: formatIST(c.expires_at), up_to_percent: c.percent,
+    rules: booked ?? rulesLine(c, !!process.env.STRIPE_SECRET_KEY),
   };
 }
 
@@ -52,8 +69,8 @@ export async function offerNotes(propertyIds: string[]): Promise<Record<string, 
 export async function offerForBooking(i: { code: unknown; phone: string; propertyId: string | null | undefined; room?: string | null; plan?: string | null }): Promise<OfferCheck> {
   const found = await findCode(normalizeCode(i.code));
   if (!found || !samePhone(found.phone, i.phone)) return { error: 'That offer code was not found for this WhatsApp number. Use get_offer_code to get one.' };
-  const { code: c } = await settle(found);
-  if (c.status === 'booked') return { error: 'This offer code is already used for another booking.' };
+  const { code: c, booking } = await settle(found);
+  if (c.status === 'booked') return { error: bookedCodeText(c, booking, i.phone) ?? 'This offer code is already used for another booking.' };
   if (c.status !== 'issued') return { error: 'This offer code can no longer be used.' };
   if (isExpired(c)) return { error: 'This offer code has expired. Use get_offer_code to get a new one if the offer is still on.' };
   const offer = await getOffer(c.offer_id);
