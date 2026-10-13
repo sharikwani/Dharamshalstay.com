@@ -90,7 +90,7 @@ describe('admin partner routes', () => {
   it('only verifies partners waiting for review', async () => {
     role = 'admin';
     docStatuses = ['approved', 'approved'];
-    for (const s of ['rejected', 'suspended', 'onboarding', 'changes_requested', 'verified']) {
+    for (const s of ['rejected', 'suspended', 'onboarding', 'changes_requested']) {
       partnerStatus = s;
       const res = await post({ action: 'verify' });
       expect(res.status).toBe(409);
@@ -166,6 +166,39 @@ describe('admin partner routes', () => {
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ saved: true, reload: true });
     expect(emailPartnerDecision).toHaveBeenCalledTimes(1);
+    log.mockRestore();
+  });
+
+  it('verify or reinstate on a partner already verified is a quiet success', async () => {
+    role = 'admin';
+    partnerStatus = 'verified';
+    for (const action of ['verify', 'reinstate']) {
+      const res = await post({ action });
+      expect(res.status).toBe(200);
+      expect((await res.json()).profile.partner_status).toBe('verified');
+    }
+    expect(update).not.toHaveBeenCalled();
+    expect(emailPartnerDecision).not.toHaveBeenCalled();
+  });
+
+  it('a failing reload after any saved change still answers success', async () => {
+    role = 'admin';
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+    for (const body of [{ action: 'set_commission', commission_pct: 12 }, { action: 'set_whatsapp', whatsapp_alerts: false }]) {
+      statusQueue = ['pending_verification', 'throw'];
+      const res = await post(body);
+      expect(res.status).toBe(200);
+      expect(await res.json()).toEqual({ saved: true, reload: true });
+    }
+    log.mockRestore();
+  });
+
+  it('a failing reload when nothing was saved is still an error', async () => {
+    role = 'admin';
+    partnerStatus = 'verified';
+    statusQueue = ['verified', 'throw'];
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+    expect((await post({ action: 'verify' })).status).toBe(500);
     log.mockRestore();
   });
 

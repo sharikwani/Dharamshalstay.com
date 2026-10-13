@@ -43,12 +43,14 @@ export async function POST(req: Request, { params }: { params: { id: string } })
     if (!PARTNER_TYPES.includes(p.partner_type)) throw new HttpError(404, 'Partner not found.');
     const now = new Date().toISOString();
     const name = p.legal_name || p.full_name || 'Partner';
+    // Set after every successful write, so a failed reload afterwards is not reported as an error.
+    let committed = false;
     const saveProfile = async (patch: Record<string, unknown>) => {
       const { error } = await sb.from('profiles').update(patch).eq('id', p.id);
       if (error) { console.error(error); throw new HttpError(500, SAVE_FAILED); }
+      committed = true;
     };
     type Decision = 'verified' | 'changes_requested' | 'rejected' | 'suspended';
-    let committed = false;
     /**
      * A status decision changes the row only if it still has the status this decision was made on, so a double
      * click or two admins at once make one change and send one email. The email goes out after the response.
@@ -60,8 +62,8 @@ export async function POST(req: Request, { params }: { params: { id: string } })
       if (error) { console.error(error); throw new HttpError(500, SAVE_FAILED); }
       if (!changed?.length) {
         // Someone else changed the status meanwhile: fine if it is this same decision, otherwise ask to reload.
-        const now = await loadOnboarding(params.id);
-        if (now.profile.partner_status === target) return;
+        const current = await loadOnboarding(params.id);
+        if (current.profile.partner_status === target) return;
         throw new HttpError(409, "This partner's status changed meanwhile. Reload the page and try again.");
       }
       committed = true;
@@ -78,6 +80,9 @@ export async function POST(req: Request, { params }: { params: { id: string } })
         reviewed_by: admin.id, reviewed_at: now,
       }).eq('id', d.id);
       if (error) { console.error(error); throw new HttpError(500, SAVE_FAILED); }
+      committed = true;
+    } else if ((a.action === 'verify' || a.action === 'reinstate') && p.partner_status === 'verified') {
+      // Already verified (double click, another admin): nothing to change and no second email.
     } else if (a.action === 'verify') {
       // Only a partner who signed and submitted can be verified; suspended partners use reinstate.
       if (p.partner_status !== 'pending_verification') throw new HttpError(409, 'Only partners waiting for review can be verified.');

@@ -11,4 +11,12 @@ describe('canVerify', () => {
     expect(canVerify({ ...ok, agreements: [] })).toMatch(/agreement/i);
     expect(canVerify({ ...ok, missing: [{ key: 'vehicle' }] })).toMatch(/incomplete/i);
   });
+  it('needs a signature from the latest submission, not an older one', () => {
+    const profile = { submitted_at: '2026-10-10T08:00:00.000Z' };
+    // Re-sign interrupted: submitted_at moved on, but only the old signature exists.
+    expect(canVerify({ ...ok, profile, agreements: [{ signed_at: '2026-10-01T08:00:00+00:00' }] })).toMatch(/latest submission/i);
+    // The same instant written in the database's own format still counts.
+    expect(canVerify({ ...ok, profile, agreements: [{ signed_at: '2026-10-01T08:00:00+00:00' }, { signed_at: '2026-10-10T08:00:00+00:00' }] })).toBeNull();
+    expect(canVerify({ ...ok, profile: { submitted_at: null }, agreements: [{ signed_at: '2020-01-01T00:00:00Z' }] })).toBeNull();
+  });
 });
