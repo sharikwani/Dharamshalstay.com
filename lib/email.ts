@@ -22,6 +22,7 @@ type BookingEmailInput = {
   check_in?: string; check_out?: string; activity_date?: string;
   amount: number; category: string; room_name?: string;
   property_name?: string; paid_amount?: number;
+  payment_method?: string | null; payment_status?: string | null;
 };
 
 type BookingEmailText = { heading: string; intro: (b: BookingEmailInput) => string; subject: string; payment: (b: BookingEmailInput) => string };
@@ -78,11 +79,18 @@ async function sendBookingEmail(booking: BookingEmailInput, t: BookingEmailText)
   }
 }
 
+/** The confirmation's payment row: an unpaid online booking (e.g. confirmed by the admin before payment) must not say "Pay at property". */
+export function confirmedPaymentText(b: Pick<BookingEmailInput, 'amount' | 'paid_amount' | 'payment_method' | 'payment_status'>): string {
+  if (b.paid_amount) return 'Paid Rs.' + b.paid_amount.toLocaleString('en-IN');
+  if (b.payment_method === 'online') return b.payment_status === 'paid' ? 'Paid Rs.' + b.amount.toLocaleString('en-IN') : 'Online payment pending';
+  return 'Pay at property';
+}
+
 export const sendBookingConfirmation = (booking: BookingEmailInput) => sendBookingEmail(booking, {
   heading: 'Booking Confirmed!',
   intro: () => 'Your booking has been confirmed. Here are the details:',
   subject: 'Booking Confirmed - ' + booking.booking_ref + ' | Dharamshala Stay',
-  payment: (b) => (b.paid_amount ? 'Paid Rs.' + b.paid_amount.toLocaleString('en-IN') : 'Pay at property'),
+  payment: confirmedPaymentText,
 });
 
 /** Pay-later bookings: the hotel has not confirmed yet, so say so honestly. Never throws. */

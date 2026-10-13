@@ -121,6 +121,11 @@ export async function createBooking(data: BookingInput, opts: { userId: string |
       const { data: row } = await sb.from(TABLE[data.category]).select('*').eq('id', entityId).single();
       entity = row || null;
     }
+    // A room switched off by the hotel cannot be booked, even from an old page or quote.
+    if (data.category === 'hotel' && data.room_name) {
+      const room = ((entity?.rooms || []) as any[]).find((r) => r?.name === data.room_name);
+      if (room && room.is_active === false) return { ok: false, error: 'This room is not available any more.', status: 409 };
+    }
     if (data.category === 'hotel' && data.extra_beds) {
       const p = extraBedProblem(entity || {}, data.room_name, data.extra_beds);
       if (p) return { ok: false, error: p, status: 400 };

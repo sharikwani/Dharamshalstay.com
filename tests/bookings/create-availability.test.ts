@@ -10,6 +10,7 @@ const h = vi.hoisted(() => ({
       { name: 'Standard', base_price: 1500, total_inventory: 2, rate_plans: [] },
       { name: 'Dorm', base_price: 500, rate_plans: [] },
       { name: 'Deluxe', base_price: 3000, extra_beds_max: 1, extra_bed_price: 800, rate_plans: [{ name: 'Breakfast', price: 3500 }] },
+      { name: 'Old Wing', base_price: 1200, rate_plans: [], is_active: false },
     ],
   },
 }));
@@ -113,6 +114,19 @@ describe('createBooking room availability', () => {
     expect(r.ok).toBe(true);
     expect(h.updates).toEqual([]);
     expect(h.emails).toEqual(['b1']);
+  });
+});
+
+describe('createBooking switched-off rooms', () => {
+  it('refuses a room the hotel switched off with 409, before pricing or inserting', async () => {
+    expect(await book({ room_name: 'Old Wing' })).toEqual({ ok: false, status: 409, error: 'This room is not available any more.' });
+    expect(await book({ room_name: 'Old Wing', extra_beds: 1 })).toEqual({ ok: false, status: 409, error: 'This room is not available any more.' });
+    expect(h.inserted).toEqual([]);
+    expect(h.availCalls).toEqual([]);
+    expect(h.emails).toEqual([]);
+  });
+  it('still books rooms without is_active (legacy) and active rooms', async () => {
+    expect((await book({ room_name: 'Dorm' })).ok).toBe(true);
   });
 });
 

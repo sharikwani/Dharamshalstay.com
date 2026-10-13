@@ -3,7 +3,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 const h = vi.hoisted(() => ({ send: vi.fn() }));
 vi.mock('resend', () => ({ Resend: class { emails = { send: h.send }; } }));
 
-import { sendBookingConfirmation, sendBookingRequestReceived } from '@/lib/email';
+import { confirmedPaymentText, sendBookingConfirmation, sendBookingRequestReceived } from '@/lib/email';
 
 const base = { guest_name: 'Asha', guest_email: 'a@x.com', booking_ref: 'DS-1', amount: 5000, category: 'hotel', check_in: '2026-10-12', check_out: '2026-10-14' };
 
@@ -34,5 +34,20 @@ describe('booking emails', () => {
     const m = h.send.mock.calls[0][0];
     expect(m.subject).toBe('Booking Confirmed - DS-1 | Dharamshala Stay');
     expect(m.html).toContain('Booking Confirmed!');
+  });
+  it('confirmation of an unpaid online booking says online payment pending', async () => {
+    await sendBookingConfirmation({ ...base, payment_method: 'online', payment_status: 'pending' });
+    const html = h.send.mock.calls[0][0].html;
+    expect(html).toContain('Online payment pending');
+    expect(html).not.toContain('Pay at property');
+  });
+  it('payment row text', () => {
+    expect(confirmedPaymentText({ amount: 5000, payment_method: 'online', payment_status: 'pending' })).toBe('Online payment pending');
+    expect(confirmedPaymentText({ amount: 5000, payment_method: 'online', payment_status: null })).toBe('Online payment pending');
+    expect(confirmedPaymentText({ amount: 5000, payment_method: 'online', payment_status: 'paid' })).toBe('Paid Rs.5,000');
+    expect(confirmedPaymentText({ amount: 5000, paid_amount: 5000, payment_method: 'online', payment_status: 'paid' })).toBe('Paid Rs.5,000');
+    expect(confirmedPaymentText({ amount: 5000, payment_method: 'pay_at_hotel', payment_status: 'pending' })).toBe('Pay at property');
+    expect(confirmedPaymentText({ amount: 5000, payment_method: 'offline' })).toBe('Pay at property');
+    expect(confirmedPaymentText({ amount: 5000 })).toBe('Pay at property');
   });
 });

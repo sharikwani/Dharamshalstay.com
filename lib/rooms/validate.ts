@@ -31,6 +31,29 @@ const int = (x: unknown) => Math.floor(Number(x));
 const str = (x: unknown) => (typeof x === 'string' ? x.trim() : '');
 const inr = (n: number) => `Rs.${n.toLocaleString('en-IN')}`;
 
+const price = (v: unknown) => typeof v === 'number' && Number.isFinite(v) && v >= 0 && v <= 1_000_000;
+/** Legacy room fields the form does not edit: kept only when they have the expected shape. */
+const LEGACY_CHECKS: Record<string, (v: unknown) => boolean> = {
+  amenities: (v) => Array.isArray(v) && v.length <= 30 && v.every((a) => typeof a === 'string' && a.length <= 60),
+  room_size: (v) => typeof v === 'string' && v.length <= 40,
+  weekend_price: price,
+  peak_price: price,
+  meal_plan: (v) => typeof v === 'string' && MEAL_PLANS.includes(v),
+};
+const MAX_EXTRA_JSON = 2048;
+
+/** Copies the fields of a raw room that normaliseRooms does not set itself, dropping bad or oversized ones. */
+function legacyFields(r: Record<string, any>): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(r)) {
+    const check = Object.prototype.hasOwnProperty.call(LEGACY_CHECKS, k) ? LEGACY_CHECKS[k] : undefined;
+    if (check) { if (check(v)) out[k] = v; continue; }
+    if (v && typeof v === 'object' && JSON.stringify(v).length > MAX_EXTRA_JSON) continue;
+    out[k] = v;
+  }
+  return out;
+}
+
 export function normaliseRooms(
   input: unknown,
   opts: { newId: () => string; defaultExtraBedPrice: number },
@@ -100,7 +123,7 @@ export function normaliseRooms(
     seenIds.add(id);
 
     rooms.push({
-      ...r,
+      ...legacyFields(r),
       id,
       name,
       description,

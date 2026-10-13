@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { HttpError, jsonError, requireCaller, type Caller } from '@/lib/server-auth';
 import { assertActive } from '@/lib/partners/load';
 import { isUuid } from '@/lib/availability/validate';
-import { loadRoomsProperty, ownedRoomsProperties } from '@/lib/rooms/store';
+import { ensureRoomIds, loadRoomsProperty, ownedRoomsProperties } from '@/lib/rooms/store';
 import { readJson } from '@/lib/availability/handlers';
 import { roomsGet, roomsPut } from '@/lib/rooms/handlers';
 
@@ -17,10 +17,13 @@ async function activePartner(req: Request) {
 
 async function ownProperty(id: string | null, caller: Caller, forWrite: boolean) {
   if (!id || !isUuid(id)) throw new HttpError(400, 'property_id is required');
-  const p = await loadRoomsProperty(id);
+  // Read without writing: room ids are persisted only once the caller is known to own the property.
+  const p = await loadRoomsProperty(id, { assignIds: false });
   if (!p || p.owner_id !== caller.profile.id) throw new HttpError(404, 'Property not found');
   if (forWrite && !LIVE.includes(p.status)) throw new HttpError(403, 'Use the listing form to edit rooms on a draft listing.');
-  return p;
+  const withIds = await ensureRoomIds(p);
+  if (!withIds) throw new HttpError(404, 'Property not found');
+  return withIds;
 }
 
 export async function GET(req: Request) {

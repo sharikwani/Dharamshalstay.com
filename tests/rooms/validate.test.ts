@@ -11,6 +11,26 @@ describe('normaliseRooms', () => {
     expect(r).toMatchObject({ name: 'Deluxe', room_size: '200 sq ft', amenities: ['TV'], extra_beds_max: 1, extra_bed_price: 700, rate_plans: [], images: [], max_occupancy: 3 });
     expect(r.id).toMatch(/^[0-9a-f-]{36}$/);
   });
+  it('keeps valid legacy fields and drops malformed ones', () => {
+    const good = { amenities: ['TV', 'Wifi'], room_size: '200 sq ft', weekend_price: 3500, peak_price: 0, meal_plan: 'cp', color: 'blue', tags: ['a'] };
+    expect(ok([room(good)])[0]).toMatchObject(good);
+    const [r] = ok([room({
+      amenities: ['TV', 5], room_size: 'x'.repeat(41), weekend_price: -1, peak_price: 1_000_001, meal_plan: 'xx',
+      blob: { junk: 'y'.repeat(3000) }, list: Array(1000).fill('zzz'), note: 'short',
+    })]);
+    for (const k of ['amenities', 'room_size', 'weekend_price', 'peak_price', 'meal_plan', 'blob', 'list']) expect(k in r).toBe(false);
+    expect((r as any).note).toBe('short');
+  });
+  it.each([
+    [{ amenities: Array(31).fill('a') }, 'amenities'],
+    [{ amenities: ['a'.repeat(61)] }, 'amenities'],
+    [{ amenities: 'TV' }, 'amenities'],
+    [{ room_size: 200 }, 'room_size'],
+    [{ weekend_price: '3000' }, 'weekend_price'],
+    [{ meal_plan: null }, 'meal_plan'],
+  ])('drops a bad legacy field %o', (over, key) => {
+    expect(key in ok([room(over)])[0]).toBe(false);
+  });
   it('keeps an existing id', () => { expect(ok([room({ id: '11111111-1111-4111-8111-111111111111' })])[0].id).toBe('11111111-1111-4111-8111-111111111111'); });
   it('turns image objects into urls and refuses non-https', () => {
     expect(ok([room({ images: [{ url: 'https://x/a.jpg' }, 'https://x/b.jpg'] })])[0].images).toEqual(['https://x/a.jpg', 'https://x/b.jpg']);

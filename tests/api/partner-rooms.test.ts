@@ -14,7 +14,7 @@ const room = (over: Record<string, any> = {}) => ({
 const h = vi.hoisted(() => ({
   role: 'partner', status: 'verified' as string | null, profile: { full_name: 'Asha' } as Record<string, any>,
   bookings: 0, saveResult: null as any, saves: [] as any[], emails: [] as any[], counts: [] as any[],
-  props: {} as Record<string, any>,
+  props: {} as Record<string, any>, loads: [] as any[], ensured: [] as string[],
 }));
 
 vi.mock('@/lib/server-auth', async (orig) => {
@@ -28,7 +28,8 @@ vi.mock('@/lib/server-auth', async (orig) => {
   };
 });
 vi.mock('@/lib/rooms/store', () => ({
-  loadRoomsProperty: async (id: string) => h.props[id] ?? null,
+  loadRoomsProperty: async (id: string, opts?: any) => { h.loads.push(opts); return h.props[id] ?? null; },
+  ensureRoomIds: async (p: any) => { h.ensured.push(p.id); return p; },
   ownedRoomsProperties: async (owner: string) => Object.values(h.props).filter((p: any) => p.owner_id === owner).map((p: any) => ({ id: p.id, name: p.name, status: p.status })),
   upcomingBookingCount: async (...a: any[]) => { h.counts.push(a); return h.bookings; },
   saveRooms: async (...a: any[]) => { h.saves.push(a); return h.saveResult ?? { ok: true, updated_at: SAVED_AT }; },
@@ -46,7 +47,7 @@ const valid = (over: Record<string, any> = {}) => ({ property_id: OWN, total_roo
 beforeEach(() => {
   vi.spyOn(console, 'error').mockImplementation(() => {});
   Object.assign(h, {
-    role: 'partner', status: 'verified', profile: { full_name: 'Asha' }, bookings: 0, saveResult: null, saves: [], emails: [], counts: [],
+    role: 'partner', status: 'verified', profile: { full_name: 'Asha' }, bookings: 0, saveResult: null, saves: [], emails: [], counts: [], loads: [], ensured: [],
     props: {
       [OWN]: { id: OWN, name: 'Own Hotel', owner_id: 'p1', status: 'published', total_rooms: 20, extra_bed_charge: 500, rooms: [room()], updated_at: UPDATED },
       [OTHER]: { id: OTHER, name: 'Other', owner_id: 'p2', status: 'published', total_rooms: 5, extra_bed_charge: 0, rooms: [], updated_at: UPDATED },
@@ -69,6 +70,13 @@ describe('GET /api/partner/rooms', () => {
     expect((await get(`?property_id=${DRAFT}`)).status).toBe(200);
     expect((await get(`?property_id=${OTHER}`)).status).toBe(404);
   });
+  it('writes no room ids for a property the caller does not own', async () => {
+    expect((await get(`?property_id=${OTHER}`)).status).toBe(404);
+    expect(h.loads).toEqual([{ assignIds: false }]);
+    expect(h.ensured).toEqual([]);
+    await get(`?property_id=${OWN}`);
+    expect(h.ensured).toEqual([OWN]);
+  });
   it('blocks wrong role and suspended partners', async () => {
     h.role = 'customer';
     expect((await get()).status).toBe(403);
@@ -87,11 +95,13 @@ describe('PUT /api/partner/rooms', () => {
   });
   it('404s another owner\'s property', async () => {
     expect((await put(valid({ property_id: OTHER }))).status).toBe(404);
+    expect(h.ensured).toEqual([]);
   });
   it('refuses draft listings', async () => {
     const res = await put(valid({ property_id: DRAFT }));
     expect(res.status).toBe(403);
     expect((await res.json()).error).toBe('Use the listing form to edit rooms on a draft listing.');
+    expect(h.ensured).toEqual([]);
   });
   it('400s bad JSON', async () => {
     expect((await put('{nope')).status).toBe(400);

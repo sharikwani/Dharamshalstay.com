@@ -53,6 +53,7 @@ beforeEach(() => {
     booking: {
       id: 'b1', guest_name: 'Asha', guest_email: 'a@x.com', booking_ref: 'HTL-1', check_in: '2099-01-10', check_out: '2099-01-12',
       activity_date: null, amount: 5000, category: 'hotel', room_name: 'Deluxe', property_id: 'h1', paid_amount: 0,
+      payment_method: 'online', payment_status: 'pending',
     },
     property: { name: 'Hotel Snow View' },
   });
@@ -66,7 +67,7 @@ describe('confirmBooking', () => {
     expect(h.filters).toEqual([['eq', 'id', 'b1'], ['eq', 'status', 'pending']]);
     expect(h.selects[0]).toBe('id');
     expect(h.emails).toHaveLength(1);
-    expect(h.emails[0]).toMatchObject({ guest_email: 'a@x.com', booking_ref: 'HTL-1', property_name: 'Hotel Snow View', room_name: 'Deluxe' });
+    expect(h.emails[0]).toMatchObject({ guest_email: 'a@x.com', booking_ref: 'HTL-1', property_name: 'Hotel Snow View', room_name: 'Deluxe', payment_method: 'online', payment_status: 'pending' });
     expect(h.wa).toEqual([['b1', { customer: true, partners: false }]]);
   });
 

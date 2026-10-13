@@ -28,3 +28,24 @@ export async function sendRoomChangeEmail(p: Change): Promise<void> {
     console.error('Room change email failed:', e);
   }
 }
+
+type RenameCheck = { hotel: string; from: string; to: string; failed: string[] };
+
+export function renameCheckEmail(p: RenameCheck): { subject: string; html: string } {
+  return {
+    subject: `Room rename needs a check: ${p.hotel}`,
+    html: `<div style="font-family:sans-serif"><h2>Room rename needs a check: ${esc(p.hotel)}</h2>`
+      + `<p>The room "${esc(p.from)}" was renamed to "${esc(p.to)}", but updating ${esc(p.failed.join(', '))} failed.</p>`
+      + `<p>Please check these for the old name and fix them by hand.</p></div>`,
+  };
+}
+
+/** Never throws: the rooms are already saved. */
+export async function sendRenameCheckEmail(p: RenameCheck): Promise<void> {
+  try {
+    const { subject, html } = renameCheckEmail(p);
+    await sendEmail({ to: adminEmail(), subject, html });
+  } catch (e) {
+    console.error('Room rename check email failed:', e);
+  }
+}

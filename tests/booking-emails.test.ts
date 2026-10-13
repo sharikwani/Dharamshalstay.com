@@ -14,6 +14,7 @@ vi.mock('@/lib/server-auth', () => ({
         data: t === 'properties' ? { name: 'Snow View' } : {
           id: 'b1', property_id: 'p1', guest_name: 'Asha', guest_email: 'a@x.com', guest_phone: '9816000001', booking_ref: 'DS-1',
           check_in: '2026-10-12', check_out: '2026-10-14', amount: 5000, category: 'hotel', room_name: 'Deluxe', paid_amount: 0,
+          payment_method: 'online', payment_status: 'pending',
         },
       }) }) }),
     }),
@@ -27,7 +28,7 @@ beforeEach(() => { vi.clearAllMocks(); });
 describe('sendBookingEmails', () => {
   it("'confirmed' sends the confirmation email and the customer + partner WhatsApp", async () => {
     await sendBookingEmails('b1', 'confirmed');
-    expect(h.confirmation).toHaveBeenCalledWith(expect.objectContaining({ booking_ref: 'DS-1', property_name: 'Snow View' }));
+    expect(h.confirmation).toHaveBeenCalledWith(expect.objectContaining({ booking_ref: 'DS-1', property_name: 'Snow View', payment_method: 'online', payment_status: 'pending' }));
     expect(h.requestReceived).not.toHaveBeenCalled();
     expect(h.whatsapp).toHaveBeenCalledWith('b1', { customer: true, partners: true });
   });

@@ -24,6 +24,7 @@ export async function sendBookingEmails(bookingId: string, stage: 'requested' | 
         check_in: booking.check_in, check_out: booking.check_out, activity_date: booking.activity_date,
         amount: booking.amount, category: booking.category, room_name: booking.room_name,
         property_name: propertyName, paid_amount: booking.paid_amount,
+        payment_method: booking.payment_method, payment_status: booking.payment_status,
       });
     }
     await sendAdminNotification({
