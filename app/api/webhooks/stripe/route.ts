@@ -6,6 +6,8 @@ import { adminEmail, sendEmail } from '@/lib/email';
 
 const SETTLED_COMMISSION = ['paid', 'waived', 'disputed'];
 const OPEN_RECORD = ['pending', 'due', 'overdue'];
+// Bookings that must not be confirmed by a late payment: cancelled ones, and failed ones (lost the last room).
+const CLOSED = ['cancelled', 'failed'];
 const LOOKUP_COLS = 'id, booking_ref, status, payment_status, commission_status';
 const esc = (s: unknown) => String(s ?? '').replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
@@ -55,7 +57,8 @@ export async function POST(req: NextRequest) {
           return NextResponse.json({ received: true });
         }
 
-        const cancelled = found.status === 'cancelled';
+        const closedStatus = CLOSED.includes(found.status) ? String(found.status) : null;
+        const cancelled = !!closedStatus;
         const update: Record<string, unknown> = {
           payment_status: 'paid',
           paid_amount: Math.round((session.amount_total || 0) / 100),
@@ -84,13 +87,13 @@ export async function POST(req: NextRequest) {
         }
 
         if (booking && cancelled) {
-          // Money arrived for a booking that is already cancelled: keep it cancelled and tell the owner.
-          console.error('Stripe webhook: payment for cancelled booking', booking.booking_ref);
-          const subject = `Payment received for cancelled booking ${booking.booking_ref} — refund needed in Stripe`;
+          // Money arrived for a booking that is already cancelled or failed: keep its status and tell the owner.
+          console.error(`Stripe webhook: payment for ${closedStatus} booking`, booking.booking_ref);
+          const subject = `Payment received for ${closedStatus} booking ${booking.booking_ref} — refund needed in Stripe`;
           try {
             await sendEmail({
               to: adminEmail(), subject,
-              html: `<p>Payment received for cancelled booking <b>${esc(booking.booking_ref)}</b> — refund needed in Stripe.</p>`
+              html: `<p>Payment received for ${esc(closedStatus)} booking <b>${esc(booking.booking_ref)}</b> — refund needed in Stripe.</p>`
                 + `<p>Amount: ₹${esc(update.paid_amount)}<br>Payment intent: ${esc(update.stripe_payment_intent)}<br>Checkout session: ${esc(session.id)}</p>`,
             });
           } catch (e) { console.error('Stripe webhook: owner email failed:', e); }

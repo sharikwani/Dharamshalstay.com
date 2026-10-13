@@ -138,6 +138,23 @@ describe('POST /api/webhooks/stripe', () => {
     spy.mockRestore();
   });
 
+  it('keeps a failed booking (lost the last room) failed, records the money and emails the owner only', async () => {
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    h.bySession = { data: open({ status: 'failed' }), error: null };
+    h.result = { data: { id: 'b1', booking_ref: 'DS-1', status: 'failed' }, error: null };
+    await send();
+    const u = bookingUpdate();
+    expect(u).toMatchObject({ payment_status: 'paid', paid_amount: 4500, stripe_payment_intent: 'pi_1' });
+    expect(u).not.toHaveProperty('status');
+    expect(u).not.toHaveProperty('payment_method');
+    expect(u).not.toHaveProperty('commission_status');
+    expect(h.sendBookingEmails).not.toHaveBeenCalled();
+    expect(recordUpdate()).toBeUndefined();
+    expect(h.sendEmail).toHaveBeenCalledTimes(1);
+    expect(h.sendEmail.mock.calls[0][0]).toMatchObject({ to: 'owner@x', subject: 'Payment received for failed booking DS-1 — refund needed in Stripe' });
+    spy.mockRestore();
+  });
+
   it('a retried event for an already-paid booking updates nothing and sends nothing', async () => {
     h.result = { data: null, error: null };
     const res = await send();

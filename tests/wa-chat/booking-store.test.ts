@@ -40,6 +40,15 @@ describe('booking-store', () => {
     expect(r.map((x) => x.id)).toEqual(['a', 'c']);
     expect(h.filters).toContainEqual(['ilike', 'guest_phone', '%0665']);
   });
+  it('ownBookings hides failed bookings (race losers)', async () => {
+    h.rows = [
+      { id: 'a', booking_ref: 'HTL-1', guest_phone: '9805700665', status: 'failed' },
+      { id: 'b', booking_ref: 'HTL-2', guest_phone: '9805700665', status: 'pending' },
+      { id: 'c', booking_ref: 'HTL-3', guest_phone: '9805700665', status: 'cancelled' },
+    ];
+    expect((await ownBookings('919805700665')).map((x) => x.id)).toEqual(['b', 'c']);
+    expect(await findOwnBooking('919805700665', 'HTL-1')).toBeNull();
+  });
   it('findOwnBooking matches the ref case-insensitively among own bookings only', async () => {
     h.rows = [{ id: 'a', booking_ref: 'TRK-1', guest_phone: '9811100665' }];
     expect(await findOwnBooking('919805700665', 'trk-1')).toBeNull();

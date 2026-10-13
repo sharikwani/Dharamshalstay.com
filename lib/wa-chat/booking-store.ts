@@ -89,7 +89,8 @@ export async function ownBookings(phone: string): Promise<OwnBooking[]> {
   const { data, error } = await serviceClient().from('bookings').select(OWN_COLS)
     .ilike('guest_phone', `%${last4}`).order('created_at', { ascending: false }).limit(100);
   if (error) throw error;
-  return ((data as OwnBooking[]) || []).filter((b) => samePhone(b.guest_phone, phone)).slice(0, 20);
+  // Failed bookings lost the last room to another guest; customers never see them.
+  return ((data as OwnBooking[]) || []).filter((b) => b.status !== 'failed' && samePhone(b.guest_phone, phone)).slice(0, 20);
 }
 
 export async function findOwnBooking(phone: string, ref: string): Promise<OwnBooking | null> {

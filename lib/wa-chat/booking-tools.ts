@@ -175,6 +175,7 @@ async function paymentLinkTool(a: any, ctx: ToolCtx) {
   const b = await findOwnBooking(ctx.phone, a.booking_ref);
   if (!b) return { error: 'Booking not found for this WhatsApp number.' };
   if (b.status === 'cancelled') return { error: 'This booking is cancelled.' };
+  if (b.status === 'failed' || b.status === 'no_show') return { error: 'This booking can no longer be paid.' };
   if (b.payment_status === 'paid') return { error: 'This booking is already paid.' };
   let link: Awaited<ReturnType<typeof createCheckoutLink>>;
   try { link = await createCheckoutLink(b.id); } catch (e) {

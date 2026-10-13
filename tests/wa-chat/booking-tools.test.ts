@@ -218,6 +218,15 @@ describe('payment_link and my_bookings', () => {
     h.own[0].payment_status = 'paid';
     expect((await run('payment_link', { booking_ref: 'TRK-9' })).error).toMatch(/already paid/i);
   });
+  it('refuses failed bookings and passes checkout refusals through', async () => {
+    h.own = [{ id: 'b1', booking_ref: 'TRK-9', status: 'failed', payment_status: 'pending' }];
+    expect((await run('payment_link', { booking_ref: 'TRK-9' })).error).toBe('This booking can no longer be paid.');
+    h.own[0].status = 'pending';
+    h.checkout = { ok: false, error: 'Sold out for these dates', status: 409 };
+    expect(await run('payment_link', { booking_ref: 'TRK-9' })).toEqual({ error: 'Sold out for these dates' });
+    h.checkout = { ok: false, error: 'This booking can no longer be paid', status: 409 };
+    expect(await run('payment_link', { booking_ref: 'TRK-9' })).toEqual({ error: 'This booking can no longer be paid' });
+  });
   it('lists up to 5 own bookings with plain status words', async () => {
     h.own = Array.from({ length: 7 }, (_, i) => ({ booking_ref: `T-${i}`, category: 'trek', status: i ? 'confirmed' : 'pending', payment_status: 'pending', amount: 100, activity_date: '2099-10-24', num_guests: 1 }));
     const r = await run('my_bookings', {});

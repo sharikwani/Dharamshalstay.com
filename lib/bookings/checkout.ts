@@ -1,7 +1,25 @@
 import { getStripe } from '@/lib/stripe';
 import { serviceClient } from '@/lib/server-auth';
+import { holdsRoom, matchesRoom } from '@/lib/availability/calc';
+import { availabilityFor } from '@/lib/availability/store';
 
 const RETURN_PATH: Record<string, string> = { hotel: '/hotels', taxi: '/taxi', trek: '/treks', paragliding: '/paragliding' };
+
+const DEAD = ['failed', 'cancelled', 'no_show'];
+/** Stripe's minimum session life (30 min) plus a minute so request latency never trips the minimum. ONLINE_HOLD_MS (lib/availability/calc) is longer, so a session opened with the booking ends inside its hold. */
+const SESSION_MS = 31 * 60e3;
+export const NO_LONGER_PAYABLE = 'This booking can no longer be paid';
+export const SOLD_OUT = 'Sold out for these dates';
+
+/** A hotel booking whose online hold has lapsed may only be paid if its room type still has a room left for the stay. */
+async function soldOutSinceHoldLapsed(b: any, now: Date): Promise<boolean> {
+  if (b.category !== 'hotel' || !b.property_id || !b.check_in || !b.check_out) return false;
+  if (holdsRoom(b, now)) return false;
+  const avail = await availabilityFor(b.property_id, b.check_in, b.check_out, { now });
+  const key = b.room_key && avail[b.room_key] ? b.room_key : Object.keys(avail).find((k) => matchesRoom(b, k));
+  const room = key ? avail[key] : undefined;
+  return !!room?.tracked && room.left < 1;
+}
 
 export type CheckoutResult = { ok: true; url: string; sessionId: string } | { ok: false; error: string; status: number };
 
@@ -12,7 +30,10 @@ export async function createCheckoutLink(bookingId: string): Promise<CheckoutRes
   const { data: b } = await sb.from('bookings').select('*').eq('id', bookingId).single();
   if (!b) return { ok: false, error: 'Booking not found', status: 404 };
   if (b.payment_status === 'paid') return { ok: false, error: 'This booking is already paid', status: 409 };
+  if (DEAD.includes(b.status)) return { ok: false, error: NO_LONGER_PAYABLE, status: 409 };
   if (!b.amount || b.amount < 100) return { ok: false, error: 'This booking has no online price', status: 400 };
+  const now = new Date();
+  if (await soldOutSinceHoldLapsed(b, now)) return { ok: false, error: SOLD_OUT, status: 409 };
 
   let title = 'Dharamshala Stay booking';
   if (b.property_id) {
@@ -24,6 +45,7 @@ export async function createCheckoutLink(bookingId: string): Promise<CheckoutRes
 
   const session = await getStripe().checkout.sessions.create({
     mode: 'payment',
+    expires_at: Math.floor((now.getTime() + SESSION_MS) / 1000),
     currency: 'inr',
     line_items: [{ quantity: 1, price_data: { currency: 'inr', unit_amount: Math.round(b.amount * 100), product_data: { name: title, description: description.slice(0, 500) || undefined } } }],
     customer_email: b.guest_email || undefined,

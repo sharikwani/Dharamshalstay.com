@@ -44,9 +44,10 @@ describe('holdsRoom', () => {
     expect(holdsRoom(bk({ payment_status: 'paid', created_at: '2026-01-01T00:00:00Z' }), NOW)).toBe(true);
     expect(holdsRoom(bk({ payment_method: 'partial_online', payment_status: 'partially_paid', created_at: '2026-01-01T00:00:00Z' }), NOW)).toBe(true);
   });
-  it('unpaid online bookings hold for 30 minutes only', () => {
-    expect(holdsRoom(bk({ created_at: '2026-10-13T11:30:01Z' }), NOW)).toBe(true);
-    expect(holdsRoom(bk({ created_at: '2026-10-13T11:30:00Z' }), NOW)).toBe(false);
+  it('unpaid online bookings hold for 35 minutes only (a 30-minute Stripe session always ends inside it)', () => {
+    expect(ONLINE_HOLD_MS).toBe(35 * 60e3);
+    expect(holdsRoom(bk({ created_at: '2026-10-13T11:25:01Z' }), NOW)).toBe(true);
+    expect(holdsRoom(bk({ created_at: '2026-10-13T11:25:00Z' }), NOW)).toBe(false);
     expect(holdsRoom(bk({ created_at: '2026-10-13T09:00:00Z', payment_status: 'failed' }), NOW)).toBe(false);
     expect(holdsRoom(bk({ payment_method: 'partial_online', created_at: '2026-10-13T09:00:00Z' }), NOW)).toBe(false);
   });
