@@ -105,8 +105,9 @@ export async function POST(req: Request) {
   }
   for (const m of inbound) {
     try {
-      const work = await handleInbound(m);
-      if (work) waitUntil(Promise.resolve(work).catch((e) => console.error('WhatsApp chat: background error', e)));
+      // Only storing the message is awaited; the answer runs after Meta has its 200.
+      const r = await handleInbound(m);
+      if (r) waitUntil(r.work.catch((e) => console.error('WhatsApp chat: background error', e)));
     } catch (e) { console.error('WhatsApp webhook: inbound error', e); }
   }
   return NextResponse.json({ ok: true });

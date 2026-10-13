@@ -34,8 +34,8 @@ function builder(table: string) {
   };
   return b;
 }
-const inbound = vi.hoisted(() => ({ calls: [] as any[], waited: [] as any[] }));
-vi.mock('@/lib/wa-chat/inbound', () => ({ handleInbound: async (m: any) => { inbound.calls.push(m); return Promise.resolve('done'); } }));
+const inbound = vi.hoisted(() => ({ calls: [] as any[], waited: [] as any[], work: Promise.resolve('done') as Promise<unknown> }));
+vi.mock('@/lib/wa-chat/inbound', () => ({ handleInbound: async (m: any) => { inbound.calls.push(m); return { work: inbound.work }; } }));
 vi.mock('@/lib/wa-chat/store', () => ({ updateChatStatus: async () => {} }));
 vi.mock('@vercel/functions', () => ({ waitUntil: (p: any) => { inbound.waited.push(p); } }));
 vi.mock('@/lib/server-auth', async (orig) => ({
@@ -283,5 +283,21 @@ describe('POST /api/whatsapp/webhook', () => {
     expect(res.status).toBe(200);
     expect(inbound.calls[0]).toMatchObject({ waId: 'w1', text: 'Hi' });
     expect(inbound.waited).toHaveLength(1);
+  });
+  it('answers Meta at once without waiting for the AI turn', async () => {
+    inbound.calls = []; inbound.waited = [];
+    let finish!: () => void;
+    let done = false;
+    inbound.work = new Promise<void>((r) => { finish = r; }).then(() => { done = true; });
+    const payload = { entry: [{ changes: [{ value: { contacts: [{ wa_id: '919800000001', profile: { name: 'A' } }], messages: [{ id: 'w1', from: '919800000001', timestamp: '1', type: 'text', text: { body: 'Hi' } }] } }] }] };
+    const res = await Promise.race([send(payload), new Promise<'hung'>((r) => setTimeout(() => r('hung'), 500))]);
+    expect(res).not.toBe('hung');
+    expect((res as Response).status).toBe(200);
+    expect(done).toBe(false);
+    expect(inbound.waited).toHaveLength(1);
+    finish();
+    await inbound.waited[0];
+    expect(done).toBe(true);
+    inbound.work = Promise.resolve('done');
   });
 });

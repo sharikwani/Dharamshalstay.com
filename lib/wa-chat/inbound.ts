@@ -25,11 +25,11 @@ async function handToOwner(c: Conversation, what: string) {
 }
 
 /**
- * Store a customer message and return the background work that answers it (null when there is
- * nothing to do). Slow steps (voice transcription, the AI) run in that background work so Meta
- * gets its 200 straight away.
+ * Store a customer message and return the background work that answers it (null when there is nothing to do).
+ * Only the quick steps are awaited here; the slow ones (voice transcription, proof checks, the AI turn) run in
+ * `work`, which the webhook hands to waitUntil so Meta gets its 200 straight away.
  */
-export async function handleInbound(m: Inbound): Promise<Promise<unknown> | null> {
+export async function handleInbound(m: Inbound): Promise<{ work: Promise<unknown> } | null> {
   const deadline = Date.now() + 50_000;
   if (m.timestamp && Date.now() / 1000 - m.timestamp > 24 * 3600) return null;
   const body = m.kind === 'voice' ? '[voice note]' : m.kind === 'media' ? [m.mediaLabel, m.text].filter(Boolean).join(' ') : m.text;
@@ -41,25 +41,27 @@ export async function handleInbound(m: Inbound): Promise<Promise<unknown> | null
     const who = conversation.profile_name || `+${conversation.phone}`;
     await notify(`New WhatsApp chat from ${who}`, `<p>${esc(who)} started a WhatsApp chat. AI replies are not on for this number.</p>${chatLink(conversation)}`);
   }
+  // The AI does not answer this number: nothing more to do (the owner answers from the inbox).
+  if (!served) return null;
   // "Typing…" only when the assistant will actually answer.
-  if (served && conversation.status === 'ai') await markReadTyping(m.waId);
-  if (!served) return processConversation(conversation.id, message.id, { deadline });
+  if (conversation.status === 'ai') await markReadTyping(m.waId);
+  return { work: answer(m, conversation, message.id, deadline) };
+}
+
+/** The slow part of handling a customer message; runs after the webhook has answered. */
+async function answer(m: Inbound, conversation: Conversation, messageId: string, deadline: number): Promise<unknown> {
   if (m.kind === 'media') {
     const open = conversation.status === 'ai' ? await openCancellation(conversation.id).catch(() => null) : null;
     if (!open) return handToOwner(conversation, m.mediaLabel || 'a file');
-    return (async () => {
-      const outcome = await handleProof(conversation, message.id, m, open);
-      if (outcome === 'cancelled') return processConversation(conversation.id, message.id, { deadline });
-    })();
+    const outcome = await handleProof(conversation, messageId, m, open);
+    if (outcome === 'cancelled') return processConversation(conversation.id, messageId, { deadline });
+    return outcome;
   }
   if (m.kind === 'voice') {
-    return (async () => {
-      const media = m.mediaId ? await downloadMedia(m.mediaId) : null;
-      const text = media ? await transcribe(media.data, media.mimeType) : null;
-      if (!text) return handToOwner(conversation, 'a voice note');
-      await setMessageBody(message.id, `🎤 ${text}`);
-      return processConversation(conversation.id, message.id, { deadline });
-    })();
+    const media = m.mediaId ? await downloadMedia(m.mediaId) : null;
+    const text = media ? await transcribe(media.data, media.mimeType) : null;
+    if (!text) return handToOwner(conversation, 'a voice note');
+    await setMessageBody(messageId, `🎤 ${text}`);
   }
-  return processConversation(conversation.id, message.id, { deadline });
+  return processConversation(conversation.id, messageId, { deadline });
 }
