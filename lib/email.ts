@@ -24,7 +24,7 @@ type BookingEmailInput = {
   property_name?: string; paid_amount?: number;
 };
 
-type BookingEmailText = { heading: string; intro: string; subject: string; payment: (b: BookingEmailInput) => string };
+type BookingEmailText = { heading: string; intro: (b: BookingEmailInput) => string; subject: string; payment: (b: BookingEmailInput) => string };
 
 async function sendBookingEmail(booking: BookingEmailInput, t: BookingEmailText) {
   if (!booking.guest_email || !process.env.RESEND_API_KEY) return null;
@@ -40,12 +40,12 @@ async function sendBookingEmail(booking: BookingEmailInput, t: BookingEmailText)
         <p style="margin:8px 0 0;opacity:0.8">Dharamshala Stay</p>
       </div>
       <div style="border:1px solid #e2e8f0;border-top:none;padding:24px;border-radius:0 0 12px 12px">
-        <p style="font-size:16px;color:#334155">Hi ${booking.guest_name},</p>
-        <p style="color:#64748b">${t.intro}</p>
+        <p style="font-size:16px;color:#334155">Hi ${escHtml(booking.guest_name)},</p>
+        <p style="color:#64748b">${t.intro(booking)}</p>
         <table style="width:100%;border-collapse:collapse;margin:16px 0">
-          <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:8px 0;color:#64748b">Reference</td><td style="padding:8px 0;font-weight:700;color:#1e3a5f">${booking.booking_ref}</td></tr>
-          ${booking.property_name ? '<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:8px 0;color:#64748b">Property</td><td style="padding:8px 0;font-weight:600">' + booking.property_name + '</td></tr>' : ''}
-          ${booking.room_name ? '<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:8px 0;color:#64748b">Room</td><td style="padding:8px 0">' + booking.room_name + '</td></tr>' : ''}
+          <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:8px 0;color:#64748b">Reference</td><td style="padding:8px 0;font-weight:700;color:#1e3a5f">${escHtml(booking.booking_ref)}</td></tr>
+          ${booking.property_name ? '<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:8px 0;color:#64748b">Property</td><td style="padding:8px 0;font-weight:600">' + escHtml(booking.property_name) + '</td></tr>' : ''}
+          ${booking.room_name ? '<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:8px 0;color:#64748b">Room</td><td style="padding:8px 0">' + escHtml(booking.room_name) + '</td></tr>' : ''}
           <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:8px 0;color:#64748b">Type</td><td style="padding:8px 0;text-transform:capitalize">${booking.category}</td></tr>
           ${dateInfo ? '<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:8px 0;color:#64748b">Dates</td><td style="padding:8px 0">' + dateInfo + '</td></tr>' : ''}
           <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:8px 0;color:#64748b">Amount</td><td style="padding:8px 0;font-weight:700;color:#16a34a">Rs.${booking.amount.toLocaleString('en-IN')}</td></tr>
@@ -80,7 +80,7 @@ async function sendBookingEmail(booking: BookingEmailInput, t: BookingEmailText)
 
 export const sendBookingConfirmation = (booking: BookingEmailInput) => sendBookingEmail(booking, {
   heading: 'Booking Confirmed!',
-  intro: 'Your booking has been confirmed. Here are the details:',
+  intro: () => 'Your booking has been confirmed. Here are the details:',
   subject: 'Booking Confirmed - ' + booking.booking_ref + ' | Dharamshala Stay',
   payment: (b) => (b.paid_amount ? 'Paid Rs.' + b.paid_amount.toLocaleString('en-IN') : 'Pay at property'),
 });
@@ -88,7 +88,7 @@ export const sendBookingConfirmation = (booking: BookingEmailInput) => sendBooki
 /** Pay-later bookings: the hotel has not confirmed yet, so say so honestly. Never throws. */
 export const sendBookingRequestReceived = (booking: BookingEmailInput) => sendBookingEmail(booking, {
   heading: 'Booking Request Received',
-  intro: "Thank you! We've received your booking request. The hotel will confirm it shortly, and we'll send you a confirmation by email and WhatsApp.",
+  intro: (b) => `Thank you! We've received your booking request. ${b.category === 'hotel' ? 'The hotel' : 'Our team'} will confirm it shortly, and we'll send you a confirmation by email and WhatsApp.`,
   subject: 'Booking Request Received - ' + booking.booking_ref + ' | Dharamshala Stay',
   payment: () => 'Pay at property',
 });
