@@ -109,6 +109,7 @@ export default function AdminOffersPage() {
   const [loading, setLoading] = useState(true);
   const [entered, setEntered] = useState('');
   const [result, setResult] = useState<CodeCheck | null>(null);
+  const [usedNow, setUsedNow] = useState(false);
   const [busy, setBusy] = useState(false);
   const [newProp, setNewProp] = useState('');
   const [newPrefix, setNewPrefix] = useState('');
@@ -129,17 +130,26 @@ export default function AdminOffersPage() {
   async function codeAction(action: 'check' | 'redeem' | 'cancel') {
     const code = entered.trim();
     if (!code) return;
-    if (action === 'cancel' && !confirm(`Cancel code ${code.toUpperCase()}? The customer can no longer use it.`)) return;
     setBusy(true); setError('');
     try {
+      if (action === 'cancel') {
+        // Look first: a code on a paid booking means the guest already paid the discounted price.
+        const now: CodeCheck = (await api('/api/admin/offers/codes', { method: 'POST', body: JSON.stringify({ action: 'check', code }) })).result;
+        const paid = now?.status === 'booked' && now.path === 'paid_booking' && now.valid;
+        const question = paid
+          ? `This code is linked to paid booking ${now.booking_ref || ''}; the guest paid the discounted price. Cancel anyway?`
+          : `Cancel code ${code.toUpperCase()}? The customer can no longer use it.`;
+        if (!confirm(question)) { setResult(now); setUsedNow(false); return; }
+      }
       const d = await api('/api/admin/offers/codes', { method: 'POST', body: JSON.stringify({ action, code }) });
       setResult(action === 'cancel'
         ? (await api('/api/admin/offers/codes', { method: 'POST', body: JSON.stringify({ action: 'check', code }) })).result
         : d.result);
+      setUsedNow(action === 'redeem');
       if (action !== 'check') await load();
     } catch (e: any) {
       setError(e.message);
-      if (e.body?.result) setResult(e.body.result);
+      setResult(e.body?.result ?? null); setUsedNow(false);
     } finally { setBusy(false); }
   }
 
@@ -161,14 +171,14 @@ export default function AdminOffersPage() {
       <section className="bg-white border border-slate-200 rounded-xl p-4 mb-6">
         <h2 className="font-semibold text-slate-900 mb-2">Check a code</h2>
         <div className="flex flex-wrap items-center gap-2">
-          <input value={entered} onChange={(e) => { setEntered(e.target.value); setResult(null); }} placeholder="e.g. PNV-7K3Q9" aria-label="Offer code"
+          <input value={entered} onChange={(e) => { setEntered(e.target.value); setResult(null); setUsedNow(false); }} placeholder="e.g. PNV-7K3Q9" aria-label="Offer code"
             className="px-3 py-2 border border-slate-300 rounded-lg uppercase w-48" />
           <button onClick={() => codeAction('check')} disabled={busy} className="px-4 py-2 rounded-lg bg-slate-900 text-white text-sm font-semibold disabled:opacity-50">Check</button>
           <button onClick={() => codeAction('redeem')} disabled={busy || !result?.valid} className="px-4 py-2 rounded-lg bg-green-600 text-white text-sm font-semibold disabled:opacity-50">Mark as used</button>
           <button onClick={() => codeAction('cancel')} disabled={busy} className="px-4 py-2 rounded-lg border border-red-300 text-red-700 text-sm font-semibold disabled:opacity-50">Cancel code</button>
           {busy && <Loader2 className="h-5 w-5 animate-spin text-slate-400" />}
         </div>
-        {result && <div className="mt-3"><CodeResult r={result} /></div>}
+        {result && <div className="mt-3"><CodeResult r={result} justUsed={usedNow} /></div>}
       </section>
 
       <section className="mb-6">
@@ -212,7 +222,7 @@ export default function AdminOffersPage() {
               {codes.length === 0 && <tr><td colSpan={8} className="p-4 text-slate-500">No codes.</td></tr>}
               {codes.map((c) => (
                 <tr key={c.id}>
-                  <td className="p-2 font-mono"><button onClick={() => { setEntered(c.code); setResult(null); }} className="hover:underline">{c.code}</button></td>
+                  <td className="p-2 font-mono"><button onClick={() => { setEntered(c.code); setResult(null); setUsedNow(false); }} className="hover:underline">{c.code}</button></td>
                   <td className="p-2"><span className={cn('text-xs px-2 py-0.5 rounded-full capitalize', STATE_STYLE[c.state])}>{c.state}</span></td>
                   <td className="p-2">{c.offer_name}</td>
                   <td className="p-2">{c.phone}</td>
