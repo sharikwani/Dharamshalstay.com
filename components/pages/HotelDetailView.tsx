@@ -5,6 +5,7 @@ import { Breadcrumb, FAQSection, HotelCard } from '@/components/ui/Cards';
 import PhotoGallery from '@/components/ui/PhotoGallery';
 import HotelBooking from '@/components/hotels/HotelBooking';
 import DirectoryListing from '@/components/hotels/DirectoryListing';
+import HotelReviews from '@/components/reviews/HotelReviews';
 import JsonLd from '@/components/seo/JsonLd';
 import { isDirectoryListing, areaName } from '@/lib/listing';
 import { getPropertyBySlug, getPropertiesByDestination } from '@/lib/db';
@@ -66,7 +67,7 @@ export default async function HotelDetailView({ slug, lang }: { slug: string; la
           breadcrumbSchema(crumbs, lang),
           ...(hotel.faqs?.length ? [faqSchema(hotel.faqs)] : []),
         ]} />
-        <DirectoryListing hotel={hotel} related={related} lang={lang} />
+        <DirectoryListing hotel={hotel} related={related} reviews={reviews} lang={lang} />
       </>
     );
   }
@@ -125,11 +126,11 @@ export default async function HotelDetailView({ slug, lang }: { slug: string; la
             {hotel.address_line1 && (
               <span className="flex items-center gap-1.5"><MapPin className="h-4 w-4 text-brand-500" />{hotel.address_line1}{hotel.city ? ', ' + hotel.city : ''}</span>
             )}
-            {hotel.rating > 0 && (
-              <span className="flex items-center gap-1 bg-green-700 text-white text-sm font-bold px-2 py-1 rounded-lg">
-                <Star className="h-3.5 w-3.5 fill-white" />{hotel.rating}
-                {hotel.review_count > 0 && <span className="font-normal text-xs ml-1 text-green-100">({hotel.review_count})</span>}
-              </span>
+            {reviews.summary.count > 0 && (
+              <a href="#reviews" className="flex items-center gap-1 bg-green-700 text-white text-sm font-bold px-2 py-1 rounded-lg">
+                <Star className="h-3.5 w-3.5 fill-white" />{reviews.summary.average.toFixed(1)}
+                <span className="font-normal text-xs ml-1 text-green-100">({reviews.summary.count})</span>
+              </a>
             )}
           </div>
 
@@ -202,6 +203,8 @@ export default async function HotelDetailView({ slug, lang }: { slug: string; la
             </div>
           </div>
         )}
+
+        <HotelReviews propertyId={hotel.id} hotelName={hotel.name} initial={reviews} />
 
         {hotel.faqs?.length > 0 && (
           <div className="mb-10">

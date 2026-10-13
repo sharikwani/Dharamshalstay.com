@@ -4,6 +4,8 @@ import { MapPin, Users, Sparkles, Navigation, CheckCircle, MessageCircle, Buildi
 import { Breadcrumb, HotelCard, FAQSection } from '@/components/ui/Cards';
 import PhotoGallery from '@/components/ui/PhotoGallery';
 import InquiryForm from '@/components/forms/InquiryForm';
+import HotelReviews from '@/components/reviews/HotelReviews';
+import type { ReviewBundle } from '@/lib/reviews/types';
 import { directoryView, type DirectoryProperty } from '@/lib/listing';
 import type { Property } from '@/types';
 import { getWhatsAppLink } from '@/lib/utils';
@@ -15,9 +17,9 @@ import type { Lang } from '@/lib/i18n/core';
 /**
  * Page for a real property we list but don't (yet) partner with. Shows the
  * property's own photos (credited) like a partner page, but no prices or
- * ratings, and says plainly that rates are confirmed on enquiry.
+ * ratings other than approved guest reviews, and says plainly that rates are confirmed on enquiry.
  */
-export default function DirectoryListing({ hotel, related, lang = 'en' }: { hotel: DirectoryProperty; related: Property[]; lang?: Lang }) {
+export default function DirectoryListing({ hotel, related, reviews, lang = 'en' }: { hotel: DirectoryProperty; related: Property[]; reviews: ReviewBundle; lang?: Lang }) {
   const v = directoryView(hotel);
   const { t } = serverT(lang);
   const d = t.directory;
@@ -138,6 +140,8 @@ export default function DirectoryListing({ hotel, related, lang = 'en' }: { hote
               <FAQSection faqs={hotel.faqs} />
             </section>
           )}
+
+          <HotelReviews propertyId={hotel.id} hotelName={hotel.name} initial={reviews} />
 
           <div className="flex gap-3 bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-900 mb-8">
             <Info className="h-5 w-5 shrink-0 mt-0.5" />
