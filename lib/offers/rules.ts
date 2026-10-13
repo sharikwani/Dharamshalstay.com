@@ -77,7 +77,8 @@ export function shouldRelease(c: Pick<OfferCode, 'status' | 'booking_id' | 'expi
   if (c.status !== 'booked') return false;
   if (!c.booking_id) return isExpired(c, now); // claimed but never linked (crashed mid-booking)
   if (!b || DEAD_BOOKING.includes(b.status)) return true;
-  return b.payment_status !== 'paid' && now - Date.parse(b.created_at) > ONLINE_HOLD_MS;
+  if (b.payment_status === 'paid' || b.payment_status === 'partially_paid') return false;
+  return now - Date.parse(b.created_at) >= ONLINE_HOLD_MS;
 }
 
 export function judgeCode(c: Pick<OfferCode, 'status' | 'expires_at' | 'percent' | 'booked_percent' | 'booking_id'>, b: CodeBooking | null, now = Date.now()): Verdict {

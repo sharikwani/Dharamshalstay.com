@@ -79,6 +79,8 @@ describe('expiry and release', () => {
     expect(shouldRelease(b, null, NOW)).toBe(true);
     expect(shouldRelease(b, booking({ created_at: iso(-36) }), NOW)).toBe(true);
     expect(shouldRelease(b, booking({ created_at: iso(-34) }), NOW)).toBe(false);
+    expect(shouldRelease(b, booking({ created_at: iso(-35) }), NOW)).toBe(true);
+    expect(shouldRelease(b, booking({ created_at: iso(-600), payment_status: 'partially_paid' }), NOW)).toBe(false);
     expect(shouldRelease(b, booking({ created_at: iso(-600), payment_status: 'paid', status: 'confirmed' }), NOW)).toBe(false);
     expect(shouldRelease(code(), null, NOW)).toBe(false);
   });
