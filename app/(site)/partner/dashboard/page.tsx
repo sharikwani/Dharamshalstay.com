@@ -83,6 +83,11 @@ export default function PartnerDashboard() {
             </Link>
           )}
           {(!partnerType || partnerType === 'hotel') && (
+            <Link href="/partner/reviews" className="flex items-center gap-2 border border-brand-200 text-brand-700 px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-brand-50">
+              <Star className="h-4 w-4" /> Reviews
+            </Link>
+          )}
+          {(!partnerType || partnerType === 'hotel') && (
             <Link href="/partner/properties/new" className="flex items-center gap-2 bg-brand-600 text-white px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-brand-700">
               <Plus className="h-4 w-4" /> Add Property
             </Link>
