@@ -7,6 +7,7 @@ import { serviceClient } from '@/lib/server-auth';
 import { history, setStatus } from './store';
 import { BOOKING_TOOL_DEFS, runBookingTool } from './booking-tools';
 import { CANCEL_TOOL_DEF, requestCancellation } from './cancellations';
+import { getOfferCode, OFFER_TOOL_DEF, offerNotes } from './offer-tools';
 
 export type ToolCtx = { conversationId: string; phone: string; profileName: string | null; handedOver: boolean };
 
@@ -34,7 +35,7 @@ export const TOOL_DEFS = [
   fn('handover', 'Hand the chat to a team member. Use for complaints, refunds, changes to existing bookings, angry customers, requests for a person, or when unsure.', {
     reason: str('Short reason for the team'),
   }, ['reason']),
-  ...BOOKING_TOOL_DEFS, CANCEL_TOOL_DEF,
+  ...BOOKING_TOOL_DEFS, CANCEL_TOOL_DEF, OFFER_TOOL_DEF,
 ];
 
 const SITE = siteConfig.url;
@@ -49,11 +50,14 @@ async function searchHotels(a: any) {
   if (area) rows = rows.filter((p) => p.destination_slug === area);
   if (a.budget_max > 0) rows = rows.filter((p) => !(p.price_min > 0) || p.price_min <= a.budget_max);
   if (a.query) rows = rows.filter((p) => lc([p.name, p.type, p.short_description, p.locality].join(' ')).includes(lc(a.query)));
+  const top = rows.slice(0, 6);
+  const offers = await offerNotes(top.map((p) => p.id));
   return {
-    hotels: rows.slice(0, 6).map((p) => ({
+    hotels: top.map((p) => ({
       name: p.name, type: p.type, area: p.locality || p.destination_slug, stars: p.star_rating || null,
       price_from: p.price_min || null, price_to: p.price_max || null, about: String(p.short_description || '').slice(0, 160),
       link: `${SITE}/hotels/${p.slug}`,
+      offer: offers[p.id],
     })),
     note: rows.length > 6 ? `${rows.length - 6} more on ${SITE}/hotels` : undefined,
   };
@@ -62,9 +66,11 @@ async function searchHotels(a: any) {
 async function getHotel(a: any) {
   const p: any = await findHotel(String(a.name || ''));
   if (!p) return { error: 'Hotel not found. Try search_hotels.' };
+  const offers = await offerNotes([p.id]);
   return {
     name: p.name, link: `${SITE}/hotels/${p.slug}`, check_in_time: p.check_in_time || null, check_out_time: p.check_out_time || null,
     amenities: (p.amenities || []).slice(0, 15), cancellation_policy: p.cancellation_policy || null,
+    offer: offers[p.id],
     rooms: (p.rooms || []).filter((r: any) => r.is_active !== false).map((r: any) => ({
       name: r.name, base_price: r.base_price || null, max_adults: r.max_adults || null, max_children: r.max_children || null,
       rates: (r.rate_plans || []).map((rp: any) => ({ name: rp.name, price: rp.price })),
@@ -146,6 +152,7 @@ export async function runTool(name: string, args: any, ctx: ToolCtx): Promise<st
     const booking = await runBookingTool(name, a, ctx, handover);
     if (booking) return JSON.stringify(booking);
     if (name === 'request_cancellation') return JSON.stringify(await requestCancellation(a, ctx, handover));
+    if (name === 'get_offer_code') return JSON.stringify(await getOfferCode(a, ctx));
     const out = name === 'search_hotels' ? await searchHotels(a)
       : name === 'get_hotel' ? await getHotel(a)
       : name === 'list_taxi_routes' ? await taxiRoutes(a)

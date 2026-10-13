@@ -3,11 +3,11 @@ import { describe, expect, it, vi, beforeEach } from 'vitest';
 const h = vi.hoisted(() => ({ inserts: [] as any[], emails: [] as any[], statuses: [] as any[] }));
 vi.mock('@/lib/db', () => ({
   getPublishedProperties: async () => [
-    { slug: 'panchvati-cottages', name: 'Panchvati Cottages', type: 'cottage', destination_slug: 'dharamshala', star_rating: null, price_min: 4000, price_max: 9700, short_description: 'Quiet cottages', locality: 'Kharota' },
-    { slug: 'pine-view', name: 'Pine View', type: 'hotel', destination_slug: 'mcleod-ganj', star_rating: 3, price_min: 2500, price_max: 3500, short_description: 'Valley views' },
+    { id: 'p-panch', slug: 'panchvati-cottages', name: 'Panchvati Cottages', type: 'cottage', destination_slug: 'dharamshala', star_rating: null, price_min: 4000, price_max: 9700, short_description: 'Quiet cottages', locality: 'Kharota' },
+    { id: 'p-pine', slug: 'pine-view', name: 'Pine View', type: 'hotel', destination_slug: 'mcleod-ganj', star_rating: 3, price_min: 2500, price_max: 3500, short_description: 'Valley views' },
   ],
   getPropertyBySlug: async (s: string) => s === 'panchvati-cottages' ? {
-    slug: s, name: 'Panchvati Cottages', check_in_time: '12:00', check_out_time: '11:00', amenities: ['Parking'], cancellation_policy: 'Free cancellation',
+    id: 'p-panch', slug: s, name: 'Panchvati Cottages', check_in_time: '12:00', check_out_time: '11:00', amenities: ['Parking'], cancellation_policy: 'Free cancellation',
     rooms: [{ name: 'Super Deluxe', base_price: 5006, max_adults: 2, is_active: true, rate_plans: [{ name: 'Room Only', price: 4000 }] }],
   } : null,
   getPublishedTreks: async () => [{ slug: 'triund-trek', name: 'Triund Trek', duration: '2 days', difficulty: 'moderate', price_per_person: 1500, short_description: 'Classic' }],
@@ -20,6 +20,11 @@ vi.mock('@/lib/server-auth', () => ({ serviceClient: () => ({ from: () => ({ ins
 
 vi.mock('@/lib/wa-chat/booking-tools', () => ({ BOOKING_TOOL_DEFS: ['quote_booking', 'create_booking', 'payment_link', 'my_bookings'].map((name) => ({ type: 'function', function: { name } })), runBookingTool: async () => null }));
 vi.mock('@/lib/wa-chat/cancellations', () => ({ CANCEL_TOOL_DEF: { type: 'function', function: { name: 'request_cancellation' } }, requestCancellation: async () => ({ result: 'need_proof' }) }));
+vi.mock('@/lib/wa-chat/offer-tools', () => ({
+  OFFER_TOOL_DEF: { type: 'function', function: { name: 'get_offer_code' } },
+  getOfferCode: async () => ({ code: 'PNV-7K3Q9' }),
+  offerNotes: async (ids: string[]) => Object.fromEntries(ids.filter((id) => id === 'p-panch').map((id) => [id, 'Up to 25% off, only through this WhatsApp chat'])),
+}));
 
 import { runTool, TOOL_DEFS } from '@/lib/wa-chat/tools';
 
@@ -29,7 +34,7 @@ beforeEach(() => { h.inserts = []; h.emails = []; h.statuses = []; });
 describe('tools', () => {
   it('defines every tool', () => {
     expect(TOOL_DEFS.map((t: any) => t.function.name).sort()).toEqual(
-      ['create_booking', 'create_enquiry', 'get_hotel', 'get_trek', 'handover', 'list_paragliding', 'list_taxi_routes', 'list_treks', 'my_bookings', 'payment_link', 'quote_booking', 'request_cancellation', 'search_hotels']);
+      ['create_booking', 'create_enquiry', 'get_hotel', 'get_offer_code', 'get_trek', 'handover', 'list_paragliding', 'list_taxi_routes', 'list_treks', 'my_bookings', 'payment_link', 'quote_booking', 'request_cancellation', 'search_hotels']);
   });
   it('search_hotels filters by area and budget and links pages', async () => {
     const r = JSON.parse(await runTool('search_hotels', { area: 'mcleod', budget_max: 3000 }, ctx()));
@@ -64,5 +69,15 @@ describe('tools', () => {
   });
   it('unknown tool returns an error string', async () => {
     expect(JSON.parse(await runTool('nope', {}, ctx()))).toEqual({ error: 'Unknown tool' });
+  });
+  it('get_hotel and search_hotels show an active offer', async () => {
+    const one = JSON.parse(await runTool('get_hotel', { name: 'panchvati' }, ctx()));
+    expect(one.offer).toBe('Up to 25% off, only through this WhatsApp chat');
+    const list = JSON.parse(await runTool('search_hotels', {}, ctx()));
+    expect(list.hotels.find((x: any) => x.name === 'Panchvati Cottages').offer).toBe('Up to 25% off, only through this WhatsApp chat');
+    expect(list.hotels.find((x: any) => x.name === 'Pine View')).not.toHaveProperty('offer');
+  });
+  it('routes get_offer_code', async () => {
+    expect(JSON.parse(await runTool('get_offer_code', { hotel_name: 'panchvati' }, ctx()))).toEqual({ code: 'PNV-7K3Q9' });
   });
 });
