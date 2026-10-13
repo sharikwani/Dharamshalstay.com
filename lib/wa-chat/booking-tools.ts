@@ -1,7 +1,7 @@
 // lib/wa-chat/booking-tools.ts
 import { getActiveTaxiRoutes, getParaglidingPackages, getPublishedTreks } from '@/lib/db';
-import { quoteBooking } from '@/lib/pricing';
-import { bookingSchema, createBooking, dateProblem } from '@/lib/bookings/create';
+import { extraBedProblem, quoteBooking } from '@/lib/pricing';
+import { bookingSchema, createBooking, dateProblem, roomLabel } from '@/lib/bookings/create';
 import { createCheckoutLink } from '@/lib/bookings/checkout';
 import { fallbackToPayLater, laterMethod } from '@/lib/bookings/pay-later';
 import { adminEmail, sendEmail } from '@/lib/email';
@@ -33,6 +33,7 @@ export const BOOKING_TOOL_DEFS = [
     category: { type: 'string', enum: ['hotel', 'taxi', 'trek', 'paragliding'] },
     name: str('Hotel, trek or paragliding package name (not for taxi)'),
     room_name: str('Hotel room name from get_hotel'), plan_name: str('Hotel rate plan name from get_hotel, if any'),
+    extra_beds: { type: 'number', description: 'Hotel extra beds wanted (0-3), only if the room offers them in get_hotel' },
     check_in: str('Hotel check-in YYYY-MM-DD'), check_out: str('Hotel check-out YYYY-MM-DD'),
     date: str('Trek, paragliding or taxi date YYYY-MM-DD'), guests: { type: 'number', description: 'Number of people' },
     from: str('Taxi pickup place'), to: str('Taxi drop place'), vehicle: str('Taxi vehicle name, e.g. Sedan, SUV'),
@@ -61,10 +62,13 @@ async function resolve(category: Category, a: any): Promise<Resolved> {
     const planIndex = a.plan_name ? plans.findIndex((rp) => lc(rp.name) === lc(a.plan_name)) : -1;
     if (a.plan_name && planIndex < 0) return { error: 'That rate plan was not found for this room.', plans: plans.map((rp) => rp.name) };
     const plan = planIndex >= 0 ? plans[planIndex] : null;
+    const beds = Math.max(0, Math.floor(Number(a.extra_beds) || 0));
+    const bedProblem = beds > 0 ? extraBedProblem(p, room?.name, beds) : null;
+    if (bedProblem) return { error: bedProblem };
     return {
-      entity: p, label: `${p.name}${room ? ` – ${room.name}` : ''}${plan ? ` (${plan.name})` : ''}`, when: `${a.check_in} to ${a.check_out}`,
+      entity: p, label: `${p.name}${room ? ` – ${room.name}` : ''}${plan ? ` (${plan.name})` : ''}${beds > 0 ? ` + ${beds} extra bed${beds > 1 ? 's' : ''}` : ''}`, when: `${a.check_in} to ${a.check_out}`,
       input: { category, property_id: p.id, check_in: a.check_in, check_out: a.check_out, num_guests: guests,
-        room_name: room?.name, plan_name: plan?.name, plan_index: planIndex >= 0 ? planIndex : null },
+        room_name: room?.name, plan_name: plan?.name, plan_index: planIndex >= 0 ? planIndex : null, ...(beds > 0 ? { extra_beds: beds } : {}) },
     };
   }
   if (category === 'trek' || category === 'paragliding') {
@@ -123,7 +127,7 @@ async function quoteTool(a: any, ctx: ToolCtx) {
     if (sold) return sold;
   }
   const { amount: listAmount } = quoteBooking(category, r.entity, {
-    num_guests: r.input.num_guests, check_in: r.input.check_in, check_out: r.input.check_out, room_name: r.input.room_name, plan_index: r.input.plan_index,
+    num_guests: r.input.num_guests, check_in: r.input.check_in, check_out: r.input.check_out, room_name: r.input.room_name, plan_index: r.input.plan_index, extra_beds: r.input.extra_beds,
   });
   let amount = listAmount;
   let offer: { code: string; percent: number; full_price: number } | null = null;
@@ -150,9 +154,6 @@ async function quoteTool(a: any, ctx: ToolCtx) {
 const DUPLICATE_WINDOW = 30 * 60e3;
 const ITEM_KEYS = ['property_id', 'trek_id', 'paragliding_id', 'taxi_route_id'] as const;
 const opt = (v: unknown) => (v === undefined || v === '' ? null : v);
-
-/** The room label createBooking stores: "Room" or "Room - Plan". */
-const roomLabel = (i: Record<string, any>) => (i.room_name ? (i.plan_name ? `${i.room_name} - ${i.plan_name}` : i.room_name) : null);
 
 const ALREADY_BOOKED = 'This quote was already booked – make a new quote if the customer wants another booking.';
 

@@ -68,7 +68,7 @@ export default async function HotelDetailView({ slug, lang }: { slug: string; la
   const area = t.places[hotel.destination_slug] || areaName(hotel.destination_slug);
   const images = normalizeImages(hotel.images);
   const allImages = [...images];
-  (hotel.rooms || []).forEach((room: any) => {
+  (hotel.rooms || []).filter((room: any) => room?.is_active !== false).forEach((room: any) => {
     if (room.images && Array.isArray(room.images)) {
       room.images.forEach((img: any) => {
         const url = typeof img === 'string' ? img : img?.url;

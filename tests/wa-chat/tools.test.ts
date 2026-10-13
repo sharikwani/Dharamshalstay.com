@@ -8,7 +8,13 @@ vi.mock('@/lib/db', () => ({
   ],
   getPropertyBySlug: async (s: string) => s === 'panchvati-cottages' ? {
     id: 'p-panch', slug: s, name: 'Panchvati Cottages', check_in_time: '12:00', check_out_time: '11:00', amenities: ['Parking'], cancellation_policy: 'Free cancellation',
-    rooms: [{ name: 'Super Deluxe', base_price: 5006, max_adults: 2, is_active: true, rate_plans: [{ name: 'Room Only', price: 4000 }] }],
+    extra_bed_charge: 600,
+    rooms: [
+      { name: 'Super Deluxe', base_price: 5006, max_adults: 2, is_active: true, extra_beds_max: 2, extra_bed_price: 900, rate_plans: [{ name: 'Room Only', price: 4000 }] },
+      { name: 'Cottage', base_price: 3000, is_active: true, extra_beds_max: 1, rate_plans: [] },
+      { name: 'Plain', base_price: 2000, is_active: true, extra_beds_max: 0, rate_plans: [] },
+      { name: 'Old Wing', base_price: 1000, is_active: false, extra_beds_max: 1, rate_plans: [] },
+    ],
   } : null,
   getPublishedTreks: async () => [{ slug: 'triund-trek', name: 'Triund Trek', duration: '2 days', difficulty: 'moderate', price_per_person: 1500, short_description: 'Classic' }],
   getParaglidingPackages: async () => [{ slug: 'bir-tandem', name: 'Bir Tandem', destination: 'Bir', duration: '20 min', price_per_person: 3000, includes: ['Video'], description: 'Fly' }],
@@ -58,6 +64,13 @@ describe('tools', () => {
     const r = JSON.parse(await runTool('get_hotel', { name: 'panchvati' }, ctx()));
     expect(r.rooms[0]).toMatchObject({ name: 'Super Deluxe', max_adults: 2, rates: [{ name: 'Room Only', price: 4000 }] });
     expect(r.check_in_time).toBe('12:00');
+  });
+  it('get_hotel hides switched-off rooms and shows the extra bed option only when allowed', async () => {
+    const r = JSON.parse(await runTool('get_hotel', { name: 'panchvati' }, ctx()));
+    expect(r.rooms.map((x: any) => x.name)).toEqual(['Super Deluxe', 'Cottage', 'Plain']);
+    expect(r.rooms[0].extra_bed).toEqual({ max: 2, price_per_night: 900 });
+    expect(r.rooms[1].extra_bed).toEqual({ max: 1, price_per_night: 600 });
+    expect(r.rooms[2]).not.toHaveProperty('extra_bed');
   });
   it('list_taxi_routes matches either end', async () => {
     const r = JSON.parse(await runTool('list_taxi_routes', { to: 'mcleod' }, ctx()));

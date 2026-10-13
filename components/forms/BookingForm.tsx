@@ -17,6 +17,9 @@ interface BookingFormProps {
   roomName?: string;
   planName?: string;
   planIndex?: number;
+  /** Hotel only: extra beds chosen for the room and the price of one bed per night. */
+  extraBeds?: number;
+  extraBedPrice?: number;
   className?: string;
   /** Hotel only: told whenever the chosen dates change (the hotel page uses it to look up rooms left). */
   onDatesChange?: (checkIn: string, checkOut: string) => void;
@@ -34,7 +37,7 @@ function calcNights(checkIn: string, checkOut: string): number {
   return diff > 0 ? diff : 0;
 }
 
-export default function BookingForm({ category, entityId, entityName, pricePerNight, defaultAmount, roomName, planName, planIndex, className = '', onDatesChange, blockedMessage }: BookingFormProps) {
+export default function BookingForm({ category, entityId, entityName, pricePerNight, defaultAmount, roomName, planName, planIndex, extraBeds = 0, extraBedPrice = 0, className = '', onDatesChange, blockedMessage }: BookingFormProps) {
   const { t } = useT();
   const f = t.form;
   const [status, setStatus] = useState<'idle' | 'loading' | 'paying' | 'success' | 'error'>('idle');
@@ -80,18 +83,19 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
   useEffect(() => { onDatesChange?.(checkIn, checkOut); }, [checkIn, checkOut, onDatesChange]);
 
   // A stale error (e.g. an earlier sold-out refusal) should not linger once the guest changes dates or room.
-  useEffect(() => { setStatus((s) => (s === 'error' ? 'idle' : s)); }, [checkIn, checkOut, roomName, planName, blockedMessage]);
+  useEffect(() => { setStatus((s) => (s === 'error' ? 'idle' : s)); }, [checkIn, checkOut, roomName, planName, extraBeds, blockedMessage]);
 
   // Calculate nights and total
   const nights = useMemo(() => calcNights(checkIn, checkOut), [checkIn, checkOut]);
   const hasPricePerNight = typeof pricePerNight === 'number' && pricePerNight > 0;
   const hasFixedAmount = !hasPricePerNight && typeof defaultAmount === 'number' && defaultAmount > 0;
+  const bedsPerNight = isHotel ? Math.max(0, extraBeds) * Math.max(0, extraBedPrice) : 0;
   const totalAmount = useMemo(() => {
-    if (hasPricePerNight && nights > 0) return pricePerNight * nights;
-    if (hasPricePerNight) return pricePerNight;
+    if (hasPricePerNight && nights > 0) return (pricePerNight + bedsPerNight) * nights;
+    if (hasPricePerNight) return pricePerNight + bedsPerNight;
     if (hasFixedAmount) return defaultAmount;
     return customAmount;
-  }, [hasPricePerNight, pricePerNight, nights, hasFixedAmount, defaultAmount, customAmount]);
+  }, [hasPricePerNight, pricePerNight, bedsPerNight, nights, hasFixedAmount, defaultAmount, customAmount]);
 
   function handleCheckInChange(v: string) {
     const c = enforceCheckIn(v); setCheckIn(c);
@@ -127,6 +131,7 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
       room_name: roomName || '', plan_name: planName || '',
       plan_index: typeof planIndex === 'number' ? planIndex : null,
     };
+    if (category === 'hotel') payload.extra_beds = extraBeds > 0 ? extraBeds : 0;
 
     if (isHotel) { payload.check_in = checkIn; payload.check_out = checkOut; payload.property_id = entityId || null; }
     else if (isTaxi) { payload.activity_date = activityDate; payload.taxi_route_id = entityId || null; payload.pickup_location = fd.get('pickup_location') || ''; payload.drop_location = fd.get('drop_location') || ''; payload.pickup_time = fd.get('pickup_time') || ''; payload.vehicle_type = fd.get('vehicle_type') || ''; }
@@ -242,6 +247,12 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
               <span className="text-slate-600">{formatPrice(pricePerNight)} x {nights > 0 ? nights : '...'} {nights === 1 ? t.filters.night : t.filters.nights}</span>
               {nights > 0 && <span className="font-semibold text-slate-800">{formatPrice(pricePerNight * nights)}</span>}
             </div>
+            {extraBeds > 0 && (
+              <div className="flex justify-between text-sm">
+                <span className="text-slate-600">{extraBeds} extra bed{extraBeds > 1 ? 's' : ''} x {formatPrice(extraBedPrice)} x {nights > 0 ? nights : '...'}</span>
+                {nights > 0 && <span className="font-semibold text-slate-800">{formatPrice(bedsPerNight * nights)}</span>}
+              </div>
+            )}
             {nights > 1 && (
               <div className="flex justify-between text-xs text-slate-500 pt-1 border-t border-brand-200">
                 <span className="flex items-center gap-1"><Moon className="h-3 w-3" /> {nights} {f.nightsTotal}</span>

@@ -11,7 +11,7 @@ const h = vi.hoisted(() => ({
 vi.mock('@/lib/wa-chat/find', () => ({
   findHotel: async (n: string) => n.toLowerCase().includes('pine') ? {
     id: '11111111-1111-4111-8111-111111111111', name: 'Pine View', slug: 'pine-view', price_min: 2000,
-    rooms: [{ name: 'Deluxe', base_price: 2500, is_active: true, rate_plans: [{ name: 'Room Only', price: 2500 }, { name: 'Breakfast', price: 3000 }] }],
+    rooms: [{ name: 'Deluxe', base_price: 2500, is_active: true, extra_beds_max: 1, extra_bed_price: 700, rate_plans: [{ name: 'Room Only', price: 2500 }, { name: 'Breakfast', price: 3000 }] }],
   } : n.toLowerCase().includes('cedar') ? {
     id: '77777777-7777-4777-8777-777777777777', name: 'Cedar Lodge', slug: 'cedar-lodge', price_min: 1800,
     rooms: [
@@ -93,6 +93,29 @@ describe('quote_booking', () => {
     const r = await run('quote_booking', { category: 'hotel', name: 'Pine View', check_in: '2099-10-24', check_out: '2099-10-26', guests: 2, room_name: 'deluxe', plan_name: 'breakfast' });
     expect(r.amount).toBe(6000);
     expect(h.quotes[0].input).toMatchObject({ property_id: HOTEL_ID, room_name: 'Deluxe', plan_name: 'Breakfast', plan_index: 1 });
+  });
+  it('adds an extra bed to the quote, summary and stored input', async () => {
+    const r = await run('quote_booking', { category: 'hotel', name: 'Pine View', check_in: '2099-10-24', check_out: '2099-10-26', guests: 2, room_name: 'deluxe', plan_name: 'breakfast', extra_beds: 1 });
+    expect(r.amount).toBe(2 * (3000 + 700));
+    expect(r.summary).toContain('Pine View – Deluxe (Breakfast) + 1 extra bed');
+    expect(h.quotes[0].input).toMatchObject({ room_name: 'Deluxe', extra_beds: 1 });
+  });
+  it('refuses more beds than the room allows', async () => {
+    const r = await run('quote_booking', { category: 'hotel', name: 'Pine View', check_in: '2099-10-24', check_out: '2099-10-26', guests: 2, room_name: 'deluxe', extra_beds: 2 });
+    expect(r.error).toBe('This room allows at most 1 extra bed(s)');
+    expect(h.quotes).toEqual([]);
+  });
+  it('does not match a switched-off room', async () => {
+    const r = await run('quote_booking', { category: 'hotel', name: 'Cedar Lodge', check_in: '2099-10-21', check_out: '2099-10-23', guests: 2, room_name: 'Suite' });
+    expect(r.error).toMatch(/Which room/);
+    expect(r.rooms).toEqual(['Standard', 'Deluxe']);
+  });
+  it('book the saved quote with its extra beds', async () => {
+    h.useSaved = true;
+    await run('quote_booking', { category: 'hotel', name: 'Pine View', check_in: '2099-10-24', check_out: '2099-10-26', guests: 2, room_name: 'deluxe', extra_beds: 1 });
+    h.createResult = { ok: true, booking: { id: 'b1', booking_ref: 'HTL-1' }, amount: 7400, payment_method: 'pay_at_hotel' };
+    await run('create_booking', { payment: 'later', guest_name: 'Asha Rao' });
+    expect(h.created[0][0]).toMatchObject({ room_name: 'Deluxe', extra_beds: 1 });
   });
   it('asks for a room when the hotel has rooms', async () => {
     const r = await run('quote_booking', { category: 'hotel', name: 'Pine View', check_in: '2099-10-24', check_out: '2099-10-26', guests: 2 });
@@ -336,6 +359,17 @@ describe('quote_booking room availability', () => {
     await run('quote_booking', { category: 'hotel', name: 'Pine View', check_in: '2099-10-24', check_out: '2099-10-26', guests: 2, room_name: 'deluxe' });
     expect(h.availCalls).toEqual([]);
     expect(h.quotes).toHaveLength(1);
+  });
+});
+
+describe('create_booking duplicate guard with extra beds', () => {
+  it('treats a booking labelled with the beds as the same booking', async () => {
+    h.quote = goodQuote({ category: 'hotel', input: { category: 'hotel', property_id: HOTEL_ID, check_in: '2099-10-24', check_out: '2099-10-26', num_guests: 2, room_name: 'Deluxe', plan_name: 'Breakfast', plan_index: 1, extra_beds: 1 } });
+    h.own = [{ id: 'b0', booking_ref: 'HTL-1', category: 'hotel', status: 'pending', payment_status: 'pending', booking_source: 'whatsapp', property_id: HOTEL_ID, trek_id: null, paragliding_id: null, taxi_route_id: null,
+      check_in: '2099-10-24', check_out: '2099-10-26', activity_date: null, room_name: 'Deluxe - Breakfast + 1 extra bed', num_guests: 2, guest_name: 'Pallavi', pickup_time: null, payment_method: 'pay_at_hotel', created_at: new Date().toISOString() }];
+    const r = await run('create_booking', { payment: 'later', guest_name: 'Pallavi' });
+    expect(r).toMatchObject({ duplicate: true, booking_ref: 'HTL-1' });
+    expect(h.created).toEqual([]);
   });
 });
 

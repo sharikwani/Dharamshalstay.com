@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { nightsBetween, hotelNightlyPrice, quoteBooking } from '@/lib/pricing';
+import { nightsBetween, hotelNightlyPrice, quoteBooking, extraBedOption, extraBedProblem } from '@/lib/pricing';
 
 const hotel = {
   price_min: 1800,
@@ -46,5 +46,42 @@ describe('quoteBooking', () => {
   });
   it('clamps guests to at least 1', () => {
     expect(quoteBooking('trek', { price_per_person: 1000 }, { num_guests: 0 }).amount).toBe(1000);
+  });
+});
+
+describe('extra beds', () => {
+  const bedHotel = {
+    price_min: 3000, extra_bed_charge: 500,
+    rooms: [
+      { name: 'Deluxe', base_price: 3000, extra_beds_max: 2, extra_bed_price: 800 },
+      { name: 'Cottage', base_price: 2000, extra_beds_max: 1 },
+      { name: 'Standard', base_price: 1800, extra_beds_max: 0, extra_bed_price: 800 },
+      { name: 'Plain', base_price: 1500 },
+    ],
+  };
+  const stay = { num_guests: 2, check_in: '2026-11-01', check_out: '2026-11-03' };
+  it('adds beds x price x nights', () => {
+    expect(quoteBooking('hotel', bedHotel, { ...stay, room_name: 'Deluxe', extra_beds: 1 }).amount).toBe(7600);
+  });
+  it('uses the property extra_bed_charge when the room has no price', () => {
+    expect(extraBedOption(bedHotel, 'Cottage')).toEqual({ max: 1, price: 500 });
+    expect(quoteBooking('hotel', bedHotel, { ...stay, room_name: 'Cottage', extra_beds: 1 }).amount).toBe(5000);
+  });
+  it('allows no beds without extra_beds_max', () => {
+    expect(extraBedOption(bedHotel, 'Plain').max).toBe(0);
+    expect(extraBedOption(bedHotel, 'Standard').max).toBe(0);
+    expect(extraBedOption(bedHotel, null).max).toBe(0);
+  });
+  it('refuses too many beds', () => {
+    expect(extraBedProblem(bedHotel, 'Standard', 1)).toBe('This room allows at most 0 extra bed(s)');
+    expect(extraBedProblem(bedHotel, 'Deluxe', 3)).toBe('This room allows at most 2 extra bed(s)');
+    expect(extraBedProblem(bedHotel, 'Deluxe', 2)).toBeNull();
+    expect(extraBedProblem(bedHotel, 'Deluxe', 0)).toBeNull();
+  });
+  it('never charges beds above the room maximum', () => {
+    expect(quoteBooking('hotel', bedHotel, { ...stay, room_name: 'Deluxe', extra_beds: 9 }).amount).toBe(2 * (3000 + 1600));
+  });
+  it('ignores extra_beds for other categories', () => {
+    expect(quoteBooking('trek', { price_per_person: 1000 }, { num_guests: 2, extra_beds: 2 }).amount).toBe(2000);
   });
 });

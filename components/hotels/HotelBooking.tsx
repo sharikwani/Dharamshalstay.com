@@ -1,11 +1,12 @@
 'use client';
-import { useCallback, useState, useRef } from 'react';
+import { useCallback, useMemo, useState, useRef } from 'react';
 import { MessageCircle, Phone, Shield, CheckCircle, Check, BedDouble, Users, Maximize, UtensilsCrossed } from 'lucide-react';
 import { RoomGallery } from '@/components/ui/PhotoGallery';
 import BookingForm from '@/components/forms/BookingForm';
 import InquiryForm from '@/components/forms/InquiryForm';
 import { formatPrice, getWhatsAppLink } from '@/lib/utils';
 import { getRoomImageUrl } from '@/lib/images';
+import { extraBedOption } from '@/lib/pricing';
 import { siteConfig } from '@/lib/config';
 
 import { useT } from '@/lib/i18n/client';
@@ -39,6 +40,9 @@ export default function HotelBooking({ hotel }: Props) {
     pricePerNight: hotel.price_min ? discountedPrice(hotel.price_min) : 0,
     planIndex: -1,
   });
+  const rooms: any[] = useMemo(() => (hotel.rooms || []).filter((r: any) => r?.is_active !== false), [hotel.rooms]);
+  const [extraBeds, setExtraBeds] = useState(0);
+  const bedOpt = extraBedOption(hotel, selected.roomName);
   const formRef = useRef<HTMLDivElement>(null);
   const [stay, setStay] = useState({ checkIn: '', checkOut: '' });
   const onDatesChange = useCallback((checkIn: string, checkOut: string) => {
@@ -50,6 +54,7 @@ export default function HotelBooking({ hotel }: Props) {
   function selectRoom(roomName: string, planName: string, price: number, planIndex: number) {
     const ourPrice = discountedPrice(price);
     setSelected({ roomName, planName, pricePerNight: ourPrice, planIndex });
+    if (roomName !== selected.roomName) setExtraBeds(0);
     // Scroll to booking form
     if (formRef.current) {
       formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -67,7 +72,7 @@ export default function HotelBooking({ hotel }: Props) {
       {/* Left column: rooms */}
       <div className="lg:col-span-2">
         {/* Rooms */}
-        {hotel.rooms?.length > 0 && (
+        {rooms.length > 0 && (
           <div>
             <div className="flex items-center justify-between mb-5">
               <h2 className="text-xl font-heading font-bold text-slate-900">{b.chooseRoom}</h2>
@@ -75,7 +80,7 @@ export default function HotelBooking({ hotel }: Props) {
             </div>
 
             <div className="space-y-6">
-              {hotel.rooms.map((room: any, i: number) => {
+              {rooms.map((room: any, i: number) => {
                 const roomImg = getRoomImageUrl(room.images, hotel.images);
                 const roomName = room.name || b.room;
                 const roomImages = (room.images || []).map((img: any) => typeof img === 'string' ? { url: img, alt: room.name } : { url: img?.url || '', alt: img?.alt || room.name }).filter((im: any) => im.url);
@@ -190,10 +195,22 @@ export default function HotelBooking({ hotel }: Props) {
               <p className="font-semibold text-slate-900 text-sm">{selected.roomName}</p>
               {selected.planName && <p className="text-xs text-slate-600">{selected.planName}</p>}
               <p className="text-lg font-bold text-green-700 mt-1">{formatPrice(selected.pricePerNight)} <span className="text-xs font-normal text-slate-500">{t.common.perNight}</span></p>
+              {bedOpt.max > 0 && (
+                <label className="block mt-2 text-xs text-slate-600">
+                  Extra bed
+                  <select value={Math.min(extraBeds, bedOpt.max)} onChange={(e) => setExtraBeds(Number(e.target.value))}
+                    className="mt-1 w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white text-slate-900">
+                    <option value={0}>None</option>
+                    {Array.from({ length: bedOpt.max }, (_, k) => k + 1).map((n) => (
+                      <option key={n} value={n}>{n} bed{n > 1 ? 's' : ''} (+{formatPrice(n * bedOpt.price)}/night)</option>
+                    ))}
+                  </select>
+                </label>
+              )}
             </div>
           )}
 
-          {!selected.roomName && hotel.rooms?.length > 0 && (
+          {!selected.roomName && rooms.length > 0 && (
             <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-center">
               <p className="text-sm text-amber-700 font-medium">{b.selectPrompt}</p>
               <p className="text-xs text-amber-600 mt-0.5">{b.selectHint}</p>
@@ -208,6 +225,8 @@ export default function HotelBooking({ hotel }: Props) {
             pricePerNight={selected.pricePerNight || (hotel.price_min ? discountedPrice(hotel.price_min) : undefined)}
             roomName={selected.roomName}
             planName={selected.planName}
+            extraBeds={bedOpt.max > 0 ? Math.min(extraBeds, bedOpt.max) : 0}
+            extraBedPrice={bedOpt.price}
             onDatesChange={onDatesChange}
             blockedMessage={selectedSoldOut ? b.soldOutDates : undefined}
           />

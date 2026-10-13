@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { quoteBooking } from '@/lib/pricing';
+import { extraBedProblem, quoteBooking } from '@/lib/pricing';
 import { sendBookingEmails } from '@/lib/booking-emails';
 import { inBackground } from '@/lib/background';
 import { todayIST } from './timing';
@@ -31,6 +31,7 @@ export const bookingSchema = z.object({
   booking_source: z.enum(['website', 'whatsapp', 'phone', 'walkin']).default('website'),
   room_name: z.string().optional(),
   plan_name: z.string().max(200).optional(),
+  extra_beds: z.number().int().min(0).max(3).default(0),
   /** One id per booking-form submit, so a retry of the same submit returns the booking it already made. */
   client_request_id: z.string().uuid().optional(),
 });
@@ -45,9 +46,13 @@ export type CreateResult =
 const SOLD_OUT = 'Sold out for these dates';
 const UNIQUE_VIOLATION = '23505';
 
-/** The room label createBooking stores: the room type, plus the plan when one was chosen. */
-const roomLabel = (d: Pick<BookingInput, 'room_name' | 'plan_name'>) =>
-  d.room_name ? (d.plan_name ? `${d.room_name} - ${d.plan_name}` : d.room_name) : null;
+/** The room label createBooking stores: the room type, plus the plan and extra beds when chosen ("Deluxe - Breakfast + 1 extra bed"). */
+export const roomLabel = (d: { room_name?: string; plan_name?: string; extra_beds?: number }): string | null => {
+  if (!d.room_name) return null;
+  const n = Math.floor(Number(d.extra_beds) || 0);
+  const extras = [d.plan_name, n > 0 ? `${n} extra bed${n > 1 ? 's' : ''}` : null].filter(Boolean).join(' + ');
+  return extras ? `${d.room_name} - ${extras}` : d.room_name;
+};
 
 /**
  * The booking an earlier submit with this request id made, as a createBooking result (no notices are sent again).
@@ -116,9 +121,13 @@ export async function createBooking(data: BookingInput, opts: { userId: string |
       const { data: row } = await sb.from(TABLE[data.category]).select('*').eq('id', entityId).single();
       entity = row || null;
     }
+    if (data.category === 'hotel' && data.extra_beds) {
+      const p = extraBedProblem(entity || {}, data.room_name, data.extra_beds);
+      if (p) return { ok: false, error: p, status: 400 };
+    }
     const { amount: listAmount, commission_pct } = quoteBooking(data.category, entity, {
       num_guests: data.num_guests, check_in: data.check_in, check_out: data.check_out,
-      room_name: data.room_name, plan_index: data.plan_index ?? null,
+      room_name: data.room_name, plan_index: data.plan_index ?? null, extra_beds: data.extra_beds,
     });
     // A WhatsApp offer lowers the database price by its percent and must be paid online in full (pay later is never discounted).
     const amount = opts.offer ? discounted(listAmount, opts.offer.percent) : listAmount;

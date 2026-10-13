@@ -9,6 +9,7 @@ const h = vi.hoisted(() => ({
     rooms: [
       { name: 'Standard', base_price: 1500, total_inventory: 2, rate_plans: [] },
       { name: 'Dorm', base_price: 500, rate_plans: [] },
+      { name: 'Deluxe', base_price: 3000, extra_beds_max: 1, extra_bed_price: 800, rate_plans: [{ name: 'Breakfast', price: 3500 }] },
     ],
   },
 }));
@@ -112,5 +113,23 @@ describe('createBooking room availability', () => {
     expect(r.ok).toBe(true);
     expect(h.updates).toEqual([]);
     expect(h.emails).toEqual(['b1']);
+  });
+});
+
+describe('createBooking extra beds', () => {
+  it('stores the beds in the room label and prices them', async () => {
+    const r = await book({ room_name: 'Deluxe', plan_name: 'Breakfast', plan_index: 0, extra_beds: 1 });
+    expect(r).toMatchObject({ ok: true, amount: 2 * (3500 + 800) });
+    expect(h.inserted[0]).toMatchObject({ room_name: 'Deluxe - Breakfast + 1 extra bed', amount: 8600 });
+  });
+  it('labels beds without a plan', async () => {
+    await book({ room_name: 'Deluxe', extra_beds: 1 });
+    expect(h.inserted[0].room_name).toBe('Deluxe - 1 extra bed');
+  });
+  it('refuses too many beds with 400 before inserting', async () => {
+    expect(await book({ room_name: 'Deluxe', extra_beds: 2 })).toEqual({ ok: false, status: 400, error: 'This room allows at most 1 extra bed(s)' });
+    expect(await book({ room_name: 'Standard', extra_beds: 1 })).toEqual({ ok: false, status: 400, error: 'This room allows at most 0 extra bed(s)' });
+    expect(h.inserted).toEqual([]);
+    expect(h.availCalls).toEqual([]);
   });
 });

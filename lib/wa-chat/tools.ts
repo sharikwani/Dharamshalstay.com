@@ -2,6 +2,7 @@ import { getPublishedProperties, getPublishedTreks, getParaglidingPackages } fro
 import { findHotel } from './find';
 import { getTaxiRouteGroups } from '@/lib/taxi';
 import { siteConfig } from '@/lib/config';
+import { extraBedOption } from '@/lib/pricing';
 import { sendEmail, adminEmail } from '@/lib/email';
 import { serviceClient } from '@/lib/server-auth';
 import { history, setStatusIf } from './store';
@@ -76,10 +77,14 @@ async function getHotel(a: any) {
     name: p.name, link: `${SITE}/hotels/${p.slug}`, check_in_time: p.check_in_time || null, check_out_time: p.check_out_time || null,
     amenities: (p.amenities || []).slice(0, 15), cancellation_policy: p.cancellation_policy || null,
     offer: offers[p.id],
-    rooms: (p.rooms || []).filter((r: any) => r.is_active !== false).map((r: any) => ({
+    rooms: (p.rooms || []).filter((r: any) => r.is_active !== false).map((r: any) => {
+      const bed = extraBedOption(p, r.name);
+      return {
       name: r.name, base_price: r.base_price || null, max_adults: r.max_adults || null, max_children: r.max_children || null,
+      ...(bed.max > 0 ? { extra_bed: { max: bed.max, price_per_night: bed.price } } : {}),
       rates: (r.rate_plans || []).map((rp: any) => ({ name: rp.name, price: rp.price })),
-    })),
+      };
+    }),
     prices_note: 'Prices are per room per night in rupees. Availability is not known here; the team confirms it.',
   };
 }
