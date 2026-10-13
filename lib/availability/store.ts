@@ -9,15 +9,18 @@ import {
 export type PropertySummary = { id: string; name: string; owner_id: string | null; rooms: RoomSummary[] };
 export type RoomAvailability = { tracked: false; left: null } | { tracked: true; left: number };
 export type MonthGrid = { room_key: string; tracked: boolean; total: number; days: DayCell[] };
-export type StoreOpts = { sb?: SupabaseClient; now?: Date; excludeAfter?: { id: string; created_at: string } };
+/** publishedOnly: answer only for live (published) properties, as the public endpoint must. */
+export type StoreOpts = { sb?: SupabaseClient; now?: Date; excludeAfter?: { id: string; created_at: string }; publishedOnly?: boolean };
 
 const PROPERTY_COLS = 'id, name, owner_id, rooms';
 const BOOKING_COLS = 'id, room_key, room_name, check_in, check_out, status, payment_method, payment_status, created_at';
 
 const toSummary = (row: any): PropertySummary => ({ id: row.id, name: row.name || '', owner_id: row.owner_id ?? null, rooms: roomSummaries(row.rooms) });
 
-export async function loadProperty(id: string, sb: SupabaseClient = serviceClient()): Promise<PropertySummary | null> {
-  const { data, error } = await sb.from('properties').select(PROPERTY_COLS).eq('id', id).maybeSingle();
+export async function loadProperty(id: string, sb: SupabaseClient = serviceClient(), publishedOnly = false): Promise<PropertySummary | null> {
+  let q = sb.from('properties').select(PROPERTY_COLS).eq('id', id);
+  if (publishedOnly) q = q.eq('status', 'published');
+  const { data, error } = await q.maybeSingle();
   if (error) throw error;
   return data ? toSummary(data) : null;
 }
@@ -49,7 +52,7 @@ async function loadStayData(sb: SupabaseClient, propertyId: string, from: string
 export async function availabilityFor(propertyId: string, checkIn: string, checkOut: string, opts: StoreOpts = {}): Promise<Record<string, RoomAvailability>> {
   const sb = opts.sb ?? serviceClient();
   const out: Record<string, RoomAvailability> = {};
-  const prop = await loadProperty(propertyId, sb);
+  const prop = await loadProperty(propertyId, sb, opts.publishedOnly);
   if (!prop) return out;
   const tracked = prop.rooms.filter((r) => r.tracked);
   for (const r of prop.rooms) if (!r.tracked) out[r.key] = { tracked: false, left: null };

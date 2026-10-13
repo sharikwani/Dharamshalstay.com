@@ -51,6 +51,16 @@ describe('loadProperty / ownedProperties', () => {
 });
 
 describe('availabilityFor', () => {
+  it('publishedOnly filters on status = published and answers nothing for an unpublished property', async () => {
+    const pub = fakeSb({ properties: [HOTEL] });
+    await availabilityFor(PID, '2099-10-20', '2099-10-22', { sb: pub.sb, now: NOW, publishedOnly: true });
+    expect(pub.calls).toContainEqual({ table: 'properties', op: 'eq', args: ['status', 'published'] });
+    const any = fakeSb({ properties: [HOTEL] });
+    await availabilityFor(PID, '2099-10-20', '2099-10-22', { sb: any.sb, now: NOW });
+    expect(any.calls).not.toContainEqual({ table: 'properties', op: 'eq', args: ['status', 'published'] });
+    // The status filter matches no row for a draft property.
+    expect(await availabilityFor(PID, '2099-10-20', '2099-10-22', { sb: fakeSb({}).sb, now: NOW, publishedOnly: true })).toEqual({});
+  });
   it('counts overrides and holding bookings for tracked rooms; untracked rooms are open', async () => {
     const { sb, calls } = fakeSb({
       properties: [HOTEL],

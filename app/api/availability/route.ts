@@ -19,7 +19,8 @@ export async function GET(req: Request) {
   if (!isDate(checkIn) || !isDate(checkOut) || checkOut <= checkIn) return bad('check_in and check_out must be YYYY-MM-DD, check_out after check_in');
   if (dayCount(checkIn, checkOut) - 1 > MAX_PUBLIC_NIGHTS) return bad(`At most ${MAX_PUBLIC_NIGHTS} nights`);
   try {
-    const avail = await availabilityFor(id, checkIn, checkOut);
+    // Unpublished (draft, pending, rejected) properties answer { rooms: {} }.
+    const avail = await availabilityFor(id, checkIn, checkOut, { publishedOnly: true });
     const rooms: Record<string, { tracked: boolean; left: number | null }> = {};
     for (const key of Object.keys(avail)) {
       const v = avail[key];

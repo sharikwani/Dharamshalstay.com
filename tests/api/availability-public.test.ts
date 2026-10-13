@@ -21,7 +21,7 @@ describe('GET /api/availability', () => {
     expect(res.status).toBe(200);
     expect(res.headers.get('cache-control')).toBe('no-store');
     expect(await res.json()).toEqual({ rooms: { Standard: { tracked: true, left: 0 }, Deluxe: { tracked: true, left: 5 }, Dorm: { tracked: false, left: null } } });
-    expect(h.calls).toEqual([[PID, '2099-10-21', '2099-10-23']]);
+    expect(h.calls).toEqual([[PID, '2099-10-21', '2099-10-23', { publishedOnly: true }]]);
   });
   it('rejects bad input with 400 and does not query', async () => {
     for (const q of [
@@ -32,6 +32,12 @@ describe('GET /api/availability', () => {
       `property_id=${PID}&check_in=2099-10-01&check_out=2099-12-31`,
     ]) expect((await get(q)).status).toBe(400);
     expect(h.calls).toEqual([]);
+  });
+  it('answers { rooms: {} } for a property that is not published', async () => {
+    h.result = {};
+    const res = await get(`property_id=${PID}&check_in=2099-10-21&check_out=2099-10-23`);
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ rooms: {} });
   });
   it('returns 500 when the lookup fails', async () => {
     h.fail = true;
