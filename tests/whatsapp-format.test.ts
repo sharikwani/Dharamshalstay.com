@@ -13,6 +13,13 @@ describe('tidyWhatsApp', () => {
   });
   it('leaves urls alone', () => expect(t('Pay here: https://x.com/a_b*c__d')).toBe('Pay here: https://x.com/a_b*c__d'));
   it('drops markdown links to "text: url"', () => expect(t('[Pay now](https://x.com/p)')).toBe('Pay now: https://x.com/p'));
+  it('leaves ordinary text alone', () => {
+    for (const x of ['3 * 2 = 6', 'Pickup at 10:30', '📅 12 Oct', 'Rs.5 * 2 nights', 'Aap ka *booking* confirm hai, kal milte hain 🙏']) expect(t(x)).toBe(x);
+  });
+  it('strips ** inside headings, idempotently', () => {
+    expect(t('## **Options**')).toBe('*Options*');
+    expect(t(t('## **Options**'))).toBe('*Options*');
+  });
   it('keeps a bold heading and Hindi text intact', () => {
     expect(t('# *Options*')).toBe('*Options*');
     expect(t('नमस्ते 🙏\n\n**कुल** Rs.5,000')).toBe('नमस्ते 🙏\n\n*कुल* Rs.5,000');

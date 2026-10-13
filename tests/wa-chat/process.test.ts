@@ -105,6 +105,16 @@ describe('processConversation', () => {
     expect(s.sent).toEqual([]);
     expect(s.releases).toHaveLength(1);
   });
+  it('tidies the AI reply before sending (normal branch)', async () => {
+    s.reply.mockResolvedValue('**x**\n\n\n\ny');
+    expect(await run()).toBe('replied');
+    expect(s.sent).toEqual([['919800000001', '*x*\n\ny']]);
+  });
+  it('tidies the AI reply before sending (sentinel branch)', async () => {
+    s.reply.mockResolvedValue('NOTHING_TO_ADD **x**\n\n\n\ny');
+    expect(await run()).toBe('replied');
+    expect(s.sent).toEqual([['919800000001', '*x*\n\ny']]);
+  });
   it('a waiter that gets the lock answers a message the other turn did not cover', async () => {
     s.lockHeld = true; s.lockFreeAfter = 1;
     expect(await run()).toBe('replied');
