@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Save, Loader2, Trash2, Plus, X, LinkIcon, Check, Eye, ShieldCheck, ArrowUp, ArrowDown, Star } from 'lucide-react';
+import { ArrowLeft, Save, Loader2, Trash2, Plus, X, LinkIcon, Check, Eye, ShieldCheck, ArrowUp, ArrowDown, Star, CalendarDays } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { slugify, formatPrice } from '@/lib/utils';
 
@@ -131,9 +131,14 @@ export default function AdminEditPropertyPage() {
           <h1 className="text-2xl font-heading font-bold text-slate-900">Edit: {form.name}</h1>
           <p className="text-sm text-slate-500">Status: <span className="font-medium capitalize">{form.status?.replace(/_/g, ' ')}</span></p>
         </div>
-        <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 bg-brand-600 text-white px-5 py-2.5 rounded-lg font-semibold hover:bg-brand-700 disabled:opacity-50">
-          {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />} Save Changes
-        </button>
+        <div className="flex items-center gap-3">
+          <Link href={`/admin/properties/${params.id}/availability`} className="flex items-center gap-2 border border-brand-200 text-brand-700 px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-brand-50">
+            <CalendarDays className="h-4 w-4" /> Room availability
+          </Link>
+          <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 bg-brand-600 text-white px-5 py-2.5 rounded-lg font-semibold hover:bg-brand-700 disabled:opacity-50">
+            {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />} Save Changes
+          </button>
+        </div>
       </div>
 
       {error && <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-lg mb-4">{error}</div>}
@@ -234,11 +239,12 @@ export default function AdminEditPropertyPage() {
                 <button onClick={() => u('rooms', form.rooms.filter((_: any, i: number) => i !== idx))} className="text-red-500 ml-3"><Trash2 className="h-4 w-4" /></button>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-3">
                 <div><label className="text-xs text-slate-500">Bed Type</label><input value={room.bed_type || ''} onChange={e => updateRoom(idx, 'bed_type', e.target.value)} className="w-full mt-1 px-2 py-1.5 border border-slate-200 rounded text-sm outline-none" /></div>
                 <div><label className="text-xs text-slate-500">Size</label><input value={room.room_size || ''} onChange={e => updateRoom(idx, 'room_size', e.target.value)} className="w-full mt-1 px-2 py-1.5 border border-slate-200 rounded text-sm outline-none" /></div>
                 <div><label className="text-xs text-slate-500">Max Guests</label><input type="number" value={room.max_occupancy || ''} onChange={e => updateRoom(idx, 'max_occupancy', Number(e.target.value) || 0)} className="w-full mt-1 px-2 py-1.5 border border-slate-200 rounded text-sm outline-none" /></div>
                 <div><label className="text-xs text-slate-500">Base Price</label><input type="number" value={room.base_price || ''} onChange={e => updateRoom(idx, 'base_price', Number(e.target.value) || 0)} className="w-full mt-1 px-2 py-1.5 border border-slate-200 rounded text-sm outline-none" /></div>
+                <div><label className="text-xs text-slate-500">Rooms to sell</label><input type="number" min={0} value={room.total_inventory || ''} placeholder="Not tracked" onChange={e => updateRoom(idx, 'total_inventory', Math.max(0, Math.floor(Number(e.target.value) || 0)))} className="w-full mt-1 px-2 py-1.5 border border-slate-200 rounded text-sm outline-none" /></div>
               </div>
 
               <div><label className="text-xs text-slate-500">Description</label>
