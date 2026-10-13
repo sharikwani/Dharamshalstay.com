@@ -2,6 +2,7 @@ import { siteConfig } from '@/lib/config';
 import { BOOKING_DISCOUNT_NOTE } from '@/lib/pricing';
 import { runTool, TOOL_DEFS, type ToolCtx } from './tools';
 import type { ChatMessage } from './types';
+import { ownBookings, type OwnBooking } from './booking-store';
 
 const SITE = siteConfig.url;
 const MAX_TOOL_CALLS = 6;
@@ -71,12 +72,41 @@ async function complete(messages: any[]) {
   return message;
 }
 
+const RECENT_STATUS: Record<string, string> = { pending: 'requested', confirmed: 'confirmed', completed: 'completed', cancelled: 'cancelled' };
+
+function bookingLine(b: OwnBooking): string {
+  const what = b.room_name ? `${b.category} – ${b.room_name}` : b.category;
+  const when = b.check_in ? `${b.check_in} to ${b.check_out || ''}` : [b.activity_date, b.pickup_time].filter(Boolean).join(' ');
+  const pay = b.payment_status === 'paid' ? 'paid online' : b.payment_method === 'online' ? 'pay online (unpaid)' : 'pay later';
+  return `- ${b.booking_ref} (${[what, when, pay, RECENT_STATUS[b.status] || b.status].filter(Boolean).join(', ')})`;
+}
+
+/**
+ * Tool calls are not kept in chat history, so a later turn cannot see that create_booking already ran.
+ * This note tells it which WhatsApp bookings this number made in the last 24 hours (max 5). Never throws.
+ */
+export async function recentBookingsNote(phone: string): Promise<string> {
+  try {
+    const since = Date.now() - 24 * 3600e3;
+    const rows = (await ownBookings(phone)).filter((b) => b.booking_source === 'whatsapp' && Date.parse(b.created_at) >= since).slice(0, 5);
+    if (!rows.length) return '';
+    return [
+      '\n\nBookings made in this chat in the last 24h:', ...rows.map(bookingLine),
+      'These are already booked: never book them again. If the customer asks about one, give its reference.',
+    ].join('\n');
+  } catch (e) {
+    console.error('WhatsApp recent bookings lookup failed:', e);
+    return '';
+  }
+}
+
 /** The assistant's next WhatsApp reply for this conversation. Throws if OpenAI fails. */
 export async function reply(msgs: ChatMessage[], ctx: ToolCtx): Promise<string> {
   if (!process.env.OPENAI_API_KEY) throw new Error('OPENAI_API_KEY is not set');
   const today = new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' });
+  const recent = await recentBookingsNote(ctx.phone);
   const messages: any[] = [
-    { role: 'system', content: `${SYSTEM_PROMPT}\n\nToday is ${today} (India time). Customer's WhatsApp name: ${ctx.profileName || 'unknown'}.` },
+    { role: 'system', content: `${SYSTEM_PROMPT}\n\nToday is ${today} (India time). Customer's WhatsApp name: ${ctx.profileName || 'unknown'}.${recent}` },
     ...toOpenAiMessages(msgs),
     { role: 'system', content: REMINDER },
   ];
