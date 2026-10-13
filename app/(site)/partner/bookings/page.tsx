@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Phone, ShoppingBag } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { supabase, authFetch } from '@/lib/supabase';
 import { formatPrice, statusLabel, STATUS_COLORS, cn } from '@/lib/utils';
 
 /** WhatsApp alert settings for activity partners (works after verification too). Hidden if it cannot load. */
@@ -74,22 +74,47 @@ export default function PartnerBookingsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [token, setToken] = useState('');
+  const [confirming, setConfirming] = useState<string | null>(null);
+  const [notices, setNotices] = useState<Record<string, { ok: boolean; text: string }>>({});
+
+  async function loadBookings() {
+    try {
+      const res = await authFetch('/api/partner/bookings');
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) setError(json.error || 'Could not load bookings');
+      else { setError(''); setBookings(json.bookings || []); }
+    } catch { setError('Could not load bookings'); }
+  }
 
   useEffect(() => {
     async function load() {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) { router.push('/partner/login'); return; }
       setToken(session.access_token);
-      try {
-        const res = await fetch('/api/partner/bookings', { headers: { Authorization: `Bearer ${session.access_token}` } });
-        const json = await res.json().catch(() => ({}));
-        if (!res.ok) setError(json.error || 'Could not load bookings');
-        else setBookings(json.bookings || []);
-      } catch { setError('Could not load bookings'); }
+      await loadBookings();
       setLoading(false);
     }
     load();
   }, [router]);
+
+  /** Confirm a pay-later booking; the customer is told by email and WhatsApp. */
+  async function confirmBooking(id: string) {
+    setConfirming(id);
+    let notice: { ok: boolean; text: string };
+    try {
+      const res = await authFetch('/api/partner/bookings', {
+        method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, action: 'confirm' }),
+      });
+      const json = await res.json().catch(() => ({}));
+      notice = !res.ok ? { ok: false, text: json.error || 'Could not confirm the booking.' }
+        : { ok: true, text: json.already ? 'This booking was already confirmed.' : 'Confirmed — the customer has been told by email and WhatsApp.' };
+    } catch {
+      notice = { ok: false, text: 'Could not confirm the booking. Please check your connection and try again.' };
+    }
+    setNotices((prev) => ({ ...prev, [id]: notice }));
+    setConfirming(null);
+    await loadBookings();
+  }
 
   if (loading) return <div className="min-h-[60vh] flex items-center justify-center"><div className="w-8 h-8 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin" /></div>;
 
@@ -140,7 +165,13 @@ export default function PartnerBookingsPage() {
                     <Phone className="h-4 w-4" /> {b.guest_phone}
                   </a>
                 )}
+                {b.status === 'pending' && b.payment_method !== 'online' && (
+                  <button disabled={confirming === b.id} onClick={() => confirmBooking(b.id)} className="ml-auto bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 disabled:opacity-50">
+                    {confirming === b.id ? 'Confirming...' : 'Confirm booking'}
+                  </button>
+                )}
               </div>
+              {notices[b.id] && <p className={cn('text-sm mt-2 px-3 py-2 rounded-lg', notices[b.id].ok ? 'text-green-700 bg-green-50' : 'text-red-600 bg-red-50')}>{notices[b.id].text}</p>}
             </div>
           ))}
         </div>

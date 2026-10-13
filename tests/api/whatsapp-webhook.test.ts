@@ -7,12 +7,15 @@ const updates: any[] = [];
 const dbCalls: string[] = [];
 const eqs: { table: string; col: string; val: unknown }[] = [];
 const sendEmail = vi.fn(async (..._a: unknown[]) => {});
+const confirmBooking = vi.fn(async (..._a: unknown[]): Promise<any> => ({ ok: true, already: false }));
+const bookingSelects: string[] = [];
+vi.mock('@/lib/bookings/confirm', () => ({ confirmBooking: (...a: unknown[]) => confirmBooking(...a) }));
 
 function builder(table: string) {
   dbCalls.push(table);
   const local: Record<string, unknown> = {};
   const b: any = {
-    select: () => b, gt: () => b, limit: () => b,
+    select: (cols: string) => { if (table === 'bookings') bookingSelects.push(cols); return b; }, gt: () => b, limit: () => b,
     eq: (col: string, val: unknown) => { local[col] = val; eqs.push({ table, col, val }); return b; },
     in: (col: string, val: unknown) => { local[col] = val; eqs.push({ table, col, val }); return b; },
     update: (row: any) => {
@@ -68,6 +71,7 @@ beforeEach(() => {
     bookings: { booking_ref: 'TRK-1', partner_response: null, status: 'confirmed', partner_id: 'p1' },
     profiles: { whatsapp_number: '9876543210', phone: null, whatsapp_alerts: true },
   }; dbError = null; updates.length = 0; dbCalls.length = 0; eqs.length = 0; sendEmail.mockClear();
+  confirmBooking.mockClear(); bookingSelects.length = 0;
 });
 
 describe('GET verification', () => {
@@ -302,5 +306,46 @@ describe('POST /api/whatsapp/webhook', () => {
     await inbound.waited[0];
     expect(done).toBe(true);
     inbound.work = Promise.resolve('done');
+  });
+});
+
+describe('WhatsApp Accept confirms a pay-later booking', () => {
+  beforeEach(() => {
+    fixtures.whatsapp_messages = { id: 'm1', booking_id: 'b1', to_phone: '919876543210' };
+  });
+
+  it('Accept on a pending pay-later booking confirms it through the shared confirm path', async () => {
+    fixtures.bookings = { booking_ref: 'HTL-1', partner_response: null, status: 'pending', partner_id: 'p1', payment_method: 'pay_at_hotel' };
+    await send(replyPayload('Accept'));
+    expect(updates[0].row).toMatchObject({ partner_response: 'accepted' });
+    expect(bookingSelects[0]).toContain('payment_method');
+    expect(confirmBooking).toHaveBeenCalledWith('b1', 'partner');
+  });
+
+  it('Accept on a pending online booking does not confirm it (payment does)', async () => {
+    fixtures.bookings = { booking_ref: 'HTL-1', partner_response: null, status: 'pending', partner_id: 'p1', payment_method: 'online' };
+    await send(replyPayload('Accept'));
+    expect(updates[0].row).toMatchObject({ partner_response: 'accepted' });
+    expect(confirmBooking).not.toHaveBeenCalled();
+  });
+
+  it("Can't do it never confirms", async () => {
+    fixtures.bookings = { booking_ref: 'HTL-1', partner_response: null, status: 'pending', partner_id: 'p1', payment_method: 'pay_at_hotel' };
+    await send(replyPayload("Can't do it"));
+    expect(confirmBooking).not.toHaveBeenCalled();
+  });
+
+  it('Accept on an already confirmed booking does not confirm again', async () => {
+    fixtures.bookings = { booking_ref: 'HTL-1', partner_response: null, status: 'confirmed', partner_id: 'p1', payment_method: 'pay_at_hotel' };
+    await send(replyPayload('Accept'));
+    expect(confirmBooking).not.toHaveBeenCalled();
+  });
+
+  it('a failed response save does not confirm', async () => {
+    fixtures.bookings = { booking_ref: 'HTL-1', partner_response: null, status: 'pending', partner_id: 'p1', payment_method: 'pay_at_hotel' };
+    dbError = { message: 'boom' };
+    vi.spyOn(console, 'error').mockImplementationOnce(() => {});
+    await send(replyPayload('Accept'));
+    expect(confirmBooking).not.toHaveBeenCalled();
   });
 });

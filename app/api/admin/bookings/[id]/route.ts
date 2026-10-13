@@ -6,6 +6,7 @@ import { whatsappNewBooking, whatsappReassignedAway } from '@/lib/booking-whatsa
 import { loadBookingView, sendManualBookingEmails, sendReassignedAwayEmail } from '@/lib/manual-booking-emails';
 
 import { cancelBooking } from '@/lib/bookings/cancel';
+import { confirmBooking } from '@/lib/bookings/confirm';
 import { settlePaidOffer } from '@/lib/offers/paid';
 
 export const dynamic = 'force-dynamic';
@@ -32,6 +33,7 @@ const schema = z.discriminatedUnion('action', [
     reason: z.string().trim().min(3).max(500),
     notify: z.boolean().default(true),
   }),
+  z.object({ action: z.literal('confirm') }),
 ]);
 
 const isId = (id: string) => uuid.safeParse(id).success;
@@ -121,6 +123,13 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
     if (loadError) throw new HttpError(500, 'Could not load the booking. Please try again.');
     if (!booking) throw new HttpError(404, 'Booking not found.');
     if (booking.status === 'cancelled') throw new HttpError(409, 'This booking is cancelled.');
+
+    if (body.action === 'confirm') {
+      // Pending -> confirmed and the customer is told; already confirmed is a no-op, other states are refused.
+      const r = await confirmBooking(id, 'admin');
+      if (!r.ok) throw new HttpError(r.status, r.error);
+      return NextResponse.json({ booking: await loadBookingView(id), already: r.already });
+    }
 
     if (body.action === 'cancel') {
       const r = await cancelBooking({ id, commission_status: booking.commission_status }, body.reason, { notify: body.notify });

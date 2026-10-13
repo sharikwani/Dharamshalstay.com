@@ -2,10 +2,18 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Calendar, DollarSign, Phone, Mail, Check, X, RefreshCw, Plus } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { Calendar, DollarSign, Phone, Mail, Check, X, RefreshCw, Plus, Clock } from 'lucide-react';
+import { supabase, authFetch } from '@/lib/supabase';
 import { AdminPageHeader } from '@/components/admin/AdminShell';
 import { formatPrice, formatDateTime, statusLabel, STATUS_COLORS, cn } from '@/lib/utils';
+
+/** How long a booking has been waiting: minutes under an hour, hours under two days, then days. */
+function waitingFor(createdAt: string): { text: string; late: boolean } {
+  const minutes = Math.max(0, Math.floor((Date.now() - new Date(createdAt).getTime()) / 60_000));
+  const hours = Math.floor(minutes / 60);
+  const text = minutes < 60 ? `${minutes}m` : hours < 48 ? `${hours}h` : `${Math.floor(hours / 24)}d`;
+  return { text, late: minutes >= 120 };
+}
 
 export default function AdminBookings() {
   const router = useRouter();
@@ -15,6 +23,8 @@ export default function AdminBookings() {
   const [catFilter, setCatFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
   const [commFilter, setCommFilter] = useState('all');
+  const [confirming, setConfirming] = useState<string | null>(null);
+  const [notices, setNotices] = useState<Record<string, { ok: boolean; text: string }>>({});
 
   async function load() {
     setLoading(true);
@@ -35,6 +45,23 @@ export default function AdminBookings() {
   }
 
   useEffect(() => { load(); }, [catFilter, statusFilter, commFilter]);
+
+  /** Pending -> confirmed through the shared confirm path, which emails and WhatsApps the customer. */
+  async function confirmBooking(id: string) {
+    setConfirming(id);
+    let notice: { ok: boolean; text: string };
+    try {
+      const res = await authFetch(`/api/admin/bookings/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'confirm' }) });
+      const data = await res.json().catch(() => ({}));
+      notice = !res.ok ? { ok: false, text: data.error || 'Could not confirm the booking.' }
+        : { ok: true, text: data.already ? 'This booking was already confirmed.' : 'Confirmed — customer notified by email and WhatsApp' };
+    } catch {
+      notice = { ok: false, text: 'Could not confirm the booking. Please check your connection and try again.' };
+    }
+    setNotices((prev) => ({ ...prev, [id]: notice }));
+    setConfirming(null);
+    load();
+  }
 
   async function updateBookingStatus(id: string, newStatus: string) {
     await supabase.from('bookings').update({ status: newStatus, updated_at: new Date().toISOString() }).eq('id', id);
@@ -122,6 +149,10 @@ export default function AdminBookings() {
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
                     <Link href={`/admin/bookings/${b.id}`} className="font-mono text-sm font-semibold text-brand-600 hover:underline">{b.booking_ref}</Link>
                     <span className={cn('text-xs font-medium px-2 py-0.5 rounded-full', STATUS_COLORS[b.status])}>{statusLabel(b.status)}</span>
+                    {b.status === 'pending' && b.created_at && (() => {
+                      const w = waitingFor(b.created_at);
+                      return <span className={cn('text-xs font-medium px-2 py-0.5 rounded-full inline-flex items-center gap-1', w.late ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-600')}><Clock className="h-3 w-3" /> Waiting for {b.category === 'hotel' ? 'hotel' : 'partner'} · {w.text}</span>;
+                    })()}
                     <span className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full capitalize">{b.category === 'guide' ? 'Local guide' : b.category}</span>
                     {b.booking_source === 'admin' && <span className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">Admin</span>}
                     {b.price_overridden && <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">manual price</span>}
@@ -158,7 +189,7 @@ export default function AdminBookings() {
 
               <div className="flex flex-wrap gap-2 pt-3 border-t border-slate-100">
                 {b.status === 'pending' && (
-                  <button onClick={() => updateBookingStatus(b.id, 'confirmed')} className="text-xs px-3 py-1.5 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 flex items-center gap-1"><Check className="h-3 w-3" /> Confirm</button>
+                  <button disabled={confirming === b.id} onClick={() => confirmBooking(b.id)} className="text-xs px-3 py-1.5 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 disabled:opacity-60 flex items-center gap-1"><Check className="h-3 w-3" /> {confirming === b.id ? 'Confirming...' : 'Confirm'}</button>
                 )}
                 {b.status === 'confirmed' && (
                   <button onClick={() => updateBookingStatus(b.id, 'completed')} className="text-xs px-3 py-1.5 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700">Complete</button>
@@ -167,12 +198,13 @@ export default function AdminBookings() {
                   <Link href={`/admin/bookings/${b.id}`} className="text-xs px-3 py-1.5 border border-slate-300 text-slate-700 rounded-lg font-medium hover:bg-slate-50">Open</Link>
                 )}
                 {['pending', 'confirmed'].includes(b.status) && b.booking_source !== 'admin' && (
-                  <button onClick={() => updateBookingStatus(b.id, 'cancelled')} className="text-xs px-3 py-1.5 border border-red-300 text-red-600 rounded-lg font-medium hover:bg-red-50 flex items-center gap-1"><X className="h-3 w-3" /> Cancel</button>
+                  <Link href={`/admin/bookings/${b.id}`} className="text-xs px-3 py-1.5 border border-red-300 text-red-600 rounded-lg font-medium hover:bg-red-50 flex items-center gap-1"><X className="h-3 w-3" /> Cancel…</Link>
                 )}
                 {['pending', 'due', 'overdue'].includes(b.commission_status) && b.commission_amount > 0 && (
                   <button onClick={() => markCommissionPaid(b.id)} className="text-xs px-3 py-1.5 bg-amber-500 text-white rounded-lg font-medium hover:bg-amber-600 flex items-center gap-1"><DollarSign className="h-3 w-3" /> Mark Commission Paid</button>
                 )}
               </div>
+              {notices[b.id] && <p className={cn('text-xs mt-2 px-3 py-1.5 rounded-lg border', notices[b.id].ok ? 'text-green-700 bg-green-50 border-green-200' : 'text-red-700 bg-red-50 border-red-200')}>{notices[b.id].text}</p>}
             </div>
           ))}
         </div>

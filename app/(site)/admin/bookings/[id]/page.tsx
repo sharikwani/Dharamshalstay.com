@@ -41,6 +41,8 @@ export default function BookingDetailPage() {
   const [partners, setPartners] = useState<OptionPartner[]>([]);
   const [optsLoading, setOptsLoading] = useState(false);
   const [reason, setReason] = useState('');
+  const [confirming, setConfirming] = useState(false);
+  const [confirmMsg, setConfirmMsg] = useState<{ ok: boolean; text: string } | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -94,6 +96,22 @@ export default function BookingDetailPage() {
       setError('Could not save the change. Please check your connection and try again.');
     } finally {
       setSaving(false);
+    }
+  }
+
+  /** Pending -> confirmed through the shared confirm path, which emails and WhatsApps the customer. */
+  async function confirmNow() {
+    setConfirming(true); setConfirmMsg(null);
+    try {
+      const res = await authFetch(`/api/admin/bookings/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'confirm' }) });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) { setConfirmMsg({ ok: false, text: data.error || 'Could not confirm the booking.' }); return; }
+      setB((prev: any) => ({ ...prev, ...data.booking }));
+      setConfirmMsg({ ok: true, text: data.already ? 'This booking was already confirmed.' : 'Confirmed — customer notified by email and WhatsApp' });
+    } catch {
+      setConfirmMsg({ ok: false, text: 'Could not confirm the booking. Please check your connection and try again.' });
+    } finally {
+      setConfirming(false);
     }
   }
 
@@ -221,10 +239,12 @@ export default function BookingDetailPage() {
         <section className={CARD}>
           <h2 className={H2}>Actions</h2>
           <div className="flex flex-col sm:flex-row flex-wrap gap-2">
+            {b.status === 'pending' && <button disabled={confirming} onClick={confirmNow} className={cn(BTN, 'inline-flex items-center justify-center gap-2 bg-brand-600 text-white hover:bg-brand-700')}>{confirming ? 'Confirming...' : 'Confirm booking'}</button>}
             {partnerLink && <a href={partnerLink} target="_blank" rel="noopener noreferrer" className={cn(BTN, 'inline-flex items-center justify-center gap-2 bg-green-600 text-white hover:bg-green-700')}><MessageCircle className="h-4 w-4" /> Send on WhatsApp to partner</a>}
             {customerLink && <a href={customerLink} target="_blank" rel="noopener noreferrer" className={cn(BTN, 'inline-flex items-center justify-center gap-2 bg-green-600 text-white hover:bg-green-700')}><MessageCircle className="h-4 w-4" /> Send on WhatsApp to customer</a>}
             {panel !== 'cancel' && <button onClick={() => open('cancel')} className={cn(BTN, 'border border-red-300 text-red-600 hover:bg-red-50')}>Cancel booking</button>}
           </div>
+          {confirmMsg && <p className={cn('text-sm rounded-lg px-3 py-2 mt-3 border', confirmMsg.ok ? 'text-green-700 bg-green-50 border-green-200' : 'text-red-700 bg-red-50 border-red-200')}>{confirmMsg.text}</p>}
           {panel === 'cancel' && (
             <div className="mt-4 pt-4 border-t border-slate-100">
               <label className={LABEL}>Reason for cancelling</label>

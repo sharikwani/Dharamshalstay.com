@@ -80,6 +80,10 @@ vi.mock('@/lib/booking-whatsapp', () => ({
   whatsappReassignedAway: (...a: unknown[]) => whatsappReassignedAway(...a),
 }));
 
+// The confirm path itself is tested in tests/bookings/confirm.test.ts.
+const confirmBooking = vi.fn(async (..._a: unknown[]): Promise<any> => ({ ok: true, already: false }));
+vi.mock('@/lib/bookings/confirm', () => ({ confirmBooking: (...a: unknown[]) => confirmBooking(...a) }));
+
 // Cancelling releases any WhatsApp offer code; that store is not under test here.
 const offer = vi.hoisted(() => ({ result: 'none' as string, calls: [] as string[], emails: [] as any[] }));
 vi.mock('@/lib/offers/store', () => ({
@@ -634,5 +638,47 @@ describe('GET/PATCH /api/admin/bookings/:id', () => {
     const bad = { params: { id: 'nope' } };
     expect((await GET(new Request('http://x'), bad)).status).toBe(404);
     expect((await PATCH(new Request('http://x', { method: 'PATCH', body: JSON.stringify({ action: 'cancel', reason: 'abc' }) }), bad)).status).toBe(404);
+  });
+});
+
+describe('PATCH /api/admin/bookings/:id action confirm', () => {
+  beforeEach(() => { confirmBooking.mockClear(); });
+
+  it('confirms a pending booking through the shared confirm path', async () => {
+    fixtures.bookings = { ...fixtures.bookings, status: 'pending' };
+    const res = await patch({ action: 'confirm' });
+    expect(res.status).toBe(200);
+    expect(confirmBooking).toHaveBeenCalledWith(ID, 'admin');
+    expect(await res.json()).toEqual({ booking: { id: ID, item_name: 'x' }, already: false });
+    expect(updates).toHaveLength(0);
+  });
+
+  it('reports an already confirmed booking', async () => {
+    confirmBooking.mockResolvedValueOnce({ ok: true, already: true });
+    const res = await patch({ action: 'confirm' });
+    expect(res.status).toBe(200);
+    expect((await res.json()).already).toBe(true);
+  });
+
+  it('a cancelled booking is refused with 409', async () => {
+    fixtures.bookings = { ...fixtures.bookings, status: 'cancelled' };
+    const res = await patch({ action: 'confirm' });
+    expect(res.status).toBe(409);
+    expect((await res.json()).error).toBe('This booking is cancelled.');
+    expect(confirmBooking).not.toHaveBeenCalled();
+  });
+
+  it('passes on a refusal from the confirm path', async () => {
+    fixtures.bookings = { ...fixtures.bookings, status: 'completed' };
+    confirmBooking.mockResolvedValueOnce({ ok: false, status: 409, error: 'This booking is completed.' });
+    const res = await patch({ action: 'confirm' });
+    expect(res.status).toBe(409);
+    expect((await res.json()).error).toBe('This booking is completed.');
+  });
+
+  it('is admin only', async () => {
+    role = 'partner';
+    expect((await patch({ action: 'confirm' })).status).toBe(403);
+    expect(confirmBooking).not.toHaveBeenCalled();
   });
 });

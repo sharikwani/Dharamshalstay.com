@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
-import { requireCaller, serviceClient, jsonError } from '@/lib/server-auth';
+import { z } from 'zod';
+import { HttpError, requireCaller, serviceClient, jsonError } from '@/lib/server-auth';
+import { confirmBooking } from '@/lib/bookings/confirm';
 import { toBookingViews } from '@/lib/manual-booking-emails';
 import { assertActive } from '@/lib/partners/load';
 
@@ -40,10 +42,53 @@ export async function GET(req: Request) {
         guest_name: v.guest_name,
         partner_response: row?.partner_response ?? null, partner_responded_at: row?.partner_responded_at ?? null,
         offer_code: row?.offer_code ?? null, offer_percent: row?.offer_percent ?? null,
+        // Pay-later bookings (not online) can be confirmed by the partner.
+        payment_method: row?.payment_method ?? null,
         guest_phone: show ? v.guest_phone ?? null : null,
         guest_email: show ? v.guest_email ?? null : null,
       };
     });
     return NextResponse.json({ bookings });
+  } catch (e) { return jsonError(e); }
+}
+
+const patchSchema = z.object({ id: z.string().uuid(), action: z.literal('confirm') });
+
+/** The partner confirms a pending booking; the customer is told by email and WhatsApp. */
+export async function PATCH(req: Request) {
+  try {
+    const caller = await requireCaller(req, ['partner']);
+    assertActive(caller.profile.partner_status);
+    const parsed = patchSchema.safeParse(await req.json().catch(() => null));
+    if (!parsed.success) throw new HttpError(400, 'Please check the details.');
+    const { id } = parsed.data;
+    const sb = serviceClient();
+
+    const { data: booking, error } = await sb.from('bookings')
+      .select('id, status, property_id, partner_id, payment_method, payment_status').eq('id', id).maybeSingle();
+    if (error) throw new HttpError(500, 'Could not load the booking. Please try again.');
+    if (!booking) throw new HttpError(404, 'Booking not found.');
+
+    // Same scope as GET: hotel partners see bookings of the properties they own, others their assigned bookings.
+    let mine = false;
+    if (!caller.profile.partner_type || caller.profile.partner_type === 'hotel') {
+      if (booking.property_id) {
+        const { data: prop, error: propErr } = await sb.from('properties').select('id')
+          .eq('id', booking.property_id).eq('owner_id', caller.profile.id).maybeSingle();
+        if (propErr) throw new HttpError(500, 'Could not load the booking. Please try again.');
+        mine = Boolean(prop);
+      }
+    } else {
+      mine = booking.partner_id === caller.profile.id;
+    }
+    if (!mine) throw new HttpError(404, 'Booking not found.');
+
+    // Online bookings are confirmed by their payment.
+    if (booking.payment_method === 'online' && booking.payment_status !== 'paid') {
+      throw new HttpError(409, 'This booking is waiting for online payment.');
+    }
+    const r = await confirmBooking(id, 'partner');
+    if (!r.ok) throw new HttpError(r.status, r.error);
+    return NextResponse.json({ ok: true, already: r.already });
   } catch (e) { return jsonError(e); }
 }

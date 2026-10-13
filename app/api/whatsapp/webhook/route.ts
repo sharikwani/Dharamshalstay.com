@@ -5,6 +5,7 @@ import { verifySignature } from '@/lib/whatsapp-cloud';
 import { parseWebhook, replyAction, STATUS_RANK } from '@/lib/whatsapp-webhook';
 import { sendEmail, adminEmail } from '@/lib/email';
 import { currentAssigneePhones } from '@/lib/booking-whatsapp';
+import { confirmBooking } from '@/lib/bookings/confirm';
 import { normalizeIndianPhone } from '@/lib/whatsapp';
 import { handleInbound } from '@/lib/wa-chat/inbound';
 import { updateChatStatus } from '@/lib/wa-chat/store';
@@ -55,7 +56,7 @@ async function handleReply(sb: Sb, r: { contextId: string; from: string; text: s
   if (!msg?.booking_id || !samePhone(r.from, msg.to_phone)) return;
 
   const { data: booking, error: bErr } = await sb.from('bookings')
-    .select('booking_ref, partner_response, status, partner_id, staff_id, property_id, guide_id').eq('id', msg.booking_id).maybeSingle();
+    .select('booking_ref, partner_response, status, payment_method, partner_id, staff_id, property_id, guide_id').eq('id', msg.booking_id).maybeSingle();
   if (bErr) { console.error('WhatsApp webhook: booking lookup failed', bErr); return; }
   if (!booking || booking.status === 'cancelled') return; // nothing to accept or reassign
 
@@ -79,6 +80,13 @@ async function handleReply(sb: Sb, r: { contextId: string; from: string; text: s
   if (action === 'declined') update = update.or('partner_response.is.null,partner_response.neq.declined');
   const { data: changed, error: upErr } = await update.select('id');
   if (upErr) { console.error('WhatsApp webhook: booking update failed', upErr); return; }
+  // Accept confirms a pay-later booking and tells the customer (online bookings are confirmed by their payment).
+  // If the admin confirmed it a moment earlier, confirmBooking sends nothing again.
+  if (action === 'accepted' && booking.status === 'pending' && booking.payment_method !== 'online') {
+    const r = await confirmBooking(msg.booking_id, 'partner');
+    if (!r.ok) console.error('WhatsApp webhook: confirm on Accept failed', r.error);
+    return;
+  }
   if (action !== 'declined' || booking.partner_response === 'declined' || !changed?.length) return;
   const ref = booking.booking_ref || msg.booking_id;
   await sendEmail({
