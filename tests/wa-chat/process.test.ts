@@ -52,6 +52,11 @@ describe('processConversation', () => {
     expect(s.sent).toEqual([['919800000001', 'Booked! Ref HTL-1']]);
     expect(s.outbound[0]).toEqual(['c1', 'ai', 'Booked! Ref HTL-1', 'wamid.out', undefined]);
   });
+  it('an acted turn still stays silent when the owner has taken over', async () => {
+    s.reply.mockImplementation(async (_h: any, ctx: any) => { ctx.sideEffects = ['create_booking']; s.conv = { ...s.conv, status: 'human' }; return 'Booked! Ref HTL-1'; });
+    expect(await processConversation('c1', 'm1', { wait })).toBe('skipped');
+    expect(s.sent).toEqual([]);
+  });
   it('passes a fresh side-effect list to the assistant', async () => {
     await processConversation('c1', 'm1', { wait });
     expect(s.reply.mock.calls[0][1]).toMatchObject({ sideEffects: [] });
