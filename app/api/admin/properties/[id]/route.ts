@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 /**
  * DELETE /api/admin/properties/[id]
  * Permanently deletes a property. Uses service role key to bypass RLS.
- * Handles foreign key references by nulling them in related tables first.
+ * References in other tables are cleared by the database's ON DELETE rules, in the same statement.
  */
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   try {
@@ -62,43 +62,9 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       return NextResponse.json({ error: 'Property not found' }, { status: 404 });
     }
 
-    // Step 1: Null out foreign key references in related tables (preserve history)
-    // We null instead of delete to keep booking/inquiry records for reporting.
-    const cleanupErrors: string[] = [];
-
-    const { error: bookingsErr } = await sbAdmin
-      .from('bookings')
-      .update({ property_id: null })
-      .eq('property_id', propertyId);
-    if (bookingsErr) cleanupErrors.push('bookings: ' + bookingsErr.message);
-
-    const { error: inquiriesErr } = await sbAdmin
-      .from('inquiries')
-      .update({ property_id: null })
-      .eq('property_id', propertyId);
-    if (inquiriesErr && !inquiriesErr.message.includes('does not exist')) {
-      cleanupErrors.push('inquiries: ' + inquiriesErr.message);
-    }
-
-    // Try to null commission records if the table exists
-    const { error: commErr } = await sbAdmin
-      .from('commission_records')
-      .update({ property_id: null })
-      .eq('property_id', propertyId);
-    if (commErr && !commErr.message.includes('does not exist')) {
-      cleanupErrors.push('commission_records: ' + commErr.message);
-    }
-
-    // Try to null notification_log references
-    const { error: notifErr } = await sbAdmin
-      .from('notification_log')
-      .update({ property_id: null })
-      .eq('property_id', propertyId);
-    if (notifErr && !notifErr.message.includes('does not exist')) {
-      cleanupErrors.push('notification_log: ' + notifErr.message);
-    }
-
-    // Step 2: Delete the property itself
+    // One statement: the database clears every reference to the property itself (bookings, inquiries, commission
+    // records, notification log and testimonials are ON DELETE SET NULL since v5 / v25; rooms, images and offers
+    // cascade), so the delete either happens completely or not at all.
     const { error: deleteErr } = await sbAdmin
       .from('properties')
       .delete()
@@ -106,17 +72,15 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
     if (deleteErr) {
       console.error('Property delete error:', deleteErr);
-      return NextResponse.json({
-        error: 'Delete failed: ' + deleteErr.message,
-        cleanup_errors: cleanupErrors,
-      }, { status: 500 });
+      if (deleteErr.code === '23503') {
+        return NextResponse.json({
+          error: 'This property is still linked to other records, so nothing was deleted. Apply database migration v25, then try again.',
+        }, { status: 409 });
+      }
+      return NextResponse.json({ error: 'Delete failed: ' + deleteErr.message }, { status: 500 });
     }
 
-    return NextResponse.json({
-      success: true,
-      deleted: existing.name,
-      cleanup_errors: cleanupErrors.length ? cleanupErrors : undefined,
-    });
+    return NextResponse.json({ success: true, deleted: existing.name });
   } catch (err: any) {
     console.error('Delete API error:', err);
     return NextResponse.json({ error: err.message || 'Server error' }, { status: 500 });

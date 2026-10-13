@@ -18,3 +18,24 @@ ALTER TABLE whatsapp_conversations ADD COLUMN IF NOT EXISTS processing_until TIM
 ALTER TABLE whatsapp_chat_messages DROP CONSTRAINT IF EXISTS whatsapp_chat_messages_status_check;
 ALTER TABLE whatsapp_chat_messages ADD CONSTRAINT whatsapp_chat_messages_status_check
   CHECK (status IN ('received','sent','delivered','read','failed','unknown'));
+
+-- Deleting a property: the database clears every reference to it in the same statement, so the admin delete can
+-- never stop half-way. v5 set ON DELETE SET NULL on four of these by constraint name; this re-asserts it whatever
+-- the constraint is called, and adds testimonials, whose reference never had an ON DELETE rule.
+DO $$
+DECLARE r RECORD;
+BEGIN
+  FOR r IN
+    SELECT c.conname, c.conrelid::regclass AS tbl
+    FROM pg_constraint c
+    JOIN pg_attribute a ON a.attrelid = c.conrelid AND a.attnum = c.conkey[1]
+    WHERE c.contype = 'f' AND c.confrelid = 'public.properties'::regclass
+      AND array_length(c.conkey, 1) = 1 AND a.attname = 'property_id'
+      AND c.conrelid IN (SELECT to_regclass('public.' || t)
+                         FROM unnest(ARRAY['bookings','inquiries','commission_records','notification_log','testimonials']) AS t)
+      AND c.confdeltype <> 'n'
+  LOOP
+    EXECUTE format('ALTER TABLE %s DROP CONSTRAINT %I', r.tbl, r.conname);
+    EXECUTE format('ALTER TABLE %s ADD CONSTRAINT %I FOREIGN KEY (property_id) REFERENCES properties(id) ON DELETE SET NULL', r.tbl, r.conname);
+  END LOOP;
+END $$;
