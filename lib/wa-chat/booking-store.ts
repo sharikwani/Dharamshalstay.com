@@ -40,10 +40,13 @@ export async function linkQuoteBooking(id: string, bookingId: string): Promise<v
   if (error) console.error('WhatsApp quote link failed:', error);
 }
 
-/** The newest unused, unexpired quote in this conversation (create_booking books this one). */
-export async function latestOpenQuote(conversationId: string): Promise<Quote | null> {
+/**
+ * The newest quote in this conversation, used or expired included. create_booking books only this one and refuses
+ * it when it is used or expired, so an older quote is never booked by mistake.
+ */
+export async function latestQuote(conversationId: string): Promise<Quote | null> {
   const { data, error } = await serviceClient().from('whatsapp_quotes').select('*')
-    .eq('conversation_id', conversationId).is('used_at', null).gt('expires_at', now())
+    .eq('conversation_id', conversationId)
     .order('created_at', { ascending: false }).limit(1).maybeSingle();
   if (error) throw error;
   return (data as Quote) ?? null;

@@ -11,7 +11,7 @@ import { availabilityFor } from '@/lib/availability/store';
 import { claimCode, linkCodeBooking, releaseCode } from '@/lib/offers/store';
 import { discounted, formatIST, OFFER_NEEDS_ONLINE, offerNeedsOnline } from '@/lib/offers/rules';
 import { offerForBooking, type OfferOk } from './offer-tools';
-import { claimQuote, confirmedAfter, findOwnBooking, latestOpenQuote, linkQuoteBooking, ownBookings, releaseQuote, saveQuote, type OwnBooking, type Quote } from './booking-store';
+import { claimQuote, confirmedAfter, findOwnBooking, latestQuote, linkQuoteBooking, ownBookings, releaseQuote, saveQuote, type OwnBooking, type Quote } from './booking-store';
 import { findHotel } from './find';
 import type { ToolCtx } from './tools';
 import { markSideEffect } from './types';
@@ -154,6 +154,8 @@ const opt = (v: unknown) => (v === undefined || v === '' ? null : v);
 /** The room label createBooking stores: "Room" or "Room - Plan". */
 const roomLabel = (i: Record<string, any>) => (i.room_name ? (i.plan_name ? `${i.room_name} - ${i.plan_name}` : i.room_name) : null);
 
+const ALREADY_BOOKED = 'This quote was already booked – make a new quote if the customer wants another booking.';
+
 const DUPLICATE_NOTE = 'This booking was already made a moment ago – do not book it again. If the customer clearly wants an additional identical booking (e.g. a second room), call handover. If the customer wants to pay online and it is unpaid, call payment_link with this booking_ref.';
 
 /** A live WhatsApp booking from the last 30 minutes for exactly what this quote would book, for the same guest. */
@@ -171,9 +173,9 @@ function sameBooking(b: OwnBooking, q: Quote, guestName: string): boolean {
 }
 
 async function createTool(a: any, ctx: ToolCtx, handover: Handover) {
-  const q = await latestOpenQuote(ctx.conversationId);
+  const q = await latestQuote(ctx.conversationId);
   if (!q || q.conversation_id !== ctx.conversationId) return { error: 'No open quote. Make a quote with quote_booking, show it, and wait for YES.' };
-  if (q.used_at || q.used_booking_id) return { error: 'This quote was already booked.' };
+  if (q.used_at || q.used_booking_id) return { error: ALREADY_BOOKED };
   if (Date.parse(q.expires_at) < Date.now()) return { error: 'This quote expired. Make a new quote and ask the customer to confirm again.' };
   if (!(await confirmedAfter(ctx.conversationId, q.created_at))) return { error: 'Show the summary and wait for the customer to reply YES before booking.' };
   const name = String(a.guest_name || '').trim().slice(0, 200);
@@ -210,7 +212,7 @@ async function createTool(a: any, ctx: ToolCtx, handover: Handover) {
     // Keep the percent the customer said YES to in the quote.
     offer = { ...o, percent: Number(q.input.offer_percent) || o.percent };
   }
-  if (!(await claimQuote(q.id))) return { error: 'This quote was already booked.' };
+  if (!(await claimQuote(q.id))) return { error: ALREADY_BOOKED };
   if (offer && !(await claimCode(offer.codeId, offer.percent))) {
     await releaseQuote(q.id);
     return { error: 'This offer code was just used or has expired. Make a new quote.' };

@@ -21,7 +21,7 @@ vi.mock('@/lib/db', () => ({
 }));
 vi.mock('@/lib/wa-chat/booking-store', () => ({
   saveQuote: async (q: any) => { const row = { id: 'q1', created_at: '2026-10-13T10:00:00Z', expires_at: new Date(Date.now() + 60e3).toISOString(), used_at: null, used_booking_id: null, ...q }; h.quotes.push(row); return row; },
-  latestOpenQuote: async () => h.quote,
+  latestQuote: async () => h.quote,
   claimQuote: async () => true,
   releaseQuote: async (id: string) => { h.released.push(id); },
   linkQuoteBooking: async (...a: any[]) => { h.linked.push(a); },

@@ -19,7 +19,7 @@ vi.mock('@/lib/server-auth', () => ({
   }),
 }));
 
-import { claimCancellation, claimQuote, confirmedAfter, confirmedInOrder, findOwnBooking, latestOpenQuote, ownBookings, samePhone } from '@/lib/wa-chat/booking-store';
+import { claimCancellation, claimQuote, confirmedAfter, confirmedInOrder, findOwnBooking, latestQuote, ownBookings, samePhone } from '@/lib/wa-chat/booking-store';
 
 beforeEach(() => { h.rows = []; h.filters = []; h.claimRows = [{ id: 'q1' }]; h.single = null; });
 
@@ -65,14 +65,12 @@ describe('booking-store', () => {
     h.claimRows = [];
     expect(await claimCancellation('x1')).toBe(false);
   });
-  it('latestOpenQuote asks for the newest unused, unexpired quote of the conversation', async () => {
+  it('latestQuote asks for the newest quote of the conversation, used or expired included', async () => {
     h.single = { id: 'q9' };
-    expect((await latestOpenQuote('c1'))?.id).toBe('q9');
-    expect(h.filters).toContainEqual(['eq', 'conversation_id', 'c1']);
-    expect(h.filters).toContainEqual(['is', 'used_at', null]);
-    expect(h.filters.some((f) => f[0] === 'gt' && f[1] === 'expires_at')).toBe(true);
+    expect((await latestQuote('c1'))?.id).toBe('q9');
+    expect(h.filters).toEqual([['eq', 'conversation_id', 'c1']]);
     h.single = null;
-    expect(await latestOpenQuote('c1')).toBeNull();
+    expect(await latestQuote('c1')).toBeNull();
   });
   describe('confirmedInOrder', () => {
     const Q = '2026-10-13T10:00:00Z';

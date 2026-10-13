@@ -33,7 +33,7 @@ vi.mock('@/lib/db', () => ({
 }));
 vi.mock('@/lib/wa-chat/booking-store', () => ({
   saveQuote: async (q: any) => { const row = { id: 'q1', created_at: '2026-10-13T10:00:00Z', expires_at: new Date(Date.now() + 60e3).toISOString(), used_at: null, used_booking_id: null, ...q }; h.quotes.push(row); return row; },
-  latestOpenQuote: async (cid: string) => h.useSaved ? (h.quotes.filter((q) => q.conversation_id === cid && !q.used_at).at(-1) ?? null) : h.quote,
+  latestQuote: async (cid: string) => h.useSaved ? (h.quotes.filter((q) => q.conversation_id === cid).at(-1) ?? null) : h.quote,
   claimQuote: async (id: string) => { h.claimCalls.push(id); return h.claimed; },
   releaseQuote: async (id: string) => { h.released.push(id); },
   linkQuoteBooking: async (...a: any[]) => { h.linked.push(a); },
@@ -160,6 +160,23 @@ describe('create_booking', () => {
     expect((await run('create_booking', { payment: 'later', guest_name: 'Asha' })).error).toMatch(/expired/i);
     h.quote = goodQuote(); h.claimed = false;
     expect((await run('create_booking', { payment: 'later', guest_name: 'Asha' })).error).toMatch(/already/i);
+    expect(h.created).toEqual([]);
+  });
+  it('never falls back to an older open quote when the newest one was already booked', async () => {
+    h.useSaved = true;
+    h.quotes = [
+      goodQuote({ id: 'q1', created_at: '2026-10-13T10:00:00Z' }),
+      goodQuote({ id: 'q2', created_at: '2026-10-13T10:05:00Z', used_at: '2026-10-13T10:06:00Z', used_booking_id: 'b2' }),
+    ];
+    const r = await run('create_booking', { payment: 'later', guest_name: 'Asha' });
+    expect(r.error).toBe('This quote was already booked – make a new quote if the customer wants another booking.');
+    expect(h.claimCalls).toEqual([]);
+    expect(h.created).toEqual([]);
+  });
+  it('rejects the newest quote when it has expired, even if an older one is open', async () => {
+    h.useSaved = true;
+    h.quotes = [goodQuote({ id: 'q1' }), goodQuote({ id: 'q2', expires_at: '2000-01-01T00:00:00Z' })];
+    expect((await run('create_booking', { payment: 'later', guest_name: 'Asha' })).error).toMatch(/expired/i);
     expect(h.created).toEqual([]);
   });
   it("describes payment as the customer's explicit choice", () => {
