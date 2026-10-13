@@ -21,7 +21,7 @@ describe('tidyWhatsApp', () => {
     expect(t(t('## **Options**'))).toBe('*Options*');
   });
   it('headings keep urls and lone asterisks', () => {
-    expect(t('## Pay https://x.com/a*b')).toContain('https://x.com/a*b');
+    expect(t('## Pay https://x.com/a*b')).toBe('Pay https://x.com/a*b');
     expect(t('## Total 3 * 2')).toBe('*Total 3 * 2*');
   });
   it('keeps a bold heading and Hindi text intact', () => {
