@@ -6,6 +6,7 @@ import { todayIST } from './timing';
 import { roomSummaries } from '@/lib/availability/calc';
 import type { RoomAvailability } from '@/lib/availability/store';
 import { discounted, OFFER_NEEDS_ONLINE } from '@/lib/offers/rules';
+import { ALREADY_RECEIVED, matchEarlier, REQUEST_ID_COLUMNS } from './request-id';
 
 export const bookingSchema = z.object({
   category: z.enum(['hotel', 'taxi', 'trek', 'paragliding']),
@@ -44,14 +45,30 @@ export type CreateResult =
 const SOLD_OUT = 'Sold out for these dates';
 const UNIQUE_VIOLATION = '23505';
 
-/** The booking an earlier submit with this request id made, as a createBooking result (no notices are sent again). */
-async function earlierBooking(sb: any, requestId: string): Promise<CreateResult | null> {
-  const { data: b, error } = await sb.from('bookings').select('id, booking_ref, amount, payment_method, status')
-    .eq('client_request_id', requestId).maybeSingle();
+/** The room label createBooking stores: the room type, plus the plan when one was chosen. */
+const roomLabel = (d: Pick<BookingInput, 'room_name' | 'plan_name'>) =>
+  d.room_name ? (d.plan_name ? `${d.room_name} - ${d.plan_name}` : d.room_name) : null;
+
+/**
+ * The booking an earlier submit with this request id made, as a createBooking result (no notices are sent again).
+ * Handed back only when the phone and the booking details match; any other reuse of the id is refused with a
+ * neutral message that says nothing about the earlier booking.
+ */
+async function earlierBooking(sb: any, data: BookingInput): Promise<CreateResult | null> {
+  const { data: b, error } = await sb.from('bookings').select(REQUEST_ID_COLUMNS)
+    .eq('client_request_id', data.client_request_id).maybeSingle();
   if (error) { console.error('Booking request-id lookup failed:', error); return null; }
   if (!b) return null;
+  const match = matchEarlier(b, {
+    guest_phone: data.guest_phone, category: data.category,
+    property_id: data.property_id || null, taxi_route_id: data.taxi_route_id || null,
+    trek_id: data.trek_id || null, paragliding_id: data.paragliding_id || null,
+    check_in: data.check_in || null, check_out: data.check_out || null, activity_date: data.activity_date || null,
+    room_name: roomLabel(data), num_guests: data.num_guests,
+  });
+  if (match === 'other_request') return { ok: false, error: ALREADY_RECEIVED, status: 409 };
   // The earlier submit lost the last room (marked failed by the re-check): the retry is sold out too.
-  if (b.status === 'failed') return { ok: false, error: SOLD_OUT, status: 409 };
+  if (match === 'closed') return { ok: false, error: b.status === 'failed' ? SOLD_OUT : ALREADY_RECEIVED, status: 409 };
   return { ok: true, booking: { id: b.id, booking_ref: b.booking_ref }, amount: Number(b.amount) || 0, payment_method: b.payment_method, duplicate: true };
 }
 
@@ -65,15 +82,22 @@ export function dateProblem(d: Pick<BookingInput, 'category' | 'check_in' | 'che
 }
 
 export async function createBooking(data: BookingInput, opts: { userId: string | null; callerRole?: string | null; offer?: BookingOffer }): Promise<CreateResult> {
-  const problem = dateProblem(data);
-  if (problem) return { ok: false, error: problem, status: 400 };
-
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (url && key) {
     const { createClient } = await import('@supabase/supabase-js');
     const sb = createClient(url, key);
+
+    // A retried submit (lost response, double click) gets the booking it already made, before the date rules
+    // (the date may have passed since) and before any availability check.
+    if (data.client_request_id) {
+      const earlier = await earlierBooking(sb, data);
+      if (earlier) return earlier;
+    }
+
+    const problem = dateProblem(data);
+    if (problem) return { ok: false, error: problem, status: 400 };
 
     // Nor can a partner's email be used as the guest email (admins booking on someone's behalf excepted).
     if (data.guest_email && opts.callerRole !== 'admin') {
@@ -82,12 +106,6 @@ export async function createBooking(data: BookingInput, opts: { userId: string |
       if (partnerRows?.length) {
         return { ok: false, error: 'This email belongs to a partner account and can\'t be used for customer bookings. Please use a different email.', status: 400 };
       }
-    }
-
-    // A retried submit (lost response, double click) gets the booking it already made, before any availability check.
-    if (data.client_request_id) {
-      const earlier = await earlierBooking(sb, data.client_request_id);
-      if (earlier) return earlier;
     }
 
     // Price comes from the database row, never from the browser.
@@ -112,7 +130,7 @@ export async function createBooking(data: BookingInput, opts: { userId: string |
     const payment_method = data.payment_method === 'online' && (amount < 100 || !process.env.STRIPE_SECRET_KEY) ? 'offline' : data.payment_method;
     const commission_status = (payment_method === 'offline' || payment_method === 'pay_at_hotel') && commission_amount > 0
       ? 'pending' : 'not_applicable';
-    const room_label = data.room_name ? (data.plan_name ? `${data.room_name} - ${data.plan_name}` : data.room_name) : null;
+    const room_label = roomLabel(data);
 
     // Room calendar (spec 2026-10-13-room-availability, section 7). Only room types with a room count are checked;
     // the store is loaded only then, so untracked hotels make exactly the same queries as before.
@@ -168,7 +186,7 @@ export async function createBooking(data: BookingInput, opts: { userId: string |
     if (error) {
       // The same submit arrived twice at once and the other one saved first: return that booking.
       if (data.client_request_id && error.code === UNIQUE_VIOLATION) {
-        const earlier = await earlierBooking(sb, data.client_request_id);
+        const earlier = await earlierBooking(sb, data);
         if (earlier) return earlier;
       }
       console.error('Booking insert error:', error);
@@ -225,6 +243,8 @@ export async function createBooking(data: BookingInput, opts: { userId: string |
     if (payment_method !== 'online') inBackground('Booking emails', () => sendBookingEmails(booking.id));
     return { ok: true, booking: { id: booking.id, booking_ref: booking.booking_ref }, amount, payment_method };
   } else {
+    const problem = dateProblem(data);
+    if (problem) return { ok: false, error: problem, status: 400 };
     console.log('[Booking] No Supabase:', JSON.stringify(data, null, 2));
     return { ok: true, booking: { id: '', booking_ref: 'BKG-DEMO-00001' }, amount: 0, payment_method: data.payment_method, demo: true };
   }

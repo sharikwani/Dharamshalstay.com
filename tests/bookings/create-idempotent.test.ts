@@ -39,6 +39,13 @@ const input = (over: Record<string, any> = {}) => bookingSchema.parse({
   activity_date: '2099-10-21', payment_method: 'offline', ...over,
 });
 const settle = () => Promise.all(h.waited);
+/** The row the earlier submit of input() saved. */
+const earlierRow = (over: Record<string, any> = {}) => ({
+  id: 'b0', booking_ref: 'TRK-0', amount: 3000, payment_method: 'offline', status: 'pending',
+  guest_phone: '+91 99999 99999', category: 'trek', property_id: null, taxi_route_id: null, trek_id: TREK_ID, paragliding_id: null,
+  check_in: null, check_out: null, activity_date: '2099-10-21', room_name: null, num_guests: 2, ...over,
+});
+const ALREADY = 'We already received a booking from this form – please check your email/WhatsApp or contact us';
 
 beforeEach(() => {
   Object.assign(h, { inserted: [], lookups: [], emails: [], logs: [], waited: [], existing: null, insertError: null, emailsFail: false });
@@ -73,7 +80,7 @@ describe('createBooking client_request_id', () => {
   });
 
   it('returns the booking a retried request already made, with no insert and no notices', async () => {
-    h.existing = { id: 'b0', booking_ref: 'TRK-0', amount: 3000, payment_method: 'offline', status: 'pending' };
+    h.existing = earlierRow();
     const r = await createBooking(input({ client_request_id: RID }), { userId: null });
     expect(r).toEqual({ ok: true, booking: { id: 'b0', booking_ref: 'TRK-0' }, amount: 3000, payment_method: 'offline', duplicate: true });
     expect(h.inserted).toEqual([]);
@@ -84,7 +91,7 @@ describe('createBooking client_request_id', () => {
 
   it('a concurrent duplicate that loses the unique index returns the other booking, with no notices', async () => {
     let calls = 0;
-    const existing = { id: 'b0', booking_ref: 'TRK-0', amount: 3000, payment_method: 'online', status: 'pending' };
+    const existing = earlierRow({ payment_method: 'online' });
     Object.defineProperty(h, 'existing', { configurable: true, get: () => (calls++ === 0 ? null : existing), set: () => {} });
     h.insertError = { code: '23505', message: 'duplicate key value violates unique constraint "uq_bookings_client_request_id"' };
     const r = await createBooking(input({ client_request_id: RID }), { userId: null });
@@ -96,9 +103,47 @@ describe('createBooking client_request_id', () => {
   });
 
   it('a retry of a request that lost the last room is still sold out', async () => {
-    h.existing = { id: 'b0', booking_ref: 'TRK-0', amount: 3000, payment_method: 'offline', status: 'failed' };
+    h.existing = earlierRow({ status: 'failed' });
     expect(await createBooking(input({ client_request_id: RID }), { userId: null })).toEqual({ ok: false, error: 'Sold out for these dates', status: 409 });
     expect(h.inserted).toEqual([]);
+  });
+
+  it('the same id with a different phone is refused without revealing the booking', async () => {
+    h.existing = earlierRow({ guest_phone: '8888888888' });
+    const r = await createBooking(input({ client_request_id: RID }), { userId: null });
+    expect(r).toEqual({ ok: false, error: ALREADY, status: 409 });
+    expect(JSON.stringify(r)).not.toContain('TRK-0');
+    expect(h.inserted).toEqual([]);
+  });
+
+  it('the same id and phone with different dates is refused the same way', async () => {
+    h.existing = earlierRow({ activity_date: '2099-10-22' });
+    expect(await createBooking(input({ client_request_id: RID }), { userId: null })).toEqual({ ok: false, error: ALREADY, status: 409 });
+    h.existing = earlierRow({ num_guests: 3 });
+    expect(await createBooking(input({ client_request_id: RID }), { userId: null })).toEqual({ ok: false, error: ALREADY, status: 409 });
+    expect(h.inserted).toEqual([]);
+  });
+
+  it('a retry of a request whose booking was cancelled is refused, not re-created', async () => {
+    h.existing = earlierRow({ status: 'cancelled' });
+    expect(await createBooking(input({ client_request_id: RID }), { userId: null })).toEqual({ ok: false, error: ALREADY, status: 409 });
+    expect(h.inserted).toEqual([]);
+  });
+
+  it('a concurrent duplicate from a different phone is refused too', async () => {
+    let calls = 0;
+    const existing = earlierRow({ guest_phone: '8888888888' });
+    Object.defineProperty(h, 'existing', { configurable: true, get: () => (calls++ === 0 ? null : existing), set: () => {} });
+    h.insertError = { code: '23505', message: 'duplicate key' };
+    const r = await createBooking(input({ client_request_id: RID }), { userId: null });
+    Object.defineProperty(h, 'existing', { configurable: true, writable: true, value: null });
+    expect(r).toEqual({ ok: false, error: ALREADY, status: 409 });
+  });
+
+  it('a retry after the date passed still returns the booking (lookup comes before the date rules)', async () => {
+    h.existing = earlierRow({ activity_date: '2020-01-01' });
+    const r = await createBooking(input({ client_request_id: RID, activity_date: '2020-01-01' }), { userId: null });
+    expect(r).toMatchObject({ ok: true, duplicate: true, booking: { booking_ref: 'TRK-0' } });
   });
 
   it('a unique violation without a request id is still a failure', async () => {

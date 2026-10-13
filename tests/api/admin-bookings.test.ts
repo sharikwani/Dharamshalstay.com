@@ -8,6 +8,7 @@ let updateError: any = null;
 let listError: any = null;
 let recordInsertError: any = null;
 const updates: any[] = [];
+let requestLookups: any[] = [];
 const recordOps: any[] = [];
 const sendManualBookingEmails = vi.fn(async (..._a: unknown[]) => {});
 const sendCancellationEmails = vi.fn(async (..._a: unknown[]) => {});
@@ -19,8 +20,9 @@ const loadBookingView = vi.fn(async (id: string) => ({ id, item_name: 'x' }));
 
 function builder(table: string) {
   let inserting = false;
+  let byRequestId = false;
   const b: any = {
-    select: () => b, eq: () => b, in: () => b,
+    select: () => b, eq: (col: string) => { if (col === 'client_request_id') byRequestId = true; return b; }, in: () => b,
     // List query (WhatsApp messages): sort the fixture rows the way the database would.
     order: (col: string, opts: { ascending?: boolean } = {}) => {
       const rows = [...(fixtures[table + '_list'] || [])].sort((x: any, y: any) =>
@@ -44,7 +46,8 @@ function builder(table: string) {
       if (table === 'commission_records') { recordOps.push({ op: 'insert', row }); return { then: (res: any) => res({ error: recordInsertError }) }; }
       inserting = true; inserts.push({ table, row }); return b;
     },
-    maybeSingle: async () => ({ data: fixtures[table] ?? null, error: null }),
+    // Lookups by form request id answer from their own queue (the pre-insert check, then the 23505 re-read).
+    maybeSingle: async () => (byRequestId ? { data: requestLookups.shift() ?? null, error: null } : { data: fixtures[table] ?? null, error: null }),
     single: async () => inserting
       ? (insertError ? { data: null, error: insertError } : { data: { id: 'b1', booking_ref: 'TRK-1' }, error: null })
       : { data: fixtures[table] ?? null, error: null },
@@ -99,10 +102,18 @@ const base = {
   payment: { choice: 'partner_collects' },
   partner_id: '22222222-2222-4222-8222-222222222222',
 };
+const RID_ADMIN = '66666666-6666-4666-8666-666666666666';
+/** The row an earlier submit of `base` saved. */
+const earlierAdminRow = (over: Record<string, any> = {}) => ({
+  id: 'b0', booking_ref: 'TRK-0', amount: 4500, payment_method: 'offline', status: 'confirmed', guest_phone: '9876543210',
+  category: 'trek', property_id: null, taxi_route_id: null, trek_id: '11111111-1111-4111-8111-111111111111', paragliding_id: null, guide_id: null,
+  check_in: null, check_out: null, activity_date: '2099-01-10', room_name: null, num_guests: 3, ...over,
+});
 const post = async (body: unknown) => { const r = await POST(new Request('http://x', { method: 'POST', body: JSON.stringify(body) })); await settle(); return r; };
 
 beforeEach(() => {
   bg.waited.length = 0;
+  requestLookups = [];
   role = 'admin'; insertError = null; updateError = null; listError = null; recordInsertError = null; inserts.length = 0; updates.length = 0; recordOps.length = 0;
   sendManualBookingEmails.mockClear(); sendCancellationEmails.mockClear(); sendReassignedAwayEmail.mockClear();
   whatsappNewBooking.mockClear(); whatsappCancelled.mockClear(); whatsappReassignedAway.mockClear();
@@ -217,13 +228,48 @@ describe('POST /api/admin/bookings', () => {
   it('stores the form request id and answers a repeated submit with the booking it already made, sending nothing', async () => {
     const rid = '55555555-5555-4555-8555-555555555555';
     insertError = { code: '23505', message: 'duplicate key value violates unique constraint "uq_bookings_client_request_id"' };
-    fixtures.bookings = { id: 'b0', booking_ref: 'TRK-0' };
+    requestLookups = [null, earlierAdminRow()];
     const res = await post({ ...base, client_request_id: rid });
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ id: 'b0', booking_ref: 'TRK-0', duplicate: true });
     expect(inserts[0].row.client_request_id).toBe(rid);
     expect(sendManualBookingEmails).not.toHaveBeenCalled();
     expect(whatsappNewBooking).not.toHaveBeenCalled();
+  });
+
+  it('a repeated submit found before saving returns that booking without inserting again', async () => {
+    requestLookups = [earlierAdminRow()];
+    const res = await post({ ...base, client_request_id: RID_ADMIN });
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ id: 'b0', booking_ref: 'TRK-0', duplicate: true });
+    expect(inserts).toEqual([]);
+    expect(sendManualBookingEmails).not.toHaveBeenCalled();
+  });
+
+  it('the same form id with different details is refused and points the admin to the bookings list', async () => {
+    for (const over of [{ guest_phone: '9000000000' }, { activity_date: '2099-01-11' }, { num_guests: 4 }]) {
+      requestLookups = [earlierAdminRow(over)];
+      const res = await post({ ...base, client_request_id: RID_ADMIN });
+      expect(res.status).toBe(409);
+      expect((await res.json()).error).toMatch(/TRK-0.*bookings list/);
+    }
+    expect(inserts).toEqual([]);
+  });
+
+  it('the same form id whose booking was cancelled is refused', async () => {
+    requestLookups = [earlierAdminRow({ status: 'cancelled' })];
+    const res = await post({ ...base, client_request_id: RID_ADMIN });
+    expect(res.status).toBe(409);
+    expect((await res.json()).error).toMatch(/TRK-0.*cancelled/);
+    expect(inserts).toEqual([]);
+  });
+
+  it('a concurrent duplicate with different details is refused, not returned', async () => {
+    insertError = { code: '23505', message: 'duplicate key' };
+    requestLookups = [null, earlierAdminRow({ num_guests: 5 })];
+    const res = await post({ ...base, client_request_id: RID_ADMIN });
+    expect(res.status).toBe(409);
+    expect(sendManualBookingEmails).not.toHaveBeenCalled();
   });
 
   it('leaves the request id out when the form sends none', async () => {

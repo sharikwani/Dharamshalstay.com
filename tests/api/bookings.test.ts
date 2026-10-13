@@ -99,7 +99,8 @@ describe('POST /api/bookings', () => {
     const first = await (await post(payload({ client_request_id: rid }))).json();
     expect(inserted[0].client_request_id).toBe(rid);
     sendBookingEmails.mockClear();
-    earlier.row = { id: 'b1', booking_ref: 'BKG-1', amount: 6000, payment_method: 'offline', status: 'pending' };
+    // The row the first submit saved (phone and details match the retry).
+    earlier.row = { ...inserted[0], id: 'b1', booking_ref: 'BKG-1', amount: 6000, payment_method: 'offline', status: 'pending' };
     const res = await post(payload({ client_request_id: rid }));
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual(first);

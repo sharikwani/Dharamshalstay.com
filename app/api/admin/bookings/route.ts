@@ -7,6 +7,7 @@ import { sendManualBookingEmails } from '@/lib/manual-booking-emails';
 import { whatsappNewBooking } from '@/lib/booking-whatsapp';
 import { roomSummaries } from '@/lib/availability/calc';
 import { inBackground } from '@/lib/background';
+import { matchEarlier, REQUEST_ID_COLUMNS, type RequestDetails } from '@/lib/bookings/request-id';
 
 export const dynamic = 'force-dynamic';
 
@@ -54,6 +55,39 @@ const schema = z.object({
 
 const PAST = "That date is in the past. Tick 'allow past date' to record an earlier booking.";
 
+type Body = z.infer<typeof schema>;
+
+/** The details this form's booking is saved with, as the request-id check compares them. */
+function requestDetails(body: Body): RequestDetails {
+  const isHotel = body.category === 'hotel';
+  const items: Record<string, string | null> = { property_id: null, taxi_route_id: null, trek_id: null, paragliding_id: null, guide_id: null };
+  items[ITEM_COLUMN[body.category]] = body.item_id ?? null;
+  return {
+    guest_phone: body.guest_phone, category: body.category, ...items,
+    check_in: isHotel ? body.check_in ?? null : null,
+    check_out: isHotel ? body.check_out ?? null : null,
+    activity_date: isHotel ? null : body.activity_date ?? null,
+    room_name: body.room_name ? (body.plan_name ? `${body.room_name} - ${body.plan_name}` : body.room_name) : null,
+    num_guests: body.num_guests,
+  };
+}
+
+/**
+ * The booking this form already saved (lost response, double click). Returned only when it is the same booking;
+ * a different booking under the same form id, or one cancelled since, is refused so nothing is saved twice.
+ */
+async function earlierFromForm(sb: any, body: Body): Promise<NextResponse | null> {
+  const { data: b, error } = await sb.from('bookings').select(`${REQUEST_ID_COLUMNS}, guide_id`)
+    .eq('client_request_id', body.client_request_id).maybeSingle();
+  if (error) { console.error('Manual booking request-id lookup failed:', error); return null; }
+  if (!b) return null;
+  const match = matchEarlier(b, requestDetails(body));
+  if (match === 'same') return NextResponse.json({ id: b.id, booking_ref: b.booking_ref, duplicate: true });
+  throw new HttpError(409, match === 'closed'
+    ? `This form already saved booking ${b.booking_ref}, which is now ${b.status}. Check the bookings list, then reload the form to make a new booking.`
+    : `This form already saved booking ${b.booking_ref} with different details. Check the bookings list before saving again.`);
+}
+
 export async function POST(req: Request) {
   try {
     const { profile: admin } = await requireCaller(req, ['admin']);
@@ -65,6 +99,12 @@ export async function POST(req: Request) {
     const body = parsed.data;
     const category = body.category;
     const sb = serviceClient();
+
+    // A repeated submit of this form gets the booking it already made, before any other check.
+    if (body.client_request_id) {
+      const earlier = await earlierFromForm(sb, body);
+      if (earlier) return earlier;
+    }
 
     // The item being booked
     let item: Record<string, any> | null = null;
@@ -171,8 +211,8 @@ export async function POST(req: Request) {
     const { data: saved, error } = await sb.from('bookings').insert(row).select('id, booking_ref').single();
     if (error?.code === '23505' && body.client_request_id) {
       // This form was already submitted: return that booking and send no second emails / WhatsApp.
-      const { data: earlier } = await sb.from('bookings').select('id, booking_ref').eq('client_request_id', body.client_request_id).maybeSingle();
-      if (earlier) return NextResponse.json({ id: earlier.id, booking_ref: earlier.booking_ref, duplicate: true });
+      const earlier = await earlierFromForm(sb, body);
+      if (earlier) return earlier;
     }
     if (error || !saved) {
       console.error('Manual booking insert failed:', error);
