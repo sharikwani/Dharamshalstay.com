@@ -6,7 +6,20 @@ let updateError: any = null;
 let partnerType = 'taxi';
 let docStatuses = ['approved', 'pending'];
 let partnerStatus = 'pending_verification';
-const update = vi.fn((_patch: unknown) => ({ eq: async () => ({ error: updateError }) }));
+// Conditional updates: .eq() filters are recorded; .select('id') returns the rows that changed.
+let changedRows: any[] = [{ id: 'p1' }];
+const updateFilters: unknown[][] = [];
+const update = vi.fn((_patch: unknown) => {
+  const c: any = {
+    eq: (...a: unknown[]) => { updateFilters.push(a); return c; },
+    select: async () => ({ data: updateError ? null : changedRows, error: updateError }),
+    then: (res: any) => res({ error: updateError }),
+  };
+  return c;
+});
+// Each loadOnboarding call takes the next status from this queue (the last one repeats); 'throw' fails the load.
+let statusQueue: string[] = [];
+let emailWaits: Promise<unknown>[] = [];
 const sb = { from: () => ({ select: () => ({ in: () => ({ order: async () => ({ data: [], error: null }) }) }), update }) };
 
 vi.mock('@/lib/server-auth', async (orig) => {
@@ -21,21 +34,30 @@ vi.mock('@/lib/server-auth', async (orig) => {
   };
 });
 vi.mock('@/lib/partners/load', () => ({
-  loadOnboarding: async () => ({
-    profile: { id: 'p1', email: 'p@x.com', legal_name: 'Partner One', partner_status: partnerStatus, partner_type: partnerType },
+  loadOnboarding: async () => {
+    const next = statusQueue.length > 1 ? statusQueue.shift()! : statusQueue[0];
+    if (next === 'throw') throw new Error('slow database');
+    return {
+    profile: { id: 'p1', email: 'p@x.com', legal_name: 'Partner One', partner_status: next ?? partnerStatus, partner_type: partnerType },
     documents: docStatuses.map((status, i) => ({ id: 'd' + i, status })),
     agreements: [{ id: 'a1' }],
     missing: [],
-  }),
+    };
+  },
 }));
+vi.mock('@vercel/functions', () => ({ waitUntil: (p: Promise<unknown>) => { emailWaits.push(p); } }));
 vi.mock('@/lib/partners/emails', () => ({ emailPartnerDecision: (...a: unknown[]) => emailPartnerDecision(...(a as [])) }));
 
 import { GET } from '@/app/api/admin/partners/route';
 import { POST } from '@/app/api/admin/partners/[id]/route';
 
-beforeEach(() => { role = 'partner'; updateError = null; partnerType = 'taxi'; docStatuses = ['approved', 'pending']; partnerStatus = 'pending_verification'; emailPartnerDecision.mockClear(); update.mockClear(); });
+beforeEach(() => { changedRows = [{ id: 'p1' }]; updateFilters.length = 0; statusQueue = []; emailWaits = []; role = 'partner'; updateError = null; partnerType = 'taxi'; docStatuses = ['approved', 'pending']; partnerStatus = 'pending_verification'; emailPartnerDecision.mockClear(); update.mockClear(); });
 
-const post = (body: unknown) => POST(new Request('http://x', { method: 'POST', body: JSON.stringify(body) }), { params: { id: 'p1' } });
+const post = async (body: unknown) => {
+  const r = await POST(new Request('http://x', { method: 'POST', body: JSON.stringify(body) }), { params: { id: 'p1' } });
+  await Promise.all(emailWaits);
+  return r;
+};
 
 describe('admin partner routes', () => {
   it('returns 403 for a non-admin caller on GET /api/admin/partners', async () => {
@@ -87,6 +109,63 @@ describe('admin partner routes', () => {
     expect(res.status).toBe(500);
     expect((await res.json()).error).toBe('Could not save. Please try again.');
     expect(emailPartnerDecision).not.toHaveBeenCalled();
+    log.mockRestore();
+  });
+
+  it('a decision only changes the status it was made on', async () => {
+    role = 'admin';
+    docStatuses = ['approved', 'approved'];
+    await post({ action: 'verify' });
+    expect(updateFilters).toContainEqual(['partner_status', 'pending_verification']);
+  });
+
+  it('a decision another admin already made is not an error and sends no second email', async () => {
+    role = 'admin';
+    docStatuses = ['approved', 'approved'];
+    changedRows = [];
+    statusQueue = ['pending_verification', 'verified'];
+    const res = await post({ action: 'verify' });
+    expect(res.status).toBe(200);
+    expect((await res.json()).profile.partner_status).toBe('verified');
+    expect(emailPartnerDecision).not.toHaveBeenCalled();
+  });
+
+  it('a status changed meanwhile to something else is a 409 and sends no email', async () => {
+    role = 'admin';
+    changedRows = [];
+    statusQueue = ['pending_verification', 'suspended'];
+    const res = await post({ action: 'reject', note: 'Not a real company' });
+    expect(res.status).toBe(409);
+    expect(emailPartnerDecision).not.toHaveBeenCalled();
+  });
+
+  it('repeating a decision already in place changes nothing and sends no email', async () => {
+    role = 'admin';
+    partnerStatus = 'changes_requested';
+    const res = await post({ action: 'request_changes', note: 'Upload the RC again' });
+    expect(res.status).toBe(200);
+    expect(update).not.toHaveBeenCalled();
+    expect(emailPartnerDecision).not.toHaveBeenCalled();
+  });
+
+  it('a failing email never turns a saved decision into an error', async () => {
+    role = 'admin';
+    emailPartnerDecision.mockImplementationOnce(async () => { throw new Error('smtp down'); });
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const res = await post({ action: 'suspend', note: 'Complaints from guests' });
+    expect(res.status).toBe(200);
+    expect(emailPartnerDecision).toHaveBeenCalledTimes(1);
+    log.mockRestore();
+  });
+
+  it('a failing reload after a saved decision still answers success', async () => {
+    role = 'admin';
+    statusQueue = ['pending_verification', 'throw'];
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const res = await post({ action: 'reject', note: 'Not a real company' });
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ saved: true, reload: true });
+    expect(emailPartnerDecision).toHaveBeenCalledTimes(1);
     log.mockRestore();
   });
 

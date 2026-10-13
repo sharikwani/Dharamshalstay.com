@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { CheckCircle, XCircle, ExternalLink } from 'lucide-react';
 import { supabase, authFetch } from '@/lib/supabase';
@@ -12,6 +12,9 @@ export default function AdminPartnerDetail() {
   const [s, setS] = useState<any>(null);
   const [msg, setMsg] = useState('');
   const [note, setNote] = useState('');
+  // One action at a time: the ref blocks a second click before React re-renders, the state disables the buttons.
+  const [busy, setBusy] = useState(false);
+  const acting = useRef(false);
 
   const load = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser();
@@ -24,11 +27,21 @@ export default function AdminPartnerDetail() {
   useEffect(() => { load(); }, [load]);
 
   async function act(body: Record<string, unknown>) {
-    setMsg('');
-    const res = await authFetch('/api/admin/partners/' + id, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-    const data = await res.json();
-    if (!res.ok) { setMsg(data.error); return; }
-    setS(data);
+    if (acting.current) return;
+    acting.current = true; setBusy(true); setMsg('');
+    try {
+      const res = await authFetch('/api/admin/partners/' + id, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      const data = await res.json().catch(() => null);
+      if (!data) { setMsg('No clear answer from the server. Reload the page to see whether it was saved.'); return; }
+      if (!res.ok) { setMsg(data.error); return; }
+      // Saved, but the server could not send the fresh page data: load it separately.
+      if (data.reload) { await load(); return; }
+      setS(data);
+    } catch {
+      setMsg('Network problem. Reload the page to see whether it was saved.');
+    } finally {
+      acting.current = false; setBusy(false);
+    }
   }
 
   if (!s) return <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8"><p className="text-slate-500">{msg || 'Loading...'}</p></div>;
@@ -60,8 +73,8 @@ export default function AdminPartnerDetail() {
               </div>
               <div className="flex items-center gap-2">
                 {d.url && <a href={d.url} target="_blank" rel="noreferrer" className="text-brand-600 text-sm inline-flex items-center gap-1">Open <ExternalLink className="h-3.5 w-3.5" /></a>}
-                <button onClick={() => act({ action: 'approve_doc', document_id: d.id })} className="text-green-700 text-sm inline-flex items-center gap-1"><CheckCircle className="h-4 w-4" />Approve</button>
-                <button onClick={() => { const reason = window.prompt('Why is this document rejected? The partner will see this.'); if (reason) act({ action: 'reject_doc', document_id: d.id, reason }); }} className="text-red-600 text-sm inline-flex items-center gap-1"><XCircle className="h-4 w-4" />Reject</button>
+                <button disabled={busy} onClick={() => act({ action: 'approve_doc', document_id: d.id })} className="text-green-700 text-sm inline-flex items-center gap-1"><CheckCircle className="h-4 w-4" />Approve</button>
+                <button disabled={busy} onClick={() => { const reason = window.prompt('Why is this document rejected? The partner will see this.'); if (reason) act({ action: 'reject_doc', document_id: d.id, reason }); }} className="text-red-600 text-sm inline-flex items-center gap-1"><XCircle className="h-4 w-4" />Reject</button>
               </div>
             </div>
           ))}
@@ -87,22 +100,22 @@ export default function AdminPartnerDetail() {
         <h2 className="font-semibold">Decision</h2>
         <textarea value={note} onChange={(e) => setNote(e.target.value)} placeholder="Note to the partner (required to send back, reject or suspend)" className="w-full border border-slate-300 rounded-lg p-2 text-sm" rows={3} />
         <div className="flex flex-wrap gap-2">
-          <button onClick={() => act({ action: 'verify' })} className="bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-semibold">Approve partner</button>
-          <button onClick={() => act({ action: 'request_changes', note })} className="bg-amber-500 text-white px-4 py-2 rounded-lg text-sm font-semibold">Send back for changes</button>
-          <button onClick={() => act({ action: 'reject', note })} className="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold">Reject</button>
-          {p.partner_status === 'verified' && <button onClick={() => act({ action: 'suspend', note })} className="bg-slate-800 text-white px-4 py-2 rounded-lg text-sm font-semibold">Suspend</button>}
-          {p.partner_status === 'suspended' && <button onClick={() => act({ action: 'reinstate' })} className="bg-slate-800 text-white px-4 py-2 rounded-lg text-sm font-semibold">Reinstate</button>}
+          <button disabled={busy} onClick={() => act({ action: 'verify' })} className="bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-50">Approve partner</button>
+          <button disabled={busy} onClick={() => act({ action: 'request_changes', note })} className="bg-amber-500 text-white px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-50">Send back for changes</button>
+          <button disabled={busy} onClick={() => act({ action: 'reject', note })} className="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-50">Reject</button>
+          {p.partner_status === 'verified' && <button disabled={busy} onClick={() => act({ action: 'suspend', note })} className="bg-slate-800 text-white px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-50">Suspend</button>}
+          {p.partner_status === 'suspended' && <button disabled={busy} onClick={() => act({ action: 'reinstate' })} className="bg-slate-800 text-white px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-50">Reinstate</button>}
         </div>
         <div className="flex items-center gap-2 pt-2 border-t border-slate-100">
           <label className="text-sm">Commission %</label>
           <input type="number" min={0} max={100} step={0.5} defaultValue={p.commission_pct} id="commission" className="w-24 border border-slate-300 rounded px-2 py-1 text-sm" />
-          <button onClick={() => act({ action: 'set_commission', commission_pct: Number((document.getElementById('commission') as HTMLInputElement).value) })} className="text-sm text-brand-600 font-semibold">Save</button>
+          <button disabled={busy} onClick={() => act({ action: 'set_commission', commission_pct: Number((document.getElementById('commission') as HTMLInputElement).value) })} className="text-sm text-brand-600 font-semibold">Save</button>
         </div>
         <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100">
           <label className="text-sm">WhatsApp number</label>
           <input type="text" defaultValue={p.whatsapp_number ? p.whatsapp_number.replace(/^91/, '') : p.phone || ''} id="wa-number" className="w-40 border border-slate-300 rounded px-2 py-1 text-sm" />
           <label className="text-sm flex items-center gap-1.5"><input type="checkbox" defaultChecked={!!p.whatsapp_alerts} id="wa-alerts" />Send booking alerts</label>
-          <button onClick={() => act({ action: 'set_whatsapp', whatsapp_number: (document.getElementById('wa-number') as HTMLInputElement).value, whatsapp_alerts: (document.getElementById('wa-alerts') as HTMLInputElement).checked })} className="text-sm text-brand-600 font-semibold">Save</button>
+          <button disabled={busy} onClick={() => act({ action: 'set_whatsapp', whatsapp_number: (document.getElementById('wa-number') as HTMLInputElement).value, whatsapp_alerts: (document.getElementById('wa-alerts') as HTMLInputElement).checked })} className="text-sm text-brand-600 font-semibold">Save</button>
         </div>
       </section>
     </div>

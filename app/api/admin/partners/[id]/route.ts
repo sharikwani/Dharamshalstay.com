@@ -5,6 +5,7 @@ import { loadOnboarding } from '@/lib/partners/load';
 import { canVerify } from '@/lib/partners/admin-actions';
 import { whatsappProfilePatch } from '@/lib/partners/whatsapp';
 import { emailPartnerDecision } from '@/lib/partners/emails';
+import { inBackground } from '@/lib/background';
 
 export const dynamic = 'force-dynamic';
 
@@ -46,6 +47,26 @@ export async function POST(req: Request, { params }: { params: { id: string } })
       const { error } = await sb.from('profiles').update(patch).eq('id', p.id);
       if (error) { console.error(error); throw new HttpError(500, SAVE_FAILED); }
     };
+    type Decision = 'verified' | 'changes_requested' | 'rejected' | 'suspended';
+    let committed = false;
+    /**
+     * A status decision changes the row only if it still has the status this decision was made on, so a double
+     * click or two admins at once make one change and send one email. The email goes out after the response.
+     */
+    const decide = async (target: Decision, patch: Record<string, unknown>, note?: string) => {
+      if (p.partner_status === target) return; // already in place: nothing to change, nobody to email again
+      const { data: changed, error } = await sb.from('profiles').update({ ...patch, partner_status: target })
+        .eq('id', p.id).eq('partner_status', p.partner_status).select('id');
+      if (error) { console.error(error); throw new HttpError(500, SAVE_FAILED); }
+      if (!changed?.length) {
+        // Someone else changed the status meanwhile: fine if it is this same decision, otherwise ask to reload.
+        const now = await loadOnboarding(params.id);
+        if (now.profile.partner_status === target) return;
+        throw new HttpError(409, "This partner's status changed meanwhile. Reload the page and try again.");
+      }
+      committed = true;
+      inBackground('Partner decision email', () => (note ? emailPartnerDecision(p.email, name, target, note) : emailPartnerDecision(p.email, name, target)));
+    };
 
     if (a.action === 'approve_doc' || a.action === 'reject_doc') {
       const { data: d, error: lookupError } = await sb.from('partner_documents').select('id').eq('id', a.document_id).eq('partner_id', p.id).single();
@@ -62,16 +83,13 @@ export async function POST(req: Request, { params }: { params: { id: string } })
       if (p.partner_status !== 'pending_verification') throw new HttpError(409, 'Only partners waiting for review can be verified.');
       const reason = canVerify(state);
       if (reason) throw new HttpError(409, reason);
-      await saveProfile({ partner_status: 'verified', verified_at: now, verification_note: null });
-      await emailPartnerDecision(p.email, name, 'verified');
+      await decide('verified', { verified_at: now, verification_note: null });
     } else if (a.action === 'request_changes' || a.action === 'reject' || a.action === 'suspend') {
       const status = a.action === 'request_changes' ? 'changes_requested' : a.action === 'reject' ? 'rejected' : 'suspended';
-      await saveProfile({ partner_status: status, verification_note: a.note });
-      await emailPartnerDecision(p.email, name, status, a.note);
+      await decide(status, { verification_note: a.note }, a.note);
     } else if (a.action === 'reinstate') {
       if (p.partner_status !== 'suspended') throw new HttpError(409, 'Only suspended partners can be reinstated.');
-      await saveProfile({ partner_status: 'verified', verification_note: null });
-      await emailPartnerDecision(p.email, name, 'verified');
+      await decide('verified', { verification_note: null });
     } else if (a.action === 'set_commission') {
       await saveProfile({ commission_pct: a.commission_pct });
     } else if (a.action === 'set_whatsapp') {
@@ -79,6 +97,13 @@ export async function POST(req: Request, { params }: { params: { id: string } })
         rawNumber: a.whatsapp_number || p.whatsapp_number || p.phone, alerts: a.whatsapp_alerts, wasOn: !!p.whatsapp_alerts, by: 'admin',
       }));
     }
-    return NextResponse.json(await loadOnboarding(params.id));
+    try {
+      return NextResponse.json(await loadOnboarding(params.id));
+    } catch (e) {
+      // The decision is saved; a slow or failed reload must not report it as an error.
+      if (!committed) throw e;
+      console.error('Partner reload after a saved decision failed:', e);
+      return NextResponse.json({ saved: true, reload: true });
+    }
   } catch (e) { return jsonError(e); }
 }
