@@ -19,9 +19,16 @@ export async function POST(req: Request) {
     if (!parsed.success) throw new HttpError(400, 'Fill in vehicle type, model, number and seats.');
     const reg = normalizeVehicleReg(parsed.data.registration_no);
     if (!reg) throw new HttpError(400, 'Vehicle number should look like HP39A1234.');
-    const { data, error } = await serviceClient().from('vehicles')
+    const sb = serviceClient();
+    const { data, error } = await sb.from('vehicles')
       .insert({ ...parsed.data, registration_no: reg, partner_id: profile.id }).select('id').single();
-    if (error?.code === '23505') throw new HttpError(409, 'This vehicle number is already registered with us.');
+    if (error?.code === '23505') {
+      // A repeated add (double click, lost response) of the caller's own vehicle is a success; someone
+      // else's vehicle keeps the refusal and nothing about it is revealed.
+      const { data: existing } = await sb.from('vehicles').select('id, partner_id').eq('registration_no', reg).maybeSingle();
+      if (existing && existing.partner_id === profile.id) return NextResponse.json({ ok: true, id: existing.id, duplicate: true });
+      throw new HttpError(409, 'This vehicle number is already registered with us.');
+    }
     if (error) throw error;
     return NextResponse.json({ ok: true, id: data.id });
   } catch (e) { return jsonError(e); }
