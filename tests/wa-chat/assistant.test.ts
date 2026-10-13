@@ -23,6 +23,7 @@ describe('assistant', () => {
   });
   it('only books once the customer chose the payment themselves', () => {
     expect(SYSTEM_PROMPT).toContain('Only call create_booking after the customer has explicitly chosen pay online or pay later in their own words; if they have not, ask which they prefer. Never choose the payment for them.');
+    expect(SYSTEM_PROMPT).toContain("For a quote with an offer code, YES means pay online (pay later isn't allowed for offers).");
   });
   it('maps history roles and labels team messages', () => {
     expect(toOpenAiMessages([msg('customer', 'hi'), msg('ai', 'hello'), msg('admin', 'I can help'), msg('ai', 'x', 'system')])).toEqual([
