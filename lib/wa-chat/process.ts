@@ -56,7 +56,7 @@ export const NOTHING_TO_ADD = 'NOTHING_TO_ADD';
  * The sentinel token inside a reply: NOTHING_TO_ADD (any case, underscores or dashes) as a whole word, optionally
  * quoted, starred or code-fenced and followed by punctuation. Never consumes line breaks outside a fence.
  */
-const TOKEN = /(?:```[a-z]*[ \t]*\r?\n?)?[ \t]*[`*«»"'“”]*\bnothing[_-]to[_-]add\b[`*«»"'“”]*[.!]?[ \t]*(?:\r?\n?[ \t]*```)?/gi;
+const TOKEN = /(?:```[a-z]*[ \t]*\r?\n?)?[ \t]*[`*«»"'“”]*(?<![\w-])nothing[_-]to[_-]add(?![\w-])[`*«»"'“”]*[.!]?[ \t]*(?:\r?\n?[ \t]*```)?/gi;
 /** Natural-language "nothing to add" counts only as the entire reply (after quotes, fences and punctuation). */
 const WHOLE = /^nothing[ _-]*to[ _-]*add$/i;
 

@@ -327,6 +327,8 @@ describe('processConversation', () => {
       'Nothing to additionally pay at the hotel.',
       'Your room is booked.\n\nNothing to add for now — see you soon!\n\nRef DS-123',
       'Thanks!\n\n*Room* is free on 12 May.',
+      'We have nothing-to-add-on charges.',
+      'Note: nothing_to_address yet',
     ]) {
       it(`leaves ordinary text byte-identical: ${JSON.stringify(legit).slice(0, 40)}`, async () => {
         s.reply.mockResolvedValue(legit);
