@@ -59,7 +59,13 @@ function Inbox() {
   async function send() {
     if (!openId || !text.trim()) return;
     setBusy(true); setError('');
-    try { await api(`/api/admin/whatsapp/conversations/${openId}/messages`, { method: 'POST', body: JSON.stringify({ text }) }); setText(''); await loadThread(); }
+    try {
+      const r = await api(`/api/admin/whatsapp/conversations/${openId}/messages`, { method: 'POST', body: JSON.stringify({ text }) });
+      setText('');
+      // 202: WhatsApp may or may not have delivered it; the owner checks the chat before resending.
+      if (r?.unknown) setError(r.error);
+      await loadThread();
+    }
     catch (e: any) { setError(e.message); } finally { setBusy(false); }
   }
   async function setStatus(status: 'ai' | 'human' | 'closed') {
@@ -155,7 +161,7 @@ function Inbox() {
                       <p className="text-[11px] font-semibold text-slate-500 mb-0.5 flex items-center gap-1">
                         {m.author === 'customer' ? <UserRound className="h-3 w-3" /> : m.author === 'ai' ? <Bot className="h-3 w-3" /> : <Hand className="h-3 w-3" />}
                         {m.author === 'customer' ? 'Customer' : m.author === 'ai' ? 'AI assistant' : 'You'} · {time(m.created_at)}
-                        {m.author !== 'customer' && <span className={m.status === 'failed' ? 'text-red-600' : ''}> · {m.status}</span>}
+                        {m.author !== 'customer' && <span className={m.status === 'failed' ? 'text-red-600' : m.status === 'unknown' ? 'text-amber-600' : ''}> · {m.status}</span>}
                       </p>
                       {m.body}
                       {m.error && <p className="text-xs text-red-600 mt-1">{m.error}</p>}

@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { requireCaller, serviceClient, jsonError, HttpError } from '@/lib/server-auth';
 import { sendText } from '@/lib/whatsapp-cloud';
 import { saveOutbound, setStatus } from '@/lib/wa-chat/store';
+import { UNCONFIRMED } from '@/lib/wa-chat/types';
 
 export const dynamic = 'force-dynamic';
 const schema = z.object({ text: z.string().trim().min(1).max(4096) });
@@ -21,6 +22,12 @@ export async function POST(req: Request, { params }: { params: { id: string } })
       throw new HttpError(409, "More than 24 hours since the customer's last message. WhatsApp only allows template messages now.");
     }
     const r = await sendText(conv.phone, body.data.text);
+    if (!r.ok && r.unknown) {
+      // It may have reached the customer: log it as unknown and tell the owner to check before sending it again.
+      await saveOutbound(conv.id, 'admin', body.data.text, null, UNCONFIRMED, caller.profile.id, 'unknown');
+      await setStatus(conv.id, 'human', null);
+      return NextResponse.json({ ok: false, unknown: true, error: UNCONFIRMED }, { status: 202 });
+    }
     await saveOutbound(conv.id, 'admin', body.data.text, r.ok ? r.id : null, r.ok ? undefined : r.error, caller.profile.id);
     if (!r.ok) throw new HttpError(502, `WhatsApp did not accept the message: ${r.error || 'unknown error'}`);
     await setStatus(conv.id, 'human', null);

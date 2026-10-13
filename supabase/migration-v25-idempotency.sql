@@ -13,3 +13,8 @@ CREATE UNIQUE INDEX IF NOT EXISTS uq_partner_staff_partner_role_phone ON partner
 
 -- WhatsApp AI turn lock: a conversation is being answered until this time.
 ALTER TABLE whatsapp_conversations ADD COLUMN IF NOT EXISTS processing_until TIMESTAMPTZ;
+
+-- A WhatsApp send that timed out may still have been delivered: such chat messages are logged as 'unknown'.
+ALTER TABLE whatsapp_chat_messages DROP CONSTRAINT IF EXISTS whatsapp_chat_messages_status_check;
+ALTER TABLE whatsapp_chat_messages ADD CONSTRAINT whatsapp_chat_messages_status_check
+  CHECK (status IN ('received','sent','delivered','read','failed','unknown'));

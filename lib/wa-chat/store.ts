@@ -48,11 +48,15 @@ export async function setMessageBody(id: string, body: string) {
   if (error) console.error('WhatsApp chat: could not update message text:', error);
 }
 
-export async function saveOutbound(conversationId: string, author: 'ai' | 'admin', body: string, waMessageId: string | null, error?: string, adminId?: string) {
+/**
+ * Log a message we sent (or tried to). Status is 'sent' with an id, else 'failed'; pass status 'unknown' when the
+ * send may have gone through (see SendResult.unknown).
+ */
+export async function saveOutbound(conversationId: string, author: 'ai' | 'admin', body: string, waMessageId: string | null, error?: string, adminId?: string, status?: 'unknown') {
   const sb = serviceClient();
   const { error: e1 } = await sb.from('whatsapp_chat_messages').insert({
     conversation_id: conversationId, direction: 'out', author, body, kind: 'text', wa_message_id: waMessageId,
-    status: waMessageId ? 'sent' : 'failed', error: waMessageId ? null : error || 'Send failed', admin_id: adminId ?? null,
+    status: status ?? (waMessageId ? 'sent' : 'failed'), error: waMessageId ? null : error || 'Send failed', admin_id: adminId ?? null,
   });
   if (e1) console.error('WhatsApp chat: could not log outbound message:', e1);
   const patch: Record<string, unknown> = { last_message_at: now(), updated_at: now() };

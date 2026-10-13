@@ -24,3 +24,6 @@ export type Inbound = {
 export function markSideEffect(ctx: { sideEffects?: string[] }, what: string): void {
   (ctx.sideEffects ??= []).push(what);
 }
+
+/** Delivery not confirmed (a WhatsApp send timed out after it may have gone out). */
+export const UNCONFIRMED = 'Delivery not confirmed – check the chat before resending';

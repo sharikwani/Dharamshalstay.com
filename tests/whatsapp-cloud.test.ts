@@ -38,7 +38,18 @@ describe('sendTemplate', () => {
   it('never throws on network errors', async () => {
     vi.stubEnv('WHATSAPP_TOKEN', 'tok'); vi.stubEnv('WHATSAPP_PHONE_NUMBER_ID', '123');
     vi.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('offline'));
-    expect(await sendTemplate({ to: '919816000005', template: 'x', params: [] })).toEqual({ ok: false, error: 'offline' });
+    // The request may have reached Meta before the connection broke, so delivery is unknown (not a rejection).
+    expect(await sendTemplate({ to: '919816000005', template: 'x', params: [] })).toEqual({ ok: false, unknown: true, error: 'offline' });
+  });
+  it('a connection that never opened is a plain failure (nothing was sent)', async () => {
+    vi.stubEnv('WHATSAPP_TOKEN', 'tok'); vi.stubEnv('WHATSAPP_PHONE_NUMBER_ID', '123');
+    vi.spyOn(globalThis, 'fetch').mockRejectedValue(Object.assign(new TypeError('fetch failed'), { cause: { code: 'ENOTFOUND' } }));
+    expect(await sendTemplate({ to: '919816000005', template: 'x', params: [] })).toEqual({ ok: false, error: 'fetch failed' });
+  });
+  it('a rejection from Meta is not unknown', async () => {
+    vi.stubEnv('WHATSAPP_TOKEN', 'tok'); vi.stubEnv('WHATSAPP_PHONE_NUMBER_ID', '123');
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify({ error: { message: 'Bad number' } }), { status: 400 }));
+    expect(await sendTemplate({ to: '919816000005', template: 'x', params: [] })).not.toHaveProperty('unknown');
   });
   it('sends with a 5 second timeout signal and returns an error when it times out', async () => {
     vi.stubEnv('WHATSAPP_TOKEN', 'tok'); vi.stubEnv('WHATSAPP_PHONE_NUMBER_ID', '123');
@@ -47,6 +58,7 @@ describe('sendTemplate', () => {
     const r = await sendTemplate({ to: '919816000005', template: 'x', params: [] });
     expect(r.ok).toBe(false);
     expect((r as { error?: string }).error).toMatch(/timeout/i);
+    expect(r).toMatchObject({ unknown: true });
     expect((fetchMock.mock.calls[0][1] as RequestInit).signal).toBeInstanceOf(AbortSignal);
     expect(timeoutSpy).toHaveBeenCalledWith(5000);
   });
@@ -74,6 +86,14 @@ describe('chat helpers', () => {
     vi.stubGlobal('fetch', f);
     expect(await sendText('919800000001', 'Hello')).toEqual({ ok: true, id: 'wamid.9' });
     expect(JSON.parse(f.mock.calls[0][1].body)).toMatchObject({ to: '919800000001', type: 'text', text: { body: 'Hello' } });
+  });
+  it('sendText: a timeout or an accepted request without a message id is unknown, a rejection is not', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => { throw new DOMException('The operation was aborted due to timeout', 'TimeoutError'); }));
+    expect(await sendText('919800000001', 'Hello')).toMatchObject({ ok: false, unknown: true });
+    vi.stubGlobal('fetch', vi.fn(async () => new Response('not json', { status: 200 })));
+    expect(await sendText('919800000001', 'Hello')).toMatchObject({ ok: false, unknown: true });
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ error: { message: 'Re-engagement message' } }), { status: 400 })));
+    expect(await sendText('919800000001', 'Hello')).toEqual({ ok: false, error: 'Re-engagement message' });
   });
   it('markReadTyping never throws', async () => {
     vi.stubGlobal('fetch', vi.fn(async () => { throw new Error('down'); }));

@@ -12,7 +12,7 @@ function chain(table: string): any {
 }
 vi.mock('@/lib/server-auth', () => ({ serviceClient: () => ({ from: (t: string) => chain(t) }) }));
 
-import { saveInbound, getSettings } from '@/lib/wa-chat/store';
+import { saveInbound, saveOutbound, getSettings } from '@/lib/wa-chat/store';
 
 beforeEach(() => { db.calls = []; db.results = []; });
 
@@ -54,6 +54,13 @@ describe('store', () => {
     ];
     expect(await saveInbound(m, 'Hi', 'text')).toBeNull();
     expect(db.calls.some(([t, op]) => t === 'whatsapp_conversations' && op === 'update')).toBe(false);
+  });
+  it('saveOutbound logs sent, failed or an explicit status such as unknown', async () => {
+    await saveOutbound('c1', 'ai', 'a', 'wamid.1');
+    await saveOutbound('c1', 'ai', 'b', null, 'Bad number');
+    await saveOutbound('c1', 'ai', 'c', null, 'Delivery not confirmed', undefined, 'unknown');
+    const rows = db.calls.filter(([t, op]) => t === 'whatsapp_chat_messages' && op === 'insert').map((c) => c[2]);
+    expect(rows.map((r) => [r.status, r.error])).toEqual([['sent', null], ['failed', 'Bad number'], ['unknown', 'Delivery not confirmed']]);
   });
   it('getSettings falls back to off', async () => {
     db.results = [{ data: null, error: { message: 'x' } }];
