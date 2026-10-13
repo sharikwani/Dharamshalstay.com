@@ -69,3 +69,78 @@ export function createdAfter(b: { id?: string; created_at: string }, ref: { id: 
   if (tb !== tr) return tb > tr;
   return String(b.id ?? '') > ref.id;
 }
+
+export type RoomSummary = { key: string; tracked: boolean; total: number };
+
+/** Room types of a property row's `rooms` JSON. Tracked only when it has a room count (total_inventory > 0). */
+export function roomSummaries(rooms: unknown): RoomSummary[] {
+  const out: RoomSummary[] = [];
+  for (const r of Array.isArray(rooms) ? rooms : []) {
+    const key = typeof r?.name === 'string' ? r.name : '';
+    if (!key.trim() || out.some((o) => o.key === key)) continue;
+    const n = Math.floor(Number(r.total_inventory));
+    const tracked = Number.isFinite(n) && n > 0;
+    out.push({ key, tracked, total: tracked ? n : 0 });
+  }
+  return out;
+}
+
+export type LeftInput = { total: number; overrides: Record<string, number>; bookings: StayBooking[]; nights: string[]; now?: Date };
+
+const has = (o: object, k: string) => Object.prototype.hasOwnProperty.call(o, k);
+
+/** Rooms left per night (open minus holding bookings on that night) and for the whole stay (lowest night). */
+export function roomsLeft({ total, overrides, bookings, nights, now = new Date() }: LeftInput): { left: number; byNight: Record<string, number> } {
+  const holding = bookings.filter((b) => holdsRoom(b, now));
+  const byNight: Record<string, number> = {};
+  for (const n of nights) {
+    const open = has(overrides, n) ? overrides[n] : total;
+    const used = holding.filter((b) => !!b.check_in && !!b.check_out && b.check_in <= n && n < b.check_out).length;
+    byNight[n] = open - used;
+  }
+  const values = nights.map((n) => byNight[n]);
+  return { left: values.length ? Math.min(...values) : total, byNight };
+}
+
+export type DayCell = { date: string; open: number; booked: number; left: number; override: boolean };
+
+/** One calendar cell per date in `input.nights`. */
+export function dayCells(input: LeftInput): DayCell[] {
+  const { byNight } = roomsLeft(input);
+  return input.nights.map((date) => {
+    const override = has(input.overrides, date);
+    const open = override ? input.overrides[date] : input.total;
+    return { date, open, booked: open - byNight[date], left: byNight[date], override };
+  });
+}
+
+/** Every date of a 'YYYY-MM' month. */
+export function monthDates(month: string): string[] {
+  const first = `${month}-01`;
+  if (!isDate(first)) return [];
+  const out: string[] = [];
+  for (let d = first; d.startsWith(month); d = addDays(d, 1)) out.push(d);
+  return out;
+}
+
+export function shiftMonth(month: string, delta: number): string {
+  const [y, m] = month.split('-').map(Number);
+  const i = y * 12 + (m - 1) + delta;
+  return `${Math.floor(i / 12)}-${String((i % 12) + 1).padStart(2, '0')}`;
+}
+
+/** Blank cells before the 1st in a Monday-first week. */
+export function weekdayOffset(month: string): number {
+  return (new Date(`${month}-01T00:00:00Z`).getUTCDay() + 6) % 7;
+}
+
+export type RoomInfo = { tracked: boolean; left: number | null };
+export const FEW_LEFT = 3;
+
+/** What the hotel page shows on a room card for the chosen dates. */
+export function roomBadge(info: RoomInfo | undefined): { kind: 'sold_out' } | { kind: 'few'; left: number } | null {
+  if (!info?.tracked || info.left === null) return null;
+  if (info.left <= 0) return { kind: 'sold_out' };
+  if (info.left <= FEW_LEFT) return { kind: 'few', left: info.left };
+  return null;
+}
