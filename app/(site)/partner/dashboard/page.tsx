@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Building, Plus, Eye, Clock, CheckCircle, XCircle, AlertCircle, LogOut, ShoppingBag, DollarSign, Bell, BarChart3, Star, CalendarDays, BadgePercent } from 'lucide-react';
+import { Building, Plus, Eye, Clock, CheckCircle, XCircle, AlertCircle, LogOut, ShoppingBag, DollarSign, Bell, BarChart3, Star, CalendarDays, BadgePercent, BedDouble } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { formatPrice, formatDateTime, statusLabel, STATUS_COLORS, cn } from '@/lib/utils';
 
@@ -75,6 +75,11 @@ export default function PartnerDashboard() {
           {(!partnerType || partnerType === 'hotel') && (
             <Link href="/partner/availability" className="flex items-center gap-2 border border-brand-200 text-brand-700 px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-brand-50">
               <CalendarDays className="h-4 w-4" /> Availability
+            </Link>
+          )}
+          {(!partnerType || partnerType === 'hotel') && (
+            <Link href="/partner/rooms" className="flex items-center gap-2 border border-brand-200 text-brand-700 px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-brand-50">
+              <BedDouble className="h-4 w-4" /> Rooms
             </Link>
           )}
           {(!partnerType || partnerType === 'hotel') && (

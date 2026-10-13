@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, Save, Loader2, Trash2, Plus, X, LinkIcon, Check, Eye, ShieldCheck, ArrowUp, ArrowDown, Star, CalendarDays } from 'lucide-react';
+import { ArrowLeft, Save, Loader2, Trash2, Plus, X, LinkIcon, Check, Eye, ShieldCheck, ArrowUp, ArrowDown, Star, CalendarDays, BedDouble } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { slugify, formatPrice } from '@/lib/utils';
 
@@ -134,6 +134,9 @@ export default function AdminEditPropertyPage() {
         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <Link href={`/admin/properties/${params.id}/availability`} className="flex items-center gap-2 border border-brand-200 text-brand-700 px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-brand-50">
             <CalendarDays className="h-4 w-4" /> Room availability
+          </Link>
+          <Link href={`/admin/properties/${params.id}/rooms`} className="flex items-center gap-2 border border-brand-200 text-brand-700 px-4 py-2.5 rounded-lg font-semibold text-sm hover:bg-brand-50">
+            <BedDouble className="h-4 w-4" /> Rooms
           </Link>
           <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 bg-brand-600 text-white px-5 py-2.5 rounded-lg font-semibold hover:bg-brand-700 disabled:opacity-50">
             {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />} Save Changes
