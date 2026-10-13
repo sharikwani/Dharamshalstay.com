@@ -93,7 +93,8 @@ export default function NewPropertyPage() {
     try {
       const { data, error } = await insertProperty(status);
       // The admin is told once per listing, and only when it is (now) waiting for review.
-      if (data?.status === 'pending_review' && !notified.current) { notified.current = true; await notifyPropertySubmitted(data.id); }
+      // Marked only once the server took it, so a notice that failed is sent again by a later save in this wizard.
+      if (data?.status === 'pending_review' && !notified.current) notified.current = await notifyPropertySubmitted(data.id);
       if (!error) { router.push('/partner/dashboard'); return; }
       alert((status === 'draft' ? 'Error saving: ' : 'Error submitting: ') + error.message);
     } catch {

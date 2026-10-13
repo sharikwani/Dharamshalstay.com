@@ -44,18 +44,20 @@ export async function getUser() {
   return user;
 }
 
-/** Emails the admin that a listing is waiting for approval. Never blocks or fails the submit. */
-export async function notifyPropertySubmitted(id: string) {
+/** Emails the admin that a listing is waiting for approval. Never throws; true when the server accepted it. */
+export async function notifyPropertySubmitted(id: string): Promise<boolean> {
   try {
     const { data: { session } } = await supabase.auth.getSession();
-    if (!session) return;
-    await fetch('/api/partner/property-submitted', {
+    if (!session) return false;
+    const res = await fetch('/api/partner/property-submitted', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + session.access_token },
       body: JSON.stringify({ id }),
     });
+    return res.ok;
   } catch {
     // The listing is saved either way; it still shows in /admin/approvals.
+    return false;
   }
 }
 
