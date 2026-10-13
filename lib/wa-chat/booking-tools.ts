@@ -5,6 +5,8 @@ import { bookingSchema, createBooking, dateProblem } from '@/lib/bookings/create
 import { createCheckoutLink } from '@/lib/bookings/checkout';
 import { sendBookingEmails } from '@/lib/booking-emails';
 import { serviceClient } from '@/lib/server-auth';
+import { roomSummaries } from '@/lib/availability/calc';
+import { availabilityFor } from '@/lib/availability/store';
 import { claimQuote, confirmedAfter, findOwnBooking, latestOpenQuote, linkQuoteBooking, ownBookings, releaseQuote, saveQuote, type Quote } from './booking-store';
 import { findHotel } from './find';
 import type { ToolCtx } from './tools';
@@ -83,6 +85,24 @@ async function resolve(category: Category, a: any): Promise<Resolved> {
   };
 }
 
+/** Tracked hotel room with nothing left: an error naming the room types that still have space (null = go ahead). */
+async function soldOutCheck(hotel: Record<string, any>, input: Record<string, any>) {
+  const room = roomSummaries(hotel.rooms).find((x) => x.key === input.room_name);
+  if (!room?.tracked) return null;
+  const avail = await availabilityFor(hotel.id, input.check_in, input.check_out);
+  const mine = avail[room.key];
+  if (!mine?.tracked || mine.left >= 1) return null;
+  const active = ((hotel.rooms || []) as any[]).filter((x) => x?.is_active !== false).map((x) => x.name);
+  const open = Object.keys(avail).filter((k) => {
+    const v = avail[k];
+    return k !== room.key && active.includes(k) && (!v.tracked || v.left >= 1);
+  });
+  const when = `${input.check_in} to ${input.check_out}`;
+  return open.length
+    ? { error: `${room.key} is sold out for ${when}. Offer one of the rooms that still have space.`, rooms_available: open }
+    : { error: `${hotel.name} is fully booked for ${when}. Ask the customer for other dates.`, rooms_available: [] as string[] };
+}
+
 async function quoteTool(a: any, ctx: ToolCtx) {
   const category = a.category as Category;
   if (!['hotel', 'taxi', 'trek', 'paragliding'].includes(category)) return { error: 'Unknown category' };
@@ -93,6 +113,10 @@ async function quoteTool(a: any, ctx: ToolCtx) {
   const r = await resolve(category, a);
   if ('error' in r) return r;
   if (!UUID.test(String(r.entity.id || ''))) return { error: 'This item cannot be booked in chat. Offer create_enquiry instead.' };
+  if (category === 'hotel' && r.input.room_name) {
+    const sold = await soldOutCheck(r.entity, r.input);
+    if (sold) return sold;
+  }
   const { amount } = quoteBooking(category, r.entity, {
     num_guests: r.input.num_guests, check_in: r.input.check_in, check_out: r.input.check_out, room_name: r.input.room_name, plan_index: r.input.plan_index,
   });

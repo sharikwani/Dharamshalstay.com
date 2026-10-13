@@ -5,12 +5,20 @@ const HOTEL_ID = '11111111-1111-4111-8111-111111111111';
 const TREK_ID = '22222222-2222-4222-8222-222222222222';
 const h = vi.hoisted(() => ({
   quotes: [] as any[], quote: null as any, claimed: true, confirmed: true, useSaved: false, own: [] as any[], confirmCalls: [] as any[], created: [] as any[], createResult: null as any,
+  avail: {} as any, availCalls: [] as any[],
   checkout: { ok: true, url: 'https://pay/x', sessionId: 's' } as any, released: [] as any[], linked: [] as any[], updates: [] as any[], emails: [] as any[], handovers: [] as any[], commission: 0,
 }));
 vi.mock('@/lib/wa-chat/find', () => ({
   findHotel: async (n: string) => n.toLowerCase().includes('pine') ? {
     id: '11111111-1111-4111-8111-111111111111', name: 'Pine View', slug: 'pine-view', price_min: 2000,
     rooms: [{ name: 'Deluxe', base_price: 2500, is_active: true, rate_plans: [{ name: 'Room Only', price: 2500 }, { name: 'Breakfast', price: 3000 }] }],
+  } : n.toLowerCase().includes('cedar') ? {
+    id: '77777777-7777-4777-8777-777777777777', name: 'Cedar Lodge', slug: 'cedar-lodge', price_min: 1800,
+    rooms: [
+      { name: 'Standard', base_price: 1800, total_inventory: 2, is_active: true, rate_plans: [] },
+      { name: 'Deluxe', base_price: 2600, total_inventory: 1, is_active: true, rate_plans: [] },
+      { name: 'Suite', base_price: 5000, total_inventory: 1, is_active: false, rate_plans: [] },
+    ],
   } : null,
 }));
 vi.mock('@/lib/db', () => ({
@@ -40,6 +48,7 @@ vi.mock('@/lib/bookings/create', async (orig) => {
 vi.mock('@/lib/bookings/checkout', () => ({ createCheckoutLink: async () => { if (h.checkout === 'throw') throw new Error('stripe down'); return h.checkout; } }));
 vi.mock('@/lib/booking-emails', () => ({ sendBookingEmails: async (id: string) => { h.emails.push(id); } }));
 vi.mock('@/lib/server-auth', () => ({ serviceClient: () => ({ from: () => ({ select: () => ({ eq: () => ({ single: async () => ({ data: { commission_amount: h.commission } }) }) }), update: (row: any) => ({ eq: async () => { h.updates.push(row); return { error: null }; } }) }) }) }));
+vi.mock('@/lib/availability/store', () => ({ availabilityFor: async (...a: any[]) => { h.availCalls.push(a); return h.avail; } }));
 
 import { BOOKING_TOOL_DEFS, runBookingTool } from '@/lib/wa-chat/booking-tools';
 
@@ -53,7 +62,7 @@ const goodQuote = (over: any = {}) => ({
 });
 
 beforeEach(() => {
-  Object.assign(h, { quotes: [], quote: goodQuote(), claimed: true, confirmed: true, useSaved: false, own: [], confirmCalls: [], created: [], released: [], linked: [], updates: [], emails: [], handovers: [], commission: 0,
+  Object.assign(h, { avail: {}, availCalls: [], quotes: [], quote: goodQuote(), claimed: true, confirmed: true, useSaved: false, own: [], confirmCalls: [], created: [], released: [], linked: [], updates: [], emails: [], handovers: [], commission: 0,
     createResult: { ok: true, booking: { id: 'b1', booking_ref: 'TRK-9' }, amount: 3000, payment_method: 'offline' },
     checkout: { ok: true, url: 'https://pay/x', sessionId: 's' } });
   vi.stubEnv('STRIPE_SECRET_KEY', 'sk_test');
@@ -218,5 +227,40 @@ describe('payment_link and my_bookings', () => {
   });
   it('returns null for tools it does not own', async () => {
     expect(await run('search_hotels', {})).toBeNull();
+  });
+});
+
+describe('quote_booking room availability', () => {
+  const CEDAR_ID = '77777777-7777-4777-8777-777777777777';
+  const ask = (room: string) => run('quote_booking', { category: 'hotel', name: 'Cedar Lodge', check_in: '2099-10-21', check_out: '2099-10-23', guests: 2, room_name: room });
+
+  it('refuses a sold-out room and lists the active rooms that still have space', async () => {
+    h.avail = { Standard: { tracked: true, left: 0 }, Deluxe: { tracked: true, left: 1 }, Suite: { tracked: true, left: 1 } };
+    const r = await ask('Standard');
+    expect(r.error).toBe('Standard is sold out for 2099-10-21 to 2099-10-23. Offer one of the rooms that still have space.');
+    expect(r.rooms_available).toEqual(['Deluxe']);
+    expect(h.availCalls).toEqual([[CEDAR_ID, '2099-10-21', '2099-10-23']]);
+    expect(h.quotes).toEqual([]);
+  });
+
+  it('says the hotel is fully booked when no active room has space', async () => {
+    h.avail = { Standard: { tracked: true, left: 0 }, Deluxe: { tracked: true, left: 0 }, Suite: { tracked: true, left: 1 } };
+    const r = await ask('Deluxe');
+    expect(r.error).toBe('Cedar Lodge is fully booked for 2099-10-21 to 2099-10-23. Ask the customer for other dates.');
+    expect(r.rooms_available).toEqual([]);
+    expect(h.quotes).toEqual([]);
+  });
+
+  it('quotes a tracked room that has space', async () => {
+    h.avail = { Standard: { tracked: true, left: 1 }, Deluxe: { tracked: true, left: 0 }, Suite: { tracked: true, left: 0 } };
+    const r = await ask('Standard');
+    expect(r.amount).toBe(3600);
+    expect(h.quotes).toHaveLength(1);
+  });
+
+  it('does not look up availability for room types without a room count', async () => {
+    await run('quote_booking', { category: 'hotel', name: 'Pine View', check_in: '2099-10-24', check_out: '2099-10-26', guests: 2, room_name: 'deluxe' });
+    expect(h.availCalls).toEqual([]);
+    expect(h.quotes).toHaveLength(1);
   });
 });
