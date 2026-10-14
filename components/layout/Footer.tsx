@@ -25,7 +25,7 @@ export default function Footer({ lang }: { lang: Lang }) {
 
   return (
     <footer className="bg-slate-900 text-slate-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14">
+      <div className="max-w-[2400px] mx-auto px-4 sm:px-6 lg:px-10 py-14">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           <div>
             <Link href={href('/')} className="flex items-center gap-2 mb-4"><Mountain className="h-6 w-6 text-orange-500" /><span className="text-lg font-heading font-bold text-white">Dharamshala Stay</span></Link>

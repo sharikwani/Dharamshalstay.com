@@ -21,7 +21,7 @@ export default function GaddiPainting({ src, alt, spots }: { src: string; alt: s
   const tipPos = open === null ? null : { left: Math.min(78, Math.max(22, SPOTS[open][0])) + '%', top: Math.max(SPOTS[open][1], 34) + '%' };
 
   return (
-    <figure className="frame rv" style={{ margin: 0 }}>
+    <figure className="frame rv" style={{ marginBlock: 0 }}>
       <div className="frame-in" id="gframe">
         <Image src={src} alt={alt} fill sizes="(max-width:1240px) 100vw, 1200px" />
         {spots.map((s, i) => (

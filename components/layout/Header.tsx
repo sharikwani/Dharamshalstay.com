@@ -23,6 +23,9 @@ export default function Header() {
   const [user, setUser] = useState(false);
   const { t, href } = useT();
   const pathname = usePathname();
+  // The homepage runs edge to edge on wide screens; other pages keep the reading width.
+  const isHome = pathname === '/' || pathname === '/hi';
+  const width = isHome ? 'max-w-[2400px] px-4 sm:px-6 lg:px-10' : 'max-w-7xl px-4 sm:px-6';
 
   const navLinks = [
     { label: t.nav.hotels, href: '/hotels' },
@@ -44,7 +47,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-brand-900 text-white shadow-lg">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <div className={`${width} mx-auto`}>
         <div className="flex items-center justify-between h-16 gap-3">
           <Link href={href('/')} className="flex items-center gap-2 group shrink-0">
             <Mountain className="h-7 w-7 text-orange-500" />
