@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { Metadata } from 'next';
 import { Breadcrumb } from '@/components/ui/Cards';
 import { photoCredits } from '@/data/photo-credits';
+import { gaddiPhotos } from '@/data/gaddi-photos';
 import { generateSEO } from '@/lib/seo';
 
 export const metadata: Metadata = generateSEO({
@@ -32,6 +33,29 @@ export default function PhotoCreditsPage() {
               <p className="text-slate-600">
                 Photo by {c.author} &middot;{' '}
                 {c.license_url ? <a href={c.license_url} target="_blank" rel="noopener noreferrer license" className="underline">{c.license}</a> : c.license}
+              </p>
+              <a href={c.source} target="_blank" rel="noopener noreferrer" className="text-brand-600 underline break-all">Source on Wikimedia Commons</a>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <h2 className="text-2xl font-heading font-bold mt-12 mb-3">Gaddi life</h2>
+      <p className="text-slate-600 mb-6 max-w-3xl">
+        Photos of Gaddi shepherds and the Gaddan on our homepage, also from Wikimedia Commons. The Kangra-style painting of
+        Gaddi life on the homepage is an illustration made with AI for Dharamshala Stay, not a photograph.
+      </p>
+      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        {gaddiPhotos.map((c) => (
+          <li key={c.file} className="flex gap-4 bg-white border border-slate-200 rounded-xl p-3">
+            <div className="relative w-28 h-20 shrink-0 rounded-lg overflow-hidden bg-slate-100">
+              <Image src={'/images/gaddi/' + c.file + '.jpg'} alt={c.title} fill className="object-cover" sizes="112px" />
+            </div>
+            <div className="text-sm min-w-0">
+              <p className="font-medium text-slate-900">{c.title}</p>
+              <p className="text-slate-600">
+                Photo by {c.author} &middot;{' '}
+                <a href={c.license_url} target="_blank" rel="noopener noreferrer license" className="underline">{c.license}</a>
               </p>
               <a href={c.source} target="_blank" rel="noopener noreferrer" className="text-brand-600 underline break-all">Source on Wikimedia Commons</a>
             </div>

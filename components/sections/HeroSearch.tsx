@@ -1,7 +1,7 @@
 'use client';
 import { useId, useRef, useState, type FormEvent, type KeyboardEvent, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
-import { Search, Building, Mountain, Car, Wind } from 'lucide-react';
+import { Search, Building, Mountain, Car, Wind, ShieldCheck, MessageCircle } from 'lucide-react';
 import { getMinDate, getMinCheckoutDate, enforceCheckIn, enforceCheckOut, enforceActivityDate } from '@/lib/date-helpers';
 import { useT } from '@/lib/i18n/client';
 
@@ -18,12 +18,13 @@ const PICKUPS = ['Gaggal Airport', 'Pathankot Railway Station', 'Chakki Bank Rai
 const DROPS = ['Dharamshala', 'McLeod Ganj', 'Bir Billing', 'Palampur', 'Manali', 'Dalhousie', 'Delhi', 'Chandigarh', 'Amritsar'];
 const DESTINATIONS = ['dharamshala', 'mcleod-ganj', 'bhagsu', 'dharamkot', 'naddi'];
 
-const INPUT = 'w-full h-11 px-3 border border-slate-300 rounded-lg text-sm bg-white text-slate-800 focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none';
+// Styled by .book .field in components/home/home.css.
+const INPUT = '';
 
-function Field({ id, label, children }: { id: string; label: string; children: ReactNode }) {
+function Field({ id, label, full, children }: { id: string; label: string; full?: boolean; children: ReactNode }) {
   return (
-    <div className="flex-1 min-w-0">
-      <label htmlFor={id} className="text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1 block">{label}</label>
+    <div className={'field' + (full ? ' full' : '')}>
+      <label htmlFor={id}>{label}</label>
       {children}
     </div>
   );
@@ -33,6 +34,7 @@ export default function HeroSearch() {
   const router = useRouter();
   const { t, href } = useT();
   const s = t.search;
+  const v = t.home.v2;
   const place = (p: string) => t.taxiPlaces[p] || p;
   const uid = useId();
   const id = (name: string) => `${uid}-${name}`;
@@ -109,8 +111,8 @@ export default function HeroSearch() {
     router.push(href(path) + (qs ? '?' + qs : '') + hash, hash ? { scroll: false } : undefined);
   }
 
-  const dateField = (label: string) => (
-    <Field id={id('date')} label={label}>
+  const dateField = (label: string, full?: boolean) => (
+    <Field id={id('date')} label={label} full={full}>
       <input id={id('date')} type="date" value={activityDate}
         onChange={(e) => handleActivityDateChange(e.target.value)}
         onBlur={() => { if (activityDate) setActivityDate(enforceActivityDate(activityDate)); }}
@@ -119,8 +121,9 @@ export default function HeroSearch() {
   );
 
   return (
-    <div className="bg-white rounded-2xl shadow-2xl shadow-brand-950/30 max-w-4xl overflow-hidden">
-      <div role="tablist" aria-label={s.search} className="flex border-b border-slate-200 overflow-x-auto scrollbar-hide">
+    <div className="book">
+      <div className="book-h"><p>{v.panelTitle}</p><span>{v.panelNote}</span></div>
+      <div role="tablist" aria-label={s.search} className="tabs">
         {TABS.map((tab, i) => {
           const selected = activeTab === tab.key;
           return (
@@ -128,20 +131,18 @@ export default function HeroSearch() {
               ref={(el) => { tabRefs.current[i] = el; }}
               aria-selected={selected} aria-controls={id('panel')} tabIndex={selected ? 0 : -1}
               onClick={() => setActiveTab(tab.key)} onKeyDown={(e) => handleTabKey(e, i)}
-              className={`flex items-center gap-2 px-5 py-3.5 text-sm font-semibold border-b-2 -mb-px transition-colors whitespace-nowrap ${
-                selected ? 'border-brand-600 text-brand-700 bg-brand-50/60' : 'border-transparent text-slate-600 hover:text-brand-700'
-              }`}>
-              <tab.icon className="h-4 w-4" aria-hidden="true" />{s.tabs[tab.key]}
+              className="tab">
+              <tab.icon className="h-5 w-5" aria-hidden="true" />{s.tabs[tab.key]}
             </button>
           );
         })}
       </div>
 
-      <form id={id('panel')} role="tabpanel" aria-labelledby={id('tab-' + activeTab)} onSubmit={handleSearch}
-        className="p-4 sm:p-5 flex flex-col sm:flex-row gap-3">
+      <form id={id('panel')} role="tabpanel" aria-labelledby={id('tab-' + activeTab)} onSubmit={handleSearch}>
+        <div className="fields">
         {activeTab === 'hotels' && (
           <>
-            <Field id={id('destination')} label={s.destination}>
+            <Field id={id('destination')} label={s.destination} full>
               <select id={id('destination')} value={destination} onChange={(e) => setDestination(e.target.value)} className={INPUT}>
                 <option value="">{s.allDestinations}</option>
                 {DESTINATIONS.map((d) => <option key={d} value={d}>{t.places[d]}</option>)}
@@ -176,21 +177,21 @@ export default function HeroSearch() {
                 {DROPS.map((p) => <option key={p} value={p}>{place(p)}</option>)}
               </select>
             </Field>
-            {dateField(s.pickupDate)}
+            {dateField(s.pickupDate, true)}
           </>
         )}
 
         {(activeTab === 'treks' || activeTab === 'paragliding') && (
           <>
             {activeTab === 'treks' ? (
-              <Field id={id('trek')} label={s.trek}>
+              <Field id={id('trek')} label={s.trek} full>
                 <select id={id('trek')} value={trek} onChange={(e) => setTrek(e.target.value)} className={INPUT}>
                   <option value="">{s.allTreks}</option>
                   {Object.entries(s.trekOptions).map(([slug, label]) => <option key={slug} value={slug}>{label}</option>)}
                 </select>
               </Field>
             ) : (
-              <Field id={id('package')} label={s.pkg}>
+              <Field id={id('package')} label={s.pkg} full>
                 <select id={id('package')} value={pkg} onChange={(e) => setPkg(e.target.value)} className={INPUT}>
                   <option value="">{s.allPackages}</option>
                   {Object.entries(s.pkgOptions).map(([key, label]) => <option key={key} value={key}>{label}</option>)}
@@ -206,11 +207,13 @@ export default function HeroSearch() {
           </>
         )}
 
-        <div className="sm:self-end">
-          <button type="submit"
-            className="flex items-center justify-center gap-2 bg-brand-600 text-white px-8 h-11 rounded-lg font-semibold hover:bg-brand-700 transition-colors text-sm w-full sm:w-auto">
-            <Search className="h-4 w-4" aria-hidden="true" /> {s.search}
-          </button>
+        </div>
+        <button type="submit" className="btn btn-sf">
+          <Search className="h-5 w-5" aria-hidden="true" /> {s.search}
+        </button>
+        <div className="book-note">
+          <span><ShieldCheck aria-hidden="true" />{v.panelChecked}</span>
+          <span><MessageCircle aria-hidden="true" />{v.panelHelp}</span>
         </div>
       </form>
     </div>

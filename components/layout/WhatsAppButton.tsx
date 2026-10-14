@@ -1,6 +1,8 @@
 import { getWhatsAppLink } from '@/lib/utils';
 import { getDict } from '@/lib/i18n/dict';
 import type { Lang } from '@/lib/i18n/core';
+import WhatsAppGreeting from './WhatsAppGreeting';
+import './whatsapp.css';
 
 export function WhatsAppIcon({ className }: { className?: string }) {
   return (
@@ -13,9 +15,11 @@ export function WhatsAppIcon({ className }: { className?: string }) {
 export default function WhatsAppButton({ lang }: { lang: Lang }) {
   const h = getDict(lang).home;
   return (
-    <a href={getWhatsAppLink(h.ctaMsg)} target="_blank" rel="noopener noreferrer" aria-label={h.ctaWhatsApp}
-      className="fixed bottom-5 right-5 z-50 flex items-center gap-2 bg-green-700 hover:bg-green-800 text-white p-3.5 sm:pl-4 sm:pr-5 sm:py-3 rounded-full shadow-lg hover:shadow-xl transition-all">
-      <WhatsAppIcon className="h-6 w-6" /><span className="text-sm font-semibold hidden sm:inline">{h.ctaWhatsApp}</span>
-    </a>
+    <div className="wa-fab">
+      <WhatsAppGreeting title={h.v2.waTitle} text={h.v2.waGreeting} closeLabel={h.v2.waClose} />
+      <a href={getWhatsAppLink(h.ctaMsg)} target="_blank" rel="noopener noreferrer" aria-label={h.ctaWhatsApp} className="wa-btn">
+        <WhatsAppIcon className="h-8 w-8" />
+      </a>
+    </div>
   );
 }

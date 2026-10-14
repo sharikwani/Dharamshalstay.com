@@ -1,278 +1,317 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Shield, HeadphonesIcon, Mountain, Car, ArrowRight, Star, MessageCircle, Building, Wind, Heart, Sparkles, IndianRupee, Compass, Palette, Coffee, Check } from 'lucide-react';
-import { DestinationCard, SectionHeading, FAQSection, BlogCard } from '@/components/ui/Cards';
+import { Shield, HeadphonesIcon, ArrowRight, Star, MessageCircle, IndianRupee, Heart, Building, Compass, BedDouble, Mountain, BookOpen, MapPin } from 'lucide-react';
+import { FAQSection, BlogCard } from '@/components/ui/Cards';
 import HeroSearch from '@/components/sections/HeroSearch';
+import HeroAtmosphere from '@/components/home/HeroAtmosphere';
+import HeroClock from '@/components/home/HeroClock';
+import StaySlider from '@/components/home/StaySlider';
+import TrekScene from '@/components/home/TrekScene';
+import GaddiPainting from '@/components/home/GaddiPainting';
+import HomeEffects from '@/components/home/HomeEffects';
 import JsonLd from '@/components/seo/JsonLd';
 import PreferredSourceButton from '@/components/seo/PreferredSourceButton';
 import { getDestinations, getPublishedProperties, getPublishedTreks } from '@/lib/db';
 import { blogPosts, getFeaturedBlogPosts } from '@/data/blog';
+import { gaddiPhotos } from '@/data/gaddi-photos';
 import { faqSchema } from '@/lib/seo';
-import { getWhatsAppLink } from '@/lib/utils';
+import { formatPrice, getWhatsAppLink } from '@/lib/utils';
+import { pickFeaturedStays } from '@/lib/home-helpers';
+import { placeImage } from '@/lib/place-images';
+import { display, mono } from '@/lib/fonts';
 import { UNSPLASH_IMAGES } from '@/types';
 import { serverT } from '@/lib/i18n/server';
 import { fmt } from '@/lib/i18n/dict';
 import { getHomepageFAQs, localizeDestination, localizePost } from '@/lib/i18n/content';
 import type { Lang } from '@/lib/i18n/core';
+import '@/components/home/home.css';
 
 const TRUST_ICONS = [IndianRupee, Shield, HeadphonesIcon, Heart];
 const WHY_ICONS = [Building, Compass, IndianRupee];
 const EXP = [
-  { icon: Mountain, href: '/treks', image: UNSPLASH_IMAGES.trek1 },
-  { icon: Wind, href: '/paragliding', image: UNSPLASH_IMAGES.paragliding },
-  { icon: Car, href: '/taxi', image: UNSPLASH_IMAGES.taxi },
+  { href: '/treks', image: UNSPLASH_IMAGES.trek1 },
+  { href: '/paragliding', image: UNSPLASH_IMAGES.paragliding },
+  { href: '/taxi', image: UNSPLASH_IMAGES.taxi },
 ];
-const SEASON_ICONS = {
-  spring: [Mountain, Wind, Coffee, Palette],
-  monsoon: [Wind, IndianRupee, Coffee, Mountain],
-  autumn: [Mountain, Wind, Palette, Coffee],
-  winter: [Mountain, Palette, Coffee, IndianRupee],
-};
-
-/** Left-aligned section title with a "view all" link beside it on wider screens. */
-function SectionHeader({ title, subtitle, action }: { title: string; subtitle?: string; action?: { href: string; label: string } }) {
-  return (
-    <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-8 lg:mb-10">
-      <div className="max-w-2xl">
-        <h2 className="text-2xl sm:text-3xl font-heading font-bold text-slate-900 mb-2">{title}</h2>
-        {subtitle && <p className="text-slate-600 text-base sm:text-lg">{subtitle}</p>}
-      </div>
-      {action && (
-        <Link href={action.href} className="hidden sm:inline-flex items-center gap-1.5 shrink-0 text-sm font-semibold text-brand-600 hover:text-brand-800">
-          {action.label} <ArrowRight className="h-4 w-4" aria-hidden="true" />
-        </Link>
-      )}
-    </div>
-  );
-}
+const SEASON_IMAGE = { spring: 'triund', monsoon: 'bhagsu-waterfall', autumn: 'kareri-lake', winter: 'dharamshala-snow' } as const;
+// Altitudes shown in the place ticker, where a well-documented figure exists.
+const TICKER_ALT: Record<number, string> = { 0: '2,082 m', 3: '2,828 m', 5: '2,934 m', 9: '4,342 m' };
+const RIDGE = 'M0 96V62l70-18 55 14 80-34 62 22 48-10 90 30 70-26 60 8 85-40 58 26 44-6 96 34 66-20 52 10 90-38 70 28 48-8 82 30 64-18 50 10 100-30V96z';
 
 /** "What's special right now" follows the real calendar. */
-function seasonFor(month: number): keyof typeof SEASON_ICONS {
+function seasonFor(month: number): keyof typeof SEASON_IMAGE {
   if (month >= 2 && month <= 5) return 'spring';
   if (month >= 6 && month <= 8) return 'monsoon';
   if (month >= 9 && month <= 10) return 'autumn';
   return 'winter';
 }
 
+function SecHead({ eyebrow, title, lede, action }: { eyebrow: string; title: string; lede?: string; action?: { href: string; label: string; external?: boolean } }) {
+  return (
+    <div className="sec-head rv">
+      <div>
+        <span className="eyebrow">{eyebrow}</span>
+        <h2>{title}</h2>
+        {lede && <p className="lede">{lede}</p>}
+      </div>
+      {action && (action.external
+        ? <a className="link" href={action.href} target="_blank" rel="noopener noreferrer">{action.label} <ArrowRight className="ico" aria-hidden="true" /></a>
+        : <Link className="link" href={action.href}>{action.label} <ArrowRight className="ico" aria-hidden="true" /></Link>)}
+    </div>
+  );
+}
+
 export default async function HomeView({ lang }: { lang: Lang }) {
   const { t, href } = serverT(lang);
   const h = t.home;
+  const v = h.v2;
   const destinations = (await getDestinations()).map((d: any) => localizeDestination(d, lang));
   const featuredBlogs = getFeaturedBlogPosts(6).map((p) => localizePost(p, lang));
   const faqs = getHomepageFAQs(lang);
   const [stays, treks] = await Promise.all([getPublishedProperties(), getPublishedTreks()]);
+  // Only stays with their own photos are featured; the slideshows never show stand-in pictures.
+  const featured = pickFeaturedStays(stays, 5);
   // Real counts only -- nothing here is a marketing number.
   const proof = [
-    stays.length > 0 && fmt(h.proofStays, { n: stays.length }),
-    treks.length > 0 && fmt(h.proofTreks, { n: treks.length }),
-    fmt(h.proofGuides, { n: blogPosts.length }),
-    h.proofLocal,
-  ].filter(Boolean) as string[];
-  const seasonKey = seasonFor(new Date().getMonth());
+    stays.length > 0 && { icon: BedDouble, text: fmt(h.proofStays, { n: stays.length }) },
+    treks.length > 0 && { icon: Mountain, text: fmt(h.proofTreks, { n: treks.length }) },
+    { icon: BookOpen, text: fmt(h.proofGuides, { n: blogPosts.length }) },
+    { icon: MapPin, text: h.proofLocal },
+  ].filter(Boolean) as { icon: typeof MapPin; text: string }[];
+  const now = new Date();
+  const seasonKey = seasonFor(now.getMonth());
   const season = h.seasons[seasonKey];
+  const month = new Intl.DateTimeFormat(lang === 'hi' ? 'hi-IN' : 'en-IN', { month: 'long', timeZone: 'Asia/Kolkata' }).format(now);
+  const [big, ...areaRest] = destinations;
+
+  const sections = [
+    featured.length > 0 && 'stays', 'areas', 'trail', 'experiences', 'gaddi', 'season', 'packages', featuredBlogs.length > 0 && 'guides', 'faq',
+  ].filter(Boolean).map((id) => ({ id: id as string, label: v.nav[id as string] }));
 
   return (
-    <>
+    <div className={`hm ${display.variable} ${mono.variable}`}>
       <JsonLd data={faqSchema(faqs)} />
 
-      {/* HERO */}
-      <section className="relative sm:min-h-[600px] lg:min-h-[680px] flex items-center overflow-hidden">
-        <Image src={UNSPLASH_IMAGES.hero} alt={h.heroAlt} fill className="object-cover" priority quality={75} sizes="100vw" />
-        <div className="absolute inset-0 bg-gradient-to-br from-brand-950/80 via-brand-950/50 to-transparent" />
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 w-full pt-10 pb-12 sm:py-20 lg:py-28">
-          <div className="max-w-4xl">
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md text-white text-xs font-medium px-3 py-1.5 rounded-full mb-5 sm:mb-6 border border-white/20">
-              <Sparkles className="h-3.5 w-3.5 text-orange-300" aria-hidden="true" />{h.badge}
+      {/* HERO: the Dhauladhar, a living sky, and the booking panel beside the headline */}
+      <section className="hero">
+        <div className="hero-bg">
+          <Image src={UNSPLASH_IMAGES.hero} alt={h.heroAlt} fill priority quality={75} sizes="100vw" />
+        </div>
+        <HeroAtmosphere />
+        <div className="wrap">
+          <div className="hero-grid">
+            <div className="hero-copy">
+              <span className="badge"><i aria-hidden="true" />{h.badge}</span>
+              <h1 className="h1"><span className="ln">{h.h1a}</span><em className="ln">{h.h1b}</em></h1>
+              <p className="intro">{h.intro}</p>
+              <ul className="proof">
+                {proof.map((p) => <li key={p.text}><p.icon className="ico" aria-hidden="true" />{p.text}</li>)}
+              </ul>
             </div>
-            <h1 className="text-[2rem] sm:text-5xl lg:text-6xl font-heading font-bold text-white leading-[1.15] mb-4 sm:mb-5">
-              {h.h1a}
-              <br />
-              <span className="text-orange-300">{h.h1b}</span>
-            </h1>
-            <p className="text-base sm:text-lg lg:text-xl text-white/85 mb-7 sm:mb-10 max-w-2xl leading-relaxed">{h.intro}</p>
+            <HeroSearch />
           </div>
-          <HeroSearch />
-          <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium text-white/90">
-            {proof.map((p) => (
-              <li key={p} className="flex items-center gap-1.5"><Check className="h-4 w-4 text-orange-300" aria-hidden="true" />{p}</li>
-            ))}
-          </ul>
+          <div className="hero-foot">
+            <a className="scrollcue" href={featured.length > 0 ? '#stays' : '#areas'}><i aria-hidden="true" />{v.exploreStays}</a>
+            <div className="r">
+              <HeroClock template={v.clock} phases={v.tod} />
+              <p className="caption">{v.heroCaption}</p>
+            </div>
+          </div>
         </div>
+        <svg className="ridge" viewBox="0 0 1440 96" preserveAspectRatio="none" aria-hidden="true"><path d={RIDGE} /></svg>
       </section>
 
-      {/* WHY BOOK WITH US */}
-      <section className="py-10 bg-white border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8">
-            {h.trust.map((item, i) => {
-              const Icon = TRUST_ICONS[i];
-              return (
-                <div key={item.label} className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-brand-50 flex items-center justify-center shrink-0">
-                    <Icon className="h-5 w-5 text-brand-600" aria-hidden="true" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-slate-800">{item.label}</p>
-                    <p className="text-sm text-slate-600 mt-0.5">{item.desc}</p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      <HomeEffects sections={sections} navLabel={v.onThisPage} searchLabel={v.panelTitle} />
 
-      {/* WHAT MAKES US DIFFERENT */}
-      <section className="py-16 lg:py-20 bg-slate-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-heading font-bold text-slate-900 mb-3">{h.whyTitle}</h2>
-            <p className="text-slate-600 text-lg max-w-2xl mx-auto">{h.whyIntro}</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {h.why.map((item, i) => {
-              const Icon = WHY_ICONS[i];
-              return (
-                <div key={item.title} className="bg-white rounded-2xl p-7 border border-slate-200/70">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-11 h-11 rounded-xl bg-brand-50 flex items-center justify-center"><Icon className="h-5 w-5 text-brand-600" /></div>
-                    <span className="text-xs font-bold text-brand-600 bg-brand-50 px-2 py-1 rounded-full">{item.highlight}</span>
-                  </div>
-                  <h3 className="font-heading font-bold text-lg text-slate-900 mb-2">{item.title}</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed">{item.desc}</p>
-                </div>
-              );
-            })}
-          </div>
+      {/* TRUST + WHY US */}
+      <div className="wrap">
+        <div className="trust rv">
+          {h.trust.map((item, i) => {
+            const Icon = TRUST_ICONS[i];
+            return <div key={item.label}><Icon className="ico" aria-hidden="true" /><p><b>{item.label}</b><span>{item.desc}</span></p></div>;
+          })}
         </div>
-      </section>
+        <div className="why">
+          <h2 className="why-title rv">{h.whyTitle}</h2>
+          {h.why.map((item, i) => {
+            const Icon = WHY_ICONS[i];
+            return (
+              <div key={item.title} className="rv">
+                <span className="eyebrow" style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}><Icon className="ico" aria-hidden="true" />{item.highlight}</span>
+                <h3>{item.title}</h3>
+                <p>{item.desc}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* FEATURED STAYS: each card is a slideshow of the property's own photos */}
+      {featured.length > 0 && (
+        <section id="stays" className="sec">
+          <div className="wrap">
+            <SecHead eyebrow={v.staysEyebrow} title={v.staysTitle} lede={v.staysIntro} action={{ href: href('/hotels'), label: h.browseAllHotels }} />
+            <div className={'stays' + (featured.length < 3 ? ' few' : '')}>
+              {featured.map((p, i) => {
+                const reviewed = (p.review_count || 0) > 0 && p.rating > 0;
+                const typeLabel = (t.common.propertyTypes[p.type] || p.type) + (p.star_rating ? ` · ${p.star_rating}★` : '');
+                const dest = destinations.find((d: any) => d.slug === p.destination_slug);
+                return (
+                  <StaySlider key={p.id} index={i} lead={featured.length >= 3 && i === 0}
+                    href={href('/hotels/' + p.slug)} name={p.name} photos={p.photos}
+                    typeLabel={typeLabel} area={t.places[p.destination_slug] || p.destination_slug} altitude={dest?.altitude}
+                    price={p.price_min > 0 ? formatPrice(p.price_min) : undefined} perNight={t.common.perNight} from={v.from}
+                    rating={reviewed ? p.rating : undefined} desc={p.short_description}
+                    labels={{ photoOf: v.photoOf, prev: v.prevPhoto, next: v.nextPhoto }} />
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* PLACE TICKER */}
+      <div className="ticker" aria-hidden="true">
+        <ul>
+          {[0, 1].flatMap((copy) => v.ticker.map((name, i) => (
+            <li key={copy + '-' + i}>{name}{TICKER_ALT[i] && <span className="alt">{TICKER_ALT[i]}</span>}</li>
+          )))}
+        </ul>
+      </div>
 
       {/* BEST AREAS TO STAY */}
-      <section className="py-16 lg:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <SectionHeader title={h.areasTitle} subtitle={h.areasSubtitle} action={{ href: href('/hotels'), label: h.browseAllHotels }} />
-          {/* Phones get a swipeable row: five cards don't split evenly into two columns. */}
-          <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-hide -mx-4 px-4 pb-1 sm:grid sm:grid-cols-3 lg:grid-cols-5 sm:overflow-visible sm:mx-0 sm:px-0 sm:pb-0">
-            {destinations.map((d: any) => (
-              <div key={d.id} className="w-[44%] shrink-0 snap-start sm:w-auto">
-                <DestinationCard destination={d} lang={lang} />
-              </div>
+      <section id="areas" className="sec">
+        <div className="wrap">
+          <SecHead eyebrow={v.areasEyebrow} title={h.areasTitle} lede={h.areasSubtitle} action={{ href: href('/hotels'), label: h.browseAllHotels }} />
+          <div className="bento">
+            {big && (
+              <Link className="area big rv" href={href('/destinations/' + big.slug)}>
+                <Image src={big.image} alt={big.image_alt || big.name} fill sizes="(max-width:560px) 100vw, 50vw" />
+                {big.altitude && <span className="alt">{big.altitude}</span>}
+                <h3>{big.name}</h3><p>{big.tagline}</p>
+              </Link>
+            )}
+            {areaRest.map((d: any) => (
+              <Link key={d.id} className="area rv" href={href('/destinations/' + d.slug)}>
+                <Image src={d.image} alt={d.image_alt || d.name} fill sizes="(max-width:560px) 100vw, 25vw" />
+                {d.altitude && <span className="alt">{d.altitude}</span>}
+                <h3>{d.name}</h3><p>{d.tagline}</p>
+              </Link>
             ))}
-          </div>
-          <div className="text-center mt-8 sm:hidden">
-            <Link href={href('/hotels')} className="inline-flex items-center gap-2 bg-brand-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-brand-700 transition-colors">
-              {h.browseAllHotels} <ArrowRight className="h-4 w-4" />
-            </Link>
           </div>
         </div>
       </section>
+
+      {/* ON THE TRAIL */}
+      <TrekScene eyebrow={v.trekEyebrow} title={v.trekTitle} beats={v.trekBeats} cta={v.trekCta} ctaHref={href('/treks')} />
 
       {/* EXPERIENCES */}
-      <section className="py-16 lg:py-20 bg-brand-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-heading font-bold mb-3">{h.expTitle}</h2>
-            <p className="text-brand-200 text-lg max-w-2xl mx-auto">{h.expIntro}</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {h.experiences.map((exp, i) => {
-              const meta = EXP[i];
-              return (
-                <Link key={exp.title} href={href(meta.href)} className="group relative rounded-2xl overflow-hidden aspect-[4/5] flex items-end">
-                  <Image src={meta.image} alt={exp.title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" sizes="(max-width:768px) 100vw, 33vw" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-                  <div className="relative p-6 w-full">
-                    <div className="flex items-center gap-2 mb-2">
-                      <meta.icon className="h-5 w-5 text-orange-300" />
-                      <span className="text-xs font-semibold text-orange-300">{exp.price}</span>
-                    </div>
-                    <h3 className="text-xl font-heading font-bold text-white mb-1">{exp.title}</h3>
-                    <p className="text-sm text-white/70 line-clamp-2">{exp.desc}</p>
-                  </div>
-                </Link>
-              );
-            })}
+      <section id="experiences" className="sec dark">
+        <div className="wrap">
+          <SecHead eyebrow={v.expEyebrow} title={h.expTitle} lede={h.expIntro} />
+          <div className="exp">
+            {h.experiences.map((exp, i) => (
+              <Link key={exp.title} className="xp rv" href={href(EXP[i].href)}>
+                <span className="glare" aria-hidden="true" />
+                <Image src={EXP[i].image} alt={exp.title} fill sizes="(max-width:960px) 100vw, 33vw" />
+                <span className="from">{exp.price}</span>
+                <h3>{exp.title}</h3>
+                <p>{exp.desc}</p>
+                <span className="link">{v.expCtas[i]} <ArrowRight className="ico" aria-hidden="true" /></span>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* COMBO PACKAGES */}
-      <section className="py-16 lg:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-heading font-bold text-slate-900 mb-3">{h.pkgTitle}</h2>
-            <p className="text-slate-600 text-lg max-w-2xl mx-auto">{h.pkgIntro}</p>
+      {/* GADDI SHEPHERDS AND THE GADDAN */}
+      <section id="gaddi" className="sec gaddi">
+        <div className="wrap">
+          <div className="gaddi-head rv">
+            <div><span className="eyebrow">{v.gaddiEyebrow}</span><h2>{v.gaddiTitleA} <em>{v.gaddiTitleB}</em></h2></div>
+            <p>{v.gaddiIntro}</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {h.packages.map((pkg) => (
-              <div key={pkg.title} className="bg-white border border-slate-200 rounded-2xl p-6 relative overflow-hidden flex flex-col">
-                <span className="absolute top-4 right-4 text-xs font-bold text-brand-600 bg-brand-50 px-2.5 py-1 rounded-full">{pkg.tag}</span>
-                <h3 className="font-heading font-bold text-xl text-slate-900 mb-1 pr-24">{pkg.title}</h3>
-                <p className="text-sm text-slate-500 mb-3">{pkg.duration}</p>
-                <p className="text-slate-700 text-sm mb-4">{pkg.desc}</p>
-                <div className="flex items-end justify-between mt-auto">
-                  <div>
-                    <span className="text-2xl font-bold text-slate-900">{pkg.price}</span>
-                    <span className="text-xs text-slate-500 ml-1">{t.common.perPerson}</span>
-                  </div>
-                  <a href={getWhatsAppLink(fmt(h.pkgWhatsApp, { name: pkg.title }))} target="_blank" rel="noopener noreferrer"
-                    className="text-sm font-semibold text-brand-600 hover:text-brand-700 flex items-center gap-1">
-                    {h.enquire} <ArrowRight className="h-3.5 w-3.5" />
-                  </a>
-                </div>
+          <GaddiPainting src="/images/gaddi/gaddi-painting.jpg" alt={v.paintingAlt} spots={v.hotspots} />
+          <div className="frame-cap"><span>{v.paintingCaption}</span><span className="alt">{v.paintingHint}</span></div>
+          <ol className="cycle">
+            {v.cycle.map((c) => <li key={c.title} className="rv"><span className="alt">{c.alt}</span><b>{c.title}</b><span>{c.desc}</span></li>)}
+          </ol>
+          <div className="gaddi-two">
+            {[v.shepherd, v.gaddan].map((c) => (
+              <div key={c.title} className="gcard rv">
+                <span className="eyebrow">{c.eyebrow}</span><h3>{c.title}</h3><p>{c.intro}</p>
+                <ul>{c.items.map((it) => <li key={it}>{it}</li>)}</ul>
               </div>
             ))}
           </div>
-          <p className="text-center text-sm text-slate-500 mt-6">
-            {h.customizable}{' '}
-            <a href={getWhatsAppLink(h.customMsg)} target="_blank" rel="noopener noreferrer" className="text-brand-600 font-medium">{h.customQuote}</a>
-          </p>
+          <div className="reel" tabIndex={0} role="region" aria-label={v.reelLabel}>
+            {gaddiPhotos.map((ph, i) => (
+              <figure key={ph.file} className="rv">
+                <div className="ph" style={{ position: 'relative' }}>
+                  <Image src={`/images/gaddi/${ph.file}.jpg`} alt={v.photos[i]} fill sizes="(max-width:960px) 70vw, 360px" />
+                </div>
+                <figcaption>{v.photos[i]}<small>{v.photoCredit.split('{name}')[0]}<a href={ph.source} target="_blank" rel="noopener noreferrer">{ph.author}</a>{v.photoCredit.split('{name}')[1]}</small></figcaption>
+              </figure>
+            ))}
+          </div>
+          <p className="respect">{v.respect}</p>
         </div>
       </section>
 
-      {/* SEASONAL HIGHLIGHTS */}
-      <section className="py-16 lg:py-20 bg-gradient-to-br from-brand-50 via-white to-amber-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-heading font-bold text-slate-900 mb-3">{h.nowTitle}</h2>
-            <p className="text-slate-600 text-lg max-w-3xl mx-auto">
-              {season.intro}{' '}
-              <Link href={href('/blog/best-time-to-visit-dharamshala')} className="text-brand-600 font-medium underline">{h.monthGuide}</Link>
-            </p>
+      {/* THIS MONTH */}
+      <section id="season" className="sec">
+        <div className="wrap">
+          <div className="month rv">
+            <div className="ph">
+              <Image src={placeImage(SEASON_IMAGE[seasonKey])} alt={v.seasonTitles[seasonKey]} fill sizes="(max-width:960px) 100vw, 45vw" />
+              <span className="tag">{month}</span>
+            </div>
+            <div className="bd">
+              <span className="eyebrow">{h.nowTitle}</span>
+              <h2>{v.seasonTitles[seasonKey]}</h2>
+              <p className="lede">{season.intro}</p>
+              <ul className="picks">
+                {season.items.map((s) => <li key={s.title}><b>{s.title}</b><span>{s.desc}</span></li>)}
+              </ul>
+              <Link className="link" href={href('/blog/best-time-to-visit-dharamshala')}>{h.monthGuide} <ArrowRight className="ico" aria-hidden="true" /></Link>
+            </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {season.items.map((s, i) => {
-              const Icon = SEASON_ICONS[seasonKey][i];
-              return (
-                <div key={s.title} className="bg-white/80 backdrop-blur-sm rounded-xl p-5 border border-slate-100">
-                  <Icon className="h-6 w-6 text-brand-600 mb-3" />
-                  <h3 className="font-heading font-semibold text-slate-900 mb-1">{s.title}</h3>
-                  <p className="text-sm text-slate-600">{s.desc}</p>
-                </div>
-              );
-            })}
+        </div>
+      </section>
+
+      {/* PACKAGES */}
+      <section id="packages" className="sec" style={{ paddingTop: 0 }}>
+        <div className="wrap">
+          <SecHead eyebrow={v.pkgEyebrow} title={h.pkgTitle} lede={`${h.pkgIntro} ${h.customizable}`} action={{ href: getWhatsAppLink(h.customMsg), label: h.customQuote, external: true }} />
+          <div className="pkgs">
+            {h.packages.map((pkg, i) => (
+              <div key={pkg.title} className={'pkg rv' + (i === 0 ? ' hot' : '')}>
+                <div className="top"><span className="tagl">{pkg.tag}</span><span className="dur">{pkg.duration}</span></div>
+                <h3>{pkg.title}</h3>
+                <p className="inc">{pkg.desc}</p>
+                <p className="amt">{pkg.price} <small>{t.common.perPerson}</small></p>
+                <a className={'btn ' + (i === 0 ? 'btn-sf' : 'btn-line')} href={getWhatsAppLink(fmt(h.pkgWhatsApp, { name: pkg.title }))} target="_blank" rel="noopener noreferrer">
+                  <MessageCircle className="ico" aria-hidden="true" />{h.enquire}
+                </a>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* TRAVEL GUIDES */}
       {featuredBlogs.length > 0 && (
-        <section className="py-16 lg:py-20 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <SectionHeader title={h.guidesTitle} subtitle={h.guidesSubtitle} action={{ href: href('/blog'), label: h.allGuides }} />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {featuredBlogs.map((p) => <BlogCard key={p.id} post={p} lang={lang} />)}
+        <section id="guides" className="sec" style={{ paddingTop: 0 }}>
+          <div className="wrap">
+            <SecHead eyebrow={v.guidesEyebrow} title={h.guidesTitle} lede={h.guidesSubtitle} action={{ href: href('/blog'), label: h.allGuides }} />
+            <div className="guides-grid">
+              {featuredBlogs.map((p) => <div key={p.id} className="rv"><BlogCard post={p} lang={lang} /></div>)}
             </div>
-            <div className="flex flex-wrap justify-center gap-3 mt-8">
-              <Link href={href('/blog')} className="inline-flex sm:hidden items-center gap-2 bg-brand-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-brand-700 transition-colors">
-                {h.allGuides} <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link href={href('/faq')} className="inline-flex items-center gap-2 border border-slate-300 text-slate-800 px-6 py-3 rounded-xl font-semibold hover:bg-slate-50 transition-colors">
-                {t.common.qa}
-              </Link>
+            <div className="guides-more">
+              <Link href={href('/faq')} className="btn btn-line">{t.common.qa}</Link>
             </div>
-            <div className="mt-10 flex flex-col items-center text-center gap-2">
-              <p className="text-sm text-slate-600 max-w-md">{h.preferredIntro}</p>
+            <div style={{ marginTop: 32, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 8 }}>
+              <p style={{ color: 'var(--muted)', fontSize: 14, maxWidth: 420 }}>{h.preferredIntro}</p>
               <PreferredSourceButton lang={lang} />
             </div>
           </div>
@@ -281,61 +320,48 @@ export default async function HomeView({ lang }: { lang: Lang }) {
 
       {/* REVIEWS -- only real Google reviews; set NEXT_PUBLIC_GOOGLE_REVIEW_URL to show this */}
       {process.env.NEXT_PUBLIC_GOOGLE_REVIEW_URL && (
-        <section className="py-14 bg-white">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
-            <h2 className="text-2xl sm:text-3xl font-heading font-bold text-slate-900 mb-3">{h.reviewTitle}</h2>
-            <p className="text-slate-600 mb-6">{h.reviewIntro}</p>
-            <a href={process.env.NEXT_PUBLIC_GOOGLE_REVIEW_URL} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-brand-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-brand-700">
-              <Star className="h-4 w-4" /> {h.reviewCta}
-            </a>
+        <section className="sec" style={{ paddingTop: 0, textAlign: 'center' }}>
+          <div className="wrap">
+            <h2 style={{ fontSize: 'clamp(26px,3.4vw,36px)' }}>{h.reviewTitle}</h2>
+            <p style={{ color: 'var(--muted)', margin: '12px auto 20px', maxWidth: 520 }}>{h.reviewIntro}</p>
+            <a href={process.env.NEXT_PUBLIC_GOOGLE_REVIEW_URL} target="_blank" rel="noopener noreferrer" className="btn btn-sf"><Star className="ico" aria-hidden="true" /> {h.reviewCta}</a>
           </div>
         </section>
       )}
 
       {/* FAQ */}
-      <section className="py-16 lg:py-20 bg-slate-50">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6">
-          <SectionHeading title={h.faqTitle} />
-          <FAQSection faqs={faqs} />
-          <p className="text-center mt-6">
-            <Link href={href('/faq')} className="text-brand-600 font-semibold hover:text-brand-700">{h.allQa} &rarr;</Link>
-          </p>
+      <section id="faq" className="sec" style={{ paddingTop: 0 }}>
+        <div className="wrap faq">
+          <div className="rv"><span className="eyebrow">{v.faqEyebrow}</span><h2>{h.faqTitle}</h2>
+            <p style={{ marginTop: 16 }}><Link className="link" href={href('/faq')}>{h.allQa} <ArrowRight className="ico" aria-hidden="true" /></Link></p>
+          </div>
+          <div><FAQSection faqs={faqs} /></div>
         </div>
       </section>
 
       {/* FINAL CTA */}
-      <section className="py-16 bg-brand-700 text-white">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
-          <h2 className="text-2xl sm:text-3xl font-heading font-bold mb-4">{h.ctaTitle}</h2>
-          <p className="text-brand-100 text-lg mb-8">{h.ctaIntro}</p>
-          <div className="flex flex-col sm:flex-row justify-center gap-3">
-            <Link href={href('/hotels')} className="inline-flex items-center justify-center gap-2 bg-white text-brand-700 px-6 py-3 rounded-xl font-semibold hover:bg-brand-50 transition-colors">
-              {t.common.browseHotels}
-            </Link>
-            <a href={getWhatsAppLink(h.ctaMsg)} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 bg-green-700 text-white px-6 py-3 rounded-xl font-semibold hover:bg-green-800 transition-colors">
-              <MessageCircle className="h-4 w-4" /> {h.ctaWhatsApp}
-            </a>
+      <section className="cta">
+        <Image src={placeImage('dharamshala-snow')} alt="" fill sizes="100vw" />
+        <svg className="ridge-top" viewBox="0 0 1440 96" preserveAspectRatio="none" aria-hidden="true"><path d={RIDGE} /></svg>
+        <div className="wrap">
+          <div className="cta-in">
+            <h2>{v.ctaLead} <em>{v.ctaEm}</em></h2>
+            <p>{h.ctaIntro}</p>
+            <div className="btns">
+              <Link href={href('/hotels')} className="btn btn-sf">{t.common.browseHotels} <ArrowRight className="ico" aria-hidden="true" /></Link>
+              <a href={getWhatsAppLink(h.ctaMsg)} target="_blank" rel="noopener noreferrer" className="btn btn-ghost"><MessageCircle className="ico" aria-hidden="true" />{h.ctaWhatsApp}</a>
+            </div>
           </div>
         </div>
       </section>
 
       {/* LIST YOUR PROPERTY -- aimed at owners, so it waits until the traveller content is done */}
-      <section className="py-8 bg-orange-50 border-t border-orange-100">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 text-center sm:text-left">
-          <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center shrink-0 shadow-sm">
-            <Building className="h-6 w-6 text-orange-600" aria-hidden="true" />
-          </div>
-          <div className="flex-1">
-            <h2 className="text-lg font-heading font-bold text-slate-900">{h.ownerTitle}</h2>
-            <p className="text-sm text-slate-600">{h.ownerIntro}</p>
-          </div>
-          <Link href="/partner/register" className="inline-flex items-center gap-2 bg-orange-600 text-white px-5 py-2.5 rounded-xl font-semibold hover:bg-orange-700 transition-colors shrink-0">
-            {h.ownerCta} <ArrowRight className="h-4 w-4" aria-hidden="true" />
-          </Link>
+      <section className="partner">
+        <div className="wrap">
+          <div><h2 style={{ font: '600 20px/1.2 var(--display)' }}>{h.ownerTitle}</h2><span>{h.ownerIntro}</span></div>
+          <Link href="/partner/register" className="btn btn-ghost">{h.ownerCta} <ArrowRight className="ico" aria-hidden="true" /></Link>
         </div>
       </section>
-    </>
+    </div>
   );
 }
