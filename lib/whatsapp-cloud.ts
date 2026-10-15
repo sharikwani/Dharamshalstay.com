@@ -39,7 +39,8 @@ async function answer(res: Response): Promise<SendResult> {
   return id ? { ok: true, id } : { ok: false, unknown: true, error: 'No message id returned' };
 }
 
-export async function sendTemplate(opts: { to: string; template: string; params: unknown[]; language?: string }): Promise<SendResult> {
+/** urlButtons: the dynamic part of each URL button, in button order (the template holds the fixed base URL). */
+export async function sendTemplate(opts: { to: string; template: string; params: unknown[]; language?: string; urlButtons?: string[] }): Promise<SendResult> {
   if (!isWhatsAppConfigured()) return { ok: false, skipped: true };
   try {
     const res = await fetch(`${GRAPH}/${process.env.WHATSAPP_PHONE_NUMBER_ID}/messages`, {
@@ -50,7 +51,12 @@ export async function sendTemplate(opts: { to: string; template: string; params:
         messaging_product: 'whatsapp', to: opts.to, type: 'template',
         template: {
           name: opts.template, language: { code: opts.language || 'en' },
-          components: [{ type: 'body', parameters: opts.params.map((p) => ({ type: 'text', text: cleanParam(p) })) }],
+          components: [
+            { type: 'body', parameters: opts.params.map((p) => ({ type: 'text', text: cleanParam(p) })) },
+            ...(opts.urlButtons || []).map((suffix, index) => ({
+              type: 'button', sub_type: 'url', index: String(index), parameters: [{ type: 'text', text: suffix }],
+            })),
+          ],
         },
       }),
     });

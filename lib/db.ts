@@ -12,6 +12,7 @@
  */
 import { createServerClient } from './supabase';
 import { Property } from '@/types';
+import { toPublicProperty } from './public-property';
 import { placeImage, placeImageAlt, isStockImage, DESTINATION_IMAGE, TREK_IMAGES } from './place-images';
 
 // Static fallback imports (only used when Supabase is unavailable)
@@ -97,7 +98,7 @@ async function getPartnerProperties(options?: {
       console.error('DB getPublishedProperties error:', error.message);
       return [];
     }
-    const rows = ((data as Property[]) || []).map(normaliseDestination);
+    const rows = ((data as Property[]) || []).map((p) => toPublicProperty(normaliseDestination(p)));
     return options?.destination ? rows.filter((p) => p.destination_slug === options.destination) : rows;
   } catch (err) {
     console.error('DB getPublishedProperties exception:', err);
@@ -125,7 +126,7 @@ async function getPartnerPropertyBySlug(slug: string): Promise<Property | null> 
       .single();
 
     if (error || !data) return null;
-    return normaliseDestination(data as Property);
+    return toPublicProperty(normaliseDestination(data as Property));
   } catch {
     return null;
   }

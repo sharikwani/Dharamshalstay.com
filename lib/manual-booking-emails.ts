@@ -1,6 +1,7 @@
 import { sendEmail } from '@/lib/email';
 import { serviceClient } from '@/lib/server-auth';
 import { effectiveCollector } from '@/lib/manual-booking';
+import { bookingPageUrlOrNull, loadStayContact } from '@/lib/bookings/stay-details';
 
 const esc = (s: unknown) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]!));
 const wrap = (title: string, inner: string) => `<div style="font-family:system-ui,sans-serif;max-width:600px;margin:0 auto;padding:20px"><h2 style="color:#1e3a5f">${esc(title)}</h2>${inner}<p style="color:#94a3b8;font-size:12px;margin-top:24px">Dharamshala Stay</p></div>`;
@@ -127,10 +128,13 @@ export async function sendManualBookingEmails(
 
   if (opts.customer && v.guest_email) {
     const payment = v.effective_collector === 'partner' ? 'Pay at the time of service' : v.payment_text;
+    const stay = v.category === 'hotel' ? await loadStayContact(v.id) : null;
+    const pageUrl = stay ? bookingPageUrlOrNull(v) : null;
     const html = wrap('Your booking is confirmed', `<p>Hi ${esc(v.guest_name)},</p><p>Thank you for booking with Dharamshala Stay.</p><table>${[
       row('Booking reference', v.booking_ref), row('Booking', v.item_name), row('When', v.date_text),
       row('People', v.num_guests), row(v.category === 'taxi' ? 'Your driver' : v.category === 'paragliding' ? 'Your pilot' : 'Your guide', v.assignee_text), row('Price', rupees(v.amount)), row('Payment', payment),
-    ].join('')}</table><p>Need help? Reply to this email.</p>`);
+      stay ? row('Hotel address', stay.address + (stay.landmark ? ` (landmark: ${stay.landmark})` : '')) : '', stay ? row('Hotel phone', stay.phone) : '',
+    ].join('')}</table>${pageUrl ? `<p><a href="${esc(pageUrl)}">View your itinerary, map and hotel contact</a></p>` : ''}<p>Need help? Reply to this email.</p>`);
     try { await sendEmail({ to: v.guest_email, subject: `${prefix}Your booking is confirmed – ${v.booking_ref}`, html }); }
     catch (e) { console.error('Customer booking email failed:', e); }
   }

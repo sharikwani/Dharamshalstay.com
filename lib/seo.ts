@@ -3,6 +3,7 @@ import { siteConfig } from './config';
 import { hasHindiVersion, localizePath, type Lang } from './i18n/core';
 import { normalizeImages, roomImageUrls } from './images';
 import { isDirectoryListing } from './listing';
+import { mapLinks } from './location';
 import type { PublicReview, ReviewFeed, ReviewSummary } from './reviews/types';
 
 interface SEOProps {
@@ -250,7 +251,7 @@ export function hotelSchemaFull(h: {
   slug: string; type?: string; star_rating?: number;
   check_in_time?: string; check_out_time?: string;
   amenities?: string[]; images?: any[]; total_rooms?: number;
-  rooms?: any[]; contact_phone?: string; contact_email?: string; listing_type?: string;
+  rooms?: any[]; listing_type?: string;
 }, reviews?: ReviewFeed) {
   const priced = !isDirectoryListing(h);
   const area = h.destination_slug?.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()) || h.city || 'Dharamshala';
@@ -286,7 +287,8 @@ export function hotelSchemaFull(h: {
       addressCountry: 'IN',
     },
     ...(h.latitude && h.longitude && {
-      geo: { '@type': 'GeoCoordinates', latitude: h.latitude, longitude: h.longitude },
+      geo: { '@type': 'GeoCoordinates', latitude: Number(h.latitude), longitude: Number(h.longitude) },
+      hasMap: mapLinks(h.latitude, h.longitude).view,
     }),
     ...(rated ? {
       aggregateRating: { '@type': 'AggregateRating', ratingValue: s!.average, ratingCount: s!.count, reviewCount: s!.count, bestRating: 5, worstRating: 1 },
@@ -303,8 +305,7 @@ export function hotelSchemaFull(h: {
         '@type': 'LocationFeatureSpecification', name: a, value: true,
       })),
     }),
-    ...(h.contact_phone && { telephone: h.contact_phone }),
-    ...(h.contact_email && { email: h.contact_email }),
+    // No telephone/email: the hotel's phone is shared with guests only after they book.
     ...(activeRooms.length > 0 ? { containsPlace: activeRooms.map((r: any) => hotelRoomSchema(r, priced)) } : {}),
     ...(roomOffers.length > 0 && { makesOffer: roomOffers }),
   };

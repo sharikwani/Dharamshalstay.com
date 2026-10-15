@@ -2,6 +2,7 @@ import { serviceClient } from '@/lib/server-auth';
 import { loadBookingView, type BookingView } from '@/lib/manual-booking-emails';
 import { cleanParam, isWhatsAppConfigured, sendTemplate } from '@/lib/whatsapp-cloud';
 import { normalizeIndianPhone } from '@/lib/whatsapp';
+import { bookingPageUrlOrNull, hotelPhoneVisible } from '@/lib/bookings/stay-details';
 
 export type RecipientKind = 'partner' | 'staff' | 'hotel' | 'guide';
 export type Recipient = { kind: RecipientKind; phone: string };
@@ -87,11 +88,20 @@ export function cancelledCustomerParams(v: BookingView, reason: string): string[
   return [v.booking_ref, v.item_name, bookingWhen(v).date, reason].map(cleanParam);
 }
 
+/** Hotel bookings: the hotel's phone (once confirmed) and the guest's itinerary page with the address and map. */
+export function hotelContactLine(v: BookingView): string | null {
+  if (v.category !== 'hotel') return null;
+  const phone = hotelPhoneVisible(v) ? v.partner_contact?.phone : null;
+  const url = bookingPageUrlOrNull(v);
+  if (!phone && !url) return null;
+  return [phone && `Hotel reception ${phone}.`, url && `Address, map & itinerary: ${url}`].filter(Boolean).join(' ');
+}
+
 /** Params for booking_confirmed_customer_v2 (8, in template order). */
 export function customerParams(v: BookingView): string[] {
   const who = v.category === 'taxi' ? 'Driver' : v.category === 'paragliding' ? 'Pilot' : v.category === 'guide' || v.category === 'trek' ? 'Guide' : null;
   // Template line reads "Your contact: {{6}}".
-  const assignee = v.assignee_text ? (who ? `${who} ${v.assignee_text}` : v.assignee_text) : 'Our team will share the details soon';
+  const assignee = v.assignee_text ? (who ? `${who} ${v.assignee_text}` : v.assignee_text) : hotelContactLine(v) || 'Our team will share the details soon';
   const { date, time } = bookingWhen(v);
   return [v.booking_ref, v.item_name, date, time, v.num_guests, assignee, rupees(v.amount), v.payment_text].map(cleanParam);
 }

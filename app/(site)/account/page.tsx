@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { User, LogOut, Calendar, Phone, Mail, Clock, Loader2, Building, MapPin, Star, Eye, ChevronRight } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { supabase, authFetch } from '@/lib/supabase';
 import { formatPrice } from '@/lib/utils';
 import { getPrimaryImageUrl } from '@/lib/images';
 import { accountHome } from '@/lib/account-home';
@@ -14,6 +14,7 @@ export default function AccountPage() {
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [bookings, setBookings] = useState<any[]>([]);
+  const [bookingLinks, setBookingLinks] = useState<Record<string, string>>({});
   const [myProperties, setMyProperties] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -31,6 +32,9 @@ export default function AccountPage() {
 
       const { data: bk } = await supabase.from('bookings').select('*').eq('user_id', u.id).order('created_at', { ascending: false }).limit(20);
       setBookings(bk || []);
+      if (bk?.length) {
+        authFetch('/api/bookings/links').then((r) => (r.ok ? r.json() : null)).then((d) => d?.links && setBookingLinks(d.links)).catch(() => {});
+      }
 
       // Get properties assigned to this user (by email or owner_id)
       if (u.email) {
@@ -183,6 +187,11 @@ export default function AccountPage() {
                 {b.activity_date && <span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5" />{b.activity_date}</span>}
                 <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{new Date(b.created_at).toLocaleDateString('en-IN')}</span>
               </div>
+              {bookingLinks[b.id] && (
+                <Link href={bookingLinks[b.id]} className="inline-flex items-center gap-1 mt-3 text-sm font-semibold text-brand-700 hover:text-brand-800">
+                  <MapPin className="h-4 w-4" /> {b.category === 'hotel' ? 'Itinerary, map & hotel contact' : 'View booking'} <ChevronRight className="h-4 w-4" />
+                </Link>
+              )}
             </div>
           ))}
         </div>

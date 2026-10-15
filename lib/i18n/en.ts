@@ -215,6 +215,8 @@ export const en = {
     stars: '{n}-Star', trustDiscount: 'Up to ₹500 off every booking', trustVerified: 'Verified property', trustSupport: 'Direct local support',
     about: 'About {name}', amenities: 'Amenities & Facilities', policies: 'Hotel Policies', checkInOut: 'Check-in / Check-out',
     cancellation: 'Cancellation', similar: 'Similar Hotels in {place}',
+    location: 'Location', landmark: 'Landmark', openMap: 'Open in Google Maps', directions: 'Get directions',
+    mapTitle: 'Map showing where {name} is', phoneAfterBooking: "The hotel's phone number is shared with you after you book.",
   },
   directory: {
     badge: 'Directory listing', photos: 'Photos', source: 'source', areaPhoto: 'Photo of the {place} area, not of the property.',
@@ -224,6 +226,7 @@ export const en = {
     similarStay: 'stay in {place}', ownTitle: 'Own or manage {name}?', ownText: 'Claim this listing to manage your photos, rooms and direct rates -- free.',
     claim: 'Claim this listing', checkRates: 'Check rates & availability', checkRatesSub: "We'll contact {name} or suggest similar stays.",
     officialSite: 'Official website', moreStays: 'More stays in {place}',
+    removeLink: 'Want this listing removed?',
   },
   reviews: {
     heading: 'Guest reviews', write: 'Write a review',
@@ -263,7 +266,7 @@ export const en = {
     paymentFailed: 'Payment setup failed. Booking saved -- contact us.', networkError: 'Network error. Please try again or WhatsApp us.',
     maybeReceived: 'We may have received your booking – please check your email/WhatsApp before trying again.',
     onlinePayUnavailable: "Online payment isn't available right now, so your booking is saved as pay later – pay at the property or to the operator. Nothing was charged.",
-    bookingSubmitted: 'Booking Submitted!', bookingConfirmNote: "We'll confirm within 2 hours. Check your email or WhatsApp us.",
+    bookingSubmitted: 'Booking Submitted!', bookingConfirmNote: "We'll confirm within 2 hours. Check your email or WhatsApp us.", viewBooking: 'View your booking, map & hotel contact',
     redirecting: 'Redirecting to Payment...', bookProperty: 'Book This Property', bookTaxi: 'Book Taxi', bookParagliding: 'Book Paragliding', bookTrek: 'Book This Trek',
     fullName: 'Full Name *', phone: 'Phone *', emailConfirm: 'Email (for confirmation)', checkInReq: 'Check-in *', checkOutReq: 'Check-out *',
     pickupDateReq: 'Pickup Date *', activityDateReq: 'Activity Date *', pickupTime: 'Pickup Time', participants: 'Participants',

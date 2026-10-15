@@ -9,7 +9,8 @@
     "test": "vitest run",
     "whatsapp:templates": "node scripts/create-whatsapp-templates.mjs",
     "lint": "next lint",
-    "whatsapp:register": "node scripts/register-whatsapp-number.mjs"
+    "whatsapp:register": "node scripts/register-whatsapp-number.mjs",
+    "whatsapp:outreach-template": "node scripts/create-listing-outreach-template.mjs"
   },
   "dependencies": {
     "@stripe/stripe-js": "^9.0.1",

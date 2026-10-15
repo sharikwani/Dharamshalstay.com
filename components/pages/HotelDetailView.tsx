@@ -5,6 +5,7 @@ import { Breadcrumb, FAQSection, HotelCard } from '@/components/ui/Cards';
 import PhotoGallery from '@/components/ui/PhotoGallery';
 import HotelBooking from '@/components/hotels/HotelBooking';
 import DirectoryListing from '@/components/hotels/DirectoryListing';
+import HotelLocation from '@/components/hotels/HotelLocation';
 import HotelReviews from '@/components/reviews/HotelReviews';
 import JsonLd from '@/components/seo/JsonLd';
 import { isDirectoryListing, areaName } from '@/lib/listing';
@@ -124,7 +125,7 @@ export default async function HotelDetailView({ slug, lang }: { slug: string; la
 
           <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600 mb-4">
             {hotel.address_line1 && (
-              <span className="flex items-center gap-1.5"><MapPin className="h-4 w-4 text-brand-500" />{hotel.address_line1}{hotel.city ? ', ' + hotel.city : ''}</span>
+              <a href="#location" className="flex items-center gap-1.5 hover:text-brand-700"><MapPin className="h-4 w-4 text-brand-500" /><span className="underline decoration-dotted underline-offset-4">{hotel.address_line1}{hotel.city ? ', ' + hotel.city : ''}</span></a>
             )}
             {reviews.summary.count > 0 && (
               <a href="#reviews" className="flex items-center gap-1 bg-green-700 text-white text-sm font-bold px-2 py-1 rounded-lg">
@@ -203,6 +204,8 @@ export default async function HotelDetailView({ slug, lang }: { slug: string; la
             </div>
           </div>
         )}
+
+        <HotelLocation hotel={hotel} lang={lang} />
 
         <HotelReviews propertyId={hotel.id} hotelName={hotel.name} initial={reviews} />
 

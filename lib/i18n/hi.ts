@@ -404,6 +404,8 @@ export const hi: Dict = {
     stars: '{n}-स्टार', trustDiscount: 'हर बुकिंग पर ₹500 तक की छूट', trustVerified: 'वेरिफ़ाइड प्रॉपर्टी', trustSupport: 'सीधी लोकल मदद',
     about: '{name} के बारे में', amenities: 'सुविधाएं', policies: 'होटल के नियम', checkInOut: 'चेक-इन / चेक-आउट',
     cancellation: 'कैंसलेशन', similar: '{place} में मिलते-जुलते होटल',
+    location: 'लोकेशन', landmark: 'पहचान की जगह', openMap: 'Google Maps में खोलें', directions: 'रास्ता देखें',
+    mapTitle: '{name} कहाँ है, यह दिखाता नक्शा', phoneAfterBooking: 'होटल का फ़ोन नंबर बुकिंग के बाद आपको भेजा जाता है।',
   },
   directory: {
     badge: 'डायरेक्टरी लिस्टिंग', photos: 'फ़ोटो', source: 'स्रोत', areaPhoto: 'यह फ़ोटो {place} इलाके की है, प्रॉपर्टी की नहीं।',
@@ -413,6 +415,7 @@ export const hi: Dict = {
     similarStay: '{place} में ठहरने की जगहें', ownTitle: '{name} के मालिक या मैनेजर हैं?', ownText: 'अपने फ़ोटो, कमरे और सीधे रेट खुद मैनेज करने के लिए यह लिस्टिंग क्लेम करें -- मुफ़्त।',
     claim: 'यह लिस्टिंग क्लेम करें', checkRates: 'रेट और उपलब्धता देखें', checkRatesSub: 'हम {name} से संपर्क करेंगे या मिलते-जुलते होटल सुझाएंगे।',
     officialSite: 'आधिकारिक वेबसाइट', moreStays: '{place} में और होटल',
+    removeLink: 'यह लिस्टिंग हटवाना चाहते हैं?',
   },
   reviews: {
     heading: 'मेहमानों के रिव्यू', write: 'रिव्यू लिखें',
@@ -452,7 +455,7 @@ export const hi: Dict = {
     paymentFailed: 'पेमेंट शुरू नहीं हो पाया। बुकिंग सेव हो गई है -- हमसे संपर्क करें।', networkError: 'नेटवर्क में दिक्कत है। फिर से कोशिश करें या हमें WhatsApp करें।',
     maybeReceived: 'हो सकता है आपकी बुकिंग हमें मिल गई हो – दोबारा कोशिश करने से पहले अपना ईमेल/WhatsApp देखें।',
     onlinePayUnavailable: 'ऑनलाइन पेमेंट अभी उपलब्ध नहीं है, इसलिए आपकी बुकिंग "बाद में भुगतान" के रूप में सेव हुई है – प्रॉपर्टी या ऑपरेटर को भुगतान करें। कोई पैसा नहीं कटा।',
-    bookingSubmitted: 'बुकिंग भेज दी गई!', bookingConfirmNote: 'हम 2 घंटे के अंदर कन्फ़र्म करेंगे। अपना ईमेल देखें या हमें WhatsApp करें।',
+    bookingSubmitted: 'बुकिंग भेज दी गई!', bookingConfirmNote: 'हम 2 घंटे के अंदर कन्फ़र्म करेंगे। अपना ईमेल देखें या हमें WhatsApp करें।', viewBooking: 'अपनी बुकिंग, नक्शा और होटल का संपर्क देखें',
     redirecting: 'पेमेंट पेज पर ले जा रहे हैं...', bookProperty: 'यह प्रॉपर्टी बुक करें', bookTaxi: 'टैक्सी बुक करें', bookParagliding: 'पैराग्लाइडिंग बुक करें', bookTrek: 'यह ट्रेक बुक करें',
     fullName: 'पूरा नाम *', phone: 'फ़ोन *', emailConfirm: 'ईमेल (कन्फ़र्मेशन के लिए)', checkInReq: 'चेक-इन *', checkOutReq: 'चेक-आउट *',
     pickupDateReq: 'पिकअप की तारीख *', activityDateReq: 'एक्टिविटी की तारीख *', pickupTime: 'पिकअप का समय', participants: 'प्रतिभागी',

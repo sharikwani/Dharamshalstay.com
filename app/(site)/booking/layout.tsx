@@ -5,6 +5,8 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   robots: { index: false, follow: false },
   alternates: { canonical: null },
+  // Booking page URLs carry the guest's private key.
+  referrer: 'no-referrer',
 };
 
 export default function PrivateLayout({ children }: { children: React.ReactNode }) {

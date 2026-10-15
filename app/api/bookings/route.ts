@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getCaller } from '@/lib/server-auth';
 import { bookingSchema, createBooking } from '@/lib/bookings/create';
+import { bookingPagePath } from '@/lib/bookings/stay-details';
 
 export async function POST(req: NextRequest) {
   try {
@@ -21,7 +22,7 @@ export async function POST(req: NextRequest) {
     const r = await createBooking(data, { userId: caller?.user.id ?? null, callerRole: caller?.profile.role ?? null });
     if (!r.ok) return NextResponse.json({ error: r.error }, { status: r.status });
     if (r.demo) return NextResponse.json({ success: true, booking_ref: r.booking.booking_ref });
-    return NextResponse.json({ success: true, booking_ref: r.booking.booking_ref, booking_id: r.booking.id, amount: r.amount, payment_method: r.payment_method });
+    return NextResponse.json({ success: true, booking_ref: r.booking.booking_ref, booking_id: r.booking.id, amount: r.amount, payment_method: r.payment_method, details_url: bookingPagePath(r.booking) });
   } catch (err) {
     console.error('Booking API error:', err);
     return NextResponse.json({ error: 'Server error' }, { status: 500 });

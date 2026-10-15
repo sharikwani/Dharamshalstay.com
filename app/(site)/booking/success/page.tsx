@@ -9,6 +9,7 @@ import { Suspense } from 'react';
 function SuccessContent() {
   const params = useSearchParams();
   const ref = params.get('ref') || '';
+  const key = params.get('k') || '';
 
   return (
     <div className="max-w-lg mx-auto px-4 py-16 text-center">
@@ -22,8 +23,14 @@ function SuccessContent() {
         </p>
       )}
       <p className="text-slate-600 mb-8">
-        Payment received successfully. You will receive a confirmation on your email and WhatsApp shortly. Our team will contact you with the hotel details.
+        Payment received successfully. You will receive a confirmation on your email and WhatsApp shortly.
       </p>
+      {ref && key && (
+        <Link href={'/booking/' + encodeURIComponent(ref) + '?k=' + encodeURIComponent(key)}
+          className="inline-flex items-center justify-center gap-2 bg-brand-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-brand-700 mb-8">
+          View your itinerary, map &amp; hotel phone <ArrowRight className="h-4 w-4" />
+        </Link>
+      )}
 
       <div className="bg-slate-50 rounded-2xl p-6 mb-8 text-left space-y-3">
         <h3 className="font-semibold text-slate-900">What happens next?</h3>
@@ -33,7 +40,7 @@ function SuccessContent() {
         </div>
         <div className="flex items-start gap-3">
           <span className="shrink-0 w-6 h-6 rounded-full bg-brand-100 text-brand-700 text-xs font-bold flex items-center justify-center">2</span>
-          <p className="text-sm text-slate-600">Our team confirms with the property and sends you the hotel contact</p>
+          <p className="text-sm text-slate-600">Your itinerary page shows the hotel's address, map and phone number</p>
         </div>
         <div className="flex items-start gap-3">
           <span className="shrink-0 w-6 h-6 rounded-full bg-brand-100 text-brand-700 text-xs font-bold flex items-center justify-center">3</span>

@@ -1,4 +1,5 @@
 import { getStripe } from '@/lib/stripe';
+import { bookingKey } from './stay-details';
 import { serviceClient } from '@/lib/server-auth';
 import { holdsRoom, matchesRoom } from '@/lib/availability/calc';
 import { availabilityFor } from '@/lib/availability/store';
@@ -57,7 +58,7 @@ export async function createCheckoutLink(bookingId: string): Promise<CheckoutRes
     line_items: [{ quantity: 1, price_data: { currency: 'inr', unit_amount: Math.round(b.amount * 100), product_data: { name: title, description: description.slice(0, 500) || undefined } } }],
     customer_email: b.guest_email || undefined,
     metadata: { booking_id: b.id, booking_ref: b.booking_ref || '' },
-    success_url: process.env.NEXT_PUBLIC_SITE_URL + '/booking/success?session_id={CHECKOUT_SESSION_ID}&ref=' + encodeURIComponent(b.booking_ref || ''),
+    success_url: process.env.NEXT_PUBLIC_SITE_URL + '/booking/success?session_id={CHECKOUT_SESSION_ID}&ref=' + encodeURIComponent(b.booking_ref || '') + '&k=' + bookingKey(b.id),
     cancel_url: process.env.NEXT_PUBLIC_SITE_URL + (RETURN_PATH[b.category] || '/') + '?payment=cancelled',
   });
   await sb.from('bookings').update({ stripe_session_id: session.id }).eq('id', b.id);

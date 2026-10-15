@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import HotelLocation from './HotelLocation';
 import { MapPin, Users, Sparkles, Navigation, CheckCircle, MessageCircle, Building, ExternalLink, Info, Clock, BedDouble, Shield } from 'lucide-react';
 import { Breadcrumb, HotelCard, FAQSection } from '@/components/ui/Cards';
 import PhotoGallery from '@/components/ui/PhotoGallery';
@@ -45,7 +46,7 @@ export default function DirectoryListing({ hotel, related, reviews, lang = 'en' 
           </div>
 
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-heading font-bold text-slate-900 mb-2">{hotel.name}</h1>
-          <p className="flex items-center gap-1.5 text-slate-600 mb-6"><MapPin className="h-4 w-4 text-brand-500" />{v.locality}</p>
+          <a href="#location" className="flex items-center gap-1.5 text-slate-600 hover:text-brand-700 mb-6 w-fit"><MapPin className="h-4 w-4 text-brand-500" /><span className="underline decoration-dotted underline-offset-4">{v.locality}</span></a>
 
           {v.hasOwnPhotos ? (
             <figure className="mb-8">
@@ -134,6 +135,8 @@ export default function DirectoryListing({ hotel, related, reviews, lang = 'en' 
             </section>
           )}
 
+          <HotelLocation hotel={hotel} lang={lang} />
+
           {hotel.faqs?.length > 0 && (
             <section className="mb-8">
               <h2 className="text-xl font-heading font-bold text-slate-900 mb-3">{t.common.faqs}</h2>
@@ -159,11 +162,15 @@ export default function DirectoryListing({ hotel, related, reviews, lang = 'en' 
                 <p className="text-sm text-slate-600">{d.ownText}</p>
               </div>
             </div>
-            <a href={getWhatsAppLink('Hi! I manage ' + hotel.name + ' and want to claim our listing on Dharamshala Stay.')}
-              target="_blank" rel="noopener noreferrer"
-              className="shrink-0 text-center bg-brand-600 text-white px-5 py-2.5 rounded-lg font-semibold hover:bg-brand-700 text-sm">
-              {d.claim}
-            </a>
+            <div className="shrink-0 flex flex-col items-center gap-1.5">
+              <Link href={'/claim/' + hotel.slug}
+                className="w-full text-center bg-brand-600 text-white px-5 py-2.5 rounded-lg font-semibold hover:bg-brand-700 text-sm">
+                {d.claim}
+              </Link>
+              <Link href={'/remove-listing/' + hotel.slug} className="text-xs text-slate-500 hover:text-slate-700 underline">
+                {d.removeLink}
+              </Link>
+            </div>
           </div>
         </div>
 

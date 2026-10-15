@@ -18,6 +18,7 @@ import { normalizeImages, roomImageUrls } from './images';
 import { loadReviewBundle } from './reviews/store';
 import { initialName, monthLabel, shortQuote } from './reviews/summary';
 import { CATEGORIES, type Category, type ReviewFeed } from './reviews/types';
+import { hasCoordinates, propertyMapUrl } from './location';
 
 const B = siteConfig.url;
 const rs = (n: number) => 'Rs.' + Math.round(n).toLocaleString('en-IN');
@@ -152,6 +153,7 @@ export function hotelMarkdown(h: Property, reviews?: ReviewFeed): string {
       ['Area', area],
       ['Address', [h.address_line1, h.city, h.state, h.pincode].filter(Boolean).join(', ')],
       ['Landmark', h.landmark],
+      ['Map', hasCoordinates(h) ? propertyMapUrl(h) : ''],
       ['Star rating', h.star_rating],
       ['Price', !directory && h.price_min > 0 ? rs(h.price_min) + (h.price_max > h.price_min ? ' - ' + rs(h.price_max) : '') + ' per night' : extra.price_band],
       ['Guest rating', rating.count > 0 && rating.average > 0 ? outOf5(rating.average) + ' from ' + plural(rating.count, 'review') : ''],

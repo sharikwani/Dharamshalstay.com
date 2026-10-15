@@ -1,6 +1,7 @@
 import { serviceClient } from '@/lib/server-auth';
 import { sendBookingConfirmation, sendBookingRequestReceived, sendAdminNotification } from '@/lib/email';
 import { whatsappNewBooking } from '@/lib/booking-whatsapp';
+import { bookingPageUrlOrNull, loadStayContact } from '@/lib/bookings/stay-details';
 
 /**
  * Guest email + admin alert + partner WhatsApp for one booking. Never throws.
@@ -25,6 +26,8 @@ export async function sendBookingEmails(bookingId: string, stage: 'requested' | 
         amount: booking.amount, category: booking.category, room_name: booking.room_name,
         property_name: propertyName, paid_amount: booking.paid_amount,
         payment_method: booking.payment_method, payment_status: booking.payment_status,
+        stay: booking.property_id ? await loadStayContact(booking.id) : null,
+        details_url: bookingPageUrlOrNull(booking) || undefined,
       });
     }
     await sendAdminNotification({

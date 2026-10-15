@@ -23,6 +23,10 @@ type BookingEmailInput = {
   amount: number; category: string; room_name?: string;
   property_name?: string; paid_amount?: number;
   payment_method?: string | null; payment_status?: string | null;
+  /** Hotel address/map, and its phone once the booking is confirmed (lib/bookings/stay-details.ts). */
+  stay?: { address: string; landmark: string | null; mapUrl: string; phone: string | null } | null;
+  /** The guest's private booking page. */
+  details_url?: string;
 };
 
 type BookingEmailText = { heading: string; intro: (b: BookingEmailInput) => string; subject: string; payment: (b: BookingEmailInput) => string };
@@ -50,7 +54,9 @@ async function sendBookingEmail(booking: BookingEmailInput, t: BookingEmailText)
           <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:8px 0;color:#64748b">Type</td><td style="padding:8px 0;text-transform:capitalize">${booking.category}</td></tr>
           ${dateInfo ? '<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:8px 0;color:#64748b">Dates</td><td style="padding:8px 0">' + dateInfo + '</td></tr>' : ''}
           <tr style="border-bottom:1px solid #f1f5f9"><td style="padding:8px 0;color:#64748b">Amount</td><td style="padding:8px 0;font-weight:700;color:#16a34a">Rs.${booking.amount.toLocaleString('en-IN')}</td></tr>
-          <tr><td style="padding:8px 0;color:#64748b">Payment</td><td style="padding:8px 0;color:#16a34a;font-weight:600">${t.payment(booking)}</td></tr>
+          <tr${booking.stay ? ' style="border-bottom:1px solid #f1f5f9"' : ''}><td style="padding:8px 0;color:#64748b">Payment</td><td style="padding:8px 0;color:#16a34a;font-weight:600">${t.payment(booking)}</td></tr>
+          ${booking.stay ? '<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:8px 0;color:#64748b;vertical-align:top">Address</td><td style="padding:8px 0">' + escHtml(booking.stay.address) + (booking.stay.landmark ? '<br><span style="color:#64748b;font-size:13px">Landmark: ' + escHtml(booking.stay.landmark) + '</span>' : '') + '<br><a href="' + escHtml(booking.stay.mapUrl) + '" style="color:#1e3a5f;font-size:13px">Open in Google Maps</a></td></tr>' : ''}
+          ${booking.stay ? '<tr><td style="padding:8px 0;color:#64748b">Hotel phone</td><td style="padding:8px 0">' + (booking.stay.phone ? '<a href="tel:' + escHtml(booking.stay.phone) + '" style="color:#1e3a5f;font-weight:600">' + escHtml(booking.stay.phone) + '</a>' : '<span style="color:#64748b">Shared on your booking page once the booking is confirmed</span>') + '</td></tr>' : ''}
         </table>
         <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:16px;margin:16px 0">
           <p style="margin:0;font-weight:600;color:#166534">What to bring:</p>
@@ -58,7 +64,7 @@ async function sendBookingEmail(booking: BookingEmailInput, t: BookingEmailText)
         </div>
         <p style="color:#64748b;font-size:14px">Questions? WhatsApp us at +1 929-525-5894 or reply to this email.</p>
         <div style="text-align:center;margin-top:24px">
-          <a href="https://dharamshalastay.com" style="background:#1e3a5f;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block">Visit Dharamshala Stay</a>
+          <a href="${escHtml(booking.details_url || 'https://www.dharamshalastay.com')}" style="background:#1e3a5f;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block">${booking.details_url ? 'View your itinerary' : 'Visit Dharamshala Stay'}</a>
         </div>
       </div>
     </div>

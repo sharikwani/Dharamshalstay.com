@@ -43,6 +43,7 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
   const [status, setStatus] = useState<'idle' | 'loading' | 'paying' | 'success' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
   const [bookingRef, setBookingRef] = useState('');
+  const [detailsUrl, setDetailsUrl] = useState('');
   const [payNote, setPayNote] = useState('');
   // One id per booking attempt: a retry after a lost response returns the booking the server already made.
   // It is replaced only after a confirmed success or a definite refusal (4xx), never after an unreadable reply.
@@ -166,11 +167,12 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
       requestId.current = '';
       // No payment link: the server switched a fresh booking to pay later, or (already paid) there is nothing to pay.
       setPayNote(cd.pay_later ? f.onlinePayUnavailable : cr.status === 409 && cd.error === 'This booking is already paid' ? '' : f.paymentFailed);
-      setBookingRef(data.booking_ref || ''); setStatus('success'); return;
+      setBookingRef(data.booking_ref || ''); setDetailsUrl(data.details_url || ''); setStatus('success'); return;
     }
 
     requestId.current = '';
     setBookingRef(data.booking_ref || '');
+    setDetailsUrl(data.details_url || '');
     setStatus('success');
   }
 
@@ -181,6 +183,9 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
       {bookingRef && <p className="text-sm text-green-700 font-mono font-semibold mb-2">Ref: {bookingRef}</p>}
       {payNote && <p className="text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mb-2">{payNote}</p>}
       <p className="text-sm text-slate-600">{f.bookingConfirmNote}</p>
+      {detailsUrl && (
+        <a href={detailsUrl} className="inline-block mt-4 bg-brand-600 text-white px-5 py-2.5 rounded-lg font-semibold hover:bg-brand-700 text-sm">{f.viewBooking}</a>
+      )}
     </div>
   );
 
