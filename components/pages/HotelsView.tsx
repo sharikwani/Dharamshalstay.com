@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { placeImage } from '@/lib/place-images';
 import { Breadcrumb, FAQSection } from '@/components/ui/Cards';
-import HotelFilters from '@/components/hotels/HotelFilters';
+import StayFinder from '@/components/hotels/finder/StayFinder';
 import JsonLd from '@/components/seo/JsonLd';
 import { getPublishedProperties, getDestinations } from '@/lib/db';
 import { serverT } from '@/lib/i18n/server';
@@ -42,7 +42,7 @@ export default async function HotelsView({ lang }: { lang: Lang }) {
       </section>
       <section className="pb-12 bg-slate-50">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
-          <HotelFilters hotels={hotels.map((h) => localizeHotel(h, lang))} destinations={destinations} />
+          <StayFinder hotels={hotels.map((h) => localizeHotel(h, lang))} destinations={destinations} />
         </div>
       </section>
 
