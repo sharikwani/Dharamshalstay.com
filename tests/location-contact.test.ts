@@ -92,3 +92,14 @@ describe('public property rows', async () => {
     expect(p).toMatchObject({ address_line1: 'Road', latitude: 32.2, longitude: 76.3 });
   });
 });
+
+describe('isUnclaimed', async () => {
+  const { isUnclaimed } = await import('@/lib/listings/ownership');
+  const admins = new Set(['admin-1']);
+  it('covers listings we own (directory or partner) until the owner claims them', () => {
+    expect(isUnclaimed({ owner_id: 'admin-1', owner_email: null }, admins)).toBe(true);
+    expect(isUnclaimed({ owner_id: null, owner_email: null }, admins)).toBe(true);
+    expect(isUnclaimed({ owner_id: 'admin-1', owner_email: 'owner@hotel.in' }, admins)).toBe(false);
+    expect(isUnclaimed({ owner_id: 'partner-9', owner_email: null }, admins)).toBe(false);
+  });
+});

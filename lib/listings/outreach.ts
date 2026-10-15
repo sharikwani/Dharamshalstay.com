@@ -9,6 +9,7 @@ import { siteConfig } from '@/lib/config';
 import { isWhatsAppConfigured, sendTemplate } from '@/lib/whatsapp-cloud';
 import { normalizeIndianPhone } from '@/lib/whatsapp';
 import { listingLinkSuffix } from './links';
+import { adminIds, isUnclaimed } from './ownership';
 
 export const OUTREACH_TEMPLATE = 'listing_claim_invite';
 /** Sends per request, so one call stays well inside the function time limit. */
@@ -30,10 +31,13 @@ export function outreachMessage(p: { id: string; name: string; slug: string }) {
 export async function outreachList(): Promise<OutreachRow[]> {
   const sb = serviceClient();
   const { data: props, error } = await sb.from('properties')
-    .select('id, name, slug, contact_phone, owner_email, status')
-    .eq('listing_type', 'directory').eq('status', 'published').order('name');
+    .select('id, name, slug, contact_phone, owner_id, owner_email, status')
+    .eq('status', 'published').order('name');
   if (error) throw new Error(error.message);
-  const ids = (props || []).map((p) => p.id);
+  // Every live listing we added ourselves (directory or partner) that its owner hasn't claimed yet.
+  const admins = await adminIds();
+  const unclaimed = (props || []).filter((p) => isUnclaimed(p, admins));
+  const ids = unclaimed.map((p) => p.id);
   const { data: msgs, error: mErr } = ids.length
     ? await sb.from('whatsapp_messages').select('property_id, status, error, created_at')
       .eq('template', OUTREACH_TEMPLATE).in('property_id', ids).order('created_at', { ascending: false })
@@ -42,11 +46,10 @@ export async function outreachList(): Promise<OutreachRow[]> {
   const last = new Map<string, any>();
   for (const m of msgs || []) if (!last.has(m.property_id)) last.set(m.property_id, m);
 
-  return (props || []).map((p) => {
+  return unclaimed.map((p) => {
     const l = last.get(p.id);
     const mobile = normalizeIndianPhone(p.contact_phone);
-    const blocked = p.owner_email ? 'Already claimed'
-      : !p.contact_phone ? 'No phone number'
+    const blocked = !p.contact_phone ? 'No phone number'
       : !mobile ? 'Landline: no WhatsApp'
       : l && l.status !== 'failed' ? 'Already messaged'
       : null;

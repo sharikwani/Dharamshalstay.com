@@ -21,7 +21,7 @@ const BENEFITS = [
   'Correct your photos, rooms, phone number and description',
   'Take bookings with live rates and availability -- no listing fee',
   'Get booking alerts on WhatsApp and reply to guest reviews',
-  'Show a "Verified property" badge instead of "Directory listing"',
+  'Show guests a "Verified property" badge, managed by you',
 ];
 
 export default async function ClaimPage({ params, searchParams }: { params: { slug: string }; searchParams: { t?: string } }) {

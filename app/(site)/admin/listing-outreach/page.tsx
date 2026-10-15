@@ -62,7 +62,7 @@ export default function ListingOutreachPage() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-6">
-      <AdminPageHeader title="Owner outreach" description="WhatsApp each directory hotel once to say it is listed, with private links to claim the listing or have it removed. Sent from the business number with the listing_claim_invite template, which Meta must approve first. Replies arrive in WhatsApp chats; claims and removals in Claims & removals." />
+      <AdminPageHeader title="Owner outreach" description="WhatsApp each listed hotel its owner hasn't claimed yet, once, to say it is listed, with private links to claim the listing or have it removed. Sent from the business number with the listing_claim_invite template, which Meta must approve first. Replies arrive in WhatsApp chats; claims and removals in Claims & removals." />
 
       <div className="grid lg:grid-cols-[1fr_320px] gap-6">
         <div>
@@ -72,7 +72,7 @@ export default function ListingOutreachPage() {
               className="flex items-center gap-2 bg-green-700 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-800 disabled:opacity-50">
               {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />} Send to all {ready.length} ready
             </button>
-            <span className="text-sm text-slate-500">{rows.length} live directory listings</span>
+            <span className="text-sm text-slate-500">{rows.length} unclaimed live listings</span>
           </div>
           {log.length > 0 && <pre className="mb-4 text-xs bg-slate-900 text-slate-100 rounded-lg p-3 whitespace-pre-wrap">{log.join('\n')}</pre>}
 
