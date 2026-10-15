@@ -9,6 +9,7 @@ import StaySlider from '@/components/home/StaySlider';
 import TrekScene from '@/components/home/TrekScene';
 import GaddiPainting from '@/components/home/GaddiPainting';
 import HomeEffects from '@/components/home/HomeEffects';
+import Divider from '@/components/home/Divider';
 import JsonLd from '@/components/seo/JsonLd';
 import PreferredSourceButton from '@/components/seo/PreferredSourceButton';
 import { getDestinations, getPublishedProperties, getPublishedTreks } from '@/lib/db';
@@ -146,6 +147,8 @@ export default async function HomeView({ lang }: { lang: Lang }) {
         </div>
       </div>
 
+      <Divider />
+
       {/* FEATURED STAYS: each card is a slideshow of the property's own photos */}
       {featured.length > 0 && (
         <section id="stays" className="sec">
@@ -207,7 +210,7 @@ export default async function HomeView({ lang }: { lang: Lang }) {
 
       {/* EXPERIENCES */}
       <section id="experiences" className="sec dark">
-        <div className="wrap">
+        <div className="wrap split">
           <SecHead eyebrow={v.expEyebrow} title={h.expTitle} lede={h.expIntro} />
           <div className="exp">
             {h.experiences.map((exp, i) => (
@@ -258,6 +261,8 @@ export default async function HomeView({ lang }: { lang: Lang }) {
         </div>
       </section>
 
+      <Divider />
+
       {/* THIS MONTH */}
       <section id="season" className="sec">
         <div className="wrap">
@@ -279,9 +284,11 @@ export default async function HomeView({ lang }: { lang: Lang }) {
         </div>
       </section>
 
+      <Divider />
+
       {/* PACKAGES */}
-      <section id="packages" className="sec" style={{ paddingTop: 0 }}>
-        <div className="wrap">
+      <section id="packages" className="sec">
+        <div className="wrap split">
           <SecHead eyebrow={v.pkgEyebrow} title={h.pkgTitle} lede={`${h.pkgIntro} ${h.customizable}`} action={{ href: getWhatsAppLink(h.customMsg), label: h.customQuote, external: true }} />
           <div className="pkgs">
             {h.packages.map((pkg, i) => (
@@ -301,7 +308,9 @@ export default async function HomeView({ lang }: { lang: Lang }) {
 
       {/* TRAVEL GUIDES */}
       {featuredBlogs.length > 0 && (
-        <section id="guides" className="sec" style={{ paddingTop: 0 }}>
+        <>
+        <Divider />
+        <section id="guides" className="sec">
           <div className="wrap">
             <SecHead eyebrow={v.guidesEyebrow} title={h.guidesTitle} lede={h.guidesSubtitle} action={{ href: href('/blog'), label: h.allGuides }} />
             <div className="guides-grid">
@@ -316,6 +325,7 @@ export default async function HomeView({ lang }: { lang: Lang }) {
             </div>
           </div>
         </section>
+        </>
       )}
 
       {/* REVIEWS -- only real Google reviews; set NEXT_PUBLIC_GOOGLE_REVIEW_URL to show this */}
@@ -329,8 +339,10 @@ export default async function HomeView({ lang }: { lang: Lang }) {
         </section>
       )}
 
+      <Divider />
+
       {/* FAQ */}
-      <section id="faq" className="sec" style={{ paddingTop: 0 }}>
+      <section id="faq" className="sec">
         <div className="wrap faq">
           <div className="rv"><span className="eyebrow">{v.faqEyebrow}</span><h2>{h.faqTitle}</h2>
             <p style={{ marginTop: 16 }}><Link className="link" href={href('/faq')}>{h.allQa} <ArrowRight className="ico" aria-hidden="true" /></Link></p>
