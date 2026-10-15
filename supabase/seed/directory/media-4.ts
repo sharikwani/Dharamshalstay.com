@@ -6,6 +6,7 @@ import type { DirectoryMedia } from './types';
  * Trip.com photos were removed (OTA-hosted images are not reused);
  * details are included only where those sources state them. Properties with no
  * verified own photos have no images, so the page uses an area photo.
+ * Own photos for these listings were added later in media-6.ts (migration v30).
  */
 export const directoryMedia4: Record<string, DirectoryMedia> = {
   'hotel-norbu-house-mcleod-ganj': {

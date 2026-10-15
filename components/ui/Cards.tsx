@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Star, MapPin, ChevronRight } from 'lucide-react';
+import { Star, MapPin, ChevronRight, Building2 } from 'lucide-react';
 import { Property, Trek, Destination, BlogPost, FAQ } from '@/types';
 import { formatPrice, cn } from '@/lib/utils';
-import { getPrimaryImageUrl } from '@/lib/images';
+import { normalizeImages } from '@/lib/images';
 import { getDict } from '@/lib/i18n/dict';
 import { localizePath, type Lang } from '@/lib/i18n/core';
 
@@ -11,8 +11,10 @@ import { localizePath, type Lang } from '@/lib/i18n/core';
 
 export function HotelCard({ hotel, nights = 0, lang = 'en' }: { hotel: Property; nights?: number; lang?: Lang }) {
   const t = getDict(lang).common;
-  const img = getPrimaryImageUrl(hotel.images);
-  const alt = hotel.images?.[0]?.alt || hotel.name || 'Hotel';
+  // A listing without its own photos gets a neutral placeholder, never a shared photo that looks like the hotel.
+  const photos = normalizeImages(hotel.images);
+  const cover = photos.find((p) => p.is_primary) || photos[0];
+  const alt = cover?.alt || hotel.name || 'Hotel';
   const perNight = hotel.price_min;
   const total = nights > 1 ? perNight * nights : 0;
   const band = (hotel as any).price_band as string | undefined;
@@ -21,7 +23,13 @@ export function HotelCard({ hotel, nights = 0, lang = 'en' }: { hotel: Property;
     <Link href={localizePath('/hotels/' + hotel.slug, lang)} className="group block">
       <div className="bg-white rounded-xl overflow-hidden border border-slate-200 hover:shadow-lg transition-all">
         <div className="relative aspect-[4/3] overflow-hidden">
-          <Image src={img} alt={alt} fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="(max-width:768px) 100vw, 33vw" />
+          {cover ? (
+            <Image src={cover.url} alt={alt} fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="(max-width:768px) 100vw, 33vw" />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200" role="img" aria-label={hotel.name}>
+              <Building2 className="h-12 w-12 text-slate-400" aria-hidden="true" />
+            </div>
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
           {hotel.featured && <span className="absolute top-3 left-3 bg-orange-600 text-white text-xs font-bold px-2.5 py-1 rounded">{t.featured}</span>}
           <div className="absolute bottom-3 left-3 flex items-center gap-1 bg-white/90 backdrop-blur-sm text-slate-800 text-xs font-medium px-2 py-1 rounded">
