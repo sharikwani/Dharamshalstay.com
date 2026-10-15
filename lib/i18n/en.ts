@@ -134,6 +134,9 @@ export const en = {
       tickerLabel: 'Places around Dharamshala',
       ticker: ['McLeod Ganj', 'Bhagsu', 'Dharamkot', 'Triund', 'Naddi', 'Kareri Lake', 'Bir Billing', 'Norbulingka', 'Kangra Valley', 'Indrahar Pass'],
       trekEyebrow: 'On the trail', trekTitle: 'Walk to Triund with people who grew up on it', trekCta: 'See all treks',
+      trekIntro: 'A day climb from Dharamkot through oak and rhododendron forest to a grassy ridge right under the Dhauladhar. Stay the night for the sunset, the stars and a sunrise you will not forget.',
+      trekBook: 'Book the Triund trek', trekStatTime: 'Duration', trekStatTop: 'Top', trekStatFrom: 'From', trekPhotoBy: 'Photo of the Triund ridge:',
+      trekPhotos: ['The meadow on the way up', 'Camp at golden hour', 'A night under the stars'],
       trekBeats: [
         { alt: 'about 2,100 m', title: 'Start at Dharamkot', desc: 'Meet your certified local guide at the trailhead.' },
         { alt: 'The climb', title: 'Through oak and rhododendron', desc: 'A steady climb with snack stops on the way.' },
@@ -153,17 +156,6 @@ export const en = {
       ],
       gaddiEyebrow: 'The people of the mountains', gaddiTitleA: 'Gaddi shepherds', gaddiTitleB: 'and the Gaddan',
       gaddiIntro: 'For centuries Gaddi families have walked their sheep and goats over the Dhauladhar with the seasons. Many still live in the villages around Dharamshala and McLeod Ganj, and you will meet their flocks on the trails.',
-      paintingAlt: 'Painting in the Kangra miniature style: a Gaddi shepherd in a white chola leads his flock below the snowy Dhauladhar while two Gaddan women stand by a stone and slate house',
-      paintingCaption: 'Illustration in the Kangra miniature style, made with AI for Dharamshala Stay. Kangra painting flourished in this valley in the 18th century.',
-      paintingHint: 'Tap the numbers to explore',
-      hotspots: [
-        { title: 'The chola and dora', desc: 'Gaddi men wear the chola, a long white woollen coat, tied at the waist with the dora, a long black woollen rope, and a woollen cap.' },
-        { title: 'Sheep and goats', desc: 'A Gaddi flock can run to hundreds of animals. Their wool and hair become blankets, shawls and rope.' },
-        { title: 'The Gaddi dog', desc: 'Big, shaggy mountain dogs guard the flock from leopards and bears through the night.' },
-        { title: 'The Gaddan', desc: 'Gaddi women wear the luanchari, a long pleated dress, with a dora at the waist and silver jewellery. They keep home, fields and loom running while the men are away.' },
-        { title: 'Stone and slate homes', desc: 'Thick stone walls, carved timber balconies and grey slate roofs built to carry the winter snow.' },
-        { title: 'Over the passes', desc: 'Each summer the flocks climb to high pastures and cross the Dhauladhar. In winter they come down to the warmer valleys.' },
-      ],
       cycle: [
         { alt: 'Winter', title: 'Down in the valleys', desc: 'Flocks graze the warmer lower hills of Kangra.' },
         { alt: 'Spring', title: 'Up through the villages', desc: 'Families move uphill as the snow melts.' },

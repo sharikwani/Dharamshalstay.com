@@ -6,8 +6,7 @@ import HeroSearch from '@/components/sections/HeroSearch';
 import HeroAtmosphere from '@/components/home/HeroAtmosphere';
 import HeroClock from '@/components/home/HeroClock';
 import StaySlider from '@/components/home/StaySlider';
-import TrekScene from '@/components/home/TrekScene';
-import GaddiPainting from '@/components/home/GaddiPainting';
+import TrailSection from '@/components/home/TrailSection';
 import HomeEffects from '@/components/home/HomeEffects';
 import Divider from '@/components/home/Divider';
 import MonasteryDay from '@/components/home/MonasteryDay';
@@ -87,6 +86,7 @@ export default async function HomeView({ lang }: { lang: Lang }) {
   const season = h.seasons[seasonKey];
   const month = new Intl.DateTimeFormat(lang === 'hi' ? 'hi-IN' : 'en-IN', { month: 'long', timeZone: 'Asia/Kolkata' }).format(now);
   const [big, ...areaRest] = destinations;
+  const triund = (treks as any[]).find((x) => x.slug === 'triund-trek');
 
   const sections = [
     featured.length > 0 && 'stays', 'areas', 'trail', 'experiences', 'gaddi', 'monk', 'season', 'packages', featuredBlogs.length > 0 && 'guides', 'faq',
@@ -209,7 +209,13 @@ export default async function HomeView({ lang }: { lang: Lang }) {
       </section>
 
       {/* ON THE TRAIL */}
-      <TrekScene eyebrow={v.trekEyebrow} title={v.trekTitle} beats={v.trekBeats} cta={v.trekCta} ctaHref={href('/treks')} />
+      <TrailSection beats={v.trekBeats} bookHref={href(triund ? '/treks/' + triund.slug : '/treks')} allHref={href('/treks')}
+        labels={{ eyebrow: v.trekEyebrow, title: v.trekTitle, intro: v.trekIntro, book: v.trekBook, all: v.trekCta, photos: v.trekPhotos, photoBy: v.trekPhotoBy }}
+        stats={triund ? [
+          { icon: 'time' as const, label: v.trekStatTime, value: triund.duration },
+          { icon: 'top' as const, label: v.trekStatTop, value: v.trekBeats[3].alt },
+          ...(triund.price_per_person > 0 ? [{ icon: 'price' as const, label: v.trekStatFrom, value: formatPrice(triund.price_per_person) + ' ' + t.common.perPerson }] : []),
+        ] : []} />
 
       {/* EXPERIENCES */}
       <section id="experiences" className="sec dark">
@@ -230,37 +236,31 @@ export default async function HomeView({ lang }: { lang: Lang }) {
         </div>
       </section>
 
-      {/* GADDI SHEPHERDS AND THE GADDAN */}
+      {/* GADDI SHEPHERDS AND THE GADDAN: one compact section of real photos */}
       <section id="gaddi" className="sec gaddi">
-        <div className="wrap">
-          <div className="gaddi-head rv">
-            <div><span className="eyebrow">{v.gaddiEyebrow}</span><h2>{v.gaddiTitleA} <em>{v.gaddiTitleB}</em></h2></div>
-            <p>{v.gaddiIntro}</p>
+        <div className="wrap gaddi-grid">
+          <div className="gaddi-copy rv">
+            <span className="eyebrow">{v.gaddiEyebrow}</span>
+            <h2>{v.gaddiTitleA} <em>{v.gaddiTitleB}</em></h2>
+            <p className="lede">{v.gaddiIntro}</p>
+            <ol className="gyear">
+              {v.cycle.map((c) => <li key={c.title}><span className="alt">{c.alt}</span><b>{c.title}</b><span>{c.desc}</span></li>)}
+            </ol>
+            <div className="gpair">
+              {[v.shepherd, v.gaddan].map((c) => (
+                <div key={c.title}><span className="eyebrow">{c.eyebrow}</span><h3>{c.title}</h3><p>{c.intro}</p></div>
+              ))}
+            </div>
+            <p className="respect">{v.respect}</p>
           </div>
-          <GaddiPainting src="/images/gaddi/gaddi-painting.jpg" alt={v.paintingAlt} spots={v.hotspots} />
-          <div className="frame-cap"><span>{v.paintingCaption}</span><span className="alt">{v.paintingHint}</span></div>
-          <ol className="cycle">
-            {v.cycle.map((c) => <li key={c.title} className="rv"><span className="alt">{c.alt}</span><b>{c.title}</b><span>{c.desc}</span></li>)}
-          </ol>
-          <div className="gaddi-two">
-            {[v.shepherd, v.gaddan].map((c) => (
-              <div key={c.title} className="gcard rv">
-                <span className="eyebrow">{c.eyebrow}</span><h3>{c.title}</h3><p>{c.intro}</p>
-                <ul>{c.items.map((it) => <li key={it}>{it}</li>)}</ul>
-              </div>
-            ))}
-          </div>
-          <div className="reel" tabIndex={0} role="region" aria-label={v.reelLabel}>
+          <div className="gcollage" role="region" aria-label={v.reelLabel}>
             {gaddiPhotos.map((ph, i) => (
               <figure key={ph.file} className="rv">
-                <div className="ph" style={{ position: 'relative' }}>
-                  <Image src={`/images/gaddi/${ph.file}.jpg`} alt={v.photos[i]} fill sizes="(max-width:960px) 70vw, 360px" />
-                </div>
+                <Image src={`/images/gaddi/${ph.file}.jpg`} alt={v.photos[i]} fill sizes={i === 0 ? '(max-width:960px) 100vw, 30vw' : '(max-width:960px) 50vw, 15vw'} />
                 <figcaption>{v.photos[i]}<small>{v.photoCredit.split('{name}')[0]}<a href={ph.source} target="_blank" rel="noopener noreferrer">{ph.author}</a>{v.photoCredit.split('{name}')[1]}</small></figcaption>
               </figure>
             ))}
           </div>
-          <p className="respect">{v.respect}</p>
         </div>
       </section>
 

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { istHour, skyPhase, ownPhotos, pickFeaturedStays, trekZoom } from '@/lib/home-helpers';
+import { istHour, skyPhase, ownPhotos, pickFeaturedStays } from '@/lib/home-helpers';
 
 describe('istHour', () => {
   it('converts UTC to India time (UTC+5:30)', () => {
@@ -39,13 +39,5 @@ describe('pickFeaturedStays', () => {
   it('caps each stay at 5 photos', () => {
     const many = prop('m', Array.from({ length: 9 }, (_, i) => `https://h/${i}.jpg`));
     expect(pickFeaturedStays([many], 5)[0].photos).toHaveLength(5);
-  });
-});
-
-describe('trekZoom', () => {
-  it('starts and ends wide, closest in the middle', () => {
-    expect(trekZoom(0)).toBeCloseTo(1);
-    expect(trekZoom(1)).toBeCloseTo(1);
-    expect(trekZoom(0.5)).toBeCloseTo(2.5);
   });
 });

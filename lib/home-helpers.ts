@@ -35,12 +35,3 @@ export function pickFeaturedStays<T extends Pick<Property, 'name'> & { images?: 
     .filter((p) => p.photos.length > 0)
     .slice(0, limit);
 }
-
-/** How much closer the trek camera gets at its nearest point (1 = twice as close). */
-export const TREK_ZOOM_GAIN = 1.5;
-
-/** Camera scale for the trek scene: wide at both ends of the scroll, closest in the middle. */
-export function trekZoom(progress: number): number {
-  const p = Math.min(1, Math.max(0, (progress - 0.04) / 0.92));
-  return 1 + TREK_ZOOM_GAIN * Math.sin(Math.PI * p);
-}
