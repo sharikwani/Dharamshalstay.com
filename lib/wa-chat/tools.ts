@@ -1,5 +1,7 @@
 import { getPublishedProperties, getPublishedTreks, getParaglidingPackages } from '@/lib/db';
 import { findHotel } from './find';
+import { inBackground } from '@/lib/background';
+import { alertHotelOfEnquiry } from '@/lib/listings/enquiry-alert';
 import { getTaxiRouteGroups } from '@/lib/taxi';
 import { siteConfig } from '@/lib/config';
 import { extraBedOption } from '@/lib/pricing';
@@ -34,6 +36,7 @@ export const TOOL_DEFS = [
   fn('list_paragliding', 'Paragliding packages and prices.', {}),
   fn('create_enquiry', 'Save a request for the team when it cannot be booked with quote_booking (no fixed price, item not listed, special requests). Only after the customer gave the details and agreed.', {
     type: { type: 'string', enum: ['hotel', 'taxi', 'trek', 'paragliding', 'general'] }, name: str('Customer name'),
+    hotel: str('Hotel enquiries about a hotel listed on our site: its name or page slug, as search_hotels/get_hotel showed it'),
     item: str('Hotel, room, route, trek or package wanted'), check_in: str('YYYY-MM-DD (hotel) or activity/pickup date'),
     check_out: str('YYYY-MM-DD (hotel only)'), guests: num('Number of people'), pickup: str('Pickup place/time (taxi)'),
     drop: str('Drop place (taxi)'), email: str('Email if given'), notes: str('Anything else: room type, meal plan, special requests'),
@@ -126,7 +129,10 @@ async function createEnquiry(a: any, ctx: ToolCtx) {
   for (const k of ['check_in', 'check_out']) if (a[k] && !DATE.test(a[k])) return { error: `${k} must be YYYY-MM-DD` };
   if (a.check_in && a.check_out && a.check_out <= a.check_in) return { error: 'check_out must be after check_in' };
   const message = [a.item && `Wants: ${a.item}`, a.notes].filter(Boolean).join('\n') || null;
+  // Link the enquiry to the listed hotel, so the team (and the hotel) know which one it is for.
+  const property = a.type === 'hotel' && a.hotel ? await findHotel(String(a.hotel)).catch(() => null) : null;
   const row = {
+    property_id: property?.id ?? null,
     type: a.type, name: String(a.name || ctx.profileName || 'WhatsApp customer').slice(0, 200), phone: ctx.phone,
     email: a.email ? String(a.email).slice(0, 200) : null, message, check_in: a.check_in || null,
     check_out: a.type === 'hotel' ? a.check_out || null : null, guests: Number(a.guests) > 0 ? Math.round(a.guests) : null,
@@ -146,10 +152,11 @@ async function createEnquiry(a: any, ctx: ToolCtx) {
   const { data, error } = await serviceClient().from('inquiries').insert(row).select('id').single();
   if (error) { console.error('WhatsApp enquiry insert failed:', error); return { error: 'Could not save the enquiry' }; }
   markSideEffect(ctx, 'create_enquiry', `Enquiry ${data.id} saved`);
+  if (row.property_id) inBackground('Hotel enquiry alert', () => alertHotelOfEnquiry(data.id));
   await sendEmail({
     to: adminEmail(), subject: `New WhatsApp enquiry: ${row.type} from ${row.name}`,
     html: `<p><strong>${esc(row.name)}</strong> (+${esc(ctx.phone)}) asked on WhatsApp.</p><ul>${
-      [['Type', row.type], ['Wants', a.item], ['Dates', [row.check_in, row.check_out].filter(Boolean).join(' to ')], ['Guests', row.guests],
+      [['Type', row.type], ['Hotel', property?.name], ['Wants', a.item], ['Dates', [row.check_in, row.check_out].filter(Boolean).join(' to ')], ['Guests', row.guests],
         ['Pickup', row.pickup_location], ['Drop', row.drop_location], ['Notes', a.notes]]
         .filter(([, v]) => v).map(([k, v]) => `<li>${k}: ${esc(v)}</li>`).join('')}</ul><p><a href="${SITE}/admin/whatsapp?c=${ctx.conversationId}">Open the chat</a></p>`,
   }).catch((e) => console.error('Enquiry email failed:', e));

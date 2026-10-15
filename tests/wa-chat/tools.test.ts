@@ -1,6 +1,8 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
-const h = vi.hoisted(() => ({ inserts: [] as any[], emails: [] as any[], statuses: [] as any[], existing: null as any, filters: [] as any[], status: 'ai' }));
+const h = vi.hoisted(() => ({ inserts: [] as any[], emails: [] as any[], statuses: [] as any[], existing: null as any, filters: [] as any[], status: 'ai', alerts: [] as string[] }));
+vi.mock('@/lib/background', () => ({ inBackground: (_l: string, work: () => unknown) => { work(); } }));
+vi.mock('@/lib/listings/enquiry-alert', () => ({ alertHotelOfEnquiry: async (id: string) => { h.alerts.push(id); return { sent: true }; } }));
 vi.mock('@/lib/db', () => ({
   getPublishedProperties: async () => [
     { id: 'p-panch', slug: 'panchvati-cottages', name: 'Panchvati Cottages', type: 'cottage', destination_slug: 'dharamshala', star_rating: null, price_min: 4000, price_max: 9700, short_description: 'Quiet cottages', locality: 'Kharota' },
@@ -81,6 +83,15 @@ describe('tools', () => {
     expect(r).toEqual({ ok: true, enquiry_id: 'inq1' });
     expect(h.inserts[0]).toMatchObject({ type: 'hotel', name: 'Asha', phone: '919800000001', source: 'whatsapp', whatsapp_conversation_id: 'c1', status: 'new', guests: 2 });
     expect(h.emails[0].subject).toMatch(/WhatsApp enquiry/);
+  });
+  it('create_enquiry links a listed hotel and alerts it; an unknown hotel is saved unlinked', async () => {
+    h.alerts = [];
+    await runTool('create_enquiry', { type: 'hotel', name: 'Asha', hotel: 'Panchvati Cottages', check_in: '2026-10-13' }, ctx());
+    expect(h.inserts.at(-1)).toMatchObject({ property_id: 'p-panch' });
+    expect(h.alerts).toEqual(['inq1']);
+    await runTool('create_enquiry', { type: 'hotel', name: 'Ravi', hotel: 'Nowhere Inn', check_in: '2026-10-14' }, ctx());
+    expect(h.inserts.at(-1)).toMatchObject({ property_id: null });
+    expect(h.alerts).toEqual(['inq1']);
   });
   it('create_enquiry counts as an action the customer must hear about', async () => {
     const c: any = ctx();

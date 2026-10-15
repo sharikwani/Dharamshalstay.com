@@ -103,3 +103,12 @@ describe('isUnclaimed', async () => {
     expect(isUnclaimed({ owner_id: 'partner-9', owner_email: null }, admins)).toBe(false);
   });
 });
+
+describe('enquiry alert to the hotel', async () => {
+  const { enquiryAlertParams } = await import('@/lib/listings/enquiry-alert');
+  it('gives dates, guests and the request, never the guest contact', () => {
+    expect(enquiryAlertParams('Panchvati Cottages', { check_in: '2026-12-10', check_out: '2026-12-13', guests: 4, message: '[Directory hotel: Panchvati Cottages, Kharota] 2 rooms please' }))
+      .toEqual(['Panchvati Cottages', '10 Dec 2026 to 13 Dec 2026', '4', '2 rooms please']);
+    expect(enquiryAlertParams('H', {})).toEqual(['H', 'Not given yet', 'Not given yet', 'Room availability and rates']);
+  });
+});

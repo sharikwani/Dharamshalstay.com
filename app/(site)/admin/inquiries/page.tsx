@@ -15,8 +15,8 @@ export default function AdminInquiries() {
   async function loadInquiries() {
     setLoading(true);
     const query = filter === 'all'
-      ? supabase.from('inquiries').select('*').order('created_at', { ascending: false }).limit(50)
-      : supabase.from('inquiries').select('*').eq('status', filter).order('created_at', { ascending: false }).limit(50);
+      ? supabase.from('inquiries').select('*, property:properties(name, slug)').order('created_at', { ascending: false }).limit(50)
+      : supabase.from('inquiries').select('*, property:properties(name, slug)').eq('status', filter).order('created_at', { ascending: false }).limit(50);
     const { data } = await query;
     setInquiries(data || []);
     setLoading(false);
@@ -61,7 +61,11 @@ export default function AdminInquiries() {
                     <h3 className="font-semibold text-slate-900">{inq.name}</h3>
                     <span className={`text-xs font-medium px-2 py-0.5 rounded-full capitalize ${statusColors[inq.status]}`}>{inq.status}</span>
                     <span className="text-xs px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full capitalize">{inq.type}</span>
+                    {inq.source === 'whatsapp' && <span className="text-xs px-2 py-0.5 bg-green-50 text-green-700 rounded-full">WhatsApp</span>}
                   </div>
+                  {inq.property && (
+                    <a href={'/hotels/' + inq.property.slug} target="_blank" rel="noopener noreferrer" className="block text-sm font-medium text-brand-700 hover:underline mb-1">{inq.property.name}</a>
+                  )}
                   <div className="flex items-center gap-4 text-sm text-slate-500">
                     <a href={`tel:${inq.phone}`} className="flex items-center gap-1 hover:text-brand-600"><Phone className="h-3.5 w-3.5" />{inq.phone}</a>
                     {inq.email && <a href={`mailto:${inq.email}`} className="flex items-center gap-1 hover:text-brand-600"><Mail className="h-3.5 w-3.5" />{inq.email}</a>}
