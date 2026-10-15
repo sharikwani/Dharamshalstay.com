@@ -230,6 +230,7 @@ export async function llmsIndex(): Promise<string> {
       link('Paragliding', '/paragliding', 'Bir Billing and Dharamshala paragliding'),
       link('Taxi', '/taxi', 'airport, local and outstation taxi fares'),
       link('Travel guides', '/blog', 'in-depth local guides'),
+      link('Monasteries & meditation', '/monasteries-meditation', 'Dalai Lama Temple, Namgyal debates, Gyuto, Norbulingka, the kora, Tushita and Vipassana courses, temple etiquette'),
       link('Travel essentials', '/essentials', 'money, SIM, weather, food, health and local rules in quick answers'),
       link('FAQ', '/faq', 'hundreds of answered traveller questions'),
       link('About us', '/about'),

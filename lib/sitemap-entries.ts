@@ -11,6 +11,7 @@ import { hasHindiVersion, localizePath } from '@/lib/i18n/core';
 import { hasHindiPost } from '@/lib/i18n/content';
 import { normalizeImages, roomImageUrls } from '@/lib/images';
 import { placeImage, isStockImage } from '@/lib/place-images';
+import { monasteryPhotos } from '@/data/monastery-photos';
 
 // Must be the canonical (www) origin -- the bare domain 301s to www, and a
 // sitemap full of redirecting URLs is largely ignored by Google.
@@ -54,6 +55,7 @@ export async function sitemapEntries(): Promise<SitemapEntry[]> {
     { url: B + '/blog', lastModified: contentDate, changeFrequency: 'weekly', priority: 0.9 },
     { url: B + '/faq', lastModified: contentDate, changeFrequency: 'monthly', priority: 0.8 },
     { url: B + '/essentials', lastModified: contentDate, changeFrequency: 'monthly', priority: 0.8 },
+    { url: B + '/monasteries-meditation', lastModified: date('2026-10-16'), changeFrequency: 'monthly', priority: 0.8, images: imgs(monasteryPhotos.map((p) => '/images/monasteries/' + p.file + '.jpg')) },
     { url: B + '/destinations', lastModified: contentDate, changeFrequency: 'monthly', priority: 0.8 },
     { url: B + '/treks', lastModified: contentDate, changeFrequency: 'weekly', priority: 0.8 },
     { url: B + '/paragliding', lastModified: contentDate, changeFrequency: 'monthly', priority: 0.8, images: imgs([placeImage('bir-paragliding')]) },

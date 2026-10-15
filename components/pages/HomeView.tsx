@@ -10,6 +10,9 @@ import TrekScene from '@/components/home/TrekScene';
 import GaddiPainting from '@/components/home/GaddiPainting';
 import HomeEffects from '@/components/home/HomeEffects';
 import Divider from '@/components/home/Divider';
+import MonasteryDay from '@/components/home/MonasteryDay';
+import { monasteryDay } from '@/data/monasteries';
+import { monasteryPhotos } from '@/data/monastery-photos';
 import JsonLd from '@/components/seo/JsonLd';
 import PreferredSourceButton from '@/components/seo/PreferredSourceButton';
 import { getDestinations, getPublishedProperties, getPublishedTreks } from '@/lib/db';
@@ -86,7 +89,7 @@ export default async function HomeView({ lang }: { lang: Lang }) {
   const [big, ...areaRest] = destinations;
 
   const sections = [
-    featured.length > 0 && 'stays', 'areas', 'trail', 'experiences', 'gaddi', 'season', 'packages', featuredBlogs.length > 0 && 'guides', 'faq',
+    featured.length > 0 && 'stays', 'areas', 'trail', 'experiences', 'gaddi', 'monk', 'season', 'packages', featuredBlogs.length > 0 && 'guides', 'faq',
   ].filter(Boolean).map((id) => ({ id: id as string, label: v.nav[id as string] }));
 
   return (
@@ -261,7 +264,21 @@ export default async function HomeView({ lang }: { lang: Lang }) {
         </div>
       </section>
 
-      <Divider />
+      {/* MONASTERIES: dawn kora to evening lamps */}
+      <section id="monk" className="sec monk">
+        <div className="wrap split">
+          <SecHead eyebrow={v.monkEyebrow} title={`${v.monkTitleA} ${v.monkTitleB}`} lede={v.monkIntro} action={{ href: '/monasteries-meditation', label: v.monkCta }} />
+          <div>
+          <MonasteryDay
+            moments={[0, 1, 3, 4].map((d, i) => {
+              const ph = monasteryPhotos.find((x) => x.file === monasteryDay[d].photo)!;
+              return { ...v.monkMoments[i], img: `/images/monasteries/${ph.file}.jpg`, alt: ph.alt, credit: { author: ph.author, license: ph.license, licenseUrl: ph.license_url, source: ph.source } };
+            })}
+            labels={{ soundOn: v.monkSoundOn, soundOff: v.monkSoundOff, moment: v.monkMoment }} />
+          <p className="monk-note">{v.monkNote}</p>
+          </div>
+        </div>
+      </section>
 
       {/* THIS MONTH */}
       <section id="season" className="sec">

@@ -524,3 +524,56 @@
   .hm .area{min-height:200px}
   .hm .area.big{min-height:300px}
 }
+
+/* ---------- monasteries: a day from dawn chanting to evening lamps ---------- */
+.hm .monk{--maroon:#4a1410;--maroon-2:#2b0b09;--gold:#e8b923;position:relative;isolation:isolate;overflow:hidden;color:#f7ede4;
+  background:radial-gradient(120% 80% at 50% 0%,#6b1d14 0%,var(--maroon) 45%,var(--maroon-2) 100%)}
+.hm .monk::before{content:"";position:absolute;width:min(1100px,120vw);aspect-ratio:1;right:-18%;top:-30%;z-index:-1;opacity:.09;
+  background:repeating-conic-gradient(from 0deg,var(--gold) 0 2deg,transparent 2deg 15deg),radial-gradient(circle,transparent 30%,var(--gold) 30.4% 30.8%,transparent 31.2% 46%,var(--gold) 46.4% 46.8%,transparent 47.2% 62%,var(--gold) 62.4% 62.8%,transparent 63.2%);
+  border-radius:50%;-webkit-mask:radial-gradient(circle,#000 0 70%,transparent 71%);mask:radial-gradient(circle,#000 0 70%,transparent 71%);animation:hm-turn 240s linear infinite}
+@keyframes hm-turn{to{transform:rotate(1turn)}}
+.hm .monk .eyebrow{color:var(--gold)}
+.hm .monk .sec-head p.lede{color:#e2cfc2}
+.hm .monk .link{color:#ffd28a}
+.hm .monk h2 em{font-style:italic;font-weight:400;color:#ffb38a}
+.hm .mday{position:relative;padding-top:clamp(110px,10vw,150px)}
+.hm .mday-sky{position:absolute;left:0;right:0;top:0;height:clamp(110px,10vw,150px);pointer-events:none}
+.hm .mday-sky svg{width:100%;height:100%;overflow:visible}
+.hm .mday-sky path{fill:none;stroke:rgba(232,185,35,.35);stroke-width:1.2;stroke-dasharray:2 5;vector-effect:non-scaling-stroke}
+.hm .mday-sun{position:absolute;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;background:radial-gradient(circle,#fff6d6,#ffc24a 55%,#ff8a3c);
+  box-shadow:0 0 22px 6px rgba(255,180,70,.55),0 0 60px 20px rgba(255,140,60,.25);transition:left 1.2s cubic-bezier(.4,0,.2,1),top 1.2s cubic-bezier(.4,0,.2,1),background .8s,box-shadow .8s}
+.hm .mday[data-moment="3"] .mday-sun{background:radial-gradient(circle,#ffffff,#dfe7ff 60%,#aab8e8);box-shadow:0 0 18px 5px rgba(200,215,255,.45),0 0 50px 16px rgba(160,180,255,.18)}
+.hm .mday-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.hm .mday-list button{all:unset;box-sizing:border-box;display:grid;gap:8px;width:100%;height:100%;padding:10px 10px 18px;border-radius:16px;cursor:pointer;background:rgba(255,255,255,.04);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);transition:background .4s,box-shadow .4s,transform .4s}
+.hm .mday-list button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.hm .mday-list li.on button{background:rgba(255,255,255,.1);box-shadow:inset 0 0 0 1px rgba(232,185,35,.6),0 24px 50px -30px rgba(0,0,0,.8);transform:translateY(-6px)}
+.hm .mday-list .ph{position:relative;display:block;aspect-ratio:4/3;border-radius:10px;overflow:hidden;margin-bottom:6px}
+.hm .mday-list .ph img{object-fit:cover;filter:saturate(.75) brightness(.8);transition:filter .6s,transform 1.2s}
+.hm .mday-list li.on .ph img{filter:none;transform:scale(1.04)}
+.hm .mday-list .alt{color:var(--gold);padding-inline:6px}
+.hm .mday-list b{font:600 19px/1.2 var(--display);padding-inline:6px}
+.hm .mday-list .d{font-size:14px;line-height:1.5;color:#e2cfc2;padding-inline:6px}
+.hm .mday-sound{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:10px;margin-top:22px;padding:10px 16px;border-radius:999px;font:500 14px/1 var(--body);color:#f7ede4;box-shadow:inset 0 0 0 1px rgba(232,185,35,.5);transition:background .2s}
+.hm .mday-sound:hover{background:rgba(232,185,35,.12)}
+.hm .mday-sound:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.hm .mday-sound[aria-pressed="true"]{background:rgba(232,185,35,.2)}
+.hm .mday-sound svg{width:20px;height:20px;fill:none;stroke:var(--gold);stroke-width:1.6;stroke-linecap:round}
+.hm .monk-foot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-top:8px}
+@media (max-width:960px){
+  .hm .mday-list{grid-template-columns:1fr 1fr}
+  .hm .mday-list li.on button{transform:none}
+}
+@media (max-width:560px){
+  .hm .mday-list{grid-template-columns:1fr}
+  .hm .mday-sky{display:none}
+  .hm .mday{padding-top:0}
+}
+.hm .mday-list li{display:grid;gap:6px;align-content:start}
+.hm .mday-list .cr{font-size:11px;color:#b9a497;padding-inline:10px}
+.hm .mday-list .cr a{text-decoration:underline;text-underline-offset:2px}
+.hm .monk-note{margin-top:16px;font-size:13px;color:#cdb8aa;max-width:80ch}
+.hm .monk .sec-head{margin-bottom:0}
+@media (min-width:1680px){
+  .hm .monk .mday-list .ph{aspect-ratio:16/10}
+}
