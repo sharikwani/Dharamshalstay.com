@@ -511,7 +511,7 @@ describe('GET/PATCH /api/admin/bookings/:id', () => {
       for (const choice of ['unpaid', 'partner_collects']) {
         const res = await patch({ action: 'payment', choice });
         expect(res.status).toBe(409);
-        expect((await res.json()).error).toBe('This booking was paid online; record a refund in Stripe first.');
+        expect((await res.json()).error).toBe('This booking was paid online; refund it in Razorpay or Stripe first.');
       }
     }
     expect(updates).toHaveLength(0);

@@ -7,6 +7,7 @@ import { roomSummaries } from '@/lib/availability/calc';
 import type { RoomAvailability } from '@/lib/availability/store';
 import { discounted, OFFER_NEEDS_ONLINE } from '@/lib/offers/rules';
 import { ALREADY_RECEIVED, matchEarlier, REQUEST_ID_COLUMNS } from './request-id';
+import { onlinePaymentEnabled } from '@/lib/razorpay';
 
 export const bookingSchema = z.object({
   category: z.enum(['hotel', 'taxi', 'trek', 'paragliding']),
@@ -136,12 +137,12 @@ export async function createBooking(data: BookingInput, opts: { userId: string |
     });
     // A WhatsApp offer lowers the database price by its percent and must be paid online in full (pay later is never discounted).
     const amount = opts.offer ? discounted(listAmount, opts.offer.percent) : listAmount;
-    if (opts.offer && (data.payment_method !== 'online' || amount < 100 || !process.env.STRIPE_SECRET_KEY)) {
+    if (opts.offer && (data.payment_method !== 'online' || amount < 100 || !onlinePaymentEnabled())) {
       return { ok: false, error: OFFER_NEEDS_ONLINE, status: 400 };
     }
     const commission_amount = Math.round(amount * commission_pct / 100);
     // Online payment needs a price; quote-only bookings are taken as pay-later.
-    const payment_method = data.payment_method === 'online' && (amount < 100 || !process.env.STRIPE_SECRET_KEY) ? 'offline' : data.payment_method;
+    const payment_method = data.payment_method === 'online' && (amount < 100 || !onlinePaymentEnabled()) ? 'offline' : data.payment_method;
     const commission_status = (payment_method === 'offline' || payment_method === 'pay_at_hotel') && commission_amount > 0
       ? 'pending' : 'not_applicable';
     const room_label = roomLabel(data);

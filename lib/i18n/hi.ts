@@ -463,7 +463,7 @@ export const hi: Dict = {
     nightsTotal: 'रात कुल', selectDatesTotal: 'कुल रकम देखने के लिए चेक-इन और चेक-आउट की तारीख चुनें', amount: 'रकम',
     estimatedAmount: 'अनुमानित रकम', enterAmount: 'पता हो तो रकम लिखें', paymentMethod: 'पेमेंट का तरीका', payOnline: 'ऑनलाइन पेमेंट',
     payAtHotel: 'होटल पर पेमेंट', payLater: 'बाद में पेमेंट', processing: 'प्रोसेस हो रहा है...', pay: 'अभी पेमेंट करें', now: '', bookFor: 'बुक करें', bookNow: 'अभी बुक करें',
-    securePayment: 'Stripe से सुरक्षित पेमेंट। कार्ड, UPI और नेटबैंकिंग से भुगतान कर सकते हैं।', confirmNoCharge: '2 घंटे के अंदर कन्फ़र्मेशन। कन्फ़र्म होने तक कोई पैसा नहीं कटेगा।',
+    securePayment: 'Razorpay से सुरक्षित पेमेंट। UPI, कार्ड, नेटबैंकिंग और वॉलेट से भुगतान कर सकते हैं।', confirmNoCharge: '2 घंटे के अंदर कन्फ़र्मेशन। कन्फ़र्म होने तक कोई पैसा नहीं कटेगा।',
     inquirySent: 'पूछताछ भेज दी गई!', inquirySentNote: 'हम 2 घंटे के अंदर जवाब देंगे। आप हमसे WhatsApp पर भी बात कर सकते हैं।',
     sendInquiry: 'पूछताछ भेजें', replyWithin: 'हम 2 घंटे के अंदर जवाब देंगे।', email: 'ईमेल', checkInDate: 'चेक-इन / तारीख',
     twoGuests: '2 मेहमान', yourPlans: 'अपने प्लान के बारे में बताएं...', somethingWrong: 'कुछ गड़बड़ हो गई। WhatsApp पर संपर्क करें।',

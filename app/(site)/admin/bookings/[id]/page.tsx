@@ -63,12 +63,12 @@ export default function BookingDetailPage() {
       setNotify(true);
       // Website bookings have no collected_by; only treat as paid to us once payment is confirmed (online + pending is not paid)
       const paidToUs = b.collected_by === 'platform'
-        || (!b.collected_by && (['paid', 'partially_paid'].includes(b.payment_status) || Boolean(b.stripe_payment_intent)));
+        || (!b.collected_by && (['paid', 'partially_paid'].includes(b.payment_status) || Boolean(b.stripe_payment_intent || b.razorpay_payment_id)));
       setPayment({
         ...EMPTY_PAYMENT,
         choice: paidToUs ? 'platform_paid' : b.collected_by === 'partner' ? 'partner_collects' : 'unpaid',
         amount: b.paid_amount != null ? String(b.paid_amount) : '',
-        channel: ['upi', 'bank', 'cash', 'card', 'stripe'].includes(b.payment_channel) ? b.payment_channel : b.payment_method === 'online' ? 'stripe' : 'upi',
+        channel: ['upi', 'bank', 'cash', 'card', 'stripe', 'razorpay'].includes(b.payment_channel) ? b.payment_channel : b.payment_method === 'online' ? 'razorpay' : 'upi',
         reference: b.payment_reference || '',
       });
     } else {

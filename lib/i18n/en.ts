@@ -274,7 +274,7 @@ export const en = {
     nightsTotal: 'nights total', selectDatesTotal: 'Select check-in and check-out dates to see total', amount: 'Amount',
     estimatedAmount: 'Estimated Amount', enterAmount: 'Enter amount if known', paymentMethod: 'Payment Method', payOnline: 'Pay Online',
     payAtHotel: 'Pay at Hotel', payLater: 'Pay Later', processing: 'Processing...', pay: 'Pay', now: 'Now', bookFor: 'Book for', bookNow: 'Book Now',
-    securePayment: 'Secure payment via Stripe. Card, UPI, and netbanking accepted.', confirmNoCharge: 'Confirmation within 2 hours. No charges until confirmed.',
+    securePayment: 'Secure payment via Razorpay. UPI, cards, netbanking and wallets accepted.', confirmNoCharge: 'Confirmation within 2 hours. No charges until confirmed.',
     inquirySent: 'Inquiry Sent!', inquirySentNote: "We'll reply within 2 hours. You can also reach us on WhatsApp.",
     sendInquiry: 'Send an Inquiry', replyWithin: "We'll get back within 2 hours.", email: 'Email', checkInDate: 'Check-in / Date',
     twoGuests: '2 Guests', yourPlans: 'Tell us about your plans...', somethingWrong: 'Something went wrong. Try WhatsApp instead.',

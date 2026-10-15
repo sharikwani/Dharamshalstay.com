@@ -2,7 +2,7 @@ import type { BookingCategory } from './pricing';
 
 export type ManualCategory = BookingCategory;
 export type PaymentChoice = 'partner_collects' | 'platform_paid' | 'unpaid';
-export type PaymentChannel = 'upi' | 'bank' | 'cash' | 'card' | 'stripe';
+export type PaymentChannel = 'upi' | 'bank' | 'cash' | 'card' | 'stripe' | 'razorpay';
 export const ACTIVITY_CATEGORIES = ['taxi', 'trek', 'paragliding'] as const;
 export type ActivityCategory = (typeof ACTIVITY_CATEGORIES)[number];
 export const STAFF_ROLE_FOR: Record<ActivityCategory, 'driver' | 'guide' | 'pilot'> = { taxi: 'driver', trek: 'guide', paragliding: 'pilot' };
@@ -23,14 +23,14 @@ export function splitAmount(finalAmount: number, pct: number) {
 
 /**
  * Who actually collects the money, or null when payment is still pending (nobody has collected yet).
- * Website bookings have collected_by NULL and set payment_method 'online' before Stripe confirms, so that alone is not proof of payment.
+ * Website bookings have collected_by NULL and set payment_method 'online' before the payment provider confirms, so that alone is not proof of payment.
  */
 export function effectiveCollector(b: {
   collected_by?: string | null; payment_status?: string | null; payment_method?: string | null;
-  stripe_payment_intent?: string | null; booking_source?: string | null;
+  stripe_payment_intent?: string | null; razorpay_payment_id?: string | null; booking_source?: string | null;
 }): 'partner' | 'platform' | null {
   if (b.collected_by === 'partner' || b.collected_by === 'platform') return b.collected_by;
-  if (b.payment_status === 'paid' || b.payment_status === 'partially_paid' || b.stripe_payment_intent) return 'platform';
+  if (b.payment_status === 'paid' || b.payment_status === 'partially_paid' || b.stripe_payment_intent || b.razorpay_payment_id) return 'platform';
   if (b.booking_source === 'admin') return null;
   return b.payment_method === 'online' ? null : 'partner';
 }
@@ -44,7 +44,7 @@ export function paymentFields(
   if (choice === 'platform_paid') {
     const channel = opts.channel || 'cash';
     return {
-      payment_method: channel === 'card' || channel === 'stripe' ? 'online' : 'offline',
+      payment_method: channel === 'card' || channel === 'stripe' || channel === 'razorpay' ? 'online' : 'offline',
       payment_status: 'paid', collected_by: 'platform' as const, commission_status: 'not_applicable',
       paid_amount: opts.amountReceived ?? finalAmount, payment_channel: channel, payment_reference: opts.reference?.trim() || null,
     };

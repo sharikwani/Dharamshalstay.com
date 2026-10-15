@@ -15,6 +15,7 @@ import { claimQuote, confirmedAfter, findOwnBooking, latestQuote, linkQuoteBooki
 import { findHotel } from './find';
 import type { ToolCtx } from './tools';
 import { markSideEffect, noteAction } from './types';
+import { onlinePaymentEnabled } from '@/lib/razorpay';
 
 type Handover = (a: any, ctx: ToolCtx) => Promise<unknown>;
 type Category = Quote['category'];
@@ -139,10 +140,10 @@ async function quoteTool(a: any, ctx: ToolCtx) {
     const o = await offerForBooking({ code: a.offer_code, phone: ctx.phone, propertyId: r.input.property_id, room: r.input.room_name, plan: r.input.plan_name });
     if ('error' in o) return o;
     amount = discounted(listAmount, o.percent);
-    if (amount < 100 || !process.env.STRIPE_SECRET_KEY) return { error: offerNeedsOnline(o.expiresAt) };
+    if (amount < 100 || !onlinePaymentEnabled()) return { error: offerNeedsOnline(o.expiresAt) };
     offer = { code: o.code, percent: o.percent, full_price: listAmount };
   }
-  const online = amount >= 100 && !!process.env.STRIPE_SECRET_KEY;
+  const online = amount >= 100 && onlinePaymentEnabled();
   const n = Number(r.input.num_guests);
   const lines = [
     `${QUOTE_ICON[category] || '🛎️'} *${r.label}*`,

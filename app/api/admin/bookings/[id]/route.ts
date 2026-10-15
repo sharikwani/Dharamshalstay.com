@@ -24,7 +24,7 @@ const schema = z.discriminatedUnion('action', [
     action: z.literal('payment'),
     choice: z.enum(['partner_collects', 'platform_paid', 'unpaid']),
     amount_received: z.number().int().min(0).max(10_000_000).optional(),
-    channel: z.enum(['upi', 'bank', 'cash', 'card', 'stripe']).optional(),
+    channel: z.enum(['upi', 'bank', 'cash', 'card', 'stripe', 'razorpay']).optional(),
     reference: z.string().max(200).optional(),
     notify: z.boolean().default(false),
   }),
@@ -181,9 +181,9 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
         update.partner_responded_at = null;
       }
     } else {
-      const paidOnline = Boolean(booking.stripe_payment_intent) || (booking.payment_status === 'paid' && booking.payment_method === 'online');
+      const paidOnline = Boolean(booking.stripe_payment_intent || booking.razorpay_payment_id) || (booking.payment_status === 'paid' && booking.payment_method === 'online');
       if (paidOnline && (body.choice === 'unpaid' || body.choice === 'partner_collects')) {
-        throw new HttpError(409, 'This booking was paid online; record a refund in Stripe first.');
+        throw new HttpError(409, 'This booking was paid online; refund it in Razorpay or Stripe first.');
       }
       // Website bookings may have no commission/share saved yet; fill both so partners see the right money
       const fill: Record<string, unknown> = {};

@@ -80,11 +80,11 @@ export type OwnBooking = {
   id: string; booking_ref: string; category: string; status: string; payment_status: string | null; payment_method: string | null;
   amount: number | null; check_in: string | null; check_out: string | null; activity_date: string | null; pickup_time: string | null;
   num_guests: number | null; room_name: string | null; property_id: string | null; trek_id: string | null; paragliding_id: string | null;
-  taxi_route_id: string | null; commission_status: string | null; stripe_payment_intent: string | null; booking_source: string | null; guest_name: string | null;
+  taxi_route_id: string | null; commission_status: string | null; stripe_payment_intent: string | null; razorpay_payment_id: string | null; booking_source: string | null; guest_name: string | null;
   guest_phone: string; created_at: string;
 };
 
-const OWN_COLS = 'id, booking_ref, category, status, payment_status, payment_method, amount, check_in, check_out, activity_date, pickup_time, num_guests, room_name, property_id, trek_id, paragliding_id, taxi_route_id, commission_status, stripe_payment_intent, booking_source, guest_name, guest_phone, created_at';
+const OWN_COLS = 'id, booking_ref, category, status, payment_status, payment_method, amount, check_in, check_out, activity_date, pickup_time, num_guests, room_name, property_id, trek_id, paragliding_id, taxi_route_id, commission_status, stripe_payment_intent, razorpay_payment_id, booking_source, guest_name, guest_phone, created_at';
 
 /** Bookings made with this phone number, newest first. */
 export async function ownBookings(phone: string): Promise<OwnBooking[]> {

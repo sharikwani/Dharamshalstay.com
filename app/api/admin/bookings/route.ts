@@ -39,7 +39,7 @@ const schema = z.object({
   payment: z.object({
     choice: z.enum(['partner_collects', 'platform_paid', 'unpaid']),
     amount_received: z.number().int().min(0).max(10_000_000).optional(),
-    channel: z.enum(['upi', 'bank', 'cash', 'card', 'stripe']).optional(),
+    channel: z.enum(['upi', 'bank', 'cash', 'card', 'stripe', 'razorpay']).optional(),
     reference: z.string().max(200).optional(),
   }),
   partner_id: z.string().uuid().nullable().optional(),

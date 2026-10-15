@@ -3,7 +3,7 @@
 const DAY_MS = 86400e3;
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 export const MAX_DAYS = 366;
-/** Unpaid online bookings hold their room this long: longer than the 30-minute Stripe session (lib/bookings/checkout). */
+/** Unpaid online bookings hold their room this long: longer than the 31-minute payment link (lib/bookings/checkout). */
 export const ONLINE_HOLD_MS = 35 * 60e3;
 const PAY_LATER = ['offline', 'pay_at_hotel'];
 const LIVE = ['pending', 'confirmed', 'completed'];

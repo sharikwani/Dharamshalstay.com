@@ -5,6 +5,7 @@ import { samePhone } from './booking-store';
 import { findHotel } from './find';
 import type { ToolCtx } from './tools';
 import { markSideEffect } from './types';
+import { onlinePaymentEnabled } from '@/lib/razorpay';
 
 export type OfferOk = { ok: true; codeId: string; code: string; percent: number; expiresAt: string };
 export type OfferCheck = OfferOk | { error: string };
@@ -51,7 +52,7 @@ export async function getOfferCode(a: any, ctx: ToolCtx) {
   }
   return {
     hotel: p.name, code: c.code, expires_at_india_time: formatIST(c.expires_at), up_to_percent: c.percent,
-    rules: booked ?? rulesLine(c, !!process.env.STRIPE_SECRET_KEY),
+    rules: booked ?? rulesLine(c, onlinePaymentEnabled()),
   };
 }
 
