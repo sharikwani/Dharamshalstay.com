@@ -24,6 +24,9 @@ ALTER TABLE listing_requests ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "Admin full access listing requests" ON listing_requests;
 CREATE POLICY "Admin full access listing requests" ON listing_requests FOR ALL USING (is_admin()) WITH CHECK (is_admin());
 
+-- Listings never to be sent the outreach message (e.g. the only number is a chain's head office).
+ALTER TABLE properties ADD COLUMN IF NOT EXISTS outreach_skip BOOLEAN NOT NULL DEFAULT FALSE;
+
 -- Outreach messages are logged with the booking alerts, so delivery receipts from the webhook update them too.
 ALTER TABLE whatsapp_messages ADD COLUMN IF NOT EXISTS property_id UUID REFERENCES properties(id) ON DELETE SET NULL;
 CREATE INDEX IF NOT EXISTS idx_whatsapp_messages_property ON whatsapp_messages(property_id) WHERE property_id IS NOT NULL;

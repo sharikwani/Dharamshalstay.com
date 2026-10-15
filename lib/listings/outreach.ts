@@ -31,7 +31,7 @@ export function outreachMessage(p: { id: string; name: string; slug: string }) {
 export async function outreachList(): Promise<OutreachRow[]> {
   const sb = serviceClient();
   const { data: props, error } = await sb.from('properties')
-    .select('id, name, slug, contact_phone, owner_id, owner_email, status')
+    .select('id, name, slug, contact_phone, owner_id, owner_email, status, outreach_skip')
     .eq('status', 'published').order('name');
   if (error) throw new Error(error.message);
   // Every live listing we added ourselves (directory or partner) that its owner hasn't claimed yet.
@@ -49,7 +49,8 @@ export async function outreachList(): Promise<OutreachRow[]> {
   return unclaimed.map((p) => {
     const l = last.get(p.id);
     const mobile = normalizeIndianPhone(p.contact_phone);
-    const blocked = !p.contact_phone ? 'No phone number'
+    const blocked = p.outreach_skip ? 'Not to be messaged'
+      : !p.contact_phone ? 'No phone number'
       : !mobile ? 'Landline: no WhatsApp'
       : l && l.status !== 'failed' ? 'Already messaged'
       : null;

@@ -7,7 +7,7 @@ import type { Property } from '@/types';
  */
 const PRIVATE_PROPERTY_FIELDS = [
   'contact_name', 'contact_phone', 'contact_email', 'contact_whatsapp',
-  'owner_email', 'admin_notes', 'compliance', 'whatsapp_alerts',
+  'owner_email', 'admin_notes', 'compliance', 'whatsapp_alerts', 'outreach_skip',
 ] as const;
 
 export function toPublicProperty<T extends Property | null>(p: T): T {
