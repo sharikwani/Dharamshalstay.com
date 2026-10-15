@@ -385,6 +385,18 @@ export const hi: Dict = {
     sort: { recommended: 'हमारी पसंद', price_low: 'कीमत: कम से ज़्यादा', price_high: 'कीमत: ज़्यादा से कम', rating: 'सबसे ज़्यादा रेटिंग', newest: 'सबसे नए पहले' } as Record<string, string>,
     propertyType: 'प्रॉपर्टी का प्रकार', allTypes: 'सभी प्रकार', maxPrice: 'अधिकतम कीमत', clearAll: 'सब हटाएँ', all: 'सभी',
     foundOne: '{n} प्रॉपर्टी मिली', foundMany: '{n} प्रॉपर्टी मिलीं', noMatch: 'आपके फ़िल्टर से कोई प्रॉपर्टी मेल नहीं खाती', clearFilters: 'फ़िल्टर हटाएँ',
+    list: {
+      allOfDharamshala: 'पूरा धर्मशाला', sortBy: 'क्रम', show: '{n} जगहें दिखाएँ',
+      instantTitle: 'बुकिंग', liveOnly: 'तुरंत बुकिंग (लाइव रेट)', area: 'इलाका', budget: 'बजट', amenities: 'लोकप्रिय सुविधाएँ', goodFor: 'किसके लिए अच्छा',
+      band: { budget: 'बजट', 'mid-range': 'मध्यम', upscale: 'प्रीमियम' } as Record<string, string>,
+      amenity: { wifi: 'मुफ़्त WiFi', parking: 'पार्किंग', view: 'पहाड़ों का नज़ारा', restaurant: 'रेस्टोरेंट या कैफ़े', roomService: 'रूम सर्विस', balcony: 'बालकनी या टैरेस', breakfast: 'नाश्ता', pool: 'स्विमिंग पूल' } as Record<string, string>,
+      good: { couples: 'कपल', families: 'परिवार', solo: 'अकेले यात्री', backpackers: 'बैकपैकर और बजट', groups: 'ग्रुप और दोस्त', trekkers: 'ट्रेकर', work: 'रिमोट वर्क और लंबा स्टे' } as Record<string, string>,
+      card: {
+        perNight: 'प्रति रात', taxes: '+ टैक्स', forNights: '{n} रातों के लिए', viewRooms: 'कमरे देखें', checkAvail: 'उपलब्धता जानें',
+        ratesOnRequest: 'रेट पूछने पर', weCheck: 'हम आपकी तारीखों के रेट पता करेंगे', instant: 'तुरंत बुकिंग', map: 'नक्शा', more: '+{n} और',
+        band: { budget: 'बजट', 'mid-range': 'मध्यम', upscale: 'प्रीमियम' } as Record<string, string>, goodFor: 'किसके लिए अच्छा',
+      },
+    },
   },
   hotels: {
     metaTitle: 'धर्मशाला होटल - मैक्लोडगंज में ठहरने की बेस्ट जगहें',

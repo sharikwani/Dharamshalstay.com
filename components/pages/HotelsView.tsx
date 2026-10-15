@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import Image from 'next/image';
+import { placeImage } from '@/lib/place-images';
 import { Breadcrumb, FAQSection } from '@/components/ui/Cards';
 import HotelFilters from '@/components/hotels/HotelFilters';
 import JsonLd from '@/components/seo/JsonLd';
@@ -28,16 +30,18 @@ export default async function HotelsView({ lang }: { lang: Lang }) {
         itemListSchema(hotels.map((h) => ({ name: h.name, href: '/hotels/' + h.slug })), lang),
         ...(faqs.length ? [faqSchema(faqs)] : []),
       ]} />
-      <section className="bg-brand-900 text-white py-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <Breadcrumb lang={lang} items={[{ label: t.common.home, href: '/' }, { label: t.common.hotels }]} />
-          <h1 className="text-3xl font-heading font-bold mt-2 mb-2">{t.hotels.h1}</h1>
-          <p className="text-brand-200 max-w-2xl mb-3">{t.hotels.intro}</p>
-          <Link href={href('/blog/budget-hotels-in-dharamshala')} className="inline-block text-sm font-semibold text-white underline underline-offset-4 hover:text-brand-200 mb-6">{t.hotels.budgetLink} &rarr;</Link>
+      <section className="relative text-white overflow-hidden">
+        <Image src={placeImage('mcleod-ganj')} alt="" fill priority className="object-cover" sizes="100vw" />
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-950/90 via-brand-900/75 to-brand-900/40" />
+        <div className="relative max-w-[1400px] mx-auto px-4 sm:px-6 pt-8 pb-20">
+          <div className="[&_*]:!text-brand-100 [&_a:hover]:!text-white"><Breadcrumb lang={lang} items={[{ label: t.common.home, href: '/' }, { label: t.common.hotels }]} /></div>
+          <h1 className="text-3xl sm:text-4xl font-heading font-bold mt-2 mb-2">{t.hotels.h1}</h1>
+          <p className="text-brand-100 max-w-2xl mb-3">{t.hotels.intro}</p>
+          <Link href={href('/blog/budget-hotels-in-dharamshala')} className="inline-block text-sm font-semibold text-white underline underline-offset-4 hover:text-brand-200">{t.hotels.budgetLink} &rarr;</Link>
         </div>
       </section>
-      <section className="py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <section className="pb-12 bg-slate-50">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
           <HotelFilters hotels={hotels.map((h) => localizeHotel(h, lang))} destinations={destinations} />
         </div>
       </section>

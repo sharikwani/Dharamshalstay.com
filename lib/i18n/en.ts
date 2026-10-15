@@ -196,6 +196,18 @@ export const en = {
     sort: { recommended: 'Recommended', price_low: 'Price: Low to High', price_high: 'Price: High to Low', rating: 'Highest Rated', newest: 'Newest First' } as Record<string, string>,
     propertyType: 'Property Type', allTypes: 'All Types', maxPrice: 'Max Price', clearAll: 'Clear all', all: 'All',
     foundOne: '{n} property found', foundMany: '{n} properties found', noMatch: 'No properties match your filters', clearFilters: 'Clear filters',
+    list: {
+      allOfDharamshala: 'All of Dharamshala', sortBy: 'Sort by', show: 'Show {n} stays',
+      instantTitle: 'Booking', liveOnly: 'Instant booking (live rates)', area: 'Area', budget: 'Budget', amenities: 'Popular amenities', goodFor: 'Good for',
+      band: { budget: 'Budget', 'mid-range': 'Mid-range', upscale: 'Upscale' } as Record<string, string>,
+      amenity: { wifi: 'Free WiFi', parking: 'Parking', view: 'Mountain view', restaurant: 'Restaurant or café', roomService: 'Room service', balcony: 'Balcony or terrace', breakfast: 'Breakfast', pool: 'Swimming pool' } as Record<string, string>,
+      good: { couples: 'Couples', families: 'Families', solo: 'Solo travellers', backpackers: 'Backpackers & budget', groups: 'Groups & friends', trekkers: 'Trekkers', work: 'Remote work & long stays' } as Record<string, string>,
+      card: {
+        perNight: 'per night', taxes: '+ taxes', forNights: 'for {n} nights', viewRooms: 'View rooms', checkAvail: 'Check availability',
+        ratesOnRequest: 'Rates on request', weCheck: 'We check prices for your dates', instant: 'Instant booking', map: 'Map', more: '+{n} more',
+        band: { budget: 'Budget', 'mid-range': 'Mid-range', upscale: 'Upscale' } as Record<string, string>, goodFor: 'Good for',
+      },
+    },
   },
   hotels: {
     metaTitle: 'Hotels in Dharamshala & McLeod Ganj - Best Stays',

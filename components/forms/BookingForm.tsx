@@ -67,8 +67,18 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
   // The homepage search sends ?date=&people=&package= along; prefill from them.
   // Read in an effect (not useSearchParams) so the page stays statically rendered.
   useEffect(() => {
-    if (category !== 'trek' && category !== 'paragliding') return;
     const q = new URLSearchParams(window.location.search);
+    // The hotels list passes the dates it was searched with.
+    if (category === 'hotel') {
+      const ci = q.get('check_in'), co = q.get('check_out');
+      if (ci && /^\d{4}-\d{2}-\d{2}$/.test(ci)) {
+        const c = enforceCheckIn(ci);
+        setCheckIn(c);
+        if (co && /^\d{4}-\d{2}-\d{2}$/.test(co) && co > c) setCheckOut(enforceCheckOut(co, c));
+      }
+      return;
+    }
+    if (category !== 'trek' && category !== 'paragliding') return;
     const date = q.get('date');
     if (date && /^\d{4}-\d{2}-\d{2}$/.test(date)) setActivityDate(enforceActivityDate(date));
     const people = q.get('people');
