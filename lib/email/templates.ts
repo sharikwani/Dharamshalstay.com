@@ -217,6 +217,30 @@ export function reviewRequest(b: BookingData, reminder = false): Built {
   };
 }
 
+// ───────────────────────── Hotel outreach ─────────────────────────
+
+/** "Your hotel is listed: claim it free (or have it removed)" for hotels we cannot reach on WhatsApp. */
+export function listingClaimInvite(h: { name: string; slug: string; images?: any; claimUrl: string; removeUrl: string }): Built {
+  return {
+    subject: `${h.name} is listed on Dharamshala Stay: claim your free listing`,
+    doc: T([
+      { type: 'p', text: 'Dear Team,' },
+      { type: 'p', text: `Greetings from **Dharamshala Stay** ([dharamshalastay.com](/)), a local travel and hotel guide for Dharamshala and McLeod Ganj run from Khaniyara, Dharamshala. **${h.name}** is listed in our guide to places to stay, and travellers are already finding it there.` },
+      { type: 'feature', photo: propertyPhoto(h), title: h.name, text: 'See how your hotel appears to travellers on our site.', cta: { label: 'View your listing', href: '/hotels/' + h.slug } },
+      { type: 'h2', text: 'Claim it for free and receive enquiries directly' },
+      { type: 'checks', items: [
+        'Correct your photos, rooms, phone number and description',
+        'Show your own rates and availability, with **no listing fee**',
+        'Receive guest enquiries and booking alerts on WhatsApp and email',
+        'A "Verified property" badge, and replies to guest reviews',
+      ] },
+      { type: 'callout', tone: 'festive', title: 'How to claim (about 2 minutes)', text: '1. Press the button below. 2. Enter your name, phone, email and role. 3. We verify it, usually within one working day. 4. Create your partner login with the same email, and the listing links to your account.' },
+      { type: 'button', label: `Claim ${h.name}`, href: h.claimUrl },
+      { type: 'small', text: `Prefer not to be listed? [Ask us to remove ${h.name}](${h.removeUrl}) and we will take it down.` },
+    ], { preheader: 'Travellers are finding your hotel on our site. Claim it free and get enquiries directly.', kicker: 'For hotel owners and managers', heading: `${h.name} is on Dharamshala Stay` }),
+  };
+}
+
 // ───────────────────────── Newsletter ─────────────────────────
 
 export function newsletterConfirm(name: string | null, confirmUrl: string): Built {
