@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Home, Inbox, Building, PlusCircle, ShoppingBag, MessageSquare, Car, Mountain, Wind, Users, LogOut, ExternalLink, BadgeCheck, MessageCircle, BadgePercent, Star, Flag, Send, Mail } from 'lucide-react';
+import { Home, Inbox, Building, PlusCircle, ShoppingBag, MessageSquare, Car, Mountain, Wind, Users, LogOut, ExternalLink, BadgeCheck, MessageCircle, BadgePercent, Star, Flag, Send, Mail, Instagram } from 'lucide-react';
 import { authFetch, supabase } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
 
@@ -34,6 +34,7 @@ export const ADMIN_NAV: { title: string; items: NavItem[] }[] = [
       { href: '/admin/bookings', label: 'Bookings', hint: 'Paid and pending bookings, commission', icon: ShoppingBag, tone: 'bg-violet-500' },
       { href: '/admin/inquiries', label: 'Inquiries', hint: 'Questions and leads from the website', icon: MessageSquare, tone: 'bg-pink-500', badge: 'inquiries' },
       { href: '/admin/email', label: 'Email', hint: 'Sent emails, AI campaigns, subscribers', icon: Mail, tone: 'bg-blue-600' },
+      { href: '/admin/social', label: 'Social media', hint: 'Instagram and Facebook posts by the AI', icon: Instagram, tone: 'bg-pink-600' },
     ],
   },
   {

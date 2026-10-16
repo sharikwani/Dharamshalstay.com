@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { timingSafeEqual } from 'crypto';
 import { queueUnpaidReminders, runDueJobs } from '@/lib/email/jobs';
 import { runMarketingAutopilot } from '@/lib/email/autopilot';
+import { runSocialAutopilot } from '@/lib/social/autopilot';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -24,11 +25,15 @@ async function run(req: NextRequest) {
   const started = Date.now();
   const unpaid = await queueUnpaidReminders().catch((e) => { console.error('unpaid reminders failed:', e); return 0; });
   const jobs = await runDueJobs();
-  // Marketing only gets the time left in this run, and never blocks booking emails.
-  const marketing = Date.now() - started < 30_000
-    ? await runMarketingAutopilot({ deadline: started + 50_000 }).catch((e) => { console.error('marketing autopilot failed:', e); return { error: String(e?.message || e) }; })
+  // Instagram/Facebook: publish what is due, or write the next post. Gets the time booking emails left.
+  const social = Date.now() - started < 15_000
+    ? await runSocialAutopilot({ deadline: started + 55_000 }).catch((e) => { console.error('social autopilot failed:', e); return { error: String(e?.message || e) }; })
     : { skipped: 'out of time' };
-  return NextResponse.json({ ok: true, unpaid, jobs, marketing, ms: Date.now() - started });
+  // Marketing emails only get what is left, and never block booking emails.
+  const marketing = Date.now() - started < 30_000
+    ? await runMarketingAutopilot({ deadline: started + 55_000 }).catch((e) => { console.error('marketing autopilot failed:', e); return { error: String(e?.message || e) }; })
+    : { skipped: 'out of time' };
+  return NextResponse.json({ ok: true, unpaid, jobs, social, marketing, ms: Date.now() - started });
 }
 
 export const GET = run;
