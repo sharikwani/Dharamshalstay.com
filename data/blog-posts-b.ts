@@ -254,7 +254,7 @@ Yes, if you like clear mountain views, quiet streets and cosy cafe afternoons. Y
     read_time: 7,
     featured: false,
     meta_title: 'When Does It Snow in Dharamshala? Snowfall Months 2026',
-    meta_description: 'Snow in Dharamshala: McLeod Ganj, Naddi and Dharamkot get snow on some days from late December to February; Triund is white Dec–March. Where to see it, roads, tips.',
+    meta_description: 'Snow in Dharamshala: McLeod Ganj, Naddi and Dharamkot see snow on some days from late December to February. Where to see it, roads and tips.',
     related_slugs: ['best-time-to-visit-dharamshala', 'triund-trek-complete-guide', 'dharamshala-weather-what-to-pack'],
     faqs: [
       {

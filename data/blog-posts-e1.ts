@@ -120,7 +120,7 @@ If you are still working out the basics, start with our [complete Dharamshala tr
     featured: false,
     meta_title: 'Groceries & Daily Essentials in Dharamshala and McLeod Ganj (2026)',
     meta_description:
-      'Where to buy vegetables, water, toiletries and medicines in McLeod Ganj, Bhagsu, Dharamkot and Dharamshala town. Shop timings, winter closures and what costs more up the hill.',
+      'Where to buy vegetables, water, toiletries and medicines in McLeod Ganj, Bhagsu and Dharamkot: shop timings, winter closures and what costs more uphill.',
     related_slugs: [
       'laundry-luggage-storage-water-dharamshala',
       'health-medical-help-dharamshala',
@@ -269,7 +269,7 @@ For where to buy everything else, see our guide to [groceries and daily essentia
     featured: false,
     meta_title: 'Laundry, Luggage Storage & Drinking Water in Dharamshala (2026)',
     meta_description:
-      'Where to get laundry done in McLeod Ganj and what to expect, where to leave bags before a Triund trek or night bus, and how to drink water safely without buying plastic bottles.',
+      'Laundry in McLeod Ganj, where to leave bags before a Triund trek or night bus, and how to drink water safely without buying plastic bottles.',
     related_slugs: [
       'groceries-daily-essentials-dharamshala',
       'triund-trek-complete-guide',
@@ -415,7 +415,7 @@ For a sense of scale rather than exact numbers: a traveller eating at dhabas and
     featured: false,
     meta_title: 'Eating Out in Dharamshala: What You Will Find and What It Costs (2026)',
     meta_description:
-      'What food you will actually find in McLeod Ganj and Dharamkot, the three price tiers, vegan Jain and gluten-free options, meal timings, alcohol rules and how to avoid getting ill.',
+      'Eating out in McLeod Ganj and Dharamkot: three price tiers, vegan, Jain and gluten-free options, meal times, alcohol rules and staying well.',
     related_slugs: [
       'top-cafes-in-mcleod-ganj',
       'tibetan-food-mcleod-ganj',
@@ -576,7 +576,7 @@ Accessibility details change with renovations and new builds, and no page can st
     featured: false,
     meta_title: 'Dharamshala with Limited Mobility: An Honest Accessibility Guide (2026)',
     meta_description:
-      'What Dharamshala and McLeod Ganj are really like with a wheelchair, stroller or knee trouble. Gradients, which sights are reachable, how to choose a hotel, and what to skip.',
+      'Dharamshala and McLeod Ganj with a wheelchair, stroller or bad knees: gradients, which sights you can reach, choosing a hotel and what to skip.',
     related_slugs: [
       'dharamshala-for-senior-citizens',
       'dharamshala-with-kids-family-guide',

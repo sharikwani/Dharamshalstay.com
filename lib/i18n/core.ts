@@ -23,13 +23,17 @@ export function stripLang(pathname: string): string {
 /** Guides not yet translated: their /hi URL redirects to English. Kept in sync with data/hi by tests/seo/hindi-links.test.ts. */
 export const EN_ONLY_POSTS = [
   'budget-hotels-in-dharamshala', 'eating-out-dharamshala-what-it-costs', 'accessibility-dharamshala-limited-mobility',
-  'groceries-daily-essentials-dharamshala', 'laundry-luggage-storage-water-dharamshala',
+  'groceries-daily-essentials-dharamshala', 'laundry-luggage-storage-water-dharamshala', 'where-to-stay-in-dharamshala', 'dharamshala-3-day-itinerary',
 ];
+
+/** English-only pages inside otherwise bilingual sections. */
+export const EN_ONLY_PATHS = ['/hotels/near-dalai-lama-temple', '/hotels/hostels', '/hotels/mountain-view'];
 
 /** Does this English path have a Hindi counterpart? */
 export function hasHindiVersion(enPath: string): boolean {
   const p = enPath.split(/[?#]/)[0];
   if (p.startsWith('/blog/') && EN_ONLY_POSTS.includes(p.slice(6))) return false;
+  if (EN_ONLY_PATHS.includes(p)) return false;
   return HINDI_SECTIONS.some((s) => (s === '/' ? p === '/' : p === s || p.startsWith(s + '/')));
 }
 

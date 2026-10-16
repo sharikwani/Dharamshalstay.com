@@ -917,7 +917,7 @@ For other questions, see our [FAQ](/faq).`,
     read_time: 9,
     featured: false,
     meta_title: 'Dharamshala Stadium Timings: Mon–Sat 10am–4pm, Entry Fee',
-    meta_description: 'Dharamshala cricket stadium (HPCA) timings: Monday to Saturday, 10 am–4 pm, closed Sundays. ₹50–₹250 at the gate, no booking. Closes only for matches, VIP visits or maintenance.',
+    meta_description: 'HPCA cricket stadium, Dharamshala: Monday to Saturday, 10 am–4 pm, closed Sundays. ₹50–₹250 at the gate, no booking; closes for matches and VIP visits.',
     related_slugs: ['places-to-visit-in-dharamshala', 'one-day-in-dharamshala', 'best-hotels-in-dharamshala'],
     faqs: [
       {

@@ -16,6 +16,8 @@ import { blogPostsW9 } from './blog-posts-w9';
 import { blogPostsE1 } from './blog-posts-e1';
 import { blogPostsW10 } from './blog-posts-w10';
 import { blogPostsW11 } from './blog-posts-w11';
+import { blogPostsW12 } from './blog-posts-w12';
+import { blogPostsW13 } from './blog-posts-w13';
 import { coreOverrides } from './blog-core';
 
 // Real photos of each place (see lib/place-images.ts).
@@ -467,10 +469,13 @@ function withPhotoAlt(post: BlogPost): BlogPost {
 }
 
 /** All guides, newest first. */
-export const blogPosts: BlogPost[] = [...blogPostsA, ...blogPostsB, ...blogPostsC, ...blogPostsW1, ...blogPostsW2, ...blogPostsW3, ...blogPostsW4, ...blogPostsW5, ...blogPostsW6, ...blogPostsW7, ...blogPostsW8, ...blogPostsW9, ...blogPostsE1, ...blogPostsW10, ...blogPostsW11, ...corePosts]
+export const blogPosts: BlogPost[] = [...blogPostsA, ...blogPostsB, ...blogPostsC, ...blogPostsW1, ...blogPostsW2, ...blogPostsW3, ...blogPostsW4, ...blogPostsW5, ...blogPostsW6, ...blogPostsW7, ...blogPostsW8, ...blogPostsW9, ...blogPostsE1, ...blogPostsW10, ...blogPostsW11, ...blogPostsW12, ...blogPostsW13, ...corePosts]
   .map((p) => (coreOverrides[p.slug] ? { ...p, ...coreOverrides[p.slug] } : p))
   .map(withPhotoAlt)
   .sort((a, b) => b.published_at.localeCompare(a.published_at));
+
+/** Posts kept for readers who follow a link, but not offered to search engines (off-topic for travellers). */
+export const NOINDEX_POSTS = ['how-we-built-dharamshala-stay'];
 
 export function getBlogBySlug(slug: string) { return blogPosts.find((b) => b.slug === slug); }
 export function getAllBlogSlugs() { return blogPosts.map((b) => b.slug); }

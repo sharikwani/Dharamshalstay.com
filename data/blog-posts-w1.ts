@@ -8,9 +8,11 @@ export const blogPostsW1: BlogPost[] = [
   {
     id: 'blog-bhagsu-travel-guide',
     slug: 'bhagsu-travel-guide',
-    title: 'Bhagsu (Bhagsunag) Travel Guide 2026: Temple, Waterfall, Shiva Cafe & Where to Stay',
+    title: 'Things to Do in Bhagsu: Waterfall, Temple & Cafés (2026)',
     excerpt: "Everything you need for Bhagsu near McLeod Ganj: the Bhagsunag temple and pools, the waterfall walk, the climb to Shiva Cafe, Upper Bhagsu's cafes and yoga, where to stay and what to skip.",
     content: `Bhagsu (also written Bhagsunag or Bhagsu Nag) is a small village about **2 km east of McLeod Ganj's main square**, best known for the **Bhagsunag Shiva temple and its stone bathing pools**, the **Bhagsu waterfall** a 15 to 20 minute walk beyond it, and the hillside cafe, yoga and guesthouse scene of **Upper Bhagsu**. You can see the temple and waterfall in a relaxed half day from McLeod Ganj, but many travellers end up staying a week, because Bhagsu is cheaper, greener and slower than McLeod Ganj while still being a short walk from everything.
+
+**Looking for a room?** Compare every [stay in Bhagsu](/destinations/bhagsu) side by side, or see [where to stay around Dharamshala](/blog/where-to-stay-in-dharamshala) area by area.
 
 This guide covers what Bhagsu is actually like in 2026, how to do the waterfall and the climb to Shiva Cafe safely, where to eat and do yoga, the difference between Lower and Upper Bhagsu when choosing a room, the best months to go and the honest list of things to skip. Prices are approx. as of 2026.
 
@@ -162,7 +164,7 @@ Bhagsu pairs well with a [Triund trek](/blog/triund-trek-complete-guide) (the tr
     image_alt: 'Bhagsu waterfall pouring down a green rocky gorge above Bhagsunag village near McLeod Ganj',
     read_time: 10,
     featured: false,
-    meta_title: 'Bhagsu Travel Guide 2026: Waterfall, Temple, Shiva Cafe',
+    meta_title: 'Things to Do in Bhagsu: Waterfall, Temple & Shiva Cafe',
     meta_description: 'Bhagsu (Bhagsunag) travel guide 2026: temple and pools, waterfall walk, Shiva Cafe climb, Upper Bhagsu cafes and yoga, where to stay and what to skip.',
     related_slugs: ['dharamkot-travel-guide', 'things-to-do-in-mcleod-ganj', 'best-hotels-in-mcleod-ganj'],
     faqs: [
@@ -180,9 +182,11 @@ Bhagsu pairs well with a [Triund trek](/blog/triund-trek-complete-guide) (the tr
   {
     id: 'blog-dharamkot-travel-guide',
     slug: 'dharamkot-travel-guide',
-    title: 'Dharamkot Travel Guide 2026: Upper vs Lower, Tushita, Gallu Devi & Where to Stay',
+    title: 'Things to Do in Dharamkot: Tushita, Gallu Devi & Trails (2026)',
     excerpt: "A local's guide to Dharamkot above McLeod Ganj: Upper vs Lower Dharamkot, Tushita and Dhamma Sikhara, the Gallu Devi start of the Triund trek, cafes, hostels, the Israeli backpacker scene and how to find the quiet side.",
     content: `Dharamkot is a hillside village at roughly **2,100 m, about 3 km above McLeod Ganj**, known for three things: **meditation** (Tushita and the Dhamma Sikhara Vipassana centre are here), **the Triund trek** (the trail starts at Gallu Devi temple just above the village), and a long-running **backpacker and long-stay scene** of cafes, yoga shalas and cheap guesthouses that has been popular with Israeli travellers for decades. It is quieter and more forested than McLeod Ganj, with better mountain views, but the lanes are steep and many rooms can only be reached on foot.
+
+**Looking for a room?** Compare every [stay in Dharamkot](/destinations/dharamkot) side by side, or see [where to stay around Dharamshala](/blog/where-to-stay-in-dharamshala) area by area.
 
 Below we explain the difference between Upper and Lower Dharamkot, how Tushita and Vipassana courses work, how to start Triund from here, where to eat and stay, the best seasons and the tips that make a stay here genuinely peaceful. Prices are approx. as of 2026.
 
@@ -334,7 +338,7 @@ Combine Dharamkot with a [Bhagsu stay or day](/blog/bhagsu-travel-guide), the [D
     image_alt: 'Houses of Dharamkot village on a forested hillside above McLeod Ganj, Dharamshala',
     read_time: 8,
     featured: false,
-    meta_title: 'Dharamkot Travel Guide 2026: Tushita, Triund & Stays',
+    meta_title: 'Things to Do in Dharamkot: Tushita, Gallu Devi, Triund',
     meta_description: 'Dharamkot travel guide 2026: Upper vs Lower Dharamkot, Tushita and Vipassana, Gallu Devi and the Triund start, cafes, hostels and tips for a quiet stay.',
     related_slugs: ['bhagsu-travel-guide', 'triund-trek-complete-guide', 'meditation-yoga-retreats-dharamshala'],
     faqs: [
@@ -352,9 +356,11 @@ Combine Dharamkot with a [Bhagsu stay or day](/blog/bhagsu-travel-guide), the [D
   {
     id: 'blog-naddi-dal-lake-guide',
     slug: 'naddi-dal-lake-guide',
-    title: 'Naddi Sunrise Point, Dharamshala: Dal Lake, Tota Rani & Stays (2026)',
+    title: 'Naddi Sunrise Point, Dharamshala: Dal Lake & Tota Rani (2026)',
     excerpt: 'An honest guide to Naddi and Dal Lake above Dharamshala: the Naddi viewpoint at sunrise and sunset, the real state of Dal Lake, Tota Rani village, the St. John in the Wilderness walk, Kunal Pathri and where to stay.',
     content: `**If you are looking for the sunrise point in Dharamshala, it is the Naddi viewpoint** — a ridge above Naddi village, about **3 to 4 km west of McLeod Ganj** and a 10-minute drive up from it. There is no entry fee and no gate; you walk out onto the ridge. Arrive 20 to 30 minutes before sunrise, which means roughly **5:15 to 5:30 am in summer** and **6:30 to 6:45 am in winter**, and dress for cold even in May.
+
+**Looking for a room?** Compare every [stay in Naddi](/destinations/naddi) side by side, or see [where to stay around Dharamshala](/blog/where-to-stay-in-dharamshala) area by area.
 
 **Naddi** is a ridge-top village at roughly **2,000 m, about 3 to 4 km west of McLeod Ganj**, with the closest roadside views of the Dhauladhar range anywhere around Dharamshala. Just below it is **Dal Lake**, a small, deodar-ringed lake that is sacred locally but, honestly, far less impressive than its name suggests. Together with **Tota Rani** village, the forest road down to **St. John in the Wilderness** church, and the **Kunal Pathri** temple in lower Dharamshala, they make one of the most relaxed half-day or full-day outings in the area.
 
@@ -512,7 +518,7 @@ Naddi works well with a [weekend in Dharamshala](/blog/dharamshala-weekend-itine
     read_time: 9,
     featured: false,
     meta_title: 'Naddi Sunrise Point Dharamshala: Timings, Views & Dal Lake',
-    meta_description: 'The sunrise point in Dharamshala is the Naddi viewpoint, 3-4 km above McLeod Ganj: when to go, what you actually see, the honest state of Dal Lake, Tota Rani, the St. John church walk and where to stay.',
+    meta_description: 'Naddi viewpoint, 3-4 km above McLeod Ganj, is the sunrise point of Dharamshala: when to go, what you see, Dal Lake, Tota Rani and St. John church.',
     related_slugs: ['places-to-visit-in-dharamshala', 'honeymoon-in-dharamshala', 'photography-spots-sunset-points-dharamshala'],
     faqs: [
       { question: 'Is Naddi better at sunrise or sunset?', answer: 'Sunset is more popular and easier to reach; sunrise is quieter and very beautiful if you stay overnight in Naddi. October to March gives the clearest views either way.' },

@@ -8,7 +8,7 @@ import MarkdownContent, { extractHeadings } from '@/components/blog/MarkdownCont
 import GuideSearch from '@/components/blog/GuideSearch';
 import JsonLd from '@/components/seo/JsonLd';
 import PreferredSourceButton from '@/components/seo/PreferredSourceButton';
-import { blogPosts, getBlogBySlug, getBlogCategories, getRelatedPosts } from '@/data/blog';
+import { blogPosts, getBlogBySlug, getBlogCategories, getRelatedPosts, NOINDEX_POSTS } from '@/data/blog';
 import { generateSEO, articleSchema, breadcrumbSchema, faqSchema, itemListSchema } from '@/lib/seo';
 import { placeImage } from '@/lib/place-images';
 import { formatDate, getWhatsAppLink } from '@/lib/utils';
@@ -128,6 +128,7 @@ export function blogPostMetadata(slug: string, lang: Lang): Metadata {
     markdown: true,
     // Only claim a Hindi alternate when a real translation exists.
     hindi: hasHindiPost(p.slug),
+    noindex: NOINDEX_POSTS.includes(p.slug),
   });
 }
 

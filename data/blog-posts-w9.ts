@@ -1338,7 +1338,7 @@ If you are arriving by air or a late bus, pre-book a [taxi](/taxi) so you are no
     read_time: 9,
     featured: false,
     meta_title: 'Budget Hotels in Dharamshala: Compare Affordable Stays (2026)',
-    meta_description: 'Budget hotels in Dharamshala and McLeod Ganj compared: dorm beds from about ₹350, private rooms ₹700–1,300 plus tax. Prices checked on MakeMyTrip, Booking.com and more.',
+    meta_description: 'Budget hotels in Dharamshala and McLeod Ganj: dorm beds from about ₹350, private rooms ₹700–1,300 plus tax, compared across booking sites.',
     related_slugs: ['best-hotels-in-dharamshala', 'best-hotels-in-mcleod-ganj', 'dharamshala-vs-mcleod-ganj'],
     faqs: [
       {

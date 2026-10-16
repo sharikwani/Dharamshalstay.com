@@ -4,7 +4,8 @@
  * real image sitemap (Google Images) alongside the hreflang alternates.
  */
 import { getPublishedProperties, getDestinations, getPublishedTreks } from '@/lib/db';
-import { blogPosts } from '@/data/blog';
+import { blogPosts, NOINDEX_POSTS } from '@/data/blog';
+import { COLLECTIONS } from '@/lib/hotels/collections';
 import { siteConfig } from '@/lib/config';
 import { getTaxiRouteGroups } from '@/lib/taxi';
 import { hasHindiVersion, localizePath } from '@/lib/i18n/core';
@@ -56,6 +57,7 @@ export async function sitemapEntries(): Promise<SitemapEntry[]> {
   const entries: SitemapEntry[] = [
     { url: B, lastModified: contentDate, changeFrequency: 'weekly', priority: 1.0 },
     { url: B + '/hotels', lastModified: hotelsDate, changeFrequency: 'daily', priority: 0.9 },
+    ...COLLECTIONS.map((c) => ({ url: B + '/hotels/' + c.slug, lastModified: hotelsDate, changeFrequency: 'weekly' as const, priority: 0.8 })),
     { url: B + '/blog', lastModified: contentDate, changeFrequency: 'weekly', priority: 0.9 },
     { url: B + '/faq', lastModified: contentDate, changeFrequency: 'monthly', priority: 0.8 },
     { url: B + '/essentials', lastModified: contentDate, changeFrequency: 'monthly', priority: 0.8 },
@@ -81,7 +83,7 @@ export async function sitemapEntries(): Promise<SitemapEntry[]> {
       images: imgs([d.image]),
     })),
 
-    ...blogPosts.map(b => ({
+    ...blogPosts.filter((b) => !NOINDEX_POSTS.includes(b.slug)).map(b => ({
       url: B + '/blog/' + b.slug,
       lastModified: date(b.updated_at),
       changeFrequency: 'monthly' as const,

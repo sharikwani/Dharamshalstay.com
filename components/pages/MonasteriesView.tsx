@@ -388,7 +388,7 @@ export default function MonasteriesView() {
           <h2 className="rv">Stay within walking distance of the temple</h2>
           <p className="rv">McLeod Ganj puts the main temple and the kora at your door; Dharamkot is a short walk from Tushita and Dhamma Sikhara.</p>
           <div className="cta rv">
-            <Link href="/destinations/mcleod-ganj" className="mm-btn solid">Stays in McLeod Ganj <ArrowRight className="h-4 w-4" /></Link>
+            <Link href="/hotels/near-dalai-lama-temple" className="mm-btn solid">Hotels near the temple <ArrowRight className="h-4 w-4" /></Link>
             <Link href="/destinations/dharamkot" className="mm-btn ghost">Stays in Dharamkot</Link>
             <a href={getWhatsAppLink('Hi! I would like help planning monastery visits / a meditation course in Dharamshala.')} target="_blank" rel="noopener noreferrer" className="mm-btn wa">
               <MessageCircle className="h-4 w-4" />Ask on WhatsApp

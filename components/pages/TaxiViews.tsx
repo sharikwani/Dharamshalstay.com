@@ -76,7 +76,8 @@ export async function taxiRouteMetadata(slug: string, lang: Lang): Promise<Metad
   const to = t.taxiPlaces[g.to] || g.to;
   const price = g.minPrice.toLocaleString('en-IN');
   return generateSEO({
-    title: fmt(x.routeMetaTitle, { from, to, price }),
+    // Searchers type "Pathankot to Dharamshala", not "Pathankot Railway Station".
+    title: fmt(x.routeMetaTitle, { from: from.replace(/ Railway Station$/, ''), to, price }),
     description: fmt(x.routeMetaDescription, { from, to, price, km: g.distanceKm || '', duration: g.duration || '' }).slice(0, 158),
     path: '/taxi/' + g.slug,
     image: placeImage('mountain-road'),

@@ -3,7 +3,7 @@ import { Breadcrumb } from '@/components/ui/Cards';
 import { siteConfig } from '@/lib/config';
 import { generateSEO } from '@/lib/seo';
 
-export const metadata: Metadata = generateSEO({ title: 'Terms and Conditions', description: 'Terms and conditions for using Dharamshala Stay booking platform.', path: '/terms' });
+export const metadata: Metadata = generateSEO({ title: 'Terms and Conditions', description: 'Terms for booking hotels, treks, taxis and paragliding through Dharamshala Stay: enquiries, payments, changes, cancellations and your responsibilities.', path: '/terms' });
 
 export default function TermsPage() {
   return (

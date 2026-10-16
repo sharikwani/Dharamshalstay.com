@@ -1,14 +1,14 @@
 import type { BlogPost } from '@/types';
 
 export const override: Partial<BlogPost> = {
-  title: 'Triund Trek 2026: Complete Guide to Route, Distance, Fees, Season & Booking',
+  title: 'Triund Trek 2026: Complete Guide to Route, Distance, Fees & Season',
   excerpt:
     'Everything for the Triund trek in 2026: the Gallu Devi and McLeod Ganj routes, real distances and timings, the ₹100 entry fee and new ₹500 waste deposit, the best months, guided vs solo, what to pack and how to book.',
-  meta_title: 'Triund Trek 2026: Route, Distance, Fees & Booking Guide',
+  meta_title: 'Triund Trek 2026: Route, Distance, Fees & Best Season',
   meta_description:
     'Triund trek: approx. 6-7 km from Gallu Devi or 9 km from McLeod Ganj to 2,850 m, 3-5 hours up. 2026 fees, ₹500 waste deposit, best months and booking.',
   updated_at: '2026-10-07',
-  tags: ['triund', 'triund trek', 'trekking', 'dharamshala', 'mcleod ganj treks', 'hiking', 'camping', 'book triund trek'],
+  tags: ['triund', 'triund trek', 'trekking', 'dharamshala', 'mcleod ganj treks', 'hiking', 'camping'],
   content: `**Triund** is a grassy ridge at **approx. 2,850 m** above McLeod Ganj, with the snow wall of the Dhauladhar on one side and the whole Kangra Valley on the other. The standard trail starts at **Gallu Devi temple above Dharamkot** and is about **6-7 km one way**, taking most people **3-5 hours up and 2-3 hours down**. If you walk all the way from McLeod Ganj it is **around 9 km**. It is a moderate, beginner-friendly trek that you can do as a long day hike or, more memorably, as an overnight camp.
 
 This guide covers the route options, the numbers, the 2026 rules and fees, the best months, whether to go guided or solo, what to pack and how to [book a Triund trek](/treks/triund-trek) with a local team. For the night on the ridge itself (tents, toilets, cold, sunrise), read our separate [Triund camping guide](/blog/triund-camping-guide).

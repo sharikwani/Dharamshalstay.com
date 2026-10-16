@@ -124,10 +124,21 @@ export function contactMetadata(lang: Lang): Metadata {
 }
 
 export function ContactView({ lang }: { lang: Lang }) {
-  const { t } = serverT(lang);
+  const { t, href } = serverT(lang);
   const c = t.contact;
   return (
     <>
+      <JsonLd data={[
+        breadcrumbSchema([{ name: t.common.home, href: '/' }, { name: t.common.contact, href: '/contact' }], lang),
+        {
+          '@context': 'https://schema.org',
+          '@type': 'ContactPage',
+          name: c.h1,
+          url: siteConfig.url + href('/contact'),
+          inLanguage: lang === 'hi' ? 'hi-IN' : 'en-IN',
+          about: { '@id': siteConfig.url + '/#organization' },
+        },
+      ]} />
       <section className="bg-brand-900 text-white py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <Breadcrumb lang={lang} items={[{ label: t.common.home, href: '/' }, { label: t.common.contact }]} />
@@ -136,6 +147,7 @@ export function ContactView({ lang }: { lang: Lang }) {
         </div>
       </section>
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+        <h2 className="sr-only">{c.formTitle}</h2>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="space-y-4">
             <a href={getWhatsAppLink(c.whatsappMsg)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 bg-green-50 border border-green-200 rounded-xl hover:bg-green-100"><MessageCircle className="h-5 w-5 text-green-600" /><div><p className="font-medium text-slate-900">{c.whatsappFastest}</p><p className="text-sm text-slate-600">{siteConfig.whatsappDisplay}</p></div></a>
@@ -145,6 +157,40 @@ export function ContactView({ lang }: { lang: Lang }) {
             <div className="flex items-start gap-3 p-4 bg-white border border-slate-200 rounded-xl"><Clock className="h-5 w-5 text-brand-600 mt-0.5" /><div><p className="font-medium">{c.responseTime}</p><p className="text-sm text-slate-600">{c.responseText}</p></div></div>
           </div>
           <div className="lg:col-span-2"><InquiryForm type="general" title={c.formTitle} subtitle={c.formSubtitle} /></div>
+        </div>
+      </section>
+
+      <section className="bg-slate-50 border-t border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+          <h2 className="text-2xl font-heading font-bold text-slate-900 mb-6">{c.helpTitle}</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            {c.help.map((x) => (
+              <div key={x.href} className="bg-white rounded-xl border border-slate-200 p-5 flex flex-col">
+                <h3 className="font-heading font-semibold text-slate-900 mb-2">{x.title}</h3>
+                <p className="text-sm text-slate-600 flex-1">{x.text}</p>
+                <Link href={href(x.href)} className="text-sm text-brand-600 font-medium mt-3 hover:underline">{x.link} →</Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-12 grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <div>
+          <h2 className="text-2xl font-heading font-bold text-slate-900 mb-4">{c.howTitle}</h2>
+          <ol className="space-y-3">
+            {c.how.map((step, i) => (
+              <li key={i} className="flex gap-3 text-slate-700">
+                <span className="shrink-0 h-7 w-7 rounded-full bg-brand-600 text-white text-sm font-bold flex items-center justify-center">{i + 1}</span>
+                <span className="pt-0.5">{step}</span>
+              </li>
+            ))}
+          </ol>
+          <Link href="/cancellation-policy" className="inline-block text-sm text-brand-600 font-medium mt-4 hover:underline">{c.cancellation} →</Link>
+        </div>
+        <div className="bg-amber-50 border border-amber-100 rounded-2xl p-6 self-start">
+          <h2 className="text-xl font-heading font-bold text-slate-900 mb-3">{c.tipsTitle}</h2>
+          <ul className="list-disc pl-5 space-y-1.5 text-slate-700">{c.tips.map((x) => <li key={x}>{x}</li>)}</ul>
         </div>
       </section>
     </>

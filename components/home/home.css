@@ -654,3 +654,10 @@
 @media (max-width:700px),(pointer:coarse){
   .hm .mist{filter:none;opacity:.4}
 }
+
+/* plain text links to the pages travellers look for most (also passes link weight to them) */
+.hm .popular{margin:36px auto 0;max-width:980px;text-align:center}
+.hm .popular h3{font:600 13px/1.2 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
+.hm .popular ul{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 10px;list-style:none;margin:0;padding:0}
+.hm .popular a{display:inline-block;padding:7px 14px;border-radius:999px;background:var(--paper,#fff);box-shadow:inset 0 0 0 1px var(--line);font:500 14px/1.3 var(--body);color:var(--ink,#13243a);transition:background .2s,color .2s}
+.hm .popular a:hover{background:var(--ink,#13243a);color:#fff}

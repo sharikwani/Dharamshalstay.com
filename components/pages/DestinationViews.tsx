@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 import { Mountain } from 'lucide-react';
 import { DestinationCard, Breadcrumb, BlogCard, HotelCard, FAQSection, SectionHeading } from '@/components/ui/Cards';
 import JsonLd from '@/components/seo/JsonLd';
-import { getDestinations, getDestinationBySlug, getPropertiesByDestination } from '@/lib/db';
+import { getDestinations, getDestinationBySlug, getPropertiesByDestination, getPublishedProperties } from '@/lib/db';
 import { blogPosts } from '@/data/blog';
 import { generateSEO, breadcrumbSchema, itemListSchema, faqSchema, touristDestinationSchema } from '@/lib/seo';
 import { placeImage } from '@/lib/place-images';
@@ -25,7 +25,9 @@ export function destinationsMetadata(lang: Lang): Metadata {
 export async function DestinationsListView({ lang }: { lang: Lang }) {
   const { t, href } = serverT(lang);
   const d = t.destinations;
-  const destinations = (await getDestinations()).map((x: any) => localizeDestination(x, lang));
+  const [rawDests, hotels] = await Promise.all([getDestinations(), getPublishedProperties()]);
+  const destinations = rawDests.map((x: any) => localizeDestination(x, lang));
+  const stays = (slug: string) => hotels.filter((h: any) => h.destination_slug === slug).length;
   const guides = GUIDE_SLUGS.map((s) => blogPosts.find((b) => b.slug === s)).filter((b): b is (typeof blogPosts)[number] => !!b).map((p) => localizePost(p, lang));
 
   return (
@@ -43,8 +45,35 @@ export async function DestinationsListView({ lang }: { lang: Lang }) {
       </section>
       <section className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <h2 className="sr-only">{t.common.destinations}</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
             {destinations.map((x: any) => <DestinationCard key={x.id} destination={x} lang={lang} />)}
+          </div>
+
+          <h2 className="text-2xl font-heading font-bold text-slate-900 mt-10 mb-4">{d.compareTitle}</h2>
+          <div className="overflow-x-auto rounded-xl border border-slate-200">
+            <table className="w-full text-sm text-left">
+              <thead className="bg-slate-50 text-slate-700">
+                <tr>{[d.colArea, d.colAltitude, d.colFeel, d.colStays, ''].map((c, i) => <th key={i} scope="col" className="px-3 py-2.5 font-semibold whitespace-nowrap">{c}</th>)}</tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {destinations.map((x: any) => (
+                  <tr key={x.slug} className="align-top">
+                    <th scope="row" className="px-3 py-2.5 font-medium whitespace-nowrap">{x.name}</th>
+                    <td className="px-3 py-2.5 whitespace-nowrap">{x.altitude}</td>
+                    <td className="px-3 py-2.5 text-slate-600 min-w-[14rem]">{x.tagline}. {x.description}</td>
+                    <td className="px-3 py-2.5">{stays(x.slug)}</td>
+                    <td className="px-3 py-2.5 whitespace-nowrap"><Link href={href('/destinations/' + x.slug)} className="text-brand-600 font-medium hover:underline">{d.seeStays} →</Link></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="mt-8 max-w-3xl bg-amber-50 border border-amber-100 rounded-2xl p-6">
+            <h2 className="text-xl font-heading font-bold text-slate-900 mb-3">{d.picksTitle}</h2>
+            <ul className="list-disc pl-5 space-y-1.5 text-slate-700">{d.picks.map((p) => <li key={p}>{p}</li>)}</ul>
+            <Link href={href('/blog/where-to-stay-in-dharamshala')} className="inline-block text-sm text-brand-600 font-medium mt-3 hover:underline">{d.fullGuide} →</Link>
           </div>
           <p className="text-slate-600 mt-8 max-w-3xl">
             {d.notSure}{' '}

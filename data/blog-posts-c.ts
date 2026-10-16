@@ -582,7 +582,7 @@ Base yourself in [Dharamshala](/destinations/dharamshala) or [McLeod Ganj](/dest
     read_time: 7,
     featured: false,
     meta_title: 'Is the Kangra Toy Train Running? 2026 Status, Route, Tickets',
-    meta_description: 'Kangra toy train 2026: services resumed in June, then paused after August landslides. How to check if it is running today, the best section to ride, tickets and tips.',
+    meta_description: 'Kangra toy train 2026: resumed in June, paused after August landslides. How to check if it runs today, the best section to ride, tickets and tips.',
     related_slugs: ['places-to-visit-in-kangra', 'palampur-travel-guide', 'kangra-devi-temples-guide'],
     faqs: [
       {

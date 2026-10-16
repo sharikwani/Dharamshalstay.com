@@ -4,6 +4,7 @@ import { placeImage } from '@/lib/place-images';
 import { Breadcrumb, FAQSection } from '@/components/ui/Cards';
 import StayFinder from '@/components/hotels/finder/StayFinder';
 import { slimStay } from '@/lib/hotels/discover';
+import { COLLECTIONS } from '@/lib/hotels/collections';
 import JsonLd from '@/components/seo/JsonLd';
 import { getPublishedProperties, getDestinations } from '@/lib/db';
 import { serverT } from '@/lib/i18n/server';
@@ -66,6 +67,13 @@ export default async function HotelsView({ lang }: { lang: Lang }) {
               </div>
             ))}
           </div>
+          {lang === 'en' && (
+            <div className="mt-6 flex flex-wrap items-center gap-2">
+              <span className="text-sm font-semibold text-slate-700 mr-1">Popular searches:</span>
+              {COLLECTIONS.map((c) => <Link key={c.slug} href={'/hotels/' + c.slug} className="text-sm bg-white border border-slate-200 rounded-full px-3 py-1.5 hover:border-brand-400 hover:text-brand-700">{c.title}</Link>)}
+              <Link href="/blog/where-to-stay-in-dharamshala" className="text-sm bg-white border border-slate-200 rounded-full px-3 py-1.5 hover:border-brand-400 hover:text-brand-700">Where to stay, area by area</Link>
+            </div>
+          )}
           <p className="text-slate-700 mt-6">
             {before}{guideLink('best-hotels-in-dharamshala', t.hotels.guideA)}{middle}{guideLink('best-hotels-in-mcleod-ganj', t.hotels.guideB)}{after}
           </p>

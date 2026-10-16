@@ -3,6 +3,7 @@ import { Mountain, Mail, Phone, MapPin, Instagram } from 'lucide-react';
 import { siteConfig, DESTINATION_LINKS } from '@/lib/config';
 import { fmt, getDict } from '@/lib/i18n/dict';
 import { localizePath, type Lang } from '@/lib/i18n/core';
+import { COLLECTIONS } from '@/lib/hotels/collections';
 
 const GUIDE_SLUGS = [
   'dharamshala-complete-travel-guide', 'places-to-visit-in-dharamshala', 'things-to-do-in-mcleod-ganj',
@@ -51,6 +52,7 @@ export default function Footer({ lang }: { lang: Lang }) {
                 <li key={l.href}><Link href={href(l.href)} className="hover:text-orange-400">{fmt(t.footer.hotelsIn, { place: t.places[l.slug] })}</Link></li>
               ))}
               <li><Link href={href('/blog/dharamshala-vs-mcleod-ganj')} className="hover:text-orange-400">{t.footer.dharamshalaVsMcleod}</Link></li>
+              {lang === 'en' && COLLECTIONS.map((c) => <li key={c.slug}><Link href={'/hotels/' + c.slug} className="hover:text-orange-400">{c.title}</Link></li>)}
             </ul>
           </div>
           <div>

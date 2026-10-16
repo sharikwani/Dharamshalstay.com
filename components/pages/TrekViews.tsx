@@ -52,6 +52,7 @@ export async function TreksListView({ lang }: { lang: Lang }) {
       </section>
       <section className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <h2 className="sr-only">{t.common.treks}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {treks.map((x: any, i: number) => <TrekCard key={x.id} trek={x} lang={lang} priority={i === 0} />)}
           </div>

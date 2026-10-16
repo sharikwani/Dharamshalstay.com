@@ -784,6 +784,8 @@ After the Dalai Lama fled Tibet in 1959, the Tibetan government in exile settled
 
 Visiting hours, prayer times and teaching registration are three different things: the temple is usually open from early morning to early evening, the monks' own prayers happen early in the morning, and registration for a public teaching has its own office hours (see [How public teachings work](#how-public-teachings-work)). The complex can close to the public on special occasions and during high-security events, so check at the gate or with your hotel on your first day.
 
+**Want to stay within walking distance?** See our list of [hotels near the Dalai Lama Temple](/hotels/near-dalai-lama-temple), sorted by walking time to the gate.
+
 ## Dress code and etiquette
 
 The temple is an active place of worship, not a museum. A few simple habits go a long way.
@@ -863,7 +865,7 @@ Temple Road and the streets just above it have guesthouses and hotels within a f
     read_time: 8,
     featured: false,
     meta_title: 'Dalai Lama Temple Timings, McLeod Ganj: Hours & Entry',
-    meta_description: 'Dalai Lama Temple, McLeod Ganj: open daily, usually early morning to early evening, free entry. Prayer times, dress code, photo rules and how to attend teachings.',
+    meta_description: 'Dalai Lama Temple, McLeod Ganj: open daily, usually early morning to early evening, free entry. Prayer times, dress code, photos and teachings.',
     related_slugs: ['things-to-do-in-mcleod-ganj', 'places-to-visit-in-dharamshala', 'best-hotels-in-mcleod-ganj'],
     faqs: [
       {

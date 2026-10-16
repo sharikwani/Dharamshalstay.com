@@ -163,6 +163,7 @@ export default function StayFinder({ hotels, destinations }: { hotels: SlimStay[
 
       <div className={'sf-split' + (mobileMap ? ' map-open' : '')}>
         <div className="sf-list">
+          <h2 className="sr-only">{fmt(list.length === 1 ? T.foundOne : T.foundMany, { n: list.length })}</h2>
           {list.length === 0 ? (
             <div className="sf-empty"><p>{T.none}</p><button type="button" onClick={reset}>{T.reset}</button></div>
           ) : list.map((h) => (

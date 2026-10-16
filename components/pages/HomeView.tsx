@@ -335,6 +335,10 @@ export default async function HomeView({ lang }: { lang: Lang }) {
             <div className="guides-more">
               <Link href={href('/faq')} className="btn btn-line">{t.common.qa}</Link>
             </div>
+            <nav className="popular" aria-label={h.popularTitle}>
+              <h3>{h.popularTitle}</h3>
+              <ul>{h.popular.map((l) => <li key={l.href}><Link href={href(l.href)}>{l.label}</Link></li>)}</ul>
+            </nav>
           </div>
         </section>
         </>

@@ -3,7 +3,7 @@ import { Breadcrumb } from '@/components/ui/Cards';
 import { siteConfig } from '@/lib/config';
 import { generateSEO } from '@/lib/seo';
 
-export const metadata: Metadata = generateSEO({ title: 'Disclaimer', description: 'Disclaimer for Dharamshala Stay travel booking platform.', path: '/disclaimer' });
+export const metadata: Metadata = generateSEO({ title: 'Disclaimer', description: 'How Dharamshala Stay works: where hotel photos and details come from, how prices and availability are confirmed, and the limits of our travel information.', path: '/disclaimer' });
 
 export default function DisclaimerPage() {
   return (
