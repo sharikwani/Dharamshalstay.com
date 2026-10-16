@@ -114,6 +114,8 @@ export const hi: Dict = {
     guidesTitle: 'अपनी ट्रिप प्लान करें: लोकल ट्रैवल गाइड',
     popularTitle: 'यात्रियों की पसंद',
     popular: [
+      { href: '/travel-updates', label: 'ताज़ा यात्रा अपडेट' },
+      { href: '/facts', label: 'ज़रूरी तथ्य और आंकड़े' },
       { href: '/blog/triund-trek-complete-guide', label: 'त्रिउंड ट्रेक गाइड' },
       { href: '/treks/triund-trek', label: 'गाइड के साथ त्रिउंड ट्रेक बुक करें' },
       { href: '/hotels/near-dalai-lama-temple', label: 'दलाई लामा मंदिर के पास होटल' },

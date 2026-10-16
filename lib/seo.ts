@@ -353,7 +353,7 @@ export function faqSchema(faqs: { question: string; answer: string }[]) {
   return { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.question, acceptedAnswer: { '@type': 'Answer', text: f.answer } })) };
 }
 
-export function articleSchema(p: { title: string; excerpt: string; slug: string; author: string; published_at: string; updated_at: string; image: string; tags?: string[]; category?: string }, lang: Lang = 'en') {
+export function articleSchema(p: { title: string; excerpt: string; slug: string; author: string; published_at: string; updated_at: string; image: string; tags?: string[]; category?: string; sources?: { title: string; url: string }[] }, lang: Lang = 'en') {
   const url = siteConfig.url + localizePath('/blog/' + p.slug, lang);
   return {
     '@context': 'https://schema.org',
@@ -375,6 +375,7 @@ export function articleSchema(p: { title: string; excerpt: string; slug: string;
     image: p.image.startsWith('http') ? p.image : siteConfig.url + p.image,
     ...(p.category && { articleSection: p.category }),
     ...(p.tags?.length && { keywords: p.tags.join(', ') }),
+    ...(p.sources?.length && { citation: p.sources.map((s) => ({ '@type': 'CreativeWork', name: s.title, url: s.url })) }),
     about: { '@type': 'Place', name: 'Dharamshala, Himachal Pradesh, India' },
   };
 }
@@ -394,6 +395,14 @@ export function organizationSchema() {
     address: { '@type': 'PostalAddress', addressLocality: 'Dharamshala', addressRegion: 'Himachal Pradesh', postalCode: '176215', addressCountry: 'IN' },
     sameAs: [siteConfig.instagram],
     contactPoint: { '@type': 'ContactPoint', telephone: siteConfig.phone, contactType: 'customer service', areaServed: 'IN', availableLanguage: ['English', 'Hindi'] },
+    // Tells search and AI engines what this business is an authority on, and where.
+    areaServed: ['Dharamshala', 'McLeod Ganj', 'Bhagsu', 'Dharamkot', 'Naddi', 'Kangra Valley', 'Bir Billing', 'Palampur'].map((name) => ({ '@type': 'Place', name })),
+    knowsAbout: [
+      'Dharamshala', 'McLeod Ganj', 'Triund trek', 'Kareri Lake trek', 'Indrahar Pass', 'Dalai Lama Temple (Tsuglagkhang)',
+      'Tibet Museum', 'Tushita Meditation Centre', 'Vipassana at Dhamma Sikhara', 'Bir Billing paragliding',
+      'Dharamshala Skyway ropeway', 'Kangra Valley', 'Dhauladhar range', 'Tibetan culture in exile', 'Hotels and homestays in Dharamshala',
+    ],
+    subjectOf: { '@type': 'Dataset', name: 'Dharamshala and McLeod Ganj travel facts', url: siteConfig.url + '/facts' },
   };
 }
 

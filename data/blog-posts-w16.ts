@@ -156,6 +156,12 @@ Read the code of discipline in full, check the live schedule, be honest on the h
     meta_title: 'Vipassana Dharamkot: Dhamma Sikhara 10-Day Course Guide',
     meta_description: 'Dhamma Sikhara in Dharamkot runs free, silent 10-day Vipassana courses in the Goenka tradition. How to apply on dhamma.org, the rules, season and arrival.',
     related_slugs: ['meditation-yoga-retreats-dharamshala', 'tushita-meditation-centre-guide', 'dharamkot-travel-guide', 'where-to-stay-in-dharamshala'],
+    sources: [
+      { title: 'Dhamma Sikhara course schedule (dhamma.org)', url: 'https://www.dhamma.org/en/schedules/schsikhara' },
+      { title: 'Dhamma Sikhara, Himachal Vipassana Centre', url: 'https://sikhara.dhamma.org/' },
+      { title: 'Code of discipline for Vipassana courses (dhamma.org)', url: 'https://www.dhamma.org/en-US/about/code' },
+      { title: 'Vipassana questions and answers (dhamma.org)', url: 'https://www.dhamma.org/en/about/qanda' },
+    ],
     faqs: [
       {
         question: 'Is Vipassana at Dharamkot free?',

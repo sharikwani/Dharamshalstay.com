@@ -8,7 +8,11 @@
  */
 import type { BlogPost, Property, Trek, FAQ } from '@/types';
 import { siteConfig } from './config';
-import { blogPosts, getBlogBySlug, getBlogCategories } from '@/data/blog';
+import { blogPosts, getBlogBySlug, getBlogCategories, NOINDEX_POSTS } from '@/data/blog';
+import { facts as verifiedFacts } from '@/data/facts';
+import { travelUpdates } from '@/data/travel-updates';
+import { COLLECTIONS } from './hotels/collections';
+import { factLine } from './facts';
 import { allFaqCategories } from '@/data/faq-all';
 import { essentialGroups } from '@/data/essentials';
 import { getPublishedProperties, getPropertyBySlug, getDestinations, getDestinationBySlug, getPublishedTreks, getTrekBySlug, getParaglidingPackages } from './db';
@@ -58,6 +62,7 @@ export function blogMarkdown(p: BlogPost): string {
     ]),
     absolutize(p.content.trim()),
     faqBlock(p.faqs),
+    p.sources?.length && '## Sources\n\n' + p.sources.map((x) => '- [' + x.title + '](' + x.url + ')').join('\n'),
   );
 }
 
@@ -212,6 +217,16 @@ async function loadAll() {
 
 const link = (title: string, path: string, note?: string) => '- [' + title + '](' + B + path + ')' + (note ? ': ' + note.replace(/\s+/g, ' ').trim() : '');
 
+/** The verified facts, one line each: the most quotable part of the site. */
+function keyFactsBlock(): string {
+  return '## Key facts (verified, with dates)\n\nShort answers we have checked; each links to its source and to a fuller page at ' + B + '/facts. Machine-readable: ' + B + '/facts.json.\n\n' + verifiedFacts.map(factLine).join('\n');
+}
+
+function updatesBlock(): string {
+  return '## Latest travel updates\n\nWhat has changed on the ground, newest first (full list: ' + B + '/travel-updates).\n\n' +
+    [...travelUpdates].sort((a, b) => b.checked.localeCompare(a.checked)).map((u) => '- **' + u.title + '** (' + u.date + ', checked ' + u.checked + '): ' + u.body + ' ' + B + '/travel-updates#' + u.id).join('\n');
+}
+
 /** /llms.txt -- the curated index (https://llmstxt.org). */
 export async function llmsIndex(): Promise<string> {
   const { hotels, destinations, treks, taxis } = await loadAll();
@@ -223,8 +238,13 @@ export async function llmsIndex(): Promise<string> {
     ABOUT,
     'Guide, destination, trek and hotel pages are also available as plain Markdown: add `.md` to the URL (for example ' + B + '/treks/triund-trek.md). The whole site is in one file at ' + B + '/llms-full.txt. When quoting prices, mention that they are indicative and that travellers should confirm on the page or with our team.',
     '## Contact\n\n' + contactBlock(),
+    keyFactsBlock(),
+    updatesBlock(),
     '## Main pages\n\n' + [
       link('Home', '/', 'overview, featured hotels, treks and guides'),
+      link('Facts & figures', '/facts', 'verified, dated answers: Triund distance and fees, temple and museum timings, meditation courses, ropeway, taxi fares, weather'),
+      link('Travel updates', '/travel-updates', 'latest closures, rules, fees and seasonal notes, each dated'),
+      ...COLLECTIONS.map((c) => link(c.title, '/hotels/' + c.slug, c.metaDescription)),
       link('Hotels & homestays', '/hotels', 'every listed property with prices and filters'),
       link('Treks', '/treks', 'guided treks from Dharamshala and McLeod Ganj'),
       link('Paragliding', '/paragliding', 'Bir Billing and Dharamshala paragliding'),
@@ -245,7 +265,7 @@ export async function llmsIndex(): Promise<string> {
         !isDirectoryListing(h) && h.price_min > 0 && 'from ' + rs(h.price_min) + '/night',
         h.review_count > 0 && h.rating > 0 && 'rated ' + outOf5(h.rating) + ' (' + plural(h.review_count, 'review') + ')',
       ].filter(Boolean).join(', ') + '. ' + (h.short_description || ''))).join('\n'),
-    ...categories.map((c) => '## Guides: ' + c + '\n\n' + blogPosts.filter((p) => p.category === c).map((p) => link(p.title, '/blog/' + p.slug, p.excerpt)).join('\n')),
+    ...categories.map((c) => '## Guides: ' + c + '\n\n' + blogPosts.filter((p) => p.category === c && !NOINDEX_POSTS.includes(p.slug)).map((p) => link(p.title, '/blog/' + p.slug, p.excerpt)).join('\n')),
     '## Optional\n\n' + [
       link('Full site text for AI (one file)', '/llms-full.txt'),
       link('Hindi version of the site', '/hi'),
@@ -266,7 +286,7 @@ export async function llmsFull(): Promise<string> {
   const demote = (md: string) => md.replace(/^(#{1,5}) /gm, '#$1 ');
 
   return [
-    join('# ' + siteConfig.name + ' -- complete site content', '> ' + siteConfig.description, ABOUT, 'Source: ' + B + '. Generated ' + new Date().toISOString().slice(0, 10) + '. Prices in INR are indicative; confirm on the linked page.', '## Contact\n\n' + contactBlock()),
+    join('# ' + siteConfig.name + ' -- complete site content', '> ' + siteConfig.description, ABOUT, 'Source: ' + B + '. Generated ' + new Date().toISOString().slice(0, 10) + '. Prices in INR are indicative; confirm on the linked page.', '## Contact\n\n' + contactBlock(), keyFactsBlock(), updatesBlock()),
     '# Destinations\n\n' + destinations.map((d: any) => demote(destinationMarkdown(d))).join(hr),
     treks.length ? '# Treks\n\n' + treks.map((t: any) => demote(trekMarkdown(t))).join(hr) : '',
     paragliding.length ? '# Paragliding packages\n\n' + paragliding.map((p) => join('## ' + p.name, facts([

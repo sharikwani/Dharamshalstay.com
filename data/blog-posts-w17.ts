@@ -127,6 +127,14 @@ When it is running, yes, mainly as transport. It saves time on busy days, the vi
     meta_title: 'Dharamshala Ropeway: Status, Tickets & Timings (2026)',
     meta_description: 'Is the Dharamshala Skyway ropeway to McLeod Ganj open? Status checked October 2026, how to confirm, stations, timings, tickets, and taxi or bus options.',
     related_slugs: ['how-to-reach-dharamshala', 'dharamshala-vs-mcleod-ganj', 'places-to-visit-in-dharamshala', 'dharamshala-3-day-itinerary'],
+    sources: [
+      { title: 'Dharamshala Skyway (official site)', url: 'https://www.dharamshalaskyway.in/' },
+      { title: 'Dharamshala Skyway: terms and bye-laws', url: 'https://www.dharamshalaskyway.in/terms-condition' },
+      { title: 'Dharamshala Skyway on Instagram', url: 'https://www.instagram.com/dharamshala_skyway/' },
+      { title: 'Ropeway operations suspended after landslide (The Tribune, August 2025)', url: 'https://www.tribuneindia.com/news/himachal/dharamshala-skyway-ropeway-operations-temporarily-suspended-due-to-massive-landslide' },
+      { title: 'HP: ropeway suspension (The Week / PTI, 20 August 2025)', url: 'https://www.theweek.in/wire-updates/national/2025/08/20/nrg17-hp-ropeway-suspension.html' },
+      { title: 'LEITNER press release on the Dharamshala gondola (2022)', url: 'https://www.leitner.com/fileadmin/userdaten/06-presse/Bilder/2022/Dharamshala/LEITNER_PRESSrelease_GD8_Dharamshala_EN_.pdf' },
+    ],
     faqs: [
       {
         question: 'Is the Dharamshala ropeway open now?',

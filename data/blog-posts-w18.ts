@@ -129,6 +129,14 @@ For more Tibetan Buddhist sites around town, see our [monasteries and meditation
     meta_title: 'Tibet Museum Dharamshala: Timings, Ticket, Location',
     meta_description: 'The Tibet Museum has moved from the temple complex to Gangchen Kyishong. Timings, Rs 20 ticket, Saturday closure, what you will see and how to get there.',
     related_slugs: ['dalai-lama-temple-guide', 'tibetan-culture-etiquette-guide', 'places-to-visit-in-dharamshala', 'dharamshala-3-day-itinerary'],
+    sources: [
+      { title: 'Tibet Museum (official site)', url: 'https://tibetmuseum.org/' },
+      { title: 'Tibet Museum: plan your visit', url: 'https://tibetmuseum.org/your-visit/' },
+      { title: 'Tibet Museum: about us', url: 'https://tibetmuseum.org/about-us/' },
+      { title: 'Tibet Museum: permanent exhibition', url: 'https://tibetmuseum.org/exhibitions/permanent-exhibition/' },
+      { title: 'Tibet Museum inaugurated at Dharamsala (The Tribune, February 2022)', url: 'https://www.tribuneindia.com/news/himachal/tibet-museum-inaugurated-at-dharamsala-368879' },
+      { title: 'Library of Tibetan Works and Archives', url: 'https://tibetanlibrary.org/' },
+    ],
     faqs: [
       {
         question: 'Where is the Tibet Museum in Dharamshala?',

@@ -251,6 +251,16 @@ export function BlogPostView({ slug, lang }: { slug: string; lang: Lang }) {
           <div className="mt-6 flex justify-center"><PreferredSourceButton lang={lang} /></div>
         </div>
 
+        {post.sources && post.sources.length > 0 && (
+          <div className="mb-8 rounded-xl bg-slate-50 border border-slate-200 p-5">
+            <h2 className="text-lg font-heading font-bold text-slate-900 mb-2">Sources</h2>
+            <p className="text-xs text-slate-500 mb-2">Checked {post.updated_at}. Facts change; confirm on the official pages before you travel.</p>
+            <ol className="list-decimal pl-5 space-y-1 text-sm">
+              {post.sources.map((s) => <li key={s.url}><a href={s.url} target="_blank" rel="noopener noreferrer" className="text-brand-600 hover:underline break-words">{s.title}</a></li>)}
+            </ol>
+          </div>
+        )}
+
         {related.length > 0 && (
           <div className="mb-8">
             <h2 className="text-xl font-heading font-bold text-slate-900 mb-4">{b.related}</h2>

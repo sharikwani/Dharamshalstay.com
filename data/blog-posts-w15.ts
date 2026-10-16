@@ -172,6 +172,13 @@ If Tushita is full or you want a stricter, completely silent retreat, the 10-day
       'dharamkot-travel-guide',
       'tibetan-culture-etiquette-guide',
     ],
+    sources: [
+      { title: 'Tushita Meditation Centre (official site)', url: 'https://tushita.info/' },
+      { title: 'Tushita: daily guided meditations', url: 'https://tushita.info/program/drop-in-sessions/daily-guided-meditations/' },
+      { title: 'Tushita: Introduction to Buddhism course', url: 'https://tushita.info/program/introduction-to-buddhism/' },
+      { title: 'Tushita: short courses', url: 'https://tushita.info/program/short-courses/' },
+      { title: 'Tushita: frequently asked questions', url: 'https://tushita.info/faq/' },
+    ],
     faqs: [
       {
         question: 'Do I need to book the Tushita drop-in meditation?',

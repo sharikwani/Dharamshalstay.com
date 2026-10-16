@@ -112,6 +112,8 @@ export const en = {
     guidesTitle: 'Plan Your Trip: Local Travel Guides',
     popularTitle: 'Popular with travellers',
     popular: [
+      { href: '/travel-updates', label: 'Latest travel updates' },
+      { href: '/facts', label: 'Facts & figures' },
       { href: '/blog/triund-trek-complete-guide', label: 'Triund trek guide' },
       { href: '/treks/triund-trek', label: 'Book a guided Triund trek' },
       { href: '/hotels/near-dalai-lama-temple', label: 'Hotels near the Dalai Lama Temple' },

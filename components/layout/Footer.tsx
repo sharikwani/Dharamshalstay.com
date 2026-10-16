@@ -42,6 +42,8 @@ export default function Footer({ lang }: { lang: Lang }) {
             <h2 className="text-white font-semibold mb-4">{t.footer.quickLinks}</h2>
             <ul className="space-y-2 text-sm">
               {quick.map((l) => <li key={l.href}><Link href={href(l.href)} className="hover:text-orange-400">{l.label}</Link></li>)}
+              {lang === 'en' && <li><Link href="/facts" className="hover:text-orange-400">Facts & figures</Link></li>}
+              {lang === 'en' && <li><Link href="/travel-updates" className="hover:text-orange-400">Travel updates</Link></li>}
               <li><Link href="/partner/register" className="hover:text-orange-400">{t.nav.listProperty}</Link></li>
             </ul>
           </div>

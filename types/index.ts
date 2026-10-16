@@ -269,6 +269,8 @@ export interface BlogPost {
   meta_description: string;
   related_slugs: string[];
   faqs?: FAQ[];
+  /** Where the facts come from: shown as a Sources list and as schema.org citation. */
+  sources?: { title: string; url: string }[];
 }
 
 // ===== INQUIRY =====
