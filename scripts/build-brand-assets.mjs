@@ -50,6 +50,8 @@ await png('logo-badge.svg', 512, path.join(brand, 'logo-badge-512.png'));
 await png('logo-badge-icon.svg', 512, path.join(brand, 'logo-badge-icon-512.png'));
 await png('logo-stacked.svg', 1024, path.join(brand, 'logo-stacked-1024.png'));
 await png('logo-stacked-dark.svg', 1024, path.join(brand, 'logo-stacked-dark-1024.png'));
+await png('logo-round.svg', 1024, path.join(brand, 'logo-round-1024.png'));
+await png('logo-round.svg', 512, path.join(brand, 'logo-round-512.png'));
 await png('logo-mark.svg', 1024, path.join(brand, 'logo-mark-1024.png'));
 await png('logo-mark.svg', 512, path.join(brand, 'logo-mark-512.png'));
 await png('logo-mark-white.svg', 512, path.join(brand, 'logo-mark-white-512.png'));
