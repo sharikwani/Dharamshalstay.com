@@ -13,6 +13,7 @@ import MonasteryDay from '@/components/home/MonasteryDay';
 import { monasteryDay } from '@/data/monasteries';
 import { monasteryPhotos } from '@/data/monastery-photos';
 import JsonLd from '@/components/seo/JsonLd';
+import FestiveBanner from '@/components/sections/FestiveBanner';
 import { getDestinations, getPublishedProperties, getPublishedTreks } from '@/lib/db';
 import { blogPosts, getFeaturedBlogPosts } from '@/data/blog';
 import { gaddiPhotos } from '@/data/gaddi-photos';
@@ -123,6 +124,7 @@ export default async function HomeView({ lang }: { lang: Lang }) {
         </div>
         <svg className="ridge" viewBox="0 0 1440 96" preserveAspectRatio="none" aria-hidden="true"><path d={RIDGE} /></svg>
       </section>
+      <FestiveBanner lang={lang} />
 
       <HomeEffects sections={sections} navLabel={v.onThisPage} searchLabel={v.panelTitle} />
 

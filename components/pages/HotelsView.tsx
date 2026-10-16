@@ -6,6 +6,7 @@ import StayFinder from '@/components/hotels/finder/StayFinder';
 import { slimStay } from '@/lib/hotels/discover';
 import { COLLECTIONS } from '@/lib/hotels/collections';
 import JsonLd from '@/components/seo/JsonLd';
+import FestiveBanner from '@/components/sections/FestiveBanner';
 import { getPublishedProperties, getDestinations } from '@/lib/db';
 import { serverT } from '@/lib/i18n/server';
 import { fmt } from '@/lib/i18n/dict';
@@ -32,6 +33,7 @@ export default async function HotelsView({ lang }: { lang: Lang }) {
         itemListSchema(hotels.map((h) => ({ name: h.name, href: '/hotels/' + h.slug })), lang),
         ...(faqs.length ? [faqSchema(faqs)] : []),
       ]} />
+      <FestiveBanner lang={lang} />
       <section className="relative text-white overflow-hidden">
         <Image src={placeImage('mcleod-ganj')} alt="" fill priority className="object-cover" sizes="100vw" />
         <div className="absolute inset-0 bg-gradient-to-r from-brand-950/90 via-brand-900/75 to-brand-900/40" />

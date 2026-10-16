@@ -9,6 +9,8 @@ export const blogPostsW14: BlogPost[] = [
     excerpt: 'December in McLeod Ganj means cold nights, sunny days and the clearest Dhauladhar views of winter. Snow in town is occasional and more likely late in the month. Here is the week-by-week weather, what stays open, how to pick a warm room and how to handle the Christmas and New Year rush.',
     content: `**Short answer:** December in McLeod Ganj is cold, mostly dry and very clear. Days are usually around 9 to 15°C in the sun, nights drop to roughly 0 to 5°C, and by the last week a frosty, below-zero night is normal. Snow on the Dhauladhar peaks above town is almost certain. **Snow in McLeod Ganj itself is occasional**: it is uncommon before late December, and January and early February give much better odds. Triund and the upper slopes are far more likely to be white. The first three weeks are quiet and easy to book; from about 23 December to 2 January the town is packed and rates rise sharply.
 
+Coming for the holidays? See our [Christmas in Dharamshala guide](/blog/dharamshala-christmas-new-year) and our [New Year in McLeod Ganj guide](/blog/new-year-in-mcleod-ganj) for the festive week itself.
+
 If you want clear mountain views, quiet streets and cosy cafés, December is a good month. If your only goal is snow underfoot in town, look at January instead, or plan a day up towards Triund or Naddi.
 
 This guide covers the weather week by week, what is open and closed, how to stay warm, Christmas and New Year, what to pack, things to do and getting here in winter. For the full year, see our [best time to visit Dharamshala guide](/blog/best-time-to-visit-dharamshala). For January, see our [Dharamshala in January guide](/blog/dharamshala-in-december-january).

@@ -23,7 +23,7 @@ export function stripLang(pathname: string): string {
 /** Guides not yet translated: their /hi URL redirects to English. Kept in sync with data/hi by tests/seo/hindi-links.test.ts. */
 export const EN_ONLY_POSTS = [
   'budget-hotels-in-dharamshala', 'eating-out-dharamshala-what-it-costs', 'accessibility-dharamshala-limited-mobility',
-  'groceries-daily-essentials-dharamshala', 'laundry-luggage-storage-water-dharamshala', 'where-to-stay-in-dharamshala', 'dharamshala-3-day-itinerary', 'mcleod-ganj-in-december', 'tushita-meditation-centre-guide', 'vipassana-dharamkot-dhamma-sikhara', 'dharamshala-skyway-ropeway-guide', 'tibet-museum-dharamshala-guide',
+  'groceries-daily-essentials-dharamshala', 'laundry-luggage-storage-water-dharamshala', 'where-to-stay-in-dharamshala', 'dharamshala-3-day-itinerary', 'mcleod-ganj-in-december', 'tushita-meditation-centre-guide', 'vipassana-dharamkot-dhamma-sikhara', 'dharamshala-skyway-ropeway-guide', 'tibet-museum-dharamshala-guide', 'diwali-in-dharamshala', 'new-year-in-mcleod-ganj',
 ];
 
 /** English-only pages inside otherwise bilingual sections. */

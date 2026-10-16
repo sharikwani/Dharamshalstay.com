@@ -23,6 +23,8 @@ import { blogPostsW15 } from './blog-posts-w15';
 import { blogPostsW16 } from './blog-posts-w16';
 import { blogPostsW17 } from './blog-posts-w17';
 import { blogPostsW18 } from './blog-posts-w18';
+import { blogPostsW19 } from './blog-posts-w19';
+import { blogPostsW20 } from './blog-posts-w20';
 import { coreOverrides } from './blog-core';
 
 // Real photos of each place (see lib/place-images.ts).
@@ -474,7 +476,7 @@ function withPhotoAlt(post: BlogPost): BlogPost {
 }
 
 /** All guides, newest first. */
-export const blogPosts: BlogPost[] = [...blogPostsA, ...blogPostsB, ...blogPostsC, ...blogPostsW1, ...blogPostsW2, ...blogPostsW3, ...blogPostsW4, ...blogPostsW5, ...blogPostsW6, ...blogPostsW7, ...blogPostsW8, ...blogPostsW9, ...blogPostsE1, ...blogPostsW10, ...blogPostsW11, ...blogPostsW12, ...blogPostsW13, ...blogPostsW14, ...blogPostsW15, ...blogPostsW16, ...blogPostsW17, ...blogPostsW18, ...corePosts]
+export const blogPosts: BlogPost[] = [...blogPostsA, ...blogPostsB, ...blogPostsC, ...blogPostsW1, ...blogPostsW2, ...blogPostsW3, ...blogPostsW4, ...blogPostsW5, ...blogPostsW6, ...blogPostsW7, ...blogPostsW8, ...blogPostsW9, ...blogPostsE1, ...blogPostsW10, ...blogPostsW11, ...blogPostsW12, ...blogPostsW13, ...blogPostsW14, ...blogPostsW15, ...blogPostsW16, ...blogPostsW17, ...blogPostsW18, ...blogPostsW19, ...blogPostsW20, ...corePosts]
   .map((p) => (coreOverrides[p.slug] ? { ...p, ...coreOverrides[p.slug] } : p))
   .map(withPhotoAlt)
   .sort((a, b) => b.published_at.localeCompare(a.published_at));
