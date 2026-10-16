@@ -94,7 +94,7 @@ export const faqCategories: FAQCategory[] = [
       {
         question: 'How do I get from Dharamshala to McLeod Ganj?',
         answer:
-          "McLeod Ganj is roughly 8-10 km by road above the Dharamshala bus stand, a 20-30 minute drive depending on traffic. Local buses and shared taxis run through the day, and private taxis are easy to find. The Dharamshala Skyway ropeway was suspended in August 2025 after a landslide near one of its pillars, so check locally whether it has reopened before counting on it.",
+          "McLeod Ganj is roughly 8-10 km by road above the Dharamshala bus stand, a 20-30 minute drive depending on traffic. Local buses and shared taxis run through the day, and private taxis are easy to find. The Dharamshala Skyway ropeway (about 5 minutes, 9:30 am to 6 pm) was suspended in August 2025 after a landslide near one of its pillars; when we checked on 16 October 2026 it appeared to be running again but its online booking was down, so confirm on the day before counting on it.",
         link: { href: '/blog/dharamshala-vs-mcleod-ganj', label: 'Dharamshala vs McLeod Ganj' },
       },
       {
@@ -184,7 +184,7 @@ export const faqCategories: FAQCategory[] = [
       {
         question: 'What can I do in Dharamshala on a rainy day?',
         answer:
-          "There are plenty of indoor options in Dharamshala on a rainy day. Visit the Tsuglagkhang Complex and Tibet Museum, the Library of Tibetan Works and Archives, Norbulingka Institute or the Kangra Art Museum in Kotwali Bazaar. You can also take a Tibetan cooking class, join a meditation session or settle into one of McLeod Ganj's cafes. Avoid forest trails and waterfalls in heavy rain, when rocks are slippery and streams rise fast.",
+          "There are plenty of indoor options in Dharamshala on a rainy day. Visit the Tsuglagkhang Complex, the Tibet Museum and the Library of Tibetan Works and Archives at Gangchen Kyishong, Norbulingka Institute or the Kangra Art Museum in Kotwali Bazaar. You can also take a Tibetan cooking class, join a meditation session or settle into one of McLeod Ganj's cafes. Avoid forest trails and waterfalls in heavy rain, when rocks are slippery and streams rise fast.",
         link: { href: '/blog/dharamshala-monsoon-travel-guide', label: 'Monsoon travel guide' },
       },
       {

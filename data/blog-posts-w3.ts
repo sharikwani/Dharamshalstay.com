@@ -115,7 +115,8 @@ You will understand McLeod Ganj far better after visiting a few of these. Openin
 | Institution | Where | What it is | Why go |
 |---|---|---|---|
 | Central Tibetan Administration (CTA) | Gangchen Kyishong | The exile government's ministries and parliament | See the seat of exile democracy; the LTWA is on the same campus |
-| Tsuglagkhang complex & Tibet Museum | Temple Road, McLeod Ganj | Main temple, Namgyal Monastery, museum | The museum tells the story of 1959 and exile through photos and testimony |
+| Tsuglagkhang complex | Temple Road, McLeod Ganj | Main temple and Namgyal Monastery | The spiritual heart of the exile community |
+| [Tibet Museum](/blog/tibet-museum-dharamshala-guide) | Gangchen Kyishong, on the CTA campus | Museum of Tibetan history and exile | The museum tells the story of 1959 and exile through photos and testimony; Rs 20 for adults, under-18s free |
 | Library of Tibetan Works and Archives (LTWA) | Gangchen Kyishong | Archive, library, museum and Buddhist philosophy classes | Rare texts, artefacts and affordable classes for visitors |
 | Men-Tsee-Khang | Gangchen Kyishong / near McLeod Ganj | Tibetan Medical and Astro-Science Institute | Museum on Tibetan medicine and astrology; consultations at its clinics |
 | Tibetan Children's Village (TCV) | Upper Dharamshala, near Dal Lake | School founded in 1960 for refugee children | Learn how exile education works; respect school rules on visits |
@@ -198,9 +199,9 @@ The catch: the good courses fill up, often weeks to months in advance, and both 
 | Option | Tradition / style | Length | Cost (approx., 2026) | Booking | Season |
 |---|---|---|---|---|---|
 | Tushita drop-in meditation | Tibetan Buddhist (FPMT) | 1 hour, Mon-Sat | Donation | No booking | Feb-Nov |
-| Tushita Introduction to Buddhism | Tibetan Buddhist, teachings plus meditation, mostly silent | 10 days residential | Fixed course fee, check website | Online, fills fast | Feb-Nov |
-| Tushita short courses | e.g. How to Meditate | 2 days | Course fee | Online | Feb-Nov |
-| Dhamma Sikhara Vipassana | Goenka Vipassana, strict silence | 10 days (12 calendar days) | Free; donations from past students | Online via dhamma.org | Roughly Mar-early Dec |
+| [Tushita](/blog/tushita-meditation-centre-guide) Introduction to Buddhism | Tibetan Buddhist, teachings plus meditation, mostly silent | 10 days residential | Minimum donation (about 8,600 INR in a dorm, 2026) | Online form plus deposit; fills fast | Feb-Nov |
+| Tushita short courses | e.g. How to Meditate | 2-3 days, non-residential | Minimum donation (from about 1,500 INR, 2026) | In person at Tushita reception only | Feb-Nov |
+| [Dhamma Sikhara Vipassana](/blog/vipassana-dharamkot-dhamma-sikhara) | Goenka Vipassana, strict silence | 10 days (12 calendar days) | Free; donations from past students | Online via dhamma.org | New students mid-Mar to late Nov |
 | LTWA philosophy classes | Tibetan Buddhist philosophy and practice | Ongoing, monthly | ₹100 registration + ₹400/month per class (afternoon class ₹500) | Register at the library office | Most of the year; check holidays |
 | Yoga drop-ins | Hatha, Iyengar-style, vinyasa | 1-2 hours | ₹300-800 per class | Walk in | Mar-Nov best |
 | Yoga teacher training | Usually 200-hour | 3-4 weeks | Approx. ₹80,000-2,00,000 incl. stay | Book weeks ahead | Mostly spring and autumn |
@@ -219,7 +220,7 @@ Tushita sits in deodar forest above McLeod Ganj on the way to [Dharamkot](/desti
 ### Practicalities
 
 - **Season:** open February to November; **closed December and January**. The office is closed on Sundays.
-- **Registration:** online through Tushita's own website. Popular dates sell out, so register as soon as dates open, especially for March to May and October.
+- **Registration:** the 10-day course is booked online through Tushita's own website, with a non-refundable deposit; short weekend courses are booked in person at reception only. More in our [Tushita guide](/blog/tushita-meditation-centre-guide). Popular dates sell out, so register as soon as dates open, especially for March to May and October.
 - **Cost:** a fixed fee covering teaching, simple vegetarian meals and dorm or shared accommodation. Check the current fee on the website rather than trusting old blog figures.
 - **Rules on residential courses:** silence for most of the course, no alcohol or intoxicants, phones handed in or switched off, attendance at all sessions, no leaving the grounds.
 
@@ -238,7 +239,7 @@ Dhamma Sikhara, the Himachal Vipassana Centre, sits in around three acres of ced
 
 ### Season, cost and booking
 
-- **Season:** the 2026 and 2027 schedules run from about **March to early December**, with the centre quiet over the coldest weeks. A 3-day course for old students runs in December.
+- **Season:** 10-day courses for new students run from about **mid-March to late November**; early March and December have courses for old students only, and no courses are listed in January and February. Our [Vipassana in Dharamkot guide](/blog/vipassana-dharamkot-dhamma-sikhara) covers applying and what the days are like.
 - **Cost:** **free**. Food and accommodation are covered by donations from people who have completed a course; you may donate at the end if you wish.
 - **Booking:** apply online through the course schedule on dhamma.org. Applications open roughly two months ahead, and as of early October 2026 the late October and early November courses were already full for new students, with waiting lists. Apply early and have a backup date.
 
@@ -652,7 +653,7 @@ Conversation classes run most of the year but are busiest in spring (March to Ju
 
 ## Getting started: a simple plan
 
-1. Arrive, settle in to [McLeod Ganj](/destinations/mcleod-ganj), and visit the Tsuglagkhang and the Tibet Museum to understand the context.
+1. Arrive, settle in to [McLeod Ganj](/destinations/mcleod-ganj), and visit the Tsuglagkhang and, a short taxi ride below town, the [Tibet Museum](/blog/tibet-museum-dharamshala-guide) at Gangchen Kyishong to understand the context.
 2. Attend a conversation class on a weekday at 4 pm.
 3. Ask coordinators where else help is needed and check noticeboards.
 4. If you want a longer role, email organisations with your CV and dates, and sort the right visa before you commit.

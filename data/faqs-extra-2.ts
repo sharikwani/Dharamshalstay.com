@@ -174,8 +174,8 @@ export const faqsExtra2: FAQCategory[] = [
       {
         question: 'Is the Dharamshala-McLeod Ganj ropeway working now?',
         answer:
-          "Check locally before relying on it. The Dharamshala Skyway, which opened in 2022 and normally takes about 5 minutes between lower Dharamshala and McLeod Ganj, was suspended in August 2025 after a landslide near one of its towers and has had safety-related closures since. If it is running, it is a quick way to skip the traffic. If not, local buses and taxis cover the 9 or so km road in 20-30 minutes.",
-        link: { href: '/blog/local-transport-dharamshala', label: 'Getting around Dharamshala' },
+          "It appears to be, but confirm on the day. The Dharamshala Skyway, which opened in 2022 and takes about 5 minutes between lower Dharamshala and McLeod Ganj, was suspended in August 2025 after a landslide near one of its towers. When we checked on 16 October 2026, the operator was promoting rides on its official Instagram, but the official website showed a maintenance notice and online booking was not working, so buy at the counter. The listed hours are 9:30 am to 6 pm and the helpline is +91-1892 223302. If it is not running, local buses and taxis cover the 9 or so km road in 20-30 minutes.",
+        link: { href: '/blog/dharamshala-skyway-ropeway-guide', label: 'Dharamshala Skyway guide' },
       },
     ],
   },

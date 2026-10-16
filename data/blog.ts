@@ -18,6 +18,11 @@ import { blogPostsW10 } from './blog-posts-w10';
 import { blogPostsW11 } from './blog-posts-w11';
 import { blogPostsW12 } from './blog-posts-w12';
 import { blogPostsW13 } from './blog-posts-w13';
+import { blogPostsW14 } from './blog-posts-w14';
+import { blogPostsW15 } from './blog-posts-w15';
+import { blogPostsW16 } from './blog-posts-w16';
+import { blogPostsW17 } from './blog-posts-w17';
+import { blogPostsW18 } from './blog-posts-w18';
 import { coreOverrides } from './blog-core';
 
 // Real photos of each place (see lib/place-images.ts).
@@ -348,7 +353,7 @@ We also arrange airport transfers, sightseeing trips, and [Bir Billing paraglidi
 
 **Morning:** Arrive in Dharamshala. Check into your [McLeod Ganj hotel](/blog/best-hotels-in-mcleod-ganj). Grab breakfast at a [local cafe](/blog/top-cafes-in-mcleod-ganj).
 
-**Late Morning:** Visit the Tsuglagkhang Complex and the [Tibet Museum](/blog/dalai-lama-temple-guide). The temple is free to enter.
+**Late Morning:** Visit the [Tsuglagkhang Complex](/blog/dalai-lama-temple-guide). The temple is free to enter.
 
 **Afternoon:** Walk the McLeod Ganj market. Momos at Tibet Kitchen.
 
@@ -362,7 +367,7 @@ We also arrange airport transfers, sightseeing trips, and [Bir Billing paraglidi
 
 ## Day 3: Culture and Departure
 
-**Morning:** Norbulingka Institute (about 12 km, 30-40 min by taxi from McLeod Ganj; small entry fee). Beautiful Tibetan arts centre. Great gardens and cafe.
+**Morning:** On the way down, stop at the [Tibet Museum](/blog/tibet-museum-dharamshala-guide) at Gangchen Kyishong (closed Saturdays), then Norbulingka Institute (about 12 km, 30-40 min by taxi from McLeod Ganj; small entry fee). Beautiful Tibetan arts centre. Great gardens and cafe.
 
 **Before Departure:** Pick up souvenirs. If heading to Delhi, our [taxi service](/blog/dharamshala-to-delhi-taxi-guide) can pick you up from the hotel. For your next visit, consider adding [Bir Billing paragliding](/blog/bir-billing-paragliding-guide).
 
@@ -438,7 +443,7 @@ Waterfalls everywhere, lush green hills, 15-22 degree temperatures. And the bigg
 
 ## Best Activities During Monsoon
 
-Tsuglagkhang Complex and Tibet Museum. Norbulingka Institute. Tibetan cooking classes. Meditation sessions. The [cafe scene](/blog/top-cafes-in-mcleod-ganj) thrives as people spend more time indoors. Tea Gardens in Kangra. [Digital nomads](/blog/dharamshala-for-digital-nomads) love the quiet monsoon vibe.
+Tsuglagkhang Complex. The Tibet Museum at Gangchen Kyishong. Norbulingka Institute. Tibetan cooking classes. Meditation sessions. The [cafe scene](/blog/top-cafes-in-mcleod-ganj) thrives as people spend more time indoors. Tea Gardens in Kangra. [Digital nomads](/blog/dharamshala-for-digital-nomads) love the quiet monsoon vibe.
 
 ## Tips for Monsoon Travel
 
@@ -469,7 +474,7 @@ function withPhotoAlt(post: BlogPost): BlogPost {
 }
 
 /** All guides, newest first. */
-export const blogPosts: BlogPost[] = [...blogPostsA, ...blogPostsB, ...blogPostsC, ...blogPostsW1, ...blogPostsW2, ...blogPostsW3, ...blogPostsW4, ...blogPostsW5, ...blogPostsW6, ...blogPostsW7, ...blogPostsW8, ...blogPostsW9, ...blogPostsE1, ...blogPostsW10, ...blogPostsW11, ...blogPostsW12, ...blogPostsW13, ...corePosts]
+export const blogPosts: BlogPost[] = [...blogPostsA, ...blogPostsB, ...blogPostsC, ...blogPostsW1, ...blogPostsW2, ...blogPostsW3, ...blogPostsW4, ...blogPostsW5, ...blogPostsW6, ...blogPostsW7, ...blogPostsW8, ...blogPostsW9, ...blogPostsE1, ...blogPostsW10, ...blogPostsW11, ...blogPostsW12, ...blogPostsW13, ...blogPostsW14, ...blogPostsW15, ...blogPostsW16, ...blogPostsW17, ...blogPostsW18, ...corePosts]
   .map((p) => (coreOverrides[p.slug] ? { ...p, ...coreOverrides[p.slug] } : p))
   .map(withPhotoAlt)
   .sort((a, b) => b.published_at.localeCompare(a.published_at));

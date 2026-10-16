@@ -58,7 +58,7 @@ Timings change every season, so check the HRTC online booking site or app for th
 
 ### Where the bus drops you
 
-HRTC buses end at the **Dharamshala bus stand (ISBT) in lower Dharamshala**. From there, local HRTC buses and shared taxis climb to McLeod Ganj in about 25-40 minutes; a taxi costs approx. ₹350-500. If your hotel is in Bhagsu, Dharamkot or Naddi, take a taxi straight there. Our [local transport guide](/blog/local-transport-dharamshala) covers buses, taxis and the ropeway status in detail.
+HRTC buses end at the **Dharamshala bus stand (ISBT) in lower Dharamshala**. From there, local HRTC buses and shared taxis climb to McLeod Ganj in about 25-40 minutes; a taxi costs approx. ₹350-500. If your hotel is in Bhagsu, Dharamkot or Naddi, take a taxi straight there. Our [local transport guide](/blog/local-transport-dharamshala) covers buses, taxis and the ropeway status in detail, and our [Skyway guide](/blog/dharamshala-skyway-ropeway-guide) covers the ropeway itself.
 
 ### Bus tips
 
@@ -540,14 +540,14 @@ If you only have half a day, for example between an overnight bus and an afterno
 |---|---|---|
 | 7:00-8:00 am | Breakfast near the main square | Many cafes on Jogiwara Road and Temple Road open early |
 | 8:00-9:30 am | Tsuglagkhang (Dalai Lama Temple) | Main temple, prayer wheels, monks debating in the courtyard on many afternoons |
-| 9:30-10:00 am | Tibet Museum (in the same complex) | Short but powerful introduction to modern Tibetan history; check opening days |
-| 10:00-10:45 am | The kora (Lingkor) | Circular path around the complex lined with prayer flags and mani stones, about 30-45 minutes |
-| 11:00 am-1:00 pm | Bhagsunag temple and Bhagsu waterfall | Taxi or walk 2 km to Bhagsu; the waterfall is a 20-minute walk beyond the temple |
+| 9:30-10:15 am | The kora (Lingkor) | Circular path around the complex lined with prayer flags and mani stones, about 30-45 minutes |
+| 10:30 am-1:00 pm | Bhagsunag temple and Bhagsu waterfall | Taxi or walk 2 km to Bhagsu; the waterfall is a 20-minute walk beyond the temple |
 | 1:00-2:15 pm | Lunch in Bhagsu or back in McLeod Ganj | Thukpa, momos, thenthuk; see our Tibetan food guide |
 | 2:30-3:30 pm | Shopping and a cafe stop in McLeod Ganj | Temple Road for thangkas, singing bowls, books |
 | 3:45-4:30 pm | St. John in the Wilderness church | Short taxi ride; 1852 stone church in the deodars |
 | 4:45-6:00 pm | Naddi viewpoint and Dal Lake | Sunset over the Kangra Valley, close-up views of the Dhauladhar |
 | 6:30 pm onwards | Dinner in McLeod Ganj | Book ahead in peak season |
+| On the way in or out | [Tibet Museum](/blog/tibet-museum-dharamshala-guide), Gangchen Kyishong | Not in the temple complex: it is 10-15 minutes by taxi below McLeod Ganj, so stop on the way up from or down to lower Dharamshala. Open 9 am-5 pm (lunch 1-2 pm), closed Saturdays; Rs 20 for adults |
 
 ### Morning: the Dalai Lama Temple and the kora
 
@@ -593,8 +593,8 @@ A local sightseeing taxi for this loop costs approx. ₹2,500-3,500 as of 2026; 
 |---|---|
 | 6:30-7:30 am | Arrive, freshen up, leave bags at a cafe, guesthouse or with your hotel |
 | 7:30-8:30 am | Breakfast near the main square |
-| 8:30-10:30 am | Tsuglagkhang, Tibet Museum and the kora |
-| 10:30 am-12:30 pm | Bhagsu temple and waterfall, or a slow cafe morning |
+| 8:30-10:30 am | Tsuglagkhang and the kora |
+| 10:30 am-12:30 pm | Bhagsu temple and waterfall, a slow cafe morning, or the [Tibet Museum](/blog/tibet-museum-dharamshala-guide) at Gangchen Kyishong, 10-15 minutes by taxi below town (closed Saturdays) |
 | 12:30-1:30 pm | Lunch |
 | 1:30 pm onwards | Rest, shop, then catch the evening bus |
 
@@ -627,7 +627,7 @@ Taxis wait at the main square and charge fixed local rates. Shared taxis and HRT
 
 Rain is common from late June to mid-September and afternoon showers can hit any time in spring. A wet-weather version of the day:
 
-- Spend longer inside the Tsuglagkhang complex and the **Tibet Museum**.
+- Spend longer inside the Tsuglagkhang complex, then take a taxi down to the **[Tibet Museum](/blog/tibet-museum-dharamshala-guide)** at Gangchen Kyishong (closed Saturdays).
 - Visit the **Library of Tibetan Works and Archives** in Gangchen Kyishong, between McLeod Ganj and Dharamshala (check opening days).
 - Take a cooking or language class, or settle into a cafe with a view.
 - Skip Bhagsu waterfall if the stream is in spate, and skip Naddi if the valley is in cloud, because you will not see anything.
@@ -644,7 +644,7 @@ Rain is common from late June to mid-September and afternoon showers can hit any
 - **Triund:** it needs a full day (5-7 hours return) on its own. Do it as a separate day; see our [Triund guide](/blog/triund-trek-complete-guide).
 - **Bir Billing:** 2-2.5 hours each way by road. Combine it with an overnight stay.
 - **Palampur and Baijnath:** a whole day on their own.
-- **Dharamshala Skyway (ropeway):** it has had suspensions and safety-related closures since August 2025. Check whether it is running on the day before planning around it.
+- **Dharamshala Skyway (ropeway):** suspended after a landslide in August 2025, it appeared to be running again when we checked on 16 October 2026 (9:30 am to 6 pm). Confirm on the day; see our [Skyway guide](/blog/dharamshala-skyway-ropeway-guide).
 
 ## Practical Tips
 
@@ -675,7 +675,7 @@ One day gives you a taste. Two days lets you add Triund or a Kangra loop; our [w
       },
       {
         question: 'What should I see in Dharamshala in half a day?',
-        answer: 'Visit the Tsuglagkhang (Dalai Lama Temple) and Tibet Museum, walk the kora around the complex, and have a Tibetan lunch in McLeod Ganj. If you have an extra hour, add Bhagsu waterfall.',
+        answer: 'Visit the Tsuglagkhang (Dalai Lama Temple), walk the kora around the complex, and have a Tibetan lunch in McLeod Ganj. If you have an extra hour, add Bhagsu waterfall, or the Tibet Museum at Gangchen Kyishong, a short taxi ride below McLeod Ganj.',
       },
       {
         question: 'Can I do Triund and McLeod Ganj sightseeing in one day?',
@@ -740,7 +740,7 @@ Times assume normal traffic. Add 30-60 minutes in peak season and on wet monsoon
 
 ## Day 1: McLeod Ganj
 
-**Morning:** arrive (overnight bus or morning flight), check in, breakfast. Visit the **Tsuglagkhang Complex** (Dalai Lama Temple) and the **Tibet Museum**, then walk the **kora** around the complex.
+**Morning:** arrive (overnight bus or morning flight), check in, breakfast. Visit the **Tsuglagkhang Complex** (Dalai Lama Temple), then walk the **kora** around the complex. The **Tibet Museum** is no longer in the complex; it is at Gangchen Kyishong below town, so we have put it on day 3.
 
 **Afternoon:** walk or take a short taxi to **Bhagsu** for the temple and waterfall. If you still have energy, climb to **Dharamkot** for a cafe with a view.
 
@@ -770,12 +770,13 @@ A car day through the lower valley. Hire a taxi for the day; a Kangra loop costs
 | Time | Stop |
 |---|---|
 | 8:30 am | Leave McLeod Ganj |
-| 9:15-10:45 am | **Norbulingka Institute**, Sidhbari: Tibetan arts workshops, gardens, temple |
-| 10:50-11:30 am | **Gyuto Monastery**, a few minutes away |
-| 12:15-1:30 pm | **Kangra Fort**, one of the oldest forts in India, with the Maharaja Sansar Chand Museum near the entrance |
-| 1:30-2:30 pm | Lunch in Kangra town; optional stop at **Brajeshwari Devi temple** |
-| 3:30-4:45 pm | **Masroor rock-cut temples**, monolithic temples carved into a sandstone ridge facing the Dhauladhar |
-| 6:30 pm | Back in McLeod Ganj |
+| 9:00-9:45 am | **[Tibet Museum](/blog/tibet-museum-dharamshala-guide)**, Gangchen Kyishong, on the way down to lower Dharamshala (closed Saturdays; Rs 20 for adults) |
+| 10:15-11:30 am | **Norbulingka Institute**, Sidhbari: Tibetan arts workshops, gardens, temple |
+| 11:35 am-12:15 pm | **Gyuto Monastery**, a few minutes away |
+| 1:00-2:00 pm | **Kangra Fort**, one of the oldest forts in India, with the Maharaja Sansar Chand Museum near the entrance |
+| 2:00-2:45 pm | Lunch in Kangra town; optional stop at **Brajeshwari Devi temple** |
+| 3:45-5:00 pm | **Masroor rock-cut temples**, monolithic temples carved into a sandstone ridge facing the Dhauladhar |
+| 7:00 pm | Back in McLeod Ganj |
 
 Masroor is the most underrated sight in the valley, and the late-afternoon light on the carved stone is superb. Read more in [places to visit in Kangra](/blog/places-to-visit-in-kangra).
 

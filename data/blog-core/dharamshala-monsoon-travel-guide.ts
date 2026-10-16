@@ -51,7 +51,7 @@ Dharamshala is widely considered **the wettest place in Himachal Pradesh**, with
 - **Slippery trails and leeches.** Forest paths turn to mud and rock; leeches appear on some trails, so wear long socks.
 - **Flight disruption.** Flights into Kangra are more likely to be delayed or diverted by cloud, especially in the afternoon.
 - **Damp rooms.** Older buildings can smell musty; clothes take days to dry.
-- **Transport suspensions.** The Kangra Valley toy train has been repeatedly suspended by monsoon damage in recent years, and the Dharamshala Skyway ropeway has had safety closures since a landslide in August 2025. Check status locally before relying on either.
+- **Transport suspensions.** The Kangra Valley toy train has been repeatedly suspended by monsoon damage in recent years, and the [Dharamshala Skyway ropeway](/blog/dharamshala-skyway-ropeway-guide) was suspended after a landslide in August 2025 (it appeared to be running again when we checked on 16 October 2026). Check status locally before relying on either.
 
 ## Landslides and Road Safety
 
@@ -87,7 +87,8 @@ Paragliding at Bir Billing is **suspended every year from 15 July to 15 Septembe
 
 ## Best Things to Do in the Rain
 
-- **Tsuglagkhang (Dalai Lama Temple) and the Tibet Museum.** Sheltered, moving and free to enter (the museum is closed on Saturdays). Read our [Dalai Lama Temple guide](/blog/dalai-lama-temple-guide).
+- **Tsuglagkhang (Dalai Lama Temple).** Sheltered, moving and free to enter. Read our [Dalai Lama Temple guide](/blog/dalai-lama-temple-guide).
+- **The [Tibet Museum](/blog/tibet-museum-dharamshala-guide) at Gangchen Kyishong**, a short taxi ride below McLeod Ganj. Indoors, Rs 20 for adults (under-18s free), closed on Saturdays.
 - **Norbulingka Institute and Gyuto Monastery** in Sidhbari, lower and often drier than McLeod Ganj. See [Sidhbari, Norbulingka and Gyuto](/blog/sidhbari-norbulingka-gyuto-guide).
 - **St John in the Wilderness**, the 1852 stone church in the deodars, at its most atmospheric in mist.
 - **Cafe hopping.** McLeod Ganj and Dharamkot cafes are at their cosiest on a rainy afternoon; see our [top cafes in McLeod Ganj](/blog/top-cafes-in-mcleod-ganj).

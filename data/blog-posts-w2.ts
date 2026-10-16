@@ -439,7 +439,7 @@ From **Kotwali Bazaar** in lower Dharamshala, a road and footpath lead about 3 k
 
 | Plan | Route | Total time |
 |---|---|---|
-| Spiritual morning | Lingkhor kora at 7 am, breakfast on Temple Road, Tibetan Museum | 3 h |
+| Spiritual morning | Lingkhor kora at 7 am, breakfast on Temple Road, then a 10–15 minute taxi down to the Tibet Museum at Gangchen Kyishong (closed Saturdays) | 3–4 h |
 | Waterfall and villages | McLeod Ganj – Bhagsu waterfall – Shiva Cafe – footpath to Dharamkot – back to McLeod Ganj | 4–5 h |
 | Lakes and views | McLeod Ganj – Dal Lake – Tota Rani – Naddi for sunset – taxi back | 4–5 h |
 

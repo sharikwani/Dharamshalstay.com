@@ -19,6 +19,11 @@ import '@/components/monasteries/monasteries.css';
 
 const PATH = '/monasteries-meditation';
 const HERO = 'gyuto-monastery-dhauladhar';
+/** Our own longer guide for a place or course, where one exists. */
+const GUIDES: Record<string, string> = {
+  'tushita-intro': '/blog/tushita-meditation-centre-guide', 'tushita-dropin': '/blog/tushita-meditation-centre-guide',
+  'dhamma-sikhara': '/blog/vipassana-dharamkot-dhamma-sikhara', 'tibet-museum': '/blog/tibet-museum-dharamshala-guide',
+};
 const ETIQUETTE_ICONS = [RotateCw, Shirt, Footprints, CameraOff, Armchair, VolumeX, HeartHandshake, Flag, Gift, Lock];
 const FLAG_COLOURS = ['#2f6fb5', '#f4f4ef', '#c8372d', '#2f8f5b', '#e8b923'];
 
@@ -221,6 +226,7 @@ export default function MonasteriesView() {
                     <div className="links">
                       <a href={mapUrl(m)} target="_blank" rel="noopener noreferrer"><MapPin className="h-4 w-4" />Map</a>
                       <Link href={'/destinations/' + m.stay}><BedDouble className="h-4 w-4" />Stay nearby</Link>
+                      {GUIDES[m.id] && <Link href={GUIDES[m.id]}><ArrowRight className="h-4 w-4" />Our full guide</Link>}
                       {m.official && <a href={m.official} target="_blank" rel="noopener noreferrer"><ExternalLink className="h-4 w-4" />Official site</a>}
                     </div>
                   </div>
@@ -240,6 +246,7 @@ export default function MonasteriesView() {
                 <p>{m.about}</p>
                 <p className="visit">{m.visit}</p>
                 <a href={mapUrl(m)} target="_blank" rel="noopener noreferrer"><MapPin className="h-4 w-4" />Map</a>
+                {GUIDES[m.id] && <Link href={GUIDES[m.id]} className="ml-4"><ArrowRight className="h-4 w-4" />Our full guide</Link>}
               </div>
             ))}
           </div>
@@ -314,6 +321,7 @@ export default function MonasteriesView() {
                   <div><dt>Cost</dt><dd>{c.cost}</dd></div>
                 </dl>
                 {c.rules && <ul>{c.rules.map((r) => <li key={r}>{r}</li>)}</ul>}
+                {GUIDES[c.id] && <Link href={GUIDES[c.id]}><ArrowRight className="h-4 w-4" />Our full guide</Link>}
                 <a href={c.official} target="_blank" rel="noopener noreferrer"><ExternalLink className="h-4 w-4" />Official site</a>
               </article>
             ))}

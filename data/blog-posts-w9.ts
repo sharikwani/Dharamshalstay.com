@@ -88,7 +88,7 @@ Read more: [How to reach Dharamshala](/blog/how-to-reach-dharamshala), [Delhi to
 
 There is no Uber or Ola in Dharamshala. Local movement relies on union taxis with fixed rates, HRTC and private buses, shared jeeps on a few routes, and your legs.
 
-- **Lower Dharamshala to McLeod Ganj**: local bus (cheap and slow), taxi (approx. 300 to 500 rupees as of 2026), or the **Dharamshala Skyway** ropeway when it runs. The Skyway was suspended in August 2025 after a landslide near one of its towers and has had safety closures since, so check locally.
+- **Lower Dharamshala to McLeod Ganj**: local bus (cheap and slow), taxi (approx. 300 to 500 rupees as of 2026), or the **Dharamshala Skyway** ropeway when it runs. The Skyway was suspended in August 2025 after a landslide near one of its towers; it appeared to be running again when we checked on 16 October 2026, so confirm on the day ([Skyway guide](/blog/dharamshala-skyway-ropeway-guide)).
 - **Within McLeod Ganj**: walk. The centre is a few hundred metres across, but steep.
 - **McLeod Ganj to Bhagsu, Dharamkot, Naddi**: walk (20 to 45 minutes) or a short taxi hop. Taxis cannot always reach Dharamkot's upper lanes.
 - **Valley sights**: hire a taxi for a half day (approx. 1,800 rupees) or full day (approx. 3,500 rupees for an SUV). Buses exist but connections eat a day.
@@ -119,7 +119,7 @@ Read more: [Best hotels in Dharamshala](/blog/best-hotels-in-dharamshala), [Best
 
 ### In and around McLeod Ganj
 
-- **Tsuglagkhang Complex (Dalai Lama Temple)**: the main temple, Namgyal Monastery and the Tibet Museum. Free entry. Go early for prayers, afternoon for monks debating.
+- **Tsuglagkhang Complex (Dalai Lama Temple)**: the main temple and Namgyal Monastery. Free entry. The [Tibet Museum](/blog/tibet-museum-dharamshala-guide) is now separate, at Gangchen Kyishong below McLeod Ganj (Rs 20 for adults, under-18s free). Go early for prayers, afternoon for monks debating.
 - **The Lingkhor (kora)**: a 30 to 45 minute circuit around the complex through prayer flags and prayer wheels. Walk clockwise.
 - **Bhagsunag temple and waterfall**: Shiva temple and spring pools, then a short walk to the falls. Best early on weekdays.
 - **St. John in the Wilderness**: Gothic stone church in deodar forest, with Belgian stained glass.
@@ -138,7 +138,8 @@ Read more: [Best hotels in Dharamshala](/blog/best-hotels-in-dharamshala), [Best
 
 | Sight | From McLeod Ganj (approx.) | Time needed | Entry (approx., 2026) |
 |---|---|---|---|
-| Tsuglagkhang and Tibet Museum | walk | 1.5 to 2.5 h | Free / token |
+| Tsuglagkhang | walk | 1 to 2 h | Free |
+| Tibet Museum, Gangchen Kyishong | 10-15 min by taxi | 1 h | Rs 20 adults, under-18s free |
 | Bhagsu temple and waterfall | 2 km walk | 1.5 to 2 h | Free |
 | St. John in the Wilderness | 2 km | 30 to 45 min | Free |
 | Naddi viewpoint | 4 km | 1 h around sunset | Free |
@@ -233,7 +234,7 @@ Read more: [Dharamshala with kids](/blog/dharamshala-with-kids-family-guide), [D
 
 ### One day
 
-Early kora and Tsuglagkhang, Tibet Museum, lunch in McLeod Ganj, walk to Bhagsu and the waterfall, St. John's church, sunset at Naddi. Read [one day in Dharamshala](/blog/one-day-in-dharamshala).
+Early kora and Tsuglagkhang, lunch in McLeod Ganj, walk to Bhagsu and the waterfall, St. John's church, sunset at Naddi. Read [one day in Dharamshala](/blog/one-day-in-dharamshala).
 
 ### Weekend (2 to 3 days)
 
@@ -246,7 +247,7 @@ Read [Dharamshala weekend itinerary](/blog/dharamshala-weekend-itinerary).
 ### Five days
 
 1. **Day 1**: arrive, settle in McLeod Ganj, kora at sunset.
-2. **Day 2**: Tsuglagkhang, Tibet Museum, Bhagsu, Dharamkot.
+2. **Day 2**: Tsuglagkhang, Bhagsu, Dharamkot.
 3. **Day 3**: Triund (overnight if you have booked legal camping).
 4. **Day 4**: Kangra loop: Norbulingka, Kangra Fort, Brajeshwari, Masroor.
 5. **Day 5**: Palampur tea gardens, Andretta, Baijnath, Bir for sunset landings.
@@ -341,7 +342,7 @@ McLeod Ganj is home to a large Tibetan community, including monks and nuns, elde
 - **Afternoon**: monks from the Institute of Buddhist Dialectics and Namgyal Monastery practise debate in courtyards, with the trademark hand clap.
 - **Evening**: candlelight vigils on special dates, talks and film screenings about Tibet, and busy cafes.
 
-Several Tibetan institutions are open to visitors: the **Tibet Museum** inside the Tsuglagkhang complex, the **Library of Tibetan Works and Archives** at Gangchen Kyishong (which has run Buddhist philosophy classes for foreigners), the **Tibetan Institute of Performing Arts** (TIPA) above town, the **Men-Tsee-Khang** (Tibetan Medical and Astrological Institute) with its museum at Gangchen Kyishong, and the **Tibetan Children's Village** near Dal Lake. NGOs run conversation classes where you can help Tibetans practise English; see our volunteering guide.
+Several Tibetan institutions are open to visitors: the **[Tibet Museum](/blog/tibet-museum-dharamshala-guide)** at Gangchen Kyishong, the **Library of Tibetan Works and Archives** at Gangchen Kyishong (which has run Buddhist philosophy classes for foreigners), the **Tibetan Institute of Performing Arts** (TIPA) above town, the **Men-Tsee-Khang** (Tibetan Medical and Astrological Institute) with its museum at Gangchen Kyishong, and the **Tibetan Children's Village** near Dal Lake. NGOs run conversation classes where you can help Tibetans practise English; see our volunteering guide.
 
 ### Etiquette in one list
 
@@ -358,10 +359,10 @@ Read more: [Tibetan culture and etiquette guide](/blog/tibetan-culture-etiquette
 
 ### Tsuglagkhang Complex (Dalai Lama Temple)
 
-The heart of the town. The complex holds the main temple with a large gilded Shakyamuni Buddha, the **Kalachakra temple** with its murals, **Namgyal Monastery**, the **Tibet Museum**, and the gate to the Dalai Lama's residence (not open to the public). Entry is free. There is a security check at the gate; large bags may be checked.
+The heart of the town. The complex holds the main temple with a large gilded Shakyamuni Buddha, the **Kalachakra temple** with its murals, **Namgyal Monastery** and the gate to the Dalai Lama's residence (not open to the public). Entry is free. There is a security check at the gate; large bags may be checked.
 
 - **Go**: early morning for prayers and few crowds; mid-afternoon for monks debating in the courtyard.
-- **Time**: 1 to 1.5 hours, plus an hour for the museum.
+- **Time**: 1 to 1.5 hours.
 - **Teachings**: public teachings by His Holiness happen on some dates each year and are announced on his official website. Phones and cameras are generally not allowed in; foreigners register in advance at the Branch Security Office near the square. Do not expect to see him otherwise.
 
 Read more: [Dalai Lama Temple guide](/blog/dalai-lama-temple-guide).
@@ -401,7 +402,7 @@ Read more: [Naddi and Dal Lake guide](/blog/naddi-dal-lake-guide).
 
 | Sight | Distance from main square (approx.) | Time needed | Best time |
 |---|---|---|---|
-| Tsuglagkhang and Tibet Museum | 800 m walk | 2 to 2.5 h | 7 to 9 am, or 2 to 4 pm for debates |
+| Tsuglagkhang | 800 m walk | 1.5 to 2 h | 7 to 9 am, or 2 to 4 pm for debates |
 | Kora (Lingkhor) | starts near the temple | 30 to 45 min | Dawn |
 | Bhagsunag temple and falls | 2 to 3 km | 1.5 to 2 h | Weekday mornings |
 | Dharamkot | 2.5 to 3 km uphill | half day | Morning or late afternoon |
@@ -496,7 +497,7 @@ Read more: [Rules, permits, dos and don'ts](/blog/rules-permits-dos-donts-dharam
 
 ## Practical matters
 
-- **Getting to McLeod Ganj**: from Gaggal airport, about 45 minutes by taxi (approx. 1,100 rupees as of 2026); from lower Dharamshala by local bus, taxi or the Skyway ropeway when it runs (it has had safety-related suspensions since a landslide in August 2025, so check locally). Pre-book a [taxi](/taxi) for late arrivals.
+- **Getting to McLeod Ganj**: from Gaggal airport, about 45 minutes by taxi (approx. 1,100 rupees as of 2026); from lower Dharamshala by local bus, taxi or the Skyway ropeway when it runs (it appeared to be running when we checked on 16 October 2026, after a 2025 landslide suspension, so confirm on the day). Pre-book a [taxi](/taxi) for late arrivals.
 - **Overnight buses**: many Delhi buses terminate in or near McLeod Ganj, but some stop in lower Dharamshala; check your ticket.
 - **Money**: there are several ATMs around the square, but they can run out on long weekends. UPI is accepted almost everywhere.
 - **Connectivity**: Jio and Airtel 4G/5G is generally good in town; Wi-Fi is common in hotels and cafes.
@@ -562,7 +563,7 @@ Beyond the Tsuglagkhang, you can attend prayers at smaller temples, join introdu
 
 1. **6.30 am**: walk the kora at dawn with the Tibetan regulars.
 2. **8 am**: breakfast of tingmo and tea, or a cafe breakfast on Jogiwara Road.
-3. **9 am**: Tsuglagkhang complex and the Tibet Museum.
+3. **9 am**: Tsuglagkhang complex.
 4. **12 noon**: momos or thenthuk for lunch; browse Temple Road.
 5. **2 pm**: return to the courtyard if monks are debating, or walk to Bhagsu.
 6. **4 pm**: up the path to Dharamkot for chai with a view.
@@ -949,7 +950,7 @@ Browse summer availability on our [hotels page](/hotels), and compare areas on t
 ## A five-day summer plan
 
 1. **Day 1**: arrive (midweek if possible), settle in, evening walk on the kora.
-2. **Day 2**: dawn Tsuglagkhang visit, Tibet Museum, Bhagsu falls before 9 am on a weekday, cafe afternoon in Dharamkot.
+2. **Day 2**: dawn Tsuglagkhang visit, Bhagsu falls before 9 am on a weekday, cafe afternoon in Dharamkot.
 3. **Day 3**: Triund, starting by 7 am, down by mid-afternoon.
 4. **Day 4**: early taxi to Norbulingka, Kangra Fort and Masroor, back before the afternoon heat on the valley floor.
 5. **Day 5**: Naddi at sunrise, slow breakfast, depart.
@@ -1059,9 +1060,9 @@ App cabs do not operate here. Local taxis work on fixed union rates.
 
 ### 10. Counting on the ropeway
 
-The Dharamshala Skyway linking lower Dharamshala and McLeod Ganj was suspended in August 2025 after a landslide near one of its towers and has had safety closures since.
+The Dharamshala Skyway linking lower Dharamshala and McLeod Ganj was suspended in August 2025 after a landslide near one of its towers. It appeared to be running again when we checked on 16 October 2026, but online booking was down and it stops in bad weather.
 
-**Fix**: check locally before you plan around it. Taxis and local buses remain the fallback. See [local transport in Dharamshala](/blog/local-transport-dharamshala).
+**Fix**: confirm on the day before you plan around it. Taxis and local buses remain the fallback. See our [Dharamshala Skyway guide](/blog/dharamshala-skyway-ropeway-guide).
 
 ## On-the-ground mistakes
 

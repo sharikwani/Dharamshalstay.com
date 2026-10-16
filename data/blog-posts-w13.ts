@@ -34,7 +34,7 @@ Both assume you arrive on an overnight bus early on day 1 and leave on the eveni
 > - **Overnight Volvo from Delhi:** HRTC buses leave ISBT Kashmere Gate and private buses leave Majnu ka Tilla in the evening, taking about 10–12 hours (approx. ₹1,200–2,000 per seat, as of 2026). Many private buses go all the way to the McLeod Ganj bus stand; HRTC buses often stop in lower Dharamshala, a 20–30 minute taxi (approx. ₹300–500) below McLeod Ganj. You arrive between about 5 and 7 am.
 > - **Flight to Kangra Airport (Gaggal):** about 13–15 km from Dharamshala town. A taxi from the airport to McLeod Ganj costs about ₹1,500 and takes 45–60 minutes. Book a fixed fare with our [Gaggal airport to McLeod Ganj taxi](/taxi/gaggal-airport-to-mcleod-ganj-taxi).
 > - **Train to Pathankot:** the nearest major railhead, about 85–90 km away. A taxi from Pathankot to McLeod Ganj takes about 2.5–3 hours (from approx. ₹3,000 per car on our [taxi page](/taxi)).
-> - **The ropeway (Dharamshala Skyway)** between lower Dharamshala and McLeod Ganj was suspended after a landslide in August 2025. Check locally whether it has reopened; taxis and HRTC buses cover the same route.
+> - **The ropeway (Dharamshala Skyway)** between lower Dharamshala and McLeod Ganj was suspended after a landslide in August 2025. It appeared to be running again when we checked on 16 October 2026, but confirm on the day ([Skyway guide](/blog/dharamshala-skyway-ropeway-guide)); taxis and HRTC buses cover the same route.
 >
 > All the options, with timings, are in [how to reach Dharamshala](/blog/how-to-reach-dharamshala).
 

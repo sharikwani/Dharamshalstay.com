@@ -231,7 +231,6 @@ export const directoryHotels3: DirectoryHotel[] = [
       'Namgyal Monastery and Tsechokling Gompa -- about 15 min walk',
       'Tsuglagkhang (Dalai Lama Temple) -- about 0.7 km, 8 to 15 min walk',
       'McLeod Square Temple -- about 440 m',
-      'Tibet Museum -- about 0.9 km',
     ],
     amenities: ['WiFi', 'Restaurant', 'Room service', 'Free parking', 'Roof terrace', 'Balcony', 'Mountain views'],
     sources: [
@@ -288,7 +287,6 @@ export const directoryHotels3: DirectoryHotel[] = [
       'Ayurvedic Rejuvenation Center -- under 100 m',
       'Start of the kora circuit, McLeod Ganj -- about 480 m',
       'Tsuglagkhang (Dalai Lama Temple) -- about 15 min walk',
-      'Tibet Museum -- about 1.2 km',
     ],
     amenities: ['WiFi', 'Restaurant', 'Cafe', 'Bar', 'Free parking', 'EV charging', 'Laundry service', 'Luggage storage', '24-hour front desk', 'Balcony', 'Mountain views'],
     sources: [

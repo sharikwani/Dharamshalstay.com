@@ -50,7 +50,7 @@ export const hotels: Property[] = [
       { url: UNSPLASH_IMAGES.mcleodganj, alt: 'Hilltop Retreat McLeod Ganj', category: 'exterior', is_primary: true, sort_order: 0 },
       { url: UNSPLASH_IMAGES.mcleodganj, alt: 'Room view at Hilltop Retreat', category: 'room', is_primary: false, sort_order: 1 },
     ],
-    nearby_attractions: ['Dalai Lama Temple', 'Namgyal Monastery', 'Jogiwara Road Cafes', 'Tibetan Museum'],
+    nearby_attractions: ['Dalai Lama Temple', 'Namgyal Monastery', 'Jogiwara Road Cafes'],
     faqs: [{ question: 'How far from the main square?', answer: 'About 5 minutes uphill walk.' }],
     meta_title: 'Hilltop Retreat McLeod Ganj - Boutique Hotel with Valley Views', meta_description: 'Stay at Hilltop Retreat in McLeod Ganj near the Dalai Lama Temple. Rooftop views, Himachali hospitality, cosy rooms.',
     rating: 4.4, review_count: 189, created_at: '2024-01-01', updated_at: '2025-03-01', published_at: '2024-01-15',

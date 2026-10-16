@@ -55,9 +55,8 @@ Buses usually reach between 5 and 7 am, but hotel check-in is often at noon. Ask
 | 6:00-7:00 am | Arrive by overnight bus, drop bags, freshen up | Ask your hotel for early check-in |
 | 7:00-8:00 am | Breakfast near the main square | Jogiwara Road and Temple Road cafes open early |
 | 8:00-9:30 am | Tsuglagkhang (Dalai Lama Temple) | Calmest in the morning; dress modestly, security check at the gate |
-| 9:30-10:00 am | Tibet Museum, same complex | Closed on Saturdays, so on a Saturday arrival swap this for day 2 or 3 |
-| 10:00-10:45 am | The kora (Lingkor) walk | Prayer flags and mani stones through the forest, free |
-| 11:00 am-1:00 pm | Bhagsunag temple and Bhagsu waterfall | 2 km from the square; waterfall is a 20-minute walk beyond the temple |
+| 9:30-10:15 am | The kora (Lingkor) walk | Prayer flags and mani stones through the forest, free |
+| 10:30 am-1:00 pm | Bhagsunag temple and Bhagsu waterfall | 2 km from the square; waterfall is a 20-minute walk beyond the temple |
 | 1:00-2:30 pm | Lunch, then rest or check in | Thukpa, momos, thenthuk |
 | 2:30-4:00 pm | Shopping and cafes in McLeod Ganj | Thangkas, singing bowls, books on Temple Road |
 | 4:15-6:00 pm | Naddi viewpoint and Dal Lake for sunset | Short taxi ride; book the return before it gets dark |
@@ -102,9 +101,10 @@ Do days 1 and 2 as above, then sleep a second night instead of catching the bus.
 | Time | Plan | Notes |
 |---|---|---|
 | 8:00 am | Breakfast and check-out | Keep bags in the taxi for the day |
-| 9:00-10:30 am | Norbulingka Institute, Sidhbari | About 12 km, 30-40 min from McLeod Ganj; small entry fee; Tibetan arts workshops and gardens |
-| 10:45-11:30 am | Gyuto Monastery | Big monastery with Dhauladhar views |
-| 12:00-1:00 pm | Lunch at Norbulingka or in Dharamshala | |
+| 9:00-9:45 am | [Tibet Museum](/blog/tibet-museum-dharamshala-guide), Gangchen Kyishong | On the way down to lower Dharamshala, 10-15 min by taxi below McLeod Ganj; Rs 20 for adults, under-18s free; closed on Saturdays |
+| 10:15-11:30 am | Norbulingka Institute, Sidhbari | About 12 km, 30-40 min from McLeod Ganj; small entry fee; Tibetan arts workshops and gardens |
+| 11:45 am-12:30 pm | Gyuto Monastery | Big monastery with Dhauladhar views |
+| 12:30-1:30 pm | Lunch at Norbulingka or in Dharamshala | |
 | 1:30-2:30 pm | HPCA Cricket Stadium | Exterior and viewing; access depends on match days |
 | 2:30-3:30 pm | Kangra Fort, if you are heading towards the airport or Pathankot | About 20 km from Dharamshala; allow 1-1.5 hours |
 | Evening | Flight from Gaggal, or the overnight bus to Delhi | |
@@ -210,7 +210,7 @@ With one more day, extend to our [five-day Kangra Valley itinerary](/blog/five-d
     {
       question: 'Which day is the Tibet Museum closed?',
       answer:
-        'The Tibet Museum in the Tsuglagkhang complex is closed on Saturdays, so if you arrive on a Saturday morning, visit the temple and kora first and save the museum for Sunday or Monday.',
+        'The Tibet Museum, now at Gangchen Kyishong between lower Dharamshala and McLeod Ganj rather than in the Tsuglagkhang complex, is closed on Saturdays. It fits best on the way down to lower Dharamshala, so if that falls on a Saturday, swap it to Sunday or Monday.',
     },
     {
       question: 'Is a Dharamshala weekend trip good in winter?',

@@ -323,7 +323,7 @@ export const directoryHotels2: DirectoryHotel[] = [
     locality: 'Temple Road',
     price_band: 'mid-range',
     short_description: 'Boutique guesthouse run by the Norbulingka Institute on Temple Road, where each room is decorated with Tibetan murals and handmade furnishings.',
-    description: 'Chonor House is run by the Norbulingka Institute, the organisation that works to keep traditional Tibetan arts alive, and that connection shows in every room. Each one is themed around a different aspect of Tibet, from its regions to its plants and animals, with hand-painted murals, carved furniture and woven rugs made by Norbulingka artisans. The building itself was designed by architect David Porter to sit quietly among the cedars on the hillside.\n\nIt lies on a narrow lane off Temple Road, only a few minutes\' walk from the Tsuglagkhang complex and the Tibet Museum, yet it feels removed from the bustle of the main bazaar. Many rooms have balconies, and the restaurant and garden courtyard serve Tibetan dishes alongside Indian and continental options. It suits culturally curious travellers and couples. Be aware that the approach is steep with steps, which can be hard for anyone with limited mobility or heavy luggage.',
+    description: 'Chonor House is run by the Norbulingka Institute, the organisation that works to keep traditional Tibetan arts alive, and that connection shows in every room. Each one is themed around a different aspect of Tibet, from its regions to its plants and animals, with hand-painted murals, carved furniture and woven rugs made by Norbulingka artisans. The building itself was designed by architect David Porter to sit quietly among the cedars on the hillside.\n\nIt lies on a narrow lane off Temple Road, only a few minutes\' walk from the Tsuglagkhang complex, yet it feels removed from the bustle of the main bazaar. Many rooms have balconies, and the restaurant and garden courtyard serve Tibetan dishes alongside Indian and continental options. It suits culturally curious travellers and couples. Be aware that the approach is steep with steps, which can be hard for anyone with limited mobility or heavy luggage.',
     highlights: [
       'Run by the Norbulingka Institute',
       'Individually themed rooms with Tibetan murals',
@@ -333,7 +333,6 @@ export const directoryHotels2: DirectoryHotel[] = [
     good_for: ['Couples', 'Culture lovers', 'Solo travellers'],
     nearby: [
       'Tsuglagkhang (Dalai Lama Temple) -- approx 3-5 min walk',
-      'Tibet Museum -- approx 3-5 min walk',
       'McLeod Ganj main square -- approx 10 min walk',
       'Namgyal Monastery -- approx 5 min walk',
     ],

@@ -659,7 +659,7 @@ None of these rules are hard to follow, and most come down to keeping the mounta
     slug: 'local-transport-dharamshala',
     title: 'Local Transport in Dharamshala & McLeod Ganj: Buses, Taxis, Ropeway & Scooters (2026)',
     excerpt: 'How to get around Dharamshala, McLeod Ganj, Bhagsu, Dharamkot and Naddi: HRTC local buses, shared and union taxis with approx. fares, ropeway status, walking shortcuts, parking, scooter rentals and getting to trailheads.',
-    content: `Getting around Dharamshala comes down to three options: **HRTC local buses** (cheapest, approx. ₹20-30 between lower Dharamshala and McLeod Ganj), **union taxis** on fixed rates (approx. ₹300-500 for the same trip), and **your own feet**, which is often fastest within McLeod Ganj, Bhagsu and Dharamkot. The **Dharamshala Skyway ropeway** was suspended in August 2025 after a landslide near one of its towers, so check locally whether it has reopened before counting on it. Auto-rickshaws are rare up the hill, and app cabs are not a reliable option.
+    content: `Getting around Dharamshala comes down to three options: **HRTC local buses** (cheapest, approx. ₹20-30 between lower Dharamshala and McLeod Ganj), **union taxis** on fixed rates (approx. ₹300-500 for the same trip), and **your own feet**, which is often fastest within McLeod Ganj, Bhagsu and Dharamkot. The **Dharamshala Skyway ropeway** was suspended in August 2025 after a landslide near one of its towers; it appeared to be running again when we checked on 16 October 2026, but confirm on the day before counting on it. Auto-rickshaws are rare up the hill, and app cabs are not a reliable option.
 
 Below is how each option works, with routes, approx. fares as of 2026, walking shortcuts, driving and parking advice for narrow hill roads, renting a scooter legally, and how to reach the trailheads.
 
@@ -670,7 +670,7 @@ Below is how each option works, with routes, approx. fares as of 2026, walking s
 | HRTC local bus | Dharamshala to McLeod Ganj on a budget | ₹20-30 per person |
 | Shared taxi / jeep | Same route when buses are slow | Approx. ₹30-50 per seat; check locally |
 | Union taxi | Door-to-door, luggage, villages, sightseeing | Fixed rates, see table below |
-| Ropeway (Skyway) | Lower Dharamshala to McLeod Ganj | Suspended since Aug 2025; check locally |
+| Ropeway (Skyway) | Lower Dharamshala to McLeod Ganj | About 5 min, 9:30 am to 6 pm; appeared to be running (checked 16 Oct 2026); confirm on the day |
 | Walking | Within McLeod Ganj, Bhagsu, Dharamkot | Free, but steep |
 | Scooter rental | Experienced riders, short trips | Approx. ₹500-1,000 per day; check locally |
 
@@ -720,7 +720,7 @@ Autos are uncommon on the hill roads to McLeod Ganj and the villages because of 
 
 ## The ropeway (Dharamshala Skyway)
 
-The cable car opened in 2022 and connects lower Dharamshala to McLeod Ganj in about 5 minutes, cutting out the road traffic. Operations were **suspended in August 2025** after a landslide near one of its towers. As of our last update we cannot confirm a reopening date, so check locally before planning around it. If it is running when you visit, it is a useful time-saver, especially on peak-season weekends when the road jams.
+The cable car opened in 2022 and connects lower Dharamshala (near Byepass Road, Kotwali Bazaar) to McLeod Ganj (Temple Road) in about 5 minutes over 1.8 km, cutting out the road traffic. Operations were **suspended in August 2025** after a landslide near one of its towers. When we checked on 16 October 2026 it appeared to be running again: the operator was promoting rides on its official Instagram, though the official website showed a maintenance notice and online booking was not working. The listed hours are 9:30 am to 6 pm, and the helpline is +91-1892 223302. Confirm on the day and buy tickets at the counter. If it is running when you visit, it is a useful time-saver, especially on peak-season weekends when the road jams. Our [Dharamshala Skyway guide](/blog/dharamshala-skyway-ropeway-guide) covers stations, tickets and tips.
 
 ## Walking: shortcuts and distances
 
@@ -796,11 +796,11 @@ If you do not want to depend on taxis, stay in central McLeod Ganj, close to the
     faqs: [
       {
         question: 'How do I get from Dharamshala to McLeod Ganj?',
-        answer: 'Take an HRTC local bus from the Dharamshala bus stand (approx. ₹20-30, 30-45 minutes) or a taxi (approx. ₹300-500, 20-30 minutes). The ropeway was suspended in August 2025 after a landslide, so check locally whether it has reopened.',
+        answer: 'Take an HRTC local bus from the Dharamshala bus stand (approx. ₹20-30, 30-45 minutes) or a taxi (approx. ₹300-500, 20-30 minutes). The ropeway was suspended in August 2025 after a landslide; it appeared to be running again when we checked on 16 October 2026, but confirm on the day.',
       },
       {
         question: 'Is the Dharamshala to McLeod Ganj ropeway working?',
-        answer: 'The Dharamshala Skyway was suspended in August 2025 after a landslide near one of its towers. We could not confirm a reopening date, so check locally before planning around it.',
+        answer: 'It appeared to be when we checked on 16 October 2026. The Dharamshala Skyway was suspended in August 2025 after a landslide near one of its towers and ran again in 2026; the operator was promoting rides on Instagram in October 2026, but its website showed a maintenance notice and online booking was down. Hours are listed as 9:30 am to 6 pm. Call +91-1892 223302 or ask your hotel on the day.',
       },
       {
         question: 'Are Uber and Ola available in McLeod Ganj?',

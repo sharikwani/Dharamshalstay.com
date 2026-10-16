@@ -100,10 +100,10 @@ About 2.5 hours away by road, Bir is one of the best paragliding sites in Asia. 
 | Day | Plan | Stay |
 |---|---|---|
 | 1 | Fly into Kangra or arrive by overnight Volvo. Check in, rest, short evening walk. | Forest cottage or McLeod Ganj |
-| 2 | Lingkhor kora at dawn, Tsuglagkhang and Tibet Museum, lunch in town, St. John's church, sunset at Naddi. | Same |
+| 2 | Lingkhor kora at dawn, Tsuglagkhang, lunch in town, St. John's church, sunset at Naddi. | Same |
 | 3 | Easy day: Dharamkot cafes, Gallu Devi forest walk, spa or massage in the evening. | Move to Naddi or Dharamkot for views |
 | 4 | Day trip to Bir for paragliding and monasteries, or Palampur tea gardens and Baijnath. | Same |
-| 5 | Norbulingka and Gyuto in the morning, then the airport or onward. | — |
+| 5 | The [Tibet Museum](/blog/tibet-museum-dharamshala-guide) at Gangchen Kyishong on the way down to lower Dharamshala (closed Saturdays), Norbulingka and Gyuto, then the airport or onward. | — |
 
 Add a sixth day for Triund if you are hikers, or drop day 4 if you only have three nights.
 
@@ -299,7 +299,7 @@ McLeod Ganj also has many street dogs, mostly calm and used to people. Teach kid
 
 Rain is common in summer afternoons and constant in the monsoon. Good indoor or covered options:
 
-- **Tibet Museum** inside the Tsuglagkhang complex (older kids).
+- **[Tibet Museum](/blog/tibet-museum-dharamshala-guide)** at Gangchen Kyishong, a short taxi ride below McLeod Ganj (older kids; closed Saturdays).
 - **Norbulingka Institute** and its doll museum, with covered workshop galleries.
 - **Kangra Art Museum** in lower Dharamshala: miniature paintings, costumes and coins.
 - A **momo-making or Tibetan cooking class**; several cafes run them, ask around town.
@@ -458,7 +458,7 @@ Properties that suit older travellers include **Fortune Park Moksha** at Satobar
 
 - Ask for a **sedan or Innova** rather than a small hatchback; the higher seat in an SUV is easier on knees.
 - Local taxis stand at the McLeod Ganj main square for short hops, and auto-rickshaws run on some lower routes. See [local transport in Dharamshala](/blog/local-transport-dharamshala).
-- The **Dharamshala Skyway ropeway** has had safety-related suspensions since a landslide in August 2025. Check locally before relying on it.
+- The [Dharamshala Skyway ropeway](/blog/dharamshala-skyway-ropeway-guide) was suspended after a landslide in August 2025; it appeared to be running again when we checked on 16 October 2026, but confirm on the day.
 - **Arriving:** flying into Kangra is far easier than a 10-12 hour road journey. If you come by road, break the trip overnight or choose a Volvo seat near the front. Our [how to reach Dharamshala guide](/blog/how-to-reach-dharamshala) compares options.
 
 ## A slow 5-day itinerary
@@ -634,7 +634,7 @@ Be clear-eyed: Dharamshala does not have a fine-dining scene comparable to Delhi
 | Day | Plan | Base |
 |---|---|---|
 | 1 | Fly into Kangra, chauffeured transfer, spa evening | Hyatt Regency or Fortune Park Moksha |
-| 2 | Private guide: Tsuglagkhang, Tibet Museum, Lingkhor kora; lunch in town; sunset at Naddi | Same |
+| 2 | Private guide: Tsuglagkhang and Lingkhor kora, then the [Tibet Museum](/blog/tibet-museum-dharamshala-guide) at Gangchen Kyishong on the drive down to lower Dharamshala; lunch in town; sunset at Naddi | Same |
 | 3 | Bir Billing paragliding and Tibetan monasteries in Bir | Same, or overnight in Bir |
 | 4 | Norbulingka and Gyuto; afternoon in Palampur tea gardens | Same |
 | 5 | Kangra Fort on the way to the airport | — |

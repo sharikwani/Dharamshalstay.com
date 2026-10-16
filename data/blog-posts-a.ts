@@ -23,7 +23,7 @@ The practical upshot: group your sightseeing by area, walk within McLeod Ganj, a
 
 The main temple of the Tibetan community in exile, the official residence of the Dalai Lama and Namgyal Monastery all sit in one complex at the bottom of Temple Road. Expect monks debating in the courtyard in the afternoons, butter lamps, and a huge gilded Shakyamuni Buddha in the main hall.
 
-- **Time needed:** 1 to 2 hours (add an hour for the museum)
+- **Time needed:** 1 to 2 hours
 - **Entry:** free
 - **Timings:** roughly early morning to evening; go before 9 am for prayers and few crowds
 - **Tip:** no photography inside the shrine halls; dress modestly. Our full [Dalai Lama Temple timings and etiquette guide](/blog/dalai-lama-temple-guide) also covers public teachings.
@@ -33,7 +33,7 @@ The main temple of the Tibetan community in exile, the official residence of the
 This small museum documents the Chinese occupation of Tibet and the journey into exile through photographs and testimonies. The museum is on the 2nd floor of the T-Building at the Central Tibetan Administration in Gangchen Kyishong, between Dharamshala and McLeod Ganj (open 9 am to 5 pm with a 1 to 2 pm lunch break; closed Saturdays and government holidays, per its official website). It is sobering and essential context for everything else you will see in McLeod Ganj.
 
 - **Time needed:** 45 minutes to 1 hour
-- **Entry:** free or a token amount
+- **Entry:** Rs 20 for adults, under-18s free
 - **Tip:** it usually closes for a lunch hour and one day a week (sources differ on which day), so check at the gate on your first day.
 
 ### 3. Lingkhor (the Kora path)
@@ -212,7 +212,7 @@ About 40 km from Dharamshala, a group of 8th century monolithic temples carved o
 | Place | Area | Time needed | Entry (approx., 2026) | Best time |
 |---|---|---|---|---|
 | Tsuglagkhang (Dalai Lama Temple) | McLeod Ganj | 1 to 2 hrs | Free | Early morning |
-| Tibet Museum | Gangchen Kyishong | 1 hr | Free or token | Weekday morning |
+| Tibet Museum | Gangchen Kyishong | 1 hr | Rs 20 adults, under-18s free | Weekday morning |
 | Lingkhor kora | McLeod Ganj | 45 min | Free | Early morning |
 | Bhagsunag temple and waterfall | Bhagsu | 2 to 3 hrs | Free | Weekday morning |
 | Dharamkot | Above Bhagsu | Half day | Free | Any |
@@ -287,11 +287,11 @@ The kora is a 30 to 45 minute loop around the Dalai Lama's residence and the Tsu
 
 **Cost:** free. **Time:** 45 minutes. **Tip:** start on the path just to the left of the temple entrance (as you face it) on Temple Road.
 
-### 2. Visit the Dalai Lama Temple and Tibet Museum
+### 2. Visit the Dalai Lama Temple, then the Tibet Museum
 
-The Tsuglagkhang complex is the spiritual centre of the Tibetan exile community. Go in the morning for prayers, return in the afternoon if you want to catch monks debating in the courtyard, and give the Tibet Museum an hour. Full details on timings, etiquette and public teachings are in our [Dalai Lama Temple guide](/blog/dalai-lama-temple-guide).
+The Tsuglagkhang complex is the spiritual centre of the Tibetan exile community. Go in the morning for prayers, and return in the afternoon if you want to catch monks debating in the courtyard. The [Tibet Museum](/blog/tibet-museum-dharamshala-guide) is not in the complex: it is at Gangchen Kyishong, 10-15 minutes by taxi below McLeod Ganj, so give it an hour on the way down to or up from lower Dharamshala. Full details on timings, etiquette and public teachings are in our [Dalai Lama Temple guide](/blog/dalai-lama-temple-guide).
 
-**Cost:** free (museum free or token). **Time:** 2 to 3 hours.
+**Cost:** temple free; museum Rs 20 for adults, under-18s free. **Time:** 2 to 3 hours, plus the taxi ride.
 
 ### 3. Attend a public teaching (if one is scheduled)
 
@@ -391,7 +391,7 @@ Simple, but one of the best things to do in McLeod Ganj: find a rooftop cafe fac
 
 ## Suggested 2-day plan
 
-1. **Day 1 morning:** kora at sunrise, breakfast, Dalai Lama Temple and Tibet Museum.
+1. **Day 1 morning:** kora at sunrise, breakfast, Dalai Lama Temple; add the Tibet Museum at Gangchen Kyishong on your way down to lower Dharamshala.
 2. **Day 1 afternoon:** cooking class or English conversation class, then rooftop cafe.
 3. **Day 1 evening:** walk or taxi to Naddi for sunset.
 4. **Day 2:** Triund hike (start by 8 am), or Bhagsu and Dharamkot if you prefer an easier day.
@@ -779,7 +779,7 @@ After the Dalai Lama fled Tibet in 1959, the Tibetan government in exile settled
 | Tsuglagkhang complex (temple visiting hours) | Every day, usually early morning to early evening; no official hours published | Free |
 | Monks' morning prayers | Early morning | Visitors can usually watch quietly from the back |
 | Monk debates | Many afternoons, not daily | Free |
-| Tibet Museum (Gangchen Kyishong, not in the complex) | 9 am to 5 pm, lunch 1 to 2 pm; closed Saturdays and government holidays | Free or token amount |
+| Tibet Museum (Gangchen Kyishong, not in the complex) | 9 am to 5 pm, lunch 1 to 2 pm; closed Saturdays and government holidays | Rs 20 for adults, under-18s free |
 | Lingkhor kora (outside the complex) | Always open; best at dawn | Free |
 
 Visiting hours, prayer times and teaching registration are three different things: the temple is usually open from early morning to early evening, the monks' own prayers happen early in the morning, and registration for a public teaching has its own office hours (see [How public teachings work](#how-public-teachings-work)). The complex can close to the public on special occasions and during high-security events, so check at the gate or with your hotel on your first day.
@@ -838,7 +838,7 @@ Weather wise, March to June and October to November give the clearest skies; see
 ## How to get to the Dalai Lama Temple
 
 - **From McLeod Ganj main square:** walk down Temple Road, about 800 m and 10 minutes. The return is uphill.
-- **From Dharamshala (lower town):** about 9 to 10 km by road. Take a local taxi or bus to McLeod Ganj, or use the Dharamshala to McLeod Ganj ropeway when it is running, then walk.
+- **From Dharamshala (lower town):** about 9 to 10 km by road. Take a local taxi or bus to McLeod Ganj, or use the [Dharamshala Skyway ropeway](/blog/dharamshala-skyway-ropeway-guide) when it is running (it appeared to be running when we checked on 16 October 2026), then walk.
 - **From Kangra (Gaggal) Airport:** around 20 km to Dharamshala and another 9 km up to McLeod Ganj; allow about an hour. Pre-book a [taxi](/taxi).
 - **From Pathankot railway station:** roughly 85 to 90 km, about 3 hours by taxi.
 - **Parking:** very limited near the temple. Get dropped at the main square or at the top of Temple Road and walk.
@@ -874,7 +874,7 @@ Temple Road and the streets just above it have guesthouses and hotels within a f
       },
       {
         question: 'Is there an entry fee for the Dalai Lama Temple in McLeod Ganj?',
-        answer: 'No, entry to the complex is free. The Tibet Museum, now at the Central Tibetan Administration in Gangchen Kyishong, is free or charges a token amount and is closed on Saturdays.',
+        answer: 'No, entry to the complex is free. The Tibet Museum, now at the Central Tibetan Administration in Gangchen Kyishong, charges Rs 20 for adults (under-18s free) and is closed on Saturdays.',
       },
       {
         question: 'Can I meet the Dalai Lama in McLeod Ganj?',

@@ -91,7 +91,7 @@ People often search for a "4 star hotel in McLeod Ganj". Few properties up here 
 
 ### Mid-range with character
 
-**[Chonor House](/hotels/chonor-house-temple-road-mcleod-ganj)** is our pick for culture. It is run by the Norbulingka Institute, and every room is themed around a different aspect of Tibet, with hand-painted murals, carved furniture and woven rugs made by Norbulingka artisans. It is 3-5 minutes on foot from the Tsuglagkhang complex and the Tibet Museum, with a garden courtyard restaurant. **Watch out for:** a steep approach with steps.
+**[Chonor House](/hotels/chonor-house-temple-road-mcleod-ganj)** is our pick for culture. It is run by the Norbulingka Institute, and every room is themed around a different aspect of Tibet, with hand-painted murals, carved furniture and woven rugs made by Norbulingka artisans. It is 3-5 minutes on foot from the Tsuglagkhang complex, with a garden courtyard restaurant. **Watch out for:** a steep approach with steps.
 
 **[HPTDC Hotel Bhagsu](/hotels/hptdc-hotel-bhagsu-mcleod-ganj)** has been run by Himachal Tourism since 1978, which makes it one of the oldest established hotels in town. Unusually for McLeod Ganj, it has space: lawns, tall deodars, deluxe rooms, suites and separate huts on the grounds, plus a restaurant, bar and parking. About 5 minutes' walk from the main square. **Best for:** families, senior travellers and anyone who wants to park the car and forget it.
 

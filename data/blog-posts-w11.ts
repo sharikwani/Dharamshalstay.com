@@ -126,11 +126,11 @@ October and November have the most reliable road and flight conditions of the ye
   {
     id: 'blog-dharamshala-in-december-january',
     slug: 'dharamshala-in-december-january',
-    title: 'Dharamshala in December & January: Snow, New Year & Winter Guide',
+    title: 'Dharamshala in January: Snow, New Year & Winter Guide (2026)',
     excerpt: 'A winter trip to Dharamshala means snow on the Dhauladhar, Christmas celebrations, cosy cafes, and hotel discounts of 20 to 40 percent. Here is everything you need to know about visiting in December and January, including snowfall chances, what is open, and how to stay warm.',
     content: `Winter in Dharamshala is a different world from the summer crowds. The Dhauladhar range is white, the air is bitingly clear, McLeod Ganj is quiet enough to hear monastery bells from the main road, and hotel prices drop 20 to 40 percent outside Christmas and New Year week. The trade-off is cold, especially at night. If you come prepared, December and January offer some of the most dramatic scenery and most peaceful days of the year.
 
-For the full year-round comparison, see our [best time to visit guide](/blog/best-time-to-visit-dharamshala). For detailed snowfall information, see the [winter snowfall guide](/blog/dharamshala-in-winter-snowfall).
+January is the coldest month and the most likely time to see snow in McLeod Ganj itself; this guide covers it alongside the run-up from late December. Travelling earlier? Our [McLeod Ganj in December guide](/blog/mcleod-ganj-in-december) covers Christmas week and the first snow in detail. For the full year-round comparison, see our [best time to visit guide](/blog/best-time-to-visit-dharamshala). For detailed snowfall information, see the [winter snowfall guide](/blog/dharamshala-in-winter-snowfall).
 
 ## Weather: What to Expect
 
@@ -245,8 +245,8 @@ The reward for braving the cold is Dharamshala at its most beautiful and least c
     image_alt: 'Snow-covered McLeod Ganj with the Dhauladhar range in winter',
     read_time: 10,
     featured: false,
-    meta_title: 'Dharamshala in December & January: Snow & Winter Tips',
-    meta_description: 'Visit Dharamshala in December or January for snow, Christmas, New Year and 20-40% hotel discounts. Snowfall chances, what is open, packing tips (2026).',
+    meta_title: 'Dharamshala & McLeod Ganj in January: Snow & Weather',
+    meta_description: 'Dharamshala and McLeod Ganj in January: the best snow chances, New Year, 20-40% hotel discounts, what is open, roads and packing tips (2026).',
     related_slugs: ['dharamshala-in-winter-snowfall', 'dharamshala-christmas-new-year', 'dharamshala-weather-what-to-pack'],
     faqs: [
       {
@@ -329,7 +329,7 @@ The street food and small restaurant scene in McLeod Ganj and Bhagsu is one of t
 
 Most of Dharamshala's best experiences cost nothing:
 
-- **Tsuglagkhang Complex** (Dalai Lama Temple) — Free entry. The temple, monastery, and Tibet Museum. Allow 2 to 3 hours. [Dalai Lama temple guide](/blog/dalai-lama-temple-guide).
+- **Tsuglagkhang Complex** (Dalai Lama Temple) — Free entry. The temple and Namgyal Monastery. Allow 1 to 2 hours. (The Tibet Museum is now at Gangchen Kyishong and charges Rs 20 for adults.) [Dalai Lama temple guide](/blog/dalai-lama-temple-guide).
 - **Lingkor Kora** — The prayer-flag circuit walk around the Tsuglagkhang. Peaceful and beautiful.
 - **Bhagsu Waterfall** — Free, 20-minute walk from Bhagsu village. Best after monsoon. [Bhagsu guide](/blog/bhagsu-travel-guide).
 - **Dharamkot viewpoint** — Walk up from McLeod Ganj for panoramic Kangra Valley views.

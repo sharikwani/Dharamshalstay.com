@@ -106,7 +106,7 @@ Many visitors are surprised that "Dharamshala" is really two towns. Lower Dharam
 
 - **Local bus**: HRTC and local buses shuttle between Dharamshala bus stand and McLeod Ganj through the day. Approx. ₹20-40, 30-45 minutes. Cheap but crowded in peak season.
 - **Taxi**: approx. ₹300-500 for the 9-10 km road, 20-30 minutes. Taxi stands are at the Dharamshala bus stand and Kotwali Bazaar. Shared taxis also run on this route.
-- **Dharamshala Skyway (ropeway)**: the cable car opened in 2022 and links lower Dharamshala to McLeod Ganj in about 5 minutes. However, operations were suspended in August 2025 after a landslide near one of its towers, and the ropeway has been closed for safety reviews at times since. Treat it as a scenic bonus rather than reliable transport, and check its status locally before you plan on it.
+- **Dharamshala Skyway (ropeway)**: the cable car opened in 2022 and links lower Dharamshala to McLeod Ganj in about 5 minutes. Operations were suspended in August 2025 after a landslide near one of its towers; it appeared to be running again when we checked on 16 October 2026 (9:30 am to 6 pm), but confirm on the day. See our [Dharamshala Skyway guide](/blog/dharamshala-skyway-ropeway-guide).
 
 ## Which Route Should You Choose?
 
@@ -143,7 +143,7 @@ Once you know how you are arriving, [browse hotels in Dharamshala and McLeod Gan
       },
       {
         question: 'Is the Dharamshala to McLeod Ganj ropeway working?',
-        answer: 'The Dharamshala Skyway was suspended in August 2025 after a landslide near one of its towers and has had safety-related closures since. Check its status locally; buses and taxis between Dharamshala and McLeod Ganj run every day.',
+        answer: 'The Dharamshala Skyway was suspended in August 2025 after a landslide near one of its towers. It appeared to be running again when we checked on 16 October 2026, but confirm on the day; buses and taxis between Dharamshala and McLeod Ganj run every day.',
       },
       {
         question: 'How much does a taxi from Delhi to Dharamshala cost?',
@@ -335,7 +335,7 @@ A realistic daily food spend is approx. ₹500-800 for a backpacker, ₹1,000-1,
 | Activity | Approx. cost (as of 2026) |
 |---|---|
 | Tsuglagkhang (Dalai Lama Temple), Bhagsunag, St. John in the Wilderness | Free (donations welcome) |
-| Tibet Museum | Nominal fee; check locally |
+| Tibet Museum (Gangchen Kyishong) | Rs 20 for adults; under-18s free |
 | Triund trek, self-guided | Forest and eco-tourism entry fee (around ₹100 per head in recent seasons) + snacks |
 | Triund trek with a guide, day trip | ₹1,500-3,000 per person, depending on group size |
 | Triund overnight camping package | ₹2,000-4,000 per person (tent, meals, guide) |
@@ -650,7 +650,7 @@ Many first-timers do not realise that Dharamshala and McLeod Ganj are part of th
 - **Dharamkot** is a steep 2-3 km above McLeod Ganj, at around 2,000 m.
 - **Naddi** sits about 3-4 km west of McLeod Ganj, known for its view of the Dhauladhar.
 
-Getting between lower Dharamshala and McLeod Ganj takes 20-30 minutes by taxi (approx. ₹300-500) or about 30-45 minutes by local bus. The Dharamshala Skyway ropeway has had safety-related suspensions since a landslide in August 2025, so check locally before counting on it. Our [how to reach Dharamshala guide](/blog/how-to-reach-dharamshala) covers all the transport details.
+Getting between lower Dharamshala and McLeod Ganj takes 20-30 minutes by taxi (approx. ₹300-500) or about 30-45 minutes by local bus. The Dharamshala Skyway ropeway was suspended after a landslide in August 2025 and appeared to be running again when we checked on 16 October 2026; confirm on the day before counting on it ([Skyway guide](/blog/dharamshala-skyway-ropeway-guide)). Our [how to reach Dharamshala guide](/blog/how-to-reach-dharamshala) covers all the transport details.
 
 ## Side-by-Side Comparison
 
@@ -679,7 +679,7 @@ Getting between lower Dharamshala and McLeod Ganj takes 20-30 minutes by taxi (a
 
 ### Spiritual travellers and long stays
 
-**Best base: McLeod Ganj or Dharamkot.** McLeod Ganj puts you next to the Tsuglagkhang Complex, the Tibet Museum and the circular kora walk around the temple. Dharamkot is where many yoga and meditation courses are based, with a slower, village pace. For month-long stays and remote work, read [Dharamshala for digital nomads](/blog/dharamshala-for-digital-nomads) and look at [Dharamkot stays](/destinations/dharamkot).
+**Best base: McLeod Ganj or Dharamkot.** McLeod Ganj puts you next to the Tsuglagkhang Complex and the circular kora walk around the temple, with the [Tibet Museum](/blog/tibet-museum-dharamshala-guide) at Gangchen Kyishong a short taxi ride below. Dharamkot is where many yoga and meditation courses are based, with a slower, village pace. For month-long stays and remote work, read [Dharamshala for digital nomads](/blog/dharamshala-for-digital-nomads) and look at [Dharamkot stays](/destinations/dharamkot).
 
 ### Nightlife
 
