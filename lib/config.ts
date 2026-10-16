@@ -20,7 +20,7 @@ export const siteConfig = {
   // WhatsApp Cloud API number: wa.me links open a chat with the AI assistant without saving the contact.
   whatsapp: '19295255894',
   whatsappDisplay: '+1 929-525-5894',
-  address: 'Dharamshala, Kangra District, Himachal Pradesh 176215, India',
+  address: 'VPO Khaniyara, Dharamshala, Kangra District, Himachal Pradesh 176215, India',
   instagram: 'https://www.instagram.com/dharamshala.stay/',
   instagramHandle: 'dharamshala.stay',
 };

@@ -35,7 +35,7 @@ export function AboutView({ lang }: { lang: Lang }) {
           mainEntity: {
             '@type': 'TravelAgency',
             name: siteConfig.name, url: siteConfig.url, telephone: siteConfig.phone, email: siteConfig.email,
-            address: { '@type': 'PostalAddress', addressLocality: 'Dharamshala', addressRegion: 'Himachal Pradesh', postalCode: '176215', addressCountry: 'IN' },
+            address: { '@type': 'PostalAddress', streetAddress: 'VPO Khaniyara', addressLocality: 'Dharamshala', addressRegion: 'Himachal Pradesh', postalCode: '176215', addressCountry: 'IN' },
             areaServed: ['Dharamshala', 'McLeod Ganj', 'Bhagsu', 'Dharamkot', 'Naddi', 'Kangra', 'Palampur', 'Bir Billing'],
           },
         },

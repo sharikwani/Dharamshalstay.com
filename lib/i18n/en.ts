@@ -16,7 +16,7 @@ export const en = {
   } as Record<string, string>,
   footer: {
     description: 'Discover the best hotels, homestays, treks, paragliding, and experiences in Dharamshala, McLeod Ganj & the Kangra Valley.',
-    address: 'Dharamshala, Kangra District, Himachal Pradesh 176215, India',
+    address: 'VPO Khaniyara, Dharamshala, Kangra District, Himachal Pradesh 176215, India',
     quickLinks: 'Quick Links', allDestinations: 'All Destinations', aboutUs: 'About Us',
     whereToStay: 'Where to Stay', hotelsIn: 'Hotels in {place}', dharamshalaVsMcleod: 'Dharamshala vs McLeod Ganj',
     travelGuides: 'Travel Guides',
