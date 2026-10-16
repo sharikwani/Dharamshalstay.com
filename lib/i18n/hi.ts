@@ -446,7 +446,7 @@ export const hi: Dict = {
     about: '{name} के बारे में', amenities: 'सुविधाएं', policies: 'होटल के नियम', checkInOut: 'चेक-इन / चेक-आउट',
     cancellation: 'कैंसलेशन', similar: '{place} में मिलते-जुलते होटल',
     location: 'लोकेशन', landmark: 'पहचान की जगह', openMap: 'Google Maps में खोलें', directions: 'रास्ता देखें',
-    mapTitle: '{name} कहाँ है, यह दिखाता नक्शा', phoneAfterBooking: 'होटल का फ़ोन नंबर बुकिंग के बाद आपको भेजा जाता है।',
+    mapTitle: '{name} कहाँ है, यह दिखाता नक्शा', showMap: 'नक्शा दिखाएँ', phoneAfterBooking: 'होटल का फ़ोन नंबर बुकिंग के बाद आपको भेजा जाता है।',
   },
   directory: {
     badge: 'डायरेक्टरी लिस्टिंग', photos: 'फ़ोटो', source: 'स्रोत', areaPhoto: 'यह फ़ोटो {place} इलाके की है, प्रॉपर्टी की नहीं।',

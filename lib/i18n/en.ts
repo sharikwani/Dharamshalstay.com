@@ -51,7 +51,7 @@ export const en = {
   },
   home: {
     proofStays: '{n} stays listed', proofTreks: '{n} guided treks', proofGuides: '{n} free travel guides', proofLocal: 'Local team in Dharamshala',
-    metaTitle: 'Dharamshala Stay - Hotels, Treks & Travel in Dharamshala & McLeod Ganj',
+    metaTitle: 'Dharamshala Stay - Hotels, Treks & Taxis in McLeod Ganj',
     metaDescription: 'Local guide to Dharamshala, McLeod Ganj & Kangra Valley: verified hotels and homestays, Triund treks, Bir Billing paragliding, airport taxis and free trip planning.',
     heroAlt: 'Snow-capped Dhauladhar range above Dharamshala and McLeod Ganj',
     badge: "Dharamshala's Local Travel Marketplace",
@@ -257,7 +257,7 @@ export const en = {
     about: 'About {name}', amenities: 'Amenities & Facilities', policies: 'Hotel Policies', checkInOut: 'Check-in / Check-out',
     cancellation: 'Cancellation', similar: 'Similar Hotels in {place}',
     location: 'Location', landmark: 'Landmark', openMap: 'Open in Google Maps', directions: 'Get directions',
-    mapTitle: 'Map showing where {name} is', phoneAfterBooking: "The hotel's phone number is shared with you after you book.",
+    mapTitle: 'Map showing where {name} is', showMap: 'Show map', phoneAfterBooking: "The hotel's phone number is shared with you after you book.",
   },
   directory: {
     badge: 'Directory listing', photos: 'Photos', source: 'source', areaPhoto: 'Photo of the {place} area, not of the property.',
@@ -322,7 +322,7 @@ export const en = {
     sending: 'Sending...', dataSecure: 'We respond within 2 hours. Your data is secure.',
   },
   destinations: {
-    metaTitle: 'Where to Stay Around Dharamshala - McLeod Ganj, Bhagsu, Dharamkot & Naddi',
+    metaTitle: 'Where to Stay in Dharamshala: McLeod Ganj, Bhagsu, Naddi',
     metaDescription: 'Compare Dharamshala, McLeod Ganj, Bhagsu, Dharamkot and Naddi: altitude, vibe, best time to visit, things to do and hotels in each area of the Kangra Valley.',
     h1: 'Where to Stay Around Dharamshala',
     intro: 'Dharamshala is really a cluster of hill neighbourhoods strung up the slope of the Dhauladhar range -- from busy lower Dharamshala to Tibetan McLeod Ganj, waterfall-side Bhagsu, yoga-village Dharamkot and quiet Naddi. Each has a different character; pick the one that matches your trip.',
@@ -382,7 +382,7 @@ export const en = {
       'Temples & Heritage': 'Temples & Heritage', Hotels: 'Hotels', 'Travel Tips': 'Travel Tips', Transport: 'Transport',
       Activities: 'Activities', 'Behind the Scenes': 'Behind the Scenes',
     } as Record<string, string>,
-    metaTitle: 'Dharamshala & Himachal Travel Guides 2026 - Local Tips',
+    metaTitle: 'Dharamshala & Himachal Travel Guides by Locals',
     metaDescription: 'Local travel guides for Dharamshala, McLeod Ganj, Kangra, Palampur and Bir: places to visit, how to reach, best time, budgets, treks, food and itineraries.',
     h1: 'Dharamshala & Kangra Valley Travel Guides',
     intro: 'Written by our local team in Dharamshala: where to go, how to get here, what it costs, when to visit and what to eat -- covering McLeod Ganj, Bhagsu, Dharamkot, Naddi, Kangra, Palampur and Bir Billing.',
@@ -405,7 +405,7 @@ export const en = {
     whatsappMsg: 'Hi! I have a question about visiting Dharamshala.',
   },
   essentials: {
-    metaTitle: 'Dharamshala Travel Essentials - Everything to Know Before You Visit',
+    metaTitle: 'Dharamshala Travel Essentials: Know Before You Go',
     metaDescription: 'The practical questions travellers ask before visiting Dharamshala and McLeod Ganj: ATMs and SIM cards, groceries, laundry, drinking water, food costs, health, accessibility, weather and local etiquette.',
     breadcrumb: 'Travel Essentials',
     h1: 'Dharamshala Travel Essentials',

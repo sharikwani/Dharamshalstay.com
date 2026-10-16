@@ -5,7 +5,7 @@ import { Wind, MapPin, Clock, Star, Shield, ArrowRight, MessageCircle } from 'lu
 import { Breadcrumb, SectionHeading, FAQSection } from '@/components/ui/Cards';
 import BookingForm from '@/components/forms/BookingForm';
 import JsonLd from '@/components/seo/JsonLd';
-import { generateSEO, faqSchema, breadcrumbSchema } from '@/lib/seo';
+import { generateSEO, faqSchema, breadcrumbSchema, touristTripSchema } from '@/lib/seo';
 import { formatPrice, getWhatsAppLink } from '@/lib/utils';
 import { placeImage } from '@/lib/place-images';
 import { getParaglidingPackages, type ParaglidingPackage } from '@/lib/db';
@@ -45,6 +45,10 @@ export default async function ParaglidingView({ lang }: { lang: Lang }) {
     <>
       <JsonLd data={[
         breadcrumbSchema([{ name: t.common.home, href: '/' }, { name: t.common.paragliding, href: '/paragliding' }], lang),
+        ...packages.map((pkg) => touristTripSchema({
+          name: pkg.name, description: pkg.description, path: '/paragliding', image: pkg.image,
+          price: pkg.price_per_person, touristType: 'Adventure travellers',
+        }, lang)),
         faqSchema(p.faqs),
       ]} />
 

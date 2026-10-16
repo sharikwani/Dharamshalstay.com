@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Calendar, Users, Sparkles, SlidersHorizontal, X, Map as MapIcon, List, Heart, MessageCircle, Check, Loader2, Search } from 'lucide-react';
 import ValleyMap from './ValleyMap';
 import StayCard from './StayCard';
-import { stayFacts, matchScore, MOODS, BANDS, type Mood, type Answers, type Who } from '@/lib/hotels/discover';
+import { matchScore, MOODS, BANDS, type Mood, type Answers, type SlimStay } from '@/lib/hotels/discover';
 import { normalizeImages } from '@/lib/images';
 import { getWhatsAppLink, formatPrice } from '@/lib/utils';
 import { useT } from '@/lib/i18n/client';
@@ -21,7 +21,7 @@ const isDate = (s: string | null): s is string => !!s && /^\d{4}-\d{2}-\d{2}$/.t
 const toggle = <T,>(list: T[], v: T) => (list.includes(v) ? list.filter((x) => x !== v) : [...list, v]);
 const uuid = () => (crypto as any).randomUUID?.() || 'xxxxxxxx-xxxx-4xxx-8xxx-xxxxxxxxxxxx'.replace(/x/g, () => ((Math.random() * 16) | 0).toString(16));
 
-export default function StayFinder({ hotels, destinations }: { hotels: any[]; destinations: any[] }) {
+export default function StayFinder({ hotels, destinations }: { hotels: SlimStay[]; destinations: { slug: string; name: string }[] }) {
   const { t, lang } = useT();
   const T = t.finder;
   const [moods, setMoods] = useState<Mood[]>([]);
@@ -39,7 +39,7 @@ export default function StayFinder({ hotels, destinations }: { hotels: any[]; de
   const [mobileMap, setMobileMap] = useState(false);
   const [answers, setAnswers] = useState<Answers>({ who: null, budget: null, matters: null });
 
-  const facts = useMemo(() => new Map(hotels.map((h) => [h.id, stayFacts(h)])), [hotels]);
+  const facts = useMemo(() => new Map(hotels.map((h) => [h.id, h.facts])), [hotels]);
   const areaName = (slug: string) => destinations.find((d: any) => d.slug === slug)?.name || slug;
   const hrefFor = (h: any) => localizePath('/hotels/' + h.slug, lang) + (checkIn && checkOut ? `?check_in=${checkIn}&check_out=${checkOut}` : '');
 
@@ -82,7 +82,7 @@ export default function StayFinder({ hotels, destinations }: { hotels: any[]; de
   const list = useMemo(() => {
     const out = base.filter((h) => pass(h));
     if (sort === 'square') out.sort((a, b) => (facts.get(a.id)!.kmSquare ?? 99) - (facts.get(b.id)!.kmSquare ?? 99));
-    if (sort === 'budget') { const r: Record<string, number> = { budget: 0, 'mid-range': 1, upscale: 2 }; out.sort((a, b) => (r[a.price_band] ?? 1) - (r[b.price_band] ?? 1)); }
+    if (sort === 'budget') { const r: Record<string, number> = { budget: 0, 'mid-range': 1, upscale: 2 }; out.sort((a, b) => (r[a.price_band || ''] ?? 1) - (r[b.price_band || ''] ?? 1)); }
     return out;
   }, [base, moods, band, areas, types, sort, facts]); // eslint-disable-line react-hooks/exhaustive-deps
 

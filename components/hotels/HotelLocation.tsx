@@ -3,6 +3,7 @@ import { formatAddress, hasCoordinates, mapLinks, propertyMapUrl, type Located }
 import { serverT } from '@/lib/i18n/server';
 import { fmt } from '@/lib/i18n/dict';
 import type { Lang } from '@/lib/i18n/core';
+import MapEmbed from './MapEmbed';
 
 /** Public location block for a hotel page: address, landmark, map and directions. Never the phone. */
 export default function HotelLocation({ hotel, lang }: { hotel: Located & { name: string }; lang: Lang }) {
@@ -16,13 +17,7 @@ export default function HotelLocation({ hotel, lang }: { hotel: Located & { name
       <h2 className="text-xl font-heading font-bold text-slate-900 mb-4">{p.location}</h2>
       <div className="rounded-2xl border border-slate-200 overflow-hidden">
         {links && (
-          <iframe
-            src={links.embed}
-            title={fmt(p.mapTitle, { name: hotel.name })}
-            className="w-full h-64 sm:h-80 border-0 block"
-            loading="lazy"
-            referrerPolicy="no-referrer"
-          />
+          <MapEmbed src={links.embed} title={fmt(p.mapTitle, { name: hotel.name })} label={p.showMap} />
         )}
         <div className="p-5 space-y-3">
           <p className="flex items-start gap-2 text-slate-800">

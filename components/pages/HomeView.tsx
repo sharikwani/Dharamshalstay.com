@@ -13,7 +13,6 @@ import MonasteryDay from '@/components/home/MonasteryDay';
 import { monasteryDay } from '@/data/monasteries';
 import { monasteryPhotos } from '@/data/monastery-photos';
 import JsonLd from '@/components/seo/JsonLd';
-import PreferredSourceButton from '@/components/seo/PreferredSourceButton';
 import { getDestinations, getPublishedProperties, getPublishedTreks } from '@/lib/db';
 import { blogPosts, getFeaturedBlogPosts } from '@/data/blog';
 import { gaddiPhotos } from '@/data/gaddi-photos';
@@ -335,10 +334,6 @@ export default async function HomeView({ lang }: { lang: Lang }) {
             </div>
             <div className="guides-more">
               <Link href={href('/faq')} className="btn btn-line">{t.common.qa}</Link>
-            </div>
-            <div style={{ marginTop: 32, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 8 }}>
-              <p style={{ color: 'var(--muted)', fontSize: 14, maxWidth: 420 }}>{h.preferredIntro}</p>
-              <PreferredSourceButton lang={lang} />
             </div>
           </div>
         </section>

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { generateHotelSEO, ratedPhrase } from '@/lib/seo';
+import { generateHotelSEO, generateSEO, ratedPhrase } from '@/lib/seo';
+import { listingTitle } from '@/lib/listing';
 
 const base = {
   name: 'Snow View', slug: 'snow-view', destination_slug: 'bhagsu', type: 'hotel', price_min: 2500,
@@ -10,12 +11,12 @@ const title = (m: any) => m.title.absolute as string;
 describe('generateHotelSEO', () => {
   it('puts the approved rating and the lowest price in the title', () => {
     const m = generateHotelSEO(base, 'en', { count: 3, average: 4.7 });
-    expect(title(m)).toBe('Snow View, Bhagsu · Rated 4.7/5 by 3 guests · Rooms from ₹2,500 | Dharamshala Stay');
+    expect(title(m)).toBe('Snow View, Bhagsu · Rated 4.7/5 by 3 guests · Rooms from ₹2,500');
     expect(m.description).toBe('Snow View, Bhagsu · Rated 4.7/5 by 3 guests · Rooms from ₹2,500. Quiet rooms near the waterfall. Direct booking, best prices, local support.');
   });
 
   it('says "guest" for a single review', () => {
-    expect(title(generateHotelSEO(base, 'en', { count: 1, average: 5 }))).toBe('Snow View, Bhagsu · Rated 5/5 by 1 guest · Rooms from ₹2,500 | Dharamshala Stay');
+    expect(title(generateHotelSEO(base, 'en', { count: 1, average: 5 }))).toBe('Snow View, Bhagsu · Rated 5/5 by 1 guest · Rooms from ₹2,500');
   });
 
   it('leaves the rating out without approved reviews, ignoring legacy properties.rating', () => {
@@ -44,8 +45,8 @@ describe('generateHotelSEO', () => {
 });
 
 describe('area and ratedPhrase', () => {
-  it('title-cases a hyphenated destination slug in the title', () => {
-    expect(title(generateHotelSEO({ ...base, destination_slug: 'mcleod-ganj' }))).toContain('Snow View, Mcleod Ganj');
+  it('uses the proper area name in the title', () => {
+    expect(title(generateHotelSEO({ ...base, destination_slug: 'mcleod-ganj' }))).toContain('Snow View, McLeod Ganj');
   });
 
   it('ratedPhrase is empty without reviews and pluralises guests', () => {
@@ -53,5 +54,18 @@ describe('area and ratedPhrase', () => {
     expect(ratedPhrase({ count: 0, average: 0 })).toBe('');
     expect(ratedPhrase({ count: 1, average: 5 })).toBe('Rated 5/5 by 1 guest');
     expect(ratedPhrase({ count: 3, average: 4.7 })).toBe('Rated 4.7/5 by 3 guests');
+  });
+});
+
+describe('title length', () => {
+  it('adds the brand only when the title stays within 60 characters', () => {
+    expect((generateSEO({ title: 'Triund Trek', description: 'x', path: '/treks/triund-trek' }).title as any).absolute).toBe('Triund Trek | Dharamshala Stay');
+    const long = 'Dharamshala to Delhi Taxi: Fares, Route and Tips';
+    expect((generateSEO({ title: long, description: 'x', path: '/taxi' }).title as any).absolute).toBe(long);
+  });
+
+  it('does not repeat the area in directory titles', () => {
+    expect(listingTitle('HillOra McLeodganj', 'McLeod Ganj', 'Hotel')).toBe('HillOra McLeodganj – Hotel in Dharamshala');
+    expect(listingTitle('Zostel', 'McLeod Ganj', 'Hostel')).toBe('Zostel, McLeod Ganj – Hostel');
   });
 });

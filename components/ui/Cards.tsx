@@ -88,7 +88,7 @@ export function DestinationCard({ destination, lang = 'en' }: { destination: Des
   );
 }
 
-export function TrekCard({ trek, lang = 'en' }: { trek: Trek; lang?: Lang }) {
+export function TrekCard({ trek, lang = 'en', priority = false }: { trek: Trek; lang?: Lang; priority?: boolean }) {
   const d = getDict(lang);
   const colors: Record<string, string> = { easy: 'bg-green-100 text-green-700', moderate: 'bg-amber-100 text-amber-700', hard: 'bg-red-100 text-red-700', expert: 'bg-purple-100 text-purple-700' };
   const trekImg = trek.images?.[0] || '/images/places/dhauladhar-hero.jpg';
@@ -97,7 +97,7 @@ export function TrekCard({ trek, lang = 'en' }: { trek: Trek; lang?: Lang }) {
     <Link href={localizePath('/treks/' + trek.slug, lang)} className="group block">
       <div className="bg-white rounded-xl overflow-hidden border border-slate-200 hover:shadow-lg transition-all">
         <div className="relative aspect-[16/9]">
-          <Image src={imgSrc} alt={trek.name} fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="(max-width:768px) 100vw, 33vw" />
+          <Image src={imgSrc} alt={trek.name} fill priority={priority} className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw" />
           {trek.featured && <span className="absolute top-3 left-3 bg-orange-600 text-white text-xs font-bold px-2.5 py-1 rounded">{d.treks.popular}</span>}
         </div>
         <div className="p-4">
@@ -122,13 +122,13 @@ export function TrekCard({ trek, lang = 'en' }: { trek: Trek; lang?: Lang }) {
   );
 }
 
-export function BlogCard({ post, lang = 'en' }: { post: BlogPost; lang?: Lang }) {
+export function BlogCard({ post, lang = 'en', priority = false }: { post: BlogPost; lang?: Lang; priority?: boolean }) {
   const d = getDict(lang);
   return (
     <Link href={localizePath('/blog/' + post.slug, lang)} className="group block">
       <div className="bg-white rounded-xl overflow-hidden border border-slate-200 hover:shadow-lg transition-all">
         <div className="relative aspect-[16/9]">
-          <Image src={post.image} alt={post.image_alt || post.title} fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="(max-width:768px) 100vw, 33vw" />
+          <Image src={post.image} alt={post.image_alt || post.title} fill priority={priority} className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw" />
         </div>
         <div className="p-4">
           <div className="flex items-center gap-2 mb-2">

@@ -20,9 +20,16 @@ export function stripLang(pathname: string): string {
   return pathname.startsWith('/hi/') ? pathname.slice(3) : pathname;
 }
 
+/** Guides not yet translated: their /hi URL redirects to English. Kept in sync with data/hi by tests/seo/hindi-links.test.ts. */
+export const EN_ONLY_POSTS = [
+  'budget-hotels-in-dharamshala', 'eating-out-dharamshala-what-it-costs', 'accessibility-dharamshala-limited-mobility',
+  'groceries-daily-essentials-dharamshala', 'laundry-luggage-storage-water-dharamshala',
+];
+
 /** Does this English path have a Hindi counterpart? */
 export function hasHindiVersion(enPath: string): boolean {
   const p = enPath.split(/[?#]/)[0];
+  if (p.startsWith('/blog/') && EN_ONLY_POSTS.includes(p.slice(6))) return false;
   return HINDI_SECTIONS.some((s) => (s === '/' ? p === '/' : p === s || p.startsWith(s + '/')));
 }
 

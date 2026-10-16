@@ -69,7 +69,7 @@ export function BlogIndexView({ lang }: { lang: Lang }) {
             <h2 className="text-2xl font-heading font-bold text-slate-900 mb-2">{b.startHere}</h2>
             <p className="text-slate-600 mb-5">{b.startHereIntro}</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {startHere.map((p) => <BlogCard key={p.id} post={p} lang={lang} />)}
+              {startHere.map((p, i) => <BlogCard key={p.id} post={p} lang={lang} priority={i === 0} />)}
             </div>
           </div>
         </section>

@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
+import { permanentRedirect } from 'next/navigation';
 import { BlogPostView, blogPostMetadata } from '@/components/pages/BlogViews';
 import { getAllBlogSlugs } from '@/data/blog';
+import { hasHindiPost } from '@/lib/i18n/content';
 
 interface Props { params: { slug: string } }
 
@@ -9,7 +11,7 @@ interface Props { params: { slug: string } }
 export const dynamicParams = true;
 
 export function generateStaticParams() {
-  return getAllBlogSlugs().map(slug => ({ slug }));
+  return getAllBlogSlugs().filter(hasHindiPost).map(slug => ({ slug }));
 }
 
 export function generateMetadata({ params }: Props): Metadata {
@@ -17,5 +19,7 @@ export function generateMetadata({ params }: Props): Metadata {
 }
 
 export default function BlogPostPage({ params }: Props) {
+  // Not translated yet: send readers (and Google) to the English guide instead of an English page under /hi.
+  if (getAllBlogSlugs().includes(params.slug) && !hasHindiPost(params.slug)) permanentRedirect('/blog/' + params.slug);
   return <BlogPostView slug={params.slug} lang="hi" />;
 }

@@ -2,6 +2,7 @@
  * The stay finder (/hotels): what each listing is like, worked out from the data we already hold, plus the
  * "let us pick" scoring. Pure functions, no I/O.
  */
+import { normalizeImages } from '@/lib/images';
 
 export type Mood = 'view' | 'quiet' | 'cafes' | 'triund' | 'social' | 'family' | 'work';
 export const MOODS: Mood[] = ['view', 'quiet', 'cafes', 'triund', 'social', 'family', 'work'];
@@ -84,3 +85,24 @@ export function matchScore(h: any, f: StayFacts, a: Answers): number {
   if ((h.images || []).length) s += 1;
   return s;
 }
+
+/** Photos a finder card shows. */
+export const CARD_PHOTOS = 6;
+
+/**
+ * Only what the finder needs from a listing, with its facts worked out on the server. Sending whole
+ * listings (descriptions, rooms, every photo) made /hotels over 1 MB of HTML.
+ */
+export function slimStay(h: any) {
+  const highlights: string[] = (h.highlights || []).slice(0, 2);
+  return {
+    id: h.id as string, slug: h.slug as string, name: h.name as string, type: h.type as string,
+    destination_slug: h.destination_slug as string, price_band: (h.price_band || null) as string | null,
+    price_min: Number(h.price_min) || 0, locality: h.locality || '', address_line1: h.address_line1 || '',
+    highlights, short_description: highlights.length ? '' : (h.short_description || ''),
+    good_for: h.good_for || [],
+    images: normalizeImages(h.images).slice(0, CARD_PHOTOS).map((i) => ({ url: i.url, alt: i.alt })),
+    facts: stayFacts(h),
+  };
+}
+export type SlimStay = ReturnType<typeof slimStay>;

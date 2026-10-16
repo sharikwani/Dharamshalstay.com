@@ -27,9 +27,11 @@ export interface SitemapEntry {
 }
 
 const abs = (src: string) => (src.startsWith('http') ? src : B + src);
-/** Image-sitemap entries so every photo can show up in Google Images. */
+/** Photos we host: our own files and partner uploads. Copies hotlinked from booking sites stay out of the image sitemap. */
+const isOwnImage = (u: string) => !u.startsWith('http') || u.startsWith(B + '/') || /^https:\/\/[a-z0-9]+\.supabase\.co\/storage\//.test(u);
+/** Image-sitemap entries so every photo we own can show up in Google Images. */
 const imgs = (list: (string | undefined | null)[]) => {
-  const out = Array.from(new Set(list.filter((u): u is string => !!u && !isStockImage(u)).map(abs)));
+  const out = Array.from(new Set(list.filter((u): u is string => !!u && !isStockImage(u) && isOwnImage(u)).map(abs)));
   return out.length ? out.slice(0, 50) : undefined;
 };
 
@@ -48,10 +50,12 @@ export async function sitemapEntries(): Promise<SitemapEntry[]> {
 
   const latestPost = blogPosts.reduce((max, b) => (b.updated_at > max ? b.updated_at : max), '2026-01-01');
   const contentDate = date(latestPost);
+  const latestHotel = hotels.reduce((max: string, h: any) => { const d = h.updated_at || h.created_at || ''; return d > max ? d : max; }, '');
+  const hotelsDate = date(latestHotel, contentDate);
 
   const entries: SitemapEntry[] = [
     { url: B, lastModified: contentDate, changeFrequency: 'weekly', priority: 1.0 },
-    { url: B + '/hotels', lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
+    { url: B + '/hotels', lastModified: hotelsDate, changeFrequency: 'daily', priority: 0.9 },
     { url: B + '/blog', lastModified: contentDate, changeFrequency: 'weekly', priority: 0.9 },
     { url: B + '/faq', lastModified: contentDate, changeFrequency: 'monthly', priority: 0.8 },
     { url: B + '/essentials', lastModified: contentDate, changeFrequency: 'monthly', priority: 0.8 },

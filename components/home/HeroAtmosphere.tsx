@@ -14,8 +14,9 @@ function gliderSvg(c: string, c2: string) {
 /**
  * Decorative layers over the hero photo: light that follows the clock in
  * Dharamshala, stars at night, drifting mist, a flock of paragliders and a
- * garland of prayer flags. All of it is aria-hidden and built after load, so
- * the server-rendered hero (headline, search, photo) never waits on it.
+ * garland of prayer flags. All of it is aria-hidden and built once the browser
+ * is idle, so the server-rendered hero (headline, search, photo) never waits on it.
+ * Phones get a lighter sky: fewer stars and gliders.
  */
 export default function HeroAtmosphere() {
   const stars = useRef<HTMLDivElement>(null);
@@ -25,22 +26,34 @@ export default function HeroAtmosphere() {
 
   useEffect(() => {
     const hero = root.current?.closest('.hero') as HTMLElement | null;
-    const paint = () => hero?.setAttribute('data-tod', skyPhase(istHour(new Date())));
-    paint();
-    const clock = setInterval(paint, 60000);
+    const light = innerWidth < 700 || matchMedia('(pointer: coarse)').matches;
 
-    if (stars.current) {
+    // Stars only show at night, so they are only built (and animated) then.
+    const buildStars = (night: boolean) => {
+      const el = stars.current;
+      if (!el) return;
+      if (!night) { el.innerHTML = ''; return; }
+      if (el.childElementCount) return;
       let s = '';
-      for (let i = 0; i < 90; i++) {
+      for (let i = 0; i < (light ? 24 : 90); i++) {
         s += '<i style="left:' + (Math.random() * 100).toFixed(2) + '%;top:' + (Math.random() * 100).toFixed(2) + '%;--t:' + (2 + Math.random() * 3).toFixed(1)
           + 's;--o:-' + (Math.random() * 3).toFixed(1) + 's;transform:scale(' + (0.5 + Math.random()).toFixed(2) + ')"></i>';
       }
-      stars.current.innerHTML = s;
-    }
+      el.innerHTML = s;
+    };
+    let ready = false;
+    const paint = () => {
+      const phase = skyPhase(istHour(new Date()));
+      hero?.setAttribute('data-tod', phase);
+      if (ready) buildStars(phase === 'night');
+    };
+    paint();
+    const clock = setInterval(paint, 60000);
 
-    if (flock.current) {
+    const buildFlock = () => {
+      if (!flock.current) return;
       const small = innerWidth < 700;
-      const n = small ? 7 : 10;
+      const n = light ? 3 : 10;
       let html = '';
       for (let i = 0; i < n; i++) {
         const depth = Math.random(); // 0 = far away, 1 = close
@@ -51,7 +64,7 @@ export default function HeroAtmosphere() {
           + 'px;--bob:' + (3 + Math.random() * 2).toFixed(1) + 's">' + gliderSvg(GLIDER_COLOURS[i % 10], GLIDER_COLOURS[(i + 3) % 10]) + '</div>';
       }
       flock.current.innerHTML = html;
-    }
+    };
 
     // Prayer flags hung along a sagging curve across the full width of the hero.
     const buildGarland = () => {
@@ -72,11 +85,19 @@ export default function HeroAtmosphere() {
       }
       g.innerHTML = html;
     };
-    buildGarland();
+
+    // Built when the browser is idle, after the hero has painted.
+    const build = () => { ready = true; paint(); buildFlock(); buildGarland(); };
+    const ric = (window as any).requestIdleCallback as ((cb: () => void, o?: { timeout: number }) => number) | undefined;
+    const idle = ric ? ric(build, { timeout: 1500 }) : window.setTimeout(build, 600);
+
     let rt: ReturnType<typeof setTimeout>;
-    const onResize = () => { clearTimeout(rt); rt = setTimeout(buildGarland, 150); };
+    const onResize = () => { clearTimeout(rt); rt = setTimeout(() => { if (ready) buildGarland(); }, 150); };
     addEventListener('resize', onResize);
-    return () => { clearInterval(clock); clearTimeout(rt); removeEventListener('resize', onResize); };
+    return () => {
+      if (ric) (window as any).cancelIdleCallback(idle); else clearTimeout(idle);
+      clearInterval(clock); clearTimeout(rt); removeEventListener('resize', onResize);
+    };
   }, []);
 
   return (

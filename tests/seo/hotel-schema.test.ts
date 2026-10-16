@@ -99,8 +99,14 @@ describe('hotelSchemaFull', () => {
 });
 
 describe('hotelSchemaFull area', () => {
-  it('title-cases a hyphenated destination slug in addressLocality', () => {
-    expect((hotelSchemaFull(hotel() as any) as any).address.addressLocality).toBe('Mcleod Ganj');
+  it('uses the proper area name in addressLocality', () => {
+    expect((hotelSchemaFull(hotel() as any) as any).address.addressLocality).toBe('McLeod Ganj');
+  });
+
+  it('points the Hindi page at its own URL', () => {
+    const h = hotel() as any;
+    expect((hotelSchemaFull(h, undefined, 'hi') as any).url).toMatch(new RegExp('/hi/hotels/' + h.slug + '$'));
+    expect((hotelSchemaFull(h) as any).url).toMatch(new RegExp('[^i]/hotels/' + h.slug + '$'));
   });
 });
 

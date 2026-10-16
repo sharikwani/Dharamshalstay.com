@@ -10,7 +10,7 @@ import MarkdownContent from '@/components/blog/MarkdownContent';
 import JsonLd from '@/components/seo/JsonLd';
 import { getActiveTaxiRoutes } from '@/lib/db';
 import { getTaxiRouteGroup, getTaxiRouteGroups, getRouteNotes } from '@/lib/taxi';
-import { generateSEO, breadcrumbSchema, faqSchema } from '@/lib/seo';
+import { generateSEO, breadcrumbSchema, faqSchema, itemListSchema } from '@/lib/seo';
 import { formatPrice, getWhatsAppLink } from '@/lib/utils';
 import { placeImage } from '@/lib/place-images';
 import { siteConfig } from '@/lib/config';
@@ -33,6 +33,10 @@ export async function TaxiListView({ lang }: { lang: Lang }) {
 
   return (
     <>
+      <JsonLd data={[
+        breadcrumbSchema([{ name: t.common.home, href: '/' }, { name: t.common.taxi, href: '/taxi' }], lang),
+        ...(routeGroups.length ? [itemListSchema(routeGroups.map((g) => ({ name: place(g.from) + ' → ' + place(g.to), href: '/taxi/' + g.slug })), lang)] : []),
+      ]} />
       <section className="relative h-[280px]">
         <Image src={UNSPLASH_IMAGES.taxi} alt={x.heroAlt} fill className="object-cover" priority sizes="100vw" />
         <div className="absolute inset-0 bg-brand-950/70" />

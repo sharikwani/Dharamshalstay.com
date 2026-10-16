@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { siteConfig } from './config';
 import { hasHindiVersion, localizePath, type Lang } from './i18n/core';
 import { normalizeImages, roomImageUrls } from './images';
-import { isDirectoryListing } from './listing';
+import { areaName, isDirectoryListing } from './listing';
 import { mapLinks } from './location';
 import type { PublicReview, ReviewFeed, ReviewSummary } from './reviews/types';
 
@@ -47,6 +47,8 @@ export function ogImageUrl(title: string, image?: string, tag?: string): string 
  *    domain (https://www.dharamshalastay.com).
  * 3. metadataBase set so relative URLs resolve correctly.
  */
+export const TITLE_MAX = 60;
+
 export function generateSEO({
   title,
   description,
@@ -64,7 +66,9 @@ export function generateSEO({
 }: SEOProps): Metadata {
   const suffix = ' | ' + siteConfig.name;
   const baseTitle = title.endsWith(suffix) ? title.slice(0, -suffix.length) : title;
-  const fullTitle = baseTitle.includes(siteConfig.name) ? baseTitle : baseTitle + suffix;
+  // Google cuts titles at about 60 characters and already shows the site name above each result,
+  // so the brand suffix is added only when it still fits.
+  const fullTitle = baseTitle.includes(siteConfig.name) || (baseTitle + suffix).length > TITLE_MAX ? baseTitle : baseTitle + suffix;
 
   const hasHi = hindi ?? hasHindiVersion(path);
   const enUrl = siteConfig.url + (path === '/' ? '' : path);
@@ -141,7 +145,7 @@ export function generateHotelSEO(hotel: {
   slug: string; images?: any[];
 }, lang: Lang = 'en', reviews?: RatingSummary): Metadata {
   if (lang === 'hi') return generateHotelSEOHindi(hotel, reviews);
-  const area = hotel.destination_slug?.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()) || hotel.city || 'Dharamshala';
+  const area = hotel.destination_slug ? areaName(hotel.destination_slug) : hotel.city || 'Dharamshala';
   const typeLabel = hotel.type ? hotel.type.charAt(0).toUpperCase() + hotel.type.slice(1) : 'Hotel';
   const starText = hotel.star_rating ? hotel.star_rating + '-Star ' : '';
   const priceText = hotel.price_min ? ' from ₹' + hotel.price_min + '/night' : '';
@@ -252,9 +256,9 @@ export function hotelSchemaFull(h: {
   check_in_time?: string; check_out_time?: string;
   amenities?: string[]; images?: any[]; total_rooms?: number;
   rooms?: any[]; listing_type?: string;
-}, reviews?: ReviewFeed) {
+}, reviews?: ReviewFeed, lang: Lang = 'en') {
   const priced = !isDirectoryListing(h);
-  const area = h.destination_slug?.replace(/-/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()) || h.city || 'Dharamshala';
+  const area = h.destination_slug ? areaName(h.destination_slug) : h.city || 'Dharamshala';
   const images = hotelImageUrls(h);
   const activeRooms = (h.rooms || []).filter((r: any) => r?.name && r.is_active !== false);
   const s = reviews?.summary;
@@ -275,7 +279,7 @@ export function hotelSchemaFull(h: {
     '@type': 'Hotel',
     name: h.name,
     description: h.description || h.short_description || '',
-    url: siteConfig.url + '/hotels/' + h.slug,
+    url: siteConfig.url + localizePath('/hotels/' + h.slug, lang),
     ...(images.length > 0 ? { image: images } : {}),
     ...(h.star_rating && { starRating: { '@type': 'Rating', ratingValue: h.star_rating } }),
     address: {
@@ -317,7 +321,32 @@ export function hotelSchema(h: { name: string; description: string; address_line
 }
 
 export function localBusinessSchema() {
-  return { '@context': 'https://schema.org', '@type': 'TravelAgency', name: siteConfig.name, url: siteConfig.url, telephone: siteConfig.phone, email: siteConfig.email, address: { '@type': 'PostalAddress', addressLocality: 'Dharamshala', addressRegion: 'Himachal Pradesh', postalCode: '176215', addressCountry: 'IN' }, geo: { '@type': 'GeoCoordinates', latitude: 32.219, longitude: 76.3234 }, image: siteConfig.url + '/images/og-default.jpg', areaServed: ['Dharamshala', 'McLeod Ganj', 'Bhagsu', 'Dharamkot', 'Naddi', 'Kangra Valley', 'Palampur', 'Bir Billing'], description: siteConfig.description, priceRange: '\u20B9\u20B9', sameAs: [siteConfig.instagram] };
+  // Same @id as the Organization block, so search engines read them as one business.
+  return { '@context': 'https://schema.org', '@type': 'TravelAgency', '@id': siteConfig.url + '/#organization', name: siteConfig.name, url: siteConfig.url, telephone: siteConfig.phone, email: siteConfig.email, address: { '@type': 'PostalAddress', addressLocality: 'Dharamshala', addressRegion: 'Himachal Pradesh', postalCode: '176215', addressCountry: 'IN' }, geo: { '@type': 'GeoCoordinates', latitude: 32.219, longitude: 76.3234 }, image: siteConfig.url + '/images/og-default.jpg', areaServed: ['Dharamshala', 'McLeod Ganj', 'Bhagsu', 'Dharamkot', 'Naddi', 'Kangra Valley', 'Palampur', 'Bir Billing'], description: siteConfig.description, priceRange: '\u20B9\u20B9', sameAs: [siteConfig.instagram] };
+}
+
+/** A bookable trip (trek, paragliding flight) with its starting price, sold by us. */
+export function touristTripSchema(t: {
+  name: string; description: string; path: string; image?: string; price?: number;
+  itinerary?: { name: string; description?: string }[]; touristType?: string;
+}, lang: Lang = 'en') {
+  const url = siteConfig.url + localizePath(t.path, lang);
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'TouristTrip',
+    name: t.name,
+    description: t.description,
+    url,
+    ...(t.image && { image: t.image.startsWith('http') ? t.image : siteConfig.url + t.image }),
+    ...(t.touristType && { touristType: t.touristType }),
+    ...(t.itinerary?.length && {
+      itinerary: { '@type': 'ItemList', itemListElement: t.itinerary.map((d, i) => ({ '@type': 'ListItem', position: i + 1, item: { '@type': 'TouristAttraction', name: d.name, ...(d.description && { description: d.description }) } })) },
+    }),
+    provider: { '@id': siteConfig.url + '/#organization' },
+    ...(t.price && t.price > 0 && {
+      offers: { '@type': 'Offer', price: t.price, priceCurrency: 'INR', url, availability: 'https://schema.org/InStock', seller: { '@id': siteConfig.url + '/#organization' } },
+    }),
+  };
 }
 
 export function faqSchema(faqs: { question: string; answer: string }[]) {

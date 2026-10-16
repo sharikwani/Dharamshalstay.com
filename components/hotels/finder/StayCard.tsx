@@ -20,11 +20,14 @@ export default function StayCard({ h, f, href, area, typeLabel, active, saved, o
 }) {
   const photos = normalizeImages(h.images).slice(0, 6);
   const [i, setI] = useState(0);
+  // Only the first photo is in the page; the rest load once someone reaches for the strip.
+  const [all, setAll] = useState(false);
+  const wake = () => { if (!all) setAll(true); };
   const strip = useRef<HTMLDivElement>(null);
   const go = (n: number) => {
-    const el = strip.current; if (!el) return;
+    wake();
     const next = (n + photos.length) % photos.length;
-    el.scrollTo({ left: next * el.clientWidth, behavior: 'smooth' });
+    requestAnimationFrame(() => { const el = strip.current; if (el) el.scrollTo({ left: next * el.clientWidth, behavior: 'smooth' }); });
   };
   const why = (h.highlights || [])[0] || h.short_description;
   const facts: { icon: typeof Mountain; text: string; title?: string }[] = [];
@@ -35,12 +38,12 @@ export default function StayCard({ h, f, href, area, typeLabel, active, saved, o
 
   return (
     <article id={'stay-' + h.id} className={'sf-card' + (active ? ' on' : '')} onMouseEnter={() => onHover(true)} onMouseLeave={() => onHover(false)}>
-      <div className="sf-photos">
+      <div className="sf-photos" onPointerEnter={wake} onTouchStart={wake} onFocus={wake}>
         {photos.length ? (
           <div ref={strip} className="sf-strip" onScroll={(e) => { const el = e.currentTarget; setI(Math.round(el.scrollLeft / el.clientWidth)); }}>
-            {photos.map((p, n) => (
+            {(all ? photos : photos.slice(0, 1)).map((p, n) => (
               <div key={p.url + n} className="sf-slide">
-                <Image src={p.url} alt={p.alt || h.name} fill sizes="(max-width:768px) 92vw, 420px" loading={n === 0 ? undefined : 'lazy'} />
+                <Image src={p.url} alt={p.alt || h.name} fill sizes="(max-width:768px) 92vw, 420px" />
               </div>
             ))}
           </div>

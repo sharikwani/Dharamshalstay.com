@@ -8,7 +8,7 @@ import DirectoryListing from '@/components/hotels/DirectoryListing';
 import HotelLocation from '@/components/hotels/HotelLocation';
 import HotelReviews from '@/components/reviews/HotelReviews';
 import JsonLd from '@/components/seo/JsonLd';
-import { isDirectoryListing, areaName } from '@/lib/listing';
+import { isDirectoryListing, areaName, listingTitle } from '@/lib/listing';
 import { getPropertyBySlug, getPropertiesByDestination } from '@/lib/db';
 import { generateHotelSEO, generateSEO, ratedPhrase, hotelSchemaFull, breadcrumbSchema, faqSchema } from '@/lib/seo';
 import { formatPrice } from '@/lib/utils';
@@ -28,7 +28,7 @@ export async function hotelMetadata(slug: string, lang: Lang): Promise<Metadata>
   if (isDirectoryListing(h)) {
     const typeLabel = h.type.charAt(0).toUpperCase() + h.type.slice(1);
     return generateSEO({
-      title: h.meta_title || [h.name + ', ' + areaName(h.destination_slug) + ' - ' + typeLabel + ' Guide & Enquiries', ratedPhrase(summary)].filter(Boolean).join(' · '),
+      title: h.meta_title || [listingTitle(h.name, areaName(h.destination_slug), typeLabel), ratedPhrase(summary)].filter(Boolean).join(' · '),
       description: h.meta_description || ((h.short_description || '') + ' Location, photos, nearby sights and who it suits. Enquire for rates.').trim().slice(0, 158),
       path: '/hotels/' + h.slug,
       image: (h.images?.[0] as any)?.url,
@@ -64,7 +64,7 @@ export default async function HotelDetailView({ slug, lang }: { slug: string; la
     return (
       <>
         <JsonLd data={[
-          hotelSchemaFull(hotel, reviewLd),
+          hotelSchemaFull(hotel, reviewLd, lang),
           breadcrumbSchema(crumbs, lang),
           ...(hotel.faqs?.length ? [faqSchema(hotel.faqs)] : []),
         ]} />
@@ -91,7 +91,7 @@ export default async function HotelDetailView({ slug, lang }: { slug: string; la
   return (
     <>
       <JsonLd data={[
-        hotelSchemaFull(hotel, reviewLd),
+        hotelSchemaFull(hotel, reviewLd, lang),
         breadcrumbSchema(crumbs, lang),
         ...(hotel.faqs?.length ? [faqSchema(hotel.faqs)] : []),
       ]} />

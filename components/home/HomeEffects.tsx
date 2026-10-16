@@ -24,35 +24,61 @@ export default function HomeEffects({ sections, navLabel, searchLabel }: Props) 
     const links = Array.from(nav.current?.querySelectorAll<HTMLAnchorElement>('a') || []);
     const targets = links.map((a) => document.getElementById(a.hash.slice(1)));
 
-    let lastY = scrollY, amp = 1, ticking = false;
+    // Layout is measured once and again only when the page changes size, never on each scroll frame.
+    let tops: number[] = [], heroH = 600, max = 0, ctaTop = 0, ctaH = 0;
+    const measure = () => {
+      const y = scrollY;
+      tops = targets.map((el) => (el ? el.getBoundingClientRect().top + y : Infinity));
+      heroH = hero?.offsetHeight || 600;
+      max = document.documentElement.scrollHeight - innerHeight;
+      if (ctaImg) { const r = ctaImg.parentElement!.getBoundingClientRect(); ctaTop = r.top + y; ctaH = r.height; }
+    };
+    measure();
+
+    let lastY = scrollY, amp = 1, ticking = false, calm = 0;
+    // Lets the flags settle after a fast scroll; runs only while they are still moving.
+    const settle = () => {
+      amp = 1 + (amp - 1) * 0.86;
+      garland?.style.setProperty('--amp', amp.toFixed(2));
+      calm = amp > 1.01 ? window.setTimeout(settle, 120) : 0;
+    };
     const frame = () => {
       ticking = false;
-      const y = scrollY, vh = innerHeight, max = document.documentElement.scrollHeight - vh;
-      const heroH = hero?.offsetHeight || 600;
+      const y = scrollY, vh = innerHeight;
       nav.current?.classList.toggle('show', y > heroH - 80);
       if (prog.current) prog.current.style.transform = 'scaleX(' + (max > 0 ? y / max : 0) + ')';
       let cur = -1;
-      targets.forEach((el, i) => { if (el && el.getBoundingClientRect().top < vh * 0.4) cur = i; });
+      tops.forEach((top, i) => { if (top - y < vh * 0.4) cur = i; });
       links.forEach((a, i) => a.classList.toggle('on', i === cur));
 
       if (reduce) return;
       if (heroBg && y < heroH) heroBg.style.transform = 'translate3d(0,' + (y * 0.35).toFixed(1) + 'px,0)';
       if (ctaImg) {
-        const r = ctaImg.parentElement!.getBoundingClientRect();
-        if (r.top < vh && r.bottom > 0) ctaImg.style.transform = 'translate3d(0,' + ((r.top - vh / 2) * -0.12).toFixed(1) + 'px,0) scale(1.15)';
+        const top = ctaTop - y;
+        if (top < vh && top + ctaH > 0) ctaImg.style.transform = 'translate3d(0,' + ((top - vh / 2) * -0.12).toFixed(1) + 'px,0) scale(1.15)';
       }
       // Faster scrolling blows the prayer flags harder; it settles back on its own.
-      amp = Math.min(2.6, Math.max(amp, 1 + Math.abs(y - lastY) / 25));
-      garland?.style.setProperty('--amp', amp.toFixed(2));
+      if (y < heroH) {
+        amp = Math.min(2.6, Math.max(amp, 1 + Math.abs(y - lastY) / 25));
+        garland?.style.setProperty('--amp', amp.toFixed(2));
+        if (amp > 1.01 && !calm) calm = window.setTimeout(settle, 120);
+      }
       lastY = y;
     };
     const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(frame); } };
+    const onResize = () => { measure(); onScroll(); };
     addEventListener('scroll', onScroll, { passive: true });
-    addEventListener('resize', onScroll);
+    addEventListener('resize', onResize);
+    // Photos and fonts arriving change section positions.
+    const ro = 'ResizeObserver' in window ? new ResizeObserver(() => measure()) : null;
+    ro?.observe(document.body);
     frame();
-    const calm = reduce ? 0 : window.setInterval(() => {
-      if (amp > 1.01) { amp = 1 + (amp - 1) * 0.86; garland?.style.setProperty('--amp', amp.toFixed(2)); }
-    }, 120);
+
+    // Looping animations pause while their section is off screen.
+    const pauseIo = 'IntersectionObserver' in window
+      ? new IntersectionObserver((es) => es.forEach((e) => e.target.classList.toggle('off', !e.isIntersecting)))
+      : null;
+    document.querySelectorAll('.hm .hero, .hm .ticker, .hm .trail, .hm .divider, .hm .cta, .hm .monk, .hm #gaddi').forEach((el) => pauseIo?.observe(el));
 
     // Phone search bar: shows once the hero search has scrolled out of view.
     const book = q<HTMLElement>('.book');
@@ -96,8 +122,10 @@ export default function HomeEffects({ sections, navLabel, searchLabel }: Props) 
 
     return () => {
       removeEventListener('scroll', onScroll);
-      removeEventListener('resize', onScroll);
-      clearInterval(calm);
+      removeEventListener('resize', onResize);
+      clearTimeout(calm);
+      ro?.disconnect();
+      pauseIo?.disconnect();
       bookIo?.disconnect();
       revealIo?.disconnect();
       cleanups.forEach((f) => f());

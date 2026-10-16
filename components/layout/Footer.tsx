@@ -69,6 +69,9 @@ export default function Footer({ lang }: { lang: Lang }) {
             <Link href="/disclaimer" className="hover:text-slate-300">{t.footer.disclaimer}</Link>
             <Link href="/photo-credits" className="hover:text-slate-300">{t.footer.photoCredits}</Link>
             <Link href="/sitemap-html" className="hover:text-slate-300">{t.footer.sitemap}</Link>
+            {lang === 'en'
+              ? <Link href="/hi" hrefLang="hi-IN" lang="hi" className="hover:text-slate-300">हिन्दी में पढ़ें</Link>
+              : <Link href="/" hrefLang="en-IN" lang="en" className="hover:text-slate-300">Read in English</Link>}
           </div>
         </div>
       </div>

@@ -33,6 +33,12 @@ export function areaName(slug?: string): string {
   return (slug && AREA_NAMES[slug]) || 'Dharamshala';
 }
 
+/** "Zostel, McLeod Ganj – Hostel"; names that already say the area ("HillOra McLeodganj") skip repeating it. */
+export function listingTitle(name: string, area: string, typeLabel: string): string {
+  const squash = (s: string) => s.toLowerCase().replace(/[^a-z]/g, '');
+  return squash(name).includes(squash(area)) ? name + ' – ' + typeLabel + ' in Dharamshala' : name + ', ' + area + ' – ' + typeLabel;
+}
+
 /** Everything the directory page needs, with safe defaults for missing fields. */
 export function directoryView(p: DirectoryProperty) {
   const area = areaName(p.destination_slug);

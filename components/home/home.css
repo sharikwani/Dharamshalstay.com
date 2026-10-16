@@ -646,3 +646,11 @@
   .hm .gcollage figure:first-child{grid-column:1/-1;grid-row:auto;height:240px}
 }
 @media (max-width:560px){.hm .gpair{grid-template-columns:1fr}}
+
+/* ---------- keeping the motion cheap ---------- */
+/* looping animations stop while their section is off screen (HomeEffects adds .off) */
+.hm .off, .hm .off *, .hm .off *::before, .hm .off *::after{animation-play-state:paused!important}
+/* phones: the soft radial gradients are enough without an 18px blur filter repainting each frame */
+@media (max-width:700px),(pointer:coarse){
+  .hm .mist{filter:none;opacity:.4}
+}

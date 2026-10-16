@@ -7,7 +7,7 @@ import { Breadcrumb, FAQSection, TrekCard } from '@/components/ui/Cards';
 import BookingForm from '@/components/forms/BookingForm';
 import JsonLd from '@/components/seo/JsonLd';
 import { getTrekBySlug, getPublishedTreks } from '@/lib/db';
-import { generateSEO, breadcrumbSchema, faqSchema, itemListSchema } from '@/lib/seo';
+import { generateSEO, breadcrumbSchema, faqSchema, itemListSchema, touristTripSchema } from '@/lib/seo';
 import { placeImage } from '@/lib/place-images';
 import { formatPrice, getWhatsAppLink, cn } from '@/lib/utils';
 import { serverT } from '@/lib/i18n/server';
@@ -53,7 +53,7 @@ export async function TreksListView({ lang }: { lang: Lang }) {
       <section className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {treks.map((x: any) => <TrekCard key={x.id} trek={x} lang={lang} />)}
+            {treks.map((x: any, i: number) => <TrekCard key={x.id} trek={x} lang={lang} priority={i === 0} />)}
           </div>
           <p className="text-sm text-slate-600 mt-8">
             {t.treks.rulesNote}{' '}
@@ -85,6 +85,11 @@ export async function TrekDetailView({ slug, lang }: { slug: string; lang: Lang 
     <>
       <JsonLd data={[
         breadcrumbSchema([{ name: t.common.home, href: '/' }, { name: t.common.treks, href: '/treks' }, { name: trek.name, href: '/treks/' + trek.slug }], lang),
+        touristTripSchema({
+          name: trek.name, description: trek.short_description, path: '/treks/' + trek.slug, image: trek.images?.[0],
+          price: trek.price_per_person, touristType: 'Trekkers',
+          itinerary: (trek.itinerary || []).map((d: any) => ({ name: d.title, description: d.description })),
+        }, lang),
         ...(trek.faqs?.length ? [faqSchema(trek.faqs)] : []),
       ]} />
 
