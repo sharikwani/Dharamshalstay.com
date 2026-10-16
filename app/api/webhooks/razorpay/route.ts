@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { webhookSignatureValid } from '@/lib/razorpay';
 import { recordOnlinePayment } from '@/lib/payments/record';
+import { schedulePaymentReminder } from '@/lib/email/jobs';
 
 /**
- * Razorpay webhook (Dashboard → Settings → Webhooks, URL /api/webhooks/razorpay, event payment_link.paid).
+ * Razorpay webhook (Dashboard → Settings → Webhooks, URL /api/webhooks/razorpay, events payment_link.paid and payment.failed).
  * Razorpay retries until it gets a 2xx, so a database failure answers 500.
  */
 export async function POST(req: NextRequest) {
@@ -33,6 +34,12 @@ export async function POST(req: NextRequest) {
         });
         if (!ok) return NextResponse.json({ error: 'Webhook failed' }, { status: 500 });
       }
+    }
+
+    // A failed card/UPI attempt on a booking's payment link: email the guest a retry link (once per booking).
+    if (event?.event === 'payment.failed') {
+      const bookingId = event.payload?.payment?.entity?.notes?.booking_id;
+      if (typeof bookingId === 'string' && /^[0-9a-f-]{36}$/i.test(bookingId)) await schedulePaymentReminder(bookingId, 'failed');
     }
 
     return NextResponse.json({ received: true });

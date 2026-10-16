@@ -11,7 +11,7 @@ export default function InquiryForm({ type, propertyId, trekId, paraglidingId, c
   contextNote?: string;
   title?: string; subtitle?: string; className?: string;
 }) {
-  const { t } = useT();
+  const { t, lang } = useT();
   const f = t.form;
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [checkIn, setCheckIn] = useState('');
@@ -40,7 +40,7 @@ export default function InquiryForm({ type, propertyId, trekId, paraglidingId, c
     if (!inquiryId.current) inquiryId.current = newClientId();
     const fd = new FormData(e.currentTarget);
     try {
-      const res = await fetch('/api/inquiries', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: inquiryId.current, type, name: fd.get('name'), email: fd.get('email'), phone: fd.get('phone'), message: contextNote ? '[' + contextNote + '] ' + (fd.get('message') || '') : fd.get('message'), check_in: checkIn || undefined, check_out: checkOut || undefined, guests: fd.get('guests') ? Number(fd.get('guests')) : undefined, property_id: propertyId, trek_id: trekId, paragliding_id: paraglidingId, pickup_location: fd.get('pickup_location') || undefined, drop_location: fd.get('drop_location') || undefined }) });
+      const res = await fetch('/api/inquiries', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: inquiryId.current, type, name: fd.get('name'), email: fd.get('email'), phone: fd.get('phone'), message: contextNote ? '[' + contextNote + '] ' + (fd.get('message') || '') : fd.get('message'), check_in: checkIn || undefined, check_out: checkOut || undefined, guests: fd.get('guests') ? Number(fd.get('guests')) : undefined, property_id: propertyId, trek_id: trekId, paragliding_id: paraglidingId, pickup_location: fd.get('pickup_location') || undefined, drop_location: fd.get('drop_location') || undefined, marketing_consent: fd.get('offers') === 'on' && !!fd.get('email'), lang }) });
       if (!res.ok) throw new Error(); setStatus('success');
     } catch { failed.current = true; setStatus('error'); }
   }
@@ -55,6 +55,10 @@ export default function InquiryForm({ type, propertyId, trekId, paraglidingId, c
           <input name="phone" type="tel" required placeholder={f.phone} className="col-span-2 sm:col-span-1 w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none" />
         </div>
         <input name="email" type="email" placeholder={f.email} className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none" />
+        <label className="flex items-start gap-2 text-xs text-slate-600 leading-snug">
+          <input type="checkbox" name="offers" className="mt-0.5 h-4 w-4 rounded border-slate-300" />
+          <span>{lang === 'hi' ? 'मुझे ईमेल पर यात्रा सुझाव, त्योहार ऑफ़र और डील भेजें (हफ़्ते में अधिकतम एक)। कभी भी अनसब्सक्राइब कर सकते हैं।' : 'Email me travel ideas, festival offers and deals (at most once a week). Unsubscribe any time.'}</span>
+        </label>
         {(type === 'hotel' || type === 'trek' || type === 'paragliding') && (
           <div className="grid grid-cols-3 gap-3">
             <div>

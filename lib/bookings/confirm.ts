@@ -1,6 +1,8 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { serviceClient } from '@/lib/server-auth';
 import { sendBookingConfirmation } from '@/lib/email';
+import { scheduleBookingJourney } from '@/lib/email/jobs';
+import { bookingPageUrlOrNull, loadStayContact } from '@/lib/bookings/stay-details';
 import { whatsappNewBooking } from '@/lib/booking-whatsapp';
 
 export type ConfirmBy = 'admin' | 'partner';
@@ -45,11 +47,16 @@ export async function sendConfirmedNotices(id: string): Promise<void> {
     if (booking.guest_email) {
       try {
         let propertyName = '';
+        let property: any = null;
         if (booking.property_id) {
-          const { data: prop } = await sb.from('properties').select('name').eq('id', booking.property_id).single();
+          const { data: prop } = await sb.from('properties').select('name,slug,images,check_in_time').eq('id', booking.property_id).single();
           propertyName = prop?.name || '';
+          property = prop || null;
         }
         await sendBookingConfirmation({
+          id: booking.id, property,
+          stay: booking.property_id ? await loadStayContact(booking.id) : null,
+          details_url: bookingPageUrlOrNull(booking) || undefined,
           guest_name: booking.guest_name, guest_email: booking.guest_email, booking_ref: booking.booking_ref,
           check_in: booking.check_in, check_out: booking.check_out, activity_date: booking.activity_date,
           amount: booking.amount, category: booking.category, room_name: booking.room_name,
@@ -57,6 +64,7 @@ export async function sendConfirmedNotices(id: string): Promise<void> {
           payment_method: booking.payment_method, payment_status: booking.payment_status,
         });
       } catch (e) { console.error('Confirmation email failed (non-fatal):', e); }
+      await scheduleBookingJourney(booking.id);
     }
     await whatsappNewBooking(id, { customer: true, partners: false });
   } catch (e) { console.error('Confirmation notices failed (non-fatal):', e); }

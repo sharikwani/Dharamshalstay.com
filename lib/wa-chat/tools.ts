@@ -6,6 +6,8 @@ import { getTaxiRouteGroups } from '@/lib/taxi';
 import { siteConfig } from '@/lib/config';
 import { extraBedOption } from '@/lib/pricing';
 import { sendEmail, adminEmail } from '@/lib/email';
+import { afterEnquiry } from '@/lib/email/enquiry';
+import { CONSENT_TEXT, normEmail, upsertContact } from '@/lib/email/contacts';
 import { serviceClient } from '@/lib/server-auth';
 import { history, setStatusIf } from './store';
 import { BOOKING_TOOL_DEFS, runBookingTool } from './booking-tools';
@@ -40,7 +42,12 @@ export const TOOL_DEFS = [
     item: str('Hotel, room, route, trek or package wanted'), check_in: str('YYYY-MM-DD (hotel) or activity/pickup date'),
     check_out: str('YYYY-MM-DD (hotel only)'), guests: num('Number of people'), pickup: str('Pickup place/time (taxi)'),
     drop: str('Drop place (taxi)'), email: str('Email if given'), notes: str('Anything else: room type, meal plan, special requests'),
+    email_offers: { type: 'boolean', description: 'True only if the customer clearly said yes to travel ideas and offers by email' },
   }, ['type', 'name']),
+  fn('save_contact', 'Save the customer email to our list (when no booking or enquiry is being made), or record that they want or do not want offers by email.', {
+    email: str('Email address'), name: str('Customer name, if known'),
+    email_offers: { type: 'boolean', description: 'true if they said yes to travel ideas and offers by email, false if they said no or asked to stop' },
+  }, ['email_offers']),
   fn('handover', 'Hand the chat to a team member. Use for complaints, refunds, changes to existing bookings, angry customers, requests for a person, or when unsure.', {
     reason: str('Short reason for the team'),
   }, ['reason']),
@@ -153,6 +160,8 @@ async function createEnquiry(a: any, ctx: ToolCtx) {
   if (error) { console.error('WhatsApp enquiry insert failed:', error); return { error: 'Could not save the enquiry' }; }
   markSideEffect(ctx, 'create_enquiry', `Enquiry ${data.id} saved`);
   if (row.property_id) inBackground('Hotel enquiry alert', () => alertHotelOfEnquiry(data.id));
+  // Contact list, the guest's confirmation email and the follow-up (the admin alert is the email below).
+  inBackground('WhatsApp enquiry emails', () => afterEnquiry(data.id, { consent: a.email_offers === true, consentSource: 'whatsapp', adminAlert: false }));
   await sendEmail({
     to: adminEmail(), subject: `New WhatsApp enquiry: ${row.type} from ${row.name}`,
     html: `<p><strong>${esc(row.name)}</strong> (+${esc(ctx.phone)}) asked on WhatsApp.</p><ul>${
@@ -161,6 +170,21 @@ async function createEnquiry(a: any, ctx: ToolCtx) {
         .filter(([, v]) => v).map(([k, v]) => `<li>${k}: ${esc(v)}</li>`).join('')}</ul><p><a href="${SITE}/admin/whatsapp?c=${ctx.conversationId}">Open the chat</a></p>`,
   }).catch((e) => console.error('Enquiry email failed:', e));
   return { ok: true, enquiry_id: data.id };
+}
+
+async function saveContact(a: any, ctx: ToolCtx) {
+  const email = a.email ? normEmail(a.email) : null;
+  if (a.email && !email) return { error: 'That email looks wrong; ask the customer to check it.' };
+  const c = await upsertContact({
+    email, phone: ctx.phone, name: a.name || ctx.profileName || null, source: 'whatsapp',
+    consent: a.email_offers === true ? { text: CONSENT_TEXT.whatsapp, source: 'whatsapp' } : undefined,
+  });
+  if (!c) return { error: 'Could not save; carry on without it.' };
+  if (a.email_offers === false && c.marketing_consent) {
+    await serviceClient().from('contacts').update({ marketing_consent: false, unsubscribed_at: new Date().toISOString() }).eq('id', c.id);
+  }
+  markSideEffect(ctx, 'save_contact', `Contact saved${email ? ' (' + email + ')' : ''}, offers by email: ${a.email_offers ? 'yes' : 'no'}`);
+  return { ok: true, offers: a.email_offers === true };
 }
 
 async function handover(a: any, ctx: ToolCtx) {
@@ -192,6 +216,7 @@ export async function runTool(name: string, args: any, ctx: ToolCtx): Promise<st
       : name === 'get_trek' ? await treks(a, true)
       : name === 'list_paragliding' ? await paragliding()
       : name === 'create_enquiry' ? await createEnquiry(a, ctx)
+      : name === 'save_contact' ? await saveContact(a, ctx)
       : name === 'handover' ? await handover(a, ctx)
       : { error: 'Unknown tool' };
     return JSON.stringify(out);

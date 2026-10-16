@@ -10,7 +10,7 @@ export default function PrivacyPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
       <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Privacy Policy' }]} />
       <h1 className="text-3xl font-heading font-bold text-slate-900 mb-2">Privacy Policy</h1>
-      <p className="text-sm text-slate-500 mb-8">Last updated: March 2026</p>
+      <p className="text-sm text-slate-500 mb-8">Last updated: October 2026</p>
       <div className="space-y-8 text-slate-600 leading-relaxed">
         <section>
           <h2 className="text-xl font-heading font-semibold text-slate-900 mb-3">1. Information We Collect</h2>
@@ -20,6 +20,12 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-xl font-heading font-semibold text-slate-900 mb-3">2. How We Use Your Information</h2>
           <p>We use your information to process bookings and reservations, communicate about your travel plans, send confirmations via email and WhatsApp, improve our services, and respond to your inquiries.</p>
+        </section>
+        <section>
+          <h2 className="text-xl font-heading font-semibold text-slate-900 mb-3">Emails and WhatsApp messages</h2>
+          <p>When you book or send an enquiry, we email you about it: confirmations, payment reminders, an arrival guide before your trip and a request to review your stay afterwards. These service emails are part of the booking and are sent whether or not you subscribe to anything.</p>
+          <p className="mt-2">We send travel ideas and offers (at most once a week) only if you ask for them: by ticking the box on a form, saying yes on WhatsApp, or confirming a newsletter sign-up by email. We keep a record of when and how you agreed. Every such email has a one-click unsubscribe link, and you can also reply &quot;unsubscribe&quot; or tell us on WhatsApp. We stop emailing addresses that bounce or report spam.</p>
+          <p className="mt-2">Emails are sent through Resend, and some marketing text is drafted with the help of an AI model; we never send it your payment details. We record whether our emails were delivered and opened so we can fix delivery problems and send less of what people don&apos;t read.</p>
         </section>
         <section>
           <h2 className="text-xl font-heading font-semibold text-slate-900 mb-3">3. Information Sharing</h2>

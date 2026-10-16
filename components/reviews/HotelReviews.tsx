@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BadgeCheck, Loader2, MessageSquare, Pencil, Star } from 'lucide-react';
 import { useT } from '@/lib/i18n/client';
 import { fmt } from '@/lib/i18n/dict';
@@ -38,6 +38,8 @@ export default function HotelReviews({ propertyId, hotelName, initial }: { prope
   const [open, setOpen] = useState(false);
   const [loadError, setLoadError] = useState(false);
   const writeRef = useRef<HTMLButtonElement>(null);
+  // The review-request email links here with ?review=1, so the form opens straight away.
+  useEffect(() => { if (new URLSearchParams(window.location.search).get('review') === '1') setOpen(true); }, []);
   const photos = reviews.flatMap((x) => x.photos.map((url) => ({ url, alt: x.title }))).slice(0, 12);
 
   async function loadMore() {

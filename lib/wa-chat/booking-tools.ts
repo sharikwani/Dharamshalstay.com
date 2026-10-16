@@ -5,6 +5,7 @@ import { bookingSchema, createBooking, dateProblem, roomLabel } from '@/lib/book
 import { createCheckoutLink } from '@/lib/bookings/checkout';
 import { fallbackToPayLater, laterMethod } from '@/lib/bookings/pay-later';
 import { adminEmail, sendEmail } from '@/lib/email';
+import { CONSENT_TEXT, upsertContact } from '@/lib/email/contacts';
 import { serviceClient } from '@/lib/server-auth';
 import { roomSummaries } from '@/lib/availability/calc';
 import { availabilityFor } from '@/lib/availability/store';
@@ -44,6 +45,7 @@ export const BOOKING_TOOL_DEFS = [
   fn('create_booking', 'Book the most recent quote you showed the customer. Only after the customer replied YES to that quote\'s summary in a later message and explicitly chose pay online or pay later themselves.', {
     payment: { type: 'string', enum: ['online', 'later'], description: 'Payment, as the customer\'s explicit choice in their own words: online (pay now by link) or later. If they have not chosen, ask; never pick for them.' },
     guest_name: str('Full name for the booking'), guest_email: str('Email, if the customer gave one'),
+    email_offers: { type: 'boolean', description: 'True only if the customer clearly said yes to travel ideas and offers by email' },
   }, ['payment', 'guest_name']),
   fn('payment_link', 'A fresh online payment link for one of this customer\'s unpaid bookings.', { booking_ref: str('Booking reference, e.g. TRK-1234') }, ['booking_ref']),
   fn('my_bookings', 'This customer\'s recent bookings (made with this WhatsApp number).', {}),
@@ -228,6 +230,8 @@ async function createTool(a: any, ctx: ToolCtx, handover: Handover) {
   }
 
   const r = await createBooking(parsed.data, { userId: null, callerRole: null, ...(offer ? { offer: { code: offer.code, percent: offer.percent } } : {}) });
+  // Their yes to offers by email, with the words as proof (booking emails go out either way).
+  if (a.email_offers === true && email) await upsertContact({ email, phone: ctx.phone, name, source: 'whatsapp', interests: [q.category], consent: { text: CONSENT_TEXT.whatsapp, source: 'whatsapp' } });
   if (!r.ok) {
     // Any failure (sold out, lost race, 503, no online payment) frees the quote and the code for another try.
     await releaseQuote(q.id);

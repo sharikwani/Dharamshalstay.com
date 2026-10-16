@@ -2,6 +2,8 @@ import { serviceClient } from '@/lib/server-auth';
 import { sendBookingConfirmation, sendBookingRequestReceived, sendAdminNotification } from '@/lib/email';
 import { whatsappNewBooking } from '@/lib/booking-whatsapp';
 import { bookingPageUrlOrNull, loadStayContact } from '@/lib/bookings/stay-details';
+import { upsertContact } from '@/lib/email/contacts';
+import { scheduleBookingJourney } from '@/lib/email/jobs';
 
 /**
  * Guest email + admin alert + partner WhatsApp for one booking. Never throws.
@@ -14,13 +16,17 @@ export async function sendBookingEmails(bookingId: string, stage: 'requested' | 
     const { data: booking } = await sb.from('bookings').select('*').eq('id', bookingId).single();
     if (!booking) return;
     let propertyName = '';
+    let property: any = null;
     if (booking.property_id) {
-      const { data: prop } = await sb.from('properties').select('name').eq('id', booking.property_id).single();
+      const { data: prop } = await sb.from('properties').select('name,slug,images,check_in_time').eq('id', booking.property_id).single();
       propertyName = prop?.name || '';
+      property = prop || null;
     }
+    await upsertContact({ email: booking.guest_email, phone: booking.guest_phone, name: booking.guest_name, source: booking.booking_source === 'whatsapp' ? 'whatsapp' : 'booking', interests: [booking.category], event: 'booking' }, sb);
     if (booking.guest_email) {
       // A pay-later request is not confirmed yet: only the confirmed stage says "Booking Confirmed".
       await (stage === 'confirmed' ? sendBookingConfirmation : sendBookingRequestReceived)({
+        id: booking.id, property,
         guest_name: booking.guest_name, guest_email: booking.guest_email, booking_ref: booking.booking_ref,
         check_in: booking.check_in, check_out: booking.check_out, activity_date: booking.activity_date,
         amount: booking.amount, category: booking.category, room_name: booking.room_name,
@@ -30,7 +36,9 @@ export async function sendBookingEmails(bookingId: string, stage: 'requested' | 
         details_url: bookingPageUrlOrNull(booking) || undefined,
       });
     }
+    if (stage === 'confirmed') await scheduleBookingJourney(booking.id);
     await sendAdminNotification({
+      id: booking.id,
       guest_name: booking.guest_name, guest_phone: booking.guest_phone, guest_email: booking.guest_email,
       booking_ref: booking.booking_ref, category: booking.category, amount: booking.amount,
       check_in: booking.check_in, check_out: booking.check_out, property_name: propertyName,

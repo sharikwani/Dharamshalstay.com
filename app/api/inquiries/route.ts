@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { inBackground } from '@/lib/background';
 import { alertHotelOfEnquiry } from '@/lib/listings/enquiry-alert';
+import { afterEnquiry } from '@/lib/email/enquiry';
 
 function getTodayIST(): string {
   const now = new Date();
@@ -19,6 +20,9 @@ const schema = z.object({
   property_id: z.string().uuid().optional(), trek_id: z.string().optional(),
   paragliding_id: z.string().optional(),
   pickup_location: z.string().optional(), drop_location: z.string().optional(),
+  /** The guest ticked "send me travel ideas and offers". Stored on the contact, not the enquiry. */
+  marketing_consent: z.boolean().optional(),
+  lang: z.enum(['en', 'hi']).optional(),
 });
 
 export async function POST(req: NextRequest) {
@@ -27,7 +31,7 @@ export async function POST(req: NextRequest) {
     const parsed = schema.safeParse(body);
     if (!parsed.success) return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
 
-    const data = parsed.data;
+    const { marketing_consent, lang, ...data } = parsed.data;
     const today = getTodayIST();
     if (data.check_in && data.check_in < today) {
       return NextResponse.json({ error: 'Check-in date cannot be in the past' }, { status: 400 });
@@ -54,6 +58,8 @@ export async function POST(req: NextRequest) {
       }
       // A hotel that hasn't joined the partner portal yet hears about the enquiry on WhatsApp.
       if (data.type === 'hotel' && data.property_id && saved?.id) inBackground('Hotel enquiry alert', () => alertHotelOfEnquiry(saved.id));
+      // Guest confirmation email, admin alert, contact list and the 2-day follow-up.
+      if (saved?.id) inBackground('Enquiry emails', () => afterEnquiry(saved.id, { consent: !!marketing_consent, lang, consentSource: 'website-enquiry-form' }));
     } else {
       console.log('📩 Inquiry:', JSON.stringify(data, null, 2));
     }
