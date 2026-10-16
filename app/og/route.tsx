@@ -78,7 +78,7 @@ export async function GET(req: Request) {
   const site = 'dharamshalastay.com';
   const [photo, logo, heading, small] = await Promise.all([
     loadImage(searchParams.get('image'), origin).then((p) => p || loadImage(FALLBACK_IMAGE, origin)),
-    loadImage('/brand/logo-badge-512.png', origin),
+    loadImage('/brand/logo-badge-icon-512.png', origin),
     googleFont('Poppins', 700, title + brand),
     googleFont('Poppins', 500, tag + site),
   ]);
