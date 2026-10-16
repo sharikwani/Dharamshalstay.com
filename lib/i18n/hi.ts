@@ -6,7 +6,7 @@ import type { Dict } from './en';
  */
 export const hi: Dict = {
   nav: {
-    tagline: 'स्थानीय यात्रा विशेषज्ञ',
+    tagline: 'हिमालय में आपका घर',
     hotels: 'होटल', treks: 'ट्रेक', paragliding: 'पैराग्लाइडिंग', taxi: 'टैक्सी',
     guides: 'ट्रैवल गाइड', monasteries: 'मठ और ध्यान', essentials: 'ज़रूरी बातें', faq: 'सवाल-जवाब', contact: 'संपर्क',
     listProperty: 'पार्टनर बनें', myAccount: 'मेरा अकाउंट', login: 'लॉगिन', loginSignup: 'लॉगिन / साइन अप',
