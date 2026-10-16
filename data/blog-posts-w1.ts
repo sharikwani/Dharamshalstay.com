@@ -159,7 +159,7 @@ Bhagsu pairs well with a [Triund trek](/blog/triund-trek-complete-guide) (the tr
     tags: ['Bhagsu', 'Bhagsunag', 'Bhagsu waterfall', 'Shiva Cafe', 'McLeod Ganj', 'travel guide'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-09-18',
-    updated_at: '2026-10-02',
+    updated_at: '2026-10-17',
     image: placeImage('bhagsu-waterfall'),
     image_alt: 'Bhagsu waterfall pouring down a green rocky gorge above Bhagsunag village near McLeod Ganj',
     read_time: 10,
@@ -168,6 +168,7 @@ Bhagsu pairs well with a [Triund trek](/blog/triund-trek-complete-guide) (the tr
     meta_description: 'Bhagsu (Bhagsunag) travel guide 2026: temple and pools, waterfall walk, Shiva Cafe climb, Upper Bhagsu cafes and yoga, where to stay and what to skip.',
     related_slugs: ['dharamkot-travel-guide', 'things-to-do-in-mcleod-ganj', 'best-hotels-in-mcleod-ganj'],
     faqs: [
+      { question: 'What is the distance from Dharamshala to Bhagsu waterfall?', answer: 'About 12 km by road from Dharamshala town (Kotwali Bazaar): roughly 11 km to Bhagsunag village via McLeod Ganj, then about 1 km on foot from the temple to the falls. Allow 30 to 40 minutes by taxi to Bhagsunag plus a 15 to 20 minute walk.' },
       { question: 'How far is Bhagsu waterfall from McLeod Ganj?', answer: 'Bhagsunag temple is about 2 km from McLeod Ganj main square, a 25 to 30 minute walk or short taxi ride. From the temple, the waterfall is roughly another 1 km, about 15 to 20 minutes on a paved path.' },
       { question: 'Is there an entry fee for Bhagsu waterfall or Bhagsunag temple?', answer: 'No. Both the temple and the waterfall path were free to visit as of 2026. Remove shoes at the temple and dress modestly.' },
       { question: 'How long is the walk to Shiva Cafe from Bhagsu waterfall?', answer: 'Plan 20 to 30 minutes of steep, uneven climbing above the falls. Wear proper shoes, avoid crossing the stream when water is high, and come down before dark.' },
