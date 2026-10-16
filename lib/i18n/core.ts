@@ -5,7 +5,8 @@
  */
 export type Lang = 'en' | 'hi';
 export const LANGS: Lang[] = ['en', 'hi'];
-export const LANG_COOKIE = 'ds_lang';
+// Set only by the language toggle. Renamed from 'ds_lang', which was also set automatically on any Hindi page view.
+export const LANG_COOKIE = 'ds_lang_choice';
 
 /** Public sections that have a Hindi version. */
 const HINDI_SECTIONS = ['/', '/hotels', '/destinations', '/treks', '/taxi', '/paragliding', '/blog', '/faq', '/essentials', '/about', '/contact'];

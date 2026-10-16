@@ -1,0 +1,47 @@
+/* Diwali guide look: night-sky header with lights, toran and diyas. */
+.fx-diwali-page{background:linear-gradient(180deg,#fff8ec 0,#fffdf8 520px,#fff 100%)}
+.fx-hero{position:relative;overflow:hidden;color:#fff;
+  background:
+    radial-gradient(circle at 12% 30%,rgba(255,196,77,.35) 0 2px,transparent 3px),
+    radial-gradient(circle at 78% 22%,rgba(255,196,77,.4) 0 2px,transparent 3px),
+    radial-gradient(circle at 40% 70%,rgba(255,160,60,.3) 0 2px,transparent 3px),
+    radial-gradient(ellipse at 50% 120%,rgba(255,140,40,.45),transparent 60%),
+    linear-gradient(160deg,#1c0b2e 0%,#3b0d2c 45%,#5a1a12 100%)}
+.fx-hero::before,.fx-hero::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:
+    radial-gradient(circle,rgba(255,214,120,.9) 0 1.5px,transparent 2.5px),
+    radial-gradient(circle,rgba(255,170,80,.7) 0 1px,transparent 2px);
+  background-size:140px 120px,90px 100px;background-position:0 0,45px 60px;
+  animation:fx-twinkle 4s ease-in-out infinite alternate}
+.fx-hero::after{background-size:200px 160px,120px 140px;background-position:70px 30px,10px 90px;animation-delay:-2s;opacity:.7}
+@keyframes fx-twinkle{from{opacity:.35}to{opacity:1}}
+.fx-hero-inner{position:relative;z-index:1}
+.fx-toran{display:block;filter:drop-shadow(0 4px 6px rgba(0,0,0,.35))}
+.fx-hero h1{color:#fff;text-shadow:0 2px 24px rgba(255,170,60,.45)}
+.fx-hero .fx-kicker{display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(255,214,120,.5);color:#ffd98a;
+  background:rgba(255,190,80,.08);border-radius:999px;padding:4px 12px;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.fx-hero .fx-meta,.fx-hero .fx-meta *{color:#f5d9b8}
+.fx-hero .fx-meta .bg-brand-50{background:rgba(255,255,255,.12)}
+.fx-hero nav a,.fx-hero nav span,.fx-hero nav li,.fx-hero nav svg{color:#f5d9b8 !important}
+
+.fx-diyas{display:flex;justify-content:center;gap:clamp(6px,2vw,18px);flex-wrap:nowrap;overflow:hidden}
+.fx-flame{transform-origin:32px 30px;animation:fx-flicker 1.4s ease-in-out infinite}
+.fx-glow{animation:fx-glow 1.4s ease-in-out infinite;transform-origin:32px 22px}
+@keyframes fx-flicker{0%,100%{transform:scale(1,1) rotate(-2deg)}35%{transform:scale(.92,1.08) rotate(2deg)}70%{transform:scale(1.05,.95) rotate(-1deg)}}
+@keyframes fx-glow{0%,100%{opacity:.22;transform:scale(1)}50%{opacity:.4;transform:scale(1.12)}}
+
+.fx-diwali .prose-custom h2{position:relative;padding-left:22px}
+.fx-diwali .prose-custom h2::before{content:"";position:absolute;left:0;top:.42em;width:12px;height:12px;border-radius:50%;
+  background:radial-gradient(circle at 40% 40%,#ffe08a,#f97316 60%,#c2410c);box-shadow:0 0 10px rgba(249,115,22,.55)}
+.fx-diwali .fx-toc{background:#fff7ea;border-color:#fcd9a8}
+.fx-cta{background:linear-gradient(135deg,#7c1d0f 0%,#b4320f 45%,#e8730c 100%);color:#fff;position:relative;overflow:hidden}
+.fx-cta::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background-image:radial-gradient(circle,rgba(255,226,150,.9) 0 1.5px,transparent 2.5px);background-size:70px 60px}
+.fx-cta > *{position:relative}
+.fx-cta h2{color:#fff}
+.fx-cta p{color:#ffe7c7}
+
+@media (max-width:480px){.fx-diyas svg:nth-child(n+6){display:none}}
+@media (prefers-reduced-motion:reduce){
+  .fx-hero::before,.fx-hero::after,.fx-flame,.fx-glow{animation:none}
+}

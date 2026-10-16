@@ -8,6 +8,7 @@ import MarkdownContent, { extractHeadings } from '@/components/blog/MarkdownCont
 import GuideSearch from '@/components/blog/GuideSearch';
 import JsonLd from '@/components/seo/JsonLd';
 import PreferredSourceButton from '@/components/seo/PreferredSourceButton';
+import { FESTIVE_POSTS, Toran, DiyaRow, Rangoli } from '@/components/blog/FestiveDecor';
 import { blogPosts, getBlogBySlug, getBlogCategories, getRelatedPosts, NOINDEX_POSTS } from '@/data/blog';
 import { generateSEO, articleSchema, breadcrumbSchema, faqSchema, itemListSchema } from '@/lib/seo';
 import { placeImage } from '@/lib/place-images';
@@ -140,32 +141,16 @@ export function BlogPostView({ slug, lang }: { slug: string; lang: Lang }) {
   const b = t.blog;
   const related = getRelatedPosts(raw, 4).map((p) => localizePost(p, lang));
   const headings = extractHeadings(post.content);
+  const diwali = FESTIVE_POSTS[raw.slug] === 'diwali';
 
-  return (
-    <>
-      <JsonLd data={[
-        articleSchema(post, post.translated ? lang : 'en'),
-        breadcrumbSchema([
-          { name: t.common.home, href: '/' },
-          { name: t.common.guides, href: '/blog' },
-          { name: post.title, href: '/blog/' + post.slug },
-        ], lang),
-        ...(post.faqs?.length ? [faqSchema(post.faqs)] : []),
-      ]} />
-
-      <article className="max-w-3xl mx-auto px-4 sm:px-6 py-8" lang={post.translated ? undefined : 'en'}>
-        <Breadcrumb lang={lang} items={[
-          { label: t.common.home, href: '/' },
-          { label: t.common.guides, href: '/blog' },
-          { label: post.title },
-        ]} />
-
-        {lang === 'hi' && !post.translated && (
-          <p className="flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-900 text-sm rounded-xl px-4 py-3 mb-4" lang="hi">
-            <Languages className="h-4 w-4 shrink-0" /> {b.notTranslated}
-          </p>
-        )}
-
+  const breadcrumb = (
+    <Breadcrumb lang={lang} items={[
+      { label: t.common.home, href: '/' },
+      { label: t.common.guides, href: '/blog' },
+      { label: post.title },
+    ]} />
+  );
+  const meta = (
         <div className="flex flex-wrap items-center gap-3 mb-4 mt-3">
           <span className="text-xs font-semibold text-brand-600 bg-brand-50 px-2.5 py-1 rounded-full flex items-center gap-1">
             <Tag className="h-3 w-3" />{b.categories[post.category] || post.category}
@@ -185,9 +170,48 @@ export function BlogPostView({ slug, lang }: { slug: string; lang: Lang }) {
             <User className="h-3.5 w-3.5" />{b.author}
           </span>
         </div>
+  );
 
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-heading font-bold text-slate-900 mb-4 leading-tight">{post.title}</h1>
-        <p className="text-lg text-slate-600 mb-6 leading-relaxed">{post.excerpt}</p>
+  return (
+    <>
+      <JsonLd data={[
+        articleSchema(post, post.translated ? lang : 'en'),
+        breadcrumbSchema([
+          { name: t.common.home, href: '/' },
+          { name: t.common.guides, href: '/blog' },
+          { name: post.title, href: '/blog/' + post.slug },
+        ], lang),
+        ...(post.faqs?.length ? [faqSchema(post.faqs)] : []),
+      ]} />
+
+      <div className={diwali ? 'fx-diwali-page' : undefined}>
+      {diwali && (
+        <header className="fx-hero" lang={post.translated ? undefined : 'en'}>
+          <Toran />
+          <div className="fx-hero-inner max-w-3xl mx-auto px-4 sm:px-6 pt-4 pb-6">
+            {breadcrumb}
+            <p className="mt-5 mb-3"><span className="fx-kicker">✦ {lang === 'hi' ? 'दीपावली 2026 · रविवार 8 नवंबर' : 'Diwali 2026 · Sunday 8 November'}</span></p>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold mb-4 leading-tight">{post.title}</h1>
+            <p className="text-lg text-amber-100/90 mb-5 leading-relaxed">{post.excerpt}</p>
+            <div className="fx-meta">{meta}</div>
+            <DiyaRow className="mt-4" count={9} />
+          </div>
+        </header>
+      )}
+      <article className={'max-w-3xl mx-auto px-4 sm:px-6 py-8' + (diwali ? ' fx-diwali' : '')} lang={post.translated ? undefined : 'en'}>
+        {!diwali && breadcrumb}
+
+        {lang === 'hi' && !post.translated && (
+          <p className="flex items-center gap-2 bg-amber-50 border border-amber-200 text-amber-900 text-sm rounded-xl px-4 py-3 mb-4" lang="hi">
+            <Languages className="h-4 w-4 shrink-0" /> {b.notTranslated}
+          </p>
+        )}
+
+        {!diwali && (<>
+          {meta}
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-heading font-bold text-slate-900 mb-4 leading-tight">{post.title}</h1>
+          <p className="text-lg text-slate-600 mb-6 leading-relaxed">{post.excerpt}</p>
+        </>)}
 
         <figure className="mb-10">
           <div className="relative aspect-[16/9] rounded-2xl overflow-hidden bg-slate-100">
@@ -199,7 +223,7 @@ export function BlogPostView({ slug, lang }: { slug: string; lang: Lang }) {
         </figure>
 
         {headings.length >= 4 && (
-          <nav aria-label={b.toc} className="bg-slate-50 border border-slate-200 rounded-xl p-5 mb-8">
+          <nav aria-label={b.toc} className="fx-toc bg-slate-50 border border-slate-200 rounded-xl p-5 mb-8">
             <p className="font-heading font-semibold text-slate-900 mb-2">{b.toc}</p>
             <ol className="list-decimal pl-5 space-y-1 text-sm">
               {headings.map(h => (
@@ -212,6 +236,8 @@ export function BlogPostView({ slug, lang }: { slug: string; lang: Lang }) {
         <div className="prose-custom">
           <MarkdownContent content={post.content} lang={lang} />
         </div>
+
+        {diwali && <div className="flex justify-center mt-10"><Rangoli /></div>}
 
         {post.faqs && post.faqs.length > 0 && (
           <section className="mt-10">
@@ -238,9 +264,10 @@ export function BlogPostView({ slug, lang }: { slug: string; lang: Lang }) {
           </p>
         )}
 
-        <div className="bg-brand-50 rounded-2xl p-8 text-center mt-10 mb-10">
-          <h2 className="font-heading font-bold text-xl text-slate-900 mb-2">{b.ctaTitle}</h2>
-          <p className="text-slate-600 mb-5">{b.ctaIntro}</p>
+        <div className={(diwali ? 'fx-cta' : 'bg-brand-50') + ' rounded-2xl p-8 text-center mt-10 mb-10'}>
+          {diwali && <DiyaRow className="mb-4" count={5} />}
+          <h2 className="font-heading font-bold text-xl text-slate-900 mb-2">{diwali ? (lang === 'hi' ? 'दिवाली वीकेंड के लिए स्टे बुक करें' : 'Book your Diwali weekend stay') : b.ctaTitle}</h2>
+          <p className="text-slate-600 mb-5">{diwali ? (lang === 'hi' ? '7 से 9 नवंबर के कमरे जल्दी भरते हैं। सीधे दाम देखें या WhatsApp पर पूछें।' : 'Rooms for 7 to 9 November fill fast. Compare direct rates or ask us on WhatsApp.') : b.ctaIntro}</p>
           <div className="flex flex-col sm:flex-row justify-center gap-3">
             <Link href={href('/hotels')} className="bg-brand-600 text-white px-6 py-2.5 rounded-xl font-semibold hover:bg-brand-700 transition-colors">{t.common.browseHotels}</Link>
             <a href={getWhatsAppLink(fmt(b.whatsappMsg, { title: raw.title }))} target="_blank" rel="noopener noreferrer"
@@ -274,6 +301,7 @@ export function BlogPostView({ slug, lang }: { slug: string; lang: Lang }) {
           <ArrowLeft className="h-4 w-4" /> {b.allGuides}
         </Link>
       </article>
+      </div>
     </>
   );
 }
