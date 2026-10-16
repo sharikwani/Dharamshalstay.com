@@ -686,3 +686,20 @@
 @media (min-width:1600px){
   .hm .hero-grid{max-width:1440px}
 }
+
+/* ---------- tablets and small laptops: the same wide search bar, full width ---------- */
+@media (min-width:640px) and (max-width:1199px){
+  .hm .hero-grid{grid-template-columns:minmax(0,1fr);gap:28px;padding-block:158px 8px}
+  .hm .h1{max-width:none}
+  .hm .book{max-width:none;padding:20px}
+  .hm .tab{flex-direction:row;justify-content:center;gap:8px;padding:11px 8px;font-size:13.5px}
+  .hm .fields{grid-template-columns:1.3fr 1fr 1fr;gap:10px}
+  .hm .field.full{grid-column:auto}
+}
+/* ---------- phones: bring the search card up into the first screen ---------- */
+@media (max-width:560px){
+  .hm .hero-grid{padding-block:108px 8px;gap:22px}
+  .hm .hero-copy .badge{display:none}
+  .hm .hero-copy{gap:16px}
+  .hm .proof{gap:6px 16px;font-size:13px}
+}
