@@ -1,10 +1,11 @@
 import Link from 'next/link';
-import { Mountain, Mail, Phone, MapPin, Instagram } from 'lucide-react';
+import { Mail, Phone, MapPin, Instagram } from 'lucide-react';
 import { siteConfig, DESTINATION_LINKS } from '@/lib/config';
 import { fmt, getDict } from '@/lib/i18n/dict';
 import { localizePath, type Lang } from '@/lib/i18n/core';
 import { COLLECTIONS } from '@/lib/hotels/collections';
 import NewsletterSignup from '@/components/email/NewsletterSignup';
+import BrandMark from '@/components/brand/BrandMark';
 
 const GUIDE_SLUGS = [
   'dharamshala-complete-travel-guide', 'places-to-visit-in-dharamshala', 'things-to-do-in-mcleod-ganj',
@@ -31,7 +32,7 @@ export default function Footer({ lang }: { lang: Lang }) {
         <NewsletterSignup lang={lang} />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           <div>
-            <Link href={href('/')} className="flex items-center gap-2 mb-4"><Mountain className="h-6 w-6 text-orange-500" /><span className="text-lg font-heading font-bold text-white">Dharamshala Stay</span></Link>
+            <Link href={href('/')} className="flex items-center gap-2 mb-4"><BrandMark className="h-8 w-8 text-white" /><span className="text-lg font-heading font-bold text-white">Dharamshala Stay</span></Link>
             <p className="text-sm text-slate-400 mb-4">{t.footer.description}</p>
             <div className="space-y-2 text-sm">
               <a href={`tel:${siteConfig.phone}`} className="flex items-center gap-2 hover:text-orange-400"><Phone className="h-4 w-4 text-orange-500" /> {siteConfig.phone}</a>

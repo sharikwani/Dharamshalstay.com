@@ -125,8 +125,11 @@ ${doc.preheader ? `<div style="display:none;max-height:0;overflow:hidden;opacity
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f1f5f9;"><tr><td align="center" style="padding:24px 12px;">
 <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;background:#ffffff;border-radius:14px;overflow:hidden;border:1px solid #e2e8f0;font-family:'Segoe UI',Helvetica,Arial,sans-serif;">
   <tr><td style="background:${NAVY};padding:22px 32px;">
-    <a href="${esc(site)}" style="text-decoration:none;"><span style="font-size:21px;font-weight:700;color:#ffffff;letter-spacing:.2px;">Dharamshala Stay</span></a>
-    <span style="display:block;margin-top:3px;font-size:12.5px;color:#c7d6ea;">Local travel and hotel guide for Dharamshala &amp; McLeod Ganj</span>
+    <a href="${esc(site)}" style="text-decoration:none;"><table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+      <td style="padding-right:12px;vertical-align:middle;"><img src="${esc(site)}/brand/email-mark.png" width="44" height="44" alt="" style="display:block;border:0;width:44px;height:44px;"></td>
+      <td style="vertical-align:middle;"><span style="font-size:21px;font-weight:700;color:#ffffff;letter-spacing:.2px;">Dharamshala <span style="color:#f47e52;">Stay</span></span>
+      <span style="display:block;margin-top:3px;font-size:12.5px;color:#c7d6ea;">Local travel and hotel guide for Dharamshala &amp; McLeod Ganj</span></td>
+    </tr></table></a>
   </td></tr>
   ${doc.hero ? `<tr><td>${img(doc.hero, 260, 0)}</td></tr>` : ''}
   <tr><td style="padding:28px 32px 8px;">

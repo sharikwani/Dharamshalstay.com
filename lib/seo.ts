@@ -368,7 +368,7 @@ export function articleSchema(p: { title: string; excerpt: string; slug: string;
       '@type': 'Organization',
       name: siteConfig.name,
       url: siteConfig.url,
-      logo: { '@type': 'ImageObject', url: siteConfig.url + '/icon-512.png', width: 512, height: 512 },
+      logo: { '@type': 'ImageObject', url: siteConfig.url + '/brand/logo-mark-512.png', width: 512, height: 512 },
     },
     datePublished: p.published_at,
     dateModified: p.updated_at,
@@ -389,7 +389,7 @@ export function organizationSchema() {
   return {
     '@context': 'https://schema.org', '@type': 'Organization', '@id': siteConfig.url + '/#organization',
     name: siteConfig.name, url: siteConfig.url, description: siteConfig.description,
-    logo: { '@type': 'ImageObject', url: siteConfig.url + '/icon-512.png', width: 512, height: 512 },
+    logo: { '@type': 'ImageObject', url: siteConfig.url + '/brand/logo-mark-512.png', width: 512, height: 512 },
     image: siteConfig.url + '/images/og-default.jpg',
     email: siteConfig.email, telephone: siteConfig.phone,
     address: { '@type': 'PostalAddress', streetAddress: 'VPO Khaniyara', addressLocality: 'Dharamshala', addressRegion: 'Himachal Pradesh', postalCode: '176215', addressCountry: 'IN' },

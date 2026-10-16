@@ -78,7 +78,7 @@ export async function GET(req: Request) {
   const site = 'dharamshalastay.com';
   const [photo, logo, heading, small] = await Promise.all([
     loadImage(searchParams.get('image'), origin).then((p) => p || loadImage(FALLBACK_IMAGE, origin)),
-    loadImage('/icon-192.png', origin),
+    loadImage('/brand/logo-badge-512.png', origin),
     googleFont('Poppins', 700, title + brand),
     googleFont('Poppins', 500, tag + site),
   ]);
@@ -97,9 +97,9 @@ export async function GET(req: Request) {
         <div style={{ position: 'absolute', top: 0, left: 0, width: W, height: H, display: 'flex', backgroundImage: 'linear-gradient(180deg, rgba(16,32,50,0.25) 0%, rgba(16,32,50,0.35) 40%, rgba(16,32,50,0.92) 100%)' }} />
         <div style={{ position: 'absolute', top: 0, left: 0, width: W, height: H, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '48px 60px' }}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 14, backgroundColor: 'rgba(255,255,255,0.95)', borderRadius: 999, padding: '10px 24px 10px 10px' }}>
-              {logo && <img src={logo} width={44} height={44} style={{ borderRadius: 12 }} />}
-              <span style={{ fontSize: 26, fontWeight: 700, color: '#1e3a5f' }}>{brand}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16, backgroundColor: 'rgba(255,255,255,0.96)', borderRadius: 999, padding: '10px 30px 10px 10px' }}>
+              {logo && <img src={logo} width={64} height={64} style={{ borderRadius: 999 }} />}
+              <span style={{ display: 'flex', fontSize: 32, fontWeight: 700, color: '#1e3a5f' }}>Dharamshala<span style={{ color: '#ee5a24', marginLeft: 9 }}>Stay</span></span>
             </div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>

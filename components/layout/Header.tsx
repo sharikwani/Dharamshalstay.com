@@ -2,9 +2,10 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Mountain, LogIn, UserCircle } from 'lucide-react';
+import { Menu, X, LogIn, UserCircle } from 'lucide-react';
 import { useT } from '@/lib/i18n/client';
 import LanguageToggle from './LanguageToggle';
+import BrandMark from '@/components/brand/BrandMark';
 
 // supabase-js keeps the session under this localStorage key. Checking it here
 // keeps the whole Supabase client out of every public page's bundle; /account
@@ -51,7 +52,7 @@ export default function Header() {
       <div className={`${width} mx-auto`}>
         <div className="flex items-center justify-between h-16 gap-3">
           <Link href={href('/')} className="flex items-center gap-2 group shrink-0">
-            <Mountain className="h-7 w-7 text-orange-500" />
+            <BrandMark className="h-9 w-9 text-white" />
             <div className="leading-tight">
               <span className="text-lg font-heading font-bold tracking-tight">Dharamshala Stay</span>
               <span className="text-[10px] uppercase tracking-widest text-brand-300 hidden sm:block">{t.nav.tagline}</span>
