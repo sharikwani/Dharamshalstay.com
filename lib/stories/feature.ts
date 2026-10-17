@@ -82,8 +82,8 @@ export async function runStoriesAutopilot(opts: { deadline: number }) {
   const sb = serviceClient();
   const out: Record<string, unknown> = {};
 
-  // 1. Screen one new story.
-  const { data: fresh, error } = await sb.from('stories').select('*').eq('status', 'pending').is('ai_screened_at', null).order('created_at').limit(1);
+  // 1. Screen one new story (also one approved before the AI got to it, so it can be picked).
+  const { data: fresh, error } = await sb.from('stories').select('*').in('status', ['pending', 'approved']).is('ai_screened_at', null).order('created_at').limit(1);
   if (error) return { error: error.message }; // tables missing until migration v34 runs
   if (fresh?.length && Date.now() < opts.deadline - 45_000) {
     const s = fresh[0] as StoryRow;

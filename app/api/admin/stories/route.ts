@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { HttpError, jsonError, requireCaller } from '@/lib/server-auth';
 import { approveStory, featureStory, unfeatureStory } from '@/lib/stories/feature';
@@ -40,28 +41,37 @@ export async function POST(req: Request) {
     const body = schema.safeParse(await req.json().catch(() => null));
     if (!body.success) throw new HttpError(400, 'Invalid request');
     const { action, id, title } = body.data;
-
-    if (action.startsWith('comment_') || action.startsWith('flag_')) {
-      await setShortStatus(action.startsWith('comment_') ? 'story_comments' : 'story_flags', id, action.endsWith('_show') ? 'visible' : 'removed');
-      return NextResponse.json({ ok: true });
-    }
-    if (action === 'approve') { await approveStory(id); return NextResponse.json({ ok: true }); }
-    if (action === 'feature') return NextResponse.json({ ok: true, ...(await featureStory(id)) });
-    if (action === 'unfeature') { await unfeatureStory(id); return NextResponse.json({ ok: true }); }
-
-    const s = await getStory(id);
-    if (!s) throw new HttpError(404, 'Story not found');
-    if (action === 'edit') {
-      if (!title) throw new HttpError(400, 'A title needs 8 to 90 characters.');
-      await updateStory(id, { title });
-    } else {
-      // reject / hide: off the site, photos out of the public bucket, out of the spotlight.
-      await updateStory(id, {
-        status: action === 'reject' ? 'rejected' : 'hidden',
-        ...(s.featured_until && Date.parse(s.featured_until) > Date.now() ? { featured_until: new Date().toISOString() } : {}),
-      });
-      await unpublishStoryPhotos(s.photos);
-    }
-    return NextResponse.json({ ok: true });
+    const res = await handle(action, id, title);
+    // Show the change on the public pages at once instead of after the next one-minute refresh.
+    const s = action.startsWith('comment_') || action.startsWith('flag_') ? null : await getStory(id);
+    revalidatePath('/stories');
+    if (s) revalidatePath('/stories/' + s.slug);
+    revalidatePath('/sitemap.xml');
+    return NextResponse.json(res);
   } catch (e) { return jsonError(e); }
+}
+
+async function handle(action: z.infer<typeof schema>['action'], id: string, title?: string): Promise<Record<string, unknown>> {
+  if (action.startsWith('comment_') || action.startsWith('flag_')) {
+    await setShortStatus(action.startsWith('comment_') ? 'story_comments' : 'story_flags', id, action.endsWith('_show') ? 'visible' : 'removed');
+    return { ok: true };
+  }
+  if (action === 'approve') { await approveStory(id); return { ok: true }; }
+  if (action === 'feature') return { ok: true, ...(await featureStory(id)) };
+  if (action === 'unfeature') { await unfeatureStory(id); return { ok: true }; }
+
+  const s = await getStory(id);
+  if (!s) throw new HttpError(404, 'Story not found');
+  if (action === 'edit') {
+    if (!title) throw new HttpError(400, 'A title needs 8 to 90 characters.');
+    await updateStory(id, { title });
+  } else {
+    // reject / hide: off the site, photos out of the public bucket, out of the spotlight.
+    await updateStory(id, {
+      status: action === 'reject' ? 'rejected' : 'hidden',
+      ...(s.featured_until && Date.parse(s.featured_until) > Date.now() ? { featured_until: new Date().toISOString() } : {}),
+    });
+    await unpublishStoryPhotos(s.photos);
+  }
+  return { ok: true };
 }
