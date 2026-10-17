@@ -3,7 +3,11 @@ import type { ActivityPartnerType } from './types';
 
 // IMPORTANT: draft text. Have a lawyer review before real partners sign.
 // Changing the wording requires a new AGREEMENT_VERSION.
-export const AGREEMENT_VERSION = '2026-10-v1';
+// v2 (17 Oct 2026): 25% commission for trek and paragliding partners (taxi stays 20%).
+export const AGREEMENT_VERSION = '2026-10-v2';
+
+/** Commission each kind of partner agrees to, unless a different rate is agreed in writing. */
+export const PARTNER_COMMISSION: Record<ActivityPartnerType, number> = { taxi: 20, trek: 25, paragliding: 25 };
 
 const SERVICE: Record<ActivityPartnerType, string> = {
   paragliding: 'tandem and other paragliding flights, including pilots, equipment and transport to and from the take-off site where included in a package',
@@ -19,6 +23,7 @@ const SAFETY: Record<ActivityPartnerType, string> = {
 
 export function agreementFor(type: ActivityPartnerType) {
   const title = 'Dharamshala Stay Partner Agreement';
+  const rate = PARTNER_COMMISSION[type];
   const body = `This Partner Agreement ("Agreement") is between Dharamshala Stay ("Dharamshala Stay", "we", "us"), operator of the website dharamshalastay.com (the "Platform"), and the person or business signing below ("Partner", "you").
 
 1. Services
@@ -28,13 +33,13 @@ You will provide ${SERVICE[type]} ("Services") to customers who book through the
 You confirm that every document and detail you have given us, including your identity documents (Aadhaar, shown masked, and PAN), licences, registrations, vehicle documents and bank or UPI details, is true, current and belongs to you or your business. You will tell us within 7 days if any of them changes, expires or is cancelled. We may suspend your account while documents are missing or expired.
 
 3. Commission
-For every booking made through the Platform, Dharamshala Stay earns a commission of 20% of the booking value (the price paid by the customer, before any payment-gateway fee and excluding any taxes we collect separately), unless we agree a different rate with you in writing. Commission is earned on every booking whether the customer pays online or pays you in cash or by UPI directly.
+For every booking made through the Platform, Dharamshala Stay earns a commission of ${rate}% of the booking value (the price paid by the customer, before any payment-gateway fee and excluding any taxes we collect separately), unless we agree a different rate with you in writing. Commission is earned on every booking whether the customer pays online or pays you in cash or by UPI directly.
 
 4. Online payments
-When a customer pays online, we receive the full amount. After the Service is completed, we credit 80% of the booking value to your Partner balance. We pay positive balances to your registered bank account or UPI ID every week, normally on Monday, after deducting any commission you owe us. Payment-gateway charges are borne by Dharamshala Stay.
+When a customer pays online, we receive the full amount. After the Service is completed, we credit ${100 - rate}% of the booking value to your Partner balance. We pay positive balances to your registered bank account or UPI ID every week, normally on Monday, after deducting any commission you owe us. Payment-gateway charges are borne by Dharamshala Stay.
 
 5. Cash and direct payments
-When a customer pays you directly (cash, UPI to you, or any other method), you collect the full amount and owe us the 20% commission. The commission is recorded in your Partner balance when the Service is completed. It is first deducted from money we owe you. Any amount still owed must be paid through the Platform within 7 days. If commission stays unpaid for more than 21 days, we may stop sending you new bookings until it is paid, and recover the amount by other lawful means.
+When a customer pays you directly (cash, UPI to you, or any other method), you collect the full amount and owe us the ${rate}% commission. The commission is recorded in your Partner balance when the Service is completed. It is first deducted from money we owe you. Any amount still owed must be paid through the Platform within 7 days. If commission stays unpaid for more than 21 days, we may stop sending you new bookings until it is paid, and recover the amount by other lawful means.
 
 6. Bookings taken off the Platform
 You will not ask customers who found you through the Platform to cancel and re-book with you directly to avoid commission. A booking arranged with a customer introduced by the Platform within 90 days of their enquiry or booking is treated as a Platform booking.
@@ -73,7 +78,7 @@ This Agreement is governed by the laws of India. The courts at Dharamshala, Hima
 By ticking the acceptance box and typing your full name, you sign this Agreement electronically under the Information Technology Act, 2000. We record the date, time, IP address and a fingerprint (SHA-256) of this exact text, and email you a PDF copy.
 
 Agreement version: ${AGREEMENT_VERSION}`;
-  return { version: AGREEMENT_VERSION, title, body };
+  return { version: AGREEMENT_VERSION, title, body, commission: rate };
 }
 
 export function sha256Hex(text: string): string {

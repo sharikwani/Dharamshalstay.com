@@ -58,6 +58,14 @@ export async function POST(req: Request) {
       });
       if (insErr) throw insErr;
 
+      // The partner's rate follows the agreement they signed (25% trek and paragliding, 20% taxi). A rate the
+      // admin already set by hand (anything but the old 20% default) is kept.
+      const current = before.commission_pct;
+      if (a.commission !== 20 && (current == null || Number(current) === 20)) {
+        const { error: rateErr } = await sb.from('profiles').update({ commission_pct: a.commission }).eq('id', profile.id);
+        if (rateErr) console.error('Agreement: could not set the commission rate', profile.id, rateErr);
+      }
+
       // Sent after the response: a slow or failing email never fails a signature that is saved.
       inBackground('Agreement emails', async () => {
         const results = await Promise.allSettled([

@@ -243,7 +243,7 @@ export default function PartnerOnboarding() {
         {s.agreements[0] && <p className="text-sm text-slate-600 mt-2 flex items-center gap-1.5"><FileText className="h-4 w-4" />Signed by {s.agreements[0].signed_name} on {new Date(s.agreements[0].signed_at).toLocaleString('en-IN')}{s.agreements[0].url && <> · <a href={s.agreements[0].url} className="text-brand-600 underline" target="_blank" rel="noreferrer">download PDF</a></>}</p>}
         {editable && (
           <form onSubmit={sign} className="mt-3 space-y-3">
-            <label className="flex items-start gap-2 text-sm"><input type="checkbox" name="accepted" required className="mt-1" />I have read and agree to the Dharamshala Stay Partner Agreement, including the 20% commission on every booking, online or cash.</label>
+            <label className="flex items-start gap-2 text-sm"><input type="checkbox" name="accepted" required className="mt-1" />I have read and agree to the Dharamshala Stay Partner Agreement, including the {s.agreement.commission ?? 20}% commission on every booking, online or cash.</label>
             <label className="text-sm block">Type your full legal name to sign<input name="signed_name" required className={field} placeholder={p.legal_name || ''} /></label>
             <button disabled={!!busy || !s.readyToSign} className="bg-green-700 text-white px-5 py-2.5 rounded-lg font-semibold disabled:opacity-50">{busy === 'sign' ? 'Signing…' : 'Sign and submit for approval'}</button>
             {!s.readyToSign && <p className="text-xs text-slate-500">Complete everything in "Still to do" first.</p>}

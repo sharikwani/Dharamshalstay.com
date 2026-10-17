@@ -3,12 +3,24 @@ import { agreementFor, sha256Hex, AGREEMENT_VERSION } from '@/lib/partners/agree
 import { renderAgreementPdf, toPdfSafe } from '@/lib/partners/agreement-pdf';
 
 describe('agreement text', () => {
-  it('states the 20% commission on online and cash bookings', () => {
+  it('states the 20% commission for taxis on online and cash bookings', () => {
     const a = agreementFor('taxi');
     expect(a.version).toBe(AGREEMENT_VERSION);
-    expect(a.body).toMatch(/20%/);
+    expect(a.commission).toBe(20);
+    expect(a.body).toMatch(/commission of 20%/);
+    expect(a.body).toMatch(/credit 80%/);
     expect(a.body).toMatch(/cash/i);
     expect(a.body).toMatch(/taxi/i);
+  });
+  it('states 25% for trek and paragliding partners, and 75% to them on online payments', () => {
+    for (const t of ['trek', 'paragliding'] as const) {
+      const a = agreementFor(t);
+      expect(a.commission).toBe(25);
+      expect(a.body).toMatch(/commission of 25%/);
+      expect(a.body).toMatch(/credit 75%/);
+      expect(a.body).toMatch(/owe us the 25% commission/);
+      expect(a.body).not.toMatch(/\b20%/);
+    }
   });
   it('is stable for hashing', () => {
     expect(sha256Hex(agreementFor('trek').body)).toBe(sha256Hex(agreementFor('trek').body));
