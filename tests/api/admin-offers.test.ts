@@ -62,6 +62,22 @@ describe('GET /api/admin/offers', () => {
     expect(fake.ops('offer_codes', 'eq')).toEqual([['offer_id', OFFER_ID], ['status', 'issued']]);
     expect(fake.ops('offer_codes', 'lte')[0][0]).toBe('expires_at');
   });
+  it('counts every code per offer by state, and names the hotel on each code', async () => {
+    fake.queue('offers', { data: [{ id: OFFER_ID, property_id: PROP_ID, name: 'Panchvati', active: true, default_percent: 20, plan_percents: {}, valid_hours: 3, code_prefix: 'PNV', properties: { name: 'Panchvati Cottages', slug: 'panchvati-cottages', rooms: ROOMS } }] });
+    fake.queue('properties', { data: [] });
+    fake.queue('offer_codes',
+      { data: [{ id: 'k1', code: 'PNV-7K3Q9', status: 'booked', expires_at: '2020-01-01T00:00:00Z', offers: { name: 'Panchvati', properties: { name: 'Panchvati Cottages' } }, bookings: { booking_ref: 'DS-1' } }] },
+      { data: [
+        { offer_id: OFFER_ID, status: 'issued', expires_at: '2999-01-01T00:00:00Z' },
+        { offer_id: OFFER_ID, status: 'issued', expires_at: '2020-01-01T00:00:00Z' },
+        { offer_id: OFFER_ID, status: 'booked', expires_at: '2020-01-01T00:00:00Z' },
+        { offer_id: OFFER_ID, status: 'redeemed', expires_at: '2020-01-01T00:00:00Z' },
+      ] });
+    const body = await (await GET(json('GET'))).json();
+    expect(body.offers[0].counts).toEqual({ issued: 1, expired: 1, booked: 1, redeemed: 1, cancelled: 0 });
+    expect(body.offers[0].property_slug).toBe('panchvati-cottages');
+    expect(body.codes[0]).toMatchObject({ property_name: 'Panchvati Cottages', booking_ref: 'DS-1' });
+  });
 });
 
 describe('POST /api/admin/offers', () => {

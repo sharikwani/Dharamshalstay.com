@@ -20,27 +20,40 @@ export async function GET(req: Request) {
     const sb = serviceClient();
     const now = new Date().toISOString();
 
-    let codes = sb.from('offer_codes').select('*, offers(name), bookings(booking_ref)');
+    let codes = sb.from('offer_codes').select('*, offers(name, properties(name)), bookings(booking_ref)');
     if (UUID.test(offerId)) codes = codes.eq('offer_id', offerId);
     if (status === 'issued') codes = codes.eq('status', 'issued').gt('expires_at', now);
     else if (status === 'expired') codes = codes.eq('status', 'issued').lte('expires_at', now);
     else if (STORED.includes(status)) codes = codes.eq('status', status);
 
-    const [o, p, c] = await Promise.all([
-      sb.from('offers').select('*, properties(name, rooms)').order('created_at', { ascending: false }),
+    const [o, p, c, all] = await Promise.all([
+      sb.from('offers').select('*, properties(name, slug, rooms)').order('created_at', { ascending: false }),
       sb.from('properties').select('id, name').order('name').limit(1000),
       codes.order('issued_at', { ascending: false }).limit(200),
+      // Light rows for the per-offer counts (issued / expired / booked / used / cancelled).
+      sb.from('offer_codes').select('offer_id, status, expires_at').limit(10000),
     ]);
     if (o.error) throw o.error;
     if (p.error) throw p.error;
     if (c.error) throw c.error;
+    if (all.error) throw all.error;
+
+    const counts: Record<string, Record<string, number>> = {};
+    for (const row of (all.data || []) as any[]) {
+      const k = (counts[row.offer_id] ||= { issued: 0, expired: 0, booked: 0, redeemed: 0, cancelled: 0 });
+      const s = codeState(row);
+      k[s] = (k[s] || 0) + 1;
+    }
 
     return NextResponse.json({
       offers: (o.data || []).map(({ properties, ...offer }: any) => ({
-        ...offer, property_name: properties?.name ?? '', rooms: roomPlans(properties?.rooms), up_to: maxPercent(offer),
+        ...offer, property_name: properties?.name ?? '', property_slug: properties?.slug ?? null,
+        rooms: roomPlans(properties?.rooms), up_to: maxPercent(offer),
+        counts: counts[offer.id] || { issued: 0, expired: 0, booked: 0, redeemed: 0, cancelled: 0 },
       })),
       codes: (c.data || []).map(({ offers, bookings, ...code }: any) => ({
-        ...code, state: codeState(code), offer_name: offers?.name ?? '', booking_ref: bookings?.booking_ref ?? null,
+        ...code, state: codeState(code), offer_name: offers?.name ?? '', property_name: offers?.properties?.name ?? '',
+        booking_ref: bookings?.booking_ref ?? null,
       })),
       properties: p.data || [],
     });
