@@ -11,6 +11,7 @@ export type StoryRow = StoryInput & {
   ig_story_id: string | null; ig_attempts: number; ig_error: string | null;
   views: number; likes: number; comments: number; flags: number;
   approved_at: string | null; created_at: string; updated_at: string;
+  pin_rank?: number | null;
 };
 
 /** What the public pages may see (no email, IP hash, token or AI notes). */
@@ -69,11 +70,68 @@ export async function unpublishStoryPhotos(paths: string[]): Promise<void> {
 
 // ---------- Public reads ----------
 
+/** Approved stories: the owner's pinned ones first (1st, 2nd...), then the newest approved. */
 export async function listPublicStories(limit = 60): Promise<PublicStory[]> {
-  const { data, error } = await serviceClient().from('stories').select(PUBLIC_COLS).eq('status', 'approved')
+  const base = () => serviceClient().from('stories').select(PUBLIC_COLS).eq('status', 'approved');
+  let { data, error } = await base().order('pin_rank', { ascending: true, nullsFirst: false })
     .order('approved_at', { ascending: false, nullsFirst: false }).limit(limit);
+  // Until migration v35 adds pin_rank, keep the newest-first order rather than showing nothing.
+  if (error?.code === '42703') ({ data, error } = await base().order('approved_at', { ascending: false, nullsFirst: false }).limit(limit));
   if (error) { console.error('Stories list failed:', error); return []; }
   return (data || []).map(toPublic);
+}
+
+// ---------- The owner's order (pinned stories) ----------
+
+/** Ids of the pinned stories, 1st first. */
+async function pinnedIds(): Promise<string[]> {
+  const { data, error } = await serviceClient().from('stories').select('id').eq('status', 'approved').not('pin_rank', 'is', null).order('pin_rank');
+  if (error) {
+    if (error.code === '42703') throw new HttpError(409, 'Run supabase/migration-v35-story-order.sql to turn on story ordering.');
+    throw error;
+  }
+  return (data || []).map((r: any) => r.id);
+}
+
+/** Save the pinned order as 1, 2, 3... and clear any rank not in the list. */
+async function savePins(ids: string[], drop: string[] = []): Promise<void> {
+  const sb = serviceClient();
+  for (const id of drop) await sb.from('stories').update({ pin_rank: null }).eq('id', id);
+  for (let i = 0; i < ids.length; i++) {
+    const { error } = await sb.from('stories').update({ pin_rank: i + 1 }).eq('id', ids[i]);
+    if (error) throw error;
+  }
+}
+
+export type PinMove = 'pin' | 'unpin' | 'up' | 'down';
+
+/** Pure: the pinned order after a move. "pin" puts the story 1st. */
+export function movePin(ids: string[], id: string, move: PinMove): string[] {
+  const at = ids.indexOf(id);
+  if (move === 'pin') return [id, ...ids.filter((x) => x !== id)];
+  if (move === 'unpin') return ids.filter((x) => x !== id);
+  if (at < 0) return ids;
+  const to = move === 'up' ? at - 1 : at + 1;
+  if (to < 0 || to >= ids.length) return ids;
+  const next = [...ids];
+  [next[at], next[to]] = [next[to], next[at]];
+  return next;
+}
+
+export async function changePin(id: string, move: PinMove): Promise<void> {
+  const ids = await pinnedIds();
+  if (move === 'pin') {
+    const s = await getStory(id);
+    if (s?.status !== 'approved') throw new HttpError(409, 'Only live stories can be pinned.');
+  }
+  await savePins(movePin(ids, id, move), move === 'unpin' ? [id] : []);
+}
+
+/** A story leaving the site also leaves the pinned order (the rest close the gap). */
+export async function dropPin(id: string): Promise<void> {
+  const { data, error } = await serviceClient().from('stories').select('pin_rank').eq('id', id).maybeSingle();
+  if (error || !(data as any)?.pin_rank) return;
+  await savePins((await pinnedIds()).filter((x) => x !== id), [id]);
 }
 
 export async function getPublicStory(slug: string): Promise<PublicStory | null> {
@@ -204,6 +262,7 @@ export async function removeByAuthor(s: StoryRow): Promise<void> {
   if (error) throw error;
   await unpublishStoryPhotos(s.photos);
   await removeStoryUploads(s.photos);
+  await dropPin(s.id);
 }
 
 // ---------- Admin ----------
@@ -231,6 +290,8 @@ export async function listAdminStories(status: StoryStatus | 'featured', limit =
   const { data, error } = await q.limit(limit);
   if (error) throw error;
   const rows = (data || []) as StoryRow[];
+  // Live stories in the order the public sees them: pinned first, then newest approved.
+  if (status === 'approved') rows.sort((a, b) => (a.pin_rank ?? 1e9) - (b.pin_rank ?? 1e9) || (b.approved_at || '').localeCompare(a.approved_at || ''));
   return Promise.all(rows.map(async (r) => ({ ...r, photo_urls: r.status === 'approved' ? r.photos.map(publicPhotoUrl) : await signedUploadUrls(r.photos) })));
 }
 

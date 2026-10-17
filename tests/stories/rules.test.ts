@@ -95,3 +95,16 @@ describe('display helpers', () => {
     expect(parseScreening('not json')).toBeNull();
   });
 });
+
+describe('pinned order', () => {
+  it('pin puts a story first, arrows swap neighbours, unpin closes the gap', async () => {
+    const { movePin } = await import('@/lib/stories/store');
+    expect(movePin(['a', 'b'], 'c', 'pin')).toEqual(['c', 'a', 'b']);
+    expect(movePin(['a', 'b', 'c'], 'c', 'pin')).toEqual(['c', 'a', 'b']);
+    expect(movePin(['a', 'b', 'c'], 'b', 'up')).toEqual(['b', 'a', 'c']);
+    expect(movePin(['a', 'b', 'c'], 'b', 'down')).toEqual(['a', 'c', 'b']);
+    expect(movePin(['a', 'b', 'c'], 'a', 'up')).toEqual(['a', 'b', 'c']);
+    expect(movePin(['a', 'b', 'c'], 'c', 'down')).toEqual(['a', 'b', 'c']);
+    expect(movePin(['a', 'b', 'c'], 'b', 'unpin')).toEqual(['a', 'c']);
+  });
+});

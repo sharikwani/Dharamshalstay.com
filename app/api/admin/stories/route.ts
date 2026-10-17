@@ -3,7 +3,7 @@ import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { HttpError, jsonError, requireCaller } from '@/lib/server-auth';
 import { approveStory, featureStory, unfeatureStory } from '@/lib/stories/feature';
-import { getStory, listAdminStories, listHeld, pendingCounts, setShortStatus, unpublishStoryPhotos, updateStory } from '@/lib/stories/store';
+import { changePin, dropPin, getStory, listAdminStories, listHeld, pendingCounts, setShortStatus, unpublishStoryPhotos, updateStory } from '@/lib/stories/store';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -30,7 +30,7 @@ export async function GET(req: Request) {
 }
 
 const schema = z.object({
-  action: z.enum(['approve', 'reject', 'hide', 'feature', 'unfeature', 'edit', 'comment_show', 'comment_remove', 'flag_show', 'flag_remove']),
+  action: z.enum(['approve', 'reject', 'hide', 'feature', 'unfeature', 'edit', 'pin', 'unpin', 'up', 'down', 'comment_show', 'comment_remove', 'flag_show', 'flag_remove']),
   id: z.string().uuid(),
   title: z.string().trim().min(8).max(90).optional(),
 });
@@ -59,6 +59,7 @@ async function handle(action: z.infer<typeof schema>['action'], id: string, titl
   if (action === 'approve') { await approveStory(id); return { ok: true }; }
   if (action === 'feature') return { ok: true, ...(await featureStory(id)) };
   if (action === 'unfeature') { await unfeatureStory(id); return { ok: true }; }
+  if (action === 'pin' || action === 'unpin' || action === 'up' || action === 'down') { await changePin(id, action); return { ok: true }; }
 
   const s = await getStory(id);
   if (!s) throw new HttpError(404, 'Story not found');
@@ -72,6 +73,7 @@ async function handle(action: z.infer<typeof schema>['action'], id: string, titl
       ...(s.featured_until && Date.parse(s.featured_until) > Date.now() ? { featured_until: new Date().toISOString() } : {}),
     });
     await unpublishStoryPhotos(s.photos);
+    await dropPin(id);
   }
   return { ok: true };
 }

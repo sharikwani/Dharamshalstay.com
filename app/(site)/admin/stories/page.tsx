@@ -1,6 +1,6 @@
 'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Ban, Check, ExternalLink, EyeOff, Instagram, Loader2, Pencil, Sparkles, Star, Trash2, X } from 'lucide-react';
+import { ArrowDown, ArrowUp, Ban, Check, ExternalLink, EyeOff, Instagram, Loader2, Pencil, Pin, PinOff, Sparkles, Star, Trash2, X } from 'lucide-react';
 import { authFetch } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
 import { AdminPageHeader, refreshAdminCounts } from '@/components/admin/AdminShell';
@@ -16,6 +16,7 @@ const FLAG_LABEL: Record<string, string> = {
   hate_or_abuse: 'Abusive', explicit: 'Explicit', not_own_photo: 'Photo may not be theirs', off_topic: 'Off topic', copied_or_ai: 'May be copied or AI-written',
   personal_data_of_others: 'Other people\'s personal details',
 };
+const ordinal = (n: number) => n + (n % 100 >= 11 && n % 100 <= 13 ? 'th' : ['th', 'st', 'nd', 'rd'][n % 10] || 'th');
 const when = (s: string) => new Date(s).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' });
 
 async function api(path: string, init?: RequestInit) {
@@ -74,6 +75,7 @@ export default function AdminStoriesPage() {
   }
 
   const b = 'inline-flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm font-medium disabled:opacity-50';
+  const pinnedCount = rows.filter((r) => r.pin_rank).length;
   const isBusy = (id: string, a: string) => busy === id + a;
 
   return (
@@ -89,6 +91,9 @@ export default function AdminStoriesPage() {
       </div>
       {error && <p className="mb-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
       {note && <p className="mb-3 rounded-lg bg-green-50 px-3 py-2 text-sm text-green-800">{note}</p>}
+      {tab === 'approved' && !loading && rows.length > 0 && (
+        <p className="mb-3 text-sm text-slate-500">This is the order of the stories page. Pinned stories come first in your order; the rest follow, newest first. The Story of the day always has its own spot above them.</p>
+      )}
 
       {loading ? (
         <div className="flex justify-center py-16"><Loader2 className="h-6 w-6 animate-spin text-brand-600" /></div>
@@ -103,6 +108,19 @@ export default function AdminStoriesPage() {
             return (
               <li key={s.id} id={'story-' + s.id} className={cn('rounded-2xl border bg-white p-4 sm:p-5', pick === s.id ? 'border-amber-400 ring-2 ring-amber-200' : 'border-slate-200')}>
                 {pick === s.id && <p className="mb-3 inline-flex items-center gap-1 rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800"><Sparkles className="h-3.5 w-3.5" />Today&rsquo;s AI pick</p>}
+                {tab === 'approved' && (
+                  <div className="mb-3 flex flex-wrap items-center gap-2 border-b border-slate-100 pb-3">
+                    {s.pin_rank ? <>
+                      <span className="inline-flex items-center gap-1 rounded-full bg-brand-900 px-3 py-1 text-xs font-bold text-white"><Pin className="h-3.5 w-3.5" />{ordinal(s.pin_rank)} on the stories page</span>
+                      <button onClick={() => act('up', s.id)} disabled={!!busy || s.pin_rank === 1} className={b + ' bg-slate-100 text-slate-700'} aria-label="Move up"><ArrowUp className="h-4 w-4" /></button>
+                      <button onClick={() => act('down', s.id)} disabled={!!busy || s.pin_rank === pinnedCount} className={b + ' bg-slate-100 text-slate-700'} aria-label="Move down"><ArrowDown className="h-4 w-4" /></button>
+                      <button onClick={() => act('unpin', s.id)} disabled={!!busy} className={b + ' bg-slate-100 text-slate-700'}><PinOff className="h-4 w-4" />Unpin</button>
+                    </> : <>
+                      <span className="text-xs text-slate-500">Not pinned: shown by newest approval</span>
+                      <button onClick={() => act('pin', s.id)} disabled={!!busy} className={b + ' bg-brand-900 text-white'}>{isBusy(s.id, 'pin') ? <Loader2 className="h-4 w-4 animate-spin" /> : <Pin className="h-4 w-4" />}Pin to top</button>
+                    </>}
+                  </div>
+                )}
                 <div className="flex gap-2 overflow-x-auto pb-2">
                   {(s.photo_urls || []).map((u: string | null, i: number) => u ? (
                     <a key={i} href={u} target="_blank" rel="noopener" className="flex-none">
