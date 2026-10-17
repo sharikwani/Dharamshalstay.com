@@ -1,10 +1,10 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Phone, Mail, Eye } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
-import { AdminPageHeader } from '@/components/admin/AdminShell';
+import { AdminPageHeader, refreshAdminCounts } from '@/components/admin/AdminShell';
 
 export default function AdminInquiries() {
   const router = useRouter();
@@ -12,12 +12,15 @@ export default function AdminInquiries() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
 
+  const seq = useRef(0);
   async function loadInquiries() {
+    const mine = ++seq.current; // a slower answer for a filter we already left must not overwrite this one
     setLoading(true);
     const query = filter === 'all'
       ? supabase.from('inquiries').select('*, property:properties(name, slug)').order('created_at', { ascending: false }).limit(50)
       : supabase.from('inquiries').select('*, property:properties(name, slug)').eq('status', filter).order('created_at', { ascending: false }).limit(50);
     const { data } = await query;
+    if (mine !== seq.current) return;
     setInquiries(data || []);
     setLoading(false);
   }
@@ -32,6 +35,7 @@ export default function AdminInquiries() {
   async function updateStatus(id: string, status: string) {
     await supabase.from('inquiries').update({ status, updated_at: new Date().toISOString() }).eq('id', id);
     loadInquiries();
+    refreshAdminCounts();
   }
 
   const statusColors: Record<string, string> = {

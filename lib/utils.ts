@@ -13,8 +13,10 @@ export function cn(...classes: (string | undefined | false | null)[]): string {
   return classes.filter(Boolean).join(' ');
 }
 
-export function slugify(text: string): string {
-  return text.trim().toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+/** URL slug. A name with no Latin letters or digits (e.g. Hindi only) gives the fallback, never an empty slug. */
+export function slugify(text: string, fallback = 'listing'): string {
+  const s = text.trim().toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+  return s || fallback;
 }
 
 export function formatDate(dateString: string, lang: 'en' | 'hi' = 'en'): string {

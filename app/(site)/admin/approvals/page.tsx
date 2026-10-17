@@ -17,6 +17,7 @@ export default function AdminApprovals() {
   const [filter, setFilter] = useState('pending_review');
 
   useEffect(() => {
+    let stale = false; // set when the filter changes again before this load answers
     async function load() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { router.push('/admin/login'); return; }
@@ -26,10 +27,12 @@ export default function AdminApprovals() {
         ? supabase.from('properties').select('*').order('created_at', { ascending: false })
         : supabase.from('properties').select('*').eq('status', filter).order('submitted_at', { ascending: false });
       const { data } = await query;
+      if (stale) return;
       setProperties(data || []);
       setLoading(false);
     }
     load();
+    return () => { stale = true; };
   }, [filter, router]);
 
   const statusColors: Record<string, string> = {

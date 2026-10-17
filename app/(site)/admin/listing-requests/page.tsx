@@ -1,10 +1,10 @@
 'use client';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { BadgeCheck, Ban, Check, Loader2, Link2, Trash2, Undo2 } from 'lucide-react';
 import { authFetch } from '@/lib/supabase';
 import { cn, telHref } from '@/lib/utils';
-import { AdminPageHeader } from '@/components/admin/AdminShell';
+import { AdminPageHeader, refreshAdminCounts } from '@/components/admin/AdminShell';
 import type { AdminListingRequest, ListingAction } from '@/lib/listings/admin';
 
 type Status = 'pending' | 'done' | 'rejected';
@@ -26,11 +26,13 @@ export default function ListingRequestsPage() {
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
 
+  const seq = useRef(0);
   const load = useCallback(async () => {
+    const mine = ++seq.current; // a slower answer for a tab we already left must not overwrite this one
     setLoading(true); setError('');
-    try { setRows((await api('/api/admin/listing-requests?status=' + tab)).requests); }
-    catch (e: any) { setError(e.message); }
-    setLoading(false);
+    try { const d = await api('/api/admin/listing-requests?status=' + tab); if (mine === seq.current) setRows(d.requests); }
+    catch (e: any) { if (mine === seq.current) setError(e.message); }
+    if (mine === seq.current) setLoading(false);
   }, [tab]);
   useEffect(() => { load(); }, [load]);
 
@@ -39,6 +41,7 @@ export default function ListingRequestsPage() {
     try {
       const r = await api('/api/admin/listing-requests/' + x.id, { method: 'PATCH', body: JSON.stringify({ action }) });
       setNotice((x.property?.name || 'Listing') + ': ' + r.result);
+      refreshAdminCounts();
       if (tab === 'pending') setRows((list) => list.filter((y) => y.id !== x.id)); else load();
     } catch (e: any) { setError(e.message); }
     setBusy(null);

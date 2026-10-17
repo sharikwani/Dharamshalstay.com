@@ -7,6 +7,7 @@ import { deliver } from '@/lib/email/send';
 import { newsletterWelcome } from '@/lib/email/templates';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store'; // always live data, never a cached Supabase read
 export const metadata: Metadata = { title: 'Subscription confirmed', robots: { index: false, follow: false }, referrer: 'no-referrer' };
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;

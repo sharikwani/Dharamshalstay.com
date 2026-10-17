@@ -269,15 +269,18 @@ export default function AdminOffersPage() {
   const [adding, setAdding] = useState(false);
   const checkRef = useRef<HTMLInputElement>(null);
 
+  const seq = useRef(0);
   const load = useCallback(async () => {
+    const mine = ++seq.current; // a slower answer for a filter we already left must not overwrite this one
     setCodesLoading(true);
     try {
       const qs = new URLSearchParams();
       if (state !== 'all') qs.set('status', state);
       if (offerFilter) qs.set('offer_id', offerFilter);
       const d = await api(`/api/admin/offers?${qs.toString()}`);
+      if (mine !== seq.current) return;
       setOffers(d.offers); setCodes(d.codes); setProperties(d.properties);
-    } catch (e: any) { setError(e.message); } finally { setLoading(false); setCodesLoading(false); }
+    } catch (e: any) { if (mine === seq.current) setError(e.message); } finally { if (mine === seq.current) { setLoading(false); setCodesLoading(false); } }
   }, [state, offerFilter]);
   useEffect(() => { load(); }, [load]);
 

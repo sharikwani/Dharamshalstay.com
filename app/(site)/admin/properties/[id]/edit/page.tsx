@@ -72,7 +72,7 @@ export default function AdminEditPropertyPage() {
     const slug = slugify(form.slug || form.name || 'property');
     // Rooms, room count and the price range belong to the Rooms page (it saves with a conflict check and
     // keeps bookings and offers in step on rename). Saving them here would overwrite newer room changes.
-    const payload = { ...form, slug, updated_at: new Date().toISOString() };
+    const payload = { ...form, name: String(form.name || '').trim(), slug, updated_at: new Date().toISOString() };
     for (const key of ROOMS_PAGE_FIELDS) delete payload[key];
     delete payload.created_at;
     // Rating and review count are recomputed from approved guest reviews (lib/reviews/store.ts).

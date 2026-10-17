@@ -5,6 +5,7 @@ import ListingRequestForm from '@/components/listings/ListingRequestForm';
 import { loadListingForRequest } from '@/lib/listings/page-data';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store'; // always live data, never a cached Supabase read
 
 export const metadata: Metadata = {
   title: 'Remove a listing',

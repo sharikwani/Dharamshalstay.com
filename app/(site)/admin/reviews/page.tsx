@@ -1,9 +1,9 @@
 'use client';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { BadgeCheck, Ban, Check, EyeOff, Loader2, Star } from 'lucide-react';
 import { authFetch } from '@/lib/supabase';
 import { cn, telHref } from '@/lib/utils';
-import { AdminPageHeader } from '@/components/admin/AdminShell';
+import { AdminPageHeader, refreshAdminCounts } from '@/components/admin/AdminShell';
 import type { AdminReview } from '@/lib/reviews/store';
 import type { ReviewStatus } from '@/lib/reviews/types';
 
@@ -27,11 +27,13 @@ export default function AdminReviewsPage() {
   const [error, setError] = useState('');
   const [drafts, setDrafts] = useState<Record<string, string>>({});
 
+  const seq = useRef(0);
   const load = useCallback(async () => {
+    const mine = ++seq.current; // a slower answer for a tab we already left must not overwrite this one
     setLoading(true); setError('');
-    try { setRows((await api('/api/admin/reviews?status=' + tab)).reviews); }
-    catch (e: any) { setError(e.message); }
-    setLoading(false);
+    try { const d = await api('/api/admin/reviews?status=' + tab); if (mine === seq.current) setRows(d.reviews); }
+    catch (e: any) { if (mine === seq.current) setError(e.message); }
+    if (mine === seq.current) setLoading(false);
   }, [tab]);
   useEffect(() => { load(); }, [load]);
 
@@ -40,6 +42,7 @@ export default function AdminReviewsPage() {
     try {
       await api('/api/admin/reviews/' + id, { method: 'PATCH', body: JSON.stringify({ status }) });
       setRows((list) => list.filter((x) => x.id !== id));
+      refreshAdminCounts();
     } catch (e: any) { setError(e.message); }
     setBusy(null);
   }

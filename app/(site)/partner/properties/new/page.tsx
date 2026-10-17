@@ -70,7 +70,7 @@ export default function NewPropertyPage() {
   async function insertProperty(status: 'draft' | 'pending_review') {
     if (!propertyId.current) propertyId.current = newClientId();
     const prices = form.rooms.map((r: any) => r.base_price || 0).filter((p: number) => p > 0);
-    const base = slugify(form.name || 'untitled-property');
+    const base = slugify(form.name || '', 'property');
     const payload: Record<string, any> = normalizePropertyNumbers({
       ...form, owner_id: userId, status,
       price_min: prices.length ? Math.min(...prices) : 0,

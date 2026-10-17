@@ -1,10 +1,14 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Home, Inbox, Building, PlusCircle, ShoppingBag, MessageSquare, Car, Mountain, Wind, Users, LogOut, ExternalLink, BadgeCheck, MessageCircle, BadgePercent, Star, Flag, Send, Mail, Instagram } from 'lucide-react';
 import { authFetch, supabase } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
+
+const COUNTS_EVENT = 'admin-counts-refresh';
+/** Call after an admin action that changes a sidebar count (reviews, claims, inquiries, approvals). */
+export const refreshAdminCounts = () => { if (typeof window !== 'undefined') window.dispatchEvent(new Event(COUNTS_EVENT)); };
 
 // tone = the colour of the item's icon tile, so each section is recognisable at a glance.
 type NavItem = { href: string; label: string; hint: string; icon: any; tone: string; badge?: 'review' | 'inquiries' | 'whatsapp' | 'reviews' | 'listings' };
@@ -60,8 +64,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
   const [counts, setCounts] = useState<{ review: number; inquiries: number; whatsapp: number; reviews: number; listings: number }>({ review: 0, inquiries: 0, whatsapp: 0, reviews: 0, listings: 0 });
   const isLogin = pathname.startsWith('/admin/login');
 
-  useEffect(() => {
-    if (isLogin) return;
+  const loadCounts = useCallback(() => {
     Promise.all([
       supabase.from('properties').select('id', { count: 'exact', head: true }).eq('status', 'pending_review'),
       supabase.from('inquiries').select('id', { count: 'exact', head: true }).eq('status', 'new'),
@@ -71,7 +74,16 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
       authFetch('/api/admin/listing-requests?count=1').then(res => (res.ok ? res.json() : null)).catch(() => null),
     ]).then(([r, i, w, v, l]) => setCounts({ review: r.count || 0, inquiries: i.count || 0, whatsapp: w.count || 0, reviews: Number(v?.pending) || 0, listings: Number(l?.count) || 0 }))
       .catch(() => {});
-  }, [pathname, isLogin]);
+  }, []);
+
+  // On every page change, after any admin action (refreshAdminCounts), and when the tab comes back into focus.
+  useEffect(() => { if (!isLogin) loadCounts(); }, [pathname, isLogin, loadCounts]);
+  useEffect(() => {
+    if (isLogin) return;
+    window.addEventListener(COUNTS_EVENT, loadCounts);
+    window.addEventListener('focus', loadCounts);
+    return () => { window.removeEventListener(COUNTS_EVENT, loadCounts); window.removeEventListener('focus', loadCounts); };
+  }, [isLogin, loadCounts]);
 
   if (isLogin) return <>{children}</>;
 

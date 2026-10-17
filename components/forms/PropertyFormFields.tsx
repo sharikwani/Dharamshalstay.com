@@ -60,6 +60,8 @@ export function normalizePropertyNumbers(payload: Record<string, any>): Record<s
     payload[f] = Number.isFinite(n) ? n : null;
   }
   if (payload.star_rating != null && !(payload.star_rating >= 1 && payload.star_rating <= 5)) payload.star_rating = null;
+  // "Panchvati Cottages " saved as typed gave a second listing with a slug ending in a dash.
+  if (typeof payload.name === 'string') payload.name = payload.name.trim();
   return payload;
 }
 

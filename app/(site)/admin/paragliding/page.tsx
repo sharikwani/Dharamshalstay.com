@@ -36,7 +36,9 @@ export default function AdminParagliding() {
 
   /** Throws on any failure, so the form stays open with the error. */
   async function saveEditing() {
-    const payload = { ...editing, slug: slugify(editing.name) };
+    // Keep an existing package's URL on rename; new packages get one from the name.
+    const name = String(editing.name || '').trim();
+    const payload = { ...editing, name, slug: editing.slug || slugify(name, 'paragliding') };
     if (payload.id && !payload.id.startsWith('new')) {
       const { error } = await supabase.from('paragliding_packages').update(payload).eq('id', payload.id);
       if (error) throw error;

@@ -39,7 +39,8 @@ export default function AccountPage() {
       // Get properties assigned to this user (by email or owner_id)
       if (u.email) {
         const { data: props } = await supabase.from('properties').select('*')
-          .or('owner_email.eq.' + u.email + ',owner_id.eq.' + u.id)
+          // owner_email is stored lowercase; quoted so an email with , or ( ) cannot break the filter.
+          .or('owner_email.eq."' + u.email.trim().toLowerCase().replace(/"/g, '') + '",owner_id.eq.' + u.id)
           .order('updated_at', { ascending: false });
         setMyProperties(props || []);
       }

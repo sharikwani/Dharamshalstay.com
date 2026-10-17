@@ -8,6 +8,7 @@ import { siteConfig } from '@/lib/config';
 import PrintButton from './PrintButton';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store'; // always live data, never a cached Supabase read
 
 // The URL carries the guest's private key: never send it to other sites.
 export const metadata: Metadata = { title: 'Your booking', referrer: 'no-referrer', robots: { index: false, follow: false } };

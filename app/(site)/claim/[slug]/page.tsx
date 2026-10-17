@@ -7,6 +7,7 @@ import { loadListingForRequest } from '@/lib/listings/page-data';
 import { getWhatsAppLink } from '@/lib/utils';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store'; // always live data, never a cached Supabase read
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const l = await loadListingForRequest(params.slug);
