@@ -7,6 +7,7 @@ import { handleProof } from './cancellations';
 import { aiAllowed, HOLDING_REPLY, processConversation } from './process';
 import { getSettings, history, saveInbound, setMessageBody, setStatusIf } from './store';
 import { sendLogged } from './send';
+import { businessContact, businessReason, isAutoReply } from './business';
 import { unanswered, VOICE_FAILED, VOICE_PLACEHOLDER, type Conversation, type Inbound } from './types';
 
 const esc = (s: unknown) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
@@ -40,7 +41,22 @@ export async function handleInbound(m: Inbound, deadline = Date.now() + 50_000):
   const saved = await saveInbound(m, body, m.kind);
   if (!saved) return null;
   const { conversation, message, isNewConversation } = saved;
-  const served = aiAllowed(await getSettings(), conversation.phone);
+  // A hotel or partner number (usually its WhatsApp Business auto-reply to our invite or alert): the AI stays
+  // out of it. The owner is emailed only when it looks like a real person replying, not the instant greeting.
+  const settings = await getSettings();
+  // The owner's test numbers always reach the AI, even if they also get hotel or booking alerts.
+  const business = settings.test_numbers.includes(conversation.phone) ? null
+    : await businessContact(conversation.phone).catch((e) => { console.error('WhatsApp chat: business check failed', e); return null; });
+  if (business) {
+    if (conversation.status === 'ai') await setStatusIf(conversation.id, 'ai', 'human', businessReason(business));
+    const at = m.timestamp ? m.timestamp * 1000 : Date.now();
+    if (!isAutoReply(business, at)) {
+      const who = business.name || conversation.profile_name || `+${conversation.phone}`;
+      await notify(`WhatsApp from a hotel: ${who}`, `<p>${esc(who)} wrote on WhatsApp:</p><blockquote>${esc(body)}</blockquote><p>The AI does not answer hotels. Reply from the inbox if needed.</p>${chatLink(conversation)}`);
+    }
+    return null;
+  }
+  const served = aiAllowed(settings, conversation.phone);
   if (!served && isNewConversation) {
     const who = conversation.profile_name || `+${conversation.phone}`;
     await notify(`New WhatsApp chat from ${who}`, `<p>${esc(who)} started a WhatsApp chat. AI replies are not on for this number.</p>${chatLink(conversation)}`);

@@ -12,6 +12,7 @@ const BADGE: Record<string, [string, string]> = {
   ai: ['AI', 'bg-sky-100 text-sky-800'], human: ['You', 'bg-violet-100 text-violet-800'],
   needs_human: ['Needs you', 'bg-red-100 text-red-800'], closed: ['Closed', 'bg-slate-100 text-slate-600'],
 };
+const isBusiness = (v: { handover_reason: string | null }) => !!v.handover_reason?.startsWith('Hotel or business');
 const time = (s: string) => new Date(s).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' });
 
 async function api(path: string, init?: RequestInit) {
@@ -25,6 +26,7 @@ async function api(path: string, init?: RequestInit) {
 function Inbox() {
   const params = useSearchParams();
   const [convs, setConvs] = useState<Conv[]>([]);
+  const [listLoaded, setListLoaded] = useState(false);
   const [needs, setNeeds] = useState(0);
   const [filter, setFilter] = useState<'all' | 'needs'>('all');
   const [openId, setOpenId] = useState<string | null>(params.get('c'));
@@ -41,7 +43,7 @@ function Inbox() {
   const loadList = useCallback(async () => {
     try {
       const d = await api(`/api/admin/whatsapp/conversations${filter === 'needs' ? '?filter=needs' : ''}`);
-      setConvs(d.conversations); setNeeds(d.needsYou);
+      setConvs(d.conversations); setNeeds(d.needsYou); setListLoaded(true);
     } catch (e: any) { setError(e.message); }
   }, [filter]);
   const loadThread = useCallback(async () => {
@@ -116,7 +118,7 @@ function Inbox() {
             <button onClick={() => setFilter('needs')} className={cn('px-3 py-1 rounded-full text-sm', filter === 'needs' ? 'bg-red-600 text-white' : 'bg-red-50 text-red-700')}>Needs you ({needs})</button>
           </div>
           <ul className="divide-y divide-slate-100 max-h-[70vh] overflow-y-auto">
-            {convs.length === 0 && <li className="p-6 text-sm text-slate-500">No chats yet.</li>}
+            {convs.length === 0 && <li className="p-6 text-sm text-slate-500">{listLoaded ? 'No chats yet.' : 'Loading…'}</li>}
             {convs.map((v) => (
               <li key={v.id}>
                 <button onClick={() => setOpenId(v.id)} className={cn('w-full text-left p-3 hover:bg-slate-50', openId === v.id && 'bg-brand-50')}>
@@ -125,7 +127,9 @@ function Inbox() {
                     <span className="text-xs text-slate-500 shrink-0">{time(v.last_message_at)}</span>
                   </div>
                   <div className="flex items-center gap-2 mt-1">
-                    <span className={cn('text-[11px] px-1.5 py-0.5 rounded font-medium', BADGE[v.status]?.[1])}>{BADGE[v.status]?.[0]}</span>
+                    {isBusiness(v)
+                      ? <span className="text-[11px] px-1.5 py-0.5 rounded font-medium bg-amber-100 text-amber-800" title={v.handover_reason || ''}>Hotel</span>
+                      : <span className={cn('text-[11px] px-1.5 py-0.5 rounded font-medium', BADGE[v.status]?.[1])}>{BADGE[v.status]?.[0]}</span>}
                     <span className="text-sm text-slate-600 truncate flex-1">{v.last_body}</span>
                     {v.unread_admin > 0 && <span className="text-[11px] bg-green-600 text-white rounded-full px-1.5">{v.unread_admin}</span>}
                   </div>
@@ -144,7 +148,9 @@ function Inbox() {
                 <button onClick={() => { setOpenId(null); setThread(null); }} className="lg:hidden p-1" aria-label="Back to chats"><X className="h-5 w-5" /></button>
                 <div className="flex-1 min-w-0">
                   <p className="font-semibold text-slate-900">{c.profile_name || 'Customer'} <a href={`https://wa.me/${c.phone}`} className="text-sm font-normal text-slate-500">+{c.phone}</a></p>
-                  {c.handover_reason && <p className="text-xs text-red-700">Handed over: {c.handover_reason}</p>}
+                  {c.handover_reason && (isBusiness(c)
+                    ? <p className="text-xs text-amber-700">{c.handover_reason}. Usually its automatic greeting after our invite.</p>
+                    : <p className="text-xs text-red-700">Handed over: {c.handover_reason}</p>)}
                 </div>
                 {c.status === 'ai'
                   ? <button onClick={() => setStatus('human')} className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-violet-600 text-white text-sm"><Hand className="h-4 w-4" />Take over</button>
