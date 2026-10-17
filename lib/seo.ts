@@ -402,7 +402,8 @@ export function organizationSchema() {
       'Tibet Museum', 'Tushita Meditation Centre', 'Vipassana at Dhamma Sikhara', 'Bir Billing paragliding',
       'Dharamshala Skyway ropeway', 'Kangra Valley', 'Dhauladhar range', 'Tibetan culture in exile', 'Hotels and homestays in Dharamshala',
     ],
-    subjectOf: { '@type': 'Dataset', name: 'Dharamshala and McLeod Ganj travel facts', url: siteConfig.url + '/facts' },
+    // A reference only: the full Dataset lives on /facts. A stub here made Google flag a Dataset on every page with no description, licence or creator.
+    subjectOf: { '@id': siteConfig.url + '/facts#dataset' },
   };
 }
 

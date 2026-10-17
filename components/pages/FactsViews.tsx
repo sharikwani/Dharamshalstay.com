@@ -33,10 +33,11 @@ export async function FactsView() {
         {
           '@context': 'https://schema.org',
           '@type': 'Dataset',
+          '@id': siteConfig.url + '/facts#dataset',
           name: 'Dharamshala and McLeod Ganj travel facts',
           description: 'Short, verified answers about travel in Dharamshala, McLeod Ganj and the Kangra Valley, each with the date it was checked and its source.',
           url: siteConfig.url + '/facts',
-          creator: ORG,
+          creator: { '@type': 'Organization', ...ORG, name: siteConfig.name, url: siteConfig.url },
           publisher: ORG,
           dateModified: updated,
           inLanguage: 'en-IN',
