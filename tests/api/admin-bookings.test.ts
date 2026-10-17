@@ -37,7 +37,7 @@ function builder(table: string) {
       }
       updates.push({ table, row });
       // Plain updates are awaited after .eq(); the cancel update adds .neq() and reads back the changed rows.
-      const u: any = { eq: () => u, neq: () => u, or: () => u, select: async () => ({ data: updateError ? null : [{ id: 'b1' }], error: updateError }), then: (res: any) => res({ error: updateError }) };
+      const u: any = { eq: () => u, neq: () => u, or: () => u, in: () => u, select: async () => ({ data: updateError ? null : [{ id: 'b1' }], error: updateError }), then: (res: any) => res({ error: updateError }) };
       return u;
     },
     delete: () => { recordOps.push({ op: 'delete' }); const c: any = { eq: () => c, in: () => c, then: (res: any) => res({ error: null }) }; return c; },
@@ -67,6 +67,7 @@ vi.mock('@/lib/server-auth', async (orig) => {
     },
   };
 });
+vi.mock('@/lib/bookings/links', () => ({ withItemLinks: async (rows: any[]) => rows }));
 vi.mock('@/lib/manual-booking-emails', () => ({
   sendManualBookingEmails: (...a: unknown[]) => sendManualBookingEmails(...a),
   sendCancellationEmails: (...a: unknown[]) => sendCancellationEmails(...a),
@@ -680,5 +681,25 @@ describe('PATCH /api/admin/bookings/:id action confirm', () => {
     role = 'partner';
     expect((await patch({ action: 'confirm' })).status).toBe(403);
     expect(confirmBooking).not.toHaveBeenCalled();
+  });
+});
+
+describe('PATCH /api/admin/bookings/:id action commission_paid', () => {
+  it('marks owed commission paid on the booking and its commission record', async () => {
+    fixtures.bookings = { ...fixtures.bookings, status: 'confirmed', commission_status: 'pending', commission_amount: 150 };
+    const res = await patch({ action: 'commission_paid' });
+    expect(res.status).toBe(200);
+    expect(updates.at(-1)).toMatchObject({ table: 'bookings', row: { commission_status: 'paid' } });
+    expect(recordOps.at(-1)).toMatchObject({ op: 'update', row: { status: 'paid' } });
+  });
+  it('refuses when nothing is owed or it is already paid', async () => {
+    fixtures.bookings = { ...fixtures.bookings, status: 'confirmed', commission_status: 'paid', commission_amount: 150 };
+    expect((await patch({ action: 'commission_paid' })).status).toBe(409);
+    fixtures.bookings = { ...fixtures.bookings, commission_status: 'not_applicable', commission_amount: 0 };
+    expect((await patch({ action: 'commission_paid' })).status).toBe(409);
+  });
+  it('is admin only', async () => {
+    role = 'partner';
+    expect((await patch({ action: 'commission_paid' })).status).toBe(403);
   });
 });

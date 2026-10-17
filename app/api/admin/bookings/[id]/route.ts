@@ -8,6 +8,7 @@ import { loadBookingView, sendManualBookingEmails, sendReassignedAwayEmail } fro
 import { cancelBooking } from '@/lib/bookings/cancel';
 import { confirmBooking } from '@/lib/bookings/confirm';
 import { settlePaidOffer } from '@/lib/offers/paid';
+import { withItemLinks } from '@/lib/bookings/links';
 
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supabase reads) in route handlers otherwise
@@ -35,6 +36,7 @@ const schema = z.discriminatedUnion('action', [
     notify: z.boolean().default(true),
   }),
   z.object({ action: z.literal('confirm') }),
+  z.object({ action: z.literal('commission_paid') }),
 ]);
 
 const isId = (id: string) => uuid.safeParse(id).success;
@@ -101,7 +103,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
       ...m, to_last4: String(to_phone || '').replace(/\D/g, '').slice(-4),
     }));
     return NextResponse.json({
-      booking: { ...booking, partner_response: booking.partner_response ?? null, partner_responded_at: booking.partner_responded_at ?? null },
+      booking: { ...(await withItemLinks([booking]))[0], partner_response: booking.partner_response ?? null, partner_responded_at: booking.partner_responded_at ?? null },
       whatsapp_messages,
     });
   } catch (e) { return jsonError(e); }
@@ -109,7 +111,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
 
 export async function PATCH(req: Request, { params }: { params: { id: string } }) {
   try {
-    await requireCaller(req, ['admin']);
+    const caller = await requireCaller(req, ['admin']);
     if (!isId(params.id)) throw new HttpError(404, 'Booking not found.');
     const parsed = schema.safeParse(await req.json().catch(() => null));
     if (!parsed.success) {
@@ -130,6 +132,20 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
       const r = await confirmBooking(id, 'admin');
       if (!r.ok) throw new HttpError(r.status, r.error);
       return NextResponse.json({ booking: await loadBookingView(id), already: r.already });
+    }
+
+    if (body.action === 'commission_paid') {
+      if (!OPEN_RECORD.includes(booking.commission_status) || !(Number(booking.commission_amount) > 0)) {
+        throw new HttpError(409, booking.commission_status === 'paid' ? 'Commission is already marked as paid.' : 'No commission is owed on this booking.');
+      }
+      const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
+      const now = new Date().toISOString();
+      const { error } = await sb.from('bookings').update({ commission_status: 'paid', commission_paid_date: today, updated_at: now })
+        .eq('id', id).in('commission_status', OPEN_RECORD);
+      if (error) throw error;
+      const { error: recError } = await sb.from('commission_records').update({ status: 'paid', paid_date: today, settled_by: caller.user.id, updated_at: now }).eq('booking_id', id);
+      if (recError) console.error('Commission record update failed:', recError);
+      return NextResponse.json({ booking: await loadBookingView(id) });
     }
 
     if (body.action === 'cancel') {

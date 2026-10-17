@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { ArrowLeft, Phone, Mail, MessageCircle } from 'lucide-react';
+import { ArrowLeft, Phone, Mail, MessageCircle, ExternalLink, IndianRupee } from 'lucide-react';
 import { authFetch } from '@/lib/supabase';
 import { AdminPageHeader } from '@/components/admin/AdminShell';
 import { AssignFields, EMPTY_ASSIGN, EMPTY_PAYMENT, INPUT, LABEL, PaymentFields, paymentBody, type AssignValue, type OptionPartner, type PaymentValue } from '@/components/admin/BookingFields';
@@ -14,6 +14,8 @@ const CARD = 'bg-white border border-slate-200 rounded-xl p-5 mb-5';
 const H2 = 'font-semibold text-slate-900 mb-3';
 const BTN = 'px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-50';
 const CATEGORY_LABEL: Record<string, string> = { hotel: 'Hotel', taxi: 'Taxi', trek: 'Trek', paragliding: 'Paragliding', guide: 'Local guide' };
+const CATEGORY_ICON: Record<string, string> = { hotel: '🏨', taxi: '🚕', trek: '🥾', paragliding: '🪂', guide: '🧭' };
+const fmt = (d: string) => new Date(d + 'T00:00:00Z').toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 
 const WA_STATUS: Record<string, string> = {
   queued: 'bg-slate-100 text-slate-600', sent: 'bg-blue-100 text-blue-700', delivered: 'bg-green-100 text-green-700',
@@ -43,6 +45,7 @@ export default function BookingDetailPage() {
   const [reason, setReason] = useState('');
   const [confirming, setConfirming] = useState(false);
   const [confirmMsg, setConfirmMsg] = useState<{ ok: boolean; text: string } | null>(null);
+  const [commSure, setCommSure] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -56,6 +59,14 @@ export default function BookingDetailPage() {
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
   }, [id]);
+
+  // "Cancel" on the bookings list lands here with the cancel form already open.
+  useEffect(() => {
+    if (b && b.status !== 'cancelled' && new URLSearchParams(window.location.search).get('action') === 'cancel' && panel === '') {
+      setPanel('cancel');
+      setTimeout(() => document.getElementById('cancel-reason')?.focus(), 50);
+    }
+  }, [b]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function open(p: 'payment' | 'assign' | 'cancel') {
     setError(''); setReason(''); setPanel(p);
@@ -126,6 +137,7 @@ export default function BookingDetailPage() {
   }
 
   const cancelled = b.status === 'cancelled';
+  const owed = ['pending', 'due', 'overdue'].includes(b.commission_status) && Number(b.commission_amount) > 0;
   const isActivity = (ACTIVITY_CATEGORIES as readonly string[]).includes(b.category);
   const canReassign = isActivity && !cancelled && b.commission_status !== 'paid';
   const pc = b.partner_contact as { name: string; email: string | null; phone: string | null } | null;
@@ -151,12 +163,28 @@ export default function BookingDetailPage() {
           </div>
         } />
 
-      <section className={CARD}>
-        <h2 className={H2}>What</h2>
-        <Row k="Booked" v={b.item_name} />
-        <Row k="When" v={b.date_text} />
+      <section className={cn(CARD, 'border-brand-200 bg-brand-50/40')}>
+        <p className="text-xs font-semibold uppercase tracking-wider text-brand-700">{CATEGORY_ICON[b.category] || '📋'} {CATEGORY_LABEL[b.category] || b.category} booking</p>
+        <div className="mt-1 mb-3 flex flex-wrap items-start justify-between gap-3">
+          <h2 className="text-2xl font-heading font-bold text-slate-900">{b.category === 'hotel' ? (b.partner_contact?.name || b.item_name) : b.item_name}</h2>
+          {b.item_href && <a href={b.item_href} target="_blank" rel="noopener" className="inline-flex items-center gap-1 rounded-lg border border-brand-200 bg-white px-3 py-1.5 text-sm font-semibold text-brand-700 hover:bg-brand-50"><ExternalLink className="h-4 w-4" />View {(CATEGORY_LABEL[b.category] || 'listing').toLowerCase()} page</a>}
+        </div>
+        {b.category === 'hotel' ? <>
+          <Row k="Room" v={b.room_name} />
+          <Row k="Check-in" v={b.check_in && `${fmt(b.check_in)}${b.property_check_in_time ? ', from ' + b.property_check_in_time : ''}`} />
+          <Row k="Check-out" v={b.check_out && `${fmt(b.check_out)}${b.property_check_out_time ? ', by ' + b.property_check_out_time : ''}`} />
+          <Row k="Nights" v={b.check_in && b.check_out ? Math.round((Date.parse(b.check_out) - Date.parse(b.check_in)) / 86400e3) : null} />
+          <Row k="Rooms" v={b.num_rooms} />
+        </> : <>
+          <Row k="Date" v={b.date_text} />
+          <Row k="Pickup" v={b.pickup_location} />
+          <Row k="Drop" v={b.drop_location} />
+        </>}
         <Row k="People" v={b.num_guests} />
+        <Row k="Adults / children" v={b.num_adults != null ? `${b.num_adults} adults${b.num_children ? ', ' + b.num_children + ' children' : ''}` : null} />
         <Row k="Notes" v={b.special_requests} />
+        <Row k="Offer" v={b.offer_code && `${b.offer_code} (${b.offer_percent}% off)`} />
+        <Row k="Booked on" v={`${new Date(b.created_at).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })} · ${b.booking_source === 'admin' ? 'by admin' : 'on the website'}`} />
         {cancelled && <Row k="Cancelled because" v={b.cancelled_reason} />}
       </section>
 
@@ -242,13 +270,21 @@ export default function BookingDetailPage() {
             {b.status === 'pending' && <button disabled={confirming} onClick={confirmNow} className={cn(BTN, 'inline-flex items-center justify-center gap-2 bg-brand-600 text-white hover:bg-brand-700')}>{confirming ? 'Confirming...' : 'Confirm booking'}</button>}
             {partnerLink && <a href={partnerLink} target="_blank" rel="noopener noreferrer" className={cn(BTN, 'inline-flex items-center justify-center gap-2 bg-green-600 text-white hover:bg-green-700')}><MessageCircle className="h-4 w-4" /> Send on WhatsApp to partner</a>}
             {customerLink && <a href={customerLink} target="_blank" rel="noopener noreferrer" className={cn(BTN, 'inline-flex items-center justify-center gap-2 bg-green-600 text-white hover:bg-green-700')}><MessageCircle className="h-4 w-4" /> Send on WhatsApp to customer</a>}
+            {owed && !commSure && <button onClick={() => setCommSure(true)} className={cn(BTN, 'inline-flex items-center justify-center gap-2 bg-amber-500 text-white hover:bg-amber-600')}><IndianRupee className="h-4 w-4" /> Mark commission paid</button>}
             {panel !== 'cancel' && <button onClick={() => open('cancel')} className={cn(BTN, 'border border-red-300 text-red-600 hover:bg-red-50')}>Cancel booking</button>}
           </div>
+          {owed && commSure && (
+            <div className="mt-3 flex flex-wrap items-center gap-2 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-900">
+              Have you received the {formatPrice(Number(b.commission_amount))} commission from the {b.category === 'hotel' ? 'hotel' : 'partner'}?
+              <button disabled={saving} onClick={async () => { await patch({ action: 'commission_paid' }); setCommSure(false); }} className="rounded-md bg-amber-500 px-3 py-1 font-semibold text-white disabled:opacity-60">{saving ? 'Saving…' : 'Yes, mark paid'}</button>
+              <button onClick={() => setCommSure(false)} className="rounded-md bg-white px-3 py-1 font-semibold text-slate-700">Not yet</button>
+            </div>
+          )}
           {confirmMsg && <p className={cn('text-sm rounded-lg px-3 py-2 mt-3 border', confirmMsg.ok ? 'text-green-700 bg-green-50 border-green-200' : 'text-red-700 bg-red-50 border-red-200')}>{confirmMsg.text}</p>}
           {panel === 'cancel' && (
             <div className="mt-4 pt-4 border-t border-slate-100">
               <label className={LABEL}>Reason for cancelling</label>
-              <input className={INPUT} value={reason} maxLength={500} onChange={(e) => setReason(e.target.value)} />
+              <input id="cancel-reason" className={INPUT} value={reason} maxLength={500} onChange={(e) => setReason(e.target.value)} />
               {notifyBox('Notify the customer and partner by email')}
               {errorBox}
               <div className="flex gap-2 mt-3">

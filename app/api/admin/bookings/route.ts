@@ -3,7 +3,8 @@ import { z } from 'zod';
 import { HttpError, jsonError, requireCaller, serviceClient } from '@/lib/server-auth';
 import { quoteBooking, nightsBetween } from '@/lib/pricing';
 import { BOOKABLE_STATUS, checkAssignment, commissionRateFor, isBeforeToday, paymentFields, splitAmount, todayIst } from '@/lib/manual-booking';
-import { sendManualBookingEmails } from '@/lib/manual-booking-emails';
+import { sendManualBookingEmails, toBookingViews } from '@/lib/manual-booking-emails';
+import { withItemLinks } from '@/lib/bookings/links';
 import { whatsappNewBooking } from '@/lib/booking-whatsapp';
 import { roomSummaries } from '@/lib/availability/calc';
 import { inBackground } from '@/lib/background';
@@ -11,6 +12,16 @@ import { matchEarlier, REQUEST_ID_COLUMNS, type RequestDetails } from '@/lib/boo
 
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supabase reads) in route handlers otherwise
+
+/** The admin list: the latest 500 bookings, each with what it is for (hotel and room, trek, route...) and a link to it. */
+export async function GET(req: Request) {
+  try {
+    await requireCaller(req, ['admin']);
+    const { data, error } = await serviceClient().from('bookings').select('*').order('created_at', { ascending: false }).limit(500);
+    if (error) throw error;
+    return NextResponse.json({ bookings: await withItemLinks(await toBookingViews(data || [])) });
+  } catch (e) { return jsonError(e); }
+}
 
 const TABLE = { hotel: 'properties', taxi: 'taxi_routes', trek: 'treks', paragliding: 'paragliding_packages', guide: 'guides' } as const;
 const ITEM_COLUMN = { hotel: 'property_id', taxi: 'taxi_route_id', trek: 'trek_id', paragliding: 'paragliding_id', guide: 'guide_id' } as const;
