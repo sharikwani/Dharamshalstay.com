@@ -129,6 +129,9 @@ export default async function HomeView({ lang }: { lang: Lang }) {
 
       <HomeEffects sections={sections} navLabel={v.onThisPage} searchLabel={v.panelTitle} />
 
+      {/* STORY OF THE DAY: first thing after the hero; a traveller or local story, featured for 24 hours (English homepage) */}
+      {lang === 'en' && <StoryOfTheDay />}
+
       {/* TRUST + WHY US */}
       <div className="wrap">
         <div className="trust rv">
@@ -151,9 +154,6 @@ export default async function HomeView({ lang }: { lang: Lang }) {
           })}
         </div>
       </div>
-
-      {/* STORY OF THE DAY: a traveller or local story, featured for 24 hours (English homepage) */}
-      {lang === 'en' && <StoryOfTheDay />}
 
       <Divider />
 

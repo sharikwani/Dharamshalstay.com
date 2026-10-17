@@ -40,3 +40,48 @@
 @media (prefers-reduced-motion: reduce) {
   .st-flag, .st-flag.new, .st-heart.pop svg, .st-heart.pop::after, .st-pulse::after, .st-spot::before, .st-rise { animation: none !important; }
 }
+
+/* ---------- Homepage Story of the day: rolling photos, story-style progress bars and a soft living glow ---------- */
+.sotd-board { position: relative; isolation: isolate; border-radius: 28px; padding: 2px; }
+/* The glow: prayer-flag colours turning slowly behind the board, softly breathing. */
+.sotd-board::before { content: ''; position: absolute; inset: -10px; z-index: -1; border-radius: 36px;
+  background: conic-gradient(from var(--sotd-a, 0deg), #2f6fd6, #f4f1e8, #d63a2f, #2f9e5b, #f0c419, #2f6fd6);
+  filter: blur(22px); opacity: .5; animation: sotd-spin 10s linear infinite, sotd-breathe 4.5s ease-in-out infinite; }
+/* A thin bright border in the same colours. */
+.sotd-board::after { content: ''; position: absolute; inset: 0; z-index: -1; border-radius: 28px;
+  background: conic-gradient(from var(--sotd-a, 0deg), #2f6fd6, #f4f1e8, #d63a2f, #2f9e5b, #f0c419, #2f6fd6); animation: sotd-spin 10s linear infinite; }
+@property --sotd-a { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+@keyframes sotd-spin { to { --sotd-a: 360deg; } }
+@keyframes sotd-breathe { 0%, 100% { opacity: .35; } 50% { opacity: .65; } }
+
+.sotd-slides { position: absolute; inset: 0; overflow: hidden; }
+.sotd-slide { position: absolute; inset: 0; opacity: 0; filter: blur(8px); transform: scale(1.04); transition: opacity 1.3s ease, filter 1.3s ease, transform 1.3s ease; }
+.sotd-slide.on { opacity: 1; filter: none; transform: none; z-index: 1; }
+.sotd-slide img { will-change: transform; }
+.sotd-slide.on img { animation-duration: 7s; animation-timing-function: linear; animation-fill-mode: both; }
+.sotd-slide.on.fx-0 img { animation-name: sotd-zoom-in; }
+.sotd-slide.on.fx-1 img { animation-name: sotd-pan-left; }
+.sotd-slide.on.fx-2 img { animation-name: sotd-zoom-out; }
+.sotd-slide.on.fx-3 img { animation-name: sotd-pan-up; }
+.sotd-slide.on.fx-4 img { animation-name: sotd-tilt; }
+@keyframes sotd-zoom-in { from { transform: scale(1); } to { transform: scale(1.16); } }
+@keyframes sotd-zoom-out { from { transform: scale(1.18); } to { transform: scale(1.02); } }
+@keyframes sotd-pan-left { from { transform: scale(1.14) translateX(3.5%); } to { transform: scale(1.14) translateX(-3.5%); } }
+@keyframes sotd-pan-up { from { transform: scale(1.14) translateY(3.5%); } to { transform: scale(1.14) translateY(-3.5%); } }
+@keyframes sotd-tilt { from { transform: scale(1.16) rotate(-1.6deg); } to { transform: scale(1.04) rotate(0deg); } }
+
+.sotd-bars { display: flex; gap: 5px; }
+.sotd-bar { position: relative; flex: 1; height: 3px; border-radius: 3px; background: rgba(255,255,255,.35); overflow: hidden; border: 0; padding: 0; cursor: pointer; }
+.sotd-bar > i { position: absolute; inset: 0; width: 0; background: #fff; border-radius: 3px; }
+.sotd-bar.done > i { width: 100%; }
+.sotd-bar.on > i { animation: sotd-fill 6.5s linear forwards; }
+.sotd-paused .sotd-bar.on > i, .sotd-paused .sotd-slide.on img { animation-play-state: paused; }
+@keyframes sotd-fill { to { width: 100%; } }
+
+.sotd-live { position: relative; display: inline-block; width: 8px; height: 8px; border-radius: 99px; background: #ef4444; }
+.sotd-live::after { content: ''; position: absolute; inset: 0; border-radius: 99px; background: #ef4444; animation: st-ping 1.6s ease-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sotd-board::before, .sotd-board::after, .sotd-slide.on img, .sotd-live::after { animation: none !important; }
+  .sotd-slide { transition: opacity .6s ease; filter: none; transform: none; }
+}

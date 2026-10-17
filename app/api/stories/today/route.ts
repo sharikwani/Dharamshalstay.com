@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { jsonError } from '@/lib/server-auth';
 import { excerptOf } from '@/lib/stories/rules';
-import { spotlightStory } from '@/lib/stories/store';
+import { reachSummary, spotlightStory, storyReach } from '@/lib/stories/store';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -11,12 +11,14 @@ export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supab
 export async function GET() {
   try {
     const s = await spotlightStory();
+    const reach = s ? reachSummary(await storyReach(s.story.id).catch(() => [])) : null;
     const body = s ? {
       live: s.live,
       story: {
         id: s.story.id, slug: s.story.slug, title: s.story.title, excerpt: excerptOf(s.story.body, 200), place: s.story.place,
         author_name: s.story.author_name, author_kind: s.story.author_kind, author_from: s.story.author_from, instagram: s.story.instagram,
-        photo: s.story.photos[0] || null, views: s.story.views, likes: s.story.likes, flags: s.story.flags,
+        photo: s.story.photos[0] || null, photos: s.story.photos, views: s.story.views, likes: s.story.likes, flags: s.story.flags,
+        comments: s.story.comments, cities: reach?.cities || 0,
         featured_until: s.story.featured_until,
       },
     } : { live: false, story: null };
