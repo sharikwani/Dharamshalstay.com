@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { HttpError, jsonError, requireCaller, serviceClient } from '@/lib/server-auth';
 import { accountStats, socialConfigured } from '@/lib/social/publish';
-import { createPost, nextSlot, publishPost } from '@/lib/social/autopilot';
+import { createPost, nextSlot, pickSeries, publishPost } from '@/lib/social/autopilot';
+import { SERIES } from '@/lib/social/series';
 import { slideUrl, topicIdeas, fullCaption, type Slide } from '@/lib/social/writer';
 
 export const dynamic = 'force-dynamic';
@@ -32,16 +33,19 @@ export async function GET(req: Request) {
       const { data: used } = await sb.from('social_posts').select('theme').neq('status', 'cancelled');
       const usedSet = new Set((used || []).map((u) => u.theme));
       const ideas = topicIdeas().filter((i) => !usedSet.has(i.theme));
-      return NextResponse.json({ ideas: [...ideas.filter((i) => i.theme.startsWith('festival:')), ...ideas.filter((i) => i.theme.startsWith('guide:')).slice(0, 40), ...ideas.filter((i) => i.theme.startsWith('place:')).slice(0, 20)] });
+      return NextResponse.json({
+        ideas: [...ideas.filter((i) => i.theme.startsWith('festival:')), ...ideas.filter((i) => i.theme.startsWith('guide:')).slice(0, 40), ...ideas.filter((i) => i.theme.startsWith('place:')).slice(0, 20)],
+        series: SERIES.map((s) => ({ id: s.id, name: s.name, mood: s.mood, left: ideas.filter((i) => i.series === s.id).length })),
+      });
     }
     throw new HttpError(400, 'Unknown view');
   } catch (e) { return jsonError(e); }
 }
 
-const slide = z.object({ style: z.enum(['cover', 'tip', 'cta']), image: z.string().max(60).optional(), kicker: z.string().max(40).optional(), title: z.string().min(1).max(90), body: z.string().max(220).optional() });
+const slide = z.object({ style: z.enum(['cover', 'tip', 'fact', 'question', 'cta']), image: z.string().max(60).optional(), kicker: z.string().max(40).optional(), title: z.string().min(1).max(90), body: z.string().max(220).optional() });
 const action = z.discriminatedUnion('action', [
   z.object({ action: z.literal('settings'), mode: z.enum(['off', 'approve', 'auto']).optional(), posts_per_week: z.number().int().min(1).max(14).optional(), post_time: z.string().regex(/^\d{2}:\d{2}$/).optional(), post_days: z.array(z.number().int().min(0).max(6)).min(1).optional() }),
-  z.object({ action: z.literal('generate'), theme: z.string().max(120).optional(), topic: z.string().max(300).optional(), format: z.enum(['single', 'carousel']).optional() }),
+  z.object({ action: z.literal('generate'), theme: z.string().max(120).optional(), topic: z.string().max(300).optional(), format: z.enum(['single', 'carousel']).optional(), series: z.enum(['hidden', 'didyouknow', 'guess', 'locals', 'scale', 'stillness']).optional() }),
   z.object({ action: z.literal('update'), id: z.string().uuid(), caption: z.string().min(20).max(2000), hashtags: z.array(z.string().max(40)).max(25), slides: z.array(slide).min(1).max(10).optional() }),
   z.object({ action: z.literal('approve'), id: z.string().uuid() }),
   z.object({ action: z.literal('publish'), id: z.string().uuid() }),
@@ -65,7 +69,13 @@ export async function POST(req: Request) {
     }
     if (a.action === 'generate') {
       const ideas = topicIdeas();
-      const brief = a.theme ? ideas.find((i) => i.theme === a.theme) : a.topic ? { theme: `custom:${Date.now()}`, topic: a.topic, format: a.format } : undefined;
+      let brief = a.theme ? ideas.find((i) => i.theme === a.theme) : a.topic ? { theme: `custom:${Date.now()}`, topic: a.topic, format: a.format, series: a.series } : undefined;
+      if (!brief && a.series) {
+        // "One more Hidden Dharamshala": a place this series has not featured yet.
+        const { data: used } = await sb.from('social_posts').select('theme').neq('status', 'cancelled').order('created_at');
+        brief = pickSeries(ideas.filter((i) => i.series === a.series), new Set((used || []).map((u) => u.theme)), 0);
+        if (!brief) throw new HttpError(400, 'This series has covered every place we have photos and facts for');
+      }
       if (!brief) throw new HttpError(400, 'Pick a topic or write one');
       return NextResponse.json({ post: await createPost({ ...brief, format: a.format || brief.format }, { schedule: false, createdBy: 'admin' }) });
     }

@@ -29,6 +29,7 @@ export default function AdminSocial() {
   const [configured, setConfigured] = useState(true);
   const [stats, setStats] = useState<any>(null);
   const [ideas, setIdeas] = useState<any[]>([]);
+  const [series, setSeries] = useState<any[]>([]);
   const [busy, setBusy] = useState('');
   const [msg, setMsg] = useState('');
   const [open, setOpen] = useState<any>(null);
@@ -37,7 +38,7 @@ export default function AdminSocial() {
   const load = useCallback(async () => {
     try {
       const [p, s, i] = await Promise.all([api('/api/admin/social?view=posts'), api('/api/admin/social?view=settings'), api('/api/admin/social?view=ideas')]);
-      setRows(p.rows); setSettings(s.settings); setConfigured(s.configured); setIdeas(i.ideas);
+      setRows(p.rows); setSettings(s.settings); setConfigured(s.configured); setIdeas(i.ideas); setSeries(i.series || []);
       api('/api/admin/social?view=stats').then(setStats).catch(() => {});
     } catch (e: any) { setMsg(e.message.includes('relation') ? 'Run supabase/migration-v32-social.sql in Supabase first.' : e.message); setRows([]); }
   }, []);
@@ -79,6 +80,21 @@ export default function AdminSocial() {
               })}</div>
             </div>
           </>}
+        </div>
+      </div>
+
+      <div className="rounded-xl p-5 mb-6 bg-[#0c1726] text-[#f5efe4]">
+        <h2 className="font-heading font-semibold">Curiosity series</h2>
+        <p className="text-sm text-slate-300 mt-1 mb-4">Posts built to be shared by people who live here: a hidden detail, a surprising fact, a guessing game. Facts come only from our own guides. Most autopilot posts now come from these.</p>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {series.map((s) => (
+            <button key={s.id} disabled={!!busy || !s.left} onClick={() => act('s' + s.id, { action: 'generate', series: s.id }, 'Draft ready below.')}
+              className="text-left rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 p-4 disabled:opacity-50 transition-colors">
+              <span className="block font-semibold text-[#e3b76a]">{busy === 's' + s.id ? 'Writing… (~20 s)' : s.name}</span>
+              <span className="block text-xs text-slate-300 mt-1">{s.mood}</span>
+              <span className="block text-xs text-slate-400 mt-2">{s.left} places left</span>
+            </button>
+          ))}
         </div>
       </div>
 

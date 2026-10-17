@@ -67,6 +67,23 @@ export async function createPost(brief: Brief, opts: { schedule: boolean; at?: D
   return data;
 }
 
+const randomOf = <T,>(xs: T[]): T | undefined => xs[Math.floor(Math.random() * xs.length)];
+
+/**
+ * The next curiosity post: series in turn, each on a place not featured in the last few posts,
+ * so the feed never shows the same place twice in a row.
+ */
+export function pickSeries(ideas: Brief[], used: Set<string>, count: number, rand = Math.random): Brief | undefined {
+  const open = ideas.filter((i) => i.series && !used.has(i.theme));
+  if (!open.length) return undefined;
+  const order = Array.from(new Set(open.map((i) => i.series!)));
+  const series = order[count % order.length];
+  const recent = new Set(Array.from(used).slice(-6).map((t) => t.split(':')[2]).filter(Boolean));
+  const pool = open.filter((i) => i.series === series && !recent.has(i.placeKey!));
+  const from = pool.length ? pool : open.filter((i) => i.series === series);
+  return from[Math.floor(rand() * from.length)];
+}
+
 export async function runSocialAutopilot(opts: { deadline: number }) {
   if (!socialConfigured()) return { skipped: 'not configured' };
   const sb = serviceClient();
@@ -88,15 +105,14 @@ export async function runSocialAutopilot(opts: { deadline: number }) {
   if ((queued?.length || 0) >= perWeek) return { ...out, idle: 'calendar is full' };
   if (Date.now() > opts.deadline - 50_000) return { ...out, idle: 'not enough time left this run' };
 
-  const { data: used } = await sb.from('social_posts').select('theme').neq('status', 'cancelled');
+  const { data: used } = await sb.from('social_posts').select('theme').neq('status', 'cancelled').order('created_at');
   const usedSet = new Set((used || []).map((u) => u.theme));
   const ideas = topicIdeas();
-  // Festivals first; then alternate guide carousels and place spotlights (2 guides : 1 place).
+  // Festivals first; then mostly curiosity series (2 of 3 posts), rotating the series, with a guide carousel in between.
   const festival = ideas.find((i) => i.theme.startsWith('festival:') && !usedSet.has(i.theme));
   const guides = ideas.filter((i) => i.theme.startsWith('guide:') && !usedSet.has(i.theme));
-  const places = ideas.filter((i) => i.theme.startsWith('place:') && !usedSet.has(i.theme));
   const count = used?.length || 0;
-  const pick = festival || (count % 3 === 2 ? places[Math.floor(Math.random() * places.length)] : guides[Math.floor(Math.random() * guides.length)]) || places[0] || guides[0];
+  const pick = festival || (count % 3 === 2 ? randomOf(guides) : pickSeries(ideas, usedSet, count)) || randomOf(guides) || pickSeries(ideas, usedSet, count);
   if (!pick) return { ...out, idle: 'no new topics' };
 
   const days = Array.isArray(settings?.post_days) && settings.post_days.length ? settings.post_days : [2, 4, 6, 0];
