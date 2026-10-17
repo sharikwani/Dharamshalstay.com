@@ -7,7 +7,7 @@ import { formatPrice } from '@/lib/utils';
 import { notifyHotelChanged } from '@/lib/indexnow-client';
 
 // Hotel commission used when a listing's commission_pct is blank -- keep in step with DEFAULT_COMMISSION.hotel in lib/pricing.ts.
-const HOTEL_DEFAULT_COMMISSION = 10;
+const HOTEL_DEFAULT_COMMISSION = 15;
 
 /**
  * Inline field the admin can correct. Defined at module level so the input keeps

@@ -17,9 +17,10 @@ describe('commissionRateFor', () => {
     expect(commissionRateFor('paragliding', {})).toBe(25);
     expect(commissionRateFor('taxi', {})).toBe(20);
   });
-  it('uses property rate for hotels, default 10', () => {
+  it('uses property rate for hotels, default 15', () => {
     expect(commissionRateFor('hotel', { propertyPct: 12 })).toBe(12);
-    expect(commissionRateFor('hotel', {})).toBe(10);
+    expect(commissionRateFor('hotel', {})).toBe(15);
+    expect(commissionRateFor('hotel', { propertyPct: 0 })).toBe(15);
   });
   it('guides are 20', () => expect(commissionRateFor('guide', { partnerPct: 5 })).toBe(20));
 });
