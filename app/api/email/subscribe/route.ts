@@ -7,6 +7,8 @@ import { deliver } from '@/lib/email/send';
 import { SITE } from '@/lib/email/layout';
 import { newsletterConfirm } from '@/lib/email/templates';
 
+export const fetchCache = 'force-no-store';
+
 export const runtime = 'nodejs';
 
 const schema = z.object({

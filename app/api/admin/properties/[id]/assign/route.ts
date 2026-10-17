@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+export const fetchCache = 'force-no-store';
+
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
   try {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL;

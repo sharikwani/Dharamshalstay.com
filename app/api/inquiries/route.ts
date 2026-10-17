@@ -4,6 +4,8 @@ import { inBackground } from '@/lib/background';
 import { alertHotelOfEnquiry } from '@/lib/listings/enquiry-alert';
 import { afterEnquiry } from '@/lib/email/enquiry';
 
+export const fetchCache = 'force-no-store';
+
 function getTodayIST(): string {
   const now = new Date();
   const ist = new Date(now.getTime() + (5.5 * 60 * 60 * 1000));

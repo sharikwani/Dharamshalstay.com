@@ -6,6 +6,7 @@ import { gridResponse, putResponse, readJson } from '@/lib/availability/handlers
 import { isUuid } from '@/lib/availability/validate';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supabase reads) in route handlers otherwise
 
 const notFound = () => NextResponse.json({ error: 'Property not found' }, { status: 404 });
 const badId = () => NextResponse.json({ error: 'property_id is required' }, { status: 400 });

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { requireCaller, jsonError } from '@/lib/server-auth';
 import { roomCount } from '@/lib/availability/calc';
 
+export const fetchCache = 'force-no-store';
+
 /** total_inventory only when the source gives a positive whole number; otherwise the room is left untracked. */
 const importedRoomCount = (v: unknown) => { const n = roomCount(v); return n ? { total_inventory: n } : {}; };
 

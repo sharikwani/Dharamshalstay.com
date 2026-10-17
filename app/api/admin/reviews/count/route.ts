@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { jsonError, requireCaller, serviceClient } from '@/lib/server-auth';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supabase reads) in route handlers otherwise
 
 /**
  * Pending-review count for the admin nav badge. hotel_reviews is service-role only (v23 revokes

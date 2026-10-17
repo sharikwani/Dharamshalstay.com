@@ -3,6 +3,8 @@ import { webhookSignatureValid } from '@/lib/razorpay';
 import { recordOnlinePayment } from '@/lib/payments/record';
 import { schedulePaymentReminder } from '@/lib/email/jobs';
 
+export const fetchCache = 'force-no-store';
+
 /**
  * Razorpay webhook (Dashboard → Settings → Webhooks, URL /api/webhooks/razorpay, events payment_link.paid and payment.failed).
  * Razorpay retries until it gets a 2xx, so a database failure answers 500.

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createHmac, timingSafeEqual } from 'crypto';
 import { serviceClient } from '@/lib/server-auth';
 
+export const fetchCache = 'force-no-store';
+
 export const runtime = 'nodejs';
 
 /**

@@ -5,6 +5,8 @@ import { requireActivityPartner } from '@/lib/partners/load';
 import { whatsappProfilePatch } from '@/lib/partners/whatsapp';
 import { isAccountNumber, isIfsc, isPan, isUpi } from '@/lib/partners/validate';
 
+export const fetchCache = 'force-no-store';
+
 const schema = z.object({
   legal_name: z.string().trim().min(2).max(200),
   business_name: z.string().trim().max(300).optional().default(''),

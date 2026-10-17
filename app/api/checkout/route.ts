@@ -3,6 +3,8 @@ import { createCheckoutLink, type CheckoutResult } from '@/lib/bookings/checkout
 import { websitePayLaterFallback } from '@/lib/bookings/pay-later';
 import { onlinePaymentEnabled } from '@/lib/razorpay';
 
+export const fetchCache = 'force-no-store';
+
 export async function POST(req: NextRequest) {
   try {
     const { bookingId, payLaterIfUnavailable } = await req.json().catch(() => ({}));

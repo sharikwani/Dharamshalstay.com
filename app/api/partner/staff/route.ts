@@ -4,6 +4,8 @@ import { HttpError, jsonError, serviceClient } from '@/lib/server-auth';
 import { requireActivityPartner } from '@/lib/partners/load';
 import { normalizeIndianPhone } from '@/lib/whatsapp';
 
+export const fetchCache = 'force-no-store';
+
 const schema = z.object({
   role: z.enum(['driver', 'pilot', 'guide']),
   full_name: z.string().trim().min(2).max(200),

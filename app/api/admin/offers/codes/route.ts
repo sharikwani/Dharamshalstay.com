@@ -5,6 +5,7 @@ import { HttpError, jsonError, requireCaller } from '@/lib/server-auth';
 import { cancelCode, checkCode, redeemCode, type Viewer } from '@/lib/offers/verify';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supabase reads) in route handlers otherwise
 
 const schema = z.object({
   action: z.enum(['check', 'redeem', 'cancel']),

@@ -7,6 +7,7 @@ import { gridResponse, publicProperty, putResponse, readJson } from '@/lib/avail
 import { isUuid } from '@/lib/availability/validate';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supabase reads) in route handlers otherwise
 
 async function activePartner(req: Request): Promise<Caller> {
   const caller = await requireCaller(req, ['partner']);

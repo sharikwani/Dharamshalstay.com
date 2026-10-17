@@ -8,6 +8,7 @@ import { emailPartnerDecision } from '@/lib/partners/emails';
 import { inBackground } from '@/lib/background';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supabase reads) in route handlers otherwise
 
 const PARTNER_TYPES = ['paragliding', 'taxi', 'trek'];
 const SAVE_FAILED = 'Could not save. Please try again.';

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { sendPropertySubmittedNotification } from '@/lib/email';
 
+export const fetchCache = 'force-no-store';
+
 /**
  * POST /api/partner/property-submitted { id }
  * Called by the partner form right after it submits a listing for review, so

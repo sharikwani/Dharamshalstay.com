@@ -5,6 +5,7 @@ import { dayCount, isDate } from '@/lib/availability/calc';
 import { isUuid } from '@/lib/availability/validate';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supabase reads) in route handlers otherwise
 
 const MAX_PUBLIC_NIGHTS = 60;
 const bad = (error: string) => NextResponse.json({ error }, { status: 400 });

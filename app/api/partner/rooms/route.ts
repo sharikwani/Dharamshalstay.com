@@ -7,6 +7,7 @@ import { readJson } from '@/lib/availability/handlers';
 import { roomsGet, roomsPut } from '@/lib/rooms/handlers';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supabase reads) in route handlers otherwise
 const LIVE = ['published', 'approved'];
 
 async function activePartner(req: Request) {

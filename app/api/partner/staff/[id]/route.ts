@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { HttpError, jsonError, serviceClient } from '@/lib/server-auth';
 import { KYC_BUCKET, requireActivityPartner } from '@/lib/partners/load';
 
+export const fetchCache = 'force-no-store';
+
 export async function DELETE(req: Request, { params }: { params: { id: string } }) {
   try {
     const { profile } = await requireActivityPartner(req, { editable: true });

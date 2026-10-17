@@ -4,6 +4,7 @@ import { HttpError, jsonError, requireCaller } from '@/lib/server-auth';
 import { actOnListingRequest } from '@/lib/listings/admin';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supabase reads) in route handlers otherwise
 
 const body = z.object({
   action: z.enum(['link_owner', 'remove_listing', 'restore_listing', 'reject', 'mark_done']),

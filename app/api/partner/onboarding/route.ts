@@ -4,6 +4,7 @@ import { loadOnboarding, requireActivityPartner } from '@/lib/partners/load';
 import { agreementFor } from '@/lib/partners/agreement';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supabase reads) in route handlers otherwise
 
 export async function GET(req: Request) {
   try {

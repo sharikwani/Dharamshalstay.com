@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+export const fetchCache = 'force-no-store';
+
 /**
  * DELETE /api/admin/properties/[id]
  * Permanently deletes a property. Uses service role key to bypass RLS.

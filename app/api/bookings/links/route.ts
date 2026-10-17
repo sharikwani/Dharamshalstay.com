@@ -3,6 +3,7 @@ import { getCaller, serviceClient } from '@/lib/server-auth';
 import { bookingPagePath } from '@/lib/bookings/stay-details';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supabase reads) in route handlers otherwise
 
 /** The logged-in guest's private booking-page links, keyed by booking id (account page). */
 export async function GET(req: NextRequest) {

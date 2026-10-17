@@ -10,6 +10,7 @@ import { inBackground } from '@/lib/background';
 import { matchEarlier, REQUEST_ID_COLUMNS, type RequestDetails } from '@/lib/bookings/request-id';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supabase reads) in route handlers otherwise
 
 const TABLE = { hotel: 'properties', taxi: 'taxi_routes', trek: 'treks', paragliding: 'paragliding_packages', guide: 'guides' } as const;
 const ITEM_COLUMN = { hotel: 'property_id', taxi: 'taxi_route_id', trek: 'trek_id', paragliding: 'paragliding_id', guide: 'guide_id' } as const;

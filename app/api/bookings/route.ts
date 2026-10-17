@@ -3,6 +3,8 @@ import { getCaller } from '@/lib/server-auth';
 import { bookingSchema, createBooking } from '@/lib/bookings/create';
 import { bookingPagePath } from '@/lib/bookings/stay-details';
 
+export const fetchCache = 'force-no-store';
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();

@@ -7,6 +7,7 @@ import { listPartnerReviews } from '@/lib/reviews/store';
 import { setReply } from '@/lib/reviews/moderate';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supabase reads) in route handlers otherwise
 
 /** Property owners are partners with partner_type 'hotel' or none (older accounts). */
 const ownsProperties = (type: unknown) => !type || type === 'hotel';

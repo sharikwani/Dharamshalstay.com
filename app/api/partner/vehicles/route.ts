@@ -4,6 +4,8 @@ import { HttpError, jsonError, serviceClient } from '@/lib/server-auth';
 import { requireActivityPartner } from '@/lib/partners/load';
 import { normalizeVehicleReg } from '@/lib/partners/validate';
 
+export const fetchCache = 'force-no-store';
+
 const schema = z.object({
   vehicle_type: z.enum(['sedan', 'suv', 'innova', 'tempo', 'bus']),
   make_model: z.string().trim().min(2).max(100),

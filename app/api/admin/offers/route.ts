@@ -5,6 +5,7 @@ import { HttpError, jsonError, requireCaller, serviceClient } from '@/lib/server
 import { codeState, maxPercent, roomPlans } from '@/lib/offers/rules';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supabase reads) in route handlers otherwise
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const STORED = ['booked', 'redeemed', 'cancelled'];

@@ -6,6 +6,7 @@ import { runSocialAutopilot } from '@/lib/social/autopilot';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supabase reads) in route handlers otherwise
 export const maxDuration = 60;
 
 /**

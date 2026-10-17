@@ -8,6 +8,7 @@ import { deliver, ADMIN_TO } from '@/lib/email/send';
 import { runDueJobs } from '@/lib/email/jobs';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supabase reads) in route handlers otherwise
 export const maxDuration = 60;
 
 const since = (days: number) => new Date(Date.now() - days * 86400e3).toISOString();

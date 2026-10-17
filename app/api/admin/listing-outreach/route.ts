@@ -4,6 +4,7 @@ import { HttpError, jsonError, requireCaller } from '@/lib/server-auth';
 import { outreachList, sendOutreach } from '@/lib/listings/outreach';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supabase reads) in route handlers otherwise
 export const maxDuration = 60;
 
 export async function GET(req: Request) {

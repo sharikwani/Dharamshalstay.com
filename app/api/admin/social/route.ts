@@ -6,6 +6,7 @@ import { createPost, nextSlot, publishPost } from '@/lib/social/autopilot';
 import { slideUrl, topicIdeas, fullCaption, type Slide } from '@/lib/social/writer';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supabase reads) in route handlers otherwise
 export const maxDuration = 60;
 
 export async function GET(req: Request) {

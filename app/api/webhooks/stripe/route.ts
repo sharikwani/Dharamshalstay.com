@@ -3,6 +3,8 @@ import { getStripe } from '@/lib/stripe';
 import Stripe from 'stripe';
 import { recordOnlinePayment } from '@/lib/payments/record';
 
+export const fetchCache = 'force-no-store';
+
 const CONFIRMING_EVENTS = ['checkout.session.completed', 'checkout.session.async_payment_succeeded'];
 
 export async function POST(req: NextRequest) {

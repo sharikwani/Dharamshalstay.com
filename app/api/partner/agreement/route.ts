@@ -9,6 +9,8 @@ import { emailAdminPartnerSubmitted, emailAgreementCopy } from '@/lib/partners/e
 import { inBackground } from '@/lib/background';
 import { EDITABLE_STATUSES } from '@/lib/partners/types';
 
+export const fetchCache = 'force-no-store';
+
 export const runtime = 'nodejs';
 const schema = z.object({ signed_name: z.string().trim().min(2).max(200), accepted: z.literal(true) });
 

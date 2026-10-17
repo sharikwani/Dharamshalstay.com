@@ -5,6 +5,7 @@ import { requireActivityPartner } from '@/lib/partners/load';
 import { whatsappProfilePatch } from '@/lib/partners/whatsapp';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supabase reads) in route handlers otherwise
 
 // WhatsApp alert settings only. Unlike /api/partner/profile this works after verification too,
 // so verified partners can switch alerts on or off and change the number themselves.

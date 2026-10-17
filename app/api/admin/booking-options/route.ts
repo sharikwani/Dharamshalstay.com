@@ -3,6 +3,7 @@ import { HttpError, jsonError, requireCaller, serviceClient } from '@/lib/server
 import { BOOKABLE_STATUS, STAFF_ROLE_FOR, type ActivityCategory } from '@/lib/manual-booking';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supabase reads) in route handlers otherwise
 
 const ITEMS: Record<string, { table: string; cols: string; order: string }> = {
   hotel: { table: 'properties', cols: 'id, name, destination_slug, price_min, rooms, commission_pct, contact_email, contact_phone, listing_type', order: 'name' },

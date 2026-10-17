@@ -11,6 +11,7 @@ import { handleInbound } from '@/lib/wa-chat/inbound';
 import { updateChatStatus } from '@/lib/wa-chat/store';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supabase reads) in route handlers otherwise
 export const runtime = 'nodejs';
 // Customer chats are answered in the background after Meta gets its 200.
 export const maxDuration = 60;

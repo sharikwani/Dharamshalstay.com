@@ -4,6 +4,8 @@ import { KYC_BUCKET, requireActivityPartner } from '@/lib/partners/load';
 import { DOC_TYPES, docTarget, type DocType } from '@/lib/partners/types';
 import { checkUpload } from '@/lib/partners/validate';
 
+export const fetchCache = 'force-no-store';
+
 export const runtime = 'nodejs';
 function isRealDate(s: string): boolean {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(s)) return false;

@@ -10,6 +10,7 @@ import { confirmBooking } from '@/lib/bookings/confirm';
 import { settlePaidOffer } from '@/lib/offers/paid';
 
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supabase reads) in route handlers otherwise
 
 const uuid = z.string().uuid();
 const schema = z.discriminatedUnion('action', [

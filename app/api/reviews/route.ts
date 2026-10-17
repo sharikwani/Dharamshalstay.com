@@ -13,6 +13,7 @@ import { PHOTO_TYPES, REVIEWS_PAGE_SIZE, emptySummary, type ReviewInput } from '
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
+export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supabase reads) in route handlers otherwise
 
 const RATE_LIMIT = 5;
 const HOUR_MS = 3600e3;

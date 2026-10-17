@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { serviceClient } from '@/lib/server-auth';
 
+export const fetchCache = 'force-no-store';
+
 export const runtime = 'nodejs';
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
