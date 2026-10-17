@@ -51,6 +51,15 @@ export async function publishInstagram(p: PostInput, deadline = Date.now() + 45_
   return { id: published.id, permalink };
 }
 
+/** A single-image Instagram story (24 hours). The image must be a public JPEG. */
+export async function publishInstagramStory(imageUrl: string, deadline = Date.now() + 45_000): Promise<{ id: string }> {
+  const ig = process.env.META_IG_USER_ID!;
+  const creation = (await graph(`${ig}/media`, { media_type: 'STORIES', image_url: imageUrl }, 'POST')).id;
+  await waitFinished(creation, deadline);
+  const published = await graph(`${ig}/media_publish`, { creation_id: creation }, 'POST');
+  return { id: published.id };
+}
+
 let pageTokenCache: { token: string; at: number } | null = null;
 async function pageToken(): Promise<string> {
   if (pageTokenCache && Date.now() - pageTokenCache.at < 3600e3) return pageTokenCache.token;

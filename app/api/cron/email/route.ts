@@ -3,6 +3,7 @@ import { timingSafeEqual } from 'crypto';
 import { queueUnpaidReminders, runDueJobs } from '@/lib/email/jobs';
 import { runMarketingAutopilot } from '@/lib/email/autopilot';
 import { runSocialAutopilot } from '@/lib/social/autopilot';
+import { runStoriesAutopilot } from '@/lib/stories/feature';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -30,11 +31,15 @@ async function run(req: NextRequest) {
   const social = Date.now() - started < 15_000
     ? await runSocialAutopilot({ deadline: started + 55_000 }).catch((e) => { console.error('social autopilot failed:', e); return { error: String(e?.message || e) }; })
     : { skipped: 'out of time' };
+  // Stories: screen new ones, retry the Instagram story, suggest today's pick to the owner.
+  const stories = Date.now() - started < 25_000
+    ? await runStoriesAutopilot({ deadline: started + 55_000 }).catch((e) => { console.error('stories autopilot failed:', e); return { error: String(e?.message || e) }; })
+    : { skipped: 'out of time' };
   // Marketing emails only get what is left, and never block booking emails.
   const marketing = Date.now() - started < 30_000
     ? await runMarketingAutopilot({ deadline: started + 55_000 }).catch((e) => { console.error('marketing autopilot failed:', e); return { error: String(e?.message || e) }; })
     : { skipped: 'out of time' };
-  return NextResponse.json({ ok: true, unpaid, jobs, social, marketing, ms: Date.now() - started });
+  return NextResponse.json({ ok: true, unpaid, jobs, social, stories, marketing, ms: Date.now() - started });
 }
 
 export const GET = run;

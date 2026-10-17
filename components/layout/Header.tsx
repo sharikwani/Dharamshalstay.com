@@ -36,6 +36,7 @@ export default function Header() {
     { label: t.nav.guides, href: '/blog' },
     { label: t.nav.monasteries, href: '/monasteries-meditation' },
     { label: t.nav.essentials, href: '/essentials' },
+    { label: t.nav.stories, href: '/stories' },
     { label: t.nav.contact, href: '/contact' },
   ];
 

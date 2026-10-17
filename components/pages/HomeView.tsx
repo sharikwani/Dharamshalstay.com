@@ -10,6 +10,7 @@ import TrailSection from '@/components/home/TrailSection';
 import HomeEffects from '@/components/home/HomeEffects';
 import Divider from '@/components/home/Divider';
 import MonasteryDay from '@/components/home/MonasteryDay';
+import StoryOfTheDay from '@/components/home/StoryOfTheDay';
 import { monasteryDay } from '@/data/monasteries';
 import { monasteryPhotos } from '@/data/monastery-photos';
 import JsonLd from '@/components/seo/JsonLd';
@@ -150,6 +151,9 @@ export default async function HomeView({ lang }: { lang: Lang }) {
           })}
         </div>
       </div>
+
+      {/* STORY OF THE DAY: a traveller or local story, featured for 24 hours (English homepage) */}
+      {lang === 'en' && <StoryOfTheDay />}
 
       <Divider />
 

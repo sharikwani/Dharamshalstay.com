@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Home, Inbox, Building, PlusCircle, ShoppingBag, MessageSquare, Car, Mountain, Wind, Users, LogOut, ExternalLink, BadgeCheck, MessageCircle, BadgePercent, Star, Flag, Send, Mail, Instagram } from 'lucide-react';
+import { Home, Inbox, Building, PlusCircle, ShoppingBag, MessageSquare, Car, Mountain, Wind, Users, LogOut, ExternalLink, BadgeCheck, MessageCircle, BadgePercent, Star, Flag, Send, Mail, Instagram, BookHeart } from 'lucide-react';
 import { authFetch, supabase } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
 
@@ -11,7 +11,7 @@ const COUNTS_EVENT = 'admin-counts-refresh';
 export const refreshAdminCounts = () => { if (typeof window !== 'undefined') window.dispatchEvent(new Event(COUNTS_EVENT)); };
 
 // tone = the colour of the item's icon tile, so each section is recognisable at a glance.
-type NavItem = { href: string; label: string; hint: string; icon: any; tone: string; badge?: 'review' | 'inquiries' | 'whatsapp' | 'reviews' | 'listings' };
+type NavItem = { href: string; label: string; hint: string; icon: any; tone: string; badge?: 'review' | 'inquiries' | 'whatsapp' | 'reviews' | 'listings' | 'stories' };
 
 // One menu for the whole admin, grouped by job so it is obvious where things live.
 export const ADMIN_NAV: { title: string; items: NavItem[] }[] = [
@@ -39,6 +39,7 @@ export const ADMIN_NAV: { title: string; items: NavItem[] }[] = [
       { href: '/admin/inquiries', label: 'Inquiries', hint: 'Questions and leads from the website', icon: MessageSquare, tone: 'bg-pink-500', badge: 'inquiries' },
       { href: '/admin/email', label: 'Email', hint: 'Sent emails, AI campaigns, subscribers', icon: Mail, tone: 'bg-blue-600' },
       { href: '/admin/social', label: 'Social media', hint: 'Instagram and Facebook posts by the AI', icon: Instagram, tone: 'bg-pink-600' },
+      { href: '/admin/stories', label: 'Stories', hint: 'Traveller and local stories, Story of the day', icon: BookHeart, tone: 'bg-amber-600', badge: 'stories' },
     ],
   },
   {
@@ -61,7 +62,7 @@ export const ADMIN_NAV: { title: string; items: NavItem[] }[] = [
 export default function AdminShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname() || '';
   const router = useRouter();
-  const [counts, setCounts] = useState<{ review: number; inquiries: number; whatsapp: number; reviews: number; listings: number }>({ review: 0, inquiries: 0, whatsapp: 0, reviews: 0, listings: 0 });
+  const [counts, setCounts] = useState<{ review: number; inquiries: number; whatsapp: number; reviews: number; listings: number; stories: number }>({ review: 0, inquiries: 0, whatsapp: 0, reviews: 0, listings: 0, stories: 0 });
   const isLogin = pathname.startsWith('/admin/login');
 
   const loadCounts = useCallback(() => {
@@ -72,7 +73,8 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
       // hotel_reviews is service-role only, so its count comes from an admin API route.
       authFetch('/api/admin/reviews/count').then(res => (res.ok ? res.json() : null)).catch(() => null),
       authFetch('/api/admin/listing-requests?count=1').then(res => (res.ok ? res.json() : null)).catch(() => null),
-    ]).then(([r, i, w, v, l]) => setCounts({ review: r.count || 0, inquiries: i.count || 0, whatsapp: w.count || 0, reviews: Number(v?.pending) || 0, listings: Number(l?.count) || 0 }))
+      authFetch('/api/admin/stories?count=1').then(res => (res.ok ? res.json() : null)).catch(() => null),
+    ]).then(([r, i, w, v, l, st]) => setCounts({ review: r.count || 0, inquiries: i.count || 0, whatsapp: w.count || 0, reviews: Number(v?.pending) || 0, listings: Number(l?.count) || 0, stories: (Number(st?.stories) || 0) + (Number(st?.held) || 0) }))
       .catch(() => {});
   }, []);
 

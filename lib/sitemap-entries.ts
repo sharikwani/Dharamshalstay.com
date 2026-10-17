@@ -15,6 +15,7 @@ import { hasHindiPost } from '@/lib/i18n/content';
 import { normalizeImages, roomImageUrls } from '@/lib/images';
 import { placeImage, isStockImage } from '@/lib/place-images';
 import { monasteryPhotos } from '@/data/monastery-photos';
+import { listPublicStories } from '@/lib/stories/store';
 
 // Must be the canonical (www) origin -- the bare domain 301s to www, and a
 // sitemap full of redirecting URLs is largely ignored by Google.
@@ -44,11 +45,12 @@ function date(value?: string | null, fallback = new Date()): Date {
 }
 
 export async function sitemapEntries(): Promise<SitemapEntry[]> {
-  const [hotels, destinations, treks, taxiRoutes] = await Promise.all([
+  const [hotels, destinations, treks, taxiRoutes, stories] = await Promise.all([
     getPublishedProperties(),
     getDestinations(),
     getPublishedTreks(),
     getTaxiRouteGroups(),
+    listPublicStories(1000).catch(() => []),
   ]);
 
   const latestPost = blogPosts.reduce((max, b) => (b.updated_at > max ? b.updated_at : max), '2026-01-01');
@@ -61,6 +63,8 @@ export async function sitemapEntries(): Promise<SitemapEntry[]> {
     { url: B + '/hotels', lastModified: hotelsDate, changeFrequency: 'daily', priority: 0.9 },
     { url: B + '/facts', lastModified: date(factsUpdated), changeFrequency: 'weekly', priority: 0.8 },
     { url: B + '/travel-updates', lastModified: date(updatesChecked), changeFrequency: 'daily', priority: 0.8 },
+    { url: B + '/stories', lastModified: date(stories[0]?.approved_at, contentDate), changeFrequency: 'daily', priority: 0.7 },
+    ...stories.map((s) => ({ url: B + '/stories/' + s.slug, lastModified: date(s.approved_at || s.created_at), changeFrequency: 'weekly' as const, priority: 0.5, images: imgs(s.photos) })),
     ...COLLECTIONS.map((c) => ({ url: B + '/hotels/' + c.slug, lastModified: hotelsDate, changeFrequency: 'weekly' as const, priority: 0.8 })),
     { url: B + '/blog', lastModified: contentDate, changeFrequency: 'weekly', priority: 0.9 },
     { url: B + '/faq', lastModified: contentDate, changeFrequency: 'monthly', priority: 0.8 },

@@ -47,6 +47,7 @@ export default function Footer({ lang }: { lang: Lang }) {
               {quick.map((l) => <li key={l.href}><Link href={href(l.href)} className="hover:text-orange-400">{l.label}</Link></li>)}
               {lang === 'en' && <li><Link href="/facts" className="hover:text-orange-400">Facts & figures</Link></li>}
               {lang === 'en' && <li><Link href="/travel-updates" className="hover:text-orange-400">Travel updates</Link></li>}
+              {lang === 'en' && <li><Link href="/stories" className="hover:text-orange-400">Traveller stories</Link></li>}
               <li><Link href="/partner/register" className="hover:text-orange-400">{t.nav.listProperty}</Link></li>
             </ul>
           </div>
