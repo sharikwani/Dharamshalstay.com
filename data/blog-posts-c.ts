@@ -467,7 +467,7 @@ Stay in central [McLeod Ganj](/destinations/mcleod-ganj) so you can walk to the 
     id: 'blog-kangra-toy-train-guide',
     slug: 'kangra-toy-train-guide',
     title: 'Kangra Toy Train Guide: Route, Current Status, Tickets & Tips (2026)',
-    excerpt: 'The Kangra Valley Railway from Pathankot to Joginder Nagar reopened in June 2026 after four years, then paused again for monsoon repairs. Here is the current status, the best sections to ride and how to plan.',
+    excerpt: "The Kangra toy train runs about 164 km from Pathankot to Joginder Nagar, via Nurpur, Kangra, Palampur and Baijnath. It reopened in June 2026 after four years, then paused after the August landslides, so check the live status before you go. Below: the best section to ride, tickets and how to plan.",
     content: `The **Kangra toy train** (Kangra Valley Railway) is a narrow-gauge line running about 164 km from **Pathankot in Punjab to Joginder Nagar in Himachal**, through Nurpur, Jawalamukhi Road, Kangra, Nagrota, Palampur and Baijnath. Through services resumed on **2 June 2026** after nearly four years, once the new Chakki river bridge near Pathankot opened. However, heavy rain in late August 2026 caused landslides between Jawalamukhi and Kopar Lahar and services were **suspended again**, with Northern Railway aiming to restore them around the end of September.
 
 So, as of early October 2026: **check the live status before you plan your day around the train**. The rest of this guide explains how to do that, which section is the most rewarding to ride, how tickets work and how it fits into a Dharamshala trip.

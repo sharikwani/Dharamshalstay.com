@@ -754,7 +754,7 @@ Kangra town itself has limited good accommodation, while Dharamshala and McLeod 
     id: 'blog-dalai-lama-temple-guide',
     slug: 'dalai-lama-temple-guide',
     title: 'Dalai Lama Temple Timings in McLeod Ganj & Visitor Guide',
-    excerpt: 'A complete visitor guide to the Tsuglagkhang complex in McLeod Ganj: what is inside, opening hours, dress code, photography rules, the Tibet Museum, the kora walk, and how to attend a public teaching.',
+    excerpt: "The Dalai Lama Temple (Tsuglagkhang) in McLeod Ganj is open every day, usually from early morning to early evening, and entry is free. No official hours are published, so treat exact times online as approximate. Below: what is inside, dress code, photography rules, the kora walk and how to attend a public teaching.",
     content: `The **Dalai Lama Temple** in McLeod Ganj, properly called the **Tsuglagkhang complex**, is open to everyone, free of charge, **every day, usually from early morning to early evening**. No official visiting hours are published, so treat any exact times you read online as approximate. It contains the main temple with a large gilded Buddha, the Kalachakra temple, **Namgyal Monastery** and the official residence of the Dalai Lama. Plan on 1 to 2 hours, dress modestly, leave your camera in your bag inside the shrine halls, and walk the **kora** path around the complex while you are there.
 
 If you hope to see the Dalai Lama, the only realistic way is to attend a **public teaching or event** when one is scheduled. These are announced on the official website, dalailama.com, and require registration in McLeod Ganj a few days before. Details are below.

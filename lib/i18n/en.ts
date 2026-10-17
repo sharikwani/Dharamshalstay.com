@@ -395,7 +395,7 @@ export const en = {
     faqTimeQ: 'How long does the drive from {from} to {to} take?', faqTimeA: 'The distance is about {km} km and usually takes {duration}, depending on traffic, weather and stops.',
     faqBookQ: 'How do I book this taxi?', faqBookA: 'Send the enquiry form on this page or message us on WhatsApp with your date, pickup time, number of passengers and pickup point. We confirm the car and driver details before your trip.',
     faqStopQ: 'Can I stop on the way?', faqStopA: 'Short stops for food, photos or a viewpoint are fine. For longer detours or sightseeing stops, tell us when booking so we can quote correctly.',
-    routeH1: '{from} to {to} Taxi', fixedFrom: 'Fixed fare from', distance: 'Distance', onRequest: 'On request', driveTime: 'Drive time',
+    routeH1: '{from} to {to} Taxi: Fare & Booking', fixedFrom: 'Fixed fare from', distance: 'Distance', onRequest: 'On request', driveTime: 'Drive time',
     varies: 'Varies', fareFrom: 'Fare from', faresByVehicle: 'Fares by vehicle', vehicle: 'Vehicle', seats: 'Seats', fare: 'Fare',
     aboutRoute: 'About this route', included: 'Included', notIncluded: 'Not included', otherRoutes: 'Other taxi routes',
     planning: 'Planning the whole trip?', bookThis: 'Book this taxi', bookThisSub: 'Share your date and pickup time -- we confirm quickly.',

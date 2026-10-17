@@ -740,8 +740,8 @@ Booking questions are answered in our [FAQ](/faq).`,
   {
     id: 'blog-hpca-cricket-stadium-guide',
     slug: 'hpca-cricket-stadium-guide',
-    title: 'Dharamshala Stadium Timings, Entry Fees & Visitor Guide (2026)',
-    excerpt: 'Visiting hours and entry fee for the HPCA Cricket Stadium in Dharamshala, why the timings change, how to get match tickets and what to carry, parking and traffic, the ground\'s history and the nearby War Memorial.',
+    title: 'Dharamshala Cricket Stadium (HPCA) Timings, Entry Fee & Visitor Guide (2026)',
+    excerpt: "The HPCA Cricket Stadium in Dharamshala is open to visitors Monday to Saturday, 10 am to 4 pm, and closed on Sundays. Entry is about ₹50–₹250 at the gate, with no booking needed; it also closes for matches, VIP movement and maintenance. Below: match tickets, getting there, parking and the War Memorial next door.",
     content: `**In short:** the HPCA Cricket Stadium in Dharamshala is open to visitors **Monday to Saturday, 10 am to 4 pm**, and closed on Sundays. You pay **at the gate** — usually **₹50 to ₹250** per person depending on the season and how many visitors are coming through — and **no advance booking** is needed. On an open day it closes only for **matches, VIP movement or maintenance work**.
 
 > **Before you go:** call the Dharamshala (HPCA) stadium office on the morning of your visit to confirm it is open. Closures for VIP movement and maintenance are often decided at short notice and are not announced online.
@@ -916,7 +916,7 @@ For other questions, see our [FAQ](/faq).`,
     image_alt: 'HPCA Cricket Stadium in Dharamshala with the snow-capped Dhauladhar range behind the pavilion',
     read_time: 9,
     featured: false,
-    meta_title: 'Dharamshala Stadium Timings: Mon–Sat 10am–4pm, Entry Fee',
+    meta_title: 'Dharamshala Cricket Stadium Timings: Mon–Sat 10am–4pm',
     meta_description: 'HPCA cricket stadium, Dharamshala: Monday to Saturday, 10 am–4 pm, closed Sundays. ₹50–₹250 at the gate, no booking; closes for matches and VIP visits.',
     related_slugs: ['places-to-visit-in-dharamshala', 'one-day-in-dharamshala', 'best-hotels-in-dharamshala'],
     faqs: [

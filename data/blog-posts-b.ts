@@ -155,7 +155,7 @@ Once you know how you are arriving, [browse hotels in Dharamshala and McLeod Gan
     id: 'blog-dharamshala-in-winter-snowfall',
     slug: 'dharamshala-in-winter-snowfall',
     title: 'Dharamshala in Winter: When and Where It Snows, Month by Month (2026)',
-    excerpt: 'Does it snow in Dharamshala? Here is an honest local guide to snowfall in McLeod Ganj, Naddi, Triund and lower Dharamshala, plus road conditions, what stays open and how to pack.',
+    excerpt: "Snow falls in McLeod Ganj, Naddi and Dharamkot on some days between late December and February; lower Dharamshala almost never gets settled snow. For snow you can count on, hike towards Triund. Below: month by month, where it snows, road conditions, what stays open and what to pack.",
     content: `## Does It Snow in Dharamshala?
 
 Yes, but not where most people expect. **Lower Dharamshala (around 1,400 m) almost never gets settled snow**; winter there means cold, clear days and the occasional hailstorm. **McLeod Ganj (around 2,000 m), Naddi and Dharamkot** get snow on some winter days, usually between late December and February, but not every year and often only a light dusting that melts by noon. For guaranteed snow, you need to go higher: **Triund (about 2,850 m)** and the upper Dhauladhar slopes are reliably white from December to March.

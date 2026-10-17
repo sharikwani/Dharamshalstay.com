@@ -355,7 +355,7 @@ If your bus ends at the Dharamshala bus stand and you want to rest before explor
     id: 'blog-kangra-airport-gaggal-guide',
     slug: 'kangra-airport-gaggal-guide',
     title: 'Kangra Airport (Gaggal) Guide: Flights, Taxi Fares, Delays and Tips (2026)',
-    excerpt: "Everything about flying into Dharamshala: which airlines fly to Kangra Airport at Gaggal, terminal facilities, taxi fares to Dharamshala, McLeod Ganj, Palampur and Bir, local buses, weather delays and baggage limits on small planes.",
+    excerpt: "Kangra Airport (DHM) at Gaggal is the airport for Dharamshala, about 12–15 km from town and 20 km from McLeod Ganj. As of 2026 IndiGo flies to Delhi, Chandigarh, Jaipur and Noida, and a taxi to Dharamshala costs about ₹800–1,200. Below: terminal facilities, taxi fares to Palampur and Bir, buses, weather delays and baggage limits.",
     content: `## The Short Answer
 
 **Kangra Airport (code DHM)** at **Gaggal** is the airport for Dharamshala, McLeod Ganj, Palampur and Bir. It is about **12-15 km from Dharamshala town** and roughly **20 km from McLeod Ganj**, 30-60 minutes by taxi. As of 2026, **IndiGo** lists flights to **Delhi, Chandigarh, Jaipur and Noida**, and **Alliance Air** lists a link with **Shimla**. All flights use small turboprop aircraft because the runway is short, so seats are limited, fares rise quickly and bad weather can cause delays.
