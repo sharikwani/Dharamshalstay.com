@@ -263,8 +263,10 @@ function useList(view: string, q = '', extra = '') {
 function Messages() {
   const [q, setQ] = useState(''); const [kind, setKind] = useState('');
   const { rows, err, load } = useList('messages', q, kind ? '&kind=' + kind : '');
+  const [open, setOpen] = useState<string | null>(null);
   return (
     <Card>
+      {open && <EmailViewer id={open} onClose={() => setOpen(null)} />}
       <div className="flex flex-wrap gap-2 mb-4">
         <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search email or subject" className="flex-1 min-w-[200px] border border-slate-300 rounded-lg px-3 py-2 text-sm" />
         <select value={kind} onChange={(e) => setKind(e.target.value)} className="border border-slate-300 rounded-lg px-3 py-2 text-sm"><option value="">All kinds</option><option value="transactional">Guests</option><option value="marketing">Marketing</option><option value="admin">Admin alerts</option></select>
@@ -273,19 +275,56 @@ function Messages() {
       {err && <p className="text-red-700 text-sm">{err}</p>}
       {!rows ? <p className="text-slate-500 text-sm">Loading…</p> : !rows.length ? <p className="text-slate-500 text-sm">No emails yet.</p> : (
         <div className="overflow-x-auto"><table className="w-full text-sm">
-          <thead><tr className="text-left text-xs uppercase text-slate-500 border-b"><th className="py-2 pr-3">When</th><th className="pr-3">To</th><th className="pr-3">Subject</th><th className="pr-3">Type</th><th>Status</th></tr></thead>
+          <thead><tr className="text-left text-xs uppercase text-slate-500 border-b"><th className="py-2 pr-3">When</th><th className="pr-3">To</th><th className="pr-3">Subject</th><th className="pr-3">Type</th><th className="pr-3">Status</th><th></th></tr></thead>
           <tbody>{rows.map((m) => (
-            <tr key={m.id} className="border-b border-slate-100 align-top">
+            <tr key={m.id} onClick={() => setOpen(m.id)} className="border-b border-slate-100 align-top cursor-pointer hover:bg-slate-50">
               <td className="py-2 pr-3 whitespace-nowrap text-slate-500">{when(m.created_at)}</td>
               <td className="pr-3 text-slate-800">{m.to_email}</td>
               <td className="pr-3 text-slate-700">{m.subject}{m.error && <span className="block text-xs text-amber-700">{m.error}</span>}</td>
               <td className="pr-3 text-xs text-slate-500">{m.template}</td>
-              <td><Pill s={m.status} /></td>
+              <td className="pr-3"><Pill s={m.status} /></td>
+              <td><button onClick={(e) => { e.stopPropagation(); setOpen(m.id); }} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-white"><Eye className="h-3.5 w-3.5" />Open</button></td>
             </tr>
           ))}</tbody>
         </table></div>
       )}
     </Card>
+  );
+}
+
+function EmailViewer({ id, onClose }: { id: string; onClose: () => void }) {
+  const [d, setD] = useState<{ row: any; html: string | null } | null>(null);
+  const [err, setErr] = useState('');
+  useEffect(() => { api('/api/admin/email?view=message&id=' + id).then(setD).catch((e) => setErr(e.message)); }, [id]);
+  useEffect(() => { const k = (e: KeyboardEvent) => e.key === 'Escape' && onClose(); window.addEventListener('keydown', k); return () => window.removeEventListener('keydown', k); }, [onClose]);
+  const m = d?.row;
+  return (
+    <div className="fixed inset-0 z-50 bg-black/40 flex justify-end" role="dialog" aria-modal="true" onClick={onClose}>
+      <div className="bg-white w-full max-w-3xl h-full overflow-y-auto p-5 sm:p-6" onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-start justify-between gap-3 mb-4">
+          <div className="min-w-0">
+            <h2 className="font-heading font-bold text-lg text-slate-900">{m?.subject || 'Email'}</h2>
+            {m && (
+              <p className="mt-1 text-sm text-slate-600">To <span className="font-semibold text-slate-800">{m.to_email}</span> · {when(m.created_at)} · {m.template}</p>
+            )}
+          </div>
+          <button onClick={onClose} aria-label="Close" className="p-2 rounded-lg hover:bg-slate-100"><X className="h-5 w-5" /></button>
+        </div>
+        {m && (
+          <div className="mb-4 flex flex-wrap items-center gap-2 text-xs text-slate-600">
+            <Pill s={m.status} />
+            {m.delivered_at && <span>Delivered {when(m.delivered_at)}</span>}
+            {m.opened_at && <span>· Opened {when(m.opened_at)}</span>}
+            {m.clicked_at && <span>· Clicked {when(m.clicked_at)}</span>}
+            {m.error && <span className="text-amber-700">· {m.error}</span>}
+          </div>
+        )}
+        {err && <p className="text-red-700 text-sm">{err}</p>}
+        {!d && !err ? <p className="text-slate-500 text-sm">Loading…</p> : d && (d.html
+          ? <iframe title="Sent email" srcDoc={d.html} className="w-full h-[78vh] border border-slate-200 rounded-lg bg-white" sandbox="" />
+          : <p className="text-sm text-slate-600 bg-slate-50 rounded-lg p-4">No copy of this email is available. {m?.status === 'skipped' ? 'It was not sent.' : 'It went out before we started keeping copies, and Resend no longer holds it.'}</p>)}
+      </div>
+    </div>
   );
 }
 

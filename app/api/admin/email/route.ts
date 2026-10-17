@@ -4,7 +4,7 @@ import { HttpError, jsonError, requireCaller, serviceClient } from '@/lib/server
 import { renderEmail } from '@/lib/email/layout';
 import { campaignDoc, sendTest, type Campaign, type CampaignContent } from '@/lib/email/marketing';
 import { createCampaignFromTheme, themeFor } from '@/lib/email/autopilot';
-import { deliver, ADMIN_TO } from '@/lib/email/send';
+import { deliver, fetchSentHtml, ADMIN_TO } from '@/lib/email/send';
 import { runDueJobs } from '@/lib/email/jobs';
 
 export const dynamic = 'force-dynamic';
@@ -13,7 +13,7 @@ export const maxDuration = 60;
 
 const since = (days: number) => new Date(Date.now() - days * 86400e3).toISOString();
 
-/** GET ?view=overview|messages|contacts|campaigns|jobs|settings|preview&id= */
+/** GET ?view=overview|messages|message|contacts|campaigns|jobs|settings|preview&id= */
 export async function GET(req: Request) {
   try {
     await requireCaller(req, ['admin']);
@@ -43,6 +43,14 @@ export async function GET(req: Request) {
       const kind = url.searchParams.get('kind');
       if (kind) x = x.eq('kind', kind);
       return NextResponse.json({ rows: (await x).data || [] });
+    }
+    if (view === 'message') {
+      const { data: m } = await sb.from('email_messages').select('*').eq('id', url.searchParams.get('id') || '').maybeSingle();
+      if (!m) throw new HttpError(404, 'Email not found');
+      // Our own copy first (kept since migration v38); older emails come back from Resend while it still holds them.
+      const html = m.html || (m.resend_id ? await fetchSentHtml(m.resend_id) : null);
+      const { html: _h, ...row } = m;
+      return NextResponse.json({ row, html });
     }
     if (view === 'contacts') {
       let x = sb.from('contacts').select('id,email,phone,name,source,interests,marketing_consent,consent_source,consent_at,unsubscribed_at,suppressed_reason,booking_count,last_booking_at,last_enquiry_at,last_marketing_at,created_at').order('created_at', { ascending: false }).limit(300);

@@ -22,6 +22,12 @@ let _resend: Resend | null = null;
 const resend = () => (_resend ||= new Resend(process.env.RESEND_API_KEY || ''));
 export const emailConfigured = () => !!process.env.RESEND_API_KEY;
 
+/** The HTML Resend holds for a sent email (for emails logged before we kept our own copy). */
+export async function fetchSentHtml(resendId: string): Promise<string | null> {
+  if (!emailConfigured()) return null;
+  try { return (await resend().emails.get(resendId)).data?.html || null; } catch { return null; }
+}
+
 export const unsubscribeUrl = (token: string) => `${SITE()}/email/unsubscribe?t=${encodeURIComponent(token)}`;
 
 export type DeliverInput = {
@@ -49,13 +55,17 @@ export async function deliver(input: DeliverInput): Promise<DeliverResult> {
   let contact: any = null;
   if (sb) try { contact = (await sb.from('contacts').select('id,marketing_consent,unsubscribed_at,suppressed_reason,unsubscribe_token').eq('email', to).maybeSingle()).data; } catch { /* table may not exist yet */ }
 
+  let html: string | null = null;
   const log = async (status: string, extra: Record<string, unknown> = {}) => {
     if (!sb) return;
     try {
-      await sb.from('email_messages').insert({
+      const row = {
         contact_id: contact?.id || null, to_email: to, kind: input.kind, template: input.template, subject: input.subject,
         status, booking_id: input.bookingId || null, inquiry_id: input.inquiryId || null, campaign_id: input.campaignId || null, ...extra,
-      });
+      };
+      // A copy of what was sent, so admin can open it later (column added in migration v38).
+      const { error } = await sb.from('email_messages').insert(html ? { ...row, html } : row);
+      if (error && html && /html/.test(error.message || '')) await sb.from('email_messages').insert(row);
     } catch (e) { console.error('email log failed:', e); }
   };
 
@@ -78,9 +88,10 @@ export async function deliver(input: DeliverInput): Promise<DeliverResult> {
   }
 
   try {
+    html = renderEmail(doc);
     const { data, error } = await resend().emails.send({
       from: FROM[input.kind], to, replyTo: input.replyTo || REPLY_TO, subject: input.subject,
-      html: renderEmail(doc), text: renderText(doc), headers, attachments: input.attachments,
+      html, text: renderText(doc), headers, attachments: input.attachments,
       tags: [{ name: 'template', value: input.template.replace(/[^a-zA-Z0-9_-]/g, '_') }, { name: 'kind', value: input.kind }],
     });
     if (error || !data?.id) { await log('failed', { error: String(error?.message || 'no id') }); return { ok: false, status: 'failed', reason: error?.message }; }
