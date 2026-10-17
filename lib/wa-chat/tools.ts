@@ -13,6 +13,7 @@ import { history, setStatusIf } from './store';
 import { BOOKING_TOOL_DEFS, runBookingTool } from './booking-tools';
 import { CANCEL_TOOL_DEF, requestCancellation } from './cancellations';
 import { getOfferCode, OFFER_TOOL_DEF, offerNotes } from './offer-tools';
+import { answerRetentionOffer, applyCoupon, checkCoupon, RETENTION_TOOL_DEFS } from './retention-tools';
 import { markSideEffect } from './types';
 
 /**
@@ -51,7 +52,7 @@ export const TOOL_DEFS = [
   fn('handover', 'Hand the chat to a team member. Use for complaints, refunds, changes to existing bookings, angry customers, requests for a person, or when unsure.', {
     reason: str('Short reason for the team'),
   }, ['reason']),
-  ...BOOKING_TOOL_DEFS, CANCEL_TOOL_DEF, OFFER_TOOL_DEF,
+  ...BOOKING_TOOL_DEFS, CANCEL_TOOL_DEF, ...RETENTION_TOOL_DEFS, OFFER_TOOL_DEF,
 ];
 
 const SITE = siteConfig.url;
@@ -209,6 +210,9 @@ export async function runTool(name: string, args: any, ctx: ToolCtx): Promise<st
     if (booking) return JSON.stringify(booking);
     if (name === 'request_cancellation') return JSON.stringify(await requestCancellation(a, ctx, handover));
     if (name === 'get_offer_code') return JSON.stringify(await getOfferCode(a, ctx));
+    if (name === 'answer_retention_offer') return JSON.stringify(await answerRetentionOffer(a, ctx, handover));
+    if (name === 'check_coupon') return JSON.stringify(await checkCoupon(a, ctx));
+    if (name === 'apply_coupon') return JSON.stringify(await applyCoupon(a, ctx));
     const out = name === 'search_hotels' ? await searchHotels(a)
       : name === 'get_hotel' ? await getHotel(a)
       : name === 'list_taxi_routes' ? await taxiRoutes(a)

@@ -249,11 +249,155 @@ function NewOffer({ properties, offers, onCreated, onClose, onError }: {
   );
 }
 
+type KeptCoupon = {
+  id: string; code: string; phone: string; kind: string; percent: number | null; amount: number | null; max_discount: number | null; state: string;
+  active_from: string; valid_until: string; used_booking_ref: string | null; booking_ref: string | null; created_at: string;
+};
+type KeptOffer = {
+  id: string; step: string; outcome: string; choice: string | null; amount: number | null; refund_status: string | null; reason_text: string | null; created_at: string;
+  bookings: { booking_ref: string; guest_name: string | null; guest_phone: string; amount: number | null; status: string; razorpay_payment_id: string | null } | null;
+};
+const STEP_LABEL: Record<string, string> = { date_change: 'Free date change', next_25: '25% off next booking', instant_5: '5% now' };
+const COUPON_STYLE: Record<string, string> = {
+  waiting: 'bg-amber-100 text-amber-800', active: 'bg-green-100 text-green-800', reserved: 'bg-violet-100 text-violet-800',
+  used: 'bg-slate-100 text-slate-600', expired: 'bg-slate-100 text-slate-500', void: 'bg-red-100 text-red-700',
+};
+const COUPON_LABEL: Record<string, string> = { waiting: 'Starts after checkout', active: 'Active', reserved: 'On a booking', used: 'Used', expired: 'Expired', void: 'Void' };
+const inr = (n: number | null) => `₹${(n || 0).toLocaleString('en-IN')}`;
+
+/** Bookings guests kept instead of cancelling (WhatsApp offers), the coupons they got and refunds to send. */
+function KeptBookings({ onError }: { onError: (m: string) => void }) {
+  const [data, setData] = useState<{ coupons: KeptCoupon[]; offers: KeptOffer[] } | null>(null);
+  const [busy, setBusy] = useState<string | null>(null);
+  const [missing, setMissing] = useState(false);
+
+  const load = useCallback(async () => {
+    try { setData(await api('/api/admin/retention')); setMissing(false); }
+    catch (e: any) { if (/retention_offers|loyalty_coupons|schema cache/i.test(e.message)) setMissing(true); else onError(e.message); }
+  }, [onError]);
+  useEffect(() => { load(); }, [load]);
+
+  async function act(action: string, id: string, question?: string) {
+    if (question && !confirm(question)) return;
+    setBusy(id); onError('');
+    try { await api('/api/admin/retention', { method: 'POST', body: JSON.stringify({ action, id }) }); await load(); }
+    catch (e: any) { onError(e.message); } finally { setBusy(null); }
+  }
+
+  if (missing) {
+    return <p className="bg-amber-50 text-amber-800 text-sm rounded-xl p-4">Run <span className="font-mono">supabase/migration-v33-retention.sql</span> in the Supabase SQL editor to switch this on.</p>;
+  }
+  if (!data) return <div className="py-12 flex justify-center"><Loader2 className="h-6 w-6 animate-spin text-brand-600" /></div>;
+  const refunds = data.offers.filter((o) => o.refund_status === 'pending');
+  const kept = data.offers.filter((o) => o.outcome === 'accepted');
+  const asked = new Set(data.offers.map((o) => o.bookings?.booking_ref)).size;
+  const answer = (o: KeptOffer) => o.outcome === 'accepted'
+    ? `Kept${o.choice ? ` (${o.choice === 'at_hotel' ? 'off at hotel' : o.choice})` : ''}`
+    : o.outcome === 'declined' ? 'Said no' : 'Waiting';
+
+  return (
+    <div className="space-y-6">
+      <p className="text-sm text-slate-600">
+        When a guest asks on WhatsApp to cancel (change of plans, travel or weather; never emergencies), the assistant offers each of these once:
+        a free date change, then 25% off their next booking (up to ₹2,000) from checkout, then 5% now. Discounts are split 50/50 with the hotel.
+      </p>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <Stat label="Cancellations asked" value={asked} hint="bookings that got offers" tone="text-slate-900" />
+        <Stat label="Kept" value={kept.length} hint="guest took an offer" tone="text-green-700" />
+        <Stat label="Coupons" value={data.coupons.length} hint="issued for kept bookings" tone="text-violet-700" />
+        <Stat label="Refunds to send" value={refunds.length} hint="5% back to the guest" tone={refunds.length ? 'text-red-700' : 'text-slate-900'} />
+      </div>
+
+      {refunds.length > 0 && (
+        <section className="bg-white border-2 border-red-200 rounded-xl p-4">
+          <h3 className="font-semibold text-slate-900 mb-1">Refunds to send</h3>
+          <p className="text-xs text-slate-500 mb-3">Refund the amount in Razorpay (Payments, open the payment, Refund, partial amount), then mark it sent.</p>
+          <ul className="divide-y divide-slate-100">
+            {refunds.map((o) => (
+              <li key={o.id} className="py-2 flex flex-wrap items-center gap-3 text-sm">
+                <span className="font-mono">{o.bookings?.booking_ref}</span>
+                <span>{o.bookings?.guest_name}</span>
+                <span className="font-semibold text-red-700">{inr(o.amount)}</span>
+                <span className="text-xs text-slate-500">payment {o.bookings?.razorpay_payment_id || '–'}</span>
+                <button onClick={() => act('refund_done', o.id, 'Mark this refund as sent?')} disabled={busy === o.id}
+                  className="ml-auto px-3 py-1.5 rounded-lg bg-green-600 text-white text-xs font-semibold disabled:opacity-50">Refund sent</button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <section>
+        <h3 className="font-semibold text-slate-900 mb-2">Coupons</h3>
+        <div className="bg-white border border-slate-200 rounded-xl overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-slate-50 text-left text-slate-500">
+              <tr><th className="p-3">Code</th><th className="p-3">Discount</th><th className="p-3">Status</th><th className="p-3">Guest phone</th><th className="p-3">Kept booking</th><th className="p-3">Works</th><th className="p-3">Used on</th><th className="p-3" /></tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {data.coupons.length === 0 && <tr><td colSpan={8} className="p-6 text-center text-slate-500">No coupons yet.</td></tr>}
+              {data.coupons.map((c) => (
+                <tr key={c.id}>
+                  <td className="p-3 font-mono">{c.code}</td>
+                  <td className="p-3 whitespace-nowrap">{c.kind === 'credit_5' ? `${inr(c.amount)} credit` : `${c.percent}% (max ${inr(c.max_discount)})`}</td>
+                  <td className="p-3"><span className={cn('text-xs px-2 py-0.5 rounded-full whitespace-nowrap', COUPON_STYLE[c.state])}>{COUPON_LABEL[c.state] || c.state}</span></td>
+                  <td className="p-3 whitespace-nowrap">{c.phone}</td>
+                  <td className="p-3 font-mono">{c.booking_ref || '—'}</td>
+                  <td className="p-3 whitespace-nowrap text-xs">{c.active_from} to {c.valid_until}</td>
+                  <td className="p-3 font-mono">{c.used_booking_ref || '—'}</td>
+                  <td className="p-3 whitespace-nowrap">
+                    {c.state === 'reserved' && (
+                      <>
+                        <button onClick={() => act('coupon_used', c.id)} disabled={busy === c.id} className="px-2 py-1 rounded bg-green-600 text-white text-xs font-semibold mr-1">Discount given</button>
+                        <button onClick={() => act('coupon_free', c.id, 'Free this coupon again (that booking will not get the discount)?')} disabled={busy === c.id} className="px-2 py-1 rounded border border-slate-300 text-xs">Free it</button>
+                      </>
+                    )}
+                    {(c.state === 'active' || c.state === 'waiting') && (
+                      <button onClick={() => act('coupon_void', c.id, `Cancel coupon ${c.code}? The guest can no longer use it.`)} disabled={busy === c.id}
+                        className="px-2 py-1 rounded border border-red-300 text-red-700 text-xs">Cancel</button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h3 className="font-semibold text-slate-900 mb-2">Offers made</h3>
+        <div className="bg-white border border-slate-200 rounded-xl overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-slate-50 text-left text-slate-500">
+              <tr><th className="p-3">Booking</th><th className="p-3">Guest</th><th className="p-3">Offer</th><th className="p-3">Answer</th><th className="p-3">Why cancelling</th><th className="p-3">When</th></tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {data.offers.length === 0 && <tr><td colSpan={6} className="p-6 text-center text-slate-500">No offers made yet.</td></tr>}
+              {data.offers.map((o) => (
+                <tr key={o.id}>
+                  <td className="p-3 font-mono">{o.bookings?.booking_ref || '—'}</td>
+                  <td className="p-3">{o.bookings?.guest_name || o.bookings?.guest_phone || '—'}</td>
+                  <td className="p-3 whitespace-nowrap">{STEP_LABEL[o.step] || o.step}</td>
+                  <td className="p-3 whitespace-nowrap">
+                    <span className={cn('text-xs px-2 py-0.5 rounded-full', o.outcome === 'accepted' ? 'bg-green-100 text-green-800' : o.outcome === 'declined' ? 'bg-slate-100 text-slate-600' : 'bg-sky-100 text-sky-800')}>{answer(o)}</span>
+                  </td>
+                  <td className="p-3 text-slate-600 max-w-xs truncate" title={o.reason_text || ''}>{o.reason_text || '—'}</td>
+                  <td className="p-3 whitespace-nowrap">{when(o.created_at)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 export default function AdminOffersPage() {
   const [offers, setOffers] = useState<OfferView[]>([]);
   const [codes, setCodes] = useState<CodeView[]>([]);
   const [properties, setProperties] = useState<{ id: string; name: string }[]>([]);
-  const [view, setView] = useState<'hotels' | 'codes'>('hotels');
+  const [view, setView] = useState<'hotels' | 'codes' | 'kept'>('hotels');
   const [state, setState] = useState('all');
   const [offerFilter, setOfferFilter] = useState('');
   const [search, setSearch] = useState('');
@@ -396,7 +540,7 @@ export default function AdminOffersPage() {
       )}
 
       <div role="tablist" className="flex gap-1 border-b border-slate-200 mb-4">
-        {([['hotels', `Hotels with offers (${offers.length})`], ['codes', `Codes (${totals.all})`]] as const).map(([k, label]) => (
+        {([['hotels', `Hotels with offers (${offers.length})`], ['codes', `Codes (${totals.all})`], ['kept', 'Kept bookings & coupons']] as const).map(([k, label]) => (
           <button key={k} role="tab" aria-selected={view === k} onClick={() => setView(k)}
             className={cn('px-4 py-2 text-sm font-semibold border-b-2 -mb-px', view === k ? 'border-brand-600 text-brand-700' : 'border-transparent text-slate-500 hover:text-slate-800')}>
             {label}
@@ -463,6 +607,8 @@ export default function AdminOffersPage() {
           </div>
         )
       )}
+
+      {view === 'kept' && <KeptBookings onError={setError} />}
 
       {view === 'codes' && (
         <section>

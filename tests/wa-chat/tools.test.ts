@@ -55,7 +55,7 @@ beforeEach(() => { h.inserts = []; h.emails = []; h.statuses = []; h.existing = 
 describe('tools', () => {
   it('defines every tool', () => {
     expect(TOOL_DEFS.map((t: any) => t.function.name).sort()).toEqual(
-      ['create_booking', 'create_enquiry', 'get_hotel', 'get_offer_code', 'get_trek', 'handover', 'list_paragliding', 'list_taxi_routes', 'list_treks', 'my_bookings', 'payment_link', 'quote_booking', 'request_cancellation', 'save_contact', 'search_hotels']);
+      ['answer_retention_offer', 'apply_coupon', 'check_coupon', 'create_booking', 'create_enquiry', 'get_hotel', 'get_offer_code', 'get_trek', 'handover', 'list_paragliding', 'list_taxi_routes', 'list_treks', 'my_bookings', 'payment_link', 'quote_booking', 'request_cancellation', 'save_contact', 'search_hotels']);
   });
   it('search_hotels filters by area and budget and links pages', async () => {
     const r = JSON.parse(await runTool('search_hotels', { area: 'mcleod', budget_max: 3000 }, ctx()));

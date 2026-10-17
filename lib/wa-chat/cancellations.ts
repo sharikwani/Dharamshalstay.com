@@ -7,6 +7,7 @@ import { serviceClient } from '@/lib/server-auth';
 import { siteConfig } from '@/lib/config';
 import { claimCancellation, findOwnBooking, ownBookings, saveCancellation, updateCancellation, type Cancellation, type OwnBooking } from './booking-store';
 import { checkProof } from './proof';
+import { retentionGate } from './retention-tools';
 import { setMessageBody, setStatusIf } from './store';
 import { definitelyFailed, sendLogged } from './send';
 import type { ToolCtx } from './tools';
@@ -70,6 +71,9 @@ async function decideCancellation(a: { booking_ref: string; reason_code: string;
   const block = blocker(b);
   if (block === 'already_cancelled') return { result: 'already_cancelled' as const };
   if (block === 'within_24h') return { result: 'not_allowed_within_24h' as const, message: 'Bookings cannot be cancelled or refunded within 24 hours of the start time.' };
+  // Change of plans, travel or weather: first offer to keep the booking (each offer once; then the rules below).
+  const keep = await retentionGate(b, ctx, code, text);
+  if (keep) return keep;
   if (block === 'paid' || block === 'no_start' || code === 'other') {
     await handover({ reason: `Cancellation request ${b.booking_ref}: ${block === 'paid' ? 'paid booking' : LABEL[code]} - ${text}` }, ctx);
     return { result: 'handed_over' as const };
