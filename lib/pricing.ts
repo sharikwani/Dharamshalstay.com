@@ -13,7 +13,8 @@ export type BookingCategory = 'hotel' | 'taxi' | 'trek' | 'paragliding' | 'guide
 export type QuoteInput = { num_guests: number; check_in?: string | null; check_out?: string | null; room_name?: string | null; plan_index?: number | null; guide_days?: number | null; extra_beds?: number | null };
 export type HotelLike = { price_min?: number | null; rooms?: any[] | null; commission_pct?: number | null };
 
-const DEFAULT_COMMISSION: Record<BookingCategory, number> = { hotel: 10, taxi: 10, trek: 10, paragliding: 15, guide: 20 };
+// Treks and paragliding: 25% (owner decision, 17 Oct 2026). Each trek and package also stores its own rate.
+const DEFAULT_COMMISSION: Record<BookingCategory, number> = { hotel: 10, taxi: 10, trek: 25, paragliding: 25, guide: 20 };
 
 export function nightsBetween(checkIn: string, checkOut: string): number {
   const a = Date.parse(checkIn + 'T00:00:00Z');

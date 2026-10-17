@@ -34,8 +34,8 @@ describe('quoteBooking', () => {
   it('prices treks per person', () => {
     expect(quoteBooking('trek', { price_per_person: 1500, commission_pct: 10 }, { num_guests: 3 })).toEqual({ amount: 4500, commission_pct: 10 });
   });
-  it('prices paragliding per person with default 15%', () => {
-    expect(quoteBooking('paragliding', { price_per_person: 3500 }, { num_guests: 2 })).toEqual({ amount: 7000, commission_pct: 15 });
+  it('prices paragliding per person with default 25%', () => {
+    expect(quoteBooking('paragliding', { price_per_person: 3500 }, { num_guests: 2 })).toEqual({ amount: 7000, commission_pct: 25 });
   });
   it('prices a fixed taxi route once, regardless of guests', () => {
     expect(quoteBooking('taxi', { price: 2200, price_type: 'fixed', commission_pct: 10 }, { num_guests: 4 })).toEqual({ amount: 2200, commission_pct: 10 });

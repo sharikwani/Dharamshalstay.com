@@ -13,7 +13,9 @@ const validPct = (v: unknown) => typeof v === 'number' && Number.isFinite(v) && 
 export function commissionRateFor(category: ManualCategory, opts: { partnerPct?: number | null; propertyPct?: number | null }): number {
   if (category === 'guide') return 20;
   if (category === 'hotel') return validPct(opts.propertyPct) ? (opts.propertyPct as number) : 10;
-  return validPct(opts.partnerPct) ? (opts.partnerPct as number) : 20;
+  if (validPct(opts.partnerPct)) return opts.partnerPct as number;
+  // Treks and paragliding: 25% (owner decision, 17 Oct 2026); taxis 20%.
+  return category === 'trek' || category === 'paragliding' ? 25 : 20;
 }
 
 export function splitAmount(finalAmount: number, pct: number) {

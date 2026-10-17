@@ -11,9 +11,11 @@ describe('guide pricing', () => {
 });
 
 describe('commissionRateFor', () => {
-  it('uses partner rate for activities, default 20', () => {
+  it('uses partner rate for activities; default 25 for treks and paragliding, 20 for taxis', () => {
     expect(commissionRateFor('taxi', { partnerPct: 15 })).toBe(15);
-    expect(commissionRateFor('trek', {})).toBe(20);
+    expect(commissionRateFor('trek', {})).toBe(25);
+    expect(commissionRateFor('paragliding', {})).toBe(25);
+    expect(commissionRateFor('taxi', {})).toBe(20);
   });
   it('uses property rate for hotels, default 10', () => {
     expect(commissionRateFor('hotel', { propertyPct: 12 })).toBe(12);
