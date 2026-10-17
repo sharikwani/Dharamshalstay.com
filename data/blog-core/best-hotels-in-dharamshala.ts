@@ -64,7 +64,7 @@ Prices are bands, not quotes. Rates move with season, room type and demand, so t
 
 ## First, Understand Where "Dharamshala" Is
 
-Many travellers book a "Dharamshala hotel" without realising how spread out the town is. Lower Dharamshala and McLeod Ganj are about 9-10 km apart by road and roughly 400 m apart in altitude, and the drive takes 20-30 minutes by taxi (approx. ₹300-500). Some listings described as Dharamshala are actually in Sidhbari, Kandi or out towards Kangra, so always check the map pin.
+Many travellers book a "Dharamshala hotel" without realising how spread out the town is. Lower Dharamshala and McLeod Ganj are about 9-10 km apart by road and roughly 600 m apart in altitude, and the drive takes 20-30 minutes by taxi (approx. ₹300-500). Some listings described as Dharamshala are actually in Sidhbari, Kandi or out towards Kangra, so always check the map pin.
 
 | Area | Altitude (approx.) | Feel | Best for |
 |---|---|---|---|

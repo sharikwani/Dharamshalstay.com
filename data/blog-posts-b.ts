@@ -102,7 +102,7 @@ HRTC and Punjab state buses run from Chandigarh (Sector 43 ISBT) to Dharamshala,
 
 ## Dharamshala to McLeod Ganj: The Last 9 km
 
-Many visitors are surprised that "Dharamshala" is really two towns. Lower Dharamshala (Kotwali Bazaar, the main bus stand, the cricket stadium) sits at roughly 1,400 m, while McLeod Ganj sits above it at around 1,800 m. If your hotel is in McLeod Ganj, Bhagsu or Dharamkot, you will need this last leg. See our [Dharamshala vs McLeod Ganj guide](/blog/dharamshala-vs-mcleod-ganj) if you have not decided where to stay.
+Many visitors are surprised that "Dharamshala" is really two towns. Lower Dharamshala (Kotwali Bazaar, the main bus stand, the cricket stadium) sits at roughly 1,400 m, while McLeod Ganj sits above it at around 2,000 m. If your hotel is in McLeod Ganj, Bhagsu or Dharamkot, you will need this last leg. See our [Dharamshala vs McLeod Ganj guide](/blog/dharamshala-vs-mcleod-ganj) if you have not decided where to stay.
 
 - **Local bus**: HRTC and local buses shuttle between Dharamshala bus stand and McLeod Ganj through the day. Approx. ₹20-40, 30-45 minutes. Cheap but crowded in peak season.
 - **Taxi**: approx. ₹300-500 for the 9-10 km road, 20-30 minutes. Taxi stands are at the Dharamshala bus stand and Kotwali Bazaar. Shared taxis also run on this route.
@@ -158,7 +158,7 @@ Once you know how you are arriving, [browse hotels in Dharamshala and McLeod Gan
     excerpt: 'Does it snow in Dharamshala? Here is an honest local guide to snowfall in McLeod Ganj, Naddi, Triund and lower Dharamshala, plus road conditions, what stays open and how to pack.',
     content: `## Does It Snow in Dharamshala?
 
-Yes, but not where most people expect. **Lower Dharamshala (around 1,400 m) almost never gets settled snow**; winter there means cold, clear days and the occasional hailstorm. **McLeod Ganj (around 1,800 m), Naddi and Dharamkot** get snow on some winter days, usually between late December and February, but not every year and often only a light dusting that melts by noon. For guaranteed snow, you need to go higher: **Triund (about 2,850 m)** and the upper Dhauladhar slopes are reliably white from December to March.
+Yes, but not where most people expect. **Lower Dharamshala (around 1,400 m) almost never gets settled snow**; winter there means cold, clear days and the occasional hailstorm. **McLeod Ganj (around 2,000 m), Naddi and Dharamkot** get snow on some winter days, usually between late December and February, but not every year and often only a light dusting that melts by noon. For guaranteed snow, you need to go higher: **Triund (about 2,850 m)** and the upper Dhauladhar slopes are reliably white from December to March.
 
 So if your dream is to wake up to snow on your balcony, plan for McLeod Ganj or Naddi in January or February and stay flexible. If you simply want to see and touch snow, a day hike towards Triund or the snow line almost always delivers. And from anywhere in town you get the real winter showpiece: the Dhauladhar range covered in fresh snow, sharp against a blue sky.
 
@@ -464,7 +464,7 @@ Have a budget in mind and want a plan that fits it? [Tell us your dates and budg
     excerpt: 'A month-by-month Dharamshala and McLeod Ganj weather table with temperatures and rainfall, plus season-by-season packing lists and a trek checklist from locals.',
     content: `## Dharamshala Weather at a Glance
 
-Dharamshala has mild, pleasant summers, cold but mostly sunny winters and a very heavy monsoon. Dharamshala town sits at about 1,457 m and McLeod Ganj about 400 m higher at roughly 1,800-1,850 m, so **McLeod Ganj is usually 3-5°C cooler than lower Dharamshala**. Days in April-June reach the high 20s in town, winter nights in McLeod Ganj can drop below zero, and July and August each bring more rain than many places get in a year.
+Dharamshala has mild, pleasant summers, cold but mostly sunny winters and a very heavy monsoon. Dharamshala town sits at about 1,457 m and McLeod Ganj about 600 m higher at roughly 2,000 m, so **McLeod Ganj is usually 3-5°C cooler than lower Dharamshala**. Days in April-June reach the high 20s in town, winter nights in McLeod Ganj can drop below zero, and July and August each bring more rain than many places get in a year.
 
 Dharamshala is widely considered **the wettest place in Himachal Pradesh**. Long-term India Meteorological Department (IMD) normals put annual rainfall at around 3,000 mm, most of it between late June and mid-September, because the Dhauladhar wall right behind the town traps monsoon clouds. Pack for the season, and always carry one more layer than you think you need.
 
@@ -622,7 +622,7 @@ Wherever you choose to stay, from lower [Dharamshala](/destinations/dharamshala)
       },
       {
         question: 'How cold is McLeod Ganj compared with Dharamshala?',
-        answer: 'McLeod Ganj is about 400 m higher than Dharamshala town and is usually 3-5 degrees Celsius cooler. Carry an extra warm layer if you are staying in McLeod Ganj, Dharamkot or Naddi.',
+        answer: 'McLeod Ganj is about 600 m higher than Dharamshala town and is usually 3-5 degrees Celsius cooler. Carry an extra warm layer if you are staying in McLeod Ganj, Dharamkot or Naddi.',
       },
       {
         question: 'What should I wear in Dharamshala in October?',
@@ -635,19 +635,23 @@ Wherever you choose to stay, from lower [Dharamshala](/destinations/dharamshala)
     slug: 'dharamshala-vs-mcleod-ganj',
     title: 'Dharamshala vs McLeod Ganj: Where Should You Stay? (2026)',
     excerpt: 'Lower Dharamshala or McLeod Ganj? A local comparison for families, backpackers, spiritual seekers, cricket fans and nightlife lovers, plus Bhagsu, Dharamkot and Naddi alternatives.',
-    content: `## The Quick Answer
+    content: `## Are Dharamshala and McLeod Ganj the same place?
+
+No. Dharamshala is the main town, at about 1,457 m. McLeod Ganj is its hilltop suburb, about 9 km up the road (around 4 km on the steep footpath) and spread from about 1,750 to 2,080 m. It is home to the Dalai Lama Temple and the Tibetan community.
+
+## The Quick Answer
 
 **Stay in McLeod Ganj** if this is your first visit and you want Tibetan culture, cafes, the Dalai Lama Temple and easy access to the Triund trek, all within walking distance. **Stay in lower Dharamshala** if you want calmer roads, easier car access, proximity to the cricket stadium and airport, and better value for families or business travel. If you want something quieter still, **Bhagsu, Dharamkot and Naddi** are small villages a few kilometres above McLeod Ganj, each with its own personality.
 
-Many first-timers do not realise that Dharamshala and McLeod Ganj are part of the same town, separated by about 9-10 km of winding road and roughly 400 m of altitude. Choosing the right base can make or break your trip, so here is how they compare.
+Many first-timers expect one town and find two very different places, a 20-30 minute drive and several hundred metres of climb apart. Choosing the right base can make or break your trip, so here is how they compare.
 
 ## Understanding the Geography
 
 - **Lower Dharamshala** (around 1,250-1,450 m) includes Kotwali Bazaar, the main bus stand, the district offices and the area around the HPCA cricket stadium. It is a working Himachali town.
 - **Forsyth Ganj and the cantonment** sit in between, home to St. John in the Wilderness church and the War Memorial area.
-- **McLeod Ganj** (around 1,800 m) is often called "Little Lhasa", the seat of the Tibetan government-in-exile and the Tsuglagkhang Complex.
+- **McLeod Ganj** (about 1,750-2,080 m) is often called "Little Lhasa", the seat of the Tibetan government-in-exile and the Tsuglagkhang Complex.
 - **Bhagsu** is 2 km east of McLeod Ganj, by the waterfall and Bhagsunag temple.
-- **Dharamkot** is a steep 2-3 km above McLeod Ganj, at around 2,000 m.
+- **Dharamkot** is a steep 2-3 km above McLeod Ganj, at about 2,100 m.
 - **Naddi** sits about 3-4 km west of McLeod Ganj, known for its view of the Dhauladhar.
 
 Getting between lower Dharamshala and McLeod Ganj takes 20-30 minutes by taxi (approx. ₹300-500) or about 30-45 minutes by local bus. The Dharamshala Skyway ropeway was suspended after a landslide in August 2025 and appeared to be running again when we checked on 16 October 2026; confirm on the day before counting on it ([Skyway guide](/blog/dharamshala-skyway-ropeway-guide)). Our [how to reach Dharamshala guide](/blog/how-to-reach-dharamshala) covers all the transport details.
@@ -657,7 +661,7 @@ Getting between lower Dharamshala and McLeod Ganj takes 20-30 minutes by taxi (a
 | Factor | Lower Dharamshala | McLeod Ganj | Bhagsu | Dharamkot | Naddi |
 |---|---|---|---|---|---|
 | Vibe | Local Indian town, everyday life | Busy, Tibetan, international | Lively, backpacker-friendly | Quiet, bohemian, yoga and meditation | Peaceful, scenic, resort-style |
-| Altitude (approx.) | 1,250-1,450 m | 1,800 m | 1,800-1,900 m | 2,000 m | 1,950-2,100 m |
+| Altitude (approx.) | 1,250-1,450 m | 1,750-2,080 m | 2,100 m | 2,100 m | 2,000 m |
 | Walk to Dalai Lama Temple | No (taxi or bus) | Yes | 20-30 min walk | 30-40 min walk down | Taxi recommended |
 | Cafes and restaurants | Some, mostly local | Very many | Many | Several small cafes | Few, mostly in hotels |
 | Nightlife | Very little | Moderate, ends early | Moderate, some live music | Very little | None |
@@ -741,7 +745,7 @@ Whichever you choose, you can [compare hotels in every area](/hotels) by price a
     tags: ['dharamshala vs mcleod ganj', 'where to stay in dharamshala', 'mcleod ganj', 'bhagsu', 'dharamkot', 'naddi'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-09-28',
-    updated_at: '2026-10-01',
+    updated_at: '2026-10-17',
     image: placeImage('dharamshala-town'),
     image_alt: 'Dharamshala town spread across the hillside of the Kangra Valley, with McLeod Ganj above',
     read_time: 7,
@@ -751,8 +755,8 @@ Whichever you choose, you can [compare hotels in every area](/hotels) by price a
     related_slugs: ['best-hotels-in-mcleod-ganj', 'best-hotels-in-dharamshala', 'how-to-reach-dharamshala'],
     faqs: [
       {
-        question: 'Is McLeod Ganj part of Dharamshala?',
-        answer: 'Yes. McLeod Ganj is the upper part of Dharamshala, about 9-10 km by road above the lower town and roughly 400 m higher. Taxis take 20-30 minutes between the two.',
+        question: 'Are Dharamshala and McLeod Ganj the same place?',
+        answer: 'No. Dharamshala is the main town (about 1,457 m); McLeod Ganj is its hilltop suburb about 9 km up the road (around 4 km on the steep footpath), at about 1,750 to 2,080 m, home to the Dalai Lama Temple and the Tibetan community. Taxis take 20-30 minutes between the two.',
       },
       {
         question: 'Which is better to stay in, Dharamshala or McLeod Ganj?',

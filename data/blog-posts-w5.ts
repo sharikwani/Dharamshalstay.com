@@ -344,7 +344,7 @@ Most health problems visitors have here are minor: upset stomachs, colds, bliste
 | Serious trauma, specialist care, ICU | Dr. Rajendra Prasad Government Medical College, Tanda (approx. 20-25 km) |
 | Pharmacies | Several in McLeod Ganj and Kotwali Bazaar; fewer in Bhagsu; none to speak of in Dharamkot |
 | Rabies vaccine after a bite | Government hospitals; check availability by phone first |
-| Altitude | McLeod Ganj approx. 1,750-1,800 m: no altitude sickness for most people; Triund approx. 2,850 m |
+| Altitude | McLeod Ganj approx. 1,750-2,080 m: no altitude sickness for most people; Triund approx. 2,850 m |
 | Tap water | Do not drink untreated; use filtered refills |
 
 ## Hospitals and clinics
@@ -375,7 +375,7 @@ Bring enough of any regular medication for your whole trip, in original packagin
 
 ## Altitude: mostly a non-issue
 
-McLeod Ganj sits at around 1,750-1,800 m and lower Dharamshala at around 1,250-1,450 m. Very few people feel anything at these heights beyond getting out of breath on the steep roads. Triund, at about 2,850 m, is still below the height where altitude sickness is common, though some people get a headache if they rush up and camp the same night.
+McLeod Ganj sits at around 1,750-2,080 m and lower Dharamshala at around 1,250-1,450 m. Very few people feel anything at these heights beyond getting out of breath on the steep roads. Triund, at about 2,850 m, is still below the height where altitude sickness is common, though some people get a headache if they rush up and camp the same night.
 
 Altitude matters on **Indrahar Pass** (about 4,300 m) and other high Dhauladhar crossings. Ascend gradually, drink water, and turn back if you have a worsening headache, vomiting or confusion. Our [Indrahar Pass trek guide](/blog/indrahar-pass-trek-guide) covers this in detail.
 
@@ -483,7 +483,7 @@ If you have a condition that needs quick access to care, or are travelling with 
       },
       {
         question: 'Will I get altitude sickness in McLeod Ganj or on Triund?',
-        answer: 'Very unlikely. McLeod Ganj is around 1,750-1,800 m and Triund about 2,850 m, below the heights where altitude sickness is common. Altitude becomes a real concern on Indrahar Pass at about 4,300 m.',
+        answer: 'Very unlikely. McLeod Ganj is around 1,750-2,080 m and Triund about 2,850 m, below the heights where altitude sickness is common. Altitude becomes a real concern on Indrahar Pass at about 4,300 m.',
       },
       {
         question: 'What should I do if a dog or monkey bites me in Dharamshala?',
@@ -676,7 +676,7 @@ Below is how each option works, with routes, approx. fares as of 2026, walking s
 
 ## How the area is laid out
 
-Lower Dharamshala (Kotwali Bazaar, the main bus stand, around 1,250-1,450 m) and McLeod Ganj (around 1,750-1,800 m) are about 9-10 km apart by road. Bhagsu is about 2 km east of McLeod Ganj, Dharamkot about 3 km uphill by road, and Naddi about 4 km. Between them sit Gangchen Kyishong (the Tibetan administration and Library) and Forsyth Ganj (St. John in the Wilderness church). Our [Dharamshala vs McLeod Ganj guide](/blog/dharamshala-vs-mcleod-ganj) explains the differences if you are still choosing a base.
+Lower Dharamshala (Kotwali Bazaar, the main bus stand, around 1,250-1,450 m) and McLeod Ganj (around 1,750-2,080 m) are about 9-10 km apart by road. Bhagsu is about 2 km east of McLeod Ganj, Dharamkot about 3 km uphill by road, and Naddi about 4 km. Between them sit Gangchen Kyishong (the Tibetan administration and Library) and Forsyth Ganj (St. John in the Wilderness church). Our [Dharamshala vs McLeod Ganj guide](/blog/dharamshala-vs-mcleod-ganj) explains the differences if you are still choosing a base.
 
 ## HRTC local buses
 

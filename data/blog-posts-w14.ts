@@ -17,7 +17,7 @@ This guide covers the weather week by week, what is open and closed, how to stay
 
 ## December Weather, Week by Week
 
-McLeod Ganj sits at roughly 1,800 m, about 400 m above lower Dharamshala, so it is usually 3 to 5°C colder than the lower town. Dharamkot and Naddi, a little higher again, are colder still. The figures below are our approximations for McLeod Ganj, based on long-term normals for Dharamshala town and what we see living here.
+McLeod Ganj sits at roughly 2,000 m, about 600 m above lower Dharamshala, so it is usually 3 to 5°C colder than the lower town. Dharamkot and Naddi, a little higher again, are colder still. The figures below are our approximations for McLeod Ganj, based on long-term normals for Dharamshala town and what we see living here.
 
 | Period | Day (approx.) | Night (approx.) | Snow chance in McLeod Ganj | Crowds | Room rates |
 |---|---|---|---|---|---|
@@ -37,7 +37,7 @@ A few patterns hold most years:
 Honestly, probably not during a short trip, though it does happen. Here is the picture by altitude:
 
 - **Lower Dharamshala (around 1,400 m):** settled snow is very rare.
-- **McLeod Ganj and Bhagsu (around 1,800 m):** occasional. Before about 20 December it is uncommon. In the last ten days it becomes possible, and some years bring a festive dusting around Christmas or New Year. Many years bring none at all in December.
+- **McLeod Ganj and Bhagsu (around 2,000 m):** occasional. Before about 20 December it is uncommon. In the last ten days it becomes possible, and some years bring a festive dusting around Christmas or New Year. Many years bring none at all in December.
 - **Dharamkot and Naddi (around 1,900 to 2,100 m):** a little more often than McLeod Ganj, and snow lingers longer in shaded spots.
 - **Gallu Devi and the Triund trail:** snow patches are possible from mid to late December, more so after a storm.
 - **Triund ridge (about 2,850 m):** the most reliable snow you can reach in a day in December, though early in the month it can still be bare.

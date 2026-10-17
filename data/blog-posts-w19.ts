@@ -48,7 +48,7 @@ Dharamshala is two places stacked on one hillside, and they celebrate differentl
 
 ## Early November Weather
 
-| | Lower Dharamshala (about 1,400 m) | McLeod Ganj (about 1,800 m) |
+| | Lower Dharamshala (about 1,400 m) | McLeod Ganj (about 2,000 m) |
 |---|---|---|
 | Day | About 22°C | About 16 to 18°C |
 | Night | About 10°C | About 5 to 7°C |

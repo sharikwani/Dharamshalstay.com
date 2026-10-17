@@ -25,7 +25,7 @@ There is no truly bad month: the town never shuts down, and the Dalai Lama Templ
 | Autumn | Late September-November | 22-26°C, dry and clear | High in October, easing in November | High in October, moderate in November | Views, Triund, Bir, photography |
 | Winter | December-February | 16-18°C days, 6-7°C nights, colder above | Low, except Christmas-New Year | Low, except Dec 23-Jan 2 | Snow chances, quiet streets, Dhauladhar views |
 
-Remember the altitude split. Dharamshala town sits at about 1,457 m and McLeod Ganj about 400 m higher at roughly 1,800 m, so **McLeod Ganj is usually 3-5°C cooler** than the lower town, and Dharamkot and Naddi a little colder again. Not sure where to stay? Read [Dharamshala vs McLeod Ganj](/blog/dharamshala-vs-mcleod-ganj).
+Remember the altitude split. Dharamshala town sits at about 1,457 m and McLeod Ganj about 600 m higher at roughly 2,000 m, so **McLeod Ganj is usually 3-5°C cooler** than the lower town, and Dharamkot and Naddi a little colder again. Not sure where to stay? Read [Dharamshala vs McLeod Ganj](/blog/dharamshala-vs-mcleod-ganj).
 
 ## Month-by-Month Table
 
