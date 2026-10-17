@@ -42,6 +42,8 @@ export default function PartnerRegister() {
     if (data.user && data.user.identities?.length === 0) {
       setError('An account with this email already exists. Please log in instead.'); setLoading(false); return;
     }
+    // Tell admin now: many partners never confirm their email, and nothing else would flag them.
+    if (data.user?.id) fetch('/api/partner/signed-up', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: data.user.id }) }).catch(() => {});
     setRegisteredEmail(email); setLoading(false);
   }
 

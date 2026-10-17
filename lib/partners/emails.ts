@@ -21,6 +21,16 @@ export async function emailAdminPartnerSubmitted(p: { id: string; legal_name: st
   });
 }
 
+export async function emailAdminPartnerSignedUp(p: { id: string; email: string; full_name: string | null; phone: string | null; business_name: string | null; partner_type: string | null }) {
+  const name = (p.full_name || '').trim() || p.email;
+  await sendEmail({
+    to: adminEmail(),
+    template: 'admin_partner_signup',
+    subject: `New ${p.partner_type || ''} partner signed up: ${name} (${p.email})`,
+    html: wrap('New partner sign-up', `<p><b>${esc(name)}</b>${p.business_name ? ` from <b>${esc(p.business_name)}</b>` : ''} signed up as a ${esc(p.partner_type || '')} partner.</p><p>${esc(p.email)} · ${esc(p.phone || '')}</p><p>Next for them: confirm their email, add their details and documents, and sign the agreement. You will get another email when they submit for verification.</p><p><a href="${SITE}/admin/partners/${p.id}">Open partner</a></p>`),
+  });
+}
+
 const DECISION: Record<string, { subject: string; title: string; text: string }> = {
   verified: { subject: 'Your Dharamshala Stay partner account is approved', title: 'You are approved', text: 'Your documents are verified and your partner account is active. You can now add your packages and start receiving bookings.' },
   changes_requested: { subject: 'Action needed on your Dharamshala Stay partner account', title: 'Some details need fixing', text: 'We could not approve your account yet. Please log in, fix the items below and submit again.' },
