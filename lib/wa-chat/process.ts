@@ -12,6 +12,8 @@ import { tidyWhatsApp } from '@/lib/whatsapp-format';
 
 export const HOLDING_REPLY = 'Thank you for your message! 🙏\n\nA member of our team will reply here shortly.';
 const HOUR = 3600e3;
+/** Pause before answering, so a burst ("2" / "Dharamshala" / "5000") is answered once. Longer feels slow. */
+const DEBOUNCE_MS = 1500;
 /** How often a turn that is waiting for the lock (or for a voice transcription) looks again. */
 const POLL_MS = 1500;
 /** Time one AI turn needs (thinking + sending) before the invocation deadline; with less left, the owner takes over. */
@@ -163,7 +165,7 @@ export async function processConversation(conversationId: string, messageId: str
   const wait = opts.wait || sleep;
   let token: string | null = null;
   try {
-    await wait(2000);
+    await wait(DEBOUNCE_MS);
     // A newer message has its own invocation, which answers everything (this message included). A late voice
     // transcription (force) still checks after taking the lock whether its text was answered.
     if (!opts.force && (await latestInboundId(conversationId)) !== messageId) return 'superseded';
