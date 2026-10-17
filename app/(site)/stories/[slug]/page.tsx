@@ -8,6 +8,7 @@ import JsonLd from '@/components/seo/JsonLd';
 import StoryLive, { LiveActions, LiveComments, LiveFlags, LiveReach } from '@/components/stories/StoryLive';
 import StoryCard, { KindBadge } from '@/components/stories/StoryCard';
 import Countdown from '@/components/stories/Countdown';
+import StoryGallery, { CoverButton, PhotoGrid } from '@/components/stories/StoryGallery';
 import { breadcrumbSchema, generateSEO } from '@/lib/seo';
 import { siteConfig } from '@/lib/config';
 import { display } from '@/lib/fonts';
@@ -63,12 +64,14 @@ export default async function StoryPage({ params }: { params: { slug: string } }
           </div>
         </div>
 
+        <StoryGallery photos={s.photos} title={s.title}>
         <article>
           <header className="relative">
             <div className="relative h-[58vh] min-h-[340px] w-full overflow-hidden bg-brand-900 sm:h-[68vh]">
               {s.photos[0] && <Image src={s.photos[0]} alt={s.title} fill priority sizes="100vw" className="object-cover" />}
               <div className="absolute inset-0 bg-gradient-to-t from-[#0c1726] via-[#0c1726]/30 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0">
+              {s.photos[0] && <CoverButton title={s.title} count={s.photos.length} />}
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 [&_a]:pointer-events-auto">
                 <div className="mx-auto max-w-5xl px-4 pb-8 text-white sm:px-6 sm:pb-12">
                   {spotlight && s.featured_until && (
                     <p className="st-rise mb-4 inline-flex items-center gap-2 rounded-full bg-[#e3b76a] px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-[#0c1726]">
@@ -101,15 +104,7 @@ export default async function StoryPage({ params }: { params: { slug: string } }
               ))}
             </div>
 
-            {s.photos.length > 1 && (
-              <div className={'grid gap-3 ' + (s.photos.length === 2 ? 'grid-cols-2' : 'grid-cols-2 sm:grid-cols-3')}>
-                {s.photos.slice(1).map((src, i) => (
-                  <a key={src} href={src} target="_blank" rel="noopener" className="relative block aspect-[4/3] overflow-hidden rounded-2xl bg-brand-100">
-                    <Image src={src} alt={`${s.title}, photo ${i + 2}`} fill sizes="(max-width:640px) 50vw, 33vw" className="object-cover transition duration-500 hover:scale-105" />
-                  </a>
-                ))}
-              </div>
-            )}
+            <PhotoGrid photos={s.photos} title={s.title} />
 
             <div className="mx-auto max-w-2xl py-10">
               <div className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-200">
@@ -137,6 +132,7 @@ export default async function StoryPage({ params }: { params: { slug: string } }
             </div>
           </div>
         </article>
+        </StoryGallery>
 
         <LiveActions sticky />
       </StoryLive>
