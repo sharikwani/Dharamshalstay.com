@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import { ArrowRight, CalendarDays, Clock, Instagram, MapPin, PenLine } from 'lucide-react';
 import { Breadcrumb } from '@/components/ui/Cards';
 import JsonLd from '@/components/seo/JsonLd';
-import StoryLive, { LiveActions, LiveComments, LiveFlags, LiveReach } from '@/components/stories/StoryLive';
+import StoryLive, { FlagsPanel, HeroFlags, LiveActions, LiveComments, LiveReach } from '@/components/stories/StoryLive';
 import StoryCard, { KindBadge } from '@/components/stories/StoryCard';
 import Countdown from '@/components/stories/Countdown';
 import StoryGallery, { CoverButton, PhotoGrid } from '@/components/stories/StoryGallery';
@@ -58,9 +58,8 @@ export default async function StoryPage({ params }: { params: { slug: string } }
       <StoryLive story={{ id: s.id, slug: s.slug, title: s.title, author_name: s.author_name, url }} initial={{ views: s.views, likes: s.likes, comments: s.comments, flags: s.flags }}>
         {/* The readers' prayer flags, strung across the top */}
         <div className="bg-[#0c1726] text-white">
-          <div className="mx-auto max-w-5xl px-4 pb-6 pt-6 sm:px-6">
+          <div className="mx-auto max-w-5xl px-4 pb-1 pt-4 sm:px-6">
             <div className="[&_nav]:text-brand-200 [&_a]:text-brand-100"><Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Stories', href: '/stories' }, { label: s.title }]} /></div>
-            <LiveFlags />
           </div>
         </div>
 
@@ -71,6 +70,7 @@ export default async function StoryPage({ params }: { params: { slug: string } }
               {s.photos[0] && <Image src={s.photos[0]} alt={s.title} fill priority sizes="100vw" className="object-cover" />}
               <div className="absolute inset-0 bg-gradient-to-t from-[#0c1726] via-[#0c1726]/30 to-transparent" />
               {s.photos[0] && <CoverButton title={s.title} count={s.photos.length} />}
+              <HeroFlags />
               <div className="pointer-events-none absolute inset-x-0 bottom-0 [&_a]:pointer-events-auto">
                 <div className="mx-auto max-w-5xl px-4 pb-8 text-white sm:px-6 sm:pb-12">
                   {spotlight && s.featured_until && (
@@ -105,6 +105,8 @@ export default async function StoryPage({ params }: { params: { slug: string } }
             </div>
 
             <PhotoGrid photos={s.photos} title={s.title} />
+
+            <div className="mx-auto max-w-3xl pt-10"><FlagsPanel /></div>
 
             <div className="mx-auto max-w-2xl py-10">
               <div className="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-200">

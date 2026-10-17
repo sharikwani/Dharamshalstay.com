@@ -24,7 +24,7 @@ export function CoverButton({ title, count }: { title: string; count: number }) 
   const open = useContext(Ctx);
   return (
     <button type="button" onClick={() => open(0)} aria-label={`View the photos of ${title}`} className="absolute inset-0 cursor-zoom-in focus:outline-none">
-      <span className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-black/45 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur hover:bg-black/60 sm:right-6 sm:top-6">
+      <span className="absolute bottom-3 right-3 z-20 hidden items-center gap-1.5 rounded-full sm:inline-flex bg-black/45 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur hover:bg-black/60 sm:bottom-6 sm:right-6">
         <Expand className="h-3.5 w-3.5" />{count > 1 ? `View all ${count} photos` : 'View photo'}
       </span>
     </button>

@@ -87,12 +87,13 @@ export default function StoryLive({ story, initial, children }: { story: StoryIn
 // ---------- Prayer flags ----------
 
 /** The string of flags readers have tied. Tap one to read its wish. */
-export function LiveFlags({ light = false }: { light?: boolean }) {
+export function LiveFlags({ light = false, caption = true }: { light?: boolean; caption?: boolean }) {
   const { live, newFlag, openFlag, story } = useLive();
   const [shown, setShown] = useState<Item | null>(null);
   const flags = live.flagList;
   // An empty string still shows five plain flags, so the idea is clear at a glance.
-  const placeholders = flags.length ? [] : FLAG_COLORS.map((c) => ({ id: c.key, name: '', text: '', created_at: '', color: c.key }));
+  // Faint flags in the five colours fill the string up to 14, so it never looks bare; tapping one ties a flag.
+  const placeholders = Array.from({ length: Math.max(0, 14 - flags.length) }, (_, i) => ({ id: 'p' + i, name: '', text: '', created_at: '', color: FLAG_COLORS[(flags.length + i) % 5].key }));
   return (
     <div className="relative">
       <div className={'st-flags big ' + (light ? 'on-light' : '')} aria-label={`${flags.length} prayer flags tied to this story`}>
@@ -101,10 +102,10 @@ export function LiveFlags({ light = false }: { light?: boolean }) {
             onClick={() => (f.name ? setShown(f) : openFlag())} aria-label={f.name ? `Prayer flag from ${f.name}: ${f.text}` : 'Tie the first prayer flag'} />
         ))}
       </div>
-      <div className={'mt-3 flex flex-wrap items-center gap-3 text-sm ' + (light ? 'text-slate-600' : 'text-brand-100')}>
+      {caption && <div className={'mt-3 flex flex-wrap items-center gap-3 text-sm ' + (light ? 'text-slate-600' : 'text-brand-100')}>
         <span>{flags.length ? `${flags.length} prayer flag${flags.length === 1 ? '' : 's'} tied for ${story.author_name}` : `Be the first to tie a prayer flag for ${story.author_name}`}</span>
         <button type="button" onClick={openFlag} className="rounded-full bg-[#e3b76a] px-4 py-1.5 font-semibold text-[#0c1726] hover:brightness-105">Tie a prayer flag</button>
-      </div>
+      </div>}
       {shown && (
         <div role="dialog" aria-label="Prayer flag" className="st-rise absolute left-0 top-16 z-20 w-72 rounded-2xl bg-white p-4 text-slate-800 shadow-2xl ring-1 ring-black/5">
           <div className="flex items-start gap-3">
@@ -118,6 +119,62 @@ export function LiveFlags({ light = false }: { light?: boolean }) {
         </div>
       )}
     </div>
+  );
+}
+
+/**
+ * Across the top of the cover photo: the readers' flags (or the five colours, faint, before the first one),
+ * with a "Tie a prayer flag" button, so everyone sees them the moment the page opens.
+ */
+export function HeroFlags() {
+  const { live, newFlag, openFlag, story } = useLive();
+  const flags = live.flagList;
+  const n = flags.length;
+  // Real flags first (bright), then faint flags in the five colours so the string always spans the photo.
+  const real = flags.slice(-40);
+  const shown = [...real, ...Array.from({ length: Math.max(0, 30 - real.length) }, (_, i) => ({ id: 'p' + i, color: FLAG_COLORS[(real.length + i) % 5].key, name: '', text: '', created_at: '' }))];
+  return (
+    <div className="pointer-events-none absolute inset-x-0 top-0 z-10">
+      <div className="st-flags big" style={{ justifyContent: 'center' }} aria-hidden="true">
+        {shown.map((f, i) => (
+          <span key={f.id + '-' + i} className={'st-flag' + (f.id === newFlag ? ' new' : '')} style={{ background: hex(f.color), opacity: f.name ? 1 : 0.45 }} />
+        ))}
+      </div>
+      <div className="flex justify-center pt-3">
+        <button type="button" onClick={openFlag}
+          className="pointer-events-auto inline-flex items-center gap-2 rounded-full bg-black/45 px-4 py-2 text-sm font-semibold text-white ring-1 ring-white/25 backdrop-blur transition hover:bg-black/60">
+          <span className="flex gap-[2px]" aria-hidden="true">{FLAG_COLORS.map((c) => <i key={c.key} className="block h-3.5 w-[4px] rounded-[1px]" style={{ background: c.hex }} />)}</span>
+          {n ? `${n} prayer flag${n === 1 ? '' : 's'} for ${story.author_name} · Tie yours` : `Tie a prayer flag for ${story.author_name}`}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/** After the story, when readers are most moved: the flag string, the latest wishes and a big button. */
+export function FlagsPanel() {
+  const { live, openFlag, story } = useLive();
+  const latest = [...live.flagList].reverse().slice(0, 3);
+  return (
+    <section aria-labelledby="flags-h" className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-[#fbf6ea] to-white p-6 ring-1 ring-[#e3b76a]/40 sm:p-8">
+      <LiveFlags light caption={false} />
+      <h2 id="flags-h" className="st-display mt-6 text-3xl text-slate-900">Tie a prayer flag for {story.author_name}</h2>
+      <p className="mt-2 max-w-xl text-slate-600">On the hills above McLeod Ganj, prayer flags carry wishes on the wind to everyone they touch. Leave {story.author_name} a short wish, and your flag joins the string on this story for everyone to see.</p>
+      {latest.length > 0 && (
+        <ul className="mt-5 space-y-2">
+          {latest.map((f) => (
+            <li key={f.id} className="flex items-start gap-3">
+              <span className="mt-0.5 h-6 w-[18px] flex-none rounded-sm shadow" style={{ background: hex(f.color), outline: f.color === 'white' ? '1px solid #ddd' : undefined }} />
+              <p className="text-slate-700"><span className="st-display text-lg">&ldquo;{f.text}&rdquo;</span> <span className="text-sm text-slate-500">from {f.name}</span></p>
+            </li>
+          ))}
+        </ul>
+      )}
+      <button type="button" onClick={openFlag} className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#0c1726] px-6 py-3 font-semibold text-white shadow-lg transition hover:bg-brand-900">
+        <span className="flex gap-[2px]" aria-hidden="true">{FLAG_COLORS.map((c) => <i key={c.key} className="block h-4 w-[5px] rounded-[1px]" style={{ background: c.hex }} />)}</span>
+        Tie my prayer flag
+      </button>
+    </section>
   );
 }
 
@@ -194,7 +251,7 @@ export function LiveActions({ sticky = false }: { sticky?: boolean }) {
         <a href="#comments" className={btn + ' bg-slate-100 text-slate-700 hover:bg-slate-200'}><MessageCircle className="h-5 w-5" />{compact(live.comments)}<span className="sr-only">comments</span></a>
         <button type="button" onClick={openFlag} className={btn + ' bg-slate-100 text-slate-700 hover:bg-slate-200'} title="Tie a prayer flag">
           <span className="flex gap-[2px]" aria-hidden="true">{FLAG_COLORS.map((f) => <i key={f.key} className="block h-4 w-[5px] rounded-[1px]" style={{ background: f.hex, outline: f.key === 'white' ? '1px solid #ccc' : undefined }} />)}</span>
-          {compact(live.flags)}<span className="sr-only">prayer flags</span>
+          {compact(live.flags)}<span className="hidden sm:inline">· Tie a flag</span><span className="sr-only">prayer flags</span>
         </button>
         <button type="button" onClick={openShare} className={btn + ' bg-brand-900 text-white hover:bg-brand-800'}><Share2 className="h-5 w-5" /><span className="hidden sm:inline">Share</span></button>
       </div>
