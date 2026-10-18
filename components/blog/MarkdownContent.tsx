@@ -1,11 +1,13 @@
 import Link from 'next/link';
 import { Fragment, type ReactNode } from 'react';
 import { localizePath, type Lang } from '@/lib/i18n/core';
+import { photoCredits } from '@/data/photo-credits';
 
 /**
  * Renders the small markdown subset our guides are written in:
  * ## / ### headings, paragraphs, - bullet lists, 1. numbered lists,
  * pipe tables, and inline **bold**, [internal](/path) and [external](https://) links.
+ * A line of its own like ![Caption](/images/places/<key>.jpg) is a photo with its caption and credit.
  * Legacy posts may still contain raw <a href> tags; those are converted too.
  */
 
@@ -94,6 +96,23 @@ export default function MarkdownContent({ content, lang = 'en' }: { content: str
       i++; continue;
     }
 
+    // Photo: one of our self-hosted, credited place photos (data/photo-credits.ts).
+    const img = line.match(/^!\[([^\]]*)\]\((\/images\/places\/([a-z0-9-]+)\.jpg)\)$/);
+    if (img) {
+      const credit = photoCredits[img[3]];
+      out.push(
+        <figure key={key} className="my-8">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={img[2]} alt={credit?.alt || img[1]} loading="lazy" decoding="async" className="w-full rounded-2xl object-cover max-h-[520px] bg-slate-100" />
+          <figcaption className="mt-2 text-sm text-slate-500">
+            {img[1]}
+            {credit && <span className="block text-xs text-slate-400">Photo: {credit.author}, <a href={credit.source} target="_blank" rel="noopener noreferrer" className="underline">{credit.license}</a></span>}
+          </figcaption>
+        </figure>
+      );
+      i++; continue;
+    }
+
     // Table: header row followed by a |---| separator row
     if (line.startsWith('|') && i + 1 < lines.length && /^\|?\s*:?-{2,}/.test(lines[i + 1].trim())) {
       const head = splitRow(line);
@@ -143,7 +162,7 @@ export default function MarkdownContent({ content, lang = 'en' }: { content: str
     const para: string[] = [];
     while (i < lines.length) {
       const l = lines[i].trim();
-      if (!l || l.startsWith('#') || l.startsWith('|') || /^[-*] /.test(l) || /^\d+\. /.test(l)) break;
+      if (!l || l.startsWith('#') || l.startsWith('|') || l.startsWith('![') || /^[-*] /.test(l) || /^\d+\. /.test(l)) break;
       para.push(l); i++;
     }
     out.push(<p key={key} className="text-slate-600 leading-relaxed mb-4">{inline(para.join(' '), key, lang)}</p>);

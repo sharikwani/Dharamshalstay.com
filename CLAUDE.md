@@ -32,4 +32,11 @@ Rules of thumb:
 - Emails go through `lib/email/send.ts` `deliver()` (logging, consent, suppression). Marketing only to contacts with consent.
 - Social posts: `lib/social/*`; slides render at `/social/card.jpg`. Only our own or properly licensed photos, with credits.
 - Facts: `data/facts.ts` and `data/travel-updates.ts` are the verified source; keep `verified` dates current.
+
+## Every piece of content is SEO + AEO + GEO (owner's rule, always)
+Blog posts, guides, landing pages, FAQs and page copy must do all three, every time:
+- **SEO:** one clear search intent per page; the main keyword in title, meta_title (under 60 chars), H1/first line and one H2; meta_description under 155 chars that leads with the answer; descriptive slug; internal links to 3+ related guides and to the booking pages (hotels, taxis, treks); real photos with descriptive alt text.
+- **AEO (answer engines, featured snippets, voice):** open with a bold **Short answer:** of 2-4 sentences; question-style H2s; a quick-facts table (dates, timings, location, entry fee, how to reach); 5-8 FAQs (the `faqs` field becomes FAQPage schema) with direct answers that make sense on their own.
+- **GEO (ChatGPT, Copilot, Perplexity, Gemini citing us):** specific, checkable facts with dates and numbers; name places precisely (ground, road, distance from McLeod Ganj / Kotwali Bazaar); say what is confirmed and what is not; a `sources` list of official and news sources; current year in title and dates; `updated_at` kept fresh.
+- Photos: only our own or freely licensed (Wikimedia Commons), self-hosted in `public/images/places` with credits in `data/photo-credits.ts`.
 - Run `npx tsc --noEmit -p .` and `npx vitest run` before committing.

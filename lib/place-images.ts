@@ -22,6 +22,9 @@ export const PLACE_IMAGE_KEYS = [
   'gallu-devi', 'laka-glacier', 'deer-park-bir', 'dalhousie', 'khajjiar', 'chamba',
   'barot-valley', 'gaddi-shepherds', 'kangra-painting', 'himachali-dham',
   'tibetan-monks-ceremony', 'tushita', 'pong-dam', 'rajgundha',
+  // Festivals and fairs
+  'ramlila-scene', 'ramlila-hanuman', 'ravan-dahan-shimla', 'dussehra-effigies', 'ravan-dahan-crowd',
+  'dussehra-fair-wheel', 'himachali-nati', 'minjar-procession', 'kushti-wrestling',
 ] as const;
 
 export type PlaceImageKey = (typeof PLACE_IMAGE_KEYS)[number];
