@@ -4,6 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import { Bot, Hand, Loader2, Send, UserRound, X } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
+import WhatsAppSent from '@/components/admin/WhatsAppSent';
 
 type Conv = { id: string; phone: string; profile_name: string | null; status: string; handover_reason: string | null; last_message_at: string; last_customer_at: string | null; unread_admin: number; last_body: string };
 type Msg = { id: string; author: 'customer' | 'ai' | 'admin'; body: string; kind: string; status: string; error: string | null; created_at: string };
@@ -36,6 +37,7 @@ function Inbox() {
   const [error, setError] = useState('');
   const [settings, setSettings] = useState<{ ai_mode: string; test_numbers: string[] } | null>(null);
   const [numbers, setNumbers] = useState('');
+  const [view, setView] = useState<'chats' | 'sent'>(params.get('view') === 'sent' ? 'sent' : 'chats');
   const bottom = useRef<HTMLDivElement>(null);
   // Set synchronously, so a second Enter or click before React re-renders cannot send the reply twice.
   const sending = useRef(false);
@@ -92,7 +94,14 @@ function Inbox() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-6">
       <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-        <h1 className="text-2xl font-heading font-bold text-slate-900">WhatsApp</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-2xl font-heading font-bold text-slate-900">WhatsApp</h1>
+          <div className="flex rounded-lg bg-slate-100 p-0.5 text-sm">
+            {(['chats', 'sent'] as const).map((v) => (
+              <button key={v} onClick={() => setView(v)} className={cn('px-3 py-1 rounded-md font-medium', view === v ? 'bg-white shadow-sm text-slate-900' : 'text-slate-600')}>{v === 'chats' ? 'Chats' : 'Sent messages'}</button>
+            ))}
+          </div>
+        </div>
         {settings && (
           <div className="flex flex-wrap items-center gap-2 text-sm">
             <span className="text-slate-600">AI replies:</span>
@@ -111,6 +120,7 @@ function Inbox() {
       </div>
       {error && <p className="mb-3 text-sm text-red-700 bg-red-50 px-3 py-2 rounded-lg">{error}</p>}
 
+      {view === 'sent' ? <WhatsAppSent api={api} /> : (
       <div className="grid lg:grid-cols-[340px_1fr] gap-4">
         <div className={cn('bg-white rounded-xl border border-slate-200 overflow-hidden', openId && 'hidden lg:block')}>
           <div className="flex gap-2 p-3 border-b border-slate-200">
@@ -204,6 +214,7 @@ function Inbox() {
           )}
         </div>
       </div>
+      )}
     </div>
   );
 }

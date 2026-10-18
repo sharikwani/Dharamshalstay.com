@@ -60,10 +60,23 @@ export async function sendTemplate(opts: { to: string; template: string; params:
         },
       }),
     });
-    return await answer(res);
+    const r = await answer(res);
+    if (r.ok) await recordTemplateSend(r.id, opts);
+    return r;
   } catch (e: any) {
     return thrown(e);
   }
+}
+
+/** Keep the filled-in values of a sent template so admin can read the exact message later (migration v40). Never throws. */
+async function recordTemplateSend(id: string, opts: { to: string; template: string; params: unknown[]; language?: string }) {
+  if (process.env.NODE_ENV === 'test') return;
+  try {
+    const { serviceClient } = await import('@/lib/server-auth');
+    await serviceClient().from('whatsapp_template_sends').insert({
+      wa_message_id: id, to_phone: opts.to, template: opts.template, language: opts.language || 'en', params: opts.params.map(cleanParam),
+    });
+  } catch { /* the copy is a convenience; the message is already sent */ }
 }
 
 export function verifySignature(rawBody: string, header: string | null): boolean {
