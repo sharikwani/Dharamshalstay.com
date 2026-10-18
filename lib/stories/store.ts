@@ -9,6 +9,7 @@ export type StoryRow = StoryInput & {
   ai_score: number | null; ai_notes: string | null; ai_flags: string[]; ai_caption: string | null; ai_screened_at: string | null;
   proposed_at: string | null; featured_at: string | null; featured_until: string | null;
   ig_story_id: string | null; ig_attempts: number; ig_error: string | null;
+  fb_story_id?: string | null;
   views: number; likes: number; comments: number; flags: number;
   approved_at: string | null; created_at: string; updated_at: string;
   pin_rank?: number | null;

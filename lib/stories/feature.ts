@@ -8,7 +8,7 @@
 import { HttpError, serviceClient } from '@/lib/server-auth';
 import { adminEmail, escHtml, sendEmail } from '@/lib/email';
 import { siteConfig } from '@/lib/config';
-import { publishInstagramStory, socialConfigured } from '@/lib/social/publish';
+import { publishFacebookStory, publishInstagramStory, socialConfigured } from '@/lib/social/publish';
 import { FEATURE_HOURS, UPLOAD_BUCKET, istDayStart, istHour, pickStoryOfTheDay } from './rules';
 import { getStory, publishStoryPhotos, updateStory, type StoryRow } from './store';
 import { screenStory } from './ai';
@@ -61,17 +61,33 @@ export async function featureStory(id: string, deadline = Date.now() + 45_000): 
   return ig;
 }
 
-async function postToInstagram(s: StoryRow, deadline: number): Promise<{ instagram: 'posted' | 'failed' | 'off'; error?: string }> {
-  if (!socialConfigured()) return { instagram: 'off' };
-  try {
-    const r = await publishInstagramStory(cardUrl(s, 'story'), deadline);
-    await updateStory(s.id, { ig_story_id: r.id, ig_attempts: s.ig_attempts + 1, ig_error: null });
-    return { instagram: 'posted' };
-  } catch (e: any) {
-    const error = String(e?.message || e).slice(0, 300);
-    await updateStory(s.id, { ig_attempts: s.ig_attempts + 1, ig_error: error });
-    return { instagram: 'failed', error };
+type Posted = 'posted' | 'failed' | 'off';
+
+/** The story card goes to the Instagram story and the Facebook Page story; a retry only posts the one still missing. */
+async function postToInstagram(s: StoryRow, deadline: number): Promise<{ instagram: Posted; facebook: Posted; error?: string }> {
+  if (!socialConfigured()) return { instagram: 'off', facebook: 'off' };
+  const card = cardUrl(s, 'story');
+  const errors: string[] = [];
+  let instagram: Posted = s.ig_story_id ? 'posted' : 'failed';
+  let facebook: Posted = s.fb_story_id ? 'posted' : 'failed';
+  if (!s.ig_story_id) {
+    try {
+      const r = await publishInstagramStory(card, deadline);
+      await updateStory(s.id, { ig_story_id: r.id });
+      instagram = 'posted';
+    } catch (e: any) { errors.push('Instagram: ' + String(e?.message || e)); }
   }
+  if (!s.fb_story_id) {
+    try {
+      const r = await publishFacebookStory(card);
+      // Saved on its own: before migration v41 the column is missing, and that must not undo the Instagram result.
+      await updateStory(s.id, { fb_story_id: r.id }).catch((e) => console.error('fb_story_id not saved:', e?.message || e));
+      facebook = 'posted';
+    } catch (e: any) { errors.push('Facebook: ' + String(e?.message || e)); }
+  }
+  const error = errors.join(' | ').slice(0, 300) || null;
+  await updateStory(s.id, { ig_attempts: s.ig_attempts + 1, ig_error: error });
+  return { instagram, facebook, ...(error ? { error } : {}) };
 }
 
 export async function unfeatureStory(id: string): Promise<void> {
@@ -102,9 +118,9 @@ export async function runStoriesAutopilot(opts: { deadline: number }) {
   const nowIso = new Date().toISOString();
   const { data: live } = await sb.from('stories').select('*').gt('featured_until', nowIso).limit(1);
 
-  // 2. Retry the Instagram story (twice more at most, within its first 3 hours).
+  // 2. Retry the Instagram / Facebook story still missing (twice more at most, within its first 3 hours).
   const l = live?.[0] as StoryRow | undefined;
-  if (l && !l.ig_story_id && l.ig_attempts < 3 && Date.now() - Date.parse(l.featured_at!) < 3 * 3600e3 && socialConfigured() && Date.now() < opts.deadline - 30_000) {
+  if (l && (!l.ig_story_id || (!l.fb_story_id && 'fb_story_id' in l)) && l.ig_attempts < 3 && Date.now() - Date.parse(l.featured_at!) < 3 * 3600e3 && socialConfigured() && Date.now() < opts.deadline - 30_000) {
     out.instagram = await postToInstagram(l, Math.min(opts.deadline, Date.now() + 40_000));
   }
 

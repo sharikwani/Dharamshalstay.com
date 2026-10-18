@@ -60,6 +60,15 @@ export async function publishInstagramStory(imageUrl: string, deadline = Date.no
   return { id: published.id };
 }
 
+/** A Facebook Page story from one image (the same card as the Instagram story). */
+export async function publishFacebookStory(imageUrl: string): Promise<{ id: string }> {
+  const page = process.env.META_PAGE_ID!;
+  const token = await pageToken();
+  const photo = (await graph(`${page}/photos`, { url: imageUrl, published: 'false' }, 'POST', token)).id;
+  const r = await graph(`${page}/photo_stories`, { photo_id: photo }, 'POST', token);
+  return { id: r.post_id || r.id || photo };
+}
+
 let pageTokenCache: { token: string; at: number } | null = null;
 async function pageToken(): Promise<string> {
   if (pageTokenCache && Date.now() - pageTokenCache.at < 3600e3) return pageTokenCache.token;

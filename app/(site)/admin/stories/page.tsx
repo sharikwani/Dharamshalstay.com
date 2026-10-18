@@ -63,9 +63,9 @@ export default function AdminStoriesPage() {
     try {
       const r = await api('/api/admin/stories', { method: 'POST', body: JSON.stringify({ action, id, ...extra }) });
       if (action === 'feature') {
-        setNote(r.instagram === 'posted' ? 'Featured: it is on the homepage and posted to the Instagram story.'
-          : r.instagram === 'off' ? 'Featured on the homepage. Instagram is not connected, so nothing was posted there.'
-          : 'Featured on the homepage. The Instagram story did not post (' + (r.error || 'unknown error') + '); it will retry automatically.');
+        setNote(r.instagram === 'off' ? 'Featured on the homepage. Instagram and Facebook are not connected, so nothing was posted there.'
+          : r.instagram === 'posted' && r.facebook === 'posted' ? 'Featured: it is on the homepage and posted to the Instagram and Facebook stories.'
+          : 'Featured on the homepage. Instagram story: ' + r.instagram + ', Facebook story: ' + r.facebook + (r.error ? ' (' + r.error + ')' : '') + '. A missing one retries automatically.');
       }
       setEditing(null);
       await load();
@@ -169,7 +169,9 @@ export default function AdminStoriesPage() {
                 {feat && (
                   <p className={cn('mt-2 text-sm', feat === 'live' ? 'font-semibold text-amber-700' : 'text-slate-500')}>
                     {feat === 'live' ? `Story of the day now, ${timeLeft(s.featured_until)} left` : `Featured ${when(s.featured_at)}`}
-                    {' · Instagram: '}{s.ig_story_id ? 'posted' : s.ig_error ? 'failed (' + s.ig_error + ')' : feat === 'live' ? 'not posted yet' : 'not posted'}
+                    {' · Instagram: '}{s.ig_story_id ? 'posted' : feat === 'live' ? 'not posted yet' : 'not posted'}
+                    {' · Facebook: '}{s.fb_story_id ? 'posted' : feat === 'live' ? 'not posted yet' : 'not posted'}
+                    {s.ig_error && <span className="block text-xs text-red-700">{s.ig_error}</span>}
                   </p>
                 )}
 
