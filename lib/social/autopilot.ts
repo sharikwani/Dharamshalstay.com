@@ -36,10 +36,15 @@ export async function publishPost(id: string, deadline = Date.now() + 45_000) {
     if (p.platforms.includes('instagram') && !p.ig_media_id) {
       const r = await publishInstagram(p, deadline);
       patch.ig_media_id = r.id; patch.ig_permalink = r.permalink || null;
+      // Saved straight away: if the run is cut off before the end, a retry must not post to Instagram again.
+      await sb.from('social_posts').update({ ig_media_id: r.id, ig_permalink: r.permalink || null }).eq('id', id);
     }
   } catch (e: any) { errors.push('Instagram: ' + (e?.message || e)); }
   try {
-    if (p.platforms.includes('facebook') && !p.fb_post_id) patch.fb_post_id = (await publishFacebook(p)).id;
+    if (p.platforms.includes('facebook') && !p.fb_post_id) {
+      patch.fb_post_id = (await publishFacebook(p)).id;
+      await sb.from('social_posts').update({ fb_post_id: patch.fb_post_id }).eq('id', id);
+    }
   } catch (e: any) { errors.push('Facebook: ' + (e?.message || e)); }
 
   const igDone = !p.platforms.includes('instagram') || p.ig_media_id || patch.ig_media_id;
@@ -91,6 +96,11 @@ export async function runSocialAutopilot(opts: { deadline: number }) {
   const mode = (settings?.mode || 'approve') as 'off' | 'approve' | 'auto';
   if (mode === 'off') return { mode };
   const out: Record<string, unknown> = { mode };
+
+  // 0. A run cut off mid-publish (time limit, database outage) leaves a post on 'publishing'. After 15 minutes it is
+  //    retried: only the platforms it has no id for are posted, since ids are saved as soon as each one succeeds.
+  await sb.from('social_posts').update({ status: 'scheduled', error: 'Retrying: the last publish was cut off', updated_at: new Date().toISOString() })
+    .eq('status', 'publishing').lt('updated_at', new Date(Date.now() - 15 * 60e3).toISOString());
 
   // 1. Publish what is due (one per run keeps us inside the time limit).
   const { data: due } = await sb.from('social_posts').select('id').eq('status', 'scheduled').lte('scheduled_at', new Date().toISOString()).order('scheduled_at').limit(1);
