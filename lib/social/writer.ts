@@ -52,7 +52,7 @@ export function topicIdeas(today = new Date().toISOString().slice(0, 10)): Brief
   for (const c of festiveCampaigns) if (today >= c.from && today <= c.to) ideas.push({ theme: `festival:${c.id}`, topic: c.text.en, guideSlug: c.guide.href.replace('/blog/', '') });
   const posts = blogPosts.filter((p) => !NOINDEX_POSTS.includes(p.slug));
   for (const p of posts) ideas.push({ theme: `guide:${p.slug}`, topic: p.title, guideSlug: p.slug });
-  for (const k of PLACE_KEYS) ideas.push({ theme: `place:${k}`, topic: `Place spotlight: ${placeImageAlt(k as PlaceImageKey)}`, format: 'single' });
+  for (const k of PLACE_KEYS) ideas.push({ theme: `place:${k}`, topic: `Place spotlight: ${placeImageAlt(k as PlaceImageKey)}` });
   return [...ideas, ...seriesIdeas()];
 }
 

@@ -56,9 +56,9 @@ export const SERIES: Series[] = [
     share: 'Caption asks who would actually do it or go there, and to tag the friend who would say yes.',
   },
   {
-    id: 'stillness', name: 'Quiet hours', format: 'single',
+    id: 'stillness', name: 'Quiet hours', format: 'carousel',
     mood: 'Peace: slow, spacious and calm. Few words, lots of air.',
-    recipe: 'A single cover: a short, calm line about the place and the hour it is most peaceful (only if the source supports the timing), with a one-line body.',
+    recipe: 'Cover: a short, calm line about the place and the hour it is most peaceful (only if the source supports the timing). Then 2-4 quiet slides, each a different photo of the place or nearby (a view, a path, a detail), with one short calm line each. Last: cta.',
     share: 'Caption is short and quiet, invites people to save it for a slow morning, and asks where they go to feel calm here.',
   },
 ];
