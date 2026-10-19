@@ -84,7 +84,7 @@ Slides:
 - style "question": a prompt to comment (e.g. "Comment your guess before you swipe"): title max 50 characters, body max 90 characters.
 - style "cta": last slide of a carousel: title like "Stay close to the mountains", body max 70 characters about stays, taxis or treks with local experts.
 - Carousel: 4 to 7 slides, cover first, cta last. Single: one "cover" slide.
-- Every slide except cta uses an image id from the IMAGE CATALOG that fits it. Use the PLACE IMAGE for the cover and the reveal when one is given. Do not repeat an image if you can avoid it.
+- Every slide except cta uses an image id from the IMAGE CATALOG that fits it. Use the PLACE IMAGE for the cover and the reveal when one is given. Never use the same image twice in one post: every slide gets a different image id.
 
 Caption: first line is the hook (no hashtags, and no place name in the first two lines of a guessing game), then 3-6 short lines with line breaks and at most 3 tasteful emojis, then the comment question, then one soft line like "Save this for your next trip" or "Send this to someone who loves the mountains". 400-900 characters. Indian English. No ALL CAPS, no fake urgency, no prices unless in the source.
 Hashtags: exactly 5, no "#", lowercase, no spaces: one broad (himachal or incredibleindia), two local (dharamshala, mcleodganj), two specific to the place or topic. No spammy tags.
@@ -106,6 +106,21 @@ const SCHEMA = {
 const clip = (s: unknown, n: number) => String(s ?? '').replace(/<[^>]*>/g, '').replace(/[ \t]+/g, ' ').trim().slice(0, n);
 const plain = (md: string) => md.replace(/```[\s\S]*?```/g, '').replace(/!\[[^\]]*\]\([^)]*\)/g, '').replace(/\[([^\]]+)\]\([^)]*\)/g, '$1').replace(/[#*_>|]/g, '').replace(/\n{3,}/g, '\n\n');
 
+/** Scenic views that fit any slide; used when the AI repeats a photo or gives none. */
+const SCENIC = ['dhauladhar-hero', 'dharamshala-town', 'kangra-valley', 'mountain-road', 'prayer-flags', 'mcleod-ganj', 'naddi', 'dharamkot', 'dharamshala-snow'];
+
+/** Owner's rule: no photo appears twice in a post. A repeated or missing photo becomes an unused scenic one;
+ * the closing slide simply drops a repeated photo (it reads fine as a plain card). */
+export function noRepeats(slides: Slide[]): void {
+  const used = new Set<string>();
+  const spare = () => [...SCENIC, ...PLACE_KEYS].find((k) => (PLACE_KEYS as string[]).includes(k) && !used.has(k) && !slides.some((s) => s.image === k));
+  for (const s of slides) {
+    if (s.image && used.has(s.image)) s.image = s.style === 'cta' ? undefined : spare();
+    else if (!s.image && s.style !== 'cta') s.image = spare();
+    if (s.image) used.add(s.image);
+  }
+}
+
 export function sanitize(raw: any, brief: Brief): Omit<SocialDraft, 'topic' | 'theme' | 'credits' | 'link'> {
   const format = brief.format === 'single' ? 'single' : 'carousel';
   let slides: Slide[] = (Array.isArray(raw?.slides) ? raw.slides : []).map((s: any) => ({
@@ -113,7 +128,6 @@ export function sanitize(raw: any, brief: Brief): Omit<SocialDraft, 'topic' | 't
     image: PLACE_KEYS.includes(s?.image) ? s.image : undefined,
     kicker: clip(s?.kicker, 30) || undefined, title: clip(s?.title, 70), body: clip(s?.body, 180) || undefined,
   })).filter((s: Slide) => s.title);
-  for (const s of slides) if (s.style !== 'cta' && !s.image) s.image = 'dhauladhar-hero';
   if (format === 'single') slides = slides.filter((s) => s.style === 'cover').slice(0, 1);
   else {
     // Keep the story order (a guess, then the answer); only one cover first and one cta last.
@@ -122,6 +136,7 @@ export function sanitize(raw: any, brief: Brief): Omit<SocialDraft, 'topic' | 't
     const cta = slides.find((s) => s.style === 'cta');
     slides = [cover, ...middle, cta].filter(Boolean) as Slide[];
   }
+  noRepeats(slides);
   if (!slides.length || slides[0].style !== 'cover' || (format === 'carousel' && slides.length < 3)) throw new Error('AI post was missing a cover or enough slides');
   const hashtags = Array.from(new Set((Array.isArray(raw?.hashtags) ? raw.hashtags : [])
     .map((h: any) => String(h).toLowerCase().replace(/[^a-z0-9_]/g, '')).filter((h: string) => h.length > 2 && h.length < 40))).slice(0, MAX_HASHTAGS) as string[];

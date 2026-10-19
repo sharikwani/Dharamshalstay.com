@@ -25,6 +25,14 @@ describe('social writer', () => {
     expect(d.caption).not.toMatch(/#triund/);
     expect(d.hashtags).toEqual(['triund', 'mcleodganj', 'himachal']);
   });
+  it('never repeats a photo in a post', () => {
+    const slides = [0, 1, 2, 3].map((i) => ({ style: i ? 'tip' : 'cover', image: 'triund', kicker: '', title: 'T' + i, body: '' }));
+    const d = sanitize({ ...raw, slides: [...slides, { style: 'cta', image: 'triund', kicker: '', title: 'Book', body: '' }] }, { theme: 'g', topic: 't' });
+    const imgs = d.slides.map((s) => s.image).filter(Boolean);
+    expect(d.slides[0].image).toBe('triund');
+    expect(new Set(imgs).size).toBe(imgs.length);
+    expect(d.slides.at(-1)!.image).toBeUndefined();
+  });
   it('a single post is just the cover', () => {
     const d = sanitize(raw, { theme: 'place:triund', topic: 'Triund', format: 'single' });
     expect(d.slides).toHaveLength(1);
