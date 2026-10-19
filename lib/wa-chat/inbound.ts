@@ -8,6 +8,7 @@ import { aiAllowed, HOLDING_REPLY, processConversation } from './process';
 import { getSettings, history, saveInbound, setMessageBody, setStatusIf } from './store';
 import { sendLogged } from './send';
 import { businessContact, businessReason, isAutoReply } from './business';
+import { answerHotel, hotelModeAllowed } from './hotel';
 import { unanswered, VOICE_FAILED, VOICE_PLACEHOLDER, type Conversation, type Inbound } from './types';
 
 const esc = (s: unknown) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
@@ -50,10 +51,14 @@ export async function handleInbound(m: Inbound, deadline = Date.now() + 50_000):
   if (business) {
     if (conversation.status === 'ai') await setStatusIf(conversation.id, 'ai', 'human', businessReason(business));
     const at = m.timestamp ? m.timestamp * 1000 : Date.now();
-    if (!isAutoReply(business, at)) {
-      const who = business.name || conversation.profile_name || `+${conversation.phone}`;
-      await notify(`WhatsApp from a hotel: ${who}`, `<p>${esc(who)} wrote on WhatsApp:</p><blockquote>${esc(body)}</blockquote><p>The AI does not answer hotels. Reply from the inbox if needed.</p>${chatLink(conversation)}`);
+    if (isAutoReply(business, at)) return null;
+    // Hotel mode: a text from hotel staff gets a partner reply (claim help, or a handover to the owner), unless
+    // the owner has taken the chat over. It emails the owner itself.
+    if (m.kind === 'text' && settings.ai_mode === 'on' && hotelModeAllowed(conversation)) {
+      return { work: answerHotel(conversation, message.id, body, business.name) };
     }
+    const who = business.name || conversation.profile_name || `+${conversation.phone}`;
+    await notify(`WhatsApp from a hotel: ${who}`, `<p>${esc(who)} wrote on WhatsApp:</p><blockquote>${esc(body)}</blockquote><p>The AI does not answer this chat. Reply from the inbox if needed.</p>${chatLink(conversation)}`);
     return null;
   }
   const served = aiAllowed(settings, conversation.phone);

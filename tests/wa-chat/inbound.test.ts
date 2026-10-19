@@ -3,14 +3,14 @@ import { describe, expect, it, vi, beforeEach } from 'vitest';
 const s = vi.hoisted(() => ({
   allowed: true, typing: [] as string[], saved: [] as any[], bodies: [] as any[], dup: false, status: 'ai', isNew: true, transcript: 'room for two tomorrow' as string | null,
   processed: [] as any[], statuses: [] as any[], sent: [] as any[], out: [] as any[], emails: [] as any[],
-  business: null as any, testNumbers: [] as string[], open: null as any, proofResult: 'cancelled' as string, proofs: [] as any[], hold: null as Promise<void> | null, flip: true, hist: [] as any[], sendResult: null as any,
+  business: null as any, testNumbers: [] as string[], open: null as any, proofResult: 'cancelled' as string, proofs: [] as any[], hold: null as Promise<void> | null, flip: true, hist: [] as any[], sendResult: null as any, aiMode: 'test', reason: null as string | null, hotel: [] as any[],
 }));
 vi.mock('@/lib/wa-chat/booking-store', () => ({ openCancellation: async () => s.open }));
 vi.mock('@/lib/wa-chat/cancellations', () => ({ handleProof: async (...a: any[]) => { s.proofs.push(a); return s.proofResult; } }));
 vi.mock('@/lib/wa-chat/store', () => ({
   saveInbound: async (m: any, body: string, kind: string) => {
     s.saved.push([m.waId, body, kind]);
-    return s.dup ? null : { conversation: { id: 'c1', phone: m.from, profile_name: 'Asha', status: s.status }, message: { id: 'row1' }, isNewConversation: s.isNew };
+    return s.dup ? null : { conversation: { id: 'c1', phone: m.from, profile_name: 'Asha', status: s.status, handover_reason: s.reason }, message: { id: 'row1' }, isNewConversation: s.isNew };
   },
   setMessageBody: async (...a: any[]) => { s.bodies.push(a); },
   setStatus: async (...a: any[]) => { s.statuses.push(a); },
@@ -18,7 +18,7 @@ vi.mock('@/lib/wa-chat/store', () => ({
   saveOutbound: async (...a: any[]) => { s.out.push(a); },
   // Rows logged meanwhile (the holding reply) are part of the history, as in the database.
   history: async () => [...s.hist, ...s.out.map((a, i) => ({ id: `out${i}`, author: a[1], kind: 'text', status: a[3] ? 'sent' : a[6] ?? 'failed', body: a[2] }))],
-  getSettings: async () => ({ ai_mode: 'test', test_numbers: s.testNumbers }),
+  getSettings: async () => ({ ai_mode: s.aiMode, test_numbers: s.testNumbers }),
 }));
 vi.mock('@/lib/whatsapp-cloud', () => ({
   markReadTyping: async (id: string) => { s.typing.push(id); },
@@ -27,6 +27,7 @@ vi.mock('@/lib/whatsapp-cloud', () => ({
 }));
 vi.mock('@/lib/wa-chat/business', async (orig) => ({ ...(await orig<any>()), businessContact: async () => s.business }));
 vi.mock('@/lib/wa-chat/assistant', () => ({ transcribe: async () => s.transcript }));
+vi.mock('@/lib/wa-chat/hotel', async (orig) => ({ ...(await orig<any>()), answerHotel: async (...a: any[]) => { s.hotel.push(a); return 'replied'; } }));
 vi.mock('@/lib/wa-chat/process', () => ({
   HOLDING_REPLY: 'HOLD', aiAllowed: () => s.allowed, processConversation: async (...a: any[]) => { s.processed.push(a); if (s.hold) await s.hold; return 'replied'; },
 }));
@@ -39,7 +40,7 @@ const runIn = async (m: any) => { const r = await handleInbound(m); await r?.wor
 
 const base = { waId: 'w1', from: '919800000001', profileName: 'Asha', timestamp: Math.floor(Date.now() / 1000) };
 beforeEach(() => {
-  Object.assign(s, { business: null, testNumbers: [], allowed: true, typing: [], saved: [], bodies: [], dup: false, status: 'ai', isNew: true, transcript: 'room for two tomorrow',
+  Object.assign(s, { business: null, testNumbers: [], aiMode: 'test', reason: null, hotel: [], allowed: true, typing: [], saved: [], bodies: [], dup: false, status: 'ai', isNew: true, transcript: 'room for two tomorrow',
     open: null, proofResult: 'cancelled', proofs: [], hold: null, flip: true, hist: [], sendResult: null,
     processed: [], statuses: [], sent: [], out: [], emails: [] });
 });
@@ -205,6 +206,27 @@ describe('hotel and business numbers', () => {
     expect(s.processed).toEqual([]);
     expect(s.emails[0].subject).toMatch(/hotel: Zambala House/);
     expect(s.emails[0].html).toMatch(/claim the listing/);
+  });
+  it('hotel mode answers a hotel when the AI is on, and the guest assistant stays out', async () => {
+    s.aiMode = 'on';
+    s.business = { name: 'Young Monk Hostel', lastSentAt: sentAgo(3600e3) };
+    await runIn({ ...base, kind: 'text', text: 'Can we have a call today?' });
+    expect(s.hotel).toHaveLength(1);
+    expect(s.hotel[0][3]).toBe('Young Monk Hostel');
+    expect(s.processed).toEqual([]);
+    expect(s.emails).toEqual([]);
+  });
+  it('hotel mode keeps out of a chat the owner has taken over, and of auto-replies', async () => {
+    s.aiMode = 'on'; s.status = 'human'; s.reason = null;
+    s.business = { name: 'Zambala House', lastSentAt: sentAgo(3600e3) };
+    await runIn({ ...base, kind: 'text', text: 'ok thanks' });
+    expect(s.hotel).toEqual([]);
+    expect(s.emails[0].subject).toMatch(/hotel: Zambala House/);
+    s.status = 'ai'; s.emails = [];
+    s.business = { name: 'Zambala House', lastSentAt: sentAgo(10_000) };
+    await runIn({ ...base, kind: 'text', text: 'Thank you for contacting Hotel Zambala House!' });
+    expect(s.hotel).toEqual([]);
+    expect(s.emails).toEqual([]);
   });
   it('still lets the AI answer the owner test numbers', async () => {
     s.business = { name: 'X', lastSentAt: sentAgo(1000) };
