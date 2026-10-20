@@ -79,7 +79,7 @@ export const facts: Fact[] = [
   // temple
   { id: 'temple-timings', topic: 'temple', question: 'What are the Dalai Lama Temple timings?',
     answer: 'No official visiting hours are published. The Tsuglagkhang complex is usually open every day from early morning to early evening, and entry is free; it can close for special events, so check at the gate.',
-    verified: '2026-10-16', sources: [OURS('Dalai Lama Temple guide', '/blog/dalai-lama-temple-guide')], page: '/blog/dalai-lama-temple-guide' },
+    verified: '2026-10-20', sources: [OURS('Dalai Lama Temple guide', '/blog/dalai-lama-temple-guide')], page: '/blog/dalai-lama-temple-guide' },
   { id: 'temple-walk', topic: 'temple', question: 'How far is the Dalai Lama Temple from McLeod Ganj Main Square?',
     answer: 'It is at the bottom of Temple Road, roughly a 10-15 minute walk downhill from the Main Square; the walk back is uphill.',
     verified: '2026-10-16', sources: [OURS('hotels near the temple', '/hotels/near-dalai-lama-temple')], page: '/hotels/near-dalai-lama-temple' },

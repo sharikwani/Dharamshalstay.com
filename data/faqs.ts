@@ -88,7 +88,7 @@ export const faqCategories: FAQCategory[] = [
       {
         question: 'Is the Kangra Valley toy train running?',
         answer:
-          "Yes, the narrow-gauge Pathankot to Joginder Nagar line resumed services in June 2026 after the Chakki river bridge, damaged in the 2022 floods, was rebuilt. It is a slow, scenic ride through Kangra, Palampur and Baijnath, and tickets are usually bought at station counters rather than online. Timings and sections can change after landslides, especially in monsoon, so confirm locally before planning a day around it.",
+          "Yes, partly. After a monsoon suspension, 4 of the 7 train pairs on the narrow-gauge Pathankot to Joginder Nagar line were restored on 11 October 2026: two Pathankot to Baijnath Paprola, one Baijnath Paprola to Jawalamukhi Road and one Baijnath Paprola to Joginder Nagar. It is a slow, scenic ride through Kangra, Palampur and Baijnath, with unreserved tickets bought at the station counter. Services can stop after landslides, so check NTES or call 139 on the day.",
         link: { href: '/blog/kangra-toy-train-guide', label: 'Kangra toy train guide' },
       },
       {
@@ -196,7 +196,7 @@ export const faqCategories: FAQCategory[] = [
       {
         question: 'Can I visit the HPCA Stadium, and what are the timings?',
         answer:
-          "Yes. The HPCA Stadium in lower Dharamshala is open to visitors Monday to Saturday, 10 am to 4 pm, and closed on Sundays. You pay at the gate, usually Rs 50 to Rs 250 per person, and no advance booking is needed for a normal visit. On an open day it closes only for matches, VIP movement or maintenance, so call the stadium office on the morning you plan to go. For matches themselves, tickets are sold online through the official ticketing partner announced for that fixture.",
+          "Usually yes, on non-match days. The Kangra district administration lists the HPCA Stadium as open about 9:30 am to 5 pm with entry of about Rs 30 per person. Visitor access is suspended around matches: HPCA closed the ground to visitors from 4 May 2026 for IPL games. No official notice confirms a weekly closed day, so check locally on the morning you go. For matches themselves, tickets are sold online through the ticketing partner announced for that fixture.",
         link: { href: '/blog/hpca-cricket-stadium-guide', label: 'HPCA Stadium timings & tickets' },
       },
       {

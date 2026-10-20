@@ -163,7 +163,7 @@ Full options and timings are in our [how to reach Dharamshala guide](/blog/how-t
     meta_description: 'McLeod Ganj in December: week-by-week weather, honest snow odds, what is open, warm rooms, Christmas and New Year crowds, packing and winter travel tips.',
     related_slugs: ['dharamshala-in-winter-snowfall', 'dharamshala-in-december-january', 'best-time-to-visit-dharamshala', 'triund-trek-complete-guide'],
     sources: [
-      { title: 'Kangra district bans trekking above 3,000 m (The Tribune, January 2026)', url: 'https://www.tribuneindia.com/news/himachal/trekking-beyond-3-000-m-banned-in-kangra-district-466046' },
+      { title: 'Kangra district bans trekking above 3,000 m (The Tribune, December 2022)', url: 'https://www.tribuneindia.com/news/himachal/trekking-beyond-3-000-m-banned-in-kangra-district-466046' },
       { title: 'Himachal: Kangra administration bans trekking above 3,000 metres (The Week / PTI, 6 January 2026)', url: 'https://www.theweek.in/wire-updates/national/2026/01/06/himachal-kangra-administration-bans-trekking-above-3-000-metres.amp.html' },
       { title: 'Dharamshala Skyway operations suspended after landslide (The Tribune, August 2025)', url: 'https://www.tribuneindia.com/news/himachal/dharamshala-skyway-ropeway-operations-temporarily-suspended-due-to-massive-landslide' },
       { title: 'Dharamshala Skyway (official site)', url: 'https://www.dharamshalaskyway.in/' },

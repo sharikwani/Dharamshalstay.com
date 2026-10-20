@@ -466,140 +466,264 @@ Stay in central [McLeod Ganj](/destinations/mcleod-ganj) so you can walk to the 
   {
     id: 'blog-kangra-toy-train-guide',
     slug: 'kangra-toy-train-guide',
-    title: 'Kangra Toy Train Guide: Route, Current Status, Tickets & Tips (2026)',
-    excerpt: "The Kangra toy train runs about 164 km from Pathankot to Joginder Nagar, via Nurpur, Kangra, Palampur and Baijnath. It reopened in June 2026 after four years, then paused after the August landslides, so check the live status before you go. Below: the best section to ride, tickets and how to plan.",
-    content: `The **Kangra toy train** (Kangra Valley Railway) is a narrow-gauge line running about 164 km from **Pathankot in Punjab to Joginder Nagar in Himachal**, through Nurpur, Jawalamukhi Road, Kangra, Nagrota, Palampur and Baijnath. Through services resumed on **2 June 2026** after nearly four years, once the new Chakki river bridge near Pathankot opened. However, heavy rain in late August 2026 caused landslides between Jawalamukhi and Kopar Lahar and services were **suspended again**, with Northern Railway aiming to restore them around the end of September.
+    title: 'Kangra Toy Train 2026: Running Status, Timetable, Route & Tickets',
+    excerpt: "As of 20 October 2026 the Kangra toy train is running again, partly: 4 of its 7 train pairs were restored on 11 October after a two-month monsoon suspension. Here is the timetable, the stations, fares, how to buy tickets and how to check if it runs today.",
+    content: `**Short answer:** As of 20 October 2026, the Kangra toy train **is running again, but only partly**. Northern Railway restored **4 of the 7 pre-2022 train pairs on Sunday 11 October 2026**, after a monsoon suspension of about two months: two pairs between Pathankot and Baijnath Paprola, one pair Baijnath Paprola to Jawalamukhi Road and one pair Baijnath Paprola to Joginder Nagar. We have found no report of a fresh suspension since then, but this line can stop at short notice after rain, so **check the live status on the NTES app or call 139** on the morning you travel.
 
-So, as of early October 2026: **check the live status before you plan your day around the train**. The rest of this guide explains how to do that, which section is the most rewarding to ride, how tickets work and how it fits into a Dharamshala trip.
+The **Kangra toy train** (the Kangra Valley Railway) is a 164 km narrow-gauge line from **Pathankot in Punjab to Joginder Nagar in Himachal Pradesh**, through Nurpur Road, Jawalamukhi Road, Kangra, Nagrota Bagwan, Palampur and Baijnath. It is a slow, cheap local passenger train, not a tourist service, and that is its charm. This guide covers the latest status, the October 2026 timetable as published, the stations, fares, booking and the best section to ride from Dharamshala.
 
-## Current Status in 2026: What Happened
+## Kangra Toy Train: Quick Facts
 
-The line has had a turbulent few years. Here is the timeline from news reports:
-
-| When | What happened |
+| | |
 |---|---|
-| August 2022 | Flash floods damaged the Chakki river bridge near Pathankot; through trains stopped |
-| 2023–2025 | Partial services ran on parts of the line between suspensions; monsoon landslides near Kopar Lahar repeatedly halted trains |
-| December 2025 | Trains partly restored on the Kangra–Baijnath section |
-| 2 June 2026 | New Chakki bridge in use; Pathankot–Baijnath/Joginder Nagar services resumed |
-| Late August 2026 | Heavy rain and landslides; all services suspended |
-| September 2026 | Railways said repairs between Jawalamukhi and Kopar Lahar should allow restoration around the end of September |
+| **Status (20 Oct 2026)** | Running, partly: 4 of 7 train pairs restored on 11 Oct 2026 |
+| **Route** | Pathankot Junction (Punjab) to Joginder Nagar (Himachal Pradesh) |
+| **Length** | About 164 km (163.72 km) |
+| **Gauge** | Narrow gauge, 2 ft 6 in (762 mm) |
+| **Opened** | Pathankot to Nagrota in December 1928; full line in April 1929 |
+| **Highest point** | Ahju station, about 1,290 m |
+| **Tunnels** | 2 (Dhundi and Daulatpur) |
+| **Station nearest Dharamshala** | Kangra or Kangra Mandir, about 18 to 20 km by road (there is no station in Dharamshala) |
+| **Tickets** | Unreserved (general class): station counter or UTS app; no seat reservation |
+| **Fare** | About ₹50 Pathankot to Kangra, ₹65 to ₹70 for the long runs (Oct 2026) |
+| **Pathankot to Baijnath Paprola** | 6 hrs 40 min to 7 hrs as timetabled |
+| **UNESCO** | On India's tentative list since 2014, with Matheran, as an extension of the Mountain Railways of India |
+| **Live status** | NTES app or enquiry.indianrail.gov.in/mntes; Rail Madad helpline 139 |
+| **Last checked** | 20 October 2026 |
 
-We will update this post as services settle, but timetables on this line genuinely change week to week in and after monsoon. Treat any timing you read online, including here, as a guide only.
+## Is the Kangra Toy Train Running Now?
+
+Yes, partly. On **11 October 2026**, the first day of Navratri, the Jammu Railway Division restored four pairs of trains on the Pathankot to Joginder Nagar line after the track had been assessed for safe operations. According to the Jammu Divisional Railway Manager, quoted by Amar Ujala, these are:
+
+- **Two pairs between Pathankot and Baijnath Paprola** (52465/52470 and 52467/52474)
+- **One pair between Baijnath Paprola and Jawalamukhi Road** (52464/52469)
+- **One pair between Baijnath Paprola and Joginder Nagar** (52473/52472)
+
+What is **confirmed**: those four pairs restarted on 11 October 2026, and trains were packed on the first day (the 5 am from Pathankot ran about an hour late with more than 229 people on a 214-seat, seven-coach rake). What is **not confirmed**: when, or whether, the other three pre-2022 pairs will return; residents have asked for more trains and later departures from Pathankot. We found no news of a new suspension between 12 and 20 October 2026, but we cannot see today's running from here.
 
 ### How to check the live status
 
-- Look up trains between your two stations on the official **NTES** (National Train Enquiry System) website or app, or on the Indian Railways enquiry number 139.
-- Search for the station codes, for example **KGRA** (Kangra) and **BJPL** (Baijnath Paprola), to see which trains are running today.
-- Ask at the station the day before. Kangra and Palampur station staff are usually the most reliable source.
-- Ask your hotel or our team via the [contact page](/contact); we check before sending guests.
+- Search your train number (for example 52467) on the official **NTES** app or website (enquiry.indianrail.gov.in/mntes), or use "trains between stations" with the codes **PTK** (Pathankot Jn), **KGRA** (Kangra) and **BJPL** (Baijnath Paprola).
+- Call the Indian Railways **Rail Madad helpline, 139**.
+- Ask at the station enquiry counter the day before; Kangra and Palampur station staff know about cancellations first.
+- Ask your hotel, or message our team through the [contact page](/contact); we check before sending guests.
 
-## Why Ride the Kangra Valley Railway?
+## Kangra Valley Toy Train Latest News: 2026 Timeline
 
-Built between 1926 and 1929 to serve a hydroelectric project at Joginder Nagar, the line is a quiet engineering marvel: about 2 ft 6 in (762 mm) gauge, tunnels, viaducts and gorge crossings, with the Dhauladhar range on one side for long stretches. It is on India's **tentative list for UNESCO World Heritage** status as a proposed extension of the Mountain Railways of India, alongside the Darjeeling, Nilgiri and Kalka–Shimla lines.
+The line was cut in 2022 and has stopped and started several times in 2026. Here is the dated record from news reports:
 
-Unlike the Kalka–Shimla train, this is not a tourist service. It is a slow, cheap local train used by villagers, students and workers, which is exactly its charm. Speeds average around 25 km/h; the full run historically took about 9 to 10 hours.
+| Date | What happened |
+|---|---|
+| August 2022 | Floods washed away the Chakki river railway bridge at Kandwal, near Pathankot; through trains stopped |
+| 5 December 2025 | Passenger trains partly restored between Kangra and Baijnath |
+| 9 March 2026 | The Tribune reported a planned restart with a new timetable; on 25 March residents were still protesting that trains had not resumed |
+| 2 June 2026 | New Chakki bridge (about ₹70 crore) in use; through services Pathankot to Baijnath Paprola resumed after nearly four years, with 2 of the 7 old train pairs |
+| 27 June 2026 | Trains from Pathankot were not running on Fridays because of maintenance |
+| 3 July 2026 | Friday services restored; trains to run all seven days |
+| 21 to 31 July 2026 | Suspended as a monsoon precaution; two pairs resumed on 31 July |
+| 11 August 2026 | Suspended again after land subsidence beside the track between Nurpur Road and Talara |
+| 8 September 2026 | Landslide damage near Jawalamukhi Road and Kopar Lahar; railways said repairs needed at least two more weeks |
+| 8 October 2026 | DRM Jammu inspected Nurpur Road and Jawalamukhi Road stations and Bathu bridge No. 388; restart expected after 11 October |
+| 11 October 2026 | Four train pairs restored after the safety review |
+| 20 October 2026 | No report of a fresh suspension found; check NTES or 139 before travel |
 
-## What the Train Is Like
+## Kangra Toy Train Timetable (October 2026)
 
-Expect a short rake of small, basic coaches pulled by a diesel locomotive. Seats are simple benches, windows open fully (great for photos, cold in winter), and there is no pantry car or air-conditioning. Toilets, where present, are basic, so use facilities at the station before boarding.
+These are the timings published by Amar Ujala on 12 October 2026 and shown on the erail.in train-enquiry pages on 20 October 2026, with times at the stations most visitors use. All are listed as daily. Narrow-gauge timings change often and delays of 30 to 60 minutes are normal, so **treat this as a guide and confirm the day before on NTES or 139**.
 
-The pace is part of the experience. The train stops at small halts every few kilometres, villagers get on with sacks of vegetables, schoolchildren hop off at village stations, and tea sellers appear at the bigger platforms. Between stations you pass paddy and wheat fields, tea gardens near Palampur, river beds and stretches of pine forest, with the Dhauladhar snowline appearing and disappearing as the line curves. If you want a polished tourist train with commentary, this is not it; if you want a slow, genuine slice of valley life for the price of a cup of coffee, it is hard to beat.
+**Towards Baijnath and Joginder Nagar (eastbound)**
 
-Families with small children should pick a short section of 1 to 2 hours. Wheelchair users will find boarding difficult, as platforms are low and coach doors are narrow.
+| Train | From | Departs | Kangra | Palampur | Arrives |
+|---|---|---|---|---|---|
+| 52465 | Pathankot Jn | 05:00 | 09:09 | 10:40 | Baijnath Paprola 12:00 |
+| 52467 | Pathankot Jn | 07:00 | 11:09 | 12:40 | Baijnath Paprola 13:40 |
+| 52473 | Baijnath Paprola | 08:00 | - | - | Joginder Nagar 09:35 (Ahju 08:40) |
+| 52469 | Jawalamukhi Road | 14:20 | 14:53 | 16:43 | Baijnath Paprola 17:30 |
 
-## The Best Sections to Ride
+**Towards Kangra and Pathankot (westbound)**
 
-You do not need to ride the whole line. For visitors based in Dharamshala, these sections are the most worthwhile:
+| Train | From | Departs | Palampur | Kangra | Arrives |
+|---|---|---|---|---|---|
+| 52464 | Baijnath Paprola | 10:00 | 10:43 | 12:34 | Jawalamukhi Road 13:30 |
+| 52472 | Joginder Nagar | 12:50 | - | - | Baijnath Paprola 14:30 |
+| 52470 | Baijnath Paprola | 14:15 | 14:56 | 16:23 | Pathankot Jn 21:45 |
+| 52474 | Baijnath Paprola | 15:40 | 16:21 | 18:01 | Pathankot Jn 22:50 |
+
+Note that there is no departure from Pathankot after 7 am, so if you arrive at Pathankot later in the day, take a taxi instead.
+
+## Kangra Toy Train Route: Stations and Distances
+
+The line has 33 stations. These are the ones visitors use, with distances from Pathankot along the line (from the railway's published chainage, via Wikipedia). Ticket and enquiry sites quote slightly longer chargeable distances, for example 105 km to Kangra and 162 km to Baijnath Paprola on erail.in.
+
+| Station | km from Pathankot | Useful for |
+|---|---|---|
+| Pathankot Junction (PTK) | 0 | Start of the line; broad-gauge trains from Delhi and Jammu |
+| Nurpur Road | 19.9 | Nurpur Fort |
+| Jawalamukhi Road | 83.0 | Jwalamukhi temple (a road transfer from the station) |
+| Kangra (KGRA) | 94.5 | Kangra Fort; nearest station to Dharamshala (about 18 to 20 km) |
+| Kangra Mandir | 97.9 | Brajeshwari Devi temple, Kangra town |
+| Nagrota Bagwan | 108.9 | Nagrota on the Dharamshala to Palampur road |
+| Palampur Himachal | 127.5 | Tea gardens, Andretta |
+| Baijnath Paprola (BJPL) | 141.9 | Baijnath temple; Bir Billing about 15 km |
+| Ahju | 152.5 | Highest point on the line, about 1,290 m |
+| Joginder Nagar | 163.7 | End of the line |
+
+## Pathankot to Dharamshala by Toy Train: Is It Possible?
+
+Not directly. **There is no railway station in Dharamshala or McLeod Ganj.** The toy train passes below the town through **Kangra** and **Kangra Mandir**, the nearest stations, about 18 to 20 km (roughly 40 minutes) from Dharamshala by road and about 9 km more to McLeod Ganj. So "Pathankot to Dharamshala by toy train" really means:
+
+1. Board **52465 (05:00)** or **52467 (07:00)** at Pathankot Junction.
+2. Get off at **Kangra** (timetabled 09:09 or 11:09), after about 4 hours.
+3. Take a taxi or local bus up to Dharamshala or McLeod Ganj.
+
+It is cheap (about ₹50 for the train) and scenic, but slow. A [taxi](/taxi) from Pathankot to Dharamshala covers about 90 km in 2.5 to 3 hours (typically ₹2,500 to ₹3,500), so most travellers with luggage go by road and ride the train as a day trip instead.
+
+**Pathankot Junction vs Pathankot Cantt:** the narrow-gauge trains start from **Pathankot Junction (PTK)**. Many long-distance broad-gauge trains towards Jammu stop only at **Pathankot Cantt** or **Chakki Bank**, which are separate stations a few kilometres away, so allow time for an auto or taxi between them. See [how to reach Dharamshala](/blog/how-to-reach-dharamshala) for the train options from Delhi.
+
+## How to Book Kangra Toy Train Tickets
+
+- **You cannot reserve a seat on IRCTC.** These are unreserved passenger trains with general-class coaches, so there is no seat booking in advance.
+- **Buy at the station counter** shortly before departure. Carry cash in small notes.
+- **UTS app:** Indian Railways' unreserved ticketing app can sell general tickets; whether it works for a given station on the day is not something we can guarantee, so keep cash as a backup.
+- **Board early at the starting station** for a window seat. Coaches are crowded at festival times (the restart on 11 October 2026 coincided with Navratri) and on weekdays at school and office hours.
+
+## Kangra Toy Train Fare
+
+Fares are very low. In October 2026:
+
+| Journey | Fare (adult, general class) | Source |
+|---|---|---|
+| Pathankot to Kangra | ₹50 (child ₹30) | erail.in |
+| Pathankot to Baijnath Paprola | ₹65 (child ₹35) | erail.in |
+| Pathankot to Joginder Nagar (164 km) | ₹70 | Amar Ujala, 11 Oct 2026 |
+| Joginder Nagar to Kangra Mandir | ₹40 | Amar Ujala, 11 Oct 2026 |
+| Joginder Nagar to Baijnath Paprola | ₹30 | Amar Ujala, 11 Oct 2026 |
+
+Shorter hops, such as Kangra to Palampur, cost less. For comparison, Amar Ujala put the bus fare from Joginder Nagar at about ₹180 to Kangra Mandir and ₹392 to Pathankot. Older figures of ₹35 to ₹40 that you may see online are out of date.
+
+## What Is the Best Section to Ride from Dharamshala?
+
+You do not need to ride the whole line. For visitors based in Dharamshala or McLeod Ganj:
 
 ### Kangra to Palampur (best short ride)
 
-Board at **Kangra** or **Kangra Mandir** station (close to Brajeshwari Devi temple) and ride to **Palampur**, roughly 1.5 to 2.5 hours. You cross rivers and side valleys with views of the Dhauladhar snowline in clear weather. Have lunch in Palampur, walk in the tea gardens and take a taxi back to Dharamshala (about 35 to 40 km). Our [Palampur travel guide](/blog/palampur-travel-guide) covers what to see.
+Board at **Kangra** or **Kangra Mandir** and ride to **Palampur**, about 1.5 hours on the current timetable (52467 leaves Kangra at 11:11 and reaches Palampur at 12:40). You cross rivers and side valleys with the Dhauladhar snowline in clear weather. Have lunch in Palampur, walk in the [tea gardens](/blog/tea-gardens-kangra-palampur) and take a taxi back to Dharamshala (about 35 to 40 km). Our [Palampur travel guide](/blog/palampur-travel-guide) covers what to see.
 
 ### Palampur to Baijnath
 
-A shorter hop through tea estates and terraced fields to **Baijnath Mandir** station, a short walk or ride from the 13th-century Baijnath Shiva temple. Combine with Bir Billing, about 15 km from Baijnath.
+A short hop through tea estates and terraced fields to **Baijnath Paprola**, close to the 13th-century Baijnath Shiva temple. Combine it with [Bir Billing](/blog/bir-travel-guide), about 15 km from Baijnath.
 
 ### Baijnath to Joginder Nagar (the climb)
 
-The most dramatic stretch. Beyond Baijnath Paprola the line climbs to its highest point near **Ahju** (around 1,290 m) and then drops to Joginder Nagar. Trains on this section have been the most frequently cancelled after rain, so check carefully.
+The most dramatic stretch. The line climbs to its highest point at **Ahju** (about 1,290 m) and drops to Joginder Nagar. On the current timetable there is one train each way (52473 at 08:00 from Baijnath Paprola, returning as 52472 at 12:50), which makes a neat morning round trip if you stay near Baijnath or Bir.
 
 ### Pathankot to Kangra
 
-Long, and the first part runs through the plains. Useful if you arrive at Pathankot by broad-gauge train and have a full day, but most travellers find a taxi from Pathankot to Dharamshala more practical.
+Long, and the first part runs through the plains. Worth it only if you arrive at Pathankot early and want the full experience.
 
-## Timings: How to Approach Them
+## What the Train Is Like
 
-When the full line runs, a handful of trains each way connect Pathankot, Kangra, Baijnath Paprola and Joginder Nagar, with early-morning departures from Pathankot and afternoon returns. After the June 2026 reopening, reports described two pairs of trains between Pathankot and Baijnath plus shorter Baijnath–Joginder Nagar services.
+Expect a short rake of small, basic coaches (the first October 2026 trains ran with seven coaches) pulled by a diesel locomotive. Seats are simple benches, windows open fully (great for photos, cold in winter), and there is no pantry car or air-conditioning. Toilets, where present, are basic, so use station facilities before boarding.
 
-Practical rules that hold true regardless of the exact timetable:
+The pace is the experience. The train stops at small halts every few kilometres, villagers get on with sacks of vegetables, schoolchildren hop off at village stations, and tea sellers appear at the bigger platforms. Between stations you pass paddy and wheat fields, tea gardens near Palampur, river beds and pine forest, with the Dhauladhar range appearing and disappearing as the line curves.
 
-- **Plan a one-way ride and return by road.** Frequencies are low and delays are common, so do not depend on a return train.
-- **Morning trains are better** for views and for having the afternoon free.
-- **Expect delays** of 30 to 60 minutes, more after rain.
-- **Never plan a tight connection** to a flight at Kangra airport or an overnight bus.
+Families with small children should pick a section of 1 to 2 hours. Wheelchair users will find boarding difficult: platforms are low and doors are narrow.
 
-## Tickets and Fares
+## Why Is the Kangra Valley Railway Special?
 
-- Tickets are **unreserved second class** on most trains. Buy at the station counter shortly before departure, or use the Indian Railways UTS app where it works.
-- Fares are very low: news reports put the Pathankot–Baijnath fare at around ₹40 in 2026, and shorter hops cost even less.
-- There is no seat reservation on most services, so board early at the starting station if you want a window seat. On weekends and during festivals coaches fill up.
-- Some trains have historically carried a first-class or special coach; availability varies, so ask at the counter.
+Work began on 2 May 1926 and the full line opened in April 1929, built largely to serve the Shanan hydroelectric project at Joginder Nagar. It has two tunnels and hundreds of bridges and viaducts, with the Dhauladhar range alongside for long stretches. In April 2014 India placed it, together with the Matheran Light Railway, on its **UNESCO World Heritage tentative list** as a proposed extension of the Mountain Railways of India (Darjeeling, Nilgiri and Kalka-Shimla). It is not yet a World Heritage Site.
 
 ## Tips for a Good Ride
 
-- **Sit on the right side heading east** (towards Baijnath) for the best Dhauladhar views.
-- **Carry water and snacks.** Small stations have tea stalls, but not reliably.
-- **Bring cash** in small notes for tickets and tea.
-- **Mind your belongings and your head.** Doors stay open; do not lean out on bridges or in tunnels.
-- **Go in October to March** for the clearest mountain views; avoid monsoon months when cancellations are frequent. See our [best time to visit](/blog/best-time-to-visit-dharamshala) guide.
-- **Photographers:** the bridge and gorge crossings near Kangra and the curves before Palampur are the classic spots.
+- **Sit on the left side heading east** (towards Baijnath) for the Dhauladhar views to the north; on the westbound return, sit on the right.
+- **Plan a one-way ride and return by road.** Frequencies are low and delays common.
+- **Never plan a tight connection** to a flight at [Kangra (Gaggal) airport](/blog/kangra-airport-gaggal-guide) or an overnight bus.
+- **Carry water, snacks and small cash.** Station tea stalls are not reliable.
+- **Mind your head and belongings.** Doors stay open; do not lean out on bridges or in tunnels.
+- **Go October to March** for clear mountain views. July to September is when suspensions happen. See our [best time to visit](/blog/best-time-to-visit-dharamshala) guide.
 
 ## A Sample Toy Train Day from Dharamshala
 
-1. 8:00 am: Taxi from Dharamshala to Kangra (about 18 to 20 km, 40 minutes). Quick darshan at Brajeshwari Devi temple if you wish; see our [Kangra Devi temples guide](/blog/kangra-devi-temples-guide).
-2. Board the morning train from Kangra Mandir or Kangra towards Palampur or Baijnath.
-3. Lunch in Palampur; walk in the tea gardens.
+1. 10:00 am: taxi from Dharamshala to Kangra station (about 18 to 20 km, 40 minutes). Visit [Kangra Fort](/blog/places-to-visit-in-kangra) or Brajeshwari Devi temple first if you leave earlier; see our [Kangra Devi temples guide](/blog/kangra-devi-temples-guide).
+2. 11:11 am: train 52467 from Kangra towards Palampur (confirm on NTES the evening before).
+3. 12:40 pm: arrive Palampur; lunch and a tea-garden walk.
 4. Optional: continue to Baijnath for the temple, or to Bir for sunset.
-5. Return to Dharamshala by taxi. Book a one-way or day [taxi](/taxi) with us so the driver meets you at the end station.
+5. Return to Dharamshala by road. Book a one-way or day [taxi](/taxi) with us so the driver meets you at the end station.
 
-## Getting to the Stations
-
-- **Kangra station** is about 18 to 20 km from Dharamshala; **Kangra Mandir** station is closer to the town and temple.
-- **Nagrota** and **Palampur** stations are on the Dharamshala–Palampur road side of the valley.
-- **Kangra (Gaggal) airport** is near the Kangra end of the valley, but it is not linked to the line.
+For a longer trip through the valley, see our [five-day Kangra Valley itinerary](/blog/five-day-kangra-valley-itinerary).
 
 ## Where to Stay
 
-Base yourself in [Dharamshala](/destinations/dharamshala) or [McLeod Ganj](/destinations/mcleod-ganj) and treat the train as a day trip, or spend a night in Palampur to ride the eastern section at leisure. Browse [our hotels](/hotels), and see [places to visit in Kangra](/blog/places-to-visit-in-kangra) for the fort, Masroor temples and more along the same route. For general booking questions, visit our [FAQ](/faq).`,
+Base yourself in [Dharamshala](/destinations/dharamshala) or [McLeod Ganj](/destinations/mcleod-ganj) and treat the train as a day trip, or spend a night in Palampur or Bir to ride the eastern section in the morning. Browse [our hotels](/hotels), and see [places to visit in Kangra](/blog/places-to-visit-in-kangra) for the fort, Masroor temples and more along the same route. For general booking questions, visit our [FAQ](/faq).`,
     category: 'Guides',
-    tags: ['kangra toy train', 'kangra valley railway', 'pathankot joginder nagar', 'palampur', 'baijnath', 'heritage railway'],
+    tags: ['kangra toy train', 'kangra valley railway', 'kangra toy train timetable', 'pathankot to dharamshala toy train', 'pathankot joginder nagar', 'palampur', 'baijnath', 'heritage railway'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-09-24',
-    updated_at: '2026-10-01',
+    updated_at: '2026-10-20',
     image: placeImage('kangra-toy-train'),
-    image_alt: 'Kangra Valley Railway narrow-gauge toy train passing through the Kangra Valley',
-    read_time: 7,
+    image_alt: 'Kangra Valley Railway narrow-gauge toy train crossing the Reond Nullah arch bridge with the Dhauladhar range behind',
+    read_time: 10,
     featured: false,
-    meta_title: 'Is the Kangra Toy Train Running? 2026 Status, Route, Tickets',
-    meta_description: 'Kangra toy train 2026: resumed in June, paused after August landslides. How to check if it runs today, the best section to ride, tickets and tips.',
-    related_slugs: ['places-to-visit-in-kangra', 'palampur-travel-guide', 'kangra-devi-temples-guide'],
+    meta_title: 'Kangra Toy Train: Running Now? Status & Timetable 2026',
+    meta_description: 'Yes, partly: 4 of 7 Kangra toy train pairs run again since 11 Oct 2026. Timetable, stations, fares from ₹30, how to book and how to check live status.',
+    related_slugs: ['places-to-visit-in-kangra', 'palampur-travel-guide', 'how-to-reach-dharamshala', 'kangra-devi-temples-guide'],
+    sources: [
+      { title: 'Connectivity to get a boost as four pairs of trains restored on Pathankot-Jogindernagar route (The Tribune, 12 Oct 2026)', url: 'https://www.tribuneindia.com/news/himachal/connectivity-to-get-a-boost-as-four-pairs-of-trains-restored-on-pathankot-jogindernagar-route' },
+      { title: 'Rail services restored in Kangra valley; trains packed on the first day (Amar Ujala, 12 Oct 2026, Hindi)', url: 'https://www.amarujala.com/himachal-pradesh/kangra/rail-services-restored-in-kangra-valley-trains-packed-on-the-very-first-day-kangra-news-c-95-1-kng1037-260833-2026-10-11' },
+      { title: 'Pathankot-Jogindernagar trains back on track after two months; fares (Amar Ujala, 11 Oct 2026, Hindi)', url: 'https://www.amarujala.com/himachal-pradesh/mandi/pathankot-jogindernagar-trains-back-on-track-after-two-months-mandi-news-c-90-1-ssml1045-217257-2026-10-11' },
+      { title: 'Kangra Valley heritage train set for return as railway conducts major safety review (Himachal Headlines, 8 Oct 2026)', url: 'https://himachalheadlines.com/news/kangra-valley-heritage-train-set-for-return-as-railway-conducts-major-safety-review/' },
+      { title: 'Hit by landslides, Kangra valley train services to take two more weeks to resume (The Tribune, 8 Sep 2026)', url: 'https://www.tribuneindia.com/news/himachal/hit-by-landslides-kangra-valley-train-services-to-take-two-more-weeks-to-resume/' },
+      { title: 'Land subsidence near narrow-gauge rail track, Northern Railway suspends train services (The Tribune, 11 Aug 2026)', url: 'https://www.tribuneindia.com/news/himachal/land-subsidence-near-narrow-gauge-rail-track-northern-railway-suspends-train-services-in-kangra-valley/' },
+      { title: 'Pathankot-Jogindernagar train services resume after 10 days (The Tribune, 31 Jul 2026)', url: 'https://www.tribuneindia.com/news/himachal/pathankot-jogindernagar-train-services-resume-after-10-days/' },
+      { title: 'Trains will now run on Fridays as well (Amar Ujala, 3 Jul 2026, Hindi)', url: 'https://www.amarujala.com/himachal-pradesh/kangra/passengers-please-note-trains-will-now-run-on-the-pathankot-jogindernagar-track-on-fridays-as-well-kangra-news-c-95-1-kng1045-242547-2026-07-03' },
+      { title: 'Only 2 of 7 train services restored on Kangra rail line (The Tribune, 27 Jun 2026)', url: 'https://www.tribuneindia.com/news/himachal/only-2-of-7-train-services-restored-on-kangra-rail-line/' },
+      { title: 'Kangra Valley Railway services resume after 4-year hiatus (The Tribune, 2 Jun 2026)', url: 'https://www.tribuneindia.com/news/himachal/kangra-valley-railway-services-resume-after-4-year-hiatus/' },
+      { title: 'Train services restored partially on Kangra-Baijnath section (The Tribune, 8 Dec 2025)', url: 'https://www.tribuneindia.com/news/himachal/train-services-restored-partially-on-kangra-baijnath-section-of-pathankot-jogindernagar-rail-line' },
+      { title: 'Trains between Pathankot Jn and Baijnath Paprola: timings and fares (erail.in)', url: 'https://erail.in/trains-between-stations/pathankot-jn-PTK/baijnath-paprola-BJPL' },
+      { title: 'National Train Enquiry System (NTES), Indian Railways', url: 'https://enquiry.indianrail.gov.in/mntes/' },
+      { title: 'Mountain Railways of India (Extension), UNESCO tentative list', url: 'https://whc.unesco.org/en/tentativelists/5919' },
+      { title: 'Kangra Valley Railway (Wikipedia: stations, distances, history)', url: 'https://en.wikipedia.org/wiki/Kangra_Valley_Railway' },
+    ],
     faqs: [
       {
         question: 'Is the Kangra toy train running now?',
-        answer: 'Through services between Pathankot and Baijnath/Joginder Nagar resumed on 2 June 2026, but were suspended again after monsoon landslides in late August 2026, with restoration targeted for around the end of September. Check NTES or call 139 for the current status before you travel.',
+        answer: 'Yes, partly. As of 20 October 2026, 4 of the 7 pre-2022 train pairs are running again: they were restored on 11 October 2026 after a monsoon suspension of about two months. Two pairs run Pathankot to Baijnath Paprola, one Baijnath Paprola to Jawalamukhi Road and one Baijnath Paprola to Joginder Nagar. Check the NTES app or call 139 on the day, as rain can stop services at short notice.',
+      },
+      {
+        question: 'What is the latest news on the Kangra Valley toy train?',
+        answer: 'Services were suspended on 11 August 2026 after land subsidence near Nurpur Road and later landslides near Jawalamukhi Road and Kopar Lahar. After a safety inspection by the Jammu division in early October, four train pairs were restored on 11 October 2026. Residents are still asking for the other three pairs and later trains from Pathankot; no date has been announced for those.',
+      },
+      {
+        question: 'What is the Kangra toy train timetable and what are the train numbers?',
+        answer: 'As published in October 2026: 52465 leaves Pathankot at 05:00 and 52467 at 07:00 for Baijnath Paprola (arriving 12:00 and 13:40); 52470 and 52474 return from Baijnath Paprola at 14:15 and 15:40. 52464 runs Baijnath Paprola to Jawalamukhi Road at 10:00 (back as 52469 at 14:20), and 52473 runs Baijnath Paprola to Joginder Nagar at 08:00 (back as 52472 at 12:50). Confirm on NTES or 139, as timings change.',
+      },
+      {
+        question: 'Can I book Kangra toy train tickets on IRCTC?',
+        answer: 'No. The Kangra Valley trains are unreserved passenger trains with general-class coaches, so there is no seat reservation on IRCTC. Buy a ticket at the station counter shortly before departure, or try the Indian Railways UTS app for unreserved tickets, and carry cash as a backup.',
+      },
+      {
+        question: 'What is the Kangra toy train fare?',
+        answer: 'Very low. In October 2026 the general-class fare was about ₹50 from Pathankot to Kangra and ₹65 to Baijnath Paprola (erail.in), and Amar Ujala reported ₹70 for the full 164 km to Joginder Nagar, ₹40 from Joginder Nagar to Kangra Mandir and ₹30 from Joginder Nagar to Baijnath Paprola. Shorter hops cost less.',
+      },
+      {
+        question: 'Does the Kangra toy train run on Fridays?',
+        answer: 'Yes, on the current timetable. In June 2026 trains from Pathankot did not run on Fridays because of maintenance, but from 3 July 2026 the Jammu division restored Friday services so trains run all seven days. The trains restored on 11 October 2026 are listed as daily on railway enquiry sites.',
+      },
+      {
+        question: 'Does the Kangra toy train run in winter?',
+        answer: 'Yes. The line normally runs year-round, and October to March is the best time to ride, with clear views of the snow-covered Dhauladhar range. Suspensions mostly happen in the July to September monsoon because of landslides. Open windows make winter rides cold, so carry a warm layer.',
       },
       {
         question: 'What is the best section of the Kangra Valley Railway for tourists?',
-        answer: 'Kangra to Palampur is the best short ride for visitors staying in Dharamshala, with valley and Dhauladhar views in about 1.5 to 2.5 hours. Palampur to Baijnath and the climb towards Joginder Nagar are also scenic.',
+        answer: 'Kangra to Palampur is the best short ride for visitors staying in Dharamshala: about 1.5 hours through the valley with Dhauladhar views (train 52467 leaves Kangra at 11:11 on the October 2026 timetable). The climb from Baijnath Paprola to Joginder Nagar via Ahju, the highest point at about 1,290 m, is the most dramatic.',
       },
       {
-        question: 'How do I book Kangra toy train tickets?',
-        answer: 'Most trains are unreserved second class. Buy tickets at the station counter shortly before departure, or through the Indian Railways UTS app where it works. Fares are very low, typically well under ₹100.',
+        question: 'Can I go from Pathankot to Dharamshala by toy train?',
+        answer: 'Not all the way. There is no railway station in Dharamshala. Take the 05:00 or 07:00 train from Pathankot Junction to Kangra (about 4 hours, ₹50), then a taxi for the last 18 to 20 km to Dharamshala or about 27 km to McLeod Ganj. A taxi from Pathankot to Dharamshala directly takes 2.5 to 3 hours.',
       },
       {
-        question: 'Is the Kangra Valley Railway a UNESCO World Heritage Site?',
-        answer: 'Not yet. It is on India\'s tentative list for UNESCO World Heritage status as a proposed extension of the Mountain Railways of India, which already include the Darjeeling, Nilgiri and Kalka-Shimla railways.',
+        question: 'How long does the Kangra toy train take?',
+        answer: 'Pathankot Junction to Baijnath Paprola (about 142 km) takes 6 hours 40 minutes to 7 hours on the October 2026 timetable, Pathankot to Kangra about 4 hours, Kangra to Palampur about 1.5 hours, and Baijnath Paprola to Joginder Nagar about 1.5 hours. Delays of 30 to 60 minutes are common.',
       },
     ],
   },

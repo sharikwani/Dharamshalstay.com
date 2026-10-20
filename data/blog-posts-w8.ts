@@ -740,60 +740,71 @@ Booking questions are answered in our [FAQ](/faq).`,
   {
     id: 'blog-hpca-cricket-stadium-guide',
     slug: 'hpca-cricket-stadium-guide',
-    title: 'Dharamshala Cricket Stadium (HPCA) Timings, Entry Fee & Visitor Guide (2026)',
-    excerpt: "The HPCA Cricket Stadium in Dharamshala is open to visitors Monday to Saturday, 10 am to 4 pm, and closed on Sundays. Entry is about ₹50–₹250 at the gate, with no booking needed; it also closes for matches, VIP movement and maintenance. Below: match tickets, getting there, parking and the War Memorial next door.",
-    content: `**In short:** the HPCA Cricket Stadium in Dharamshala is open to visitors **Monday to Saturday, 10 am to 4 pm**, and closed on Sundays. You pay **at the gate** — usually **₹50 to ₹250** per person depending on the season and how many visitors are coming through — and **no advance booking** is needed. On an open day it closes only for **matches, VIP movement or maintenance work**.
+    title: 'Dharamshala Stadium Timings & Entry Fee 2026: Can Tourists Visit HPCA?',
+    excerpt: 'Dharamshala (HPCA) cricket stadium is open to tourists on non-match days, about 9:30 am to 5 pm, for a small fee of about Rs 30 (Kangra district, April 2026). It shuts to visitors around matches, as it did from 4 May 2026 for IPL, so check before you go. Timings, fee, distance from McLeod Ganj, tickets and tips.',
+    content: `**Short answer:** On non-match days the HPCA Cricket Stadium in Dharamshala is open to tourists roughly **9:30 am to 5 pm**, for a small entry fee of **about ₹30 per person** (Kangra district administration, page updated 1 April 2026). It **closes to visitors around matches**: HPCA shut the ground to visitors **from 4 May 2026** for IPL games, and that notice was gone from its website by early June. Published hours differ between sources, so plan to be there **between 10 am and 4 pm** and confirm on the day.
 
-> **Before you go:** call the Dharamshala (HPCA) stadium office on the morning of your visit to confirm it is open. Closures for VIP movement and maintenance are often decided at short notice and are not announced online.
+> **Before you go (checked 20 October 2026):** we could not confirm today's status. The HPCA website (hpcricket.org) was returning an error, and we found no closure notice for October 2026. Ask your hotel or taxi driver to check with the stadium gate the same morning, especially if a domestic match or camp is on.
 
-The **HPCA Cricket Stadium** in Dharamshala is often called the most beautiful cricket ground in the world: a compact stadium at about **1,450 m**, with the snow-covered **Dhauladhar range** rising directly behind the pavilion. On **non-match days** you can usually walk in and sit in the stands; on **match days** it becomes a 20,000-plus crowd with strict security, road closures and no walk-ins.
+The **HPCA Cricket Stadium** in Dharamshala is often called the most beautiful cricket ground in the world: a compact stadium at about **1,457 m**, with the snow-covered **Dhauladhar range** rising directly behind the pavilion. On **non-match days** you can usually walk into the stands; on **match days** it holds a crowd of about 21,000-23,000 with strict security, road closures and no walk-ins.
 
-The stadium is in **lower Dharamshala**, about **10 km below McLeod Ganj** and **roughly 12–15 km from Kangra Airport (Gaggal)**. It sits right beside the **Dharamshala War Memorial**, so the two are an easy combined visit. Below: visiting hours and fees, why they change, match-day tickets and rules, getting there, history, and practical tips. Prices and timings are approx. as of 2026; always check locally.
+The stadium is in **Jawahar Nagar, lower Dharamshala**, about **1.5-2 km below Kotwali Bazaar**, **8-10 km by road from McLeod Ganj** and roughly **12-14 km from Kangra Airport (Gaggal)**. The **Dharamshala War Memorial** is next door, so the two are an easy combined visit.
 
-## Quick Facts
+## Quick Facts: Dharamshala Stadium Timings, Fee and Location
 
 | | |
 |---|---|
 | Full name | Himachal Pradesh Cricket Association (HPCA) Stadium |
-| Location | Lower Dharamshala, near the War Memorial and the Kangra–Dharamshala road |
+| Location | Jawahar Nagar, lower Dharamshala, near the War Memorial; 1.5-2 km below Kotwali Bazaar |
+| Visiting hours | non-match days, about 9:30 am to 5 pm (Kangra district, 2026); safest window 10 am to 4 pm |
+| Closing time | about 5 pm per the district page; one travel site says 6 pm |
+| Entry fee | about ₹30 per person (Kangra district, 2026); carry cash and UPI |
+| Closed to visitors | match days and the days around big matches; from 4 May 2026 for IPL (HPCA notice) |
+| Weekly closed day | none listed by any official source we checked |
+| Time needed | 30-60 minutes |
+| From McLeod Ganj | 8-10 km by road, 25-40 min by taxi |
+| From Kangra Airport | 12-14 km, 30-40 min |
 | Opened | 2003 |
-| Capacity | approx. 21,000–23,000 |
-| Altitude | approx. 1,450 m |
-| International debut | ODI, India v England, January 2013 |
-| First Test | India v Australia, March 2017 |
-| Visiting hours | Monday to Saturday, 10 am – 4 pm |
-| Closed | Sundays; also during matches, VIP movement and maintenance |
-| Entry fee | approx. ₹50–₹250 per person, paid at the gate |
-| Advance booking | not needed for a normal visit |
-| Confirm before going | call the stadium office the same morning |
-| From McLeod Ganj | approx. 10 km, 25–40 min |
-| From Kangra Airport | approx. 12–15 km, 30–40 min |
+| Capacity | about 21,200-23,000 |
+| Altitude | about 1,457 m (4,780 ft) |
+| First Test | India v Australia, 25-29 March 2017 |
 
-## Visiting on Non-Match Days
+## What Do Sources Say About Timings and Entry Fee?
 
-On normal days the stadium is open to visitors, and it is one of the most photographed spots in Dharamshala.
+Published visitor details for the stadium do not agree, and there is no official HPCA tariff online that we could load. Here is what each source says, with the date we checked it:
 
-- **Timings:** **Monday to Saturday, 10 am to 4 pm**. Closed on Sundays. Aim to arrive by 3:30 pm so you have time inside before the gate shuts.
-- **Entry fee:** paid at the gate, no booking. Expect roughly **₹50 to ₹250 per person**, and sometimes more. The rate is not a fixed published price: it moves with the season and visitor numbers, so treat ₹50 as a best case and carry more. Camera charges may apply for professional equipment.
-- **What you can do:** walk into the lower stands, take photos with the Dhauladhar behind the pavilion, and look at the ground. You cannot walk on the outfield or pitch.
-- **Best time for photos:** clear mornings from October to March, when the mountains are sharp and usually snow-capped. In the monsoon the peaks are often hidden by cloud.
-- **Time needed:** 30–45 minutes is enough.
+| Source | Timings | Entry fee | Checked |
+|---|---|---|---|
+| [Kangra district administration](https://hpkangra.nic.in/tourist-place/hpca-cricket-stadium/) (page updated 1 April 2026) | non-match days, typically 9:30 am to 5 pm | around ₹30 per person | 20 Oct 2026 |
+| HPCA website, banner in [archived copy of 19 May 2026](https://web.archive.org/web/20260519132534/https://www.hpcricket.org/aboutus/1) | closed for visitors from 4 May 2026 for IPL matches | not stated | 20 Oct 2026 |
+| HPCA website, archived 7 June 2026 | closure banner no longer shown | not stated | 20 Oct 2026 |
+| [Holidify](https://www.holidify.com/places/dharamsala/dharamshala-cricket-stadium-sightseeing-4518.html) (travel site) | 9 am to 6 pm | no entry fee | 20 Oct 2026 |
 
-**Tip:** if a domestic match (Ranji Trophy, age-group or women's cricket) is on, entry is sometimes free or cheap and it is a great way to watch cricket in the setting without the international-match crowds. Check the HPCA website or local news for fixtures.
+**Our practical answer:** go between **10 am and 4 pm**, which fits every published window, carry **₹50 in cash plus UPI** for the fee, and check it is not a match or closure day. In early April 2026 the HPCA website also carried a "Book Visitor Tickets" link to an online visitor-ticket page; that link was gone by May 2026 and the page did not load for us in October, so do not count on booking online.
 
-## When the Stadium Closes to Visitors
+An earlier version of this page said Monday to Saturday, 10 am to 4 pm, closed Sundays, ₹50-₹250. We could not find a source for those figures, so we have replaced them.
 
-The stadium keeps regular hours — Monday to Saturday, 10 am to 4 pm — and on an open day it closes to visitors for only three reasons:
+## Can Tourists Visit Dharamshala Stadium?
 
-- **Matches.** International, IPL and domestic fixtures close the ground to casual visitors, and so do the team practice and preparation days just before a big match.
-- **VIP movement.** Official and VIP visits are rarely announced in advance and can close the ground for a few hours on an otherwise normal day.
-- **Maintenance.** Pitch and outfield work — rolling, re-laying, drainage and pre-season preparation — can shut the ground for a day or more.
+Yes, on non-match days. It is one of the most photographed spots in Dharamshala.
 
-The entry fee is not a fixed published tariff; it tends to be higher in peak season and when visitor numbers are heavy.
+- **What you can do:** walk into the public stands, take photos with the Dhauladhar behind the pavilion, and look over the ground. You cannot walk on the outfield or pitch.
+- **Photography:** phone and personal cameras are generally fine in public areas. Professional shoots may need permission from HPCA.
+- **Drones:** do not fly one. Travel guides report drones are not permitted around the stadium, and for the India v Afghanistan ODI in June 2026 the Kangra administration banned [paragliding and all other aerial activities](https://test.uniindia.com/news/north/administration-hp-dharamshala-odi-paragliding-ban/3872818.html) around the ground.
+- **Best time for photos:** clear mornings from October to March, when the mountains are sharp and usually snow-capped. In the monsoon (July to September) the peaks are often hidden by cloud.
+- **Time needed:** 30 minutes to an hour.
 
-**Call to confirm.** Because VIP and maintenance closures are decided at short notice, call the Dharamshala stadium office on the morning you plan to go, before you come down from McLeod Ganj. A wasted trip costs you an hour each way plus the taxi fare. In the monsoon the ground stays open, but the Dhauladhar you came to photograph may be behind cloud.
+**Tip:** if a domestic match (Ranji Trophy, age-group or women's cricket) is on, entry rules differ from a normal visiting day. Sometimes spectators can watch for free or cheaply; sometimes the stands are closed to tourists. Ask at the gate.
 
-If you are staying with us, [ask us](/contact) and we will check the gate situation for you before you set out.
+## When Is the Stadium Closed to Visitors?
+
+- **Matches.** International, IPL and some domestic fixtures close the ground to casual visitors, and so do practice and preparation days before a big match. In 2026 HPCA closed the stadium to visitors from 4 May for IPL games, and the ground then hosted India v Afghanistan on 13 June.
+- **VIP movement and events.** Official visits can close the ground for a few hours on an otherwise normal day.
+- **Maintenance.** Pitch and outfield work can shut the ground for a day or more.
+
+**Is it open on Sunday?** No official source we checked lists a weekly closed day. Some older guides (and an earlier version of this page) said Sundays were closed, which we could not confirm. If your dates are flexible, a weekday is the safer bet.
+
+**Check before you go.** Closures are often decided at short notice and not announced online. A wasted trip from McLeod Ganj costs about an hour each way plus the taxi fare. If you are staying with us, [ask us](/contact) and we will check the gate situation for you before you set out.
 
 ## Match Days: Tickets
 
@@ -834,9 +845,9 @@ There is no proper cloakroom for most fans, so leave bags at your hotel. Food an
 
 ## Getting There and Parking
 
-### On non-match days
+### How to reach from McLeod Ganj (non-match days)
 
-- **From McLeod Ganj:** taxi approx. ₹400–600 one way as of 2026, or a local bus to Dharamshala and a short walk. You can also combine the cable car to Dharamshala (when operating) with an auto.
+- **From McLeod Ganj:** 8-10 km by road, 25-40 minutes. A taxi is approx. ₹400–600 one way as of 2026 ([book a taxi](/taxi)), or take a local bus to Dharamshala and walk down from Kotwali Bazaar. You can also take the [Dharamshala Skyway cable car](/blog/dharamshala-skyway-ropeway-guide) down to Kotwali Bazaar (when operating) and an auto from there.
 - **From Kotwali Bazaar (Dharamshala):** a short taxi or auto ride, or a walk downhill of about 1.5–2 km.
 - **From Kangra Airport:** approx. 30–40 minutes by taxi; see our [Gaggal airport to Dharamshala taxi](/taxi/gaggal-airport-to-dharamshala-taxi) page.
 - There is roadside and nearby parking on normal days.
@@ -865,10 +876,13 @@ You can [pre-book a taxi](/taxi) with us for match days. More on autos, buses an
 | 2023 | Hosts five ICC Men's Cricket World Cup matches, including India v New Zealand and Australia v New Zealand |
 | 2024 | Hosts the fifth Test of India v England, the 100th Test for both R Ashwin and Jonny Bairstow |
 | 2025 | Hosts IPL matches for Punjab Kings; the match on May 8 was called off midway amid the India–Pakistan security situation and blackout |
+| 2026 | Closed to visitors from 4 May for IPL; Punjab Kings home games in mid-May (including v Royal Challengers Bengaluru on 17 May); India v Afghanistan ODI on 13 June |
 
 The 2023 World Cup also saw the Netherlands beat South Africa here, one of the tournament's big upsets. Since then HPCA has worked on the outfield and drainage, which drew criticism during the World Cup. The ground is known for helping seam bowlers early and for short boundaries that favour big hitting.
 
 ## The Dharamshala War Memorial
+
+![The Shaheed Smarak war memorial next to the HPCA stadium in Dharamshala](/images/places/war-memorial.jpg)
 
 The **War Memorial** is right next to the stadium, set in a pine-forested park at the entrance to Dharamshala. It honours soldiers from Himachal Pradesh who died in conflicts including 1947–48, 1962, 1965, 1971 and Kargil (1999), with names inscribed on black stone panels.
 
@@ -890,7 +904,7 @@ Stand names and pricing change by event, so check the seating map on the officia
 
 ## Day Plan: Stadium, Memorial and Lower Dharamshala
 
-1. **10:00 am:** HPCA Stadium as the gate opens, for clear mountain photos (Monday to Saturday; call ahead to confirm).
+1. **10:00 am:** HPCA Stadium, for clear mountain photos (non-match days; check it is open that morning).
 2. **10:30 am:** walk next door to the War Memorial.
 3. **11:30 am:** Kotwali Bazaar for shopping and lunch; the Kangra Art Museum is nearby.
 4. **2:00 pm:** head up to St John in the Wilderness and McLeod Ganj, or down to Norbulingka in Sidhbari.
@@ -911,46 +925,63 @@ For other questions, see our [FAQ](/faq).`,
     tags: ['HPCA Stadium', 'Cricket', 'IPL', 'Dharamshala', 'War Memorial', 'Sightseeing'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-10-01',
-    updated_at: '2026-10-09',
+    updated_at: '2026-10-20',
     image: placeImage('hpca-stadium'),
     image_alt: 'HPCA Cricket Stadium in Dharamshala with the snow-capped Dhauladhar range behind the pavilion',
-    read_time: 9,
+    read_time: 10,
     featured: false,
-    meta_title: 'Dharamshala Cricket Stadium Timings: Mon–Sat 10am–4pm',
-    meta_description: 'HPCA cricket stadium, Dharamshala: Monday to Saturday, 10 am–4 pm, closed Sundays. ₹50–₹250 at the gate, no booking; closes for matches and VIP visits.',
+    meta_title: 'Dharamshala Stadium Timings & Entry Fee 2026 (HPCA)',
+    meta_description: 'HPCA stadium Dharamshala: open on non-match days about 9:30 am-5 pm, entry about Rs 30. Closed to visitors around matches, so check before you go.',
     related_slugs: ['places-to-visit-in-dharamshala', 'one-day-in-dharamshala', 'best-hotels-in-dharamshala'],
+    sources: [
+      { title: 'Kangra district administration: HPCA Cricket Stadium (updated 1 April 2026)', url: 'https://hpkangra.nic.in/tourist-place/hpca-cricket-stadium/' },
+      { title: 'HPCA: Dharamshala Cricket Stadium', url: 'https://www.hpcricket.org/stadium/dharamshala-cricket-stadium-3' },
+      { title: 'HPCA website, archived 19 May 2026: stadium closed for visitors from 4 May 2026 (IPL)', url: 'https://web.archive.org/web/20260519132534/https://www.hpcricket.org/aboutus/1' },
+      { title: 'UNI: Paragliding and aerial activities banned around HPCA Stadium for India v Afghanistan ODI (June 2026)', url: 'https://test.uniindia.com/news/north/administration-hp-dharamshala-odi-paragliding-ban/3872818.html' },
+      { title: 'CricTracker: IPL 2026 Match 61, Punjab Kings v RCB at HPCA Stadium, Dharamshala', url: 'https://www.crictracker.com/cricket-previews/ipl-2026-match-61-punjab-kings-vs-royal-challengers-bengaluru-match-preview-4778/' },
+      { title: 'Wikipedia: Himachal Pradesh Cricket Association Stadium', url: 'https://en.wikipedia.org/wiki/Himachal_Pradesh_Cricket_Association_Stadium' },
+      { title: 'Holidify: Dharamshala Cricket Stadium', url: 'https://www.holidify.com/places/dharamsala/dharamshala-cricket-stadium-sightseeing-4518.html' },
+    ],
     faqs: [
       {
-        question: 'What are the HPCA Stadium Dharamshala visiting timings?',
-        answer: 'The stadium is open to visitors Monday to Saturday from 10 am to 4 pm and is closed on Sundays. On an open day it closes only for matches, VIP movement or maintenance, so call the stadium office on the morning you plan to go to confirm.',
+        question: 'What are the Dharamshala cricket stadium timings?',
+        answer: 'On non-match days the HPCA stadium is open to visitors about 9:30 am to 5 pm, according to the Kangra district administration (page updated April 2026). Travel sites give slightly different hours, so the safest plan is to arrive between 10 am and 4 pm and check it is not a match or closure day.',
       },
       {
-        question: 'Can I visit the HPCA Stadium on non-match days?',
-        answer: 'Yes. On non-match days it is open Monday to Saturday, 10 am to 4 pm, for a gate fee. It closes on match days and the practice days before big fixtures, during VIP movement and for maintenance. Call the stadium office before you travel.',
+        question: 'Is Dharamshala cricket stadium open for tourists?',
+        answer: 'Yes, on non-match days tourists can walk into the public stands for a small fee. It closes to visitors around matches: HPCA closed it from 4 May 2026 for IPL games, and the notice was removed by early June. When we checked on 20 October 2026 we could not confirm the current status online, so ask your hotel or the gate that morning.',
       },
       {
-        question: 'What is the entry fee for the HPCA Stadium Dharamshala?',
-        answer: 'Entry is paid at the gate and is usually between Rs 50 and Rs 250 per person, sometimes more. It is not a fixed published rate, so it varies with the season and visitor numbers. Carry more than Rs 50 to be safe. Camera charges may apply for professional equipment.',
+        question: 'What is the closing time of HPCA stadium Dharamshala?',
+        answer: 'About 5 pm, according to the Kangra district administration. One travel site says 6 pm. Arrive by 4 pm so you are not turned away if the gate closes early.',
       },
       {
-        question: 'Do I need to book tickets in advance to visit the HPCA Stadium?',
-        answer: 'No. For a normal sightseeing visit there is no advance booking and no online ticket. You simply pay at the gate. Advance booking applies only to match tickets, which are sold online through the official ticketing partner for that match.',
+        question: 'What is the entry fee or ticket price for tourists at Dharamshala stadium?',
+        answer: 'About Rs 30 per person on non-match days, according to the Kangra district administration (2026). Some travel sites say entry is free. Carry about Rs 50 in cash plus UPI. Match tickets are separate and cost much more.',
       },
       {
-        question: 'How do I buy tickets for a match at HPCA Stadium?',
-        answer: 'Only through the official ticketing partner announced by the BCCI for internationals or by the franchise for IPL matches. Sales usually open a few weeks before the match. Avoid touts and social media resellers.',
+        question: 'Is HPCA stadium open on Sunday?',
+        answer: 'No official source we checked lists a weekly closed day, and the district page simply says non-match days. Some older guides say Sundays are closed, which we could not confirm. If your dates are flexible, visit on a weekday, and check that morning.',
       },
       {
-        question: 'Can I take a bag or water bottle into the stadium on match day?',
-        answer: 'Usually not. Bags, water bottles, outside food, power banks, coins, lighters and selfie sticks are normally banned. Phones, wallets and ID are allowed. Check the rules published for your specific match.',
+        question: 'Can we visit Dharamshala stadium during IPL or match days?',
+        answer: 'Not as a sightseer. On match days only ticket holders get in, and the ground is usually closed to visitors on practice and preparation days too. In 2026 HPCA closed the stadium to visitors from 4 May for IPL matches. To watch a match, buy tickets through the official ticketing partner announced for that fixture.',
       },
       {
-        question: 'Is the HPCA Stadium open on Sunday?',
-        answer: 'No. The stadium is open to visitors Monday to Saturday only, 10 am to 4 pm. On a Sunday, visit the War Memorial next door or head up to McLeod Ganj instead.',
+        question: 'What is the distance from McLeod Ganj to HPCA stadium?',
+        answer: 'About 8 to 10 km by road, or 25 to 40 minutes by taxi. The stadium is in lower Dharamshala, 1.5 to 2 km below Kotwali Bazaar. On match days road restrictions mean you may have to walk the last 1 to 2 km.',
       },
       {
-        question: 'How far is the HPCA Stadium from McLeod Ganj?',
-        answer: 'About 10 km, or 25 to 40 minutes by taxi. On match days traffic restrictions mean you will likely need to walk the last 1 to 2 km.',
+        question: 'How do I reach HPCA stadium Dharamshala?',
+        answer: 'Take a taxi from McLeod Ganj (approx. Rs 400 to 600 one way in 2026), a local bus to Kotwali Bazaar and a short walk or auto, or the Dharamshala Skyway cable car down to Kotwali Bazaar and an auto. From Kangra Airport at Gaggal it is about 12 to 14 km, 30 to 40 minutes by taxi.',
+      },
+      {
+        question: 'Is photography allowed at HPCA stadium? Can I fly a drone?',
+        answer: 'Phone and personal camera photos are generally fine in public areas on non-match days; professional shoots may need HPCA permission. Do not fly a drone. Drones are reported as not permitted around the stadium, and on match days the district administration bans paragliding and all other aerial activities nearby.',
+      },
+      {
+        question: 'How much time do I need at HPCA stadium?',
+        answer: 'Thirty minutes to an hour is enough for the stands and photos. Add 30 to 45 minutes for the War Memorial next door, and you can fit both plus Kotwali Bazaar into a half day.',
       },
     ],
   },

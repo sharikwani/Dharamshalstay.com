@@ -753,9 +753,26 @@ Kangra town itself has limited good accommodation, while Dharamshala and McLeod 
   {
     id: 'blog-dalai-lama-temple-guide',
     slug: 'dalai-lama-temple-guide',
-    title: 'Dalai Lama Temple Timings in McLeod Ganj & Visitor Guide',
-    excerpt: "The Dalai Lama Temple (Tsuglagkhang) in McLeod Ganj is open every day, usually from early morning to early evening, and entry is free. No official hours are published, so treat exact times online as approximate. Below: what is inside, dress code, photography rules, the kora walk and how to attend a public teaching.",
-    content: `The **Dalai Lama Temple** in McLeod Ganj, properly called the **Tsuglagkhang complex**, is open to everyone, free of charge, **every day, usually from early morning to early evening**. No official visiting hours are published, so treat any exact times you read online as approximate. It contains the main temple with a large gilded Buddha, the Kalachakra temple, **Namgyal Monastery** and the official residence of the Dalai Lama. Plan on 1 to 2 hours, dress modestly, leave your camera in your bag inside the shrine halls, and walk the **kora** path around the complex while you are there.
+    title: 'Dalai Lama Temple Timings 2026: Hours, Entry, Prayers & Rules (McLeod Ganj)',
+    excerpt: "Dalai Lama Temple (Tsuglagkhang) timings: commonly listed as about 5 am to 8 pm daily, but no official hours are published. Entry is free and there are no tickets. Closing time, prayer and debate times, Tibet Museum hours, dress code, photo rules and the kora.",
+    content: `**Short answer:** The Dalai Lama Temple (the **Tsuglagkhang complex**) in McLeod Ganj is open every day and is **commonly listed as about 5 am to 8 pm** (a few guides say 6 am to 6 or 7 pm). **Entry is free and there are no tickets.** No official visiting hours are published by the Dalai Lama's office or the temple, and the gates can close at short notice for ceremonies, teachings or security, so aim to arrive by about 5 pm if you want unhurried time inside the halls.
+
+The complex contains the main temple with a large gilded Buddha, the Kalachakra temple, **Namgyal Monastery** and the official residence of the Dalai Lama. Plan on 1 to 2 hours, dress modestly, keep your camera in your bag inside the shrine halls, and walk the **kora** path around the complex while you are there.
+
+## Dalai Lama Temple quick facts (checked 20 October 2026)
+
+| | |
+|---|---|
+| **Official name** | Tsuglagkhang complex (Main Tibetan Temple), with Namgyal Monastery |
+| **Location** | Bottom of Temple Road, McLeod Ganj; about 800 m (10 minutes) downhill from the Main Square |
+| **Timings** | Every day; commonly listed about 5 am to 8 pm; no official hours published |
+| **Closing time** | About 8 pm in most listings; some say 6 or 7 pm |
+| **Entry fee and tickets** | Free; no tickets of any kind |
+| **Time needed** | 1 to 2 hours, plus 30 to 45 minutes for the kora |
+| **Dress code** | Shoulders and knees covered; hats off in the halls |
+| **Photography** | Not inside the shrine halls; generally fine in the courtyards |
+| **How to reach** | Walk down Temple Road from the Main Square; 9 to 10 km by road from lower Dharamshala |
+| **Next events at the temple** | Long Life Offering Ceremonies on the mornings of 21 October 2026 and 24 February 2027 (dalailama.com schedule, checked 20 October 2026) |
 
 If you hope to see the Dalai Lama, the only realistic way is to attend a **public teaching or event** when one is scheduled. These are announced on the official website, dalailama.com, and require registration in McLeod Ganj a few days before. Details are below.
 
@@ -767,22 +784,68 @@ After the Dalai Lama fled Tibet in 1959, the Tibetan government in exile settled
 
 - **The main temple (Tsuglagkhang):** an upstairs hall with a large gilded statue of Shakyamuni Buddha, along with images of Avalokiteshvara (Chenrezig), the bodhisattva of compassion of whom the Dalai Lama is considered an emanation, and Padmasambhava (Guru Rinpoche). Rows of butter lamps and offerings line the hall.
 - **The Kalachakra Temple:** beside the main temple, with vivid murals associated with the Kalachakra tradition. Photography is not permitted inside.
-- **Namgyal Monastery:** the Dalai Lama's personal monastery. Its monks perform rituals for the temple and, on many afternoons, debate Buddhist philosophy in the courtyard with dramatic claps and stamps.
+- **Namgyal Monastery:** the Dalai Lama's personal monastery. Its monks perform rituals for the temple and, on many days (most often reported in the early afternoon), debate Buddhist philosophy in the courtyard with dramatic claps and stamps.
 - **The Tibet Museum:** not inside the complex any more. The museum is on the 2nd floor of the T-Building at the Central Tibetan Administration in Gangchen Kyishong, between Dharamshala and McLeod Ganj (open 9 am to 5 pm with a 1 to 2 pm lunch break; closed Saturdays and government holidays, per its official website). Photographs, documents and personal testimonies tell the story of Tibet, the 1959 uprising and the escape into exile. It is small but powerful.
 - **The Dalai Lama's residence:** within the complex but not open to visitors.
 - **A bookshop and a cafe**, useful for a quiet tea after your visit.
 
-## Timings and entry fee
+## What are the Dalai Lama Temple timings?
 
-| What | Timings (checked October 2026) | Entry |
+The Tsuglagkhang complex is open **every day**, and the hours most often quoted are **about 5 am to 8 pm**. That is a widely repeated figure, not an official notice: neither the Office of His Holiness the Dalai Lama (dalailama.com) nor Namgyal Monastery publishes visiting hours. Here is how the day breaks down.
+
+| What | Timings (checked 20 October 2026) | Entry |
 |---|---|---|
-| Tsuglagkhang complex (temple visiting hours) | Every day, usually early morning to early evening; no official hours published | Free |
-| Monks' morning prayers | Early morning | Visitors can usually watch quietly from the back |
-| Monk debates | Many afternoons, not daily | Free |
-| Tibet Museum (Gangchen Kyishong, not in the complex) | 9 am to 5 pm, lunch 1 to 2 pm; closed Saturdays and government holidays | Rs 20 for adults, under-18s free |
+| Tsuglagkhang complex (temple visiting hours) | Every day; commonly listed about 5 am to 8 pm; no official hours published | Free, no ticket |
+| Monks' morning prayers | From about 5 am (commonly reported) | Watch quietly from the back |
+| Monk debates (Namgyal courtyard) | Not every day; Lonely Planet lists 1.30 pm (except Sundays); one blog says 9 to 11 am | Free |
+| Namgyal evening prayers | About 4.30 to 5.30 pm (one travel guide; not confirmed) | Free |
+| Teaching registration (only when a teaching is announced) | 9 am to 1 pm and 2 pm to 5 pm, in the temple courtyard, a few days before | Rs 10 registration card |
+| Tibet Museum (Gangchen Kyishong, not in the complex) | 9 am to 5 pm, closed 1 to 2 pm for lunch; closed Saturdays, Tibetan festivals and gazetted holidays | Rs 20 for adults, under-18s free |
 | Lingkhor kora (outside the complex) | Always open; best at dawn | Free |
 
-Visiting hours, prayer times and teaching registration are three different things: the temple is usually open from early morning to early evening, the monks' own prayers happen early in the morning, and registration for a public teaching has its own office hours (see [How public teachings work](#how-public-teachings-work)). The complex can close to the public on special occasions and during high-security events, so check at the gate or with your hotel on your first day.
+### What sources say about the timings
+
+| Source | What it says | Date |
+|---|---|---|
+| Office of His Holiness the Dalai Lama (dalailama.com schedule) | No visiting hours; lists events only. Registration for teachings 9 am to 1 pm and 2 pm to 5 pm in the temple courtyard, Rs 10 | Checked 20 October 2026 |
+| Namgyal Monastery (namgyalmonastery.org) | Describes debate as part of monastic study; no visiting, prayer or debate times published | Checked 20 October 2026 |
+| Lonely Planet, Tsuglagkhang listing | Monk debates at 1.30 pm, except Sundays | Undated; read October 2026 |
+| travelcoffee.in | Hours "commonly cited as around 5 AM to 8 PM", with a note that some sources list shorter hours | 12 July 2026 |
+| The Hosteller blog | 5 am to 8 pm; morning prayers from 5 am; debates 9 to 11 am | 27 July 2024 |
+| Other travel guides | 6 am to 6 pm or 6 am to 7 pm | Various, mostly undated |
+
+**Our reading:** 5 am to 8 pm is the most repeated window and fits what you see on the ground (prayers and kora walkers before sunrise, the courtyard emptying after dark). Because some guides give a 6 pm close, plan your time inside the halls for the morning or afternoon rather than the last hour.
+
+## What is the Dalai Lama Temple closing time?
+
+There is **no official closing time**. Most listings say the complex closes at about **8 pm**; a few say 6 or 7 pm. To be safe, finish your visit to the shrine halls by about 6 pm. The kora path outside the complex stays open at all hours. On ceremony and teaching days the complex can close to general visitors or admit only those who have registered, and it has closed for long periods before (for example from 18 March 2020 during the pandemic).
+
+## Are there tickets for the Dalai Lama Temple?
+
+**No. Entry is free and there is no ticket counter.** If anyone near Temple Road offers you a temple ticket, a "fast entry" pass or a paid guide who can get you "inside", say no. The only official payments connected with the temple are:
+
+- **Rs 10 for a registration card** when the Dalai Lama gives a public teaching, paid at the official registration office (see [How public teachings work](#how-public-teachings-work)). The Dalai Lama does not charge for his teachings.
+- **Donations** in the boxes inside, which are entirely optional.
+
+The **Tibet Museum** charges Rs 20, but it is a separate place at Gangchen Kyishong, not inside the temple. See our [Tibet Museum guide](/blog/tibet-museum-dharamshala-guide).
+
+## Do the timings change in winter and summer?
+
+We found **no confirmed seasonal timetable**: the same 5 am to 8 pm figure is quoted all year. What does change is daylight. The sun sets around 5.30 pm in December and January and around 7.30 pm in June, so a winter evening visit is cold and dark, and the courtyard goes quiet well before 8 pm. In winter, go between 9 am and 4 pm.
+
+## What time are prayers and monk debates?
+
+- **Morning prayers** start early, commonly reported from about 5 am. Tibetan elders and monks fill the halls and the kora at dawn; visitors can sit quietly at the back.
+- **Monk debates** in the Namgyal Monastery courtyard are the highlight for many visitors, but they are **not daily**. Lonely Planet lists them at 1.30 pm except Sundays; one blog gives 9 to 11 am. We suggest being in the courtyard from about 1 pm; if you hear loud clapping, a debate is on. They stop during holidays, ceremonies and when the monks are away.
+- **Evening prayers** at Namgyal are given by one guide as about 4.30 to 5.30 pm. We could not confirm this from the monastery.
+
+## When is the temple closed or extra busy? Dates for 2026 and 2027
+
+- **Long Life Offering Ceremonies** at the main temple on the mornings of **21 October 2026** and **24 February 2027**, per the official dalailama.com schedule (checked 20 October 2026; dates can change at short notice). Expect queues, strict security and phones not allowed in.
+- **Tibet Museum closures** left in 2026: 1 November (Lhabab Duechen), 10 December (Nobel Peace Prize Day), 15 and 16 December, plus every Saturday (tibetmuseum.org).
+- **Big days at the temple:** Losar (Tibetan New Year; 18 to 20 February in 2026), 10 March Uprising Day, Saga Dawa and the Dalai Lama's birthday on 6 July bring ceremonies and crowds.
+
+For other dated changes around town, see our [travel updates](/travel-updates) and [verified facts](/facts) pages.
 
 **Want to stay within walking distance?** See our list of [hotels near the Dalai Lama Temple](/hotels/near-dalai-lama-temple), sorted by walking time to the gate.
 
@@ -800,14 +863,18 @@ The temple is an active place of worship, not a museum. A few simple habits go a
 - **Donations** are welcome in the boxes provided but never expected.
 - If you are offered a **khata** (white scarf) or blessing, receive it with both hands.
 
-## Photography rules
+## Can you take phones, cameras and bags inside?
+
+On a normal day, **yes**: you can carry a phone, camera and a small day bag through the gate, where there is usually a security check. The rules tighten on teaching and ceremony days, when phones, cameras and bags are generally not allowed past security, so leave them at your hotel.
+
+### Photography rules
 
 - **Inside the main shrine halls and the Kalachakra temple:** no photography. There are signs, and monks may ask you to put your phone away.
 - **In the courtyards:** photography is generally fine, including the monk debates, but be respectful. Do not push a lens into someone's face, and ask before close portraits.
 - **During public teachings:** cameras and phones are usually not allowed through security, and only official photographers work inside. Plan to carry as little as possible.
 - **Drones:** not permitted.
 
-## Walking the kora (Lingkhor)
+## What is the kora and when should you walk it?
 
 The kora is a circular path around the entire Tsuglagkhang complex and the Dalai Lama's residence, about 30 to 45 minutes at a gentle pace. It winds through pine forest strung with thousands of prayer flags, past prayer wheels, chortens and stones carved with the mantra Om Mani Padme Hum.
 **How to walk it:** from Temple Road, look for the path on the left just before the temple gate (as you face it) and follow the stream of walkers downhill. Always go clockwise. Early mornings, when elderly Tibetans walk it with prayer beads, are the most moving. Read more about the area in our [McLeod Ganj destination guide](/destinations/mcleod-ganj).
@@ -817,19 +884,20 @@ The kora is a circular path around the entire Tsuglagkhang complex and the Dalai
 His Holiness the Dalai Lama, now in his nineties, gives fewer public teachings than he once did, and his schedule depends on his health and travel. When a teaching or event is held at the Tsuglagkhang, the process usually works like this:
 
 1. **Check the schedule:** the only reliable source is the official schedule at dalailama.com. Dates are subject to change, sometimes at short notice. The Central Tibetan Administration website, tibet.net, also announces events.
-2. **Register in person:** registration is required for all teachings in Dharamsala. It typically opens a few days before the first session and closes the day before, at an office announced with the event (recently the main temple courtyard; in some years the Branch Security Office on Bhagsunag Road). Hours are usually around 9 am to 1 pm and 2 pm to 5 pm.
-3. **Bring documents:** foreigners need copies of their passport, Indian visa and C-form (your hotel files the C-form; ask them for a copy). Indian residents need a copy of their Aadhaar card. A nominal fee, around ₹10, is charged for the registration card. The Dalai Lama does not accept fees for his teachings.
+2. **Register in person:** registration is required for all teachings in Dharamsala. It opens a few days before the first session and closes the day before. As of October 2026 the official schedule says it is held in the Main Tibetan Temple courtyard, 9 am to 1 pm and 2 pm to 5 pm (in some past years it was at the Branch Security Office on Bhagsunag Road).
+3. **Bring documents:** foreigners need copies of their passport, Indian visa and C-form (your hotel files the C-form; ask them for a copy). Indian residents need a copy of their Aadhaar card. A nominal fee of Rs 10 is charged for the registration card. The Dalai Lama does not accept fees for his teachings.
 4. **Arrive early:** security checks are thorough and queues start early. Seating is on the floor, first come first served.
 5. **Bring:** a cushion, a cup (butter tea or bread may be served), a sun hat, and a small FM radio with earphones, because translations into English and other languages are often broadcast on FM frequencies announced at the venue.
 6. **Leave behind:** cameras, phones, bags and anything bulky, which are generally not allowed past security.
 
 Private audiences are rarely granted to individual tourists these days, so do not plan a trip around one.
 
-## Best time to visit
+## What is the best time to visit the Dalai Lama Temple?
 
-- **Opening time (10 to 11 am):** the halls are calm and Temple Road is still quiet. The best time inside.
-- **Dawn on the kora:** the Lingkhor path outside the complex is open at any hour, and early morning, when elderly Tibetans walk it with prayer beads, is the most moving time to go.
-- **Afternoon (2 to 4 pm):** chance of monk debates in the courtyard.
+- **Dawn (about 5 to 7 am):** morning prayers inside and elderly Tibetans walking the Lingkhor kora with prayer beads. The most moving time to go.
+- **Mid-morning (9 to 11 am):** the halls are calm and Temple Road is still quiet. The easiest time for a first visit.
+- **Early afternoon (from about 1 pm):** the best chance of monk debates in the courtyard.
+- **How long to allow:** 1 to 2 hours inside the complex, plus 30 to 45 minutes for the kora.
 - **Avoid:** midday on weekends and Indian holidays, when the complex and Temple Road are busiest.
 - **Special days:** Losar (Tibetan New Year, usually February or March), Saga Dawa (around May or June) and the Dalai Lama's birthday on 6 July bring ceremonies and crowds. The 10 March Tibetan Uprising Day commemoration usually starts from here with a march.
 
@@ -848,45 +916,76 @@ Weather wise, March to June and October to November give the clearest skies; see
 The temple is the anchor of any McLeod Ganj day. After your visit you can:
 
 - Walk to **Bhagsunag temple and waterfall**, around 2 km away; see our [Bhagsu guide](/destinations/bhagsu).
-- Visit the **Library of Tibetan Works and Archives** and the Central Tibetan Administration at Gangchen Kyishong, 2 to 3 km downhill.
+- Visit the **Tibet Museum**, the **Library of Tibetan Works and Archives** and the Central Tibetan Administration at Gangchen Kyishong, 2 to 3 km downhill (museum closed Saturdays; see our [Tibet Museum guide](/blog/tibet-museum-dharamshala-guide)). A [local taxi](/taxi) saves the steep walk back up.
+- Read up on [Tibetan culture and etiquette](/blog/tibetan-culture-etiquette-guide) and the other [monasteries and meditation centres](/monasteries-meditation) around town.
+- Next morning, head up to Triund on a [guided Triund trek](/treks/triund-trek) or browse all [treks from McLeod Ganj](/treks).
 - Try **momos and thenthuk** at a family-run Tibetan kitchen; see our [Tibetan food guide](/blog/tibetan-food-mcleod-ganj).
 - Explore more ideas in [things to do in McLeod Ganj](/blog/things-to-do-in-mcleod-ganj) and [places to visit in Dharamshala](/blog/places-to-visit-in-dharamshala).
 
 ## Where to stay near the temple
 
-Temple Road and the streets just above it have guesthouses and hotels within a few minutes' walk of the complex, which is ideal for dawn kora walks and early registration queues. Rooms fill up quickly when a teaching is announced, so book as soon as dates are confirmed. Browse verified stays on our [hotels page](/hotels) or read [best hotels in McLeod Ganj](/blog/best-hotels-in-mcleod-ganj). For other practical questions, see our [FAQ](/faq).`,
+Temple Road and the streets just above it have guesthouses and hotels within a few minutes' walk of the complex, which is ideal for dawn kora walks and early registration queues. Rooms fill up quickly when a teaching is announced, so book as soon as dates are confirmed. The closest picks, sorted by walking time to the gate, are on our [hotels near the Dalai Lama Temple](/hotels/near-dalai-lama-temple) page. You can also browse all verified stays on our [hotels page](/hotels), read [best hotels in McLeod Ganj](/blog/best-hotels-in-mcleod-ganj), or book a [taxi from Gaggal airport or Dharamshala](/taxi). For other practical questions, see our [FAQ](/faq).`,
     category: 'Temples & Heritage',
-    tags: ['dalai lama temple', 'tsuglagkhang', 'mcleod ganj', 'tibet museum', 'kora', 'dalai lama teachings'],
+    tags: ['dalai lama temple', 'dalai lama temple timings', 'tsuglagkhang', 'mcleod ganj', 'namgyal monastery', 'tibet museum', 'kora', 'dalai lama teachings'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-09-24',
-    updated_at: '2026-10-16',
+    updated_at: '2026-10-20',
     image: placeImage('tsuglagkhang'),
     image_alt: 'Tsuglagkhang complex, the Dalai Lama Temple on Temple Road in McLeod Ganj',
-    read_time: 8,
+    read_time: 10,
     featured: false,
-    meta_title: 'Dalai Lama Temple Timings, McLeod Ganj: Hours & Entry',
-    meta_description: 'Dalai Lama Temple, McLeod Ganj: open daily, usually early morning to early evening, free entry. Prayer times, dress code, photos and teachings.',
-    related_slugs: ['things-to-do-in-mcleod-ganj', 'places-to-visit-in-dharamshala', 'best-hotels-in-mcleod-ganj'],
+    meta_title: 'Dalai Lama Temple Timings 2026: Hours, Entry & Rules',
+    meta_description: 'Dalai Lama Temple timings: commonly about 5 am to 8 pm daily (no official hours). Free entry, no tickets. Closing time, prayers, debates, rules.',
+    related_slugs: ['tibet-museum-dharamshala-guide', 'tibetan-culture-etiquette-guide', 'things-to-do-in-mcleod-ganj', 'best-hotels-in-mcleod-ganj'],
+    sources: [
+      { title: 'Office of His Holiness the Dalai Lama: schedule and teaching registration', url: 'https://www.dalailama.com/schedule' },
+      { title: 'Namgyal Monastery (official site)', url: 'https://namgyalmonastery.org/' },
+      { title: 'Tibet Museum: plan your visit (timings, fees, 2026 closures)', url: 'https://tibetmuseum.org/your-visit/' },
+      { title: 'Lonely Planet: Tsuglagkhang Complex', url: 'https://www.lonelyplanet.com/india/dharamsala/mcleod-ganj/attractions/tsuglagkhang-complex/a/poi-sig/478060/356298' },
+      { title: 'Travel Coffee: Dalai Lama Temple McLeodganj guide (July 2026)', url: 'https://travelcoffee.in/blog/dalai-lama-temple-mcleodganj-guide' },
+      { title: 'The Hosteller: Tibetan culture spots in McLeod Ganj (July 2024)', url: 'https://www.thehosteller.com/blogs/must-visit-tibetan-culture-mcleod-ganj' },
+      { title: 'Buddhistdoor: Tsuglagkhang temple closes over coronavirus risk (March 2020)', url: 'https://www2.buddhistdoor.net/news/tsuglhakhang-temple-in-dharamsala-to-close-over-coronavirus-risk' },
+    ],
     faqs: [
       {
         question: 'What are the Dalai Lama Temple timings?',
-        answer: 'The Tsuglagkhang complex is open every day, usually from early morning to early evening, and entry is free. No official visiting hours are published. It can close on special occasions and during high-security events, so check at the gate on the day.',
+        answer: 'The Tsuglagkhang complex in McLeod Ganj is open every day and is commonly listed as about 5 am to 8 pm; a few guides say 6 am to 6 or 7 pm. No official visiting hours are published, and the complex can close at short notice for ceremonies, teachings or security, so check at the gate on the day.',
       },
       {
-        question: 'Is there an entry fee for the Dalai Lama Temple in McLeod Ganj?',
-        answer: 'No, entry to the complex is free. The Tibet Museum, now at the Central Tibetan Administration in Gangchen Kyishong, charges Rs 20 for adults (under-18s free) and is closed on Saturdays.',
+        question: 'What is the closing time of the Dalai Lama Temple?',
+        answer: 'There is no official closing time. Most listings say about 8 pm and some say 6 or 7 pm, so finish your visit to the shrine halls by about 6 pm to be safe. The kora path around the outside of the complex stays open at all hours.',
       },
       {
-        question: 'Can I meet the Dalai Lama in McLeod Ganj?',
-        answer: 'Private audiences are rarely granted to tourists. The realistic way to see him is to attend a public teaching or event when one is scheduled. Check dalailama.com and register in McLeod Ganj in the days before the event.',
+        question: 'Do I need a ticket for the Dalai Lama Temple? Is there an entry fee?',
+        answer: 'No. Entry to the Tsuglagkhang complex is free and there are no tickets, so ignore anyone offering to sell one. The only official charge is a Rs 10 registration card when the Dalai Lama gives a public teaching. The Tibet Museum at Gangchen Kyishong, a separate place, charges Rs 20 for adults.',
       },
       {
-        question: 'Is photography allowed inside the Dalai Lama Temple?',
-        answer: 'No photography is allowed inside the main shrine halls or the Kalachakra temple. Photos in the courtyards are generally fine if you are respectful. Phones and cameras are usually not allowed during public teachings.',
+        question: 'Are the Dalai Lama Temple timings different in winter and summer?',
+        answer: 'No seasonal timetable has been confirmed; the same 5 am to 8 pm figure is quoted all year. Daylight is the real difference: sunset is around 5.30 pm in December and around 7.30 pm in June, so in winter plan your visit between 9 am and 4 pm.',
       },
       {
-        question: 'What should I wear to the Dalai Lama Temple?',
-        answer: 'Wear modest clothing that covers shoulders and knees, and remove your hat and, where signs ask, your shoes before entering the prayer halls.',
+        question: 'What time are the morning prayers at the Dalai Lama Temple?',
+        answer: 'Morning prayers are commonly reported to start at about 5 am, with monks and Tibetan elders in the halls and on the kora around dawn. Visitors can sit quietly at the back. Evening prayers at Namgyal Monastery are given by one guide as about 4.30 to 5.30 pm, which we could not confirm.',
+      },
+      {
+        question: 'What time do the monks debate at the Dalai Lama Temple?',
+        answer: 'Debates in the Namgyal Monastery courtyard are not held every day. Lonely Planet lists them at 1.30 pm except Sundays, while one blog says 9 to 11 am. Be in the courtyard from about 1 pm for the best chance; loud clapping means a debate is on.',
+      },
+      {
+        question: 'Can I take my phone, camera and bag into the Dalai Lama Temple?',
+        answer: 'On normal days, yes, after a security check at the gate, but photography is not allowed inside the shrine halls or the Kalachakra temple. On teaching and ceremony days, phones, cameras and bags are generally not allowed past security.',
+      },
+      {
+        question: 'How much time do I need at the Dalai Lama Temple?',
+        answer: 'Allow 1 to 2 hours for the temple, the Kalachakra hall and the Namgyal courtyard, plus 30 to 45 minutes if you walk the kora. Add an hour or more if you are waiting for the monk debates.',
+      },
+      {
+        question: 'What are the Tibet Museum timings and which day is it closed?',
+        answer: 'The Tibet Museum is not in the temple complex any more; it is at Gangchen Kyishong, below McLeod Ganj. It opens 9 am to 5 pm with a 1 to 2 pm lunch break, is closed on Saturdays, Tibetan festivals and gazetted holidays, and charges Rs 20 for adults (under-18s free).',
+      },
+      {
+        question: 'What is the kora at the Dalai Lama Temple and when should I walk it?',
+        answer: 'The Lingkhor kora is a forest path that circles the whole Tsuglagkhang complex and the Dalai Lama residence, lined with prayer flags and prayer wheels. It takes 30 to 45 minutes, is always open and free, and is best at dawn. Always walk it clockwise.',
       },
     ],
   },

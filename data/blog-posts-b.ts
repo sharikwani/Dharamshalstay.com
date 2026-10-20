@@ -154,64 +154,125 @@ Once you know how you are arriving, [browse hotels in Dharamshala and McLeod Gan
   {
     id: 'blog-dharamshala-in-winter-snowfall',
     slug: 'dharamshala-in-winter-snowfall',
-    title: 'Dharamshala in Winter: When and Where It Snows, Month by Month (2026)',
-    excerpt: "Snow falls in McLeod Ganj, Naddi and Dharamkot on some days between late December and February; lower Dharamshala almost never gets settled snow. For snow you can count on, hike towards Triund. Below: month by month, where it snows, road conditions, what stays open and what to pack.",
-    content: `## Does It Snow in Dharamshala?
+    title: 'When Does It Snow in Dharamshala? Snowfall Months, Places and a Dated Snow Log (2026)',
+    excerpt: 'Upper Dharamshala (McLeod Ganj, Naddi, Dharamkot) gets snow on a few days between late December and February, most often in January; the lower town almost never does, and no year is guaranteed. Here is where and when it snows, a dated log of recent snowfalls, roads, hotels and packing.',
+    content: `**Short answer:** Snow falls in upper Dharamshala (McLeod Ganj, Naddi, Dharamkot and Bhagsu) on only a few days a winter, between late December and February, and most often in January. Lower Dharamshala and Kotwali Bazaar almost never get snow; the last time the bazaar did, on 8 February 2019, it was the first time in more than six years. Snow is never guaranteed: in winter 2023-24 the first fall in the upper villages came only on 1 February 2024. For snow you can almost count on from December to March, go higher, to Triund (about 2,850 m).
 
-Yes, but not where most people expect. **Lower Dharamshala (around 1,400 m) almost never gets settled snow**; winter there means cold, clear days and the occasional hailstorm. **McLeod Ganj (around 2,000 m), Naddi and Dharamkot** get snow on some winter days, usually between late December and February, but not every year and often only a light dusting that melts by noon. For guaranteed snow, you need to go higher: **Triund (about 2,850 m)** and the upper Dhauladhar slopes are reliably white from December to March.
+## Quick Facts: Snowfall in Dharamshala
 
-So if your dream is to wake up to snow on your balcony, plan for McLeod Ganj or Naddi in January or February and stay flexible. If you simply want to see and touch snow, a day hike towards Triund or the snow line almost always delivers. And from anywhere in town you get the real winter showpiece: the Dhauladhar range covered in fresh snow, sharp against a blue sky.
+| Question | Answer |
+|---|---|
+| Snow months | Late December to February; January is the likeliest month |
+| Most recent snow in town | 23-24 January 2026: about 3 inches in Dharamkot, about 2 inches in Naddi and Bhagsunag, 1-2 inches in parts of McLeod Ganj |
+| Most recent snow on the peaks | Around 14 October 2026, fresh snow on the Dhauladhar range (not in town) |
+| Where it snows most | Dharamkot and Naddi (about 1,900-2,100 m), then McLeod Ganj and Bhagsu |
+| Lower Dharamshala (about 1,400 m) | Very rare: 8 February 2019 was the first snow at Kotwali Bazaar since 2012 |
+| Guaranteed snow nearby | Triund ridge (about 2,850 m), roughly December to March, a day hike from McLeod Ganj or Dharamkot |
+| Typical snowfall | 1-6 inches in the villages, about 1 foot in a big year; often melts in a day or two |
+| What brings it | A western disturbance: rain in the valley, snow higher up for 1-3 days, then clear skies |
+| Roads | Highway via Kangra stays open; McLeod Ganj, Naddi and Dharamkot roads can be icy or blocked for a day |
+| Forecast to watch | IMD Shimla district warnings for Kangra |
 
-## Where Snow Falls: Altitude Is Everything
+## When Does It Snow in Dharamshala?
+
+Snow in Dharamshala comes in short spells, not as a season of white streets. A western disturbance moves in, it rains in the valley and snows on the higher slopes for one to three days, and then the sky clears. Every dated snowfall in the town and its upper villages that we could confirm in news reports falls between **31 December and 9 February**, and most of them are in **January**.
+
+What that means for planning:
+
+- **Late December:** possible but not common. The Christmas and New Year rush is here; snow is a bonus. See [McLeod Ganj in December](/blog/mcleod-ganj-in-december).
+- **January:** the best odds of snow in McLeod Ganj, Naddi and Dharamkot, and the coldest month. Late January is a sweet spot: the New Year crowd has gone.
+- **First half of February:** a second good window. Several of the bigger falls in our log (2010, 2019, 2024) came in early February.
+- **Late February and March:** snow in town becomes unlikely and melts fast, but Triund often holds snow into March.
+
+## Recent Snowfall Log: Dated Snowfalls in Dharamshala and McLeod Ganj
+
+No other guide we know of lists dated snowfalls, so here is what news reports actually recorded. Amounts are as reported by journalists or officials, not official gauge readings. Rows marked approx. have a date we worked out from the report (for example from a weekday).
+
+| Date | Places | How much | Source |
+|---|---|---|---|
+| About 14 Oct 2026 (approx.) | Dhauladhar peaks only; rain in the lower areas | Fresh snow on the peaks, no depth given | [The North News, 15 Oct 2026](https://www.thenorthnews.in/fresh-snowfall-brightens-dharamshala-tourism-prospects/) |
+| 23-24 Jan 2026 (Friday night to Saturday) | Dharamkot, Naddi, Bhagsunag, parts of McLeod Ganj; snow continued on the higher Dhauladhar | About 3 in in Dharamkot, about 2 in in Naddi and Bhagsunag, 1-2 in in McLeod Ganj. 58 HRTC bus routes suspended in Kangra district | [The Tribune, 25 Jan 2026](https://www.tribuneindia.com/news/himachal/snowfall-grips-mcleodganj-cold-wave-tightens-hold-on-kangra/), [The Tribune, 24 Jan 2026](https://www.tribuneindia.com/news/himachal/58-bus-routes-suspended-in-kangra-as-snowfall-blankets-mcleodganj/) |
+| 1 Feb 2024 | Naddi, Dal Lake, Dharamkot, Kharota, McLeod Ganj, Bhagsu, Triund; rain and hail lower down | First snow of that winter, after a long dry spell. A weather official put it at more than 1 ft in McLeod Ganj, Naddi and Bhagsu. Long jams on the Dharamshala-Naddi road | [The Tribune, 2 Feb 2024](https://www.tribuneindia.com/news/himachal/naddi-dal-lake-draped-in-white-586419), [IANS via Social News XYZ, 1 Feb 2024](https://www.socialnews.xyz/2024/02/01/snow-blankets-dalai-lamas-abode-in-himachal/) |
+| 21 Jan 2020 | Naddi, Dharamkot, Upper Bhagsu, McLeod Ganj; lower hills turned white | About 6 in in Naddi, Dharamkot and Upper Bhagsu; heaviest of that season | [The Tribune, 22 Jan 2020](https://www.tribuneindia.com/news/himachal/locals-rush-to-naddi-to-enjoy-snow-29800) |
+| 8 Feb 2019 | Kotwali Bazaar and parts of lower Dharamshala; Bhagsunag, McLeod Ganj, Dharamkot | Up to about 1 ft in the upper areas. First snow at Kotwali Bazaar in more than six years (previous: 2012) | [The Tribune, 9 Feb 2019](https://www.tribuneindia.com/news/archive/himachal/lower-dharamsala-experiences-snow-after-6-years-726214) |
+| 31 Dec 2010 | Dharamkot, Naddi, light snow in McLeod Ganj | Over 1 ft in Dharamkot | [The Tribune, 1 Jan 2011](https://www.tribuneindia.com/2011/20110101/himachal.htm) |
+| About 9 Feb 2010 (approx.) | McLeod Ganj, Dharamkot, Naddi, Bhagsunag, Triund | About 2 in in McLeod Ganj, about 1 ft in Dharamkot, Naddi and Bhagsunag; Dharamkot road blocked. First snow in McLeod Ganj in two years | [The Tribune, 10 Feb 2010](https://www.tribuneindia.com/2010/20100210/himachal.htm) |
+
+Two patterns stand out. First, **Dharamkot and Naddi often get several times more snow than McLeod Ganj in the same storm** (1 ft against 2 inches in February 2010). Second, **gaps of a year or more without snow in town are normal**, which is why we never promise it. We add new snowfalls to this log as they are reported; for the latest conditions, also see our [travel updates](/travel-updates).
+
+## Where Does It Snow? Altitude Is Everything
 
 | Area | Approx. altitude | Snow chance in winter | What to expect |
 |---|---|---|---|
-| Lower Dharamshala, Kotwali Bazaar | 1,250-1,450 m | Very rare | Cold, sunny days, frosty nights, hail possible |
+| Lower Dharamshala, Kotwali Bazaar | 1,250-1,450 m | Very rare (2012, 2019) | Cold, sunny days, frosty nights, hail possible |
 | McLeod Ganj, Bhagsu | 1,750-1,850 m | Occasional, Jan-Feb | A few snowy days in a good winter, often melting quickly |
-| Dharamkot, Naddi | 1,900-2,100 m | Better than McLeod Ganj | More frequent snow, lingers longer in shaded spots |
+| Dharamkot, Naddi | 1,900-2,100 m | Better than McLeod Ganj | More frequent and deeper snow, lingers in shaded spots |
 | Gallu Devi temple, Triund trail start | around 2,100-2,200 m | Fairly regular | Snow patches on the trail most of Jan-Feb |
 | Triund ridge | around 2,850 m | Very likely Dec-Mar | Snow cover often knee-deep after storms |
-| Snowline and Indrahar Pass | 3,200-4,300 m | Snowbound | Not for casual winter trekkers |
+| Snowline and Indrahar Pass | 3,200-4,300 m | Snowbound | Not for winter visitors; treks above 3,000 m are often banned in winter |
 
-Snowfall in this region usually comes with western disturbances: a system moves in, it rains in the valley and snows on the higher slopes for one to three days, then the sky clears. The day after a storm is magic: crisp air, fresh snow on the Dhauladhar and very few tourists.
+## Dharamshala Me Barf Kab Girti Hai? (Hinglish Q&A)
 
-## Month-by-Month: December to February
+### Dharamshala me barf kab girti hai?
+
+Upar wale Dharamshala (McLeod Ganj, Naddi, Dharamkot, Bhagsu) me barf December ke aakhri dino se February tak, saal me sirf kuch dino ke liye girti hai. Sabse zyada chance January me hota hai. Neeche wale Dharamshala aur Kotwali Bazaar me barf lagbhag kabhi nahi girti; wahan aakhri baar 8 February 2019 ko giri thi.
+
+### McLeodganj me barf kab girti hai?
+
+McLeodganj me barf aam taur par January aur February ke pehle hisse me girti hai, jab western disturbance aata hai. Har saal pakki nahi hai: 2024 me pehli barf 1 February ko giri. Sabse taaza barf 23-24 January 2026 ko giri thi, McLeodganj me 1-2 inch aur Dharamkot me lagbhag 3 inch.
+
+### Dharamshala me snowfall kab hota hai?
+
+Snowfall late December se February tak hota hai, sabse zyada January me. Pakki barf dekhni hai to Triund (lagbhag 2,850 m) jaiye, jahan December se March tak barf milti hai. Naddi aur Dharamkot me McLeodganj se zyada barf girti hai.
+
+## Month by Month: October to March
+
+### October and November
+
+No snow in town. The Dhauladhar peaks often get their first dusting in autumn: around 14 October 2026 fresh snow covered the peaks while the lower areas got rain. These are the clearest months for views, so you see the white peaks sharply, but you will not stand in snow without a high trek.
 
 ### December
 
-Long-term averages (IMD) for Dharamshala town put December at roughly 18°C by day and 7°C at night; McLeod Ganj runs about 3-5 degrees colder, with nights close to freezing. December is mostly dry and sunny, which makes it superb for views. Snow on the Dhauladhar peaks is common, but snow in McLeod Ganj itself is uncommon before late December. Christmas and New Year bring a crowd, so hotel prices spike from about 24 December to 2 January.
+Long-term averages (IMD) for Dharamshala town put December at roughly 18°C by day and 7°C at night; McLeod Ganj runs about 3-5 degrees colder, with nights close to freezing. December is mostly dry and sunny. Snow on the peaks is common, but snow in McLeod Ganj itself is uncommon before the last days of the month (the 31 December 2010 fall is the December event in our log). Hotel prices spike from about 24 December to 2 January.
 
 ### January
 
-The coldest month. Dharamshala averages around 16°C by day and 6°C at night, and McLeod Ganj nights often dip below zero. January has the best odds of snowfall in McLeod Ganj, Naddi and Dharamkot, usually after a western disturbance. Expect a few grey, wet days followed by brilliant clear spells. Many visitors time trips for late January because the New Year rush is over and the snow chance is highest.
+The coldest month. Dharamshala averages around 16°C by day and 6°C at night, and McLeod Ganj nights often dip below zero. January has the best odds of snowfall in McLeod Ganj, Naddi and Dharamkot, as on 21 January 2020 and 23-24 January 2026. Expect a few grey, wet days followed by brilliant clear spells.
 
 ### February
 
-Still cold, a bit wetter on average, with another good window for snow in the upper villages, especially in the first half of the month. By late February days warm up noticeably and snow in town melts quickly, but Triund often holds snow well into March. Losar, the Tibetan New Year, often falls in February or early March and brings a special atmosphere to McLeod Ganj.
+Still cold, a bit wetter on average, and another good window for snow in the upper villages in the first half of the month (9 February 2010, 8 February 2019, 1 February 2024). Losar, the Tibetan New Year, usually falls in February or early March (18 February in 2026), so a February trip can combine snow odds with festival days; see our [Losar guide](/blog/losar-tibetan-festivals-guide).
 
-## Best Snow Spots Near Dharamshala
+### March
 
-1. **Naddi**: a short drive above McLeod Ganj with a wide view of the Dhauladhar. In a snowy week it is the easiest place to see snow on the ground without trekking. See our [Naddi destination guide](/destinations/naddi).
-2. **Dharamkot and the Gallu Devi area**: the trailhead for Triund. After a fresh fall, the forest paths here look like a postcard. Explore [Dharamkot](/destinations/dharamkot).
+Snow in town is unlikely and melts fast; we found no March snowfall in McLeod Ganj in our log. Triund often keeps snow into March, and late storms can whiten the peaks again.
+
+## Best Places to See Snow Near Dharamshala
+
+1. **Naddi**: a short drive above McLeod Ganj with a wide view of the Dhauladhar, and one of the first places to turn white. Read our [Naddi and Dal Lake guide](/blog/naddi-dal-lake-guide) or the [Naddi destination page](/destinations/naddi).
+2. **Dharamkot and the Gallu Devi area**: often gets the deepest snow of the villages (over 1 ft on 31 December 2010, about 3 in on 23-24 January 2026). Explore [Dharamkot](/destinations/dharamkot).
 3. **Triund**: the most reliable snow you can reach in a day. In winter the last section above Magic View can be icy; microspikes and a local guide are wise. Read our [Triund trek complete guide](/blog/triund-trek-complete-guide) and check [guided Triund treks](/treks/triund-trek).
 4. **Dal Lake and Talnu side**: snowy pines and quiet roads beyond Naddi in a good winter.
-5. **The Dhauladhar from town**: even with zero snow underfoot, the snow-capped range filling the skyline is the winter highlight in Dharamshala.
+5. **The Dhauladhar from town**: even with zero snow underfoot, the snow-capped range filling the skyline is the winter highlight.
 
-Avoid going beyond Triund to the Snowline or Indrahar Pass in winter unless you are an experienced, properly equipped mountaineer with a guide. Avalanche and fall risk is real.
+Do not go beyond Triund to the Snowline or Indrahar Pass in winter. The Kangra district administration has banned trekking above 3,000 m in past winters (for example from 30 December 2022) because of avalanche and fall risk, and similar orders are likely again.
 
-## Road Conditions in Winter
+## Dharamshala or Manali for Snow?
+
+If snow underfoot is the main goal, Manali is the surer bet. In the same storm of 23-24 January 2026, Manali recorded about 45.8 cm of snow in 24 hours while McLeod Ganj and its villages got 1-3 inches. Dharamshala wins on views, Tibetan culture and easier roads, and you can still see snow at Naddi, Dharamkot or Triund in a good week. Manali is about 230-250 km and 7-9 hours by road; see [Dharamshala to Manali](/blog/dharamshala-to-manali).
+
+## Are Roads Open After Snowfall?
 
 - The main highway to Dharamshala via Kangra stays open all winter. Snow on this road is very rare.
 - The Dharamshala-McLeod Ganj roads (via Kotwali Bazaar or via Forsyth Ganj) can turn icy on the morning after snowfall. Taxis often wait for the sun or for the road to be cleared.
-- Roads to Naddi and Dharamkot are narrow and shaded; they may be closed to cars for a day or two after heavy snow. Walking is often easier.
-- Black ice forms on shaded bends early in the morning. If you are self-driving from the plains with no hill experience, consider leaving the car at your hotel and using [local taxis](/taxi) driven by people who know these roads.
-- Power cuts can follow heavy snowfall. Keep your phone charged and carry a power bank.
+- Roads to Naddi and Dharamkot are narrow and shaded; they may be blocked for a day or two after heavy snow (as in February 2010), and jams build when everyone drives up to see the snow (as on 1 February 2024). Walking is often easier.
+- Buses can stop too: on 23-24 January 2026, 58 HRTC bus routes were suspended in Kangra district.
+- Black ice forms on shaded bends early in the morning. If you are not used to hill driving, leave the car at your hotel and book a [local taxi](/taxi) with a driver who knows these roads; agree the fare and the drop point before you set off on a snow day.
+- Power and water cuts can follow heavy snowfall (they did in February 2019). Keep your phone charged and carry a power bank.
 
 ## What Is Open in Winter?
 
-Almost everything. Dharamshala is not a hill station that shuts down. The Tsuglagkhang Complex, monasteries, the Tibet Museum, St. John in the Wilderness, cafes, restaurants and markets in McLeod Ganj all operate through winter, though some cafes and shops close for a few weeks in January or February when owners travel. Bhagsu waterfall has little water but is still a pleasant walk. Paragliding at Bir Billing continues in winter on clear days, but flights can be cancelled in bad weather (see our [Bir Billing paragliding guide](/blog/bir-billing-paragliding-guide)), and short local tandem flights near Dharamshala depend on conditions too, so check [paragliding options](/paragliding) before you go.
-
-Camping at Triund is more restricted in winter, and some campsites and huts close. Confirm current rules and availability before planning an overnight stay.
+Almost everything. The Tsuglagkhang Complex, monasteries, the Tibet Museum, St. John in the Wilderness, cafes, restaurants and markets in McLeod Ganj all operate through winter, though some cafes and shops close for a few weeks in January or February when owners travel. Paragliding at Bir Billing continues on clear days, but flights can be cancelled in bad weather (see our [Bir Billing paragliding guide](/blog/bir-billing-paragliding-guide)), and short local tandem flights depend on conditions too, so check [paragliding options](/paragliding) before you go. Camping at Triund is more restricted in winter; confirm current rules before planning a night on the ridge.
 
 ## Winter Packing List
 
@@ -221,57 +282,96 @@ Camping at Triund is more restricted in winter, and some campsites and huts clos
 - Woollen cap, gloves and a scarf or neck gaiter
 - Waterproof shoes with good grip; add microspikes if you plan to hike to Triund
 - Thick woollen socks, several pairs
-- Sunglasses and sunscreen; the winter sun at altitude is strong and snow glare is harsh
+- Sunglasses and sunscreen; snow glare at altitude is harsh
 - Lip balm and moisturiser; the air is dry
 - Power bank and a small torch
-- A hot-water bottle if you feel the cold; many locals swear by one
 
 For more detail by month, see our [Dharamshala weather and packing guide](/blog/dharamshala-weather-what-to-pack).
 
-## Hotel Tips for a Winter Stay
+## Where to Stay for Snow and Warmth
 
-Old Himalayan buildings are built for summer views, not winter warmth, so ask these questions before you book:
+If you want the best chance of waking up to snow, stay high: Dharamkot, Naddi or upper McLeod Ganj. If comfort matters more, lower Dharamshala is a few degrees warmer. Compare areas in [where to stay in Dharamshala](/blog/where-to-stay-in-dharamshala). Before you book, ask:
 
-- **Is there a room heater, and is it included?** Some properties charge approx. ₹300-500 a night extra for an oil or fan heater.
-- **Is hot water 24-hour?** Solar geysers struggle on cloudy days. Electric geysers in the bathroom are the safe bet.
-- **Which way does the room face?** South-facing rooms with sun in the afternoon are noticeably warmer.
-- **Is there power backup?** Snowfall can cause outages; an inverter or generator matters.
-- **How do you reach the door?** Some hotels in Dharamkot and upper Bhagsu are a walk up steep steps, which can be icy after snow.
-- **Are blankets or electric blankets provided?** Ask for extra quilts on arrival.
+- **Is there a room heater, and is it included?** Some properties charge approx. ₹300-500 a night extra.
+- **Is hot water 24-hour?** Solar geysers struggle on cloudy days; electric geysers are the safe bet.
+- **Which way does the room face?** South-facing rooms with afternoon sun are noticeably warmer.
+- **Is there power backup?** Snowfall can cause outages.
+- **How do you reach the door?** Some stays in Dharamkot and upper Bhagsu are up steep steps that turn icy after snow.
 
-Winter outside the Christmas and New Year week is low season, so you can often get a mid-range room for approx. 20-40 percent less than in May or October. [Browse heated hotels in Dharamshala and McLeod Ganj](/hotels), or [ask us](/contact) which properties stay warmest in January. For quick answers on bookings and policies, visit our [FAQ](/faq).
+Outside Christmas and New Year week, winter is low season and mid-range rooms are often approx. 20-40 percent cheaper than in May or October. [Browse hotels with mountain views in Dharamshala and McLeod Ganj](/hotels), or [ask us](/contact) which properties stay warmest in January.
 
 ## Is Dharamshala Worth Visiting in Winter?
 
-Yes, if you like clear mountain views, quiet streets and cosy cafe afternoons. You trade some comfort for some of the best Dhauladhar views of the year. Just set the right expectation: snow in McLeod Ganj is a happy bonus, not a promise. Build a flexible day into your plan, watch the forecast for a western disturbance and be ready to head up to Naddi or Triund the morning after it passes. For the full picture across the year, compare with our [best time to visit Dharamshala](/blog/best-time-to-visit-dharamshala) guide.`,
+Yes, if you like clear mountain views, quiet streets and cosy cafe afternoons. Just set the right expectation: snow in McLeod Ganj is a happy bonus, not a promise. Build a flexible day into your plan, watch the IMD forecast for a western disturbance and be ready to head up to Naddi or Triund the morning after it passes. For the full year, compare with our [best time to visit Dharamshala](/blog/best-time-to-visit-dharamshala) guide.`,
     category: 'Planning',
-    tags: ['dharamshala snowfall', 'mcleod ganj snow', 'winter travel', 'triund in winter', 'naddi', 'dharamshala in january'],
+    tags: ['dharamshala snowfall', 'mcleod ganj snow', 'when does it snow in dharamshala', 'dharamshala me barf kab girti hai', 'winter travel', 'triund in winter', 'naddi', 'dharamkot snow'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-09-10',
-    updated_at: '2026-10-01',
+    updated_at: '2026-10-20',
     image: placeImage('dharamshala-snow'),
     image_alt: 'Fresh snow on the Dhauladhar range and rooftops above McLeod Ganj, Dharamshala, in winter',
-    read_time: 7,
+    read_time: 10,
     featured: false,
-    meta_title: 'When Does It Snow in Dharamshala? Snowfall Months 2026',
-    meta_description: 'Snow in Dharamshala: McLeod Ganj, Naddi and Dharamkot see snow on some days from late December to February. Where to see it, roads and tips.',
-    related_slugs: ['best-time-to-visit-dharamshala', 'triund-trek-complete-guide', 'dharamshala-weather-what-to-pack'],
+    meta_title: 'When Does It Snow in Dharamshala? Months & Places 2026',
+    meta_description: 'McLeod Ganj, Naddi and Dharamkot get snow on a few days from late Dec to Feb, most often January; lower Dharamshala almost never. Dated snow log inside.',
+    related_slugs: ['best-time-to-visit-dharamshala', 'triund-trek-complete-guide', 'dharamshala-weather-what-to-pack', 'mcleod-ganj-in-december', 'naddi-dal-lake-guide'],
+    sources: [
+      { title: 'Snowfall grips McLeodganj, cold wave tightens hold on Kangra (The Tribune, 25 January 2026)', url: 'https://www.tribuneindia.com/news/himachal/snowfall-grips-mcleodganj-cold-wave-tightens-hold-on-kangra/' },
+      { title: '58 bus routes suspended in Kangra as snowfall blankets McLeodganj (The Tribune, 24 January 2026)', url: 'https://www.tribuneindia.com/news/himachal/58-bus-routes-suspended-in-kangra-as-snowfall-blankets-mcleodganj/' },
+      { title: 'Fresh snowfall brightens Dharamshala tourism prospects (The North News, 15 October 2026)', url: 'https://www.thenorthnews.in/fresh-snowfall-brightens-dharamshala-tourism-prospects/' },
+      { title: 'Naddi, Dal Lake draped in white (The Tribune, 2 February 2024)', url: 'https://www.tribuneindia.com/news/himachal/naddi-dal-lake-draped-in-white-586419' },
+      { title: 'Snow blankets Dalai Lama abode in Himachal (IANS via Social News XYZ, 1 February 2024)', url: 'https://www.socialnews.xyz/2024/02/01/snow-blankets-dalai-lamas-abode-in-himachal/' },
+      { title: 'Locals rush to Naddi to enjoy snow (The Tribune, 22 January 2020)', url: 'https://www.tribuneindia.com/news/himachal/locals-rush-to-naddi-to-enjoy-snow-29800' },
+      { title: 'Lower Dharamsala experiences snow after 6 years (The Tribune, 9 February 2019)', url: 'https://www.tribuneindia.com/news/archive/himachal/lower-dharamsala-experiences-snow-after-6-years-726214' },
+      { title: 'Snow at Dharamkot, Naddi, McLeodganj (The Tribune, 1 January 2011)', url: 'https://www.tribuneindia.com/2011/20110101/himachal.htm' },
+      { title: 'Snow returns to McLeodganj after two years (The Tribune, 10 February 2010)', url: 'https://www.tribuneindia.com/2010/20100210/himachal.htm' },
+      { title: 'Trekking beyond 3,000 m banned in Kangra district (The Tribune, 31 December 2022)', url: 'https://www.tribuneindia.com/news/himachal/trekking-beyond-3-000-m-banned-in-kangra-district-466046' },
+      { title: 'IMD Meteorological Centre Shimla: forecasts and district warnings for Himachal Pradesh', url: 'https://mausam.imd.gov.in/shimla/' },
+    ],
     faqs: [
       {
-        question: 'When does it snow in McLeod Ganj?',
-        answer: 'Snow in McLeod Ganj is most likely in January and the first half of February, usually after a western disturbance. Some winters bring only a light dusting, and lower Dharamshala very rarely gets settled snow.',
+        question: 'When does it snow in Dharamshala?',
+        answer: 'Upper Dharamshala (McLeod Ganj, Naddi, Dharamkot and Bhagsu) gets snow on a few days between late December and February, most often in January. Lower Dharamshala almost never does. The most recent snow in town was on 23-24 January 2026, about 1-3 inches.',
       },
       {
-        question: 'Where can I see snow near Dharamshala for sure?',
-        answer: 'Triund, at about 2,850 m, is the most reliable snow you can reach in a day from December to March. Naddi and Dharamkot get snow more often than McLeod Ganj in a good winter.',
+        question: 'Dharamshala me barf kab girti hai? Snowfall kab hota hai?',
+        answer: 'Upar wale Dharamshala (McLeod Ganj, Naddi, Dharamkot) me barf aur snowfall December ke aakhir se February tak kuch dino ke liye hota hai, sabse zyada January me. Neeche wale Dharamshala me barf lagbhag kabhi nahi girti. Har saal pakki nahi hai.',
       },
       {
-        question: 'Can I do the Triund trek in winter?',
-        answer: 'Yes, in clear weather, but the upper section can be icy or deep in snow after storms. Wear proper boots with microspikes, start early and go with a local guide. Overnight camping is more restricted in winter, so confirm rules first.',
+        question: 'McLeodganj me barf kab girti hai?',
+        answer: 'McLeodganj me barf aam taur par January aur February ke pehle hisse me girti hai. Sabse taaza barf 23-24 January 2026 ko giri thi, McLeodganj me 1-2 inch. Pakki barf ke liye Triund jaiye.',
       },
       {
-        question: 'Are roads to Dharamshala open in winter?',
-        answer: 'The main highway to Dharamshala stays open all winter. Roads up to McLeod Ganj, Naddi and Dharamkot can be icy or briefly closed after heavy snowfall, so allow a buffer day.',
+        question: 'Does it snow in Dharamkot?',
+        answer: 'Yes, Dharamkot (about 2,000 m) gets snow more often and deeper than McLeod Ganj. It had about 3 inches on 23-24 January 2026 and over 1 foot on 31 December 2010, while McLeod Ganj got only a light fall.',
+      },
+      {
+        question: 'Does it snow in Dharamshala in December?',
+        answer: 'Rarely in town. Snow in McLeod Ganj before the last days of December is uncommon; the Dhauladhar peaks and Triund are often white. January and early February give much better odds.',
+      },
+      {
+        question: 'Does it snow in Dharamshala in October or November?',
+        answer: 'Not in town. The Dhauladhar peaks often get early snow, as around 14 October 2026, and you see them clearly from Dharamshala, but McLeod Ganj and the villages stay snow-free in October and November.',
+      },
+      {
+        question: 'Does it snow in Dharamshala in March?',
+        answer: 'Snow in McLeod Ganj in March is unlikely and melts fast. Triund and the upper slopes often keep snow into March, so a guided day hike is the way to see it.',
+      },
+      {
+        question: 'Does it snow in Dharamshala every year, and is snow guaranteed?',
+        answer: 'No. Some winters bring only a dusting or nothing in town: in 2023-24 the first snow in the upper villages came only on 1 February 2024, and in 2010 McLeod Ganj had gone two years without snow. Only Triund is near-certain from December to March.',
+      },
+      {
+        question: 'Are roads to McLeod Ganj open after snowfall?',
+        answer: 'The highway to Dharamshala via Kangra stays open. Roads to McLeod Ganj, Naddi and Dharamkot can be icy or blocked for a day, and buses may stop: on 23-24 January 2026, 58 HRTC routes were suspended in Kangra. Keep a buffer day.',
+      },
+      {
+        question: 'Is Dharamshala or Manali better for snow?',
+        answer: 'Manali is the surer bet for snow underfoot. In the 23-24 January 2026 storm Manali recorded about 45.8 cm in 24 hours while McLeod Ganj villages got 1-3 inches. Dharamshala is better for views, Tibetan culture and easier roads.',
+      },
+      {
+        question: 'What is the best place to see snow near Dharamshala?',
+        answer: 'Triund (about 2,850 m) is the most reliable, from December to March, with a guide and microspikes. Without trekking, Naddi and Dharamkot are the best bets after a snowfall, as they get more snow than McLeod Ganj.',
       },
     ],
   },

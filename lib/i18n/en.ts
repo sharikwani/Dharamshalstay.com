@@ -252,8 +252,8 @@ export const en = {
     },
   },
   hotels: {
-    metaTitle: 'Hotels in Dharamshala & McLeod Ganj - Best Stays',
-    metaDescription: 'Compare hotels, homestays and hostels in Dharamshala, McLeod Ganj, Bhagsu, Dharamkot & Naddi by area, type and budget. Direct rates and free local booking help.',
+    metaTitle: 'Hotels in Dharamshala & McLeod Ganj 2026: 50+ Stays',
+    metaDescription: '50+ local hotels, homestays and hostels in McLeod Ganj, Bhagsu, Dharamkot, Naddi and Dharamshala town, by area and budget. Free booking help.',
     h1: 'Hotels & Stays in Dharamshala',
     budgetLink: 'Travelling on a budget? Compare budget hotels in Dharamshala',
     intro: "From boutique stays with valley views to budget hostels near the Triund trail, across Dharamshala, McLeod Ganj, Bhagsu, Dharamkot and Naddi. Partner properties show direct rates; directory listings are rates on request -- send an enquiry and we'll check for you.",
