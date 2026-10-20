@@ -299,12 +299,12 @@ export function LikelyPlayer({ code, state, me }: { code: string; state: PublicS
 /* ================================================================== Lucky Draw */
 
 /** The reel: flicks through everyone's photos, then lands on the winner. */
-function Reel({ roster, winner }: { roster: Player[]; winner: Player | null }) {
+function Reel({ roster, winner, onSettled }: { roster: Player[]; winner: Player | null; onSettled: () => void }) {
   const [shown, setShown] = useState<Player | null>(winner);
   const [spinning, setSpinning] = useState(false);
   const lastWinner = useRef<string | null>(winner?.id ?? null);
   useEffect(() => {
-    if (!winner || winner.id === lastWinner.current || roster.length < 2) { setShown(winner); return; }
+    if (!winner || winner.id === lastWinner.current || roster.length < 2) { setShown(winner); onSettled(); return; }
     lastWinner.current = winner.id;
     setSpinning(true);
     let i = 0;
@@ -313,10 +313,11 @@ function Reel({ roster, winner }: { roster: Player[]; winner: Player | null }) {
     const step = () => {
       setShown(roster[i++ % roster.length]);
       delay *= 1.08;
-      if (delay < 450) t = setTimeout(step, delay); else { setShown(winner); setSpinning(false); }
+      if (delay < 450) t = setTimeout(step, delay); else { setShown(winner); setSpinning(false); onSettled(); }
     };
     step();
     return () => clearTimeout(t);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [winner, roster]);
   return (
     <div className="flex flex-col items-center py-6">
@@ -333,6 +334,8 @@ export function DrawHost({ code, state, hostToken, setState }: { code: string; s
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const latest = [...state.winners].sort((a, b) => b.place - a.place)[0];
+  // The winners list waits for the reel to stop, so the name is not spoiled while it spins.
+  const [settled, setSettled] = useState(state.winners.length);
   const winner = latest ? roster.find((p) => p.id === latest.player_id) || { id: latest.player_id, name: latest.name, photo: null } : null;
   async function spinNow() {
     if (busy) return;
@@ -345,12 +348,12 @@ export function DrawHost({ code, state, hostToken, setState }: { code: string; s
       <RoomHeader state={state} code={code} />
       <div className="rounded-2xl bg-white p-6 shadow text-center">
         <p className="text-slate-500">{state.winners.length} of {r.prizes} prize{r.prizes > 1 ? 's' : ''} drawn</p>
-        <Reel roster={roster} winner={winner} />
+        <Reel roster={roster} winner={winner} onSettled={() => setSettled(state.winners.length)} />
         {!done && <button onClick={spinNow} disabled={busy || state.players < 1} className={big}>{state.winners.length ? 'Spin for the next prize' : 'Spin!'}</button>}
         {!roster.length && <p className="mt-3 text-slate-500">Waiting for players to join…</p>}
       </div>
       {!done && roster.length > 0 && <div className="flex flex-wrap justify-center gap-2">{roster.slice(0, 60).map((p) => <Avatar key={p.id} p={p} size={44} />)}</div>}
-      <Winners state={state} />
+      <Winners state={{ ...state, winners: [...state.winners].sort((a, b) => a.place - b.place).slice(0, settled) }} />
       <HostButtons code={code} hostToken={hostToken} ended={state.status === 'ended'} onError={setErr}>{null}</HostButtons>
       {err && <p className="text-sm text-red-600">{err}</p>}
     </div>
@@ -359,16 +362,20 @@ export function DrawHost({ code, state, hostToken, setState }: { code: string; s
 
 export function DrawPlayer({ state, me }: { state: PublicState; me: Me }) {
   const r = state.round as Extract<RoundView, { kind: 'lucky_draw' }>;
-  const mine = state.winners.some((w) => w.player_id === me.playerId);
+  // Phones learn the winner while the TV reel is still spinning: wait for it.
+  const [shown, setShown] = useState(state.winners.length);
+  useEffect(() => { const t = setTimeout(() => setShown(state.winners.length), 4500); return () => clearTimeout(t); }, [state.winners.length]);
+  const visible = { ...state, winners: [...state.winners].sort((a, b) => a.place - b.place).slice(0, shown) };
+  const mine = visible.winners.some((w) => w.player_id === me.playerId);
   return (
     <div className="max-w-xl mx-auto space-y-4">
       <div className="rounded-2xl bg-white p-6 text-center shadow">
         <p className="text-4xl">{GAMES.lucky_draw.emoji}</p>
         <p className="mt-2 font-semibold text-slate-800">You are in the draw, {me.name}!</p>
-        <p className="text-slate-500 text-sm mt-1">{state.winners.length} of {r.prizes} prizes drawn. Watch the big screen.</p>
+        <p className="text-slate-500 text-sm mt-1">{shown < state.winners.length ? 'Spinning… watch the big screen!' : `${visible.winners.length} of ${r.prizes} prizes drawn. Watch the big screen.`}</p>
         {mine && <p className="mt-3 text-lg font-bold text-green-700">🎉 You won!</p>}
       </div>
-      <Winners state={state} meId={me.playerId} />
+      <Winners state={visible} meId={me.playerId} />
     </div>
   );
 }
