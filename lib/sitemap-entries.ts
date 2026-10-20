@@ -82,6 +82,7 @@ export async function sitemapEntries(): Promise<SitemapEntry[]> {
     { url: B + '/taxi', lastModified: contentDate, changeFrequency: 'monthly', priority: 0.7 },
     { url: B + '/about', lastModified: contentDate, changeFrequency: 'yearly', priority: 0.5 },
     { url: B + '/contact', lastModified: contentDate, changeFrequency: 'yearly', priority: 0.6 },
+    { url: B + '/sitemap-html', lastModified: contentDate, changeFrequency: 'weekly', priority: 0.3 },
     { url: B + '/photo-credits', lastModified: contentDate, changeFrequency: 'yearly', priority: 0.2 },
 
     { url: B + '/privacy', changeFrequency: 'yearly', priority: 0.2 },

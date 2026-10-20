@@ -39,4 +39,5 @@ Blog posts, guides, landing pages, FAQs and page copy must do all three, every t
 - **AEO (answer engines, featured snippets, voice):** open with a bold **Short answer:** of 2-4 sentences; question-style H2s; a quick-facts table (dates, timings, location, entry fee, how to reach); 5-8 FAQs (the `faqs` field becomes FAQPage schema) with direct answers that make sense on their own.
 - **GEO (ChatGPT, Copilot, Perplexity, Gemini citing us):** specific, checkable facts with dates and numbers; name places precisely (ground, road, distance from McLeod Ganj / Kotwali Bazaar); say what is confirmed and what is not; a `sources` list of official and news sources; current year in title and dates; `updated_at` kept fresh.
 - Photos: only our own or freely licensed (Wikimedia Commons), self-hosted in `public/images/places` with credits in `data/photo-credits.ts`.
+- Sitemap always complete (owner rule): every new public page goes in `lib/sitemap-entries.ts` (`tests/sitemap-coverage.test.ts` fails otherwise); after a push, submit new/changed URLs with `node scripts/indexnow-submit.mjs <urls>`.
 - Run `npx tsc --noEmit -p .` and `npx vitest run` before committing.
