@@ -129,7 +129,10 @@ export function inWindow(checkIn: string, today = new Date().toISOString().slice
   return checkIn >= today && checkIn <= addDays(today, MAX_ADVANCE_DAYS);
 }
 
-/** Answer a live-pricing query: one <Result> per hotel we can sell for that stay. Prices are what the guest pays. */
+/**
+ * Answer a live-pricing query: one <Result> per hotel we can sell for that stay. Prices are what the guest pays:
+ * partner rates are tax-inclusive (owner, 20 Oct 2026) and checkout adds nothing, so Tax and OtherFees are 0.
+ */
 export async function priceTransaction(q: PriceQuery, hotels?: FeedHotel[]): Promise<string> {
   const all = hotels ?? (await feedHotels());
   const wanted = all.filter((h) => q.ids.length === 0 || q.ids.includes(h.id));
