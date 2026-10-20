@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { jsonError } from '@/lib/server-auth';
 import { jsonBody } from '@/lib/stories/request';
-import { roomPlayers } from '@/lib/game/store';
+import { publicPlayers, roomPlayers } from '@/lib/game/store';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -12,5 +12,12 @@ export async function POST(req: Request, { params }: { params: { code: string } 
   try {
     const b = await jsonBody(req);
     return NextResponse.json({ players: await roomPlayers(params.code, b.hostToken) });
+  } catch (e) { return jsonError(e); }
+}
+
+/** Everyone's name and photo, for voting and the Lucky Draw reel. */
+export async function GET(_req: Request, { params }: { params: { code: string } }) {
+  try {
+    return NextResponse.json({ players: await publicPlayers(params.code) }, { headers: { 'Cache-Control': 'no-store' } });
   } catch (e) { return jsonError(e); }
 }

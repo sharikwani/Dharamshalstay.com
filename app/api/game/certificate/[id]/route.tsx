@@ -1,6 +1,7 @@
 import { ImageResponse } from 'next/og';
 import { certificate } from '@/lib/game/certificate';
-import { CODE_MIN_BOOKING, PARTY_TYPES, PRIZES, placeLabel } from '@/lib/game/tambola';
+import { CODE_MIN_BOOKING, PARTY_TYPES, placeLabel } from '@/lib/game/tambola';
+import { GAMES, prizeLabel } from '@/lib/game/party';
 
 /**
  * Winner certificate, 1080x1350 (Instagram portrait, fine on WhatsApp): place, winner's name and photo,
@@ -49,19 +50,21 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
   // /api/game/certificate/demo?place=1 shows the design without a real game.
   const demoPlace = Math.min(3, Math.max(1, Number(new URL(req.url).searchParams.get('place')) || 1));
   const c = params.id === 'demo' ? {
-    id: 'demo', place: demoPlace, prize: (['full_house', 'first_line', 'early_five'] as const)[demoPlace - 1], name: 'Riya Sharma', photo: null,
+    id: 'demo', place: demoPlace, prize: (['full_house', 'first_line', 'early_five'] as const)[demoPlace - 1], game: 'tambola' as const, detail: null, name: 'Riya Sharma', photo: null,
     party_name: 'Riya’s 30th Birthday', party_type: 'birthday' as const, host_name: 'Aman', date: new Date().toISOString(),
-    discount_code: 'WIN-7K3QX', discount_amount: [1000, 500, 300][demoPlace - 1], code_expires_at: new Date(Date.now() + 180 * 86400e3).toISOString(),
+    discount_amount: [300, 200, 100][demoPlace - 1], code_expires_at: new Date(Date.now() + 180 * 86400e3).toISOString(),
   } : await certificate(params.id);
   if (!c) return new Response('Certificate not found', { status: 404 });
   const m = MEDAL[c.place] || MEDAL[3];
-  const prize = PRIZES[c.prize];
+  const label = prizeLabel(c.prize);
+  const champion = c.game === 'tambola' ? 'Tambola Champion' : c.game === 'quiz' ? 'Quiz Champion' : c.game === 'lucky_draw' ? 'Lucky Draw Winner' : 'Party Superstar';
+  const gameName = GAMES[c.game]?.name || 'Party game';
   const party = PARTY_TYPES[c.party_type] || 'Party';
   const place = placeLabel(c.place);
   const nameSize = c.name.length > 22 ? 64 : c.name.length > 14 ? 78 : 92;
 
-  const head = 'CERTIFICATE OF VICTORY Tambola Champion Dharamshala Stay ' + place + c.name + c.discount_code;
-  const body = `This is proudly presented to for winning at Hosted by on ${c.party_name} ${party} ${c.host_name} ${day(c.date)} ${prize.label} Prize ${inr(c.discount_amount)} OFF your Dharamshala trip Use code on hotels, treks, taxis and paragliding of ${inr(CODE_MIN_BOOKING)}+ . Valid till ${day(c.code_expires_at)}. One use. dharamshalastay.com/play Play free tambola at your next party 0123456789`;
+  const head = 'CERTIFICATE OF VICTORY Dharamshala Stay ' + champion + place + c.name + gameName;
+  const body = `This is proudly presented to for winning at Hosted by on ${c.party_name} ${party} ${c.host_name} ${day(c.date)} ${label} ${c.detail || ''} Prize ${inr(c.discount_amount || 0)} OFF your Dharamshala trip Coupon code sent to the winner by email for hotels, treks, taxis and paragliding of ${inr(CODE_MIN_BOOKING)}+ . Valid till ${c.code_expires_at ? day(c.code_expires_at) : ''}. One use. dharamshalastay.com/play Play free party games at your next party 0123456789`;
   const [bold, medium, logo] = await Promise.all([font('Poppins', 700, head + body), font('Poppins', 500, head + body), localPng('/brand/logo-badge-icon-512.png', origin)]);
   const fonts = [
     bold && { name: 'Poppins', data: bold, weight: 700 as const, style: 'normal' as const },
@@ -85,7 +88,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
           </div>
 
           <div style={{ display: 'flex', marginTop: 34, fontSize: 30, fontWeight: 700, letterSpacing: 8, color: m.ring }}>CERTIFICATE OF VICTORY</div>
-          <div style={{ display: 'flex', fontSize: 26, fontWeight: 500, color: '#475569', marginTop: 4 }}>Tambola Champion</div>
+          <div style={{ display: 'flex', fontSize: 26, fontWeight: 500, color: '#475569', marginTop: 4 }}>{champion}</div>
 
           <div style={{ display: 'flex', marginTop: 30, position: 'relative', width: 300, height: 260 }}>
             <div style={{ position: 'absolute', left: 25, top: 0, width: 250, height: 250, borderRadius: 999, border: '10px solid ' + m.ring, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', backgroundColor: '#1e3a5f' }}>
@@ -99,23 +102,22 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
           <div style={{ display: 'flex', fontSize: 28, fontWeight: 500, color: '#475569', marginTop: 26 }}>This is proudly presented to</div>
           <div style={{ display: 'flex', fontSize: nameSize, fontWeight: 700, color: '#1e3a5f', lineHeight: 1.1, marginTop: 6, textAlign: 'center' }}>{c.name}</div>
           <div style={{ display: 'flex', marginTop: 18, fontSize: 30, fontWeight: 500, color: '#334155' }}>
-            for winning <span style={{ fontWeight: 700, color: m.ribbon, marginLeft: 10, marginRight: 10 }}>{prize.label}</span> ({place} Prize) at
+            {c.game === 'tambola' ? 'for winning' : 'for'} <span style={{ fontWeight: 700, color: m.ribbon, marginLeft: 10, marginRight: 10 }}>{c.game === 'tambola' ? label : c.detail || label}</span> ({place} Prize{c.game === 'tambola' ? '' : ', ' + gameName}) at
           </div>
           <div style={{ display: 'flex', fontSize: 44, fontWeight: 700, color: '#0f172a', marginTop: 8, textAlign: 'center' }}>{c.party_name}</div>
           <div style={{ display: 'flex', fontSize: 26, fontWeight: 500, color: '#64748b', marginTop: 4 }}>{party} · Hosted by {c.host_name} · {day(c.date)}</div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 36, padding: '24px 40px', borderRadius: 22, backgroundColor: '#1e3a5f', color: '#fff', width: 820 }}>
-            <div style={{ display: 'flex', fontSize: 34, fontWeight: 700 }}>{inr(c.discount_amount)} OFF your Dharamshala trip</div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginTop: 10 }}>
-              <span style={{ fontSize: 24, fontWeight: 500, color: '#cbd5e1' }}>Use code</span>
-              <span style={{ fontSize: 40, fontWeight: 700, letterSpacing: 4, backgroundColor: '#ee5a24', borderRadius: 12, padding: '4px 20px' }}>{c.discount_code}</span>
+          {c.discount_amount ? (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 36, padding: '24px 40px', borderRadius: 22, backgroundColor: '#1e3a5f', color: '#fff', width: 820 }}>
+              <div style={{ display: 'flex', fontSize: 38, fontWeight: 700 }}>{inr(c.discount_amount)} OFF your Dharamshala trip</div>
+              <div style={{ display: 'flex', fontSize: 24, fontWeight: 500, color: '#fed7aa', marginTop: 8 }}>Coupon code sent to the winner by email</div>
+              <div style={{ display: 'flex', fontSize: 20, fontWeight: 500, color: '#cbd5e1', marginTop: 10, textAlign: 'center' }}>
+                On hotels, treks, taxis and paragliding of {inr(CODE_MIN_BOOKING)}+. Valid till {c.code_expires_at ? day(c.code_expires_at) : ''}. One use.
+              </div>
             </div>
-            <div style={{ display: 'flex', fontSize: 20, fontWeight: 500, color: '#cbd5e1', marginTop: 12, textAlign: 'center' }}>
-              On hotels, treks, taxis and paragliding of {inr(CODE_MIN_BOOKING)}+. Valid till {day(c.code_expires_at)}. One use.
-            </div>
-          </div>
+          ) : <div style={{ display: 'flex', height: 40 }} />}
 
-          <div style={{ display: 'flex', marginTop: 'auto', fontSize: 24, fontWeight: 700, color: '#1e3a5f' }}>Play free tambola at your next party: dharamshalastay.com/play</div>
+          <div style={{ display: 'flex', marginTop: 'auto', fontSize: 24, fontWeight: 700, color: '#1e3a5f' }}>Play free party games at your next party: dharamshalastay.com/play</div>
         </div>
       </div>
     ),

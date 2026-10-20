@@ -2,26 +2,31 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Loader2, Play, Pause, SkipForward, Users, Trophy, Volume2, VolumeX, Maximize, Square, Award } from 'lucide-react';
-import { useGame, post, store } from './useGame';
-import { PRIZES, PRIZE_ORDER, PARTY_TYPES, callText, placeLabel } from '@/lib/game/tambola';
+import { post, store } from './useGame';
+import { PRIZES, PRIZE_ORDER, PARTY_TYPES, callText, placeLabel, type Prize } from '@/lib/game/tambola';
+import { prizeLabel } from '@/lib/game/party';
+import { ANCHOR_VOICES, DEVICE_VOICE, anchorLine, anchorWinner, preloadVoice, warmNames } from './anchor';
 import type { PublicState } from '@/lib/game/store';
 
 type Player = { id: string; name: string; photo: string | null };
 const SPEEDS = [5, 8, 12, 20];
 
-export default function HostConsole({ code }: { code: string }) {
-  const { state, error, setState } = useGame(code);
-  const [hostToken, setHostToken] = useState<string | null | undefined>(undefined);
+/** Tambola host screen (HostRoom loads the room and checks this device is the host). */
+export default function HostConsole({ code, state, hostToken, setState }: { code: string; state: PublicState; hostToken: string; setState: (s: PublicState) => void }) {
   const [players, setPlayers] = useState<Player[]>([]);
   const [auto, setAuto] = useState(false);
   const [speed, setSpeed] = useState(8);
   const [voice, setVoice] = useState(true);
+  const [anchor, setAnchor] = useState<string>(ANCHOR_VOICES[0].id);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const spoken = useRef(0);
   const announced = useRef(0);
 
-  useEffect(() => { setHostToken(store.get<string>('tambola-host-' + code)); }, [code]);
+  useEffect(() => { const a = store.get<string>('tambola-anchor'); if (a) setAnchor(a); }, []);
+  useEffect(() => { if (voice) preloadVoice(anchor); }, [anchor, voice]);
+  // Make each player's name in the anchor's voice as they join, ready for when they win.
+  useEffect(() => { if (voice) warmNames(players.map((p) => p.name), anchor); }, [players, anchor, voice]);
 
   const loadPlayers = useCallback(async () => {
     if (!hostToken) return;
@@ -43,19 +48,18 @@ export default function HostConsole({ code }: { code: string }) {
     return () => clearTimeout(t);
   }, [auto, speed, call, state?.called.length, state?.status]);
 
-  const say = (text: string) => { if (!voice) return; try { window.speechSynthesis.cancel(); window.speechSynthesis.speak(new SpeechSynthesisUtterance(text)); } catch { /* no voice */ } };
   const last = state?.called[state.called.length - 1];
   useEffect(() => {
     if (!state || !last || state.called.length === spoken.current) return;
     spoken.current = state.called.length;
-    say(callText(last));
+    if (voice) { if (state.called.length === 1) anchorLine('start', anchor); anchorLine('n' + last, anchor); }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [last, state?.called.length]);
   useEffect(() => {
     if (!state || state.winners.length <= announced.current) return;
     const fresh = state.winners.slice(announced.current);
     announced.current = state.winners.length;
-    if (spoken.current) say(fresh.map((w) => `${w.name} wins ${PRIZES[w.prize].label}!`).join(' '));
+    if (spoken.current && voice) fresh.forEach((w) => anchorWinner(w.name, w.prize as Prize, anchor));
     if (state.winners.some((w) => w.prize === 'full_house')) setAuto(false);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state?.winners.length]);
@@ -65,14 +69,6 @@ export default function HostConsole({ code }: { code: string }) {
     try { setState(await post<PublicState>(`/api/game/${code}/end`, { hostToken })); setAuto(false); } catch (x: any) { setErr(x.message); }
   }
 
-  if (error && !state) return <p className="text-center text-slate-700 py-10">{error}</p>;
-  if (!state || hostToken === undefined) return <div className="flex justify-center py-20"><Loader2 className="h-8 w-8 animate-spin text-brand-600" /></div>;
-  if (!hostToken) return (
-    <div className="max-w-md mx-auto rounded-2xl bg-white p-6 text-center shadow">
-      <p className="text-slate-700">This screen is not the host of game {code}. The host screen is the device that started the game.</p>
-      <Link href={'/play?code=' + code} className="mt-4 inline-block font-semibold text-brand-600 underline">Join as a player instead</Link>
-    </div>
-  );
 
   const called = new Set(state.called);
   const ended = state.status === 'ended';
@@ -110,6 +106,14 @@ export default function HostConsole({ code }: { code: string }) {
                 <button onClick={() => setVoice(!voice)} className="inline-flex items-center gap-1 text-slate-600 hover:text-slate-900">{voice ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}{voice ? 'Voice on' : 'Voice off'}</button>
                 <button onClick={() => document.documentElement.requestFullscreen?.().catch(() => {})} className="inline-flex items-center gap-1 text-slate-600 hover:text-slate-900"><Maximize className="h-4 w-4" />Full screen</button>
                 {!ended && <button onClick={end} className="inline-flex items-center gap-1 text-red-600 hover:text-red-700"><Square className="h-4 w-4" />End game</button>}
+              </div>
+              <div className="flex flex-wrap items-center gap-2 text-sm">
+                <label htmlFor="anchor" className="text-slate-600">Anchor voice</label>
+                <select id="anchor" value={anchor} onChange={(e) => { setAnchor(e.target.value); store.set('tambola-anchor', e.target.value); }} className="rounded-lg border border-slate-300 px-2 py-1.5">
+                  {ANCHOR_VOICES.map((v) => <option key={v.id} value={v.id}>{v.label}: {v.note}</option>)}
+                  <option value={DEVICE_VOICE}>This device&apos;s voice (no download)</option>
+                </select>
+                <button onClick={() => { anchorLine('n22', anchor); anchorWinner('Riya', 'full_house', anchor); }} className="rounded-lg border border-brand-200 px-3 py-1.5 font-medium text-brand-800 hover:bg-brand-50">&#9654; Hear it</button>
               </div>
               {err && <p className="text-sm text-red-600">{err}</p>}
             </div>

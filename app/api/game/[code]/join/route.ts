@@ -10,6 +10,6 @@ export const fetchCache = 'force-no-store';
 export async function POST(req: Request, { params }: { params: { code: string } }) {
   try {
     const b = await jsonBody(req);
-    return NextResponse.json(await joinRoom(params.code, { name: b.name, photo: b.photo }));
+    return NextResponse.json(await joinRoom(params.code, { name: b.name, photo: b.photo, email: b.email, phone: b.phone, consent: b.consent }));
   } catch (e) { return jsonError(e); }
 }

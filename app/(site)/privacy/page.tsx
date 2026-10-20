@@ -28,6 +28,10 @@ export default function PrivacyPage() {
           <p className="mt-2">Emails are sent through Resend, and some marketing text is drafted with the help of an AI model; we never send it your payment details. We record whether our emails were delivered and opened so we can fix delivery problems and send less of what people don&apos;t read.</p>
         </section>
         <section>
+          <h2 className="text-xl font-heading font-semibold text-slate-900 mb-3">Party games (tambola, quiz, lucky draw)</h2>
+          <p>To join a game at dharamshalastay.com/play you give a name, an email and a mobile number, and you can add a photo. Your name and photo are shown to the other players in that game and appear on a winner&apos;s certificate, which the winner can share. Your email and number are never shown to other players: we use them to send a winner their discount coupon. We send you offers only if you tick the box to receive them. Games close after a day; tell us if you want your game details deleted.</p>
+        </section>
+        <section>
           <h2 className="text-xl font-heading font-semibold text-slate-900 mb-3">3. Information Sharing</h2>
           <p>We share booking details with hotels, homestays, taxi operators, trek guides, and paragliding operators necessary to fulfill your reservation. We do not sell or rent your personal information to third parties for marketing. We may disclose information when required by law.</p>
         </section>

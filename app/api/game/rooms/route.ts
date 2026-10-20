@@ -12,6 +12,6 @@ export const fetchCache = 'force-no-store';
 export async function POST(req: Request) {
   try {
     const b = await jsonBody(req);
-    return NextResponse.json(await createRoom({ party_name: b.party_name, party_type: b.party_type, host_name: b.host_name }, ipHashOf(req)));
+    return NextResponse.json(await createRoom({ party_name: b.party_name, party_type: b.party_type, host_name: b.host_name, game: b.game, options: b.options }, ipHashOf(req)));
   } catch (e) { return jsonError(e); }
 }

@@ -2,64 +2,14 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Camera, Trophy, Loader2, PartyPopper, Award, Volume2, VolumeX } from 'lucide-react';
-import { useGame, post, store } from './useGame';
-import { PRIZES, PRIZE_ORDER, PARTY_TYPES, callText, placeLabel, wins, type Prize, type Ticket } from '@/lib/game/tambola';
+import { post, store } from './useGame';
+import type { Me } from './JoinForm';
+import type { PublicState } from '@/lib/game/store';
+import { PRIZES, PRIZE_ORDER, PARTY_TYPES, callSpeech, callText, placeLabel, wins, type Prize, type Ticket } from '@/lib/game/tambola';
+import { prizeLabel } from '@/lib/game/party';
 
-type Me = { playerId: string; token: string; ticket: Ticket; name: string };
-
-/** Resize a picked photo on the phone before upload (keeps the upload small on mobile data). */
-async function shrink(file: File): Promise<string> {
-  const url = URL.createObjectURL(file);
-  try {
-    const img = await new Promise<HTMLImageElement>((ok, bad) => { const i = new Image(); i.onload = () => ok(i); i.onerror = bad; i.src = url; });
-    const s = Math.min(img.width, img.height);
-    const c = document.createElement('canvas');
-    c.width = c.height = 384;
-    c.getContext('2d')!.drawImage(img, (img.width - s) / 2, (img.height - s) / 2, s, s, 0, 0, 384, 384);
-    return c.toDataURL('image/jpeg', 0.8);
-  } finally { URL.revokeObjectURL(url); }
-}
-
-function Join({ code, party, onJoined }: { code: string; party: string; onJoined: (m: Me) => void }) {
-  const [name, setName] = useState('');
-  const [photo, setPhoto] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
-  const [err, setErr] = useState<string | null>(null);
-  const file = useRef<HTMLInputElement>(null);
-
-  async function submit(e: React.FormEvent) {
-    e.preventDefault();
-    if (busy) return;
-    setBusy(true); setErr(null);
-    try {
-      const me = await post<Me>(`/api/game/${code}/join`, { name, photo });
-      store.set('tambola-player-' + code, me);
-      onJoined(me);
-    } catch (x: any) { setErr(x.message); } finally { setBusy(false); }
-  }
-
-  return (
-    <form onSubmit={submit} className="max-w-sm mx-auto bg-white rounded-2xl shadow-lg p-6 space-y-4">
-      <div className="text-center">
-        <p className="text-xs font-semibold uppercase tracking-wide text-orange-600">Joining game {code}</p>
-        <h1 className="text-2xl font-heading font-bold text-slate-900 mt-1">{party}</h1>
-      </div>
-      <button type="button" onClick={() => file.current?.click()} className="mx-auto flex h-28 w-28 items-center justify-center overflow-hidden rounded-full border-4 border-dashed border-brand-200 bg-brand-50 text-brand-700">
-        {photo ? <img src={photo} alt="Your photo" className="h-full w-full object-cover" /> : <span className="flex flex-col items-center text-xs font-medium"><Camera className="h-7 w-7 mb-1" />Add photo</span>}
-      </button>
-      <input ref={file} type="file" accept="image/*" className="hidden" onChange={async (e) => { const f = e.target.files?.[0]; if (f) { try { setPhoto(await shrink(f)); } catch { setErr('Could not read that photo.'); } } }} />
-      <p className="text-center text-xs text-slate-500">Your photo goes on your winner certificate.</p>
-      <input value={name} onChange={(e) => setName(e.target.value)} required maxLength={30} placeholder="Your name" className="w-full rounded-lg border border-slate-300 px-3 py-3 text-base outline-none focus:ring-2 focus:ring-brand-500" />
-      {err && <p className="text-sm text-red-600">{err}</p>}
-      <button disabled={busy} className="w-full rounded-lg bg-orange-600 py-3 font-semibold text-white hover:bg-orange-700 disabled:opacity-60">{busy ? 'Getting your ticket…' : 'Get my ticket'}</button>
-    </form>
-  );
-}
-
-export default function PlayerGame({ code }: { code: string }) {
-  const { state, error } = useGame(code);
-  const [me, setMe] = useState<Me | null>(null);
-  const [ready, setReady] = useState(false);
+/** Tambola on a player's phone (the room, joining and loading are handled by PlayerRoom). */
+export default function PlayerGame({ code, state, me }: { code: string; state: PublicState; me: Me }) {
   const [marks, setMarks] = useState<number[]>([]);
   const [auto, setAuto] = useState(false);
   const [voice, setVoice] = useState(false);
@@ -68,10 +18,8 @@ export default function PlayerGame({ code }: { code: string }) {
   const spoken = useRef(0);
 
   useEffect(() => {
-    setMe(store.get<Me>('tambola-player-' + code));
     setMarks(store.get<number[]>('tambola-marks-' + code) || []);
     setAuto(!!store.get<boolean>('tambola-auto'));
-    setReady(true);
   }, [code]);
 
   const called = useMemo(() => state?.called || [], [state]);
@@ -81,17 +29,10 @@ export default function PlayerGame({ code }: { code: string }) {
   useEffect(() => {
     if (!voice || !last || called.length === spoken.current) return;
     spoken.current = called.length;
-    try { window.speechSynthesis.cancel(); window.speechSynthesis.speak(new SpeechSynthesisUtterance(callText(last))); } catch { /* no voice */ }
+    try { window.speechSynthesis.cancel(); window.speechSynthesis.speak(new SpeechSynthesisUtterance(callSpeech(last))); } catch { /* no voice */ }
   }, [voice, last, called.length]);
 
-  if (error && !state) return <div className="max-w-sm mx-auto rounded-2xl bg-white p-6 text-center shadow"><p className="text-slate-700">{error}</p><Link href="/play" className="mt-4 inline-block text-brand-600 underline">Try another code</Link></div>;
-  if (!state || !ready) return <div className="flex justify-center py-20"><Loader2 className="h-8 w-8 animate-spin text-brand-600" /></div>;
-
   const party = state.party_name;
-  if (!me) {
-    if (state.status === 'ended') return <div className="max-w-sm mx-auto rounded-2xl bg-white p-6 text-center shadow"><p className="text-slate-700">This game has finished.</p><Link href="/play" className="mt-4 inline-block text-brand-600 underline">Join another game</Link></div>;
-    return <Join code={code} party={party} onJoined={setMe} />;
-  }
 
   const marked = new Set(auto ? called : marks);
   const toggle = (n: number) => {
@@ -165,14 +106,14 @@ export default function PlayerGame({ code }: { code: string }) {
       {mine.length > 0 && (
         <div className="rounded-2xl bg-gradient-to-r from-amber-400 to-orange-500 p-4 text-white shadow-lg">
           <p className="flex items-center gap-2 font-bold"><PartyPopper className="h-5 w-5" />You are a winner!</p>
-          {mine.map((w) => <Link key={w.id} href={'/play/certificate/' + w.id} className="mt-2 flex items-center justify-between rounded-lg bg-white/20 px-3 py-2 font-semibold hover:bg-white/30"><span className="flex items-center gap-2"><Award className="h-4 w-4" />{placeLabel(w.place)} prize: {PRIZES[w.prize].label}</span><span>Certificate &rarr;</span></Link>)}
+          {mine.map((w) => <Link key={w.id} href={'/play/certificate/' + w.id} className="mt-2 flex items-center justify-between rounded-lg bg-white/20 px-3 py-2 font-semibold hover:bg-white/30"><span className="flex items-center gap-2"><Award className="h-4 w-4" />{placeLabel(w.place)} prize: {prizeLabel(w.prize)}</span><span>Certificate &rarr;</span></Link>)}
         </div>
       )}
 
       {state.winners.length > 0 && (
         <div className="rounded-2xl bg-white p-4 shadow">
           <p className="flex items-center gap-2 font-semibold text-slate-800"><Trophy className="h-4 w-4 text-amber-500" />Winners</p>
-          <ul className="mt-2 space-y-1 text-sm">{[...state.winners].sort((a, b) => a.place - b.place).map((w) => <li key={w.id} className="flex justify-between"><span>{placeLabel(w.place)} · {PRIZES[w.prize].label}</span><Link href={'/play/certificate/' + w.id} className="font-medium text-brand-700 underline">{w.name}</Link></li>)}</ul>
+          <ul className="mt-2 space-y-1 text-sm">{[...state.winners].sort((a, b) => a.place - b.place).map((w) => <li key={w.id} className="flex justify-between"><span>{placeLabel(w.place)} · {prizeLabel(w.prize)}</span><Link href={'/play/certificate/' + w.id} className="font-medium text-brand-700 underline">{w.name}</Link></li>)}</ul>
         </div>
       )}
       <p className="text-center text-xs text-slate-400">Free to play. Tambola by Dharamshala Stay.</p>

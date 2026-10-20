@@ -10,9 +10,9 @@ export type Prize = 'full_house' | 'first_line' | 'early_five';
 
 /** Place on the certificate, prize name, and the discount code value (owner to confirm the amounts). */
 export const PRIZES: Record<Prize, { place: 1 | 2 | 3; label: string; rule: string; amount: number }> = {
-  full_house: { place: 1, label: 'Full House', rule: 'All 15 numbers on the ticket', amount: 1000 },
-  first_line: { place: 2, label: 'First Line', rule: 'Any one full row of 5 numbers', amount: 500 },
-  early_five: { place: 3, label: 'Early Five', rule: 'Any 5 numbers on the ticket', amount: 300 },
+  full_house: { place: 1, label: 'Full House', rule: 'All 15 numbers on the ticket', amount: 300 },
+  first_line: { place: 2, label: 'First Line', rule: 'Any one full row of 5 numbers', amount: 200 },
+  early_five: { place: 3, label: 'Early Five', rule: 'Any 5 numbers on the ticket', amount: 100 },
 };
 export const PRIZE_ORDER: Prize[] = ['early_five', 'first_line', 'full_house'];
 /** Discount codes: off a stay, trek, taxi or activity booked with us of at least this much, valid this long. */
@@ -102,9 +102,41 @@ export function makeRoomCode(randomIndex: (n: number) => number): string {
 const ORD = ['', '1st', '2nd', '3rd'];
 export const placeLabel = (p: number) => ORD[p] || p + 'th';
 
-/** Traditional tambola calls for a few numbers; the rest are read plainly. */
-const CALLS: Record<number, string> = {
-  1: 'Kelly’s eye', 11: 'Legs eleven', 22: 'Two little ducks', 44: 'All the fours', 50: 'Half century',
-  66: 'Clickety click', 77: 'Two little crutches', 88: 'Two fat ladies', 90: 'Top of the house',
+const ONES = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+const TENS = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+/** 1-90 in words (voices read words more naturally than digits). */
+export function numberWords(n: number): string {
+  if (n < 20) return ONES[n];
+  return TENS[Math.floor(n / 10)] + (n % 10 ? '-' + ONES[n % 10] : '');
+}
+
+/** Traditional tambola nicknames for some numbers. */
+const NICKNAMES: Record<number, string> = {
+  1: 'Kelly’s eye', 2: 'One little duck', 3: 'Cup of tea', 4: 'Knock at the door', 7: 'Lucky seven', 8: 'One fat lady',
+  9: 'Doctor’s orders', 10: 'Country’s leader', 11: 'Legs eleven', 13: 'Unlucky for some', 16: 'Sweet sixteen',
+  21: 'Key of the door', 22: 'Two little ducks', 26: 'Republic Day', 30: 'Dirty Gertie', 44: 'All the fours', 45: 'Halfway there',
+  50: 'Half century', 55: 'All the fives', 66: 'Clickety click', 77: 'Two little crutches', 88: 'Two fat ladies', 90: 'Top of the house',
 };
-export const callText = (n: number) => (CALLS[n] ? `${CALLS[n]}, ${n}` : `Number ${n}`);
+
+/** What the screen shows under the number. */
+export const callText = (n: number) => (NICKNAMES[n] ? `${NICKNAMES[n]}, ${n}` : `Number ${n}`);
+
+/** What the anchor says: "Two little ducks... two and two, twenty-two!" */
+export function callSpeech(n: number): string {
+  const digits = n < 10 ? 'single number, ' : n % 10 === 0 ? `${ONES[n / 10]} zero, ` : `${ONES[Math.floor(n / 10)]} and ${ONES[n % 10]}, `;
+  return NICKNAMES[n] ? `${NICKNAMES[n]}! ${digits}${numberWords(n)}.` : `${digits}${numberWords(n)}.`;
+}
+
+/** The anchor's recorded lines (public/audio/tambola/<voice>/<key>.mp3); only the winner's name is made live. */
+export const ANCHOR_LINES: Record<string, string> = {
+  start: 'Welcome everyone! Eyes down, and let’s play tambola!',
+  winner: 'We have a winner! Congratulations',
+  early_five: 'for Early Five!',
+  first_line: 'for the First Line!',
+  full_house: 'for Full House! What a game!',
+  over: 'That’s the end of the game. Thank you for playing tambola with Dharamshala Stay!',
+};
+for (let n = 1; n <= MAX_NUMBER; n++) ANCHOR_LINES['n' + n] = callSpeech(n);
+
+/** The whole winner announcement as text (for the device voice). */
+export const winnerSpeech = (name: string, prize: Prize) => `${ANCHOR_LINES.winner} ${name}, ${ANCHOR_LINES[prize]}`;
