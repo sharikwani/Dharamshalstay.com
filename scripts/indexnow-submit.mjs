@@ -10,7 +10,8 @@ if (!keyFile) { console.error('No IndexNow key file found in public/.'); process
 const key = keyFile.slice(0, -4);
 if (readFileSync(new URL('../public/' + keyFile, import.meta.url), 'utf8').trim() !== key) { console.error('Key file content does not match its name.'); process.exit(1); }
 
-let urls = process.argv.slice(2).map((p) => SITE + (p.startsWith('/') ? p : '/' + p));
+// Paths (/facts) or full URLs (https://www.dharamshalastay.com/facts) both work.
+let urls = process.argv.slice(2).map((p) => (p.startsWith('http') ? p : SITE + (p.startsWith('/') ? p : '/' + p)));
 if (!urls.length) {
   const xml = await (await fetch(SITE + '/sitemap.xml')).text();
   urls = [...new Set([...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]))];
