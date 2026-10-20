@@ -8,6 +8,7 @@ import { blogPosts, NOINDEX_POSTS } from '@/data/blog';
 import { COLLECTIONS } from '@/lib/hotels/collections';
 import { factsUpdated } from '@/data/facts';
 import { updatesChecked } from '@/data/travel-updates';
+import { eventsChecked } from '@/data/events';
 import { siteConfig } from '@/lib/config';
 import { getTaxiRouteGroups } from '@/lib/taxi';
 import { hasHindiVersion, localizePath } from '@/lib/i18n/core';
@@ -70,6 +71,10 @@ export async function sitemapEntries(): Promise<SitemapEntry[]> {
     { url: B + '/faq', lastModified: contentDate, changeFrequency: 'monthly', priority: 0.8 },
     { url: B + '/essentials', lastModified: contentDate, changeFrequency: 'monthly', priority: 0.8 },
     { url: B + '/monasteries-meditation', lastModified: date('2026-10-16'), changeFrequency: 'monthly', priority: 0.8, images: imgs(monasteryPhotos.map((p) => '/images/monasteries/' + p.file + '.jpg')) },
+    { url: B + '/events', lastModified: date(eventsChecked), changeFrequency: 'weekly', priority: 0.8 },
+    { url: B + '/groups', lastModified: date('2026-10-20'), changeFrequency: 'monthly', priority: 0.7 },
+    { url: B + '/workation', lastModified: date('2026-10-20'), changeFrequency: 'monthly', priority: 0.7 },
+    { url: B + '/for-hotels', lastModified: date('2026-10-20'), changeFrequency: 'monthly', priority: 0.4 },
     { url: B + '/destinations', lastModified: contentDate, changeFrequency: 'monthly', priority: 0.8 },
     { url: B + '/treks', lastModified: contentDate, changeFrequency: 'weekly', priority: 0.8 },
     { url: B + '/paragliding', lastModified: contentDate, changeFrequency: 'monthly', priority: 0.8, images: imgs([placeImage('bir-paragliding')]) },

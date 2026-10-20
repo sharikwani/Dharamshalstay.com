@@ -48,7 +48,11 @@ export default function Footer({ lang }: { lang: Lang }) {
               {lang === 'en' && <li><Link href="/facts" className="hover:text-orange-400">Facts & figures</Link></li>}
               {lang === 'en' && <li><Link href="/travel-updates" className="hover:text-orange-400">Travel updates</Link></li>}
               {lang === 'en' && <li><Link href="/stories" className="hover:text-orange-400">Traveller stories</Link></li>}
+              {lang === 'en' && <li><Link href="/events" className="hover:text-orange-400">Event packages</Link></li>}
+              {lang === 'en' && <li><Link href="/groups" className="hover:text-orange-400">Groups & offsites</Link></li>}
+              {lang === 'en' && <li><Link href="/workation" className="hover:text-orange-400">Monthly stays</Link></li>}
               <li><Link href="/partner/register" className="hover:text-orange-400">{t.nav.listProperty}</Link></li>
+              <li><Link href="/for-hotels" className="hover:text-orange-400">{lang === 'hi' ? 'होटल मालिकों के लिए' : 'For hotel owners'}</Link></li>
             </ul>
           </div>
           <div>

@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Building, Plus, Eye, Clock, CheckCircle, XCircle, AlertCircle, LogOut, ShoppingBag, DollarSign, Bell, BarChart3, Star, CalendarDays, BadgePercent, BedDouble } from 'lucide-react';
+import { Building, Plus, Eye, Clock, CheckCircle, XCircle, AlertCircle, LogOut, ShoppingBag, DollarSign, Bell, BarChart3, Star, CalendarDays, BadgePercent, BedDouble, MessageCircle } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { formatPrice, formatDateTime, statusLabel, STATUS_COLORS, cn } from '@/lib/utils';
 
@@ -95,6 +95,11 @@ export default function PartnerDashboard() {
           <button onClick={handleLogout} className="flex items-center gap-1.5 text-sm text-slate-600 hover:text-red-600"><LogOut className="h-4 w-4" /> Logout</button>
         </div>
       </div>
+
+      <Link href="/for-hotels" className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm hover:bg-green-100">
+        <span className="flex items-center gap-2 text-green-900"><MessageCircle className="h-4 w-4 shrink-0" /><span><strong>New: WhatsApp AI receptionist.</strong> Answer every guest in seconds, day and night, on your own number. First month free.</span></span>
+        <span className="font-semibold text-green-800">See how it works &rarr;</span>
+      </Link>
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">

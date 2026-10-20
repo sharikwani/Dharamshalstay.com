@@ -121,6 +121,7 @@ export default function PartnerRegister() {
 
         <div className="mt-6 text-center text-xs text-slate-400">
           <p>By registering, you agree to our <Link href="/terms" className="underline">Terms</Link> and <Link href="/privacy" className="underline">Privacy Policy</Link>.</p>
+          <p className="mt-3 text-sm text-slate-500">Want every guest answered on WhatsApp in seconds? <Link href="/for-hotels" className="text-brand-600 font-medium hover:underline">See our tools for hotels</Link></p>
         </div>
       </div>
     </div>
