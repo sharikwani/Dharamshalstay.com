@@ -28,6 +28,8 @@ import { blogPostsW20 } from './blog-posts-w20';
 import { blogPostsW21 } from './blog-posts-w21';
 import { blogPostsW22 } from './blog-posts-w22';
 import { blogPostsW23 } from './blog-posts-w23';
+import { blogPostsW24 } from './blog-posts-w24';
+import { blogPostsW25 } from './blog-posts-w25';
 import { coreOverrides } from './blog-core';
 
 // Real photos of each place (see lib/place-images.ts).
@@ -220,7 +222,7 @@ McLeod Ganj packs an unusually dense mix of great cafes into a few walkable stre
 
 **5. Lung Ta Japanese Kitchen** -- Unique matcha and Japanese snacks in the Himalayas.
 
-**6-12.** Tibet Kitchen (best momos), Nick's Italian Kitchen (great pasta), Clay Oven (rooftop), Carpe Diem (traveller vibes), Woeser Bakery (Tibetan pastries), Peace Cafe (quiet courtyard), Crepe Pancake Hut (sweet and savoury crepes).
+**6-12.** Tibet Kitchen (best momos), Nick's Italian Kitchen (great pasta), Clay Oven (rooftop), Raku's Place in Bhagsu (live music most weekends), Woeser Bakery (Tibetan pastries), Peace Cafe (quiet courtyard), Crepe Pancake Hut (sweet and savoury crepes).
 
 ## Tips for Cafe Hopping
 
@@ -479,7 +481,7 @@ function withPhotoAlt(post: BlogPost): BlogPost {
 }
 
 /** All guides, newest first. */
-export const blogPosts: BlogPost[] = [...blogPostsA, ...blogPostsB, ...blogPostsC, ...blogPostsW1, ...blogPostsW2, ...blogPostsW3, ...blogPostsW4, ...blogPostsW5, ...blogPostsW6, ...blogPostsW7, ...blogPostsW8, ...blogPostsW9, ...blogPostsE1, ...blogPostsW10, ...blogPostsW11, ...blogPostsW12, ...blogPostsW13, ...blogPostsW14, ...blogPostsW15, ...blogPostsW16, ...blogPostsW17, ...blogPostsW18, ...blogPostsW19, ...blogPostsW20, ...blogPostsW21, ...blogPostsW22, ...blogPostsW23, ...corePosts]
+export const blogPosts: BlogPost[] = [...blogPostsA, ...blogPostsB, ...blogPostsC, ...blogPostsW1, ...blogPostsW2, ...blogPostsW3, ...blogPostsW4, ...blogPostsW5, ...blogPostsW6, ...blogPostsW7, ...blogPostsW8, ...blogPostsW9, ...blogPostsE1, ...blogPostsW10, ...blogPostsW11, ...blogPostsW12, ...blogPostsW13, ...blogPostsW14, ...blogPostsW15, ...blogPostsW16, ...blogPostsW17, ...blogPostsW18, ...blogPostsW19, ...blogPostsW20, ...blogPostsW21, ...blogPostsW22, ...blogPostsW23, ...blogPostsW24, ...blogPostsW25, ...corePosts]
   .map((p) => (coreOverrides[p.slug] ? { ...p, ...coreOverrides[p.slug] } : p))
   .map(withPhotoAlt)
   .sort((a, b) => b.published_at.localeCompare(a.published_at));

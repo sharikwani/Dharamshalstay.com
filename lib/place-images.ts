@@ -25,6 +25,8 @@ export const PLACE_IMAGE_KEYS = [
   // Festivals and fairs
   'ramlila-scene', 'ramlila-hanuman', 'ravan-dahan-shimla', 'dussehra-effigies', 'ravan-dahan-crowd',
   'dussehra-fair-wheel', 'himachali-nati', 'minjar-procession', 'kushti-wrestling',
+  // Kangra slate
+  'slate-roof-mud-house', 'kangra-slate-roofs', 'khaniyara-slate-mine', 'kareri-village',
 ] as const;
 
 export type PlaceImageKey = (typeof PLACE_IMAGE_KEYS)[number];

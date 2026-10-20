@@ -199,7 +199,7 @@ Our [top cafes in McLeod Ganj](/blog/top-cafes-in-mcleod-ganj) guide covers the 
 
 ### Live music and open-mic nights
 
-Live music in McLeod Ganj is informal and seasonal. You will find acoustic sets, Tibetan and Himachali musicians, jam nights and open mics at cafes and restaurant-bars, mostly in peak season and on weekends. Posters on Jogiwara Road and Bhagsu Road, and noticeboards in cafes, are the best way to find what is on this week. Some cafes in Bhagsu and Dharamkot host occasional music nights, though the vibe there is closer to a backpacker cafe than a bar.
+Live music in McLeod Ganj is informal and seasonal. You will find acoustic sets, Tibetan and Himachali musicians, jam nights and open mics at cafes and restaurant-bars, mostly in peak season and on weekends. Posters on Jogiwara Road and Bhagsu Road, and noticeboards in cafes, are the best way to find what is on this week. Some cafes in Bhagsu and Dharamkot host occasional music nights, though the vibe there is closer to a backpacker cafe than a bar. For which restaurants have music on which nights, see our day-by-day guide to [live music dinners in McLeod Ganj](/blog/live-music-restaurants-mcleod-ganj).
 
 ### Clubs and DJ nights
 

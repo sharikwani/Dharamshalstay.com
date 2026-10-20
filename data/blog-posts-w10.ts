@@ -353,7 +353,7 @@ If you are combining Dharamshala and Manali, give each place at least 2 to 3 nig
     excerpt: 'From Tibetan momos and thukpa to Himachali dham and wood-fired pizza, here are the best places to eat in Dharamshala and McLeod Ganj, organized by cuisine, budget and area.',
     content: `Dharamshala and McLeod Ganj have one of the most diverse food scenes of any hill station in India. You can have Tibetan momos for breakfast, a Himachali thali for lunch, Japanese ramen for a snack, and Italian pasta for dinner, all within walking distance in McLeod Ganj. The quality is genuinely good — several of these places have been run by the same families for decades.
 
-This guide covers sit-down restaurants, not cafes. For cafe culture (coffee, baked goods, working spots), read our [top cafes in McLeod Ganj guide](/blog/top-cafes-in-mcleod-ganj). For a deep dive into Tibetan cuisine specifically, see [Tibetan food in McLeod Ganj](/blog/tibetan-food-mcleod-ganj). For Himachali food, see our [Himachali food guide](/blog/himachali-food-guide). For a cost breakdown of eating out, see [what eating out in Dharamshala costs](/blog/eating-out-dharamshala-what-it-costs).
+This guide covers sit-down restaurants, not cafes. For cafe culture (coffee, baked goods, working spots), read our [top cafes in McLeod Ganj guide](/blog/top-cafes-in-mcleod-ganj). For a deep dive into Tibetan cuisine specifically, see [Tibetan food in McLeod Ganj](/blog/tibetan-food-mcleod-ganj). For Himachali food, see our [Himachali food guide](/blog/himachali-food-guide). For a cost breakdown of eating out, see [what eating out in Dharamshala costs](/blog/eating-out-dharamshala-what-it-costs). Want a band or an acoustic set with your dinner? See [restaurants with live music in McLeod Ganj](/blog/live-music-restaurants-mcleod-ganj).
 
 ## Quick Reference by Budget
 
@@ -361,7 +361,7 @@ This guide covers sit-down restaurants, not cafes. For cafe culture (coffee, bak
 |---|---|---|---|
 | **Street food / basic** | ₹50–150 | Momos, thukpa, chow mein, bread omelette | Jogiwara Road stalls, Bhagsu Road vendors, lower Dharamshala dhabas |
 | **Budget restaurants** | ₹150–300 | Full Tibetan or Indian meal with drink | Most McLeod Ganj eateries, Bhagsu restaurants |
-| **Mid-range** | ₹300–600 | Multi-course meal, pizza, continental dishes | Nick's Italian, Moonpeak, Carpe Diem |
+| **Mid-range** | ₹300–600 | Multi-course meal, pizza, continental dishes | Nick's Italian, Moonpeak |
 | **Higher-end** | ₹600–1,200 | Tasting menus, specialty dishes, wine | Select hotel restaurants, Illiterati (technically a cafe but serves full meals) |
 
 ## Tibetan Restaurants
@@ -398,9 +398,6 @@ Bhagsu Road, McLeod Ganj. The best pizza and pasta in Dharamshala, full stop. Th
 
 ### Moonpeak Thali
 Temple Road, McLeod Ganj. Part of the Moonpeak brand (they also have a cafe). The thali here combines Indian, Tibetan and continental elements into a single generous plate. Good value. Budget about ₹250 to ₹450 per person.
-
-### Carpe Diem
-Bhagsu Road, McLeod Ganj. A cosy spot with a varied menu covering pasta, sandwiches, Tibetan dishes and Indian food. The portions are generous and the rooftop seating has Dhauladhar views on a clear day. Budget about ₹300 to ₹500 per person.
 
 ### Crepe Pancake Hut
 Near Bhagsu waterfall road. Exactly what the name says — sweet and savoury crepes, pancakes and waffles. A fun breakfast or snack stop. Budget about ₹150 to ₹300 per person.
