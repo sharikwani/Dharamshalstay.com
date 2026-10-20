@@ -74,6 +74,7 @@ export async function sitemapEntries(): Promise<SitemapEntry[]> {
     { url: B + '/events', lastModified: date(eventsChecked), changeFrequency: 'weekly', priority: 0.8 },
     { url: B + '/groups', lastModified: date('2026-10-20'), changeFrequency: 'monthly', priority: 0.7 },
     { url: B + '/workation', lastModified: date('2026-10-20'), changeFrequency: 'monthly', priority: 0.7 },
+    { url: B + '/play', lastModified: date('2026-10-20'), changeFrequency: 'monthly', priority: 0.5 },
     { url: B + '/for-hotels', lastModified: date('2026-10-20'), changeFrequency: 'monthly', priority: 0.4 },
     { url: B + '/destinations', lastModified: contentDate, changeFrequency: 'monthly', priority: 0.8 },
     { url: B + '/treks', lastModified: contentDate, changeFrequency: 'weekly', priority: 0.8 },

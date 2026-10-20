@@ -51,6 +51,7 @@ export default function Footer({ lang }: { lang: Lang }) {
               {lang === 'en' && <li><Link href="/events" className="hover:text-orange-400">Event packages</Link></li>}
               {lang === 'en' && <li><Link href="/groups" className="hover:text-orange-400">Groups & offsites</Link></li>}
               {lang === 'en' && <li><Link href="/workation" className="hover:text-orange-400">Monthly stays</Link></li>}
+              {lang === 'en' && <li><Link href="/play" className="hover:text-orange-400">Free tambola game</Link></li>}
               <li><Link href="/partner/register" className="hover:text-orange-400">{t.nav.listProperty}</Link></li>
               <li><Link href="/for-hotels" className="hover:text-orange-400">{lang === 'hi' ? 'होटल मालिकों के लिए' : 'For hotel owners'}</Link></li>
             </ul>
