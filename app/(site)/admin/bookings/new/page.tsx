@@ -61,7 +61,7 @@ export default function NewBookingPage() {
   const [assign, setAssign] = useState<AssignValue>(EMPTY_ASSIGN);
 
   const [notifyCustomer, setNotifyCustomer] = useState(true);
-  const [notifyCustomerWa, setNotifyCustomerWa] = useState(false);
+  const [notifyCustomerWa, setNotifyCustomerWa] = useState(true);
   const [notifyPartner, setNotifyPartner] = useState(true);
   const [allowPast, setAllowPast] = useState(false);
   const [saving, setSaving] = useState(false);
