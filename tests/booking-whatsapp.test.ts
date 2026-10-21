@@ -112,7 +112,7 @@ describe('bookingWhen', () => {
 
 describe('params', () => {
   it('newBookingParams has 9 sanitised values in order', () => {
-    expect(newBookingParams(view)).toEqual(['DS-1', 'Dharamshala → McLeod Ganj', 'Mon, 12 Oct 2026', '9:00 AM', '2', 'Asha K', '9816000001', 'Rs.12,500', 'Payment pending']);
+    expect(newBookingParams(view)).toEqual(['DS-1', 'Dharamshala → McLeod Ganj · Assigned: Ravi, 98160', 'Mon, 12 Oct 2026', '9:00 AM', '2', 'Asha K', '9816000001', 'Rs.12,500', 'Payment pending']);
   });
   it('cancelledParams has 5 values', () => {
     expect(cancelledParams(view, 'Guest\nasked')).toEqual(['DS-1', 'Dharamshala → McLeod Ganj', 'Mon, 12 Oct 2026', '9:00 AM', 'Guest asked']);

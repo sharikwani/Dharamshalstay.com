@@ -71,10 +71,31 @@ export function bookingWhen(v: BookingView): { date: string; time: string } {
   return { date, time: clock(v.pickup_time) || TBC };
 }
 
+const same = (a?: string | null, b?: string | null) => !!a && !!b && a.trim().toLowerCase() === b.trim().toLowerCase();
+
+/**
+ * The "Service" line partners see: what was booked plus everything they need to do the job, i.e. the exact
+ * pickup and drop the guest typed (when it is more than the route name), the car type asked for, who is assigned
+ * and the guest's own notes (luggage, flight number...). One line: template values cannot hold line breaks.
+ */
+export function partnerServiceLine(v: BookingView): string {
+  const parts = [v.item_name];
+  if (v.category === 'taxi') {
+    const [from, to] = String(v.item_name || '').split(' → ');
+    if (v.pickup_location && !same(v.pickup_location, from)) parts.push(`Pickup: ${v.pickup_location}`);
+    if (v.drop_location && !same(v.drop_location, to)) parts.push(`Drop: ${v.drop_location}`);
+    if (v.vehicle_type) parts.push(`Car asked for: ${v.vehicle_type}`);
+  }
+  if (v.assignee_text) parts.push(`Assigned: ${v.assignee_text}`);
+  const note = String(v.special_requests || '').replace(/\s+/g, ' ').trim();
+  if (note) parts.push(`Guest note: ${note.slice(0, 300)}`);
+  return parts.filter(Boolean).join(' · ').slice(0, 900);
+}
+
 /** Params for booking_new_partner_v2 (9, in template order). */
 export function newBookingParams(v: BookingView): string[] {
   const { date, time } = bookingWhen(v);
-  return [v.booking_ref, v.item_name, date, time, v.num_guests, v.guest_name, v.guest_phone, rupees(v.amount), v.payment_text].map(cleanParam);
+  return [v.booking_ref, partnerServiceLine(v), date, time, v.num_guests, v.guest_name, v.guest_phone, rupees(v.amount), v.payment_text].map(cleanParam);
 }
 
 /** Params for booking_cancelled_partner_v2 (5, in template order). */

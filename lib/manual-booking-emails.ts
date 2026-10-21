@@ -49,7 +49,7 @@ function buildView(b: Record<string, any>, r: Related): BookingView {
 
   let assignee_text: string | null = null;
   if (staff) assignee_text = staff.full_name + (staff.phone ? `, ${staff.phone}` : '');
-  if (vehicle) assignee_text = (assignee_text ? assignee_text + ' · ' : '') + vehicle.registration_no;
+  if (vehicle) assignee_text = (assignee_text ? assignee_text + ' · ' : '') + (vehicle.registration_no || vehicle.make_model || 'vehicle');
 
   const effective_collector = effectiveCollector(b);
   const payment_text = effective_collector === 'platform' ? 'Paid to Dharamshala Stay'
@@ -79,7 +79,7 @@ export async function loadBookingView(bookingId: string): Promise<BookingView | 
     one('guides', b.guide_id, 'name, email, phone'),
     one('profiles', b.partner_id, 'legal_name, business_name, full_name, email, phone'),
     one('partner_staff', b.staff_id, 'full_name, phone'),
-    one('vehicles', b.vehicle_id, 'registration_no'),
+    one('vehicles', b.vehicle_id, 'registration_no, make_model'),
   ]);
   return buildView(b, { property, route, trek, pkg, guide, partner, staff, vehicle });
 }
@@ -105,7 +105,7 @@ export async function toBookingViews(rows: Record<string, any>[]): Promise<Booki
     load('guides', 'guide_id', 'name, email, phone'),
     load('profiles', 'partner_id', 'legal_name, business_name, full_name, email, phone'),
     load('partner_staff', 'staff_id', 'full_name, phone'),
-    load('vehicles', 'vehicle_id', 'registration_no'),
+    load('vehicles', 'vehicle_id', 'registration_no, make_model'),
   ]);
   return rows.map((b) => buildView(b, {
     property: properties.get(b.property_id) ?? null, route: routes.get(b.taxi_route_id) ?? null,
