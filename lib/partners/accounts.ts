@@ -2,6 +2,7 @@ import { HttpError, serviceClient } from '@/lib/server-auth';
 import { sendEmail } from '@/lib/email';
 import { normalizeIndianPhone } from '@/lib/whatsapp';
 import { PARTNER_COMMISSION } from './agreement';
+import { whatsappProfilePatch } from './whatsapp';
 import { ACTIVITY_PARTNER_TYPES, type ActivityPartnerType } from './types';
 
 /**
@@ -60,6 +61,8 @@ export async function createPartnerAccount(input: NewPartner): Promise<{ id: str
   const rates = new Set(services.map((t) => PARTNER_COMMISSION[t]));
   const { error: upErr } = await sb.from('profiles').update({
     partner_services: services, commission_pct: rates.size === 1 ? Array.from(rates)[0] : null,
+    // Booking alerts on WhatsApp from day one (the team adds partners at their request); emails go to their login email.
+    ...(normalizeIndianPhone(phone) ? whatsappProfilePatch({ rawNumber: phone, alerts: true, wasOn: false, by: 'admin' }) : {}),
   }).eq('id', data.user.id);
   if (upErr) throw new HttpError(500, 'Account made, but the services could not be saved: ' + upErr.message);
   await sendSetPasswordEmail(email, input.full_name, 'new');
