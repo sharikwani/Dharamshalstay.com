@@ -4,6 +4,7 @@ Next.js 14 (App Router) + Supabase + Vercel. Local travel and hotel guide for Dh
 
 ## Owner's standing rules
 - Never push or deploy until the owner says "push". Commit locally, then wait.
+- Deploy with `npm run deploy` (pushes main, then calls the Vercel deploy hook in `.env.local`): Vercel's GitHub link has been missing pushes since 21 Oct 2026, so a plain `git push` may not deploy. Check with `npx vercel ls` that a new production deploy appears.
 - Check what already exists before creating anything external (GSC/Bing properties, Meta templates, webhooks, accounts).
 - Never submit test enquiries or bookings on the live site: they send real alerts to hotels and the owner.
 - Anything that messages real people (WhatsApp, email, social posts) needs the owner's OK first.

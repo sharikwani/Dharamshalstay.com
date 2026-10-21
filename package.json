@@ -11,7 +11,8 @@
     "lint": "next lint",
     "whatsapp:register": "node scripts/register-whatsapp-number.mjs",
     "whatsapp:outreach-template": "node scripts/create-listing-outreach-template.mjs",
-    "indexnow": "node scripts/indexnow-submit.mjs"
+    "indexnow": "node scripts/indexnow-submit.mjs",
+    "deploy": "node scripts/deploy.mjs"
   },
   "dependencies": {
     "@stripe/stripe-js": "^9.0.1",
