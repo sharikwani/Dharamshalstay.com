@@ -31,7 +31,7 @@ export default function ShareCertificate({ imageUrl, pageUrl, text, fileName }: 
 
   async function instagram() {
     await download();
-    setNote('Saved. Open Instagram and post it from your gallery, or add it to your story. Tag @dharamshala.stay!');
+    setNote('Saved. Open Instagram and post it from your gallery, or add it to your story. Tag @thedharamshalastay!');
   }
 
   const btn = 'inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 font-semibold';

@@ -1,5 +1,6 @@
 'use client';
 import { useCallback, useEffect, useState } from 'react';
+import { siteConfig } from '@/lib/config';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, Check, Copy, Eye, Globe2, Heart, Instagram, Loader2, MapPin, PenLine, Sparkles } from 'lucide-react';
@@ -14,7 +15,7 @@ type Story = {
 type Today = { live: boolean; story: Story | null };
 
 const DISPLAY = { fontFamily: 'var(--font-display), Georgia, serif' };
-const IG_HANDLE = 'dharamshala.stay';
+const IG_HANDLE = siteConfig.instagramHandle;
 
 /**
  * Homepage "Story of the day": the featured traveller or local story for its 24 hours, with its photos

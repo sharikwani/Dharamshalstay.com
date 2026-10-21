@@ -21,8 +21,8 @@ export const siteConfig = {
   whatsapp: '19295255894',
   whatsappDisplay: '+1 929-525-5894',
   address: 'VPO Khaniyara, Dharamshala, Kangra District, Himachal Pradesh 176215, India',
-  instagram: 'https://www.instagram.com/dharamshala.stay/',
-  instagramHandle: 'dharamshala.stay',
+  instagram: 'https://www.instagram.com/thedharamshalastay/',
+  instagramHandle: 'thedharamshalastay',
 };
 
 export const NAV_LINKS = [
