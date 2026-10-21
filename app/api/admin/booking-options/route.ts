@@ -28,7 +28,7 @@ export async function GET(req: Request) {
     if (type === 'taxi' || type === 'trek' || type === 'paragliding') {
       const { data: profs, error: pErr } = await sb.from('profiles')
         .select('id, legal_name, business_name, full_name, phone, email, commission_pct')
-        .eq('role', 'partner').eq('partner_status', 'verified').eq('partner_type', type)
+        .eq('role', 'partner').eq('partner_status', 'verified').or(`partner_type.eq.${type},partner_services.cs.{${type}}`)
         .order('legal_name');
       if (pErr) throw pErr;
       const ids = (profs || []).map((p: any) => p.id);

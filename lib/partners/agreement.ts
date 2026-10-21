@@ -21,25 +21,42 @@ const SAFETY: Record<ActivityPartnerType, string> = {
   trek: 'Every trek is led by competent guides, follows forest department and district rules, carries first aid, and is cancelled or turned back when weather or trail conditions are unsafe. You hold the registrations and permits required to operate treks in Himachal Pradesh.',
 };
 
-export function agreementFor(type: ActivityPartnerType) {
+const LIST = (xs: string[]) => (xs.length < 2 ? xs.join('') : xs.slice(0, -1).join('; ') + '; and ' + xs[xs.length - 1]);
+const NAMES: Record<ActivityPartnerType, string> = { paragliding: 'paragliding', taxi: 'taxi', trek: 'trek' };
+
+/**
+ * The agreement for the services a partner offers. A single-service agreement reads exactly as before
+ * (same version); a multi-service one lists every service and its own commission rate.
+ */
+export function agreementFor(typeOrServices: ActivityPartnerType | ActivityPartnerType[]) {
+  const wanted = Array.isArray(typeOrServices) ? typeOrServices : [typeOrServices];
+  // Fixed order, so the same services always give the same text (and the same fingerprint).
+  const types = (['paragliding', 'taxi', 'trek'] as ActivityPartnerType[]).filter((t) => wanted.includes(t));
   const title = 'Dharamshala Stay Partner Agreement';
-  const rate = PARTNER_COMMISSION[type];
+  const rates = Array.from(new Set(types.map((t) => PARTNER_COMMISSION[t])));
+  const rate = rates.length === 1 ? rates[0] : null;
+  const multi = types.length > 1;
+  const version = multi ? AGREEMENT_VERSION + '-multi' : AGREEMENT_VERSION;
+  // "25% for paragliding and trek bookings and 20% for taxi bookings"
+  const byRate = rates.map((r) => `${r}% for ${types.filter((t) => PARTNER_COMMISSION[t] === r).map((t) => NAMES[t]).join(' and ')} bookings`).join(' and ');
+  const pct = rate !== null ? `${rate}%` : `the commission for that kind of booking (${byRate})`;
+  const keep = rate !== null ? `${100 - rate}%` : 'the booking value minus that commission, that is';
   const body = `This Partner Agreement ("Agreement") is between Dharamshala Stay ("Dharamshala Stay", "we", "us"), operator of the website dharamshalastay.com (the "Platform"), and the person or business signing below ("Partner", "you").
 
 1. Services
-You will provide ${SERVICE[type]} ("Services") to customers who book through the Platform. You are an independent business. Nothing in this Agreement makes you our employee, agent or partner in law.
+You will provide ${LIST(types.map((t) => SERVICE[t]))} ("Services") to customers who book through the Platform. You are an independent business. Nothing in this Agreement makes you our employee, agent or partner in law.
 
 2. Verification
 You confirm that every document and detail you have given us, including your identity documents (Aadhaar, shown masked, and PAN), licences, registrations, vehicle documents and bank or UPI details, is true, current and belongs to you or your business. You will tell us within 7 days if any of them changes, expires or is cancelled. We may suspend your account while documents are missing or expired.
 
 3. Commission
-For every booking made through the Platform, Dharamshala Stay earns a commission of ${rate}% of the booking value (the price paid by the customer, before any payment-gateway fee and excluding any taxes we collect separately), unless we agree a different rate with you in writing. Commission is earned on every booking whether the customer pays online or pays you in cash or by UPI directly.
+For every booking made through the Platform, Dharamshala Stay earns a commission of ${rate !== null ? rate + '%' : byRate} of the booking value (the price paid by the customer, before any payment-gateway fee and excluding any taxes we collect separately), unless we agree a different rate with you in writing. Commission is earned on every booking whether the customer pays online or pays you in cash or by UPI directly.
 
 4. Online payments
-When a customer pays online, we receive the full amount. After the Service is completed, we credit ${100 - rate}% of the booking value to your Partner balance. We pay positive balances to your registered bank account or UPI ID every week, normally on Monday, after deducting any commission you owe us. Payment-gateway charges are borne by Dharamshala Stay.
+When a customer pays online, we receive the full amount. After the Service is completed, we credit ${rate !== null ? keep + ' of the booking value' : 'the booking value minus our commission'} to your Partner balance. We pay positive balances to your registered bank account or UPI ID every week, normally on Monday, after deducting any commission you owe us. Payment-gateway charges are borne by Dharamshala Stay.
 
 5. Cash and direct payments
-When a customer pays you directly (cash, UPI to you, or any other method), you collect the full amount and owe us the ${rate}% commission. The commission is recorded in your Partner balance when the Service is completed. It is first deducted from money we owe you. Any amount still owed must be paid through the Platform within 7 days. If commission stays unpaid for more than 21 days, we may stop sending you new bookings until it is paid, and recover the amount by other lawful means.
+When a customer pays you directly (cash, UPI to you, or any other method), you collect the full amount and owe us ${rate !== null ? 'the ' + pct + ' commission' : pct}. The commission is recorded in your Partner balance when the Service is completed. It is first deducted from money we owe you. Any amount still owed must be paid through the Platform within 7 days. If commission stays unpaid for more than 21 days, we may stop sending you new bookings until it is paid, and recover the amount by other lawful means.
 
 6. Bookings taken off the Platform
 You will not ask customers who found you through the Platform to cancel and re-book with you directly to avoid commission. A booking arranged with a customer introduced by the Platform within 90 days of their enquiry or booking is treated as a Platform booking.
@@ -48,7 +65,7 @@ You will not ask customers who found you through the Platform to cancel and re-b
 You set your package prices on the Platform and must honour the price shown at the time of booking. You will keep your availability up to date, accept or decline booking requests promptly, and not charge customers extra amounts that were not shown at booking, except for optional extras the customer clearly agrees to.
 
 8. Safety, licences and insurance
-${SAFETY[type]} You are solely responsible for the safety of customers during the Services and for any loss or injury caused by you, your staff, your vehicles or your equipment.
+${types.map((t) => SAFETY[t]).join(' ')} You are solely responsible for the safety of customers during the Services and for any loss or injury caused by you, your staff, your vehicles or your equipment.
 
 9. Cancellations and refunds
 Customers may cancel under the policy shown at the time of booking. If you cancel a confirmed booking or fail to provide the Service, the customer is refunded in full and any amount credited to you for that booking is reversed. Repeated cancellations or no-shows may lead to suspension.
@@ -77,8 +94,9 @@ This Agreement is governed by the laws of India. The courts at Dharamshala, Hima
 17. Electronic signature
 By ticking the acceptance box and typing your full name, you sign this Agreement electronically under the Information Technology Act, 2000. We record the date, time, IP address and a fingerprint (SHA-256) of this exact text, and email you a PDF copy.
 
-Agreement version: ${AGREEMENT_VERSION}`;
-  return { version: AGREEMENT_VERSION, title, body, commission: rate };
+Agreement version: ${version}`;
+  /** commission: one rate for every booking, or null when it differs by service (each booking then uses its service's rate). */
+  return { version, title, body, commission: rate, rates: Object.fromEntries(types.map((t) => [t, PARTNER_COMMISSION[t]])) as Partial<Record<ActivityPartnerType, number>> };
 }
 
 export function sha256Hex(text: string): string {

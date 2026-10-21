@@ -1,5 +1,5 @@
 import { HttpError, requireCaller, serviceClient, type Caller } from '@/lib/server-auth';
-import { ACTIVITY_PARTNER_TYPES, EDITABLE_STATUSES, type ActivityPartnerType, type PartnerStatus } from './types';
+import { EDITABLE_STATUSES, partnerServices, type ActivityPartnerType, type PartnerStatus } from './types';
 import { latestDocs, missingItems, readyToSign, type OnboardingInput } from './requirements';
 
 export const KYC_BUCKET = 'partner-kyc';
@@ -18,7 +18,7 @@ export function assertActive(status: string | null): void {
 
 export async function requireActivityPartner(req: Request, opts: { editable?: boolean; active?: boolean } = {}): Promise<Caller> {
   const caller = await requireCaller(req, ['partner']);
-  if (!ACTIVITY_PARTNER_TYPES.includes(caller.profile.partner_type)) throw new HttpError(403, 'This page is for paragliding, taxi and trek partners');
+  if (!partnerServices(caller.profile).length) throw new HttpError(403, 'This page is for paragliding, taxi and trek partners');
   if (opts.active) assertActive(caller.profile.partner_status);
   if (opts.editable) assertEditable(caller.profile.partner_status);
   return caller;
@@ -33,7 +33,7 @@ export async function signedUrl(path: string | null): Promise<string | null> {
 export async function loadOnboarding(partnerId: string) {
   const sb = serviceClient();
   const [{ data: profile }, { data: documents }, { data: staff }, { data: vehicles }, { data: agreements }] = await Promise.all([
-    sb.from('profiles').select('id, email, full_name, phone, business_name, legal_name, pan_number, business_registration_no, partner_type, partner_status, commission_pct, payout_method, payout_details, submitted_at, verified_at, verification_note, created_at, whatsapp_number, whatsapp_alerts').eq('id', partnerId).single(),
+    sb.from('profiles').select('id, email, full_name, phone, business_name, legal_name, pan_number, business_registration_no, partner_type, partner_services, partner_status, commission_pct, payout_method, payout_details, submitted_at, verified_at, verification_note, created_at, whatsapp_number, whatsapp_alerts').eq('id', partnerId).single(),
     sb.from('partner_documents').select('*').eq('partner_id', partnerId).order('created_at', { ascending: false }),
     sb.from('partner_staff').select('*').eq('partner_id', partnerId).order('created_at'),
     sb.from('vehicles').select('*').eq('partner_id', partnerId).order('created_at'),
@@ -43,6 +43,7 @@ export async function loadOnboarding(partnerId: string) {
 
   const input: OnboardingInput = {
     partner_type: profile.partner_type as ActivityPartnerType,
+    services: partnerServices(profile),
     legal_name: profile.legal_name, phone: profile.phone, pan_number: profile.pan_number,
     payout_method: profile.payout_method, payout_details: profile.payout_details,
     documents: documents || [], staff: staff || [], vehicles: vehicles || [],

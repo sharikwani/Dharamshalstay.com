@@ -1,4 +1,5 @@
 import type { BookingCategory } from './pricing';
+import { offers } from './partners/types';
 
 export type ManualCategory = BookingCategory;
 export type PaymentChoice = 'partner_collects' | 'platform_paid' | 'unpaid';
@@ -63,7 +64,7 @@ export function paymentFields(
   };
 }
 
-export type AssignPartner = { id: string; role: string; partner_type: string | null; partner_status: string | null };
+export type AssignPartner = { id: string; role: string; partner_type: string | null; partner_services?: string[] | null; partner_status: string | null };
 export type AssignStaff = { id: string; partner_id: string; role: string; active: boolean };
 export type AssignVehicle = { id: string; partner_id: string; active: boolean };
 
@@ -73,7 +74,7 @@ export function checkAssignment(category: ManualCategory, partner: AssignPartner
   }
   if (!partner) return staff || vehicle ? 'Choose the partner before choosing a driver, pilot, guide or vehicle.' : null;
   if (partner.role !== 'partner' || partner.partner_status !== 'verified') return 'This partner is not approved yet, so they cannot take bookings.';
-  if (partner.partner_type !== category) return `This partner is not a ${category} partner.`;
+  if (!offers(partner, category)) return `This partner does not offer ${category}.`;
   if (staff) {
     if (staff.partner_id !== partner.id) return 'That person does not belong to the chosen partner.';
     if (!staff.active) return 'That person is not active.';

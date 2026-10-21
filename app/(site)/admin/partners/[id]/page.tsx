@@ -50,7 +50,7 @@ export default function AdminPartnerDetail() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-      <AdminPageHeader title={p.legal_name || p.full_name || p.email} description={`${p.partner_type.charAt(0).toUpperCase() + p.partner_type.slice(1)} partner · ${String(p.partner_status || '').replace(/_/g, ' ')} · commission ${p.commission_pct}%`} />
+      <AdminPageHeader title={p.legal_name || p.full_name || p.email} description={`${(p.partner_services?.length ? p.partner_services : [p.partner_type]).map((t: string) => t.charAt(0).toUpperCase() + t.slice(1)).join(' + ')} partner · ${String(p.partner_status || '').replace(/_/g, ' ')} · commission ${p.commission_pct != null ? p.commission_pct + '%' : 'per service (taxi 20%, trek and paragliding 25%)'}`} />
       {msg && <p className="bg-red-50 text-red-700 text-sm rounded-lg p-3 mb-4">{msg}</p>}
 
       <section className="bg-white border border-slate-200 rounded-xl p-5 mb-5 grid sm:grid-cols-2 gap-2 text-sm">
@@ -59,6 +59,20 @@ export default function AdminPartnerDetail() {
         <p><b>Registration no.:</b> {p.business_registration_no || '—'}</p>
         <p><b>Payout:</b> {p.payout_method === 'upi' ? `UPI ${p.payout_details?.upi_id}` : p.payout_method === 'bank' ? `A/c ${p.payout_details?.account_number} · ${p.payout_details?.ifsc}` : '—'} ({p.payout_details?.account_holder || '—'})</p>
         {s.missing.length > 0 && <p className="sm:col-span-2 text-amber-700"><b>Missing:</b> {s.missing.map((m: any) => m.label).join(', ')}</p>}
+        <div className="sm:col-span-2 flex flex-wrap items-center gap-3 pt-2 border-t border-slate-100">
+          <b>Services:</b>
+          {(['taxi', 'trek', 'paragliding'] as const).map((t) => {
+            const list: string[] = p.partner_services?.length ? p.partner_services : [p.partner_type];
+            const on = list.includes(t);
+            return (
+              <label key={t} className="inline-flex items-center gap-1.5">
+                <input type="checkbox" checked={on} disabled={busy || (on && list.length === 1)}
+                  onChange={() => act({ action: 'set_services', services: on ? list.filter((x) => x !== t) : [...list, t] })} />
+                {t.charAt(0).toUpperCase() + t.slice(1)}
+              </label>
+            );
+          })}
+        </div>
       </section>
 
       <section className="bg-white border border-slate-200 rounded-xl p-5 mb-5">
@@ -84,7 +98,7 @@ export default function AdminPartnerDetail() {
       {(s.vehicles.length > 0 || s.staff.length > 0) && (
         <section className="bg-white border border-slate-200 rounded-xl p-5 mb-5 text-sm">
           <h2 className="font-semibold mb-2">Fleet and team</h2>
-          {s.vehicles.map((v: any) => <p key={v.id}>{v.registration_no} · {v.make_model} · {v.vehicle_type} · {v.seats} seats</p>)}
+          {s.vehicles.map((v: any) => <p key={v.id}>{v.registration_no || 'Number applied for'} · {v.make_model} · {v.vehicle_type}{v.fuel ? ' · ' + v.fuel : ''}{v.colour ? ' · ' + v.colour : ''} · {v.seats} seats{v.active === false ? ' · inactive' : ''}</p>)}
           {s.staff.map((m: any) => <p key={m.id}>{m.role}: {m.full_name} · {m.phone}{m.licence_no ? ` · licence ${m.licence_no}` : ''}</p>)}
         </section>
       )}

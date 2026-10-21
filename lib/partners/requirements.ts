@@ -2,6 +2,8 @@ import { DOC_LABELS, type ActivityPartnerType, type DocType } from './types';
 
 export type OnboardingInput = {
   partner_type: ActivityPartnerType;
+  /** Every service the partner offers (several for a multi-service partner); defaults to partner_type. */
+  services?: ActivityPartnerType[];
   legal_name: string | null;
   phone: string | null;
   pan_number: string | null;
@@ -9,7 +11,7 @@ export type OnboardingInput = {
   payout_details: Record<string, string> | null;
   documents: { doc_type: DocType; status: string; staff_id: string | null; vehicle_id: string | null; created_at: string }[];
   staff: { id: string; role: string; full_name: string; active: boolean }[];
-  vehicles: { id: string; registration_no: string; active: boolean }[];
+  vehicles: { id: string; registration_no: string | null; make_model?: string; active: boolean }[];
   agreementSigned: boolean;
 };
 export type Missing = { key: string; label: string };
@@ -26,12 +28,21 @@ export function latestDocs<T extends { doc_type: string; staff_id: string | null
   return Array.from(best.values());
 }
 
-const PARTNER_DOCS: Record<ActivityPartnerType, DocType[]> = {
+export const PARTNER_DOCS: Record<ActivityPartnerType, DocType[]> = {
   taxi: ['aadhaar_front', 'aadhaar_back', 'pan'],
   paragliding: ['aadhaar_front', 'aadhaar_back', 'pan', 'tourism_registration'],
   trek: ['aadhaar_front', 'aadhaar_back', 'pan', 'tourism_registration'],
 };
 const VEHICLE_DOCS: DocType[] = ['vehicle_rc', 'vehicle_permit', 'vehicle_insurance'];
+
+/** Partner documents for all the services offered (each listed once). */
+export function docsFor(services: ActivityPartnerType[]): DocType[] {
+  return Array.from(new Set(services.flatMap((t) => PARTNER_DOCS[t])));
+}
+/** Team members a partner must add: drivers for taxis, pilots for paragliding (trek guides are optional). */
+export function staffRolesNeeded(services: ActivityPartnerType[]): ('driver' | 'pilot')[] {
+  return (['driver', 'pilot'] as const).filter((r) => services.includes(r === 'driver' ? 'taxi' : 'paragliding'));
+}
 
 function payoutComplete(method: string | null, d: Record<string, string> | null): boolean {
   if (!d || !d.account_holder) return false;
@@ -51,17 +62,17 @@ export function missingItems(s: OnboardingInput): Missing[] {
   if (!s.pan_number?.trim()) out.push({ key: 'pan_number', label: 'PAN number' });
   if (!payoutComplete(s.payout_method, s.payout_details)) out.push({ key: 'payout', label: 'Bank or UPI details for payouts' });
 
-  for (const t of PARTNER_DOCS[s.partner_type]) if (!has(t)) out.push({ key: `doc:${t}`, label: DOC_LABELS[t] });
+  const services = s.services?.length ? s.services : [s.partner_type];
+  for (const t of docsFor(services)) if (!has(t)) out.push({ key: `doc:${t}`, label: DOC_LABELS[t] });
 
-  if (s.partner_type === 'taxi') {
+  if (services.includes('taxi')) {
     const vehicles = s.vehicles.filter((v) => v.active);
     if (!vehicles.length) out.push({ key: 'vehicle', label: 'At least one vehicle' });
     for (const v of vehicles) for (const t of VEHICLE_DOCS) {
-      if (!has(t, { vehicle_id: v.id })) out.push({ key: `vehicle_doc:${v.id}:${t}`, label: `${DOC_LABELS[t]} for ${v.registration_no}` });
+      if (!has(t, { vehicle_id: v.id })) out.push({ key: `vehicle_doc:${v.id}:${t}`, label: `${DOC_LABELS[t]} for ${v.registration_no || v.make_model || 'the new vehicle'}` });
     }
   }
-  const needRole = s.partner_type === 'taxi' ? 'driver' : s.partner_type === 'paragliding' ? 'pilot' : null;
-  if (needRole) {
+  for (const needRole of staffRolesNeeded(services)) {
     const licence: DocType = needRole === 'driver' ? 'driving_licence' : 'pilot_licence';
     const people = s.staff.filter((p) => p.active && p.role === needRole);
     if (!people.length) out.push({ key: needRole, label: needRole === 'driver' ? 'At least one driver' : 'At least one pilot' });

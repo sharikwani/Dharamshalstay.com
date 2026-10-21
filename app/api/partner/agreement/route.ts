@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { partnerServices } from '@/lib/partners/types';
 import { z } from 'zod';
 import { HttpError, clientIp, jsonError, serviceClient } from '@/lib/server-auth';
 import { KYC_BUCKET, loadOnboarding, requireActivityPartner } from '@/lib/partners/load';
@@ -26,7 +27,7 @@ export async function POST(req: Request) {
       throw new HttpError(400, `Type your name exactly as entered in your details: ${profile.legal_name}`);
     }
 
-    const a = agreementFor(profile.partner_type);
+    const a = agreementFor(partnerServices(profile));
     const sha256 = sha256Hex(a.body);
     const signedAt = new Date().toISOString();
     const ip = clientIp(req);

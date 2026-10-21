@@ -6,11 +6,12 @@ import { canVerify } from '@/lib/partners/admin-actions';
 import { whatsappProfilePatch } from '@/lib/partners/whatsapp';
 import { emailPartnerDecision } from '@/lib/partners/emails';
 import { inBackground } from '@/lib/background';
+import { partnerServices } from '@/lib/partners/types';
+import { PARTNER_COMMISSION } from '@/lib/partners/agreement';
 
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supabase reads) in route handlers otherwise
 
-const PARTNER_TYPES = ['paragliding', 'taxi', 'trek'];
 const SAVE_FAILED = 'Could not save. Please try again.';
 
 const schema = z.discriminatedUnion('action', [
@@ -23,6 +24,7 @@ const schema = z.discriminatedUnion('action', [
   z.object({ action: z.literal('reinstate') }),
   z.object({ action: z.literal('set_commission'), commission_pct: z.number().min(0).max(100) }),
   z.object({ action: z.literal('set_whatsapp'), whatsapp_number: z.string().trim().max(20).optional(), whatsapp_alerts: z.boolean() }),
+  z.object({ action: z.literal('set_services'), services: z.array(z.enum(['paragliding', 'taxi', 'trek'])).min(1).max(3) }),
 ]);
 
 export async function GET(req: Request, { params }: { params: { id: string } }) {
@@ -41,7 +43,7 @@ export async function POST(req: Request, { params }: { params: { id: string } })
     const sb = serviceClient();
     const state = await loadOnboarding(params.id);
     const p = state.profile;
-    if (!PARTNER_TYPES.includes(p.partner_type)) throw new HttpError(404, 'Partner not found.');
+    if (!partnerServices(p).length) throw new HttpError(404, 'Partner not found.');
     const now = new Date().toISOString();
     const name = p.legal_name || p.full_name || 'Partner';
     // Set after every successful write, so a failed reload afterwards is not reported as an error.
@@ -114,6 +116,19 @@ export async function POST(req: Request, { params }: { params: { id: string } })
     } else if (a.action === 'reinstate') {
       if (p.partner_status !== 'suspended') throw new HttpError(409, 'Only suspended partners can be reinstated.');
       await decide('verified', { verification_note: null });
+    } else if (a.action === 'set_services') {
+      // The main type stays when it is still offered. A partner offering services with different rates
+      // (taxi 20%, trek and paragliding 25%) gets no single rate, so each booking uses its own service's rate;
+      // a rate the admin set by hand is kept.
+      const services = Array.from(new Set(a.services));
+      const rates = new Set(services.map((t) => PARTNER_COMMISSION[t]));
+      const current = p.commission_pct == null ? null : Number(p.commission_pct);
+      const defaultRate = current === null || [20, 25].includes(current);
+      await saveProfile({
+        partner_services: services,
+        partner_type: services.includes(p.partner_type) ? p.partner_type : services[0],
+        ...(defaultRate ? { commission_pct: rates.size === 1 ? Array.from(rates)[0] : null } : {}),
+      });
     } else if (a.action === 'set_commission') {
       await saveProfile({ commission_pct: a.commission_pct });
     } else if (a.action === 'set_whatsapp') {

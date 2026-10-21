@@ -14,9 +14,12 @@ export default function PartnerLogin() {
   const [unconfirmedEmail, setUnconfirmedEmail] = useState('');
   const [resendState, setResendState] = useState<'idle' | 'sending' | 'sent'>('idle');
   const [resendError, setResendError] = useState('');
+  // "Forgot password?": we email a one-time link to choose a new password.
+  const [forgot, setForgot] = useState<'off' | 'form' | 'sending' | 'sent'>('off');
 
   // Arriving from the confirmation link signs the partner in; send them on.
   useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('forgot')) setForgot('form');
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) router.replace('/partner/dashboard');
     });
@@ -40,6 +43,14 @@ export default function PartnerLogin() {
       setLoading(false); return;
     }
     router.push('/partner/dashboard');
+  }
+
+  async function sendReset(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setForgot('sending');
+    const email = String(new FormData(e.currentTarget).get('email') || '').trim();
+    await fetch('/api/partner/forgot-password', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) }).catch(() => null);
+    setForgot('sent');
   }
 
   async function resendConfirmation() {
@@ -79,7 +90,7 @@ export default function PartnerLogin() {
         <div className="text-center mb-8">
           <Building className="h-10 w-10 text-brand-600 mx-auto mb-3" />
           <h1 className="text-2xl font-heading font-bold text-slate-900 mb-1">Partner Login</h1>
-          <p className="text-slate-600">Sign in to manage your property listings.</p>
+          <p className="text-slate-600">Sign in to manage your listings, bookings and payouts.</p>
         </div>
         <form onSubmit={handleSubmit} className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8 space-y-4 shadow-sm">
           <div>
@@ -98,9 +109,23 @@ export default function PartnerLogin() {
             {loading ? 'Signing in...' : 'Sign In'}
           </button>
           <p className="text-sm text-center text-slate-500">
-            Don't have an account? <Link href="/partner/register" className="text-brand-600 font-medium hover:underline">Register free</Link>
+            <button type="button" onClick={() => setForgot('form')} className="text-brand-600 font-medium hover:underline">Forgot password?</button>
+            {' · '}Don't have an account? <Link href="/partner/register" className="text-brand-600 font-medium hover:underline">Register free</Link>
           </p>
         </form>
+        {forgot !== 'off' && (
+          <div className="mt-4 bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+            {forgot === 'sent' ? (
+              <p className="text-sm text-slate-700">If that email has a partner account, a link to choose a new password is on its way. It works once and expires in about an hour. Check your spam folder too.</p>
+            ) : (
+              <form onSubmit={sendReset} className="space-y-3">
+                <p className="text-sm font-medium text-slate-800">Get a link to choose a new password</p>
+                <input name="email" type="email" required placeholder="Your partner account email" className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" />
+                <button disabled={forgot === 'sending'} className="w-full bg-slate-900 text-white font-semibold py-2.5 rounded-lg disabled:opacity-60">{forgot === 'sending' ? 'Sending…' : 'Email me a link'}</button>
+              </form>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

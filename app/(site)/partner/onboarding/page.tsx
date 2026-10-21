@@ -147,8 +147,11 @@ export default function PartnerOnboarding() {
     await call('sign', '/api/partner/agreement', json('POST', { signed_name: fd.get('signed_name'), accepted: fd.get('accepted') === 'on' }));
   }
 
-  const staffRole = p.partner_type === 'taxi' ? 'driver' : p.partner_type === 'paragliding' ? 'pilot' : null;
-  const licence: DocType | null = staffRole === 'driver' ? 'driving_licence' : staffRole === 'pilot' ? 'pilot_licence' : null;
+  // A partner can offer several services (taxi + trek + paragliding): show every section they need.
+  const services: string[] = p.partner_services?.length ? p.partner_services : [p.partner_type];
+  const roles = (['driver', 'pilot'] as const).filter((r) => services.includes(r === 'driver' ? 'taxi' : 'paragliding'));
+  const docs: DocType[] = Array.from(new Set(services.flatMap((t: string) => PARTNER_DOCS[t as keyof typeof PARTNER_DOCS] || [])));
+  let step = services.includes('taxi') ? 4 : 3;
   const pd = p.payout_details || {};
 
   return (
@@ -191,51 +194,56 @@ export default function PartnerOnboarding() {
         <h2 className="text-lg font-heading font-semibold mb-1">2. Identity and business documents</h2>
         <p className="text-sm text-slate-500 mb-3">JPG, PNG or PDF, up to 4 MB each. Only our verification team can see these files.</p>
         <p className="text-xs text-slate-500 mb-3">We use these documents only to verify you as a partner and meet legal requirements. They are kept while you are a partner and for 3 years after, then deleted. To correct or delete your data, email hello@dharamshalastay.com.</p>
-        <div className="space-y-2">{PARTNER_DOCS[p.partner_type].map((t) => <DocRow key={t} t={t} d={docFor(t)} {...rowProps} />)}</div>
+        <div className="space-y-2">{docs.map((t) => <DocRow key={t} t={t} d={docFor(t)} {...rowProps} />)}</div>
       </section>
 
-      {p.partner_type === 'taxi' && (
+      {services.includes('taxi') && (
         <section>
           <h2 className="text-lg font-heading font-semibold mb-3">3. Vehicles</h2>
           {s.vehicles.map((v: any) => (
             <div key={v.id} className="border border-slate-200 rounded-xl p-4 mb-3 space-y-2">
-              <div className="flex justify-between"><p className="font-semibold">{v.registration_no} · {v.make_model} · {v.seats} seats</p>
+              <div className="flex justify-between"><p className="font-semibold">{v.registration_no || 'Number applied for'} · {v.make_model}{v.colour ? ' · ' + v.colour : ''}{v.fuel ? ' · ' + v.fuel : ''} · {v.seats} seats</p>
                 {editable && <button onClick={() => call('dv' + v.id, '/api/partner/vehicles/' + v.id, { method: 'DELETE' })} className="text-slate-400 hover:text-red-600" aria-label="Remove vehicle"><Trash2 className="h-4 w-4" /></button>}</div>
               {VEHICLE_DOCS.map((t) => <DocRow key={t} t={t} vehicleId={v.id} d={docFor(t, undefined, v.id)} {...rowProps} />)}
             </div>
           ))}
           {editable && (
-            <form onSubmit={addVehicle} className="grid grid-cols-2 sm:grid-cols-4 gap-2 items-end">
-              <label className="text-sm">Type<select name="vehicle_type" className={field}><option value="sedan">Sedan</option><option value="suv">SUV</option><option value="innova">Innova</option><option value="tempo">Tempo Traveller</option><option value="bus">Bus</option></select></label>
-              <label className="text-sm">Model<input name="make_model" required className={field} placeholder="Toyota Innova Crysta" /></label>
-              <label className="text-sm">Number<input name="registration_no" required className={field} placeholder="HP39A1234" /></label>
+            <form onSubmit={addVehicle} className="grid grid-cols-2 sm:grid-cols-3 gap-2 items-end">
+              <label className="text-sm">Type<select name="vehicle_type" className={field}><option value="hatchback">Hatchback</option><option value="sedan">Sedan</option><option value="suv">SUV</option><option value="innova">Innova</option><option value="tempo">Tempo Traveller</option><option value="bus">Bus</option></select></label>
+              <label className="text-sm">Model<input name="make_model" required className={field} placeholder="Maruti Swift Dzire" /></label>
+              <label className="text-sm">Number<input name="registration_no" className={field} placeholder="HP01D1234 (empty if applied for)" /></label>
+              <label className="text-sm">Fuel<select name="fuel" className={field}><option value="petrol">Petrol</option><option value="diesel">Diesel</option><option value="cng">CNG</option><option value="electric">Electric</option></select></label>
+              <label className="text-sm">Colour<input name="colour" className={field} placeholder="White" /></label>
               <label className="text-sm">Seats<input name="seats" type="number" min={1} max={60} required className={field} /></label>
-              <button disabled={!!busy} className="col-span-2 sm:col-span-4 bg-slate-900 text-white rounded-lg py-2 text-sm font-semibold">Add vehicle</button>
+              <button disabled={!!busy} className="col-span-2 sm:col-span-3 bg-slate-900 text-white rounded-lg py-2 text-sm font-semibold">Add vehicle</button>
             </form>
           )}
         </section>
       )}
 
-      {staffRole && licence && (
-        <section>
-          <h2 className="text-lg font-heading font-semibold mb-3">{p.partner_type === 'taxi' ? '4. Drivers' : '3. Pilots'}</h2>
-          {s.staff.filter((m: any) => m.role === staffRole).map((m: any) => (
-            <div key={m.id} className="border border-slate-200 rounded-xl p-4 mb-3 space-y-2">
-              <div className="flex justify-between"><p className="font-semibold">{m.full_name} · {m.phone}</p>
-                {editable && <button onClick={() => call('ds' + m.id, '/api/partner/staff/' + m.id, { method: 'DELETE' })} className="text-slate-400 hover:text-red-600" aria-label="Remove"><Trash2 className="h-4 w-4" /></button>}</div>
-              <DocRow t={licence} staffId={m.id} d={docFor(licence, m.id)} {...rowProps} label={`${DOC_LABELS[licence]} for ${m.full_name}`} />
-            </div>
-          ))}
-          {editable && (
-            <form onSubmit={(e) => addStaff(e, staffRole)} className="grid grid-cols-1 sm:grid-cols-3 gap-2 items-end">
-              <label className="text-sm">Full name<input name="full_name" required className={field} /></label>
-              <label className="text-sm">Phone<input name="phone" required className={field} /></label>
-              <label className="text-sm">Licence number<input name="licence_no" className={field} /></label>
-              <button disabled={!!busy} className="sm:col-span-3 bg-slate-900 text-white rounded-lg py-2 text-sm font-semibold">Add {staffRole}</button>
-            </form>
-          )}
-        </section>
-      )}
+      {roles.map((staffRole) => {
+        const licence: DocType = staffRole === 'driver' ? 'driving_licence' : 'pilot_licence';
+        return (
+          <section key={staffRole}>
+            <h2 className="text-lg font-heading font-semibold mb-3">{step++}. {staffRole === 'driver' ? 'Drivers' : 'Pilots'}</h2>
+            {s.staff.filter((m: any) => m.role === staffRole).map((m: any) => (
+              <div key={m.id} className="border border-slate-200 rounded-xl p-4 mb-3 space-y-2">
+                <div className="flex justify-between"><p className="font-semibold">{m.full_name} · {m.phone}</p>
+                  {editable && <button onClick={() => call('ds' + m.id, '/api/partner/staff/' + m.id, { method: 'DELETE' })} className="text-slate-400 hover:text-red-600" aria-label="Remove"><Trash2 className="h-4 w-4" /></button>}</div>
+                <DocRow t={licence} staffId={m.id} d={docFor(licence, m.id)} {...rowProps} label={`${DOC_LABELS[licence]} for ${m.full_name}`} />
+              </div>
+            ))}
+            {editable && (
+              <form onSubmit={(e) => addStaff(e, staffRole)} className="grid grid-cols-1 sm:grid-cols-3 gap-2 items-end">
+                <label className="text-sm">Full name<input name="full_name" required className={field} /></label>
+                <label className="text-sm">Phone<input name="phone" required className={field} /></label>
+                <label className="text-sm">Licence number<input name="licence_no" className={field} /></label>
+                <button disabled={!!busy} className="sm:col-span-3 bg-slate-900 text-white rounded-lg py-2 text-sm font-semibold">Add {staffRole}</button>
+              </form>
+            )}
+          </section>
+        );
+      })}
 
       <section>
         <h2 className="text-lg font-heading font-semibold mb-3">Partner agreement</h2>
@@ -243,7 +251,7 @@ export default function PartnerOnboarding() {
         {s.agreements[0] && <p className="text-sm text-slate-600 mt-2 flex items-center gap-1.5"><FileText className="h-4 w-4" />Signed by {s.agreements[0].signed_name} on {new Date(s.agreements[0].signed_at).toLocaleString('en-IN')}{s.agreements[0].url && <> · <a href={s.agreements[0].url} className="text-brand-600 underline" target="_blank" rel="noreferrer">download PDF</a></>}</p>}
         {editable && (
           <form onSubmit={sign} className="mt-3 space-y-3">
-            <label className="flex items-start gap-2 text-sm"><input type="checkbox" name="accepted" required className="mt-1" />I have read and agree to the Dharamshala Stay Partner Agreement, including the {s.agreement.commission ?? 20}% commission on every booking, online or cash.</label>
+            <label className="flex items-start gap-2 text-sm"><input type="checkbox" name="accepted" required className="mt-1" />I have read and agree to the Dharamshala Stay Partner Agreement, including the {s.agreement.commission != null ? s.agreement.commission + '% commission' : 'commission for each service (' + Object.entries(s.agreement.rates || {}).map(([t, r]: any) => `${t} ${r}%`).join(', ') + ')'} on every booking, online or cash.</label>
             <label className="text-sm block">Type your full legal name to sign<input name="signed_name" required className={field} placeholder={p.legal_name || ''} /></label>
             <button disabled={!!busy || !s.readyToSign} className="bg-green-700 text-white px-5 py-2.5 rounded-lg font-semibold disabled:opacity-50">{busy === 'sign' ? 'Signing…' : 'Sign and submit for approval'}</button>
             {!s.readyToSign && <p className="text-xs text-slate-500">Complete everything in "Still to do" first.</p>}

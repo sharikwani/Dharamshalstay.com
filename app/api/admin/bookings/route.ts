@@ -163,7 +163,7 @@ export async function POST(req: Request) {
       if (!data) throw new HttpError(400, 'The chosen partner, person or vehicle was not found.');
       return data as any;
     };
-    const partner = await load('profiles', body.partner_id, 'id, role, partner_type, partner_status, commission_pct');
+    const partner = await load('profiles', body.partner_id, 'id, role, partner_type, partner_services, partner_status, commission_pct');
     const staff = await load('partner_staff', body.staff_id, 'id, partner_id, role, active');
     const vehicle = await load('vehicles', body.vehicle_id, 'id, partner_id, active');
     const problem = checkAssignment(category, partner, staff, vehicle);

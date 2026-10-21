@@ -1,6 +1,16 @@
 export const ACTIVITY_PARTNER_TYPES = ['paragliding', 'taxi', 'trek'] as const;
 export type ActivityPartnerType = (typeof ACTIVITY_PARTNER_TYPES)[number];
 export const PARTNER_TYPES = ['hotel', ...ACTIVITY_PARTNER_TYPES] as const;
+
+/**
+ * The activity services a partner offers. One account can offer several (taxi + trek + paragliding);
+ * accounts from before v45 have only partner_type.
+ */
+export function partnerServices(p: { partner_type?: string | null; partner_services?: string[] | null } | null | undefined): ActivityPartnerType[] {
+  const list = p?.partner_services?.length ? p.partner_services : p?.partner_type ? [p.partner_type] : [];
+  return ACTIVITY_PARTNER_TYPES.filter((t) => list.includes(t));
+}
+export const offers = (p: Parameters<typeof partnerServices>[0], service: string) => (partnerServices(p) as string[]).includes(service);
 export type PartnerType = (typeof PARTNER_TYPES)[number];
 
 export type PartnerStatus = 'onboarding' | 'pending_verification' | 'verified' | 'changes_requested' | 'suspended' | 'rejected';
@@ -39,5 +49,6 @@ export function docTarget(doc: DocType): 'partner' | 'staff' | 'vehicle' {
 
 export const STAFF_ROLES = ['driver', 'pilot', 'guide'] as const;
 export type StaffRole = (typeof STAFF_ROLES)[number];
-export const VEHICLE_TYPES = ['sedan', 'suv', 'innova', 'tempo', 'bus'] as const;
+export const VEHICLE_TYPES = ['hatchback', 'sedan', 'suv', 'innova', 'tempo', 'bus'] as const;
+export const FUELS = ['petrol', 'diesel', 'cng', 'electric'] as const;
 export type VehicleType = (typeof VEHICLE_TYPES)[number];
