@@ -164,7 +164,7 @@ export interface Destination {
 // ===== TAXI =====
 export type TaxiStatus = 'active' | 'inactive';
 export type TaxiType = 'airport' | 'local' | 'outstation' | 'sightseeing';
-export type VehicleCategory = 'sedan' | 'suv' | 'innova' | 'tempo' | 'bus';
+export type VehicleCategory = 'hatchback' | 'sedan' | 'suv' | 'innova' | 'tempo' | 'bus';
 
 export interface TaxiRoute {
   id: string;
