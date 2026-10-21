@@ -18,6 +18,7 @@ const schema = z.discriminatedUnion('action', [
   z.object({ action: z.literal('approve_doc'), document_id: z.string().uuid() }),
   z.object({ action: z.literal('reject_doc'), document_id: z.string().uuid(), reason: z.string().trim().min(3).max(500) }),
   z.object({ action: z.literal('verify') }),
+  z.object({ action: z.literal('approve_early'), note: z.string().trim().min(3).max(2000) }),
   z.object({ action: z.literal('request_changes'), note: z.string().trim().min(3).max(2000) }),
   z.object({ action: z.literal('reject'), note: z.string().trim().min(3).max(2000) }),
   z.object({ action: z.literal('suspend'), note: z.string().trim().min(3).max(2000) }),
@@ -104,6 +105,11 @@ export async function POST(req: Request, { params }: { params: { id: string } })
       committed = true;
     } else if ((a.action === 'verify' || a.action === 'reinstate') && p.partner_status === 'verified') {
       // Already verified (double click, another admin): nothing to change and no second email.
+    } else if (a.action === 'approve_early') {
+      // The owner's call: take bookings now, documents follow (e.g. sent on WhatsApp, saved by partner-docs).
+      if (p.partner_status === 'verified') return NextResponse.json(await loadOnboarding(params.id));
+      if (!['onboarding', 'changes_requested', 'pending_verification'].includes(p.partner_status)) throw new HttpError(409, 'Use Reinstate for suspended partners.');
+      await decide('verified', { verified_at: now, verification_note: `Approved before all documents: ${a.note}` });
     } else if (a.action === 'verify') {
       // Only a partner who signed and submitted can be verified; suspended partners use reinstate.
       if (p.partner_status !== 'pending_verification') throw new HttpError(409, 'Only partners waiting for review can be verified.');

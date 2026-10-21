@@ -115,6 +115,9 @@ export default function AdminPartnerDetail() {
         <textarea value={note} onChange={(e) => setNote(e.target.value)} placeholder="Note to the partner (required to send back, reject or suspend)" className="w-full border border-slate-300 rounded-lg p-2 text-sm" rows={3} />
         <div className="flex flex-wrap gap-2">
           <button disabled={busy} onClick={() => act({ action: 'verify' })} className="bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-50">Approve partner</button>
+          {p.partner_status !== 'verified' && p.partner_status !== 'suspended' && p.partner_status !== 'rejected' && (
+            <button disabled={busy} onClick={() => { const note = window.prompt('Approve before all documents are in? They can take bookings straight away. Write why (e.g. "Documents coming on WhatsApp"):'); if (note) act({ action: 'approve_early', note }); }} className="border border-green-700 text-green-800 px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-50">Approve now, documents later</button>
+          )}
           <button disabled={busy} onClick={() => act({ action: 'request_changes', note })} className="bg-amber-500 text-white px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-50">Send back for changes</button>
           <button disabled={busy} onClick={() => act({ action: 'reject', note })} className="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-50">Reject</button>
           {p.partner_status === 'verified' && <button disabled={busy} onClick={() => act({ action: 'suspend', note })} className="bg-slate-800 text-white px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-50">Suspend</button>}

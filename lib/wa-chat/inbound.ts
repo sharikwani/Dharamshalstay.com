@@ -9,6 +9,7 @@ import { getSettings, history, saveInbound, setMessageBody, setStatusIf } from '
 import { sendLogged } from './send';
 import { businessContact, businessReason, isAutoReply } from './business';
 import { answerHotel, hotelModeAllowed } from './hotel';
+import { handlePartnerMessage, partnerByPhone } from './partner-docs';
 import { unanswered, VOICE_FAILED, VOICE_PLACEHOLDER, type Conversation, type Inbound } from './types';
 
 const esc = (s: unknown) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
@@ -45,6 +46,10 @@ export async function handleInbound(m: Inbound, deadline = Date.now() + 50_000):
   // A hotel or partner number (usually its WhatsApp Business auto-reply to our invite or alert): the AI stays
   // out of it. The owner is emailed only when it looks like a real person replying, not the instant greeting.
   const settings = await getSettings();
+  // A taxi, trek or paragliding partner: their documents are saved to their account; the guest AI stays out.
+  const partner = settings.test_numbers.includes(conversation.phone) ? null
+    : await partnerByPhone(conversation.phone).catch((e) => { console.error('WhatsApp chat: partner check failed', e); return null; });
+  if (partner) return { work: handlePartnerMessage(m, conversation, partner, body).catch((e) => console.error('Partner WhatsApp message failed:', e)) };
   // The owner's test numbers always reach the AI, even if they also get hotel or booking alerts.
   const business = settings.test_numbers.includes(conversation.phone) ? null
     : await businessContact(conversation.phone).catch((e) => { console.error('WhatsApp chat: business check failed', e); return null; });
