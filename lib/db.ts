@@ -299,7 +299,12 @@ export async function getActiveTaxiRoutes() {
 export interface ParaglidingPackage {
   id?: string; slug: string; name: string; destination: string; duration: string; altitude: string;
   price_per_person: number; description: string; includes: string[]; featured: boolean; image: string;
+  /** tandem, scenic... or an adventure activity sold alongside (zipline, sky_cycle, atv). */
+  package_type?: string;
 }
+
+/** Zipline, sky cycle and ATV rides: booked like a flight, shown in their own section. */
+export const ADVENTURE_TYPES = ['zipline', 'sky_cycle', 'atv'];
 
 /** Published packages from /admin/paragliding (empty list if none are published yet). */
 export async function getParaglidingPackages(): Promise<ParaglidingPackage[]> {
@@ -317,7 +322,7 @@ export async function getParaglidingPackages(): Promise<ParaglidingPackage[]> {
     return data.map((p: any) => {
       const img = Array.isArray(p.images) ? (typeof p.images[0] === 'string' ? p.images[0] : p.images[0]?.url) : undefined;
       return {
-        id: p.id, slug: p.slug, name: p.name, destination: p.destination, duration: p.duration || '', altitude: p.altitude || '',
+        id: p.id, slug: p.slug, name: p.name, destination: p.destination, duration: p.duration || '', altitude: p.altitude || '', package_type: p.package_type || 'tandem',
         price_per_person: p.price_per_person, description: p.short_description || p.description || '',
         includes: Array.isArray(p.includes) ? p.includes : [], featured: !!p.featured,
         image: img || (/bir/i.test(p.destination) ? placeImage('bir-paragliding') : placeImage('dhauladhar-hero')),

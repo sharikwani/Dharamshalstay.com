@@ -8,7 +8,7 @@ import JsonLd from '@/components/seo/JsonLd';
 import { generateSEO, faqSchema, breadcrumbSchema, touristTripSchema } from '@/lib/seo';
 import { formatPrice, getWhatsAppLink } from '@/lib/utils';
 import { placeImage } from '@/lib/place-images';
-import { getParaglidingPackages, type ParaglidingPackage } from '@/lib/db';
+import { ADVENTURE_TYPES, getParaglidingPackages, type ParaglidingPackage } from '@/lib/db';
 import { serverT } from '@/lib/i18n/server';
 import { fmt } from '@/lib/i18n/dict';
 import type { Lang } from '@/lib/i18n/core';
@@ -35,17 +35,20 @@ export default async function ParaglidingView({ lang }: { lang: Lang }) {
   const { t, href } = serverT(lang);
   const p = t.paragliding;
   const fromDb = await getParaglidingPackages();
-  const packages = (fromDb.length ? fromDb : DEFAULT_PARAGLIDING).map((pkg) => {
+  const all = (fromDb.length ? fromDb : DEFAULT_PARAGLIDING).map((pkg) => {
     const tr = lang === 'hi' ? p.packages[pkg.slug as keyof typeof p.packages] : undefined;
     return tr ? { ...pkg, ...tr } : pkg;
   });
+  // Flights first; zipline, sky cycle and ATV rides get their own section below.
+  const packages = all.filter((x) => !ADVENTURE_TYPES.includes(x.package_type || ''));
+  const adventures = all.filter((x) => ADVENTURE_TYPES.includes(x.package_type || ''));
   const highlightIcons = [Shield, Wind, Clock, Star];
 
   return (
     <>
       <JsonLd data={[
         breadcrumbSchema([{ name: t.common.home, href: '/' }, { name: t.common.paragliding, href: '/paragliding' }], lang),
-        ...packages.map((pkg) => touristTripSchema({
+        ...all.map((pkg) => touristTripSchema({
           name: pkg.name, description: pkg.description, path: '/paragliding', image: pkg.image,
           price: pkg.price_per_person, touristType: 'Adventure travellers',
         }, lang)),
@@ -116,6 +119,47 @@ export default async function ParaglidingView({ lang }: { lang: Lang }) {
           </div>
         </div>
       </section>
+
+      {adventures.length > 0 && (
+        <section className="py-12 bg-white border-t border-slate-100">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <SectionHeading title={lang === 'hi' ? 'ज़िपलाइन, स्काई साइकिल और ATV' : 'Zipline, sky cycle and ATV rides'} subtitle={lang === 'hi' ? 'उड़ान के साथ और रोमांच, प्रति व्यक्ति कीमत' : 'More adventure around Dharamshala, priced per person. Book the same way as a flight.'} />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {adventures.map(pkg => (
+              <div key={pkg.slug} className="bg-white border border-slate-200 rounded-xl overflow-hidden hover:shadow-lg transition-shadow group">
+                <div className="relative aspect-[16/9]">
+                  <Image src={pkg.image} alt={pkg.name} fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="(max-width:768px) 100vw, 33vw" />
+                  {pkg.featured && <span className="absolute top-3 left-3 bg-orange-600 text-white text-xs font-bold px-2.5 py-1 rounded">{t.treks.popular}</span>}
+                </div>
+                <div className="p-5">
+                  <div className="flex items-center gap-2 mb-2">
+                    <MapPin className="h-3.5 w-3.5 text-brand-500" />
+                    <span className="text-xs font-medium text-slate-500">{pkg.destination}</span>
+                    <span className="text-xs text-slate-400">·</span>
+                    <span className="text-xs text-slate-500">{pkg.duration}</span>
+                  </div>
+                  <h3 className="text-lg font-heading font-semibold text-slate-900 mb-2">{pkg.name}</h3>
+                  <p className="text-sm text-slate-600 line-clamp-3 mb-3">{pkg.description}</p>
+                  <div className="flex flex-wrap gap-1 mb-4">
+                    {pkg.includes.slice(0, 3).map(inc => <span key={inc} className="text-xs bg-green-50 text-green-700 px-2 py-0.5 rounded">✓ {inc}</span>)}
+                  </div>
+                  <div className="flex items-center justify-between pt-3 border-t border-slate-100">
+                    <div>
+                      <span className="text-xl font-bold text-slate-900">{formatPrice(pkg.price_per_person)}</span>
+                      <span className="text-xs text-slate-500 ml-1">{t.common.perPerson}</span>
+                    </div>
+                    <a href={getWhatsAppLink(fmt(p.whatsappPkg, { name: pkg.name }))} target="_blank" rel="noopener noreferrer"
+                      className="text-sm font-semibold text-brand-600 hover:text-brand-700 flex items-center gap-1">
+                      {p.bookNow} <ArrowRight className="h-3.5 w-3.5" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       <section className="py-12 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
