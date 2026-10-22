@@ -86,7 +86,9 @@ Slides:
 - style "question": a prompt to comment (e.g. "Comment your guess before you swipe"): title max 50 characters, body max 90 characters.
 - style "cta": last slide of a carousel: title like "Stay close to the mountains", body max 70 characters about stays, taxis or treks with local experts.
 - Carousel: 4 to 7 slides, cover first, cta last. Single: one "cover" slide.
-- Every slide except cta uses an image id from the IMAGE CATALOG that fits it. Use the PLACE IMAGE for the cover and the reveal when one is given. Never use the same image twice in one post: every slide gets a different image id.
+- Photos must MATCH the slide: pick an image id only if its description shows the exact thing the slide talks about (that place, dish, activity or scene). A mountain, forest, lake or village view is NOT a match for food, cafes, music, nightlife, shopping, prices, transport or practical tips. If no catalog image truly shows the slide's subject, set image to "" and the slide becomes an elegant text card: a text card is always better than a wrong photo.
+- Use the PLACE IMAGE for the cover and the reveal when one is given. Never use the same image twice in one post.
+- Images marked [recent] were in our last few posts: prefer a different image that matches equally well, but a matching [recent] image is better than a non-matching one.
 
 Caption: first line is the hook (no hashtags, and no place name in the first two lines of a guessing game), then 3-6 short lines with line breaks and at most 3 tasteful emojis, then the comment question, then one soft line like "Save this for your next trip" or "Send this to someone who loves the mountains". 400-900 characters. Indian English. No ALL CAPS, no fake urgency, no prices unless in the source.
 Hashtags: exactly 5, no "#", lowercase, no spaces: one broad (himachal or incredibleindia), two local (dharamshala, mcleodganj), two specific to the place or topic. No spammy tags.
@@ -108,20 +110,15 @@ const SCHEMA = {
 const clip = (s: unknown, n: number) => String(s ?? '').replace(/<[^>]*>/g, '').replace(/[ \t]+/g, ' ').trim().slice(0, n);
 const plain = (md: string) => md.replace(/```[\s\S]*?```/g, '').replace(/!\[[^\]]*\]\([^)]*\)/g, '').replace(/\[([^\]]+)\]\([^)]*\)/g, '$1').replace(/[#*_>|]/g, '').replace(/\n{3,}/g, '\n\n');
 
-/** Scenic views that fit any slide; used when the AI repeats a photo or gives none. */
-const SCENIC = ['dhauladhar-hero', 'dharamshala-town', 'kangra-valley', 'mountain-road', 'prayer-flags', 'mcleod-ganj', 'naddi', 'dharamkot', 'dharamshala-snow'];
-
-/** Owner's rule: no photo appears twice in a post, nor in recent posts (avoid). A repeated or missing photo becomes
- * an unused scenic one; the closing slide simply drops a repeated photo (it reads fine as a plain card). */
-export function noRepeats(slides: Slide[], avoid: string[] = []): void {
+/** Owner's rules: a photo must show what its slide is about, and no photo appears twice in a post.
+ * A repeated or unknown photo is dropped rather than swapped for a random view; a tip without a photo
+ * becomes a text card (fact style), which reads better than a picture of the wrong thing. */
+export function noRepeats(slides: Slide[]): void {
   const used = new Set<string>();
-  const recent = new Set(avoid);
-  const free = (k: string) => (PLACE_KEYS as string[]).includes(k) && !used.has(k) && !slides.some((s) => s.image === k);
-  const spare = () => [...SCENIC, ...PLACE_KEYS].find((k) => free(k) && !recent.has(k)) || [...SCENIC, ...PLACE_KEYS].find(free);
   for (const s of slides) {
-    if (s.image && (used.has(s.image) || recent.has(s.image))) s.image = s.style === 'cta' ? undefined : spare();
-    else if (!s.image && s.style !== 'cta') s.image = spare();
+    if (s.image && used.has(s.image)) s.image = undefined;
     if (s.image) used.add(s.image);
+    else if (s.style === 'tip') s.style = 'fact';
   }
 }
 
@@ -140,7 +137,7 @@ export function sanitize(raw: any, brief: Brief): Omit<SocialDraft, 'topic' | 't
     const cta = slides.find((s) => s.style === 'cta');
     slides = [cover, ...middle, cta].filter(Boolean) as Slide[];
   }
-  noRepeats(slides, brief.avoid);
+  noRepeats(slides);
   if (!slides.length || slides[0].style !== 'cover' || (format === 'carousel' && slides.length < 3)) throw new Error('AI post was missing a cover or enough slides');
   const hashtags = Array.from(new Set((Array.isArray(raw?.hashtags) ? raw.hashtags : [])
     .map((h: any) => String(h).toLowerCase().replace(/[^a-z0-9_]/g, '')).filter((h: string) => h.length > 2 && h.length < 40))).slice(0, MAX_HASHTAGS) as string[];
@@ -170,12 +167,9 @@ export async function writePost(brief: Brief): Promise<SocialDraft> {
   const guide = guideSlug ? blogPosts.find((p) => p.slug === guideSlug) : undefined;
   const source = place?.text ? `ABOUT ${placeName(brief.placeKey!)} (from our pages):\n${place.text}` : guide ? `GUIDE "${guide.title}":\n${plain(String(guide.content || '')).slice(0, 7000)}\n\nGUIDE FAQS:\n${(guide.faqs || []).map((f: any) => `Q: ${f.question} A: ${f.answer}`).join('\n').slice(0, 2000)}` : '';
   const verified = facts.map((f) => `- ${f.question} ${f.answer}`).join('\n');
-  // Photos from recent posts are left out so the AI picks fresh ones that still fit each slide (the place itself stays).
-  const avoid = (brief.avoid || []).filter((k) => k !== brief.placeKey);
-  const fresh = PLACE_KEYS.filter((k) => !avoid.includes(k));
-  const pool = fresh.length >= 15 ? fresh : PLACE_KEYS;
-  brief = { ...brief, avoid: pool === fresh ? avoid : [] };
-  const catalog = pool.map((k) => `${k}: ${placeImageAlt(k as PlaceImageKey)}`).join('\n');
+  // Photos from recent posts are marked so the AI prefers fresh ones, but a photo that matches the slide always wins.
+  const recent = new Set(brief.avoid || []);
+  const catalog = PLACE_KEYS.map((k) => `${k}: ${placeImageAlt(k as PlaceImageKey)}${recent.has(k) && k !== brief.placeKey ? ' [recent]' : ''}`).join('\n');
   const seriesText = series ? `SERIES: ${series.name}\nSERIES MOOD: ${series.mood}\nSLIDE RECIPE: ${series.recipe}\nSHARE TRIGGER: ${series.share}\n` : '';
   const placeText = brief.placeKey ? `PLACE IMAGE: ${brief.placeKey} (${placeName(brief.placeKey)})\n` : '';
   const user = `TOPIC: ${brief.topic}\nFORMAT: ${brief.format === 'single' ? 'single (one cover slide)' : 'carousel'}\n${seriesText}${placeText}${brief.notes ? 'NOTES: ' + brief.notes + '\n' : ''}\nSOURCE:\n${source || '(no guide; use verified facts and the image descriptions)'}\n\nVERIFIED FACTS:\n${verified}\n\nIMAGE CATALOG (id: description):\n${catalog}`;

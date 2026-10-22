@@ -19,8 +19,9 @@ const raw = {
 describe('social writer', () => {
   it('keeps only our images, strips HTML and inline hashtags, cleans tags', () => {
     const d = sanitize(raw, { theme: 'guide:triund', topic: 'Triund' });
-    expect(d.slides.map((s) => s.style)).toEqual(['cover', 'tip', 'tip', 'cta']);
-    expect(d.slides[1].image).toBe('dhauladhar-hero');
+    // An unknown photo is dropped (never swapped for a random view) and that tip becomes a text card.
+    expect(d.slides.map((s) => s.style)).toEqual(['cover', 'fact', 'tip', 'cta']);
+    expect(d.slides[1].image).toBeUndefined();
     expect(d.slides[2].title).toBe('Carry water');
     expect(d.caption).not.toMatch(/#triund/);
     expect(d.hashtags).toEqual(['triund', 'mcleodganj', 'himachal']);
@@ -51,12 +52,11 @@ describe('social writer', () => {
     expect(ig).not.toMatch(/\/blog\/x/);
     expect(fb).toMatch(/\/blog\/x/);
   });
-  it('never reuses a photo from recent posts', () => {
-    const avoid = raw.slides.map((s: any) => s.image).filter(Boolean);
-    const slides = sanitize(raw, { theme: 'g', topic: 't', avoid }).slides;
-    for (const s of slides) if (s.image) expect(avoid).not.toContain(s.image);
-    const imgs = slides.map((s) => s.image).filter(Boolean);
-    expect(new Set(imgs).size).toBe(imgs.length);
+  it('a repeated photo becomes a text card, not a random scenic view', () => {
+    const slides = [0, 1].map((i) => ({ style: i ? 'tip' : 'cover', image: 'mcleod-cafe', kicker: '', title: 'T' + i, body: '' }));
+    const d = sanitize({ ...raw, slides: [...slides, raw.slides[3]] }, { theme: 'g', topic: 'Live music dinners' });
+    expect(d.slides[1].image).toBeUndefined();
+    expect(d.slides[1].style).toBe('fact');
   });
   it('slide URLs point at our JPEG renderer with numbering', () => {
     const u = slideUrl({ style: 'tip', image: 'triund', title: 'A & B' }, 1, 5);

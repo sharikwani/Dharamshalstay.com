@@ -64,7 +64,8 @@ export async function GET(req: Request) {
 
   const label = (kicker + ' Dharamshala Stay Your home in the Himalayas Swipe Comment below 0123456789/').toUpperCase();
   const [photo, logo, serif, sans, caps] = await Promise.all([
-    style === 'cta' ? Promise.resolve(null) : loadImage(q.get('img'), origin).then((p) => p || loadImage('dhauladhar-hero', origin)),
+    // No photo asked for means a text card (the post had no photo that matches); never a stand-in view.
+    style === 'cta' || !q.get('img') ? Promise.resolve(null) : loadImage(q.get('img'), origin).then((p) => p || loadImage('dhauladhar-hero', origin)),
     loadImage('/brand/logo-badge-icon-512.png', origin),
     googleFont(SERIF, 600, title + 'Dharamshala Stay?'),
     googleFont(SANS, 400, body + 'dharamshalastay.com'),
@@ -93,7 +94,7 @@ export async function GET(req: Request) {
   const fullPhoto = (shade: string) => (
     <>
       {photo && <img src={photo} width={W} height={H} style={{ position: 'absolute', top: 0, left: 0, width: W, height: H, objectFit: 'cover' }} />}
-      <div style={{ position: 'absolute', top: 0, left: 0, width: W, height: H, display: 'flex', backgroundImage: shade }} />
+      <div style={{ position: 'absolute', top: 0, left: 0, width: W, height: H, display: 'flex', backgroundImage: photo ? shade : 'radial-gradient(circle at 50% 30%, rgba(227,183,106,0.24), transparent 62%)' }} />
     </>
   );
   const layer = { position: 'absolute' as const, top: 0, left: 0, width: W, height: H, display: 'flex', flexDirection: 'column' as const, justifyContent: 'space-between' };
