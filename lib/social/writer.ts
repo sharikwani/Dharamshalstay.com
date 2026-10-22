@@ -19,7 +19,9 @@ export type SocialDraft = {
   topic: string; theme: string; format: 'single' | 'carousel'; slides: Slide[];
   caption: string; hashtags: string[]; alt_text: string; credits: string; link: string;
 };
-export type Brief = { theme: string; topic: string; guideSlug?: string; format?: 'single' | 'carousel'; notes?: string; series?: SeriesId; placeKey?: string };
+export type Brief = { theme: string; topic: string; guideSlug?: string; format?: 'single' | 'carousel'; notes?: string; series?: SeriesId; placeKey?: string;
+  /** Photos used by recent posts: kept out of the catalog so every post looks different. */
+  avoid?: string[] };
 
 /** Instagram allows at most 5 hashtags per post (since late 2025); more can stop the post. */
 export const MAX_HASHTAGS = 5;
@@ -109,13 +111,15 @@ const plain = (md: string) => md.replace(/```[\s\S]*?```/g, '').replace(/!\[[^\]
 /** Scenic views that fit any slide; used when the AI repeats a photo or gives none. */
 const SCENIC = ['dhauladhar-hero', 'dharamshala-town', 'kangra-valley', 'mountain-road', 'prayer-flags', 'mcleod-ganj', 'naddi', 'dharamkot', 'dharamshala-snow'];
 
-/** Owner's rule: no photo appears twice in a post. A repeated or missing photo becomes an unused scenic one;
- * the closing slide simply drops a repeated photo (it reads fine as a plain card). */
-export function noRepeats(slides: Slide[]): void {
+/** Owner's rule: no photo appears twice in a post, nor in recent posts (avoid). A repeated or missing photo becomes
+ * an unused scenic one; the closing slide simply drops a repeated photo (it reads fine as a plain card). */
+export function noRepeats(slides: Slide[], avoid: string[] = []): void {
   const used = new Set<string>();
-  const spare = () => [...SCENIC, ...PLACE_KEYS].find((k) => (PLACE_KEYS as string[]).includes(k) && !used.has(k) && !slides.some((s) => s.image === k));
+  const recent = new Set(avoid);
+  const free = (k: string) => (PLACE_KEYS as string[]).includes(k) && !used.has(k) && !slides.some((s) => s.image === k);
+  const spare = () => [...SCENIC, ...PLACE_KEYS].find((k) => free(k) && !recent.has(k)) || [...SCENIC, ...PLACE_KEYS].find(free);
   for (const s of slides) {
-    if (s.image && used.has(s.image)) s.image = s.style === 'cta' ? undefined : spare();
+    if (s.image && (used.has(s.image) || recent.has(s.image))) s.image = s.style === 'cta' ? undefined : spare();
     else if (!s.image && s.style !== 'cta') s.image = spare();
     if (s.image) used.add(s.image);
   }
@@ -136,7 +140,7 @@ export function sanitize(raw: any, brief: Brief): Omit<SocialDraft, 'topic' | 't
     const cta = slides.find((s) => s.style === 'cta');
     slides = [cover, ...middle, cta].filter(Boolean) as Slide[];
   }
-  noRepeats(slides);
+  noRepeats(slides, brief.avoid);
   if (!slides.length || slides[0].style !== 'cover' || (format === 'carousel' && slides.length < 3)) throw new Error('AI post was missing a cover or enough slides');
   const hashtags = Array.from(new Set((Array.isArray(raw?.hashtags) ? raw.hashtags : [])
     .map((h: any) => String(h).toLowerCase().replace(/[^a-z0-9_]/g, '')).filter((h: string) => h.length > 2 && h.length < 40))).slice(0, MAX_HASHTAGS) as string[];
@@ -166,7 +170,12 @@ export async function writePost(brief: Brief): Promise<SocialDraft> {
   const guide = guideSlug ? blogPosts.find((p) => p.slug === guideSlug) : undefined;
   const source = place?.text ? `ABOUT ${placeName(brief.placeKey!)} (from our pages):\n${place.text}` : guide ? `GUIDE "${guide.title}":\n${plain(String(guide.content || '')).slice(0, 7000)}\n\nGUIDE FAQS:\n${(guide.faqs || []).map((f: any) => `Q: ${f.question} A: ${f.answer}`).join('\n').slice(0, 2000)}` : '';
   const verified = facts.map((f) => `- ${f.question} ${f.answer}`).join('\n');
-  const catalog = PLACE_KEYS.map((k) => `${k}: ${placeImageAlt(k as PlaceImageKey)}`).join('\n');
+  // Photos from recent posts are left out so the AI picks fresh ones that still fit each slide (the place itself stays).
+  const avoid = (brief.avoid || []).filter((k) => k !== brief.placeKey);
+  const fresh = PLACE_KEYS.filter((k) => !avoid.includes(k));
+  const pool = fresh.length >= 15 ? fresh : PLACE_KEYS;
+  brief = { ...brief, avoid: pool === fresh ? avoid : [] };
+  const catalog = pool.map((k) => `${k}: ${placeImageAlt(k as PlaceImageKey)}`).join('\n');
   const seriesText = series ? `SERIES: ${series.name}\nSERIES MOOD: ${series.mood}\nSLIDE RECIPE: ${series.recipe}\nSHARE TRIGGER: ${series.share}\n` : '';
   const placeText = brief.placeKey ? `PLACE IMAGE: ${brief.placeKey} (${placeName(brief.placeKey)})\n` : '';
   const user = `TOPIC: ${brief.topic}\nFORMAT: ${brief.format === 'single' ? 'single (one cover slide)' : 'carousel'}\n${seriesText}${placeText}${brief.notes ? 'NOTES: ' + brief.notes + '\n' : ''}\nSOURCE:\n${source || '(no guide; use verified facts and the image descriptions)'}\n\nVERIFIED FACTS:\n${verified}\n\nIMAGE CATALOG (id: description):\n${catalog}`;

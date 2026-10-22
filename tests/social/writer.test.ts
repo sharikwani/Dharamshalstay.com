@@ -51,6 +51,13 @@ describe('social writer', () => {
     expect(ig).not.toMatch(/\/blog\/x/);
     expect(fb).toMatch(/\/blog\/x/);
   });
+  it('never reuses a photo from recent posts', () => {
+    const avoid = raw.slides.map((s: any) => s.image).filter(Boolean);
+    const slides = sanitize(raw, { theme: 'g', topic: 't', avoid }).slides;
+    for (const s of slides) if (s.image) expect(avoid).not.toContain(s.image);
+    const imgs = slides.map((s) => s.image).filter(Boolean);
+    expect(new Set(imgs).size).toBe(imgs.length);
+  });
   it('slide URLs point at our JPEG renderer with numbering', () => {
     const u = slideUrl({ style: 'tip', image: 'triund', title: 'A & B' }, 1, 5);
     expect(u).toMatch(/\/social\/card\.jpg\?/);

@@ -60,9 +60,15 @@ export async function publishPost(id: string, deadline = Date.now() + 45_000) {
   return { status, errors };
 }
 
+/** Photos used by the last few posts, so the next one does not repeat them (about 5 photos a post, 70 in all). */
+async function recentPhotos(sb: ReturnType<typeof serviceClient>, posts = 8): Promise<string[]> {
+  const { data } = await sb.from('social_posts').select('slides').neq('status', 'failed').order('created_at', { ascending: false }).limit(posts);
+  return Array.from(new Set((data || []).flatMap((p: any) => (Array.isArray(p.slides) ? p.slides : []).map((s: any) => s?.image).filter(Boolean))));
+}
+
 export async function createPost(brief: Brief, opts: { schedule: boolean; at?: Date; createdBy?: 'ai' | 'admin' }) {
   const sb = serviceClient();
-  const d = await writePost(brief);
+  const d = await writePost({ ...brief, avoid: await recentPhotos(sb) });
   const { data, error } = await sb.from('social_posts').insert({
     theme: d.theme, topic: d.topic, format: d.format, slides: d.slides, caption: d.caption, hashtags: d.hashtags,
     alt_text: d.alt_text, credits: d.credits, link: d.link,
