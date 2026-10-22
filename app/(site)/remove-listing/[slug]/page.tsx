@@ -32,7 +32,7 @@ export default async function RemoveListingPage({ params, searchParams }: { para
           </p>
           <ListingRequestForm slug={l.slug} hotelName={l.name} kind="removal" token={searchParams.t} />
           <p className="text-sm text-slate-500 mt-8">
-            Only want to fix something, like photos or the phone number? <Link href={'/claim/' + l.slug + (searchParams.t ? '?t=' + encodeURIComponent(searchParams.t) : '')} className="underline">Claim the listing instead</Link>, it's free.
+            Only want to fix something, like photos or the phone number? <Link rel="nofollow" href={'/claim/' + l.slug + (searchParams.t ? '?t=' + encodeURIComponent(searchParams.t) : '')} className="underline">Claim the listing instead</Link>, it's free.
           </p>
         </>
       ) : (

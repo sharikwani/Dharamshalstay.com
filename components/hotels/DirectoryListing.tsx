@@ -163,11 +163,12 @@ export default function DirectoryListing({ hotel, related, reviews, lang = 'en' 
               </div>
             </div>
             <div className="shrink-0 flex flex-col items-center gap-1.5">
-              <Link href={'/claim/' + hotel.slug}
+              {/* nofollow: the claim and removal pages are private (noindex); search engines need not crawl them. */}
+              <Link href={'/claim/' + hotel.slug} rel="nofollow"
                 className="w-full text-center bg-brand-600 text-white px-5 py-2.5 rounded-lg font-semibold hover:bg-brand-700 text-sm">
                 {d.claim}
               </Link>
-              <Link href={'/remove-listing/' + hotel.slug} className="text-xs text-slate-500 hover:text-slate-700 underline">
+              <Link href={'/remove-listing/' + hotel.slug} rel="nofollow" className="text-xs text-slate-500 hover:text-slate-700 underline">
                 {d.removeLink}
               </Link>
             </div>

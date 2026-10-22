@@ -53,7 +53,7 @@ export default async function ClaimPage({ params, searchParams }: { params: { sl
         <p className="text-slate-600">This listing is already managed by its owner. If that's not right, <a href={getWhatsAppLink('Hi! About the listing for ' + l.name + '...')} className="underline" target="_blank" rel="noopener noreferrer">WhatsApp us</a>.</p>
       )}
       <p className="text-sm text-slate-500 mt-8">
-        Prefer not to be listed? <Link href={'/remove-listing/' + l.slug + (searchParams.t ? '?t=' + encodeURIComponent(searchParams.t) : '')} className="underline">Ask us to remove {l.name}</Link>.
+        Prefer not to be listed? <Link rel="nofollow" href={'/remove-listing/' + l.slug + (searchParams.t ? '?t=' + encodeURIComponent(searchParams.t) : '')} className="underline">Ask us to remove {l.name}</Link>.
       </p>
     </div>
   );
