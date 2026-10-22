@@ -41,6 +41,15 @@ describe('social writer', () => {
   it('refuses a post without a cover', () => {
     expect(() => sanitize({ ...raw, slides: raw.slides.slice(1) }, { theme: 't', topic: 't' })).toThrow();
   });
+  it('credits our photographer by name and Instagram alongside Wikimedia photos', () => {
+    const credits = creditsFor([
+      { style: 'cover', image: 'own-mcleod-ganj-rainy-lane', title: 'Rain' },
+      { style: 'tip', image: 'triund', title: 'Triund' },
+    ]);
+    expect(credits).toMatch(/Vipasha Makkar \(@vipashamakkar10\)/);
+    expect(credits).toMatch(/via Wikimedia Commons/);
+    expect(creditsFor([{ style: 'cover', image: 'own-mcleod-ganj-rainy-lane', title: 'Rain' }])).not.toMatch(/Wikimedia/);
+  });
   it('credits every Wikimedia photo used, and puts credits and tags in the caption', () => {
     const slides = sanitize(raw, { theme: 'g', topic: 't' }).slides;
     const credits = creditsFor(slides);

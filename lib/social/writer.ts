@@ -40,11 +40,17 @@ export function slideUrl(s: Slide, i: number, n: number): string {
 
 /** "📷 Photos: Author (CC BY-SA 4.0), ... via Wikimedia Commons" for the images used. */
 export function creditsFor(slides: Slide[]): string {
-  // Our own photos need no credit line; only the Wikimedia ones do.
-  const keys = Array.from(new Set(slides.map((s) => s.image).filter((k): k is string => !!k && !!photoCredits[k] && photoCredits[k].license !== OWN_PHOTO)));
+  const keys = Array.from(new Set(slides.map((s) => s.image).filter((k): k is string => !!k && !!photoCredits[k])));
   if (!keys.length) return '';
-  const parts = keys.map((k) => `${photoCredits[k].author.replace(/\s*\(.*?\)\s*/g, ' ').trim()} (${photoCredits[k].license})`);
-  return `📷 ${keys.length > 1 ? 'Photos' : 'Photo'}: ${parts.join(', ')} via Wikimedia Commons, adapted.`;
+  // Photographers who shot for us are credited by name and Instagram; Wikimedia photos with their licence.
+  const own = Array.from(new Set(keys.filter((k) => photoCredits[k].license === OWN_PHOTO).map((k) => {
+    const c = photoCredits[k];
+    return c.instagram ? `${c.author} (@${c.instagram})` : c.author;
+  })));
+  const wiki = keys.filter((k) => photoCredits[k].license !== OWN_PHOTO)
+    .map((k) => `${photoCredits[k].author.replace(/\s*\(.*?\)\s*/g, ' ').trim()} (${photoCredits[k].license})`);
+  const parts = [...own, ...(wiki.length ? [`${wiki.join(', ')} via Wikimedia Commons, adapted`] : [])];
+  return `📷 ${keys.length > 1 ? 'Photos' : 'Photo'}: ${parts.join('; ')}.`;
 }
 
 const PLACE_KEYS = PLACE_IMAGE_KEYS.filter((k) => !!photoCredits[k]);

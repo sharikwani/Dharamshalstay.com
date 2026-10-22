@@ -14,8 +14,9 @@ export const metadata: Metadata = generateSEO({
 });
 
 export default function PhotoCreditsPage() {
-  // Our own team's photos are not Wikimedia uploads, so they are not listed with the licensed ones.
+  // Photos taken for us (used with permission) get their own section, credited to the photographer.
   const entries = Object.entries(photoCredits).filter(([, c]) => c.license !== OWN_PHOTO).sort(([a], [b]) => a.localeCompare(b));
+  const own = Object.entries(photoCredits).filter(([, c]) => c.license === OWN_PHOTO);
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
@@ -23,7 +24,7 @@ export default function PhotoCreditsPage() {
       <h1 className="text-3xl font-heading font-bold mb-3">Photo Credits</h1>
       <p className="text-slate-600 mb-8 max-w-3xl">
         Every place photo on this site is a real photograph of that place. Many were taken by the photographers below and shared on
-        Wikimedia Commons under free licences. We are grateful to them. The other place photos were taken by our own team in Dharamshala, and hotel photos are supplied by the properties themselves.
+        Wikimedia Commons under free licences. We are grateful to them. Others were taken for us by local photographers, credited further down, and hotel photos are supplied by the properties themselves.
       </p>
       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         {entries.map(([key, c]) => (
@@ -42,6 +43,29 @@ export default function PhotoCreditsPage() {
           </li>
         ))}
       </ul>
+
+      {own.length > 0 && (
+        <>
+          <h2 className="text-2xl font-heading font-bold mt-12 mb-3">Photos taken for Dharamshala Stay</h2>
+          <p className="text-slate-600 mb-6 max-w-3xl">Shot around Dharamshala, McLeod Ganj and Kangra and used with the photographer’s permission. Please ask before reusing them.</p>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {own.map(([key, c]) => (
+              <li key={key} className="flex gap-4 bg-white border border-slate-200 rounded-xl p-3">
+                <div className="relative w-28 h-20 shrink-0 rounded-lg overflow-hidden bg-slate-100">
+                  <Image src={'/images/places/' + key + '.jpg'} alt={c.alt} fill className="object-cover" sizes="112px" />
+                </div>
+                <div className="text-sm min-w-0">
+                  <p className="font-medium text-slate-900">{c.alt}</p>
+                  <p className="text-slate-600">
+                    Photo by {c.author}
+                    {c.instagram && <> (<a href={'https://www.instagram.com/' + c.instagram + '/'} target="_blank" rel="noopener noreferrer" className="text-brand-600 underline">@{c.instagram}</a>)</>}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
 
       <h2 className="text-2xl font-heading font-bold mt-12 mb-3">Gaddi life</h2>
       <p className="text-slate-600 mb-6 max-w-3xl">
