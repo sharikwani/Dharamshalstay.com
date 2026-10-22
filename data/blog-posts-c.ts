@@ -659,7 +659,7 @@ Base yourself in [Dharamshala](/destinations/dharamshala) or [McLeod Ganj](/dest
     tags: ['kangra toy train', 'kangra valley railway', 'kangra toy train timetable', 'pathankot to dharamshala toy train', 'pathankot joginder nagar', 'palampur', 'baijnath', 'heritage railway'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-09-24',
-    updated_at: '2026-10-20',
+    updated_at: '2026-10-22',
     image: placeImage('kangra-toy-train'),
     image_alt: 'Kangra Valley Railway narrow-gauge toy train crossing the Reond Nullah arch bridge with the Dhauladhar range behind',
     read_time: 10,
@@ -686,12 +686,8 @@ Base yourself in [Dharamshala](/destinations/dharamshala) or [McLeod Ganj](/dest
     ],
     faqs: [
       {
-        question: 'Is the Kangra toy train running now?',
-        answer: 'Yes, partly. As of 20 October 2026, 4 of the 7 pre-2022 train pairs are running again: they were restored on 11 October 2026 after a monsoon suspension of about two months. Two pairs run Pathankot to Baijnath Paprola, one Baijnath Paprola to Jawalamukhi Road and one Baijnath Paprola to Joginder Nagar. Check the NTES app or call 139 on the day, as rain can stop services at short notice.',
-      },
-      {
-        question: 'What is the latest news on the Kangra Valley toy train?',
-        answer: 'Services were suspended on 11 August 2026 after land subsidence near Nurpur Road and later landslides near Jawalamukhi Road and Kopar Lahar. After a safety inspection by the Jammu division in early October, four train pairs were restored on 11 October 2026. Residents are still asking for the other three pairs and later trains from Pathankot; no date has been announced for those.',
+        question: 'Is the Kangra toy train running or not right now?',
+        answer: 'Yes, partly. As of 20 October 2026, 4 of the 7 pre-2022 train pairs are running again: they were restored on 11 October 2026 after a monsoon suspension of about two months. No date has been announced for the other three pairs. Check the NTES app or call 139 on the day, as rain can stop services at short notice.',
       },
       {
         question: 'What is the Kangra toy train timetable and what are the train numbers?',
@@ -720,10 +716,6 @@ Base yourself in [Dharamshala](/destinations/dharamshala) or [McLeod Ganj](/dest
       {
         question: 'Can I go from Pathankot to Dharamshala by toy train?',
         answer: 'Not all the way. There is no railway station in Dharamshala. Take the 05:00 or 07:00 train from Pathankot Junction to Kangra (about 4 hours, ₹50), then a taxi for the last 18 to 20 km to Dharamshala or about 27 km to McLeod Ganj. A taxi from Pathankot to Dharamshala directly takes 2.5 to 3 hours.',
-      },
-      {
-        question: 'How long does the Kangra toy train take?',
-        answer: 'Pathankot Junction to Baijnath Paprola (about 142 km) takes 6 hours 40 minutes to 7 hours on the October 2026 timetable, Pathankot to Kangra about 4 hours, Kangra to Palampur about 1.5 hours, and Baijnath Paprola to Joginder Nagar about 1.5 hours. Delays of 30 to 60 minutes are common.',
       },
     ],
   },

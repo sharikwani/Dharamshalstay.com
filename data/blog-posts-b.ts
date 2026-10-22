@@ -845,7 +845,7 @@ Whichever you choose, you can [compare hotels in every area](/hotels) by price a
     tags: ['dharamshala vs mcleod ganj', 'where to stay in dharamshala', 'mcleod ganj', 'bhagsu', 'dharamkot', 'naddi'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-09-28',
-    updated_at: '2026-10-17',
+    updated_at: '2026-10-22',
     image: placeImage('dharamshala-town'),
     image_alt: 'Dharamshala town spread across the hillside of the Kangra Valley, with McLeod Ganj above',
     read_time: 7,
@@ -854,10 +854,6 @@ Whichever you choose, you can [compare hotels in every area](/hotels) by price a
     meta_description: 'Dharamshala vs McLeod Ganj: which is better to stay in for families, backpackers, spiritual travellers and cricket fans, plus Bhagsu, Dharamkot and Naddi.',
     related_slugs: ['best-hotels-in-mcleod-ganj', 'best-hotels-in-dharamshala', 'how-to-reach-dharamshala'],
     faqs: [
-      {
-        question: 'Are Dharamshala and McLeod Ganj the same place?',
-        answer: 'No. Dharamshala is the main town (about 1,457 m); McLeod Ganj is its hilltop suburb about 9 km up the road (around 4 km on the steep footpath), at about 1,750 to 2,080 m, home to the Dalai Lama Temple and the Tibetan community. Taxis take 20-30 minutes between the two.',
-      },
       {
         question: 'Which is better to stay in, Dharamshala or McLeod Ganj?',
         answer: 'McLeod Ganj is better for first-time visitors who want Tibetan culture, cafes and walkable sightseeing. Lower Dharamshala suits families with cars, cricket fans and travellers who prefer quieter streets and easier parking.',
@@ -869,6 +865,10 @@ Whichever you choose, you can [compare hotels in every area](/hotels) by price a
       {
         question: 'Where should I stay for a cricket match at HPCA Stadium?',
         answer: 'Stay in lower Dharamshala close to the stadium. Roads up to McLeod Ganj get very congested on match days, and nearby hotels fill quickly, so book as soon as fixtures are announced.',
+      },
+      {
+        question: 'What is the difference between Dharamshala and McLeod Ganj? Are they the same place?',
+        answer: 'No, they are not the same place. Dharamshala is the main working town at about 1,457 m, with Kotwali Bazaar, the bus stand and the cricket stadium. McLeod Ganj is its hilltop suburb, about 9 km up the road at 1,750 to 2,080 m, home to the Dalai Lama Temple, Tibetan cafes and the Triund trek route. The drive takes 20 to 30 minutes by taxi.',
       },
     ],
   },

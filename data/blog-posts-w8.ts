@@ -771,7 +771,7 @@ The stadium is in **Jawahar Nagar, lower Dharamshala**, about **1.5-2 km below K
 
 ## What Do Sources Say About Timings and Entry Fee?
 
-Published visitor details for the stadium do not agree, and there is no official HPCA tariff online that we could load. Here is what each source says, with the date we checked it:
+Published opening and closing times and entry fees for the stadium do not all agree, and there is no official HPCA tariff online that we could load. Here is what each source says, with the date we checked it:
 
 | Source | Timings | Entry fee | Checked |
 |---|---|---|---|
@@ -925,7 +925,7 @@ For other questions, see our [FAQ](/faq).`,
     tags: ['HPCA Stadium', 'Cricket', 'IPL', 'Dharamshala', 'War Memorial', 'Sightseeing'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-10-01',
-    updated_at: '2026-10-20',
+    updated_at: '2026-10-22',
     image: placeImage('hpca-stadium'),
     image_alt: 'HPCA Cricket Stadium in Dharamshala with the snow-capped Dhauladhar range behind the pavilion',
     read_time: 10,
@@ -944,20 +944,16 @@ For other questions, see our [FAQ](/faq).`,
     ],
     faqs: [
       {
-        question: 'What are the Dharamshala cricket stadium timings?',
-        answer: 'On non-match days the HPCA stadium is open to visitors about 9:30 am to 5 pm, according to the Kangra district administration (page updated April 2026). Travel sites give slightly different hours, so the safest plan is to arrive between 10 am and 4 pm and check it is not a match or closure day.',
+        question: 'What is the Dharamshala stadium opening time and visiting time?',
+        answer: 'On non-match days the HPCA stadium is open to visitors from about 9:30 am to 5 pm, according to the Kangra district administration (page updated April 2026), so the closing time is about 5 pm. Travel sites give slightly different hours, so the safest visiting time is between 10 am and 4 pm, after checking it is not a match or closure day.',
       },
       {
         question: 'Is Dharamshala cricket stadium open for tourists?',
         answer: 'Yes, on non-match days tourists can walk into the public stands for a small fee. It closes to visitors around matches: HPCA closed it from 4 May 2026 for IPL games, and the notice was removed by early June. When we checked on 20 October 2026 we could not confirm the current status online, so ask your hotel or the gate that morning.',
       },
       {
-        question: 'What is the closing time of HPCA stadium Dharamshala?',
-        answer: 'About 5 pm, according to the Kangra district administration. One travel site says 6 pm. Arrive by 4 pm so you are not turned away if the gate closes early.',
-      },
-      {
-        question: 'What is the entry fee or ticket price for tourists at Dharamshala stadium?',
-        answer: 'About Rs 30 per person on non-match days, according to the Kangra district administration (2026). Some travel sites say entry is free. Carry about Rs 50 in cash plus UPI. Match tickets are separate and cost much more.',
+        question: 'Is there an entry ticket for Dharamshala cricket stadium?',
+        answer: 'Yes, on non-match days there is a small entry fee of about Rs 30 per person, according to the Kangra district administration (2026), though some travel sites say entry is free. Carry about Rs 50 in cash plus UPI. Match tickets are separate and cost much more.',
       },
       {
         question: 'Is HPCA stadium open on Sunday?',
@@ -978,10 +974,6 @@ For other questions, see our [FAQ](/faq).`,
       {
         question: 'Is photography allowed at HPCA stadium? Can I fly a drone?',
         answer: 'Phone and personal camera photos are generally fine in public areas on non-match days; professional shoots may need HPCA permission. Do not fly a drone. Drones are reported as not permitted around the stadium, and on match days the district administration bans paragliding and all other aerial activities nearby.',
-      },
-      {
-        question: 'How much time do I need at HPCA stadium?',
-        answer: 'Thirty minutes to an hour is enough for the stands and photos. Add 30 to 45 minutes for the War Memorial next door, and you can fit both plus Kotwali Bazaar into a half day.',
       },
     ],
   },
