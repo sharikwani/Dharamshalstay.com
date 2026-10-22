@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Fragment, type ReactNode } from 'react';
 import { localizePath, type Lang } from '@/lib/i18n/core';
-import { photoCredits } from '@/data/photo-credits';
+import { OWN_PHOTO, photoCredits } from '@/data/photo-credits';
 
 /**
  * Renders the small markdown subset our guides are written in:
@@ -106,7 +106,8 @@ export default function MarkdownContent({ content, lang = 'en' }: { content: str
           <img src={img[2]} alt={credit?.alt || img[1]} loading="lazy" decoding="async" className="w-full rounded-2xl object-cover max-h-[520px] bg-slate-100" />
           <figcaption className="mt-2 text-sm text-slate-500">
             {img[1]}
-            {credit && <span className="block text-xs text-slate-400">Photo: {credit.author}, <a href={credit.source} target="_blank" rel="noopener noreferrer" className="underline">{credit.license}</a></span>}
+            {credit && credit.license === OWN_PHOTO && <span className="block text-xs text-slate-400">Photo: Dharamshala Stay</span>}
+            {credit && credit.license !== OWN_PHOTO && <span className="block text-xs text-slate-400">Photo: {credit.author}, <a href={credit.source} target="_blank" rel="noopener noreferrer" className="underline">{credit.license}</a></span>}
           </figcaption>
         </figure>
       );

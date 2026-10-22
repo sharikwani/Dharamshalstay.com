@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { Metadata } from 'next';
 import { Breadcrumb } from '@/components/ui/Cards';
-import { photoCredits } from '@/data/photo-credits';
+import { OWN_PHOTO, photoCredits } from '@/data/photo-credits';
 import { gaddiPhotos } from '@/data/gaddi-photos';
 import { monasteryPhotos } from '@/data/monastery-photos';
 import { triundPhotos } from '@/data/triund-photos';
@@ -14,15 +14,16 @@ export const metadata: Metadata = generateSEO({
 });
 
 export default function PhotoCreditsPage() {
-  const entries = Object.entries(photoCredits).sort(([a], [b]) => a.localeCompare(b));
+  // Our own team's photos are not Wikimedia uploads, so they are not listed with the licensed ones.
+  const entries = Object.entries(photoCredits).filter(([, c]) => c.license !== OWN_PHOTO).sort(([a], [b]) => a.localeCompare(b));
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
       <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Photo Credits' }]} />
       <h1 className="text-3xl font-heading font-bold mb-3">Photo Credits</h1>
       <p className="text-slate-600 mb-8 max-w-3xl">
-        Every place photo on this site is a real photograph of that place, taken by the photographers below and shared on
-        Wikimedia Commons under free licences. We are grateful to them. Hotel photos are supplied by the properties themselves.
+        Every place photo on this site is a real photograph of that place. Many were taken by the photographers below and shared on
+        Wikimedia Commons under free licences. We are grateful to them. The other place photos were taken by our own team in Dharamshala, and hotel photos are supplied by the properties themselves.
       </p>
       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         {entries.map(([key, c]) => (

@@ -6,7 +6,7 @@
 import { blogPosts, NOINDEX_POSTS } from '@/data/blog';
 import { facts } from '@/data/facts';
 import { festiveCampaigns } from '@/data/festive';
-import { photoCredits } from '@/data/photo-credits';
+import { OWN_PHOTO, photoCredits } from '@/data/photo-credits';
 import { PLACE_IMAGE_KEYS, placeImageAlt, type PlaceImageKey } from '@/lib/place-images';
 import { siteConfig } from '@/lib/config';
 import { placeName, placeSource, SERIES, seriesById, seriesPlaces, type SeriesId } from './series';
@@ -40,7 +40,8 @@ export function slideUrl(s: Slide, i: number, n: number): string {
 
 /** "📷 Photos: Author (CC BY-SA 4.0), ... via Wikimedia Commons" for the images used. */
 export function creditsFor(slides: Slide[]): string {
-  const keys = Array.from(new Set(slides.map((s) => s.image).filter((k): k is string => !!k && !!photoCredits[k])));
+  // Our own photos need no credit line; only the Wikimedia ones do.
+  const keys = Array.from(new Set(slides.map((s) => s.image).filter((k): k is string => !!k && !!photoCredits[k] && photoCredits[k].license !== OWN_PHOTO)));
   if (!keys.length) return '';
   const parts = keys.map((k) => `${photoCredits[k].author.replace(/\s*\(.*?\)\s*/g, ' ').trim()} (${photoCredits[k].license})`);
   return `📷 ${keys.length > 1 ? 'Photos' : 'Photo'}: ${parts.join(', ')} via Wikimedia Commons, adapted.`;

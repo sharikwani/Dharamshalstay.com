@@ -29,6 +29,8 @@ export const PLACE_IMAGE_KEYS = [
   'slate-roof-mud-house', 'kangra-slate-roofs', 'khaniyara-slate-mine', 'kareri-village',
   // Kullu valley
   'malana-village', 'tosh-village', 'bijli-mahadev', 'pulga-village', 'beas-rafting-kullu', 'kullu-valley', 'kullu-dussehra-procession',
+  // Our own photos (Dharamshala Stay team)
+  'own-roadside-hut-rocky-mountain-road', 'own-snow-dusted-peaks-through-deodar', 'own-hill-road-sunset-kangra-valley', 'own-dog-hill-road-dusk', 'own-mud-houses-slate-roofs-courtyard', 'own-mountain-meadow-small-shrine', 'own-mountain-stream-waterfall-closeup', 'own-prayer-flags-meadow-dusk', 'own-dhauladhar-peak-dusk-village-lights', 'own-dhauladhar-ridge-clouds', 'own-grey-langur-in-tree', 'own-river-valley-boulders-clouds', 'own-sunset-through-leaves', 'own-dhauladhar-snow-peak-evening-light', 'own-mcleod-ganj-rainy-lane', 'own-mcleod-ganj-balcony-hillside-view', 'own-sheep-goats-village-road', 'own-sheep-flock-mountain-road', 'own-cafe-window-counter-upper-floor', 'own-red-building-prayer-flags-pine', 'own-stone-pavilions-monks-mountain-backdrop', 'own-glass-shrine-brass-lamps', 'own-cream-red-building-golden-finial', 'own-stone-pavilions-green-path-monsoon', 'own-dhauladhar-valley-view-greenery', 'own-snow-peaks-cloud-bank',
 ] as const;
 
 export type PlaceImageKey = (typeof PLACE_IMAGE_KEYS)[number];
