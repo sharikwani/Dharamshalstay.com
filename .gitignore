@@ -11,3 +11,6 @@ npm-debug.log*
 *.tsbuildinfo
 next-env.d.ts
 .superpowers/
+
+# Owner drops raw photos here; processed copies go to public/images/places
+photo-inbox/
