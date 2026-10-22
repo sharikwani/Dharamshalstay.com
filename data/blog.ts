@@ -312,7 +312,7 @@ Absolutely. Most guests say it was the highlight of their trip. Combine it with 
     image: UI.paragliding, image_alt: 'Paragliding over Bir Billing Kangra Valley',
     read_time: 8, featured: false,
     meta_title: 'Bir Billing Paragliding from Dharamshala 2026 - Costs, Season, Safety',
-    meta_description: 'Complete Bir Billing paragliding guide. Tandem flights from Rs.2,500, best season March-June. Book from Dharamshala with taxi included.',
+    meta_description: 'Complete Bir Billing paragliding guide. Tandem flights from Rs.3,000, best season March-June. Book from Dharamshala with taxi included.',
     related_slugs: ['triund-trek-complete-guide', 'dharamshala-weekend-itinerary'],
   },
   {

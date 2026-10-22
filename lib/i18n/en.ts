@@ -75,7 +75,7 @@ export const en = {
     expTitle: 'Experiences Only Locals Can Offer', expIntro: "We don't just book rooms. We craft complete Dharamshala experiences.",
     experiences: [
       { title: 'Guided Treks', price: 'From ₹1,500', desc: 'Triund, Kareri Lake, Indrahar Pass -- with certified local guides, camping gear, and meals.' },
-      { title: 'Paragliding', price: 'From ₹2,500', desc: "Soar over the Kangra Valley from Bir Billing -- India's best-known paragliding site and host of the 2015 Paragliding World Cup." },
+      { title: 'Paragliding', price: 'From ₹3,000', desc: "Soar over the Kangra Valley from Bir Billing -- India's best-known paragliding site and host of the 2015 Paragliding World Cup." },
       { title: 'Airport & Outstation Taxis', price: 'From ₹900', desc: 'Gaggal Airport, Pathankot, Delhi, Manali -- reliable drivers who know every mountain road.' },
     ],
     pkgTitle: 'Special Dharamshala Packages', pkgIntro: 'Packages built by our local team -- hotel, transfers and activities in one plan.',

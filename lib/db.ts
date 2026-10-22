@@ -303,8 +303,8 @@ export interface ParaglidingPackage {
   package_type?: string;
 }
 
-/** Zipline, sky cycle and ATV rides: booked like a flight, shown in their own section. */
-export const ADVENTURE_TYPES = ['zipline', 'sky_cycle', 'atv'];
+/** Zipline, sky cycle, ATV rides and river rafting: booked like a flight, shown in their own section. */
+export const ADVENTURE_TYPES = ['zipline', 'sky_cycle', 'atv', 'rafting'];
 
 /** Published packages from /admin/paragliding (empty list if none are published yet). */
 export async function getParaglidingPackages(): Promise<ParaglidingPackage[]> {

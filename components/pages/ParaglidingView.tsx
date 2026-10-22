@@ -18,7 +18,7 @@ export const DEFAULT_PARAGLIDING: ParaglidingPackage[] = [
   { slug: 'tandem-bir-billing', name: 'Tandem Paragliding - Bir Billing', destination: 'Bir Billing', duration: '15-25 min flight', altitude: 'Launch at 2,400m', price_per_person: 3500,
     description: 'Fly tandem with a certified pilot from the world-famous Bir Billing launch site. Soar over tea gardens and the Kangra Valley with Dhauladhar views.',
     includes: ['Certified pilot', 'All safety equipment', 'GoPro video & photos', 'Transport to launch site', 'Landing field pickup'], featured: true, image: placeImage('bir-paragliding') },
-  { slug: 'tandem-dharamshala', name: 'Tandem Paragliding - Dharamshala', destination: 'Dharamshala', duration: '10-15 min flight', altitude: 'Launch at about 1,600 m (Indrunag)', price_per_person: 2500,
+  { slug: 'tandem-dharamshala', name: 'Tandem Paragliding - Dharamshala', destination: 'Dharamshala', duration: '10-15 min flight', altitude: 'Launch at about 1,600 m (Indrunag)', price_per_person: 3000,
     description: 'A shorter but equally thrilling flight from the hills above Dharamshala. Perfect for first-timers wanting a taste of the skies.',
     includes: ['Certified pilot', 'Safety equipment', 'GoPro video', 'Transport'], featured: true, image: placeImage('dhauladhar-hero') },
   { slug: 'scenic-long-bir', name: 'Scenic Long Flight - Bir Billing', destination: 'Bir Billing', duration: '30-45 min flight', altitude: 'Launch at 2,400m, thermal soaring', price_per_person: 5500,
@@ -123,7 +123,7 @@ export default async function ParaglidingView({ lang }: { lang: Lang }) {
       {adventures.length > 0 && (
         <section className="py-12 bg-white border-t border-slate-100">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <SectionHeading title={lang === 'hi' ? 'ज़िपलाइन, स्काई साइकिल और ATV' : 'Zipline, sky cycle and ATV rides'} subtitle={lang === 'hi' ? 'उड़ान के साथ और रोमांच, प्रति व्यक्ति कीमत' : 'More adventure around Dharamshala, priced per person. Book the same way as a flight.'} />
+            <SectionHeading title={lang === 'hi' ? 'ज़िपलाइन, स्काई साइकिल और ATV' : 'Rafting, zipline, sky cycle and ATV rides'} subtitle={lang === 'hi' ? 'उड़ान के साथ और रोमांच, प्रति व्यक्ति कीमत' : 'More adventure in Dharamshala and the Kullu valley, priced per person. Book the same way as a flight.'} />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {adventures.map(pkg => (
               <div key={pkg.slug} className="bg-white border border-slate-200 rounded-xl overflow-hidden hover:shadow-lg transition-shadow group">
