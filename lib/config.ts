@@ -23,6 +23,8 @@ export const siteConfig = {
   address: 'VPO Khaniyara, Dharamshala, Kangra District, Himachal Pradesh 176218, India',
   instagram: 'https://www.instagram.com/thedharamshalastay/',
   instagramHandle: 'thedharamshalastay',
+  /** Google Analytics 4 web stream (public ID; empty = no tracking). */
+  gaMeasurementId: 'G-55346WG9YC',
 };
 
 export const NAV_LINKS = [
