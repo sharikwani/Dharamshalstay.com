@@ -101,7 +101,7 @@ Yes. An **18-year-old Ramlila at the Dari Mela Ground**, Dharamshala, began on *
 They are very different festivals.
 
 - **Dharamshala (Kangra district) Dussehra** follows the North Indian pattern: Ramlila, Ravan dahan on Vijayadashami, fireworks and a week-long mela at the Police Ground.
-- **Kullu Dussehra** is Himachal's most famous and much bigger. It **begins on Vijayadashami, 20 October 2026**, and runs for about a week at Dhalpur Maidan in Kullu, where village deities are carried in processions.
+- **Kullu Dussehra** is Himachal's most famous and much bigger. In 2026 it **runs from 21 to 27 October** (it starts the day after Dharamshala’s Ravan dahan) at Dhalpur Maidan in Kullu, where village deities are carried in processions.
 
 ![The giant wheel at the Kullu Dussehra fair (Kullu, not Dharamshala)](/images/places/dussehra-fair-wheel.jpg)
 
@@ -173,7 +173,7 @@ Browse rooms on our [Dharamshala hotels page](/hotels) or read [where to stay in
       },
       {
         question: 'Is Dharamshala Dussehra the same as Kullu Dussehra?',
-        answer: 'No. Dharamshala has a district-level mela with Ravan dahan and fireworks at the Police Ground. Kullu Dussehra is much bigger, held at Dhalpur Maidan in Kullu, and centres on processions of village deities. In 2026 Kullu Dussehra begins on Vijayadashami, 20 October, and runs for about a week.',
+        answer: 'No. Dharamshala has a district-level mela with Ravan dahan and fireworks at the Police Ground. Kullu Dussehra is much bigger, held at Dhalpur Maidan in Kullu, and centres on processions of village deities. In 2026 Kullu Dussehra begins on Vijayadashami, 21 October and runs to 27 October.',
       },
       {
         question: 'What should I wear to the Dussehra mela in Dharamshala?',

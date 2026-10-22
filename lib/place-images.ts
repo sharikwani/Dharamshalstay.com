@@ -27,6 +27,8 @@ export const PLACE_IMAGE_KEYS = [
   'dussehra-fair-wheel', 'himachali-nati', 'minjar-procession', 'kushti-wrestling',
   // Kangra slate
   'slate-roof-mud-house', 'kangra-slate-roofs', 'khaniyara-slate-mine', 'kareri-village',
+  // Kullu valley
+  'malana-village', 'tosh-village', 'bijli-mahadev', 'pulga-village', 'beas-rafting-kullu', 'kullu-valley', 'kullu-dussehra-procession',
 ] as const;
 
 export type PlaceImageKey = (typeof PLACE_IMAGE_KEYS)[number];
@@ -116,6 +118,10 @@ export const TREK_IMAGES: Record<string, PlaceImageKey[]> = {
   'guna-devi-temple-hike': ['dharamkot', 'dhauladhar-hero'],
   'thatharana-trek': ['dhauladhar-hero', 'kangra-valley'],
   'bir-billing-rajgundha-trek': ['rajgundha', 'bir-paragliding', 'barot-valley'],
+  'kasol-to-malana-trek': ['malana-village', 'kullu-valley'],
+  'tosh-valley-trek': ['tosh-village', 'pulga-village'],
+  'bijli-mahadev-trek': ['bijli-mahadev', 'kullu-valley'],
+  'pulga-village-walk': ['pulga-village', 'tosh-village'],
   'dharamkot-gallu-devi-sunrise-hike': ['gallu-devi', 'dharamkot'],
   'minkiani-pass-trek': ['kareri-lake', 'dhauladhar-hero'],
   'adi-himani-chamunda-trek': ['chamunda-devi', 'kangra-valley'],

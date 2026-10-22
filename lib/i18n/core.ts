@@ -28,6 +28,7 @@ export const EN_ONLY_POSTS = [
   'ramlila-in-dharamshala', 'dharamshala-dussehra-police-ground', 'melas-fairs-dharamshala-kangra',
   'live-music-restaurants-mcleod-ganj',
   'kangra-slate-dharamshala',
+  'kullu-dussehra-mela-2026',
 ];
 
 /** English-only pages inside otherwise bilingual sections. */
