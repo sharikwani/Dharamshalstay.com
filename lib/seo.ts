@@ -322,7 +322,7 @@ export function hotelSchema(h: { name: string; description: string; address_line
 
 export function localBusinessSchema() {
   // Same @id as the Organization block, so search engines read them as one business.
-  return { '@context': 'https://schema.org', '@type': 'TravelAgency', '@id': siteConfig.url + '/#organization', name: siteConfig.name, url: siteConfig.url, telephone: siteConfig.phone, email: siteConfig.email, address: { '@type': 'PostalAddress', streetAddress: 'VPO Khaniyara', addressLocality: 'Dharamshala', addressRegion: 'Himachal Pradesh', postalCode: '176215', addressCountry: 'IN' }, geo: { '@type': 'GeoCoordinates', latitude: 32.219, longitude: 76.3234 }, image: siteConfig.url + '/images/og-default.jpg', areaServed: ['Dharamshala', 'McLeod Ganj', 'Bhagsu', 'Dharamkot', 'Naddi', 'Kangra Valley', 'Palampur', 'Bir Billing'], description: siteConfig.description, priceRange: '\u20B9\u20B9', sameAs: [siteConfig.instagram] };
+  return { '@context': 'https://schema.org', '@type': 'TravelAgency', '@id': siteConfig.url + '/#organization', name: siteConfig.name, url: siteConfig.url, telephone: siteConfig.phone, email: siteConfig.email, address: { '@type': 'PostalAddress', streetAddress: 'VPO Khaniyara', addressLocality: 'Dharamshala', addressRegion: 'Himachal Pradesh', postalCode: '176218', addressCountry: 'IN' }, geo: { '@type': 'GeoCoordinates', latitude: 32.219, longitude: 76.3234 }, image: siteConfig.url + '/images/og-default.jpg', areaServed: ['Dharamshala', 'McLeod Ganj', 'Bhagsu', 'Dharamkot', 'Naddi', 'Kangra Valley', 'Palampur', 'Bir Billing'], description: siteConfig.description, priceRange: '\u20B9\u20B9', sameAs: [siteConfig.instagram] };
 }
 
 /** A bookable trip (trek, paragliding flight) with its starting price, sold by us. */
@@ -392,7 +392,7 @@ export function organizationSchema() {
     logo: { '@type': 'ImageObject', url: siteConfig.url + '/brand/logo-mark-512.png', width: 512, height: 512 },
     image: siteConfig.url + '/images/og-default.jpg',
     email: siteConfig.email, telephone: siteConfig.phone,
-    address: { '@type': 'PostalAddress', streetAddress: 'VPO Khaniyara', addressLocality: 'Dharamshala', addressRegion: 'Himachal Pradesh', postalCode: '176215', addressCountry: 'IN' },
+    address: { '@type': 'PostalAddress', streetAddress: 'VPO Khaniyara', addressLocality: 'Dharamshala', addressRegion: 'Himachal Pradesh', postalCode: '176218', addressCountry: 'IN' },
     sameAs: [siteConfig.instagram],
     contactPoint: { '@type': 'ContactPoint', telephone: siteConfig.phone, contactType: 'customer service', areaServed: 'IN', availableLanguage: ['English', 'Hindi'] },
     // Tells search and AI engines what this business is an authority on, and where.

@@ -18,7 +18,7 @@ export const hi: Dict = {
   } as Record<string, string>,
   footer: {
     description: 'धर्मशाला, मैक्लोडगंज और कांगड़ा घाटी के सबसे अच्छे होटल, होमस्टे, ट्रेक, पैराग्लाइडिंग और अनुभव खोजें।',
-    address: 'वीपीओ खनियारा, धर्मशाला, ज़िला कांगड़ा, हिमाचल प्रदेश 176215, भारत',
+    address: 'वीपीओ खनियारा, धर्मशाला, ज़िला कांगड़ा, हिमाचल प्रदेश 176218, भारत',
     quickLinks: 'क्विक लिंक', allDestinations: 'सभी जगहें', aboutUs: 'हमारे बारे में',
     whereToStay: 'कहाँ ठहरें', hotelsIn: '{place} में होटल', dharamshalaVsMcleod: 'धर्मशाला या मैक्लोडगंज',
     travelGuides: 'ट्रैवल गाइड',

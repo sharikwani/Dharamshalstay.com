@@ -141,7 +141,7 @@ ${doc.preheader ? `<div style="display:none;max-height:0;overflow:hidden;opacity
     <p style="${P}">Warm regards,<br><strong style="color:#0f172a;">Team Dharamshala Stay</strong></p>`}
   </td></tr>
   <tr><td style="background:#f8fafc;border-top:1px solid #e2e8f0;padding:18px 32px;font-size:12px;line-height:1.6;color:#64748b;">
-    <strong style="color:#334155;">Dharamshala Stay</strong> &middot; VPO Khaniyara, Dharamshala, Kangra District, Himachal Pradesh 176215, India<br>
+    <strong style="color:#334155;">Dharamshala Stay</strong> &middot; VPO Khaniyara, Dharamshala, Kangra District, Himachal Pradesh 176218, India<br>
     <a href="${esc(site)}" style="color:${NAVY};">dharamshalastay.com</a> &middot; <a href="mailto:support@dharamshalastay.com" style="color:${NAVY};">support@dharamshalastay.com</a><br>
     <span style="display:block;margin-top:8px;">${footerNote}</span>
   </td></tr>
@@ -171,7 +171,7 @@ export function renderText(doc: EmailDoc): string {
     else if (b.type === 'feature') lines.push(b.title, strip(b.text), b.cta ? `${b.cta.label}: ${/^https?:/.test(b.cta.href) ? b.cta.href : SITE() + b.cta.href}` : '', '');
   }
   if (doc.signoff !== false) lines.push(`Questions? Reply to this email or WhatsApp us on ${siteConfig.whatsappDisplay}.`, '', 'Team Dharamshala Stay');
-  lines.push('', 'Dharamshala Stay, VPO Khaniyara, Dharamshala, Himachal Pradesh 176215, India');
+  lines.push('', 'Dharamshala Stay, VPO Khaniyara, Dharamshala, Himachal Pradesh 176218, India');
   if (doc.footer.kind === 'marketing') lines.push(`Unsubscribe: ${doc.footer.unsubscribeUrl || SITE() + '/email/unsubscribe'}`);
   return lines.join('\n');
 }
