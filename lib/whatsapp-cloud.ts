@@ -39,8 +39,11 @@ async function answer(res: Response): Promise<SendResult> {
   return id ? { ok: true, id } : { ok: false, unknown: true, error: 'No message id returned' };
 }
 
-/** urlButtons: the dynamic part of each URL button, in button order (the template holds the fixed base URL). */
-export async function sendTemplate(opts: { to: string; template: string; params: unknown[]; language?: string; urlButtons?: string[] }): Promise<SendResult> {
+/**
+ * urlButtons: the dynamic part of each URL button, in button order (the template holds the fixed base URL).
+ * headerImage: public JPEG/PNG URL for a template with an image header.
+ */
+export async function sendTemplate(opts: { to: string; template: string; params: unknown[]; language?: string; urlButtons?: string[]; headerImage?: string }): Promise<SendResult> {
   if (!isWhatsAppConfigured()) return { ok: false, skipped: true };
   try {
     const res = await fetch(`${GRAPH}/${process.env.WHATSAPP_PHONE_NUMBER_ID}/messages`, {
@@ -52,6 +55,7 @@ export async function sendTemplate(opts: { to: string; template: string; params:
         template: {
           name: opts.template, language: { code: opts.language || 'en' },
           components: [
+            ...(opts.headerImage ? [{ type: 'header', parameters: [{ type: 'image', image: { link: opts.headerImage } }] }] : []),
             { type: 'body', parameters: opts.params.map((p) => ({ type: 'text', text: cleanParam(p) })) },
             ...(opts.urlButtons || []).map((suffix, index) => ({
               type: 'button', sub_type: 'url', index: String(index), parameters: [{ type: 'text', text: suffix }],

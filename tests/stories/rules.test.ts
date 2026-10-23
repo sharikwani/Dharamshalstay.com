@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  countryFlag, excerptOf, featureState, hasContactInfo, istDayStart, normalizeInstagram, parseShort, parseStory,
+  countryFlag, excerptOf, featureState, hasContactInfo, istDayStart, normalizeInstagram, normalizePhone, parseShort, parseStory,
   pickStoryOfTheDay, storySlug, timeLeft,
 } from '@/lib/stories/rules';
 import { parseScreening } from '@/lib/stories/ai';
@@ -29,6 +29,16 @@ describe('story form', () => {
     expect(normalizeInstagram('')).toBeNull();
     expect(normalizeInstagram('two words')).toBe(false);
     expect(normalizeInstagram('bad..dots')).toBe(false);
+  });
+  it('reads WhatsApp numbers in the shapes people type, with India as the default country', () => {
+    expect(normalizePhone('98056 00665')).toBe('919805600665');
+    expect(normalizePhone('+91-98056-00665')).toBe('919805600665');
+    expect(normalizePhone('09805600665')).toBe('919805600665');
+    expect(normalizePhone('+44 7700 900123')).toBe('447700900123');
+    expect(normalizePhone('')).toBeNull();
+    expect(normalizePhone('12345')).toBe(false);
+    expect(parseStory({ ...good, phone: '98056 00665' })).toMatchObject({ ok: true, data: { phone: '919805600665' } });
+    expect(parseStory({ ...good, phone: 'call me' })).toMatchObject({ ok: false, error: expect.stringContaining('WhatsApp') });
   });
   it('slugs stay unique and readable', () => {
     expect(storySlug('Chai with a Monk!', '1234abcd-0000-0000-0000-000000000000')).toBe('chai-with-a-monk-1234ab');

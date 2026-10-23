@@ -11,7 +11,7 @@ const PROMPTS = ['The moment you arrived', 'A person you will never forget', 'So
 
 export default function ShareStoryForm() {
   const [photos, setPhotos] = useState<Photo[]>([]);
-  const [f, setF] = useState({ title: '', body: '', place: '', visited: '', author_name: '', author_kind: 'traveller', author_from: '', instagram: '', email: '' });
+  const [f, setF] = useState({ title: '', body: '', place: '', visited: '', author_name: '', author_kind: 'traveller', author_from: '', instagram: '', email: '', phone: '' });
   const [consent, setConsent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [shrinking, setShrinking] = useState(false);
@@ -80,6 +80,7 @@ export default function ShareStoryForm() {
               className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#e3b76a] px-4 py-2.5 text-sm font-semibold text-[#0c1726]">{copied ? <><Check className="h-4 w-4" />Copied</> : <><Copy className="h-4 w-4" />Copy link</>}</button>
           </div>
           {f.email && <p className="mt-3 text-xs text-brand-200">We will also email you at {f.email} when it goes live.</p>}
+          {f.phone && <p className="mt-2 text-xs text-brand-200">Your memory card will come to your WhatsApp ({f.phone}) once it is approved.</p>}
         </div>
         <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
           <Link href={done} className="rounded-full bg-brand-900 px-6 py-3 font-semibold text-white">Open my story page</Link>
@@ -177,6 +178,10 @@ export default function ShareStoryForm() {
             <label className={label}>Email <span className="font-normal text-slate-400">(optional)</span>
               <input className={input} type="email" value={f.email} onChange={set('email')} maxLength={120} autoComplete="email" placeholder="you@example.com" />
               <span className="mt-1 block text-xs font-normal text-slate-500">Only to tell you when your story goes live or is featured. Never shown, never used for marketing.</span>
+            </label>
+            <label className={label}>WhatsApp number <span className="font-normal text-slate-400">(optional)</span>
+              <input className={input} type="tel" inputMode="tel" value={f.phone} onChange={set('phone')} maxLength={20} autoComplete="tel" placeholder="98765 43210" />
+              <span className="mt-1 block text-xs font-normal text-slate-500">We send your memory card here when your story goes live. Never shown, never used for marketing.</span>
             </label>
           </div>
         </Step>

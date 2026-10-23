@@ -10,6 +10,7 @@ export type StoryRow = StoryInput & {
   proposed_at: string | null; featured_at: string | null; featured_until: string | null;
   ig_story_id: string | null; ig_attempts: number; ig_error: string | null;
   fb_story_id?: string | null;
+  card_sent_at?: string | null;
   views: number; likes: number; comments: number; flags: number;
   approved_at: string | null; created_at: string; updated_at: string;
   pin_rank?: number | null;
@@ -49,6 +50,13 @@ export async function removeStoryUploads(paths: string[]): Promise<void> {
 
 export async function insertStory(row: Partial<StoryRow> & StoryInput & { id: string; slug: string; photos: string[]; manage_token: string; consent_at: string }): Promise<void> {
   const { error } = await serviceClient().from('stories').insert(row);
+  if (error && /phone/i.test(error.message || '')) {
+    // Before migration v49 there is no phone column: keep the story, drop the number.
+    const { phone: _drop, ...rest } = row;
+    const { error: again } = await serviceClient().from('stories').insert(rest);
+    if (again) throw again;
+    return;
+  }
   if (error) throw error;
 }
 
@@ -257,7 +265,7 @@ export async function storyFlags(storyId: string): Promise<ShortItem[]> {
 export async function removeByAuthor(s: StoryRow): Promise<void> {
   const sb = serviceClient();
   const { error } = await sb.from('stories').update({
-    status: 'removed', email: null, instagram: null, featured_until: s.featured_until && Date.parse(s.featured_until) > Date.now() ? new Date().toISOString() : s.featured_until,
+    status: 'removed', email: null, instagram: null, ...(s.phone ? { phone: null } : {}), featured_until: s.featured_until && Date.parse(s.featured_until) > Date.now() ? new Date().toISOString() : s.featured_until,
     updated_at: new Date().toISOString(),
   }).eq('id', s.id);
   if (error) throw error;

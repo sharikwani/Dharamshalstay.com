@@ -39,7 +39,19 @@ export const isFlagColor = (c: unknown): c is FlagColor => FLAG_COLORS.some((f) 
 export type StoryInput = {
   title: string; body: string; place: string; visited: string;
   author_name: string; author_kind: AuthorKind; author_from: string; instagram: string | null; email: string | null;
+  /** Optional WhatsApp number, digits with country code (e.g. 919805600665), for the memory card. */
+  phone?: string | null;
 };
+
+/** "98056 00665", "+91-98056-00665" or "919805600665" -> "919805600665"; null when empty; false when it is not a number. */
+export function normalizePhone(raw: unknown): string | null | false {
+  const text = String(raw ?? '').trim();
+  const d = text.replace(/\D/g, '').replace(/^00/, '');
+  if (!d) return text ? false : null;
+  if (d.length === 10 && /^[6-9]/.test(d)) return '91' + d;
+  if (d.length === 11 && d.startsWith('0')) return '91' + d.slice(1);
+  return d.length >= 11 && d.length <= 15 ? d : false;
+}
 
 const clean = (v: unknown) => String(v ?? '').replace(/\r\n?/g, '\n').replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
 const len = (s: string) => Array.from(s).length;
@@ -67,8 +79,10 @@ export function parseStory(f: Record<string, unknown>): { ok: true; data: StoryI
   const instagram = normalizeInstagram(f.instagram);
   if (instagram === false) return { ok: false, error: 'That does not look like an Instagram username. Leave it empty if you prefer.' };
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return { ok: false, error: 'Please check your email address, or leave it empty.' };
+  const phone = normalizePhone(f.phone);
+  if (phone === false) return { ok: false, error: 'Please check your WhatsApp number (with country code if outside India), or leave it empty.' };
   if (f.consent !== 'yes' && f.consent !== true) return { ok: false, error: 'Please tick the box to say the photos are yours and we may share your story.' };
-  return { ok: true, data: { title, body, place, visited, author_name: name, author_kind: kind as AuthorKind, author_from: from, instagram, email: email || null } };
+  return { ok: true, data: { title, body, place, visited, author_name: name, author_kind: kind as AuthorKind, author_from: from, instagram, email: email || null, phone } };
 }
 
 /** Public URL of the story: readable words plus a short id so two titles never collide. */

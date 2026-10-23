@@ -14,7 +14,7 @@ export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supabase reads) in route handlers otherwise
 
 const RATE_LIMIT = 3;
-const FIELDS = ['title', 'body', 'place', 'visited', 'author_name', 'author_kind', 'author_from', 'instagram', 'email', 'consent'];
+const FIELDS = ['title', 'body', 'place', 'visited', 'author_name', 'author_kind', 'author_from', 'instagram', 'email', 'phone', 'consent'];
 
 async function emailOwner(s: StoryInput, photos: number) {
   await sendEmail({

@@ -12,6 +12,7 @@ import { publishFacebookStory, publishInstagramStory, socialConfigured } from '@
 import { FEATURE_HOURS, UPLOAD_BUCKET, istDayStart, istHour, pickStoryOfTheDay } from './rules';
 import { getStory, publishStoryPhotos, updateStory, type StoryRow } from './store';
 import { screenStory } from './ai';
+import { isWhatsAppConfigured, sendTemplate } from '@/lib/whatsapp-cloud';
 
 const SITE = () => siteConfig.url.replace(/\/$/, '');
 export const storyUrl = (s: Pick<StoryRow, 'slug'>) => `${SITE()}/stories/${s.slug}`;
@@ -31,12 +32,41 @@ export async function approveStory(id: string): Promise<void> {
   const first = !s.approved_at;
   await updateStory(id, { status: 'approved', approved_at: s.approved_at || new Date().toISOString() });
   if (first) {
+    const fresh = (await getStory(id)) || s;
+    await sendStoryCard(fresh);
     await emailAuthor(s, 'Your Dharamshala story is live',
       `<h2>Your story is live</h2>
        <p>Hi ${escHtml(s.author_name)}, thank you for sharing <strong>${escHtml(s.title)}</strong>. It is now on Dharamshala Stay for everyone to read:</p>
        <p><a href="${storyUrl(s)}">${storyUrl(s)}</a></p>
+       <p>Here is your memory card, made from your photos and words, to save, print or share: <a href="${cardUrl(fresh, 'fame')}">download your card</a>.</p>
        <p>Every day we choose one story for our homepage and Instagram. Watch how far yours travels, and who ties a prayer flag to it, on your private page:</p>
        <p><a href="${manageUrl(s)}">Your story page</a> (only you have this link)</p>`);
+  }
+}
+
+/**
+ * The storyteller's memory card on WhatsApp (approved template story_card: card image, title, link), once per story,
+ * logged with the other sent templates so it shows in admin. Never throws: the email still carries the card.
+ */
+export async function sendStoryCard(s: StoryRow): Promise<'sent' | 'failed' | 'skipped'> {
+  if (!s.phone || s.card_sent_at || !isWhatsAppConfigured()) return 'skipped';
+  try {
+    const firstName = s.author_name.split(/\s+/)[0] || s.author_name;
+    const r = await sendTemplate({
+      to: s.phone, template: 'story_card', headerImage: cardUrl(s, 'fame'), params: [firstName, s.title, storyUrl(s)],
+    });
+    if (!r.ok && r.skipped) return 'skipped';
+    const sb = serviceClient();
+    const { error } = await sb.from('whatsapp_messages').insert({
+      recipient_kind: 'customer', to_phone: s.phone, template: 'story_card',
+      wa_message_id: r.ok ? r.id : null, status: r.ok ? 'sent' : 'failed', error: r.ok ? null : r.error || 'Unknown error',
+    });
+    if (error) console.error('Story card: could not log WhatsApp message:', error);
+    if (r.ok) await updateStory(s.id, { card_sent_at: new Date().toISOString() });
+    return r.ok ? 'sent' : 'failed';
+  } catch (e) {
+    console.error('Story card WhatsApp failed:', e);
+    return 'failed';
   }
 }
 
