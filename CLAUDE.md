@@ -22,6 +22,11 @@ Use the cheapest model that can do the job well. Subagents in `.claude/agents/` 
 | New guides, major rewrites, brand copy readers judge on quality | **opus** | content-writer |
 | Architecture, tricky bugs, security, payments, anything risky | **opus** | (main session or Plan agent) |
 
+Owner's rule (save credits): the main session decides, writes code and checks results; it does NOT do searching, browsing or repetitive clicking itself. Hand these to a cheap agent with a tight brief:
+- Searches, file hunts, DB look-ups, counting -> quick-helper (haiku).
+- Browser chores (Instagram hashtag trawls and comments, Search Console indexing requests, GA/GBP setup, reading notifications), web research, routine content edits -> general-purpose with model: sonnet.
+- Opus only for new features, design, tricky bugs, security, payments and quality writing.
+
 Rules of thumb:
 - Mechanical and checkable -> haiku. Needs judgement or web research -> sonnet. Quality writing, design or high stakes -> opus.
 - Run independent research in parallel (several agents in one message), each with a tight brief.
