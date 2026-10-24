@@ -207,7 +207,7 @@ These are the questions our team asks before recommending any room:
 
 | From | To lower Dharamshala | To McLeod Ganj, Bhagsu or Dharamkot | Notes |
 |---|---|---|---|
-| Kangra Airport (Gaggal) | Taxi from approx. ₹1,200, about 30 min | Taxi from approx. ₹1,500, 45-60 min | Prepaid and union taxis at the airport. See our [Gaggal airport guide](/blog/kangra-airport-gaggal-guide). |
+| Kangra Airport (Gaggal) | Taxi from approx. ₹1,200, about 30 min | Taxi from approx. ₹1,500 (Alto) or ₹1,800 (Swift Dzire sedan), 45-60 min | Prepaid and union taxis at the airport. See our [Gaggal airport guide](/blog/kangra-airport-gaggal-guide). |
 | Dharamshala bus stand | Walk or short taxi | Taxi approx. ₹300-500, 20-30 min, or local bus | Overnight Volvos from Delhi arrive early morning. See [Delhi to Dharamshala by bus](/blog/delhi-to-dharamshala-by-bus). |
 | Pathankot railway station | Taxi from approx. ₹3,200, 2.5-3 hrs | Taxi from approx. ₹3,500, 3-3.5 hrs | The nearest major railhead. |
 

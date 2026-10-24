@@ -628,7 +628,7 @@ Our [weather and packing guide](/blog/dharamshala-weather-what-to-pack) has a fu
 | Mid-range hotel | ₹3,000–5,500 | ₹6,000–10,000 |
 | Upscale / boutique | ₹8,000–15,000 | ₹15,000–30,000+ |
 | Gala dinner packages (Dec 31) | not applicable | often bundled; ₹2,000–6,000 per person |
-| Taxi Gaggal Airport → McLeod Ganj | ₹1,500 (sedan, fixed fare) | can be higher at peak; book ahead |
+| Taxi Gaggal Airport → McLeod Ganj | ₹1,500 (Alto) or ₹1,800 (Swift Dzire sedan), fixed fare | can be higher at peak; book ahead |
 
 Booking tips:
 

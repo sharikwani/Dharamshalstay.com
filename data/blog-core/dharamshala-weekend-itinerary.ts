@@ -44,7 +44,7 @@ Chandigarh is roughly 235-250 km away: **5.5-7 hours by car** or **7-9 hours by 
 
 ### Arriving at dawn
 
-Buses usually reach between 5 and 7 am, but hotel check-in is often at noon. Ask for early check-in when you book, or leave your bags at the hotel and start with breakfast. For flights, an [airport taxi from Gaggal to McLeod Ganj](/taxi/gaggal-airport-to-mcleod-ganj-taxi) takes 45-60 minutes (₹1,500 for a sedan, our fixed fare).
+Buses usually reach between 5 and 7 am, but hotel check-in is often at noon. Ask for early check-in when you book, or leave your bags at the hotel and start with breakfast. For flights, an [airport taxi from Gaggal to McLeod Ganj](/taxi/gaggal-airport-to-mcleod-ganj-taxi) takes 45-60 minutes (₹1,500 for an Alto or ₹1,800 for a Swift Dzire sedan, our fixed fare).
 
 ## 2-Day Itinerary: Hour by Hour
 

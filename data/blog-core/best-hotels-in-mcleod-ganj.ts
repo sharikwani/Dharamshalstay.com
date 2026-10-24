@@ -39,7 +39,7 @@ Every hotel named here is listed on our [hotels page](/hotels). We are a local t
 | Best for views and parking | Naddi, Dal Lake and Satobari side |
 | Altitude (approx.) | McLeod Ganj 1,750-2,080 m; Dharamkot around 2,000 m |
 | Peak season | April-June, October-November, Christmas-New Year |
-| Airport transfer | Gaggal to McLeod Ganj taxi from approx. ₹1,500, 45-60 min |
+| Airport transfer | Gaggal to McLeod Ganj taxi from approx. ₹1,500 (Alto) or ₹1,800 (Swift Dzire sedan), 45-60 min |
 | Biggest booking trap | Rooms reached only by steep steps, with no road to the door |
 
 ## Our Top Picks at a Glance
@@ -185,7 +185,7 @@ If the Dalai Lama is giving public teachings at the Tsuglagkhang, rooms near the
 
 ## Getting to Your Hotel
 
-- **From Kangra Airport (Gaggal):** taxi from approx. ₹1,500, 45-60 minutes. Book a fixed fare with our [Gaggal airport to McLeod Ganj taxi](/taxi/gaggal-airport-to-mcleod-ganj-taxi), and see our [Gaggal airport guide](/blog/kangra-airport-gaggal-guide).
+- **From Kangra Airport (Gaggal):** taxi from approx. ₹1,500 (Alto) or ₹1,800 (Swift Dzire sedan), 45-60 minutes. Book a fixed fare with our [Gaggal airport to McLeod Ganj taxi](/taxi/gaggal-airport-to-mcleod-ganj-taxi), and see our [Gaggal airport guide](/blog/kangra-airport-gaggal-guide).
 - **By overnight bus from Delhi:** Volvos are often sold as going to McLeod Ganj but may drop you in lower Dharamshala depending on the season and the rules. From the Dharamshala bus stand it is 20-30 minutes up by taxi (approx. ₹300-500) or by local bus. Details in our [Delhi to Dharamshala bus guide](/blog/delhi-to-dharamshala-by-bus).
 - **To Bhagsu and Dharamkot:** taxis go up to the road heads; for guesthouses on footpaths you walk the last stretch. Our [local transport guide](/blog/local-transport-dharamshala) has fares and tips.
 

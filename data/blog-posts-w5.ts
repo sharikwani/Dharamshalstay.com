@@ -705,7 +705,7 @@ Taxis in McLeod Ganj, lower Dharamshala and at Gaggal Airport are organised into
 | McLeod Ganj to Dharamkot | ₹200-300 |
 | McLeod Ganj to Naddi | ₹250-350 |
 | McLeod Ganj to Norbulingka / Gyuto (Sidhbari) | ₹600-900 |
-| McLeod Ganj to Gaggal Airport | ₹1,500 (sedan, fixed fare) |
+| McLeod Ganj to Gaggal Airport | ₹1,500 (Alto) or ₹1,800 (Swift Dzire sedan), fixed fare |
 | Dharamshala to Kangra Fort | ₹800-1,200 |
 | Local sightseeing, full day | ₹2,000-3,000 |
 | McLeod Ganj to Bir (one way) | ₹2,500-3,500 |

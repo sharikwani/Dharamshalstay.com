@@ -68,7 +68,7 @@ These are our approximations based on long-term normals and what we see living h
 | Drive | Delhi | 9 to 11 hours, about 475 to 520 km | Groups and families; start early, festival traffic is heavy |
 | Drive or bus | Chandigarh | About 6 hours | A Saturday morning start works |
 
-From Gaggal Airport, a taxi to McLeod Ganj is ₹1,500 on our fixed fare, about 45 minutes. You can [book the Gaggal to McLeod Ganj taxi](/taxi/gaggal-airport-to-mcleod-ganj-taxi) before you fly. Flights into Kangra can be delayed in bad weather, though early November is usually settled. Full options are in our [how to reach Dharamshala guide](/blog/how-to-reach-dharamshala).
+From Gaggal Airport, a taxi to McLeod Ganj is ₹1,500 (Alto) or ₹1,800 (Swift Dzire sedan) on our fixed fare, about 45 minutes. You can [book the Gaggal to McLeod Ganj taxi](/taxi/gaggal-airport-to-mcleod-ganj-taxi) before you fly. Flights into Kangra can be delayed in bad weather, though early November is usually settled. Full options are in our [how to reach Dharamshala guide](/blog/how-to-reach-dharamshala).
 
 **Book early.** For a Friday night departure on 6 November, Volvo seats from Delhi are likely to sell out days in advance, and return buses on Monday 9 November will be busy too. Book both directions at the same time.
 

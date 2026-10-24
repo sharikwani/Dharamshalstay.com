@@ -356,7 +356,7 @@ If your bus ends at the Dharamshala bus stand and you want to rest before explor
     slug: 'kangra-airport-gaggal-guide',
     title: 'Kangra Airport (Gaggal) 2026: Flights, Taxi to Dharamshala and McLeod Ganj, Delays and Tips',
     excerpt: 'Kangra Airport (DHM) at Gaggal is the airport for Dharamshala: about 12-15 km from town and 20-22 km from McLeod Ganj. Which IndiGo routes are confirmed for 2026 (Delhi, Noida, Chandigarh), our fixed taxi fares from Rs 1,200, buses, weather delays and the road backups via Pathankot, Amritsar and Chandigarh.',
-    content: `**Short answer:** Kangra Airport (code **DHM**), also called **Gaggal Airport** or Dharamshala Airport, is at **Gaggal on the Pathankot-Mandi highway (NH 154)**, about **12-15 km from Dharamshala town** and **20-22 km from McLeod Ganj**. In 2026 **IndiGo** flies here from **Delhi**, **Noida (Jewar)** (daily since 1 July 2026) and **Chandigarh** (four days a week since 1 September 2026). Our fixed taxi fare from the airport is **₹1,200 to Dharamshala** (30-40 min) and **₹1,500 to McLeod Ganj** (45-60 min) in a sedan.
+    content: `**Short answer:** Kangra Airport (code **DHM**), also called **Gaggal Airport** or Dharamshala Airport, is at **Gaggal on the Pathankot-Mandi highway (NH 154)**, about **12-15 km from Dharamshala town** and **20-22 km from McLeod Ganj**. In 2026 **IndiGo** flies here from **Delhi**, **Noida (Jewar)** (daily since 1 July 2026) and **Chandigarh** (four days a week since 1 September 2026). Our fixed taxi fare from the airport is **₹1,200 to Dharamshala** (30-40 min, hatchback or sedan) and **₹1,500 (Alto) or ₹1,800 (Swift Dzire sedan) to McLeod Ganj** (45-60 min).
 
 Kangra is a small airport with a short runway, so only turboprop aircraft land here. That means few seats, fares that rise fast close to the date, and flights that are sensitive to cloud and rain. This guide says what we could confirm for 2026 and what we could not. Checked on 24 October 2026.
 
@@ -377,7 +377,7 @@ Kangra is a small airport with a short runway, so only turboprop aircraft land h
 | Airlines in 2026 | IndiGo (confirmed); Alliance Air Shimla link reported, not confirmed | See airlines section |
 | Passengers | 164,056 in April 2025 to March 2026, down 21.8% on the year before | AAI figures via Wikipedia |
 | Taxi to Dharamshala | ₹1,200 sedan, our fixed fare | [Book the airport to Dharamshala taxi](/taxi/gaggal-airport-to-dharamshala-taxi) |
-| Taxi to McLeod Ganj | ₹1,500 sedan, our fixed fare | [Book the airport to McLeod Ganj taxi](/taxi/gaggal-airport-to-mcleod-ganj-taxi) |
+| Taxi to McLeod Ganj | ₹1,500 Alto or ₹1,800 Swift Dzire sedan, our fixed fares | [Book the airport to McLeod Ganj taxi](/taxi/gaggal-airport-to-mcleod-ganj-taxi) |
 
 ## Where is Kangra Airport?
 
@@ -425,7 +425,7 @@ These are **our fixed fares per vehicle** (not per person), from our [taxi page]
 | Route | Hatchback (Alto) | Sedan (Dzire) | SUV (Ertiga / Innova, up to 6) | Distance | Time |
 |---|---|---|---|---|---|
 | [Gaggal Airport to Dharamshala](/taxi/gaggal-airport-to-dharamshala-taxi) | ₹1,200 | ₹1,200 | ₹1,800 | 22 km | 30-40 min |
-| [Gaggal Airport to McLeod Ganj](/taxi/gaggal-airport-to-mcleod-ganj-taxi) | ₹1,700 | ₹1,500 | ₹2,200 | 22 km | 45-60 min |
+| [Gaggal Airport to McLeod Ganj](/taxi/gaggal-airport-to-mcleod-ganj-taxi) | ₹1,500 | ₹1,800 | ₹2,200 | 22 km | 45-60 min |
 | [Gaggal Airport to Bir Billing](/taxi/gaggal-airport-to-bir-billing-taxi) | - | ₹3,000 | - | 65 km | 2-2.5 hrs |
 | [Kangra Railway Station to Dharamshala](/taxi/kangra-railway-station-to-dharamshala-taxi) | - | ₹1,000 | - | 20 km | 40 min |
 
@@ -512,7 +512,7 @@ Land in the morning and you can be at the Dalai Lama Temple by lunch. Our [one d
       },
       {
         question: 'How much is a taxi from Gaggal Airport to McLeod Ganj?',
-        answer: 'Our fixed fare from Gaggal Airport to McLeod Ganj is 1,500 rupees in a sedan, 1,700 in a hatchback and 2,200 in an SUV, per vehicle. The drive takes 45-60 minutes. To Dharamshala town it is 1,200 rupees in a sedan, about 30-40 minutes.',
+        answer: 'Our fixed fare from Gaggal Airport to McLeod Ganj is 1,500 rupees in an Alto hatchback, 1,800 in a Swift Dzire sedan and 2,200 in an SUV, per vehicle. The drive takes 45-60 minutes. To Dharamshala town it is 1,200 rupees in a hatchback or sedan, about 30-40 minutes.',
       },
       {
         question: 'How far is Kangra Airport from Dharamshala?',
