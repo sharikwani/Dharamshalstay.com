@@ -96,7 +96,9 @@ Slides:
 - Photos must MATCH the slide: pick an image id only if its description shows the exact thing the slide talks about (that place, dish, activity or scene). A mountain, forest, lake or village view is NOT a match for food, cafes, music, nightlife, shopping, prices, transport or practical tips. If no catalog image truly shows the slide's subject, set image to "" and the slide becomes an elegant text card: a text card is always better than a wrong photo.
 - Use the PLACE IMAGE for the cover and the reveal when one is given. Never use the same image twice in one post.
 - Images marked [recent] were in our last few posts: prefer a different image that matches equally well, but a matching [recent] image is better than a non-matching one.
-- Images marked [ours] were taken by our own photographer: whenever an [ours] image fits a slide as well as another image, use the [ours] one. Never use an [ours] image that does not match the slide.
+- Images marked [ours] (listed first) were taken by our own photographer and are your FIRST choice: use an [ours] image on every slide it fits, and a non-[ours] image only when no [ours] image shows that slide's subject. Never use an [ours] image that does not match the slide.
+- A "question" slide gets a mood photo that matches the topic but does not give away the answer (an [ours] view or street scene works well); use "" only if nothing fits.
+- The "cta" slide never shows a photo: always set its image to "".
 
 Caption: first line is the hook (no hashtags, and no place name in the first two lines of a guessing game), then 3-6 short lines with line breaks and at most 3 tasteful emojis, then the comment question, then one soft line like "Save this for your next trip" or "Send this to someone who loves the mountains". 400-900 characters. Indian English. No ALL CAPS, no fake urgency, no prices unless in the source.
 Hashtags: exactly 5, no "#", lowercase, no spaces: one broad (himachal or incredibleindia), two local (dharamshala, mcleodganj), two specific to the place or topic. No spammy tags.
@@ -124,6 +126,8 @@ const plain = (md: string) => md.replace(/```[\s\S]*?```/g, '').replace(/!\[[^\]
 export function noRepeats(slides: Slide[]): void {
   const used = new Set<string>();
   for (const s of slides) {
+    // The closing brand card is drawn without a photo, so a photo there would only be wasted (and credited).
+    if (s.style === 'cta') { s.image = undefined; continue; }
     if (s.image && used.has(s.image)) s.image = undefined;
     if (s.image) used.add(s.image);
     else if (s.style === 'tip') s.style = 'fact';
@@ -177,7 +181,9 @@ export async function writePost(brief: Brief): Promise<SocialDraft> {
   const verified = facts.map((f) => `- ${f.question} ${f.answer}`).join('\n');
   // Photos from recent posts are marked so the AI prefers fresh ones, but a photo that matches the slide always wins.
   const recent = new Set(brief.avoid || []);
-  const catalog = PLACE_KEYS.map((k) => `${k}: ${placeImageAlt(k as PlaceImageKey)}${photoCredits[k]?.license === OWN_PHOTO ? ' [ours]' : ''}${recent.has(k) && k !== brief.placeKey ? ' [recent]' : ''}`).join('\n');
+  // Our own photos first: the model leans towards the top of the list.
+  const ordered = [...PLACE_KEYS.filter((k) => photoCredits[k]?.license === OWN_PHOTO), ...PLACE_KEYS.filter((k) => photoCredits[k]?.license !== OWN_PHOTO)];
+  const catalog = ordered.map((k) => `${k}: ${placeImageAlt(k as PlaceImageKey)}${photoCredits[k]?.license === OWN_PHOTO ? ' [ours]' : ''}${recent.has(k) && k !== brief.placeKey ? ' [recent]' : ''}`).join('\n');
   const seriesText = series ? `SERIES: ${series.name}\nSERIES MOOD: ${series.mood}\nSLIDE RECIPE: ${series.recipe}\nSHARE TRIGGER: ${series.share}\n` : '';
   const placeText = brief.placeKey ? `PLACE IMAGE: ${brief.placeKey} (${placeName(brief.placeKey)})\n` : '';
   const user = `TOPIC: ${brief.topic}\nFORMAT: ${brief.format === 'single' ? 'single (one cover slide)' : 'carousel'}\n${seriesText}${placeText}${brief.notes ? 'NOTES: ' + brief.notes + '\n' : ''}\nSOURCE:\n${source || '(no guide; use verified facts and the image descriptions)'}\n\nVERIFIED FACTS:\n${verified}\n\nIMAGE CATALOG (id: description):\n${catalog}`;
