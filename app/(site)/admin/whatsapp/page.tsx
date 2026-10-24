@@ -35,7 +35,7 @@ function Inbox() {
   const [text, setText] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
-  const [settings, setSettings] = useState<{ ai_mode: string; test_numbers: string[] } | null>(null);
+  const [settings, setSettings] = useState<{ ai_mode: string; test_numbers: string[]; owner_alerts?: string | null; owner_phone?: string | null } | null>(null);
   const [numbers, setNumbers] = useState('');
   const [view, setView] = useState<'chats' | 'sent'>(params.get('view') === 'sent' ? 'sent' : 'chats');
   const bottom = useRef<HTMLDivElement>(null);
@@ -81,10 +81,13 @@ function Inbox() {
     try { await api(`/api/admin/whatsapp/conversations/${openId}`, { method: 'PATCH', body: JSON.stringify({ status }) }); await Promise.all([loadThread(), loadList()]); }
     catch (e: any) { setError(e.message); }
   }
-  async function saveSettings(ai_mode: string) {
+  async function saveSettings(ai_mode: string, owner_alerts?: string) {
     setError('');
     const test_numbers = numbers.split(/[,\n]/).map((n) => n.trim()).filter(Boolean);
-    try { await api('/api/admin/whatsapp/settings', { method: 'PATCH', body: JSON.stringify({ ai_mode, test_numbers }) }); setSettings({ ai_mode, test_numbers }); }
+    try {
+      await api('/api/admin/whatsapp/settings', { method: 'PATCH', body: JSON.stringify({ ai_mode, test_numbers, ...(owner_alerts ? { owner_alerts } : {}) }) });
+      setSettings((s) => ({ ...s, ai_mode, test_numbers, ...(owner_alerts ? { owner_alerts } : {}) }));
+    }
     catch (e: any) { setError(e.message); }
   }
 
@@ -114,6 +117,17 @@ function Inbox() {
             {settings.ai_mode === 'test' && (
               <input value={numbers} onChange={(e) => setNumbers(e.target.value)} onBlur={() => saveSettings('test')}
                 placeholder="Test numbers, comma separated" className="px-3 py-1.5 border border-slate-300 rounded-lg w-64" />
+            )}
+            {settings.owner_alerts != null && (
+              <>
+                <span className="ml-3 text-slate-600" title={settings.owner_phone ? 'Alerts go to +' + settings.owner_phone : undefined}>My alerts on WhatsApp:</span>
+                {(['off', 'important', 'all'] as const).map((m) => (
+                  <button key={m} onClick={() => saveSettings(settings.ai_mode, m)}
+                    className={cn('px-3 py-1.5 rounded-lg font-medium', settings.owner_alerts === m ? 'bg-green-700 text-white' : 'bg-white border border-slate-300 text-slate-700')}>
+                    {m === 'off' ? 'Off' : m === 'important' ? 'Important' : 'Everything'}
+                  </button>
+                ))}
+              </>
             )}
           </div>
         )}

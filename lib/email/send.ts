@@ -49,6 +49,11 @@ export type DeliverResult = { ok: boolean; status: 'sent' | 'skipped' | 'failed'
 export async function deliver(input: DeliverInput): Promise<DeliverResult> {
   const to = normEmail(input.to);
   if (!to) return { ok: false, status: 'skipped', reason: 'invalid address' };
+  // Admin alerts also reach the owner's WhatsApp (lib/owner-alerts.ts); independent of whether the email sends.
+  if (input.kind === 'admin') {
+    try { await (await import('@/lib/owner-alerts')).notifyOwner({ subject: input.subject, template: input.template, doc: input.doc }); }
+    catch (e) { console.error('Owner alert hook failed:', e); }
+  }
   let sb: ReturnType<typeof serviceClient> | null = null;
   try { sb = serviceClient(); } catch { /* no database configured (tests, local preview) */ }
 

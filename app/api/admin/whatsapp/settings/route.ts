@@ -9,13 +9,20 @@ export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supab
 export async function GET(req: Request) {
   try {
     await requireCaller(req, ['admin']);
-    const { data, error } = await serviceClient().from('whatsapp_settings').select('ai_mode, test_numbers').eq('id', 1).maybeSingle();
+    const { data, error } = await serviceClient().from('whatsapp_settings').select('*').eq('id', 1).maybeSingle();
     if (error) throw error;
-    return NextResponse.json({ ai_mode: data?.ai_mode ?? 'off', test_numbers: data?.test_numbers ?? [] });
+    return NextResponse.json({
+      ai_mode: data?.ai_mode ?? 'off', test_numbers: data?.test_numbers ?? [],
+      // null until migration v50 is run (the admin page then hides the owner alert controls)
+      owner_alerts: data?.owner_alerts ?? null, owner_phone: data?.owner_phone ?? null,
+    });
   } catch (e) { return jsonError(e); }
 }
 
-const schema = z.object({ ai_mode: z.enum(['off', 'test', 'on']), test_numbers: z.array(z.string()).max(20) });
+const schema = z.object({
+  ai_mode: z.enum(['off', 'test', 'on']), test_numbers: z.array(z.string()).max(20),
+  owner_alerts: z.enum(['off', 'important', 'all']).optional(),
+});
 
 export async function PATCH(req: Request) {
   try {
@@ -25,7 +32,10 @@ export async function PATCH(req: Request) {
     const numbers = body.data.test_numbers.map((n) => normalizeIndianPhone(n));
     if (numbers.some((n) => !n)) throw new HttpError(400, 'Test numbers must be valid Indian mobile numbers');
     const { error } = await serviceClient().from('whatsapp_settings')
-      .update({ ai_mode: body.data.ai_mode, test_numbers: Array.from(new Set(numbers)), updated_at: new Date().toISOString() }).eq('id', 1);
+      .update({
+        ai_mode: body.data.ai_mode, test_numbers: Array.from(new Set(numbers)), updated_at: new Date().toISOString(),
+        ...(body.data.owner_alerts ? { owner_alerts: body.data.owner_alerts } : {}),
+      }).eq('id', 1);
     if (error) throw error;
     return NextResponse.json({ ok: true });
   } catch (e) { return jsonError(e); }
