@@ -27,7 +27,7 @@ All prices are indicative and move with season, fuel prices and how early you bo
 
 ## By Air: Kangra Airport (Gaggal)
 
-Kangra Airport is a small single-runway domestic airport at Gaggal, on the Dharamshala-Pathankot highway. Its runway is short, so it handles turboprop aircraft rather than big jets, which means limited seats and fares that jump close to travel dates. An expansion to lengthen the runway has been planned for years; until it is complete, expect only a handful of flights a day.
+[Kangra Airport](/blog/kangra-airport-gaggal-guide) is a small single-runway domestic airport at Gaggal, on the Dharamshala-Pathankot highway. Its runway is short, so it handles turboprop aircraft rather than big jets, which means limited seats and fares that jump close to travel dates. An expansion to lengthen the runway has been planned for years; until it is complete, expect only a handful of flights a day.
 
 **Which airlines fly to Kangra?** As of 2026, **IndiGo** operates the main scheduled services, with routes listed to Delhi, Chandigarh, Noida and Jaipur, and **Alliance Air** has operated a regional link with Shimla. SpiceJet has flown the Delhi route in previous years. Schedules on this airport change more often than at big airports, so always check the airline websites directly before you plan around a flight.
 

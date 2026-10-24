@@ -354,157 +354,177 @@ If your bus ends at the Dharamshala bus stand and you want to rest before explor
   {
     id: 'blog-kangra-airport-gaggal-guide',
     slug: 'kangra-airport-gaggal-guide',
-    title: 'Kangra Airport (Gaggal) Guide: Flights, Taxi Fares, Delays and Tips (2026)',
-    excerpt: "Kangra Airport (DHM) at Gaggal is the airport for Dharamshala, about 12–15 km from town and 20 km from McLeod Ganj. As of 2026 IndiGo flies to Delhi, Chandigarh, Jaipur and Noida, and a taxi to Dharamshala costs about ₹800–1,200. Below: terminal facilities, taxi fares to Palampur and Bir, buses, weather delays and baggage limits.",
-    content: `## The Short Answer
+    title: 'Kangra Airport (Gaggal) 2026: Flights, Taxi to Dharamshala and McLeod Ganj, Delays and Tips',
+    excerpt: 'Kangra Airport (DHM) at Gaggal is the airport for Dharamshala: about 12-15 km from town and 20-22 km from McLeod Ganj. Which IndiGo routes are confirmed for 2026 (Delhi, Noida, Chandigarh), our fixed taxi fares from Rs 1,200, buses, weather delays and the road backups via Pathankot, Amritsar and Chandigarh.',
+    content: `**Short answer:** Kangra Airport (code **DHM**), also called **Gaggal Airport** or Dharamshala Airport, is at **Gaggal on the Pathankot-Mandi highway (NH 154)**, about **12-15 km from Dharamshala town** and **20-22 km from McLeod Ganj**. In 2026 **IndiGo** flies here from **Delhi**, **Noida (Jewar)** (daily since 1 July 2026) and **Chandigarh** (four days a week since 1 September 2026). Our fixed taxi fare from the airport is **₹1,200 to Dharamshala** (30-40 min) and **₹1,500 to McLeod Ganj** (45-60 min) in a sedan.
 
-**Kangra Airport (code DHM)** at **Gaggal** is the airport for Dharamshala, McLeod Ganj, Palampur and Bir. It is about **12-15 km from Dharamshala town** and roughly **20 km from McLeod Ganj**, 30-60 minutes by taxi. As of 2026, **IndiGo** lists flights to **Delhi, Chandigarh, Jaipur and Noida**, and **Alliance Air** lists a link with **Shimla**. All flights use small turboprop aircraft because the runway is short, so seats are limited, fares rise quickly and bad weather can cause delays.
+Kangra is a small airport with a short runway, so only turboprop aircraft land here. That means few seats, fares that rise fast close to the date, and flights that are sensitive to cloud and rain. This guide says what we could confirm for 2026 and what we could not. Checked on 24 October 2026.
 
-From the airport, a taxi to Dharamshala costs approx. **₹800-1,200**, to McLeod Ganj approx. **₹1,000-1,500**, as of 2026. You can [pre-book a Gaggal Airport to Dharamshala taxi](/taxi/gaggal-airport-to-dharamshala-taxi) so a driver is waiting when you land.
+## Kangra Airport: Quick Facts
 
-## Quick Facts
-
-| | |
-|---|---|
-| Name | Kangra Airport, also called Gaggal Airport or Dharamshala Airport |
-| Code | DHM (IATA) |
-| Location | Gaggal, on the Pathankot - Mandi highway, Kangra district |
-| Distance to Dharamshala town | approx. 12-15 km, 30-40 min |
-| Distance to McLeod Ganj | approx. 20-22 km, 45-60 min |
-| Runway | One runway of approx. 1,370 m, suitable for turboprops only |
-| Aircraft | ATR-type turboprops (IndiGo), smaller regional aircraft (Alliance Air) |
-| Airlines (as of 2026) | IndiGo, Alliance Air; check airline sites for current schedules |
-| Expansion | Runway extension planned, land acquisition under way; no completion date to rely on |
-
-## Which Airlines Fly to Kangra?
-
-| Airline | Routes listed (as of 2026) | Notes |
+| Question | Answer | Source / status |
 |---|---|---|
-| IndiGo | Delhi, Chandigarh, Jaipur, Noida | Delhi is the main route with the most frequency; others are less frequent and seasonal |
-| Alliance Air | Shimla | Small regional service; frequency varies |
+| Names | Kangra Airport, Gaggal Airport, Dharamshala Airport (all the same airport) | Confirmed |
+| Codes | IATA **DHM**, ICAO **VIGG** | Wikipedia |
+| Location | Gaggal, Kangra district, on NH 154 between Pathankot and Mandi | Wikipedia |
+| Operator | Airports Authority of India (AAI); domestic airport | Wikipedia |
+| To Dharamshala town (Kotwali Bazaar) | About 12-15 km, 30-40 min by taxi | Our guides |
+| To McLeod Ganj | About 20-22 km, 45-60 min by taxi | Our taxi page |
+| To Kangra town | About 8 km | Wikipedia |
+| To Kangra railway station | About 14 km | Wikipedia |
+| Elevation | 770 m | Wikipedia |
+| Runway | One runway, 1,372 m (15/33), turboprops only | Wikipedia |
+| Airlines in 2026 | IndiGo (confirmed); Alliance Air Shimla link reported, not confirmed | See airlines section |
+| Passengers | 164,056 in April 2025 to March 2026, down 21.8% on the year before | AAI figures via Wikipedia |
+| Taxi to Dharamshala | ₹1,200 sedan, our fixed fare | [Book the airport to Dharamshala taxi](/taxi/gaggal-airport-to-dharamshala-taxi) |
+| Taxi to McLeod Ganj | ₹1,500 sedan, our fixed fare | [Book the airport to McLeod Ganj taxi](/taxi/gaggal-airport-to-mcleod-ganj-taxi) |
 
-Airlines have come and gone on this airport. SpiceJet and Alliance Air have flown the Delhi route in past years, and route lists change with the season. **Always confirm on the airline website** before booking connecting travel or tours around a specific flight.
+## Where is Kangra Airport?
 
-**Coming from Mumbai, Bangalore, Kolkata or Hyderabad?** There are no direct flights. Connect via Delhi. On separate tickets, leave at least 3 hours between flights, and more in winter fog season, when Delhi departures can be delayed. If the connection looks risky, land in Delhi and take the [overnight bus from Delhi](/blog/delhi-to-dharamshala-by-bus) instead.
+Kangra Airport is at **Gaggal**, a village in Kangra district, right on **National Highway 154** between Pathankot and Mandi. It is the nearest airport to Dharamshala, McLeod Ganj, Kangra town, Palampur and Bir.
 
-## The Airport Itself
+- **Dharamshala town** is about 12-15 km up the hill, 30-40 minutes by car.
+- **McLeod Ganj** is about 20-22 km, 45-60 minutes, because the last stretch climbs above Dharamshala on a winding road.
+- **Kangra town** is about 8 km away, and **Kangra railway station** on the narrow-gauge line about 14 km.
 
-Kangra Airport is small and easy. There is one terminal building, a short walk from the plane, and you can be out of the door within 15-20 minutes of landing if you have no checked bag. It has even been rated highly in the Airports Authority of India customer satisfaction surveys for small airports.
+When people search for "Dharamshala airport", this is the airport they mean: there is no airport inside Dharamshala itself. The airport sits at about 770 m, far lower than McLeod Ganj, so it is warmer at Gaggal than up the hill. Not sure which side of town to stay on? Our [Dharamshala vs McLeod Ganj guide](/blog/dharamshala-vs-mcleod-ganj) compares the two.
 
-What to expect:
+## Which airlines fly to Kangra Airport in 2026?
 
-- **Basic facilities:** waiting area, washrooms, drinking water and usually a small snack counter. Do not count on full meals; eat before your flight.
-- **ATM and money:** do not rely on finding a working ATM inside. Carry some cash for taxis and tips. Our [ATM, mobile network and internet guide](/blog/atm-mobile-network-internet-dharamshala) explains where cash and SIM coverage is reliable.
-- **Taxi counter:** a local taxi counter outside arrivals offers rides at set rates. Fares are fixed rather than metered.
-- **Mobile signal:** good on major networks at the airport and along the highway.
-- **Security:** standard Indian domestic airport rules. Arrive at least 60-90 minutes before departure; check-in closes earlier than many people expect on small aircraft.
-- **Views:** on a clear day the Dhauladhar range rises straight behind the runway. Sit on the side facing the mountains for the approach (it depends on wind direction, so it is a gamble).
+**IndiGo is the airline you can count on in 2026.** Here is what we could confirm from news reports this year:
 
-## Taxi Fares from Gaggal Airport
-
-| Destination | Approx. distance | Approx. time | Approx. fare (sedan, as of 2026) |
+| Route | Airline | 2026 status | Source |
 |---|---|---|---|
-| Kangra town | 8-10 km | 20 min | ₹500-700 |
-| Dharamshala town / Kotwali Bazaar | 12-15 km | 30-40 min | ₹800-1,200 |
-| McLeod Ganj | 20-22 km | 45-60 min | ₹1,000-1,500 |
-| Bhagsu / Dharamkot | 22-25 km | 50-70 min | ₹1,200-1,800 |
-| Naddi | 22-25 km | 50-70 min | ₹1,200-1,700 |
-| Sidhbari (Norbulingka / Gyuto area) | 15-18 km | 30-40 min | ₹800-1,200 |
-| Palampur | 40-45 km | 1-1.25 hrs | ₹1,800-2,500 |
-| Bir | 65-75 km | 2-2.5 hrs | ₹2,800-3,500 |
-| Pathankot | 75-85 km | 2-2.5 hrs | ₹2,500-3,200 |
+| Delhi - Kangra | IndiGo | Operating; the main route. About 1 hour 20 minutes in the air | Daily Excelsior, 1 Sep 2026; our guides |
+| Noida International Airport (Jewar) - Kangra | IndiGo | Started 1 July 2026, daily. At launch: Jewar 9:55 am to Gaggal 11:40 am; Gaggal 12:00 noon to Jewar 1:40 pm | Amar Ujala, 30 Jun 2026 |
+| Chandigarh - Kangra | IndiGo (6E 7722) | Resumed 1 September 2026 after a weather suspension; Monday, Tuesday, Thursday and Friday. Announced times: Gaggal 1:10 pm to Chandigarh 2:15 pm; Chandigarh 2:45 pm to Gaggal 3:50 pm | Daily Excelsior, 1 Sep 2026; Himachal Dastak, 30 Aug 2026 |
+| Shimla - Kangra | Alliance Air | Reported as a current direct link in September 2026; we could not find a 2026 timetable | Daily Excelsior, 1 Sep 2026; Wikipedia |
+| Jaipur - Kangra | IndiGo (listed earlier) | **Not confirmed for 2026.** We found no current schedule | Our check, 24 Oct 2026 |
+| Jammu - Kangra | Not announced | **Proposed only.** Officials said in September 2026 it could start "in a few months" | Daily Excelsior, 1 Sep 2026 |
 
-SUV fares are typically 30-40% higher. Prices rise slightly at night and on festival days. Dharamkot and upper Bhagsu have narrow roads; the car may stop at the nearest point and you walk the last few minutes, so ask your hotel in advance.
+**What this means for you:** timings above are as announced at launch, and small airports change schedules often, sometimes suspending a route for weather (as happened with Chandigarh this year). Always check the airline website before you book anything around a flight.
 
-**Why pre-book?** Flights arrive in a small wave, the counter can have a queue, and a pre-booked driver can track your flight if it is delayed. Book on our [taxi page](/taxi) or directly for the [airport to Dharamshala route](/taxi/gaggal-airport-to-dharamshala-taxi).
+**Coming from Mumbai, Bengaluru, Kolkata or Hyderabad?** There is no direct flight. Connect in Delhi, and on separate tickets leave at least 3 hours between flights, more in the winter fog season. If the connection looks risky, land in Delhi and take the [overnight bus from Delhi to Dharamshala](/blog/delhi-to-dharamshala-by-bus) instead.
 
-## Buses from Gaggal
+## How do I get from Kangra Airport to Dharamshala and McLeod Ganj?
 
-If you are travelling light and on a budget, the airport sits close to the main **Pathankot - Mandi highway**. Walk out of the airport gate to the main road, and HRTC and private local buses heading towards Dharamshala pass regularly in the daytime (approx. ₹30-50 as of 2026, check locally). They end at the Dharamshala bus stand, where you change for McLeod Ganj.
+You have two options: a **taxi** (the practical choice for most people) or a **local bus** from the highway outside the airport.
 
-Realistically, buses only make sense in daylight with a backpack. With a suitcase, children or an evening arrival, a taxi is worth the money.
+| Option | Time to Dharamshala | Time to McLeod Ganj | Best for |
+|---|---|---|---|
+| Pre-booked taxi | 30-40 min | 45-60 min | Luggage, families, evening arrivals, anyone on a schedule |
+| Taxi from outside arrivals | 30-40 min | 45-60 min | If you did not pre-book; agree the fare before you get in |
+| Local bus from NH 154 | Longer, with a walk to the road | Change at Dharamshala bus stand | Backpackers in daylight |
 
-## Weather Delays and Cancellations
+**To McLeod Ganj by taxi:** the driver goes up through Dharamshala and on to the McLeod Ganj main square. If your hotel is in **Bhagsu, Dharamkot or Naddi**, tell the driver in advance: some lanes are narrow and the car may stop at the nearest point. See [where to stay in Dharamshala](/blog/where-to-stay-in-dharamshala) to choose the area before you land, then [browse hotels in Dharamshala and McLeod Ganj](/hotels).
 
-Kangra is a weather-sensitive airport. Small aircraft, a short runway and mountains on one side mean pilots need good visibility.
+## How much is a taxi from Gaggal Airport?
 
-| Season | What happens | What to do |
+These are **our fixed fares per vehicle** (not per person), from our [taxi page](/taxi), checked on 24 October 2026. Tolls and parking are extra where they apply, and we confirm the exact fare before the trip.
+
+| Route | Hatchback (Alto) | Sedan (Dzire) | SUV (Ertiga / Innova, up to 6) | Distance | Time |
+|---|---|---|---|---|---|
+| [Gaggal Airport to Dharamshala](/taxi/gaggal-airport-to-dharamshala-taxi) | ₹1,200 | ₹1,200 | ₹1,800 | 22 km | 30-40 min |
+| [Gaggal Airport to McLeod Ganj](/taxi/gaggal-airport-to-mcleod-ganj-taxi) | ₹1,700 | ₹1,500 | ₹2,200 | 22 km | 45-60 min |
+| [Gaggal Airport to Bir Billing](/taxi/gaggal-airport-to-bir-billing-taxi) | - | ₹3,000 | - | 65 km | 2-2.5 hrs |
+| [Kangra Railway Station to Dharamshala](/taxi/kangra-railway-station-to-dharamshala-taxi) | - | ₹1,000 | - | 20 km | 40 min |
+
+The distances are the road distances in our route listings; the 12-15 km figure above is to the town centre.
+
+**Why pre-book?** Flights land in small waves and everyone wants a car at once. A pre-booked driver waits for you, and if your flight is late you are not left negotiating at the kerb. Flying in to go paragliding? The [Bir Billing paragliding guide](/blog/bir-billing-paragliding-guide) explains the day, and you can book flights on our [paragliding page](/paragliding).
+
+## Are there buses from the airport?
+
+Yes, but not from the terminal itself. Local HRTC and private buses run along the **Pathankot-Mandi highway (NH 154)** that passes the airport, towards the Dharamshala bus stand in lower town. From there, change for McLeod Ganj (9 km) by local bus or taxi. Our [local transport guide](/blog/local-transport-dharamshala) explains the town buses.
+
+We have no reliable 2026 bus timetable or fare for this stretch, so ask at the airport or check locally. Honestly, buses only make sense in daylight with a backpack. With a suitcase, children or an evening arrival, take a taxi.
+
+## Kangra Airport tips: delays, arrival times and booking a cab
+
+**Weather delays and cancellations.** Small aircraft, a short runway and mountains close by mean pilots need good visibility. In 2026 IndiGo suspended the Chandigarh flight for a time because of "bad weather conditions in the hilly areas" (Daily Excelsior, 1 September 2026).
+
+| Season | What tends to happen | What to do |
 |---|---|---|
-| Monsoon (July to mid-September) | Low cloud and heavy rain; delays, diversions and cancellations are most common now | Prefer the earliest flight of the day, keep a buffer day before onward travel |
-| Winter (December-January) | Fog mostly affects Delhi departures in the early morning, which knocks on to Kangra | Avoid tight connections, check flight status before leaving for the airport |
-| Pre-monsoon and summer (April-June) | Generally good flying; afternoon thunderstorms possible. Heat and runway length can mean weight restrictions | Keep baggage within limits |
-| Autumn (October-November) | The most reliable season, with clear skies | Book early; this is peak season |
+| Monsoon (July to mid-September) | Low cloud and heavy rain; delays, diversions and cancellations are most common | Prefer the earliest flight; keep a buffer day before onward travel. See our [monsoon travel guide](/blog/dharamshala-monsoon-travel-guide) |
+| Winter (December to January) | Fog in Delhi delays early departures, which knocks on to Kangra | Avoid tight connections; check flight status before leaving for the airport |
+| Spring and summer (March to June) | Generally good flying; afternoon storms possible | Keep within baggage limits on small aircraft |
+| Autumn (October to November) | Usually the most settled season | Book early: this is peak season |
 
-If your flight is cancelled, the airline will usually offer a rebooking or refund. The practical backup is the road: Delhi to Dharamshala is 9-11 hours by taxi or an overnight bus. Read our [monsoon travel guide](/blog/dharamshala-monsoon-travel-guide) if you are flying in July-August.
+**Arrival times for departure.** Check-in on small aircraft closes on time, so follow your airline instructions. From McLeod Ganj, allow at least 75 minutes for the drive in peak season, as traffic through Dharamshala can be slow.
 
-## Baggage Limits on Turboprops
+**Booking a cab in advance.** Book your [airport taxi](/taxi) a day ahead with your flight number. For an early flight, stay in lower [Dharamshala](/destinations/dharamshala) rather than Dharamkot or upper Bhagsu.
 
-- **Check-in baggage:** IndiGo domestic economy fares typically include 15 kg, but the allowance depends on your fare type; check your ticket. Extra weight is paid per kg and can be expensive.
-- **Cabin baggage:** usually one bag up to 7 kg plus a small personal item, but ATR overhead bins are small. Larger cabin trolleys may be tagged and placed in the hold at the aircraft door, then returned on the stairs or at the belt. Keep medicines, power banks and valuables in a small bag you can hold.
-- **Power banks and lithium batteries** must be in cabin baggage, never checked.
-- **Weight restrictions:** on hot days or in bad weather, small aircraft at short runways sometimes have payload limits. Rarely, bags may arrive on a later flight. Pack one night's essentials in your cabin bag.
-- **Trekking gear:** trekking poles, tent pegs and gas canisters have airline restrictions. Gas canisters cannot be flown; buy them in McLeod Ganj before the [Triund trek](/blog/triund-trek-complete-guide).
-- **Paragliding gear:** pilots flying to Bir with their own wing should check sports equipment rules and fees in advance.
+**Baggage.** Your allowance depends on your fare, so check your ticket. Overhead bins on turboprops are small, and larger cabin bags may be taken to the hold at the aircraft door. Keep medicines, power banks and valuables in a small bag you can hold. Gas canisters cannot be flown; buy them locally before the [Triund trek](/blog/triund-trek-complete-guide), or join one of our [guided treks](/treks).
 
-## Tips for Flying In and Out
+**Plan B.** If you must reach Delhi for an international flight, leave Dharamshala a day early or keep a road option in reserve.
 
-1. **Book early.** With about 70 seats per plane, the cheapest Delhi - Kangra fares disappear quickly, especially in May-June, October and the Christmas - New Year week.
-2. **Choose morning flights** in the monsoon. Cloud tends to build in the afternoon.
-3. **Do not plan a same-day connection** on separate tickets out of Kangra.
-4. **Have a road plan B.** Save a taxi contact and bus option. If you need to reach Delhi by a certain time for an international flight, consider leaving a day early.
-5. **Leave for the airport early in peak season.** The road from McLeod Ganj through Dharamshala can be slow; allow 75 minutes from McLeod Ganj.
-6. **Sit on the side facing the mountains** for the approach, if you can guess right.
-7. **Stay close if you have an early flight.** Lower [Dharamshala](/destinations/dharamshala) or Sidhbari is much closer than Dharamkot or upper Bhagsu.
+## What are the alternatives if Kangra flights are cancelled?
 
-## Alternative Airports When Kangra Is Sold Out
+If your flight is cancelled or sold out, these are the realistic backups. Taxi fares are our listed sedan fares from the [taxi page](/taxi) on 24 October 2026.
 
-When Gaggal fares are high or flights are full, these are the realistic fallbacks:
+| Backup | Distance to Dharamshala | Time by road | Our taxi | Read more |
+|---|---|---|---|---|
+| **Pathankot** (railhead for trains from Delhi) | About 90 km | 2.5-3 hrs | [Pathankot station to Dharamshala](/taxi/pathankot-railway-station-to-dharamshala-taxi), ₹4,000 sedan | [How to reach Dharamshala](/blog/how-to-reach-dharamshala), [Kangra toy train guide](/blog/kangra-toy-train-guide) |
+| **Amritsar** (airport and station) | About 200 km | 5-6 hrs | [Amritsar to Dharamshala](/taxi/amritsar-to-dharamshala-taxi), ₹7,000 sedan | [Amritsar to Dharamshala guide](/blog/amritsar-to-dharamshala) |
+| **Chandigarh** (airport and buses) | About 240 km | 5.5-6.5 hrs | [Chandigarh to Dharamshala](/taxi/chandigarh-to-dharamshala-taxi), ₹6,000 sedan | [Chandigarh to Dharamshala guide](/blog/chandigarh-to-dharamshala) |
+| **Delhi** (overnight bus) | About 475-520 km | 10-13 hrs by bus | - | [Delhi to Dharamshala by bus](/blog/delhi-to-dharamshala-by-bus) |
 
-| Airport | Road distance to Dharamshala | Approx. drive | Notes |
-|---|---|---|---|
-| Chandigarh (IXC) | approx. 240-250 km | 5.5-7 hrs | Many more flights and lower fares; see our [Chandigarh to Dharamshala guide](/blog/chandigarh-to-dharamshala) |
-| Amritsar (ATQ) | approx. 200 km | 5-6 hrs | International flights; pair it with the Golden Temple |
-| Pathankot (IXP) | approx. 85-90 km | 2.5-3 hrs | Very limited civilian flights; check before relying on it |
+If the airline cancels, ask it about rebooking or a refund before you pay for a road transfer.
 
-## Short on Time? Use the Airport for a Quick Trip
+## Is Kangra Airport being expanded?
 
-Flying into Gaggal makes even a short break realistic. Land in the morning and you can be at the Dalai Lama Temple by lunch. Our [one day in Dharamshala itinerary](/blog/one-day-in-dharamshala) has a half-day plan that works around flight times, and the [five-day Kangra Valley itinerary](/blog/five-day-kangra-valley-itinerary) shows how to use the airport's central position to cover Palampur, Bir and the Kangra temples.
+A runway extension has been planned for years. AAI proposed two phases in 2022: about **1,900 m** first, then about **3,010 m**, long enough for jets such as the A320. Himachal approved land acquisition in 2023. We have not found a completion date, so for 2026 plan on turboprops and limited seats. For the record, the airport ranked first among domestic airports in AAI's 2024 customer satisfaction survey (Wikipedia).
 
-## Where to Stay
+## Short trip? Use the airport well
 
-For the airport, the closest stays are in lower Dharamshala and the Sidhbari side. For the classic mountain experience, McLeod Ganj and Bhagsu are under an hour away. [Browse hotels](/hotels), compare [McLeod Ganj stays](/destinations/mcleod-ganj), and see our [FAQ](/faq) for more travel questions. For all other ways to get here, see [how to reach Dharamshala](/blog/how-to-reach-dharamshala).`,
+Land in the morning and you can be at the Dalai Lama Temple by lunch. Our [one day in Dharamshala itinerary](/blog/one-day-in-dharamshala) works around flight times, and the [five-day Kangra Valley itinerary](/blog/five-day-kangra-valley-itinerary) uses the airport as a base for Palampur, Bir and the Kangra temples. For every other way in, see [how to reach Dharamshala](/blog/how-to-reach-dharamshala).`,
     category: 'Planning',
-    tags: ['kangra airport', 'gaggal airport', 'dharamshala airport', 'flights to dharamshala', 'airport taxi', 'dhm'],
+    tags: ['kangra airport', 'gaggal airport', 'dharamshala airport', 'kangra airport to dharamshala', 'kangra airport to mcleod ganj', 'flights to dharamshala', 'airport taxi', 'dhm'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-09-23',
-    updated_at: '2026-10-02',
+    updated_at: '2026-10-24',
     image: placeImage('kangra-airport'),
     image_alt: 'Kangra Airport at Gaggal near Dharamshala with the Dhauladhar mountains in the background',
-    read_time: 8,
+    read_time: 9,
     featured: false,
-    meta_title: 'Kangra Airport Gaggal Guide (2026): Flights, Taxi, Tips',
-    meta_description: 'Kangra (Gaggal) Airport guide for Dharamshala: airlines and routes, taxi fares to McLeod Ganj, Palampur and Bir, buses, weather delays and baggage limits.',
-    related_slugs: ['how-to-reach-dharamshala', 'delhi-to-dharamshala-by-bus', 'one-day-in-dharamshala'],
+    meta_title: 'Kangra Airport (Gaggal) 2026: Flights, Taxi Fares, Tips',
+    meta_description: 'Kangra Airport (DHM) at Gaggal is 12-15 km from Dharamshala. IndiGo flies to Delhi, Noida and Chandigarh. Taxi to McLeod Ganj from Rs 1,500.',
+    related_slugs: ['how-to-reach-dharamshala', 'delhi-to-dharamshala-by-bus', 'chandigarh-to-dharamshala', 'where-to-stay-in-dharamshala'],
+    sources: [
+      { title: 'Kangra Airport: codes, location, runway, expansion, AAI passenger figures (Wikipedia, checked 24 October 2026)', url: 'https://en.wikipedia.org/wiki/Kangra_Airport' },
+      { title: 'IndiGo resumes Dharamshala-Chandigarh direct flight service (Daily Excelsior, 1 September 2026)', url: 'https://www.dailyexcelsior.com/indigo-resumes-dharamshala-chandigarh-direct-flight-service/' },
+      { title: 'Kangra-Chandigarh IndiGo flight to resume from 1 September, four days a week (Himachal Dastak, 30 August 2026)', url: 'https://himachaldastak.com/kangra-chandigarh-indigo-flight-service-resume-september-1/' },
+      { title: 'Gaggal to Jewar direct IndiGo flight starts (Amar Ujala, 30 June 2026)', url: 'https://www.amarujala.com/himachal-pradesh/kangra/gaggal-to-jewar-direct-indigo-flight-starts-kangra-2026-06-30' },
+      { title: 'Dharamshala Stay taxi routes and fixed fares (checked 24 October 2026)', url: 'https://www.dharamshalastay.com/taxi' },
+    ],
     faqs: [
       {
-        question: 'Which airlines fly to Kangra Airport at Gaggal?',
-        answer: 'As of 2026, IndiGo lists flights to Delhi, Chandigarh, Jaipur and Noida, and Alliance Air lists a service to Shimla. Routes and frequencies change by season, so confirm on the airline websites before booking.',
+        question: 'Where is Kangra Airport?',
+        answer: 'Kangra Airport is at Gaggal in Kangra district, Himachal Pradesh, on the Pathankot-Mandi highway (NH 154). It is about 12-15 km from Dharamshala town, 20-22 km from McLeod Ganj and about 8 km from Kangra town. Its code is DHM.',
       },
       {
-        question: 'How far is Gaggal Airport from McLeod Ganj?',
-        answer: 'About 20-22 km, or 45-60 minutes by taxi. Dharamshala town is closer, about 12-15 km or 30-40 minutes. A taxi to McLeod Ganj costs approx. 1,000-1,500 rupees as of 2026.',
+        question: 'Is Gaggal Airport the same as Kangra Airport and Dharamshala Airport?',
+        answer: 'Yes. Gaggal Airport, Kangra Airport and Dharamshala Airport are three names for the same airport, code DHM. There is no separate airport inside Dharamshala town.',
       },
       {
-        question: 'Are flights to Dharamshala often cancelled?',
-        answer: 'Delays and cancellations are most common in the monsoon (July to mid-September) because of low cloud, and in winter when fog delays Delhi departures. October and November are usually the most reliable months. Keep a buffer before onward connections.',
+        question: 'Which airlines fly to Kangra Airport in 2026?',
+        answer: 'IndiGo flies to Kangra from Delhi, from Noida International Airport at Jewar (daily since 1 July 2026) and from Chandigarh (four days a week since 1 September 2026). An Alliance Air link with Shimla was reported in September 2026 but we could not find a timetable. Check the airline website before booking.',
+      },
+      {
+        question: 'How much is a taxi from Gaggal Airport to McLeod Ganj?',
+        answer: 'Our fixed fare from Gaggal Airport to McLeod Ganj is 1,500 rupees in a sedan, 1,700 in a hatchback and 2,200 in an SUV, per vehicle. The drive takes 45-60 minutes. To Dharamshala town it is 1,200 rupees in a sedan, about 30-40 minutes.',
+      },
+      {
+        question: 'How far is Kangra Airport from Dharamshala?',
+        answer: 'About 12-15 km from Dharamshala town, or 30-40 minutes by taxi. McLeod Ganj is further up the hill, about 20-22 km or 45-60 minutes from the airport.',
+      },
+      {
+        question: 'Are flights to Kangra Airport often cancelled?',
+        answer: 'Kangra is weather-sensitive because of its short runway and the mountains nearby. Delays and cancellations are most likely in the monsoon (July to mid-September) and when winter fog delays Delhi departures. In 2026 IndiGo suspended the Chandigarh route for a time due to bad weather. Keep a buffer before onward connections.',
       },
       {
         question: 'Is there a bus from Kangra Airport to Dharamshala?',
-        answer: 'Yes. Local HRTC and private buses run along the Pathankot - Mandi highway near the airport gate towards Dharamshala bus stand during the day. They are cheap but only practical with light luggage in daylight.',
-      },
-      {
-        question: 'What is the baggage allowance for flights to Kangra?',
-        answer: 'It depends on your ticket. IndiGo domestic economy typically includes 15 kg check-in and 7 kg cabin baggage, but ATR overhead bins are small and larger cabin bags may be placed in the hold at the aircraft. Check your fare rules.',
+        answer: 'Yes. Local HRTC and private buses run on the Pathankot-Mandi highway outside the airport towards Dharamshala bus stand, where you change for McLeod Ganj. They suit light luggage in daylight; with bags or an evening arrival, a taxi is easier.',
       },
     ],
   },
