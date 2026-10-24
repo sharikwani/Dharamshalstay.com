@@ -145,7 +145,9 @@ function withHindi(entries: SitemapEntry[]): SitemapEntry[] {
   for (const e of entries) {
     const path = e.url.slice(B.length) || '/';
     const blogSlug = path.startsWith('/blog/') ? path.slice(6) : null;
-    const hindi = hasHindiVersion(path) && (!blogSlug || hasHindiPost(blogSlug));
+    // Hotel detail pages: the Hindi page canonicalises to English (lib/seo.ts), so it is not listed.
+    const hotelDetail = path.startsWith('/hotels/') && !COLLECTIONS.some((c) => path === '/hotels/' + c.slug);
+    const hindi = !hotelDetail && hasHindiVersion(path) && (!blogSlug || hasHindiPost(blogSlug));
     if (!hindi) { out.push(e); continue; }
     const enUrl = e.url;
     const hiUrl = B + localizePath(path, 'hi');

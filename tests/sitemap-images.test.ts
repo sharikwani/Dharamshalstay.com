@@ -19,11 +19,12 @@ import { sitemapEntries } from '@/lib/sitemap-entries';
 import { siteConfig } from '@/lib/config';
 
 describe('hotel image sitemap', () => {
-  it('lists our own hotel and room photos (string or object) as absolute URLs on both language versions, not booking-site copies', async () => {
+  it('lists our own hotel and room photos (string or object) as absolute URLs, not booking-site copies', async () => {
     const entries = await sitemapEntries();
     const en = entries.find((e) => e.url === siteConfig.url + '/hotels/snow-view')!;
-    const hi = entries.find((e) => e.url === siteConfig.url + '/hi/hotels/snow-view')!;
     expect(en.images).toEqual([siteConfig.url + '/images/hotels/front.jpg', 'https://abc.supabase.co/storage/v1/object/public/rooms/r1.jpg', 'https://abc.supabase.co/storage/v1/object/public/rooms/r2.jpg']);
-    expect(hi.images).toEqual(en.images);
+    // Hindi hotel pages only translate labels and canonicalise to English, so they are not listed.
+    expect(entries.find((e) => e.url === siteConfig.url + '/hi/hotels/snow-view')).toBeUndefined();
+    expect(en.alternates).toBeUndefined();
   });
 });

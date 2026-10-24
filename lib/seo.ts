@@ -183,6 +183,8 @@ export function generateHotelSEO(hotel: {
     keywords,
     ogTag: hotel.price_min ? 'From ₹' + hotel.price_min.toLocaleString('en-IN') + '/night' : typeLabel + ' in ' + area,
     markdown: true,
+    // Hotel descriptions are not translated, so the Hindi page is not a separate version for Google (see below).
+    hindi: false,
   });
 }
 
@@ -204,6 +206,9 @@ function generateHotelSEOHindi(hotel: { name: string; short_description?: string
     keywords: [hotel.name, area + ' में ' + type, area + ' होटल'],
     lang: 'hi',
     ogTag: hotel.price_min ? '₹' + hotel.price_min.toLocaleString('en-IN') + '/रात से' : area + ' में ' + type,
+    // Only the labels are Hindi; the canonical is the English page, so Google indexes one copy (Search Console:
+    // dozens of /hi/hotels pages "crawled, not indexed"). Hindi visitors still get this page.
+    hindi: false,
   });
 }
 
