@@ -106,7 +106,7 @@ export const faqCategories: FAQCategory[] = [
       {
         question: 'How much is a taxi from Gaggal Airport to McLeod Ganj?',
         answer:
-          "Expect roughly ₹1,000-1,500 for a sedan from Gaggal Airport to Dharamshala or McLeod Ganj (approx., as of 2026), with higher fares for SUVs and late-night arrivals. The drive usually takes 40-60 minutes depending on traffic in Dharamshala town. There is a taxi stand at the airport, or you can pre-book a pickup so a driver is waiting even if your flight is delayed.",
+          "Our fixed fares from Gaggal Airport are ₹1,200 for a sedan to Dharamshala (₹1,800 SUV) and ₹1,500 for a sedan to McLeod Ganj (₹2,200 SUV), as of 2026. The drive takes 30-40 minutes to Dharamshala and 45-60 minutes to McLeod Ganj, depending on traffic. There is a taxi stand at the airport, or you can pre-book a pickup so a driver is waiting even if your flight is delayed.",
         link: { href: '/taxi', label: 'Pre-book an airport pickup' },
       },
       {

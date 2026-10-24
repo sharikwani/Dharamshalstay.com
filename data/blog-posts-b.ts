@@ -29,14 +29,14 @@ All prices are indicative and move with season, fuel prices and how early you bo
 
 [Kangra Airport](/blog/kangra-airport-gaggal-guide) is a small single-runway domestic airport at Gaggal, on the Dharamshala-Pathankot highway. Its runway is short, so it handles turboprop aircraft rather than big jets, which means limited seats and fares that jump close to travel dates. An expansion to lengthen the runway has been planned for years; until it is complete, expect only a handful of flights a day.
 
-**Which airlines fly to Kangra?** As of 2026, **IndiGo** operates the main scheduled services, with routes listed to Delhi, Chandigarh, Noida and Jaipur, and **Alliance Air** has operated a regional link with Shimla. SpiceJet has flown the Delhi route in previous years. Schedules on this airport change more often than at big airports, so always check the airline websites directly before you plan around a flight.
+**Which airlines fly to Kangra?** As of 2026, **IndiGo** operates the main scheduled services, with flights from Delhi, Noida (Jewar; daily since 1 July 2026) and Chandigarh (four days a week since 1 September 2026), and **Alliance Air** has operated a regional link with Shimla. Jaipur flights are not confirmed for 2026. SpiceJet has flown the Delhi route in previous years. Schedules on this airport change more often than at big airports, so always check the airline websites directly before you plan around a flight.
 
 **Tips for flying in:**
 
 - Book early. With small planes, the cheapest fares on Delhi-Kangra disappear fast, especially in May-June, October and around Christmas and New Year.
 - Mornings are more reliable. Afternoon flights are more likely to be delayed or diverted by cloud over the Dhauladhar, particularly in the monsoon (July-August).
 - Weight limits can be strict on turboprops. Check the cabin and check-in baggage allowance on your ticket.
-- From the airport, a pre-arranged or prepaid taxi to Dharamshala town costs approx. ₹800-1,200 and to McLeod Ganj approx. ₹1,000-1,500 (30-60 minutes). Local buses run on the main road outside the airport if you are travelling light. You can also [book an airport transfer with us](/taxi).
+- From the airport, our fixed-fare airport taxi costs ₹1,200 (sedan) or ₹1,800 (SUV) to Dharamshala town in 30-40 minutes, and ₹1,500 (sedan) or ₹2,200 (SUV) to McLeod Ganj in 45-60 minutes. Local buses run on the main road outside the airport if you are travelling light. You can also [book an airport transfer with us](/taxi).
 
 **From Mumbai, Bangalore, Kolkata or the south:** there are no direct flights. Fly to Delhi or Chandigarh and connect to Kangra (leave at least 3 hours between flights if they are on separate tickets), or fly to Chandigarh or Amritsar and take a taxi or bus for the final 5-6 hours. Many travellers from Mumbai and Bangalore find it easiest to land in Delhi in the evening and take the overnight Volvo, saving a hotel night.
 
@@ -135,7 +135,7 @@ Once you know how you are arriving, [browse hotels in Dharamshala and McLeod Gan
       },
       {
         question: 'How to reach Dharamshala by flight?',
-        answer: 'Fly to Kangra Airport at Gaggal (code DHM), about 12-15 km from Dharamshala town and roughly 20 km from McLeod Ganj. As of 2026 IndiGo operates the main scheduled services, with routes listed to Delhi, Chandigarh, Noida and Jaipur. From the airport a pre-arranged taxi costs approx. Rs 800-1,200 to Dharamshala town and approx. Rs 1,000-1,500 to McLeod Ganj, taking 30-60 minutes. Check airline schedules directly, as they change often.',
+        answer: 'Fly to Kangra Airport at Gaggal (code DHM), about 12-15 km from Dharamshala town and roughly 20 km from McLeod Ganj. As of 2026 IndiGo operates the main scheduled services, with flights from Delhi, Noida and Chandigarh (Jaipur flights are not confirmed for 2026). From the airport our fixed-fare taxi costs Rs 1,200 (sedan) to Dharamshala town in 30-40 minutes and Rs 1,500 (sedan) to McLeod Ganj in 45-60 minutes. Check airline schedules directly, as they change often.',
       },
       {
         question: 'Which is the nearest railway station to Dharamshala?',
@@ -453,7 +453,7 @@ A realistic daily food spend is approx. ₹500-800 for a backpacker, ₹1,000-1,
 | Local bus Dharamshala to McLeod Ganj | ₹20-40 |
 | Short taxi hops (McLeod Ganj to Bhagsu or Naddi) | ₹150-400 |
 | Full-day local sightseeing taxi | ₹2,500-3,500 per car |
-| Kangra Airport to McLeod Ganj taxi | ₹1,000-1,500 |
+| Kangra Airport to McLeod Ganj taxi | ₹1,500 (sedan, fixed fare) |
 
 Triund fees and camping rules are set by the forest department and change from season to season, so confirm at the Gallu checkpost or with your guide. Browse [guided Triund treks](/treks/triund-trek), other [treks around Dharamshala](/treks), [paragliding options](/paragliding) and [fixed-price local taxis](/taxi).
 
@@ -752,6 +752,8 @@ Wherever you choose to stay, from lower [Dharamshala](/destinations/dharamshala)
     content: `## Are Dharamshala and McLeod Ganj the same place?
 
 No. Dharamshala is the main town, at about 1,457 m. McLeod Ganj is its hilltop suburb, about 9 km up the road (around 4 km on the steep footpath) and spread from about 1,750 to 2,080 m. It is home to the Dalai Lama Temple and the Tibetan community.
+
+Looking for McLeod Ganj itself, its streets, sights, cafes and day plans? See our full [McLeod Ganj guide](/blog/mcleod-ganj-complete-guide). This page is only about choosing where to stay.
 
 ## The Quick Answer
 

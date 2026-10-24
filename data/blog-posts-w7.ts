@@ -117,7 +117,7 @@ If you love temples, our [Kangra Devi temples guide](/blog/kangra-devi-temples-g
 
 ## By Air: Chandigarh to Kangra
 
-Kangra Airport at Gaggal has only a short runway, so it is served by small turboprop planes. As of 2026, **IndiGo lists Chandigarh among its Kangra routes**, alongside Delhi, Jaipur and Noida, but frequency on the Chandigarh sector is low and has changed from season to season. Check the IndiGo website for the current schedule before you plan around it.
+Kangra Airport at Gaggal has only a short runway, so it is served by small turboprop planes. As of 2026, **IndiGo lists Chandigarh among its Kangra routes**, alongside Delhi and Noida (Jaipur is not confirmed for 2026), but frequency on the Chandigarh sector is low and has changed from season to season. Check the IndiGo website for the current schedule before you plan around it.
 
 Is it worth it? Only sometimes. By the time you reach Chandigarh airport an hour early and get from Gaggal to your hotel, the trip takes 3-4 hours door to door. That is still half the road time, so it makes sense if the fare is reasonable or if someone in your group does not cope well with winding roads. Weather delays at Gaggal are common in the monsoon; our [Kangra Airport guide](/blog/kangra-airport-gaggal-guide) covers what to expect, baggage limits and taxi fares from the airport.
 
