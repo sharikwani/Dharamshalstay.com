@@ -96,6 +96,7 @@ Slides:
 - Photos must MATCH the slide: pick an image id only if its description shows the exact thing the slide talks about (that place, dish, activity or scene). A mountain, forest, lake or village view is NOT a match for food, cafes, music, nightlife, shopping, prices, transport or practical tips. If no catalog image truly shows the slide's subject, set image to "" and the slide becomes an elegant text card: a text card is always better than a wrong photo.
 - Use the PLACE IMAGE for the cover and the reveal when one is given. Never use the same image twice in one post.
 - Images marked [recent] were in our last few posts: prefer a different image that matches equally well, but a matching [recent] image is better than a non-matching one.
+- Images marked [ours] were taken by our own photographer: whenever an [ours] image fits a slide as well as another image, use the [ours] one. Never use an [ours] image that does not match the slide.
 
 Caption: first line is the hook (no hashtags, and no place name in the first two lines of a guessing game), then 3-6 short lines with line breaks and at most 3 tasteful emojis, then the comment question, then one soft line like "Save this for your next trip" or "Send this to someone who loves the mountains". 400-900 characters. Indian English. No ALL CAPS, no fake urgency, no prices unless in the source.
 Hashtags: exactly 5, no "#", lowercase, no spaces: one broad (himachal or incredibleindia), two local (dharamshala, mcleodganj), two specific to the place or topic. No spammy tags.
@@ -176,7 +177,7 @@ export async function writePost(brief: Brief): Promise<SocialDraft> {
   const verified = facts.map((f) => `- ${f.question} ${f.answer}`).join('\n');
   // Photos from recent posts are marked so the AI prefers fresh ones, but a photo that matches the slide always wins.
   const recent = new Set(brief.avoid || []);
-  const catalog = PLACE_KEYS.map((k) => `${k}: ${placeImageAlt(k as PlaceImageKey)}${recent.has(k) && k !== brief.placeKey ? ' [recent]' : ''}`).join('\n');
+  const catalog = PLACE_KEYS.map((k) => `${k}: ${placeImageAlt(k as PlaceImageKey)}${photoCredits[k]?.license === OWN_PHOTO ? ' [ours]' : ''}${recent.has(k) && k !== brief.placeKey ? ' [recent]' : ''}`).join('\n');
   const seriesText = series ? `SERIES: ${series.name}\nSERIES MOOD: ${series.mood}\nSLIDE RECIPE: ${series.recipe}\nSHARE TRIGGER: ${series.share}\n` : '';
   const placeText = brief.placeKey ? `PLACE IMAGE: ${brief.placeKey} (${placeName(brief.placeKey)})\n` : '';
   const user = `TOPIC: ${brief.topic}\nFORMAT: ${brief.format === 'single' ? 'single (one cover slide)' : 'carousel'}\n${seriesText}${placeText}${brief.notes ? 'NOTES: ' + brief.notes + '\n' : ''}\nSOURCE:\n${source || '(no guide; use verified facts and the image descriptions)'}\n\nVERIFIED FACTS:\n${verified}\n\nIMAGE CATALOG (id: description):\n${catalog}`;
