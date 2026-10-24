@@ -603,7 +603,7 @@ If you already know McLeod Ganj, or you are staying in lower Dharamshala or Sidh
 | 3:45-4:30 pm | War Memorial | Quiet pine-shaded memorial on the way to McLeod Ganj |
 | 5:00 pm onwards | McLeod Ganj for dinner | |
 
-A local sightseeing taxi for this loop costs approx. ₹2,500-3,500 as of 2026; agree the stops and waiting time before you set off. For more on these places, see [places to visit in Dharamshala](/blog/places-to-visit-in-dharamshala) and the [Sidhbari, Norbulingka and Gyuto guide](/blog/sidhbari-norbulingka-gyuto-guide).
+A [full-day Dharamshala sightseeing taxi (10 points)](/taxi/dharamshala-to-full-day-sightseeing-10-points-taxi) covers 10 stops, 5 in McLeod Ganj and 5 in Dharamshala, for a fixed ₹4,000 by Alto (2026); a half-day local tour is ₹2,000 by sedan. Agree the stops and waiting time before you set off. For more on these places, see [places to visit in Dharamshala](/blog/places-to-visit-in-dharamshala) and the [Sidhbari, Norbulingka and Gyuto guide](/blog/sidhbari-norbulingka-gyuto-guide).
 
 ## The Half-Day Plan for Transit Travellers
 

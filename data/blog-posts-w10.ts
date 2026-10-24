@@ -55,7 +55,7 @@ A one-way taxi from Amritsar to Dharamshala costs approx. **₹4,000 to ₹6,000
 
 The taxi is the most comfortable option and the only practical one if you are arriving on a late flight. You can ask the driver to stop at Pathankot for food or at Kangra Fort if you take that route. The drive from Amritsar airport to McLeod Ganj takes roughly 5 to 6 hours with a single food stop.
 
-You can [book a taxi through us](/taxi) or ask at the Amritsar airport prepaid taxi counter. Pre-booking avoids the airport markup.
+You can book an [Amritsar to Dharamshala taxi](/taxi/amritsar-to-dharamshala-taxi) through us or ask at the Amritsar airport prepaid taxi counter. Pre-booking avoids the airport markup.
 
 ## By Train (Amritsar to Pathankot + Road Transfer)
 
@@ -87,7 +87,7 @@ The road is open year-round. Summer (April to June) means hot plains but pleasan
 
 ## Once You Arrive
 
-For getting around in Dharamshala and McLeod Ganj, read our [local transport guide](/blog/local-transport-dharamshala). If you need a return taxi or onward transport, [contact us](/contact) or use our [taxi booking page](/taxi).`,
+For getting around in Dharamshala and McLeod Ganj, read our [local transport guide](/blog/local-transport-dharamshala). If you need a return taxi, see our [Dharamshala to Amritsar taxi](/taxi/dharamshala-to-amritsar-taxi), or for onward transport [contact us](/contact) or use our [taxi booking page](/taxi).`,
     category: 'Transport',
     tags: ['amritsar to dharamshala', 'transport', 'how to reach dharamshala', 'taxi', 'bus', 'road trip', 'pathankot'],
     author: 'Dharamshala Stay Team',

@@ -555,7 +555,7 @@ Below: the luxury stay options by area, who each suits, realistic prices, experi
 
 ### Dharamkot: Hyatt Regency
 
-The **Hyatt Regency Dharamshala Resort** is the area's largest luxury option, with around 80 keys across rooms, club rooms, a few suites and private villas, all in deodar forest below Dharamkot village. The heated pool is a highlight in the cooler months, and the restaurant serves Tibetan and Himachali dishes alongside international food. Reviews praise service; some guests find it expensive for what it offers. It is a self-contained base: you will take a car into McLeod Ganj (about 10-15 minutes) rather than strolling out to cafes. More on the area in our [Dharamkot guide](/blog/dharamkot-travel-guide).
+The **[Hyatt Regency Dharamshala Resort](/hotels/hyatt-regency-dharamshala-resort-dharamkot)** is the area's largest luxury option, with around 80 keys across rooms, club rooms, a few suites and private villas, all in deodar forest below Dharamkot village. The heated pool is a highlight in the cooler months, and the restaurant serves Tibetan and Himachali dishes alongside international food. Reviews praise service; some guests find it expensive for what it offers. It is a self-contained base: you will take a car into McLeod Ganj (about 10-15 minutes) rather than strolling out to cafes. More on the area in our [Dharamkot guide](/blog/dharamkot-travel-guide).
 
 ### Kandi: Radisson Blu and Atman
 

@@ -29,7 +29,7 @@ All prices are indicative and move with season, fuel prices and how early you bo
 
 [Kangra Airport](/blog/kangra-airport-gaggal-guide) is a small single-runway domestic airport at Gaggal, on the Dharamshala-Pathankot highway. Its runway is short, so it handles turboprop aircraft rather than big jets, which means limited seats and fares that jump close to travel dates. An expansion to lengthen the runway has been planned for years; until it is complete, expect only a handful of flights a day.
 
-**Which airlines fly to Kangra?** As of 2026, **IndiGo** operates the main scheduled services, with flights from Delhi, Noida (Jewar; daily since 1 July 2026) and Chandigarh (four days a week since 1 September 2026), and **Alliance Air** has operated a regional link with Shimla. Jaipur flights are not confirmed for 2026. SpiceJet has flown the Delhi route in previous years. Schedules on this airport change more often than at big airports, so always check the airline websites directly before you plan around a flight.
+**Which airlines fly to Kangra?** As of 2026, **IndiGo** operates the main scheduled services, with flights from Delhi, Noida (Jewar; daily since 1 July 2026) and Chandigarh (four days a week since 1 September 2026), and **Alliance Air** has operated a regional link with Shimla. Jaipur flights are not confirmed for 2026. SpiceJet has flown the Delhi route in previous years. Schedules on this airport change more often than at big airports, so always check the airline websites directly before you plan around a flight. Driving in from Shimla instead? See our [Shimla to Dharamshala guide](/blog/shimla-to-dharamshala).
 
 **Tips for flying in:**
 
@@ -69,7 +69,7 @@ Majnu ka Tilla, Delhi's Tibetan colony in north Delhi, is the traditional depart
 Dharamshala has no mainline railway station. Your realistic rail options are:
 
 1. **Pathankot Cantt or Chakki Bank**: the nearest broad-gauge stations, about 85-90 km from Dharamshala. Many overnight trains from Delhi heading for Jammu stop at Pathankot Cantt or Chakki Bank, arriving early morning. From there, a taxi to Dharamshala takes about 2.5-3 hours and costs approx. ₹2,500-3,500; HRTC buses from Pathankot bus stand cost approx. ₹150-250 and take 3.5-4 hours.
-2. **Amb Andaura (Una)**: the New Delhi-Amb Andaura Vande Bharat Express gets you from Delhi to Una district by late morning. From Amb Andaura it is roughly 3-3.5 hours by taxi to Dharamshala via Kangra. A good option if you want a daytime train.
+2. **Amb Andaura (Una)**: the New Delhi-Amb Andaura Vande Bharat Express gets you from Delhi to Una district by late morning. From Amb Andaura it is roughly 3-3.5 hours by taxi to Dharamshala via Kangra (see our [Amb Andaura station taxi](/taxi/amb-andaura-railway-station-to-dharamshala-taxi)). A good option if you want a daytime train.
 3. **Kangra Valley Railway (toy train)**: the narrow-gauge line from Pathankot to Jogindernagar passes through Kangra, but services have been repeatedly suspended by monsoon damage in recent years. Treat it as a scenic experience, not as your main transport, and check the current status before relying on it.
 
 ## By Road: Self-Drive and Taxi
@@ -98,7 +98,7 @@ Fares depend on vehicle size (hatchback, sedan, SUV), tolls and state taxes. For
 
 ### From Chandigarh and Amritsar by bus
 
-HRTC and Punjab state buses run from Chandigarh (Sector 43 ISBT) to Dharamshala, taking about 6-7 hours, at approx. ₹500-900. From Amritsar there are a few direct buses, or you can go via Pathankot. Amritsar plus Dharamshala is a very common combination: visit the Golden Temple, then take a morning taxi into the hills.
+HRTC and Punjab state buses run from Chandigarh (Sector 43 ISBT) to Dharamshala, taking about 6-7 hours, at approx. ₹500-900. From Amritsar there are a few direct buses, or you can go via Pathankot. Amritsar plus Dharamshala is a very common combination: visit the Golden Temple, then take a morning taxi into the hills. Our [Amritsar to Dharamshala guide](/blog/amritsar-to-dharamshala) compares the routes.
 
 ## Dharamshala to McLeod Ganj: The Last 9 km
 
@@ -452,7 +452,7 @@ A realistic daily food spend is approx. ₹500-800 for a backpacker, ₹1,000-1,
 | Taxi Dharamshala to McLeod Ganj | ₹300-500 |
 | Local bus Dharamshala to McLeod Ganj | ₹20-40 |
 | Short taxi hops (McLeod Ganj to Bhagsu or Naddi) | ₹150-400 |
-| Full-day local sightseeing taxi | ₹2,500-3,500 per car |
+| Full-day local sightseeing taxi (10 points) | ₹4,000 per car (Alto, our fixed fare) |
 | Kangra Airport to McLeod Ganj taxi | ₹1,500 (Alto) or ₹1,800 (Swift Dzire sedan), fixed fare |
 
 Triund fees and camping rules are set by the forest department and change from season to season, so confirm at the Gallu checkpost or with your guide. Browse [guided Triund treks](/treks/triund-trek), other [treks around Dharamshala](/treks), [paragliding options](/paragliding) and [fixed-price local taxis](/taxi).

@@ -611,7 +611,7 @@ Cafes cluster around the landing site and the Tibetan colony. Many are seasonal 
 
 ## Rajgundha and treks from Billing
 
-From Billing, trails lead deeper into the Dhauladhar to **Rajgundha**, a remote valley village with meadows and simple homestays, and on to Barot. The route is popular for a 2 to 3 day trek and is far quieter than Triund. Details, distances and difficulty are in our [Bir Billing to Rajgundha trek guide](/blog/bir-billing-rajgundha-trek). For a longer trip, the [Barot valley guide](/blog/barot-valley-guide) covers the far side.
+From Billing, trails lead deeper into the Dhauladhar to **Rajgundha**, a remote valley village with meadows and simple homestays, and on to Barot. The route is popular for a 2 to 3 day trek and is far quieter than Triund. Details, distances and difficulty are in our [Bir Billing to Rajgundha trek guide](/blog/bir-billing-rajgundha-trek), or book the [guided Rajgundha trek](/treks/bir-billing-rajgundha-trek). For a longer trip, the [Barot valley guide](/blog/barot-valley-guide) covers the far side.
 
 ## Bir tea gardens and walks
 

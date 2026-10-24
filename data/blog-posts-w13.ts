@@ -80,7 +80,7 @@ For first-time visitors, families and anyone who would rather see monasteries th
 
 ### Day 3: Gangchen Kyishong, Norbulingka and Gyuto
 
-Check out and keep your bags in a sightseeing taxi for the day (approx. ₹2,500–3,500 per car as of 2026), which drops you at the airport or bus stand at the end.
+Check out and keep your bags in a sightseeing taxi for the day (our full-day 10-point tour is ₹4,000 per car by Alto as of 2026), which drops you at the airport or bus stand at the end.
 
 **Morning (9–11 am).** Drive 2–3 km downhill to **Gangchen Kyishong**, home of the Central Tibetan Administration. The **Tibet Museum** is here, on the second floor of the T-Building, not in the temple complex. It is open 9 am to 5 pm with a 1–2 pm lunch break, and is **closed on Saturdays and government holidays** (adults Rs 20, under-18s free, as of 2026). Next door are the Library of Tibetan Works and Archives and the Nechung Monastery.
 

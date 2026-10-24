@@ -238,7 +238,7 @@ Honest local opinion: **Dal Lake** is fine but not a destination on its own, the
 
 ## Getting around and where to stay
 
-McLeod Ganj, Bhagsu and Dharamkot are best explored on foot. For Norbulingka, Kangra Fort, Masroor and the valley temples, a local taxi for a half or full day is far easier than buses; you can arrange one through our [taxi service](/taxi). For the snow views and quiet, stay in Naddi or Dharamkot; for walkability and food, stay in McLeod Ganj. Browse verified [hotels and homestays](/hotels), or check our [best time to visit Dharamshala](/blog/best-time-to-visit-dharamshala) guide before you book. Common practical questions are answered in our [FAQ](/faq).`,
+McLeod Ganj, Bhagsu and Dharamkot are best explored on foot. For Norbulingka, Kangra Fort, Masroor and the valley temples, a local taxi for a half or full day is far easier than buses; you can arrange a [full-day Dharamshala sightseeing taxi (10 points)](/taxi/dharamshala-to-full-day-sightseeing-10-points-taxi) through our [taxi service](/taxi). For the snow views and quiet, stay in Naddi or Dharamkot; for walkability and food, stay in McLeod Ganj. Browse verified [hotels and homestays](/hotels), or check our [best time to visit Dharamshala](/blog/best-time-to-visit-dharamshala) guide before you book. Common practical questions are answered in our [FAQ](/faq).`,
     category: 'Guides',
     tags: ['places to visit in dharamshala', 'mcleod ganj sightseeing', 'dharamshala tourist places', 'kangra', 'travel guide'],
     author: 'Dharamshala Stay Team',
@@ -301,7 +301,7 @@ When the Dalai Lama or senior lamas give public teachings at the main temple, th
 
 ### 4. Sit an introductory meditation or Buddhism course
 
-Dharamkot, above McLeod Ganj, is home to **Tushita Meditation Centre**, which runs introductory Buddhist courses and drop-in sessions, and the **Dhamma Sikhara Vipassana centre**, which runs strict 10-day silent courses. The **Library of Tibetan Works and Archives** at Gangchen Kyishong also runs Buddhist philosophy classes for visitors. Courses fill up, especially in spring and autumn, so book well ahead on their official websites.
+Dharamkot, above McLeod Ganj, is home to **Tushita Meditation Centre**, which runs introductory Buddhist courses and drop-in sessions, and the **[Vipassana at Dhamma Sikhara, Dharamkot](/blog/vipassana-dharamkot-dhamma-sikhara)** centre, which runs strict 10-day silent courses. The **Library of Tibetan Works and Archives** at Gangchen Kyishong also runs Buddhist philosophy classes for visitors. Courses fill up, especially in spring and autumn, so book well ahead on their official websites.
 
 **Cost:** donation-based or modest fees (varies). **Time:** a morning to 10 days.
 

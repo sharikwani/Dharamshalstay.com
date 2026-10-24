@@ -207,7 +207,7 @@ Above Reoti the valley narrows and the trail climbs over boulders along the stre
 
 ### At the lake
 
-Kareri Lake is fed by snowmelt from the Minkiani pass area and is famously clear and shallow. Around it are grassy flats where trekkers camp. The trail to **Minkiani Pass** (a much harder, high-altitude crossing towards the Chamba side) continues beyond the lake; do not attempt it without an experienced guide and proper gear.
+Kareri Lake is fed by snowmelt from the Minkiani pass area and is famously clear and shallow. Around it are grassy flats where trekkers camp. The trail to **[Minkiani Pass](/treks/minkiani-pass-trek)** (a much harder, high-altitude crossing towards the Chamba side) continues beyond the lake; do not attempt it without an experienced guide and proper gear.
 
 ### Descent
 
@@ -644,7 +644,7 @@ Work began on 2 May 1926 and the full line opened in April 1929, built largely t
 
 ## A Sample Toy Train Day from Dharamshala
 
-1. 10:00 am: taxi from Dharamshala to Kangra station (about 18 to 20 km, 40 minutes). Visit [Kangra Fort](/blog/places-to-visit-in-kangra) or Brajeshwari Devi temple first if you leave earlier; see our [Kangra Devi temples guide](/blog/kangra-devi-temples-guide).
+1. 10:00 am: taxi from Dharamshala to Kangra station (about 18 to 20 km, 40 minutes; see our [Kangra railway station to Dharamshala taxi](/taxi/kangra-railway-station-to-dharamshala-taxi) page). Visit [Kangra Fort](/blog/places-to-visit-in-kangra) or Brajeshwari Devi temple first if you leave earlier; see our [Kangra Devi temples guide](/blog/kangra-devi-temples-guide).
 2. 11:11 am: train 52467 from Kangra towards Palampur (confirm on NTES the evening before).
 3. 12:40 pm: arrive Palampur; lunch and a tea-garden walk.
 4. Optional: continue to Baijnath for the temple, or to Bir for sunset.
