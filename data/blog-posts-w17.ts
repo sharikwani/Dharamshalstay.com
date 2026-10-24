@@ -107,7 +107,7 @@ The Skyway makes a neat half-day loop that saves you two slow drives:
 
 1. **Morning in lower Dharamshala.** Walk Kotwali Bazaar, see the War Memorial, and get a coffee near the bus stand.
 2. **Ride up.** Take the Skyway from the lower station to McLeod Ganj.
-3. **Afternoon in McLeod Ganj.** Walk down Temple Road to the Tsuglagkhang complex, then do the Lingkhor kora around it, which takes about 45 minutes.
+3. **Afternoon in McLeod Ganj.** Check the [Dalai Lama Temple timings](/blog/dalai-lama-temple-guide), walk down Temple Road to the Tsuglagkhang complex, then do the Lingkhor kora around it, which takes about 45 minutes.
 4. **Evening.** Momos and thukpa in the main square, then a taxi or the Skyway back down before it closes.
 
 If the ropeway is shut that day, the same plan works with a taxi between steps 1 and 3. Our [places to visit in Dharamshala](/blog/places-to-visit-in-dharamshala) list and [3-day itinerary](/blog/dharamshala-3-day-itinerary) fit the rest of your trip around it. For more on each town, see our [McLeod Ganj](/destinations/mcleod-ganj) and [Dharamshala](/destinations/dharamshala) guides.
@@ -119,7 +119,7 @@ When it is running, yes, mainly as transport. It saves time on busy days, the vi
     tags: ['dharamshala skyway', 'ropeway', 'cable car', 'mcleod ganj', 'dharamshala', 'local transport', 'ropeway ticket price', 'ropeway timings'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-10-16',
-    updated_at: '2026-10-16',
+    updated_at: '2026-10-24',
     image: placeImage('mcleod-ganj'),
     image_alt: 'McLeod Ganj on its ridge above Dharamshala, the upper end of the Skyway ropeway',
     read_time: 7,

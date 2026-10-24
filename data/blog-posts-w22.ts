@@ -42,7 +42,7 @@ The Dharamshala mela is longer than the festival itself. The district administra
 
 The **Police Ground**, officially the **Netaji Subhash Chandra Bose Police Ground**, is at **Police Line, Jawahar Nagar, in lower Dharamshala** (coordinates 32°10'35"N 76°18'28"E, as listed by the Kangra district administration, which also uses it as a helipad). It is the town's main parade ground, the same open field that hosts the district Republic Day and Himachal Day functions.
 
-It is in the lower town, not up in McLeod Ganj. **Dharamshala town to McLeod Ganj is about 9 km, roughly 30 minutes by taxi**, so if you are staying up the hill, plan your ride down and, more importantly, your ride back after the fireworks. Our [taxi page](/taxi) can help you book a return in advance.
+It is in the lower town, not up in McLeod Ganj. **Dharamshala town to McLeod Ganj is about 9 km, roughly 30 minutes by taxi**, so if you are staying up the hill, plan your ride down and, more importantly, your ride back after the fireworks. Our [taxi page](/taxi) can help you book a return in advance. The HPCA cricket ground is also in Jawahar Nagar, so see the [Dharamshala stadium timings](/blog/hpca-cricket-stadium-guide) if you want to add it to the same trip.
 
 One quirk worth knowing: according to Divya Himachal, the **permanent stage at the Police Ground has been incomplete for about 15 years**. Big events, including the district Dussehra, use rented tents and a temporary stage. Do not expect a grand amphitheatre; expect a big open field, a makeshift stage and a lot of atmosphere.
 
@@ -124,7 +124,7 @@ Browse rooms on our [Dharamshala hotels page](/hotels) or read [where to stay in
     tags: ['dussehra', 'dharamshala dussehra 2026', 'ravan dahan', 'police ground', 'mela', 'kangra', 'festivals', 'navratri', 'october'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-10-18',
-    updated_at: '2026-10-18',
+    updated_at: '2026-10-24',
     image: placeImage('ravan-dahan-crowd'),
     image_alt: 'Night crowd filming Dussehra effigies burning with fireworks (photo location not stated)',
     read_time: 7,

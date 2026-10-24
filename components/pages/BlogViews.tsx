@@ -41,12 +41,23 @@ export function BlogIndexView({ lang }: { lang: Lang }) {
   const [latest, ...rest] = posts;
   const startHere = START_HERE.map((s) => posts.find((p) => p.slug === s)).filter((p): p is (typeof posts)[number] => !!p);
   const summaries = posts.map((p) => ({ slug: p.slug, title: p.title, excerpt: p.excerpt, category: b.categories[p.category] || p.category, tags: p.tags }));
+  // Direct answers for answer engines, built from the guide list (English page only; shown and marked up as FAQPage).
+  const newest = [...posts].sort((a, c) => String(c.updated_at || '').localeCompare(String(a.updated_at || '')))[0];
+  const answers = lang === 'en' ? [
+    { question: 'Where should I start planning a trip to Dharamshala and McLeod Ganj?',
+      answer: `Start with ${startHere.slice(0, 3).map((p) => p.title).join('; ')}. Then pick guides by topic below: treks, places, food, festivals and getting around.` },
+    { question: 'How many Dharamshala travel guides are there here?',
+      answer: `${posts.length} guides written by our local team in Dharamshala, covering McLeod Ganj, Dharamkot, Bhagsu, Naddi, Triund, the Kangra valley and trips beyond.` },
+    { question: 'Are these Dharamshala guides up to date?',
+      answer: `Each guide shows the date it was last updated${newest?.updated_at ? ` (the latest on ${newest.updated_at})` : ''}. Time-sensitive facts such as timings, fees and road or trek status are dated and sourced, and changes are logged on our travel updates page.` },
+  ] : [];
 
   return (
     <>
       <JsonLd data={[
         breadcrumbSchema([{ name: t.common.home, href: '/' }, { name: t.common.guides, href: '/blog' }], lang),
         itemListSchema(posts.map((p) => ({ name: p.title, href: '/blog/' + p.slug })), lang),
+        ...(answers.length ? [faqSchema(answers)] : []),
       ]} />
       <section className="bg-brand-900 text-white py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -100,6 +111,22 @@ export function BlogIndexView({ lang }: { lang: Lang }) {
           </section>
         );
       })}
+
+      {answers.length > 0 && (
+        <section aria-labelledby="guide-answers" className="py-10 bg-slate-50">
+          <div className="max-w-3xl mx-auto px-4">
+            <h2 id="guide-answers" className="text-2xl font-heading font-bold text-slate-900 mb-4">Questions about these guides</h2>
+            <dl className="space-y-4">
+              {answers.map((a) => (
+                <div key={a.question}>
+                  <dt className="font-semibold text-slate-900">{a.question}</dt>
+                  <dd className="mt-1 text-slate-700 leading-relaxed">{a.answer}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </section>
+      )}
 
       <section className="py-10">
         <div className="max-w-3xl mx-auto px-4 text-center flex flex-col items-center gap-2">

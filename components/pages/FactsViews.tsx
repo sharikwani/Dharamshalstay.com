@@ -115,12 +115,30 @@ export function travelUpdatesMetadata(): Metadata {
   });
 }
 
+/** Direct answers built from the update list itself, so they never go stale (shown on the page and as FAQPage). */
+function updateAnswers(items: typeof travelUpdates) {
+  const latest = items.slice(0, 4).map((u) => u.title).join('; ');
+  const limits = items.filter((u) => u.status === 'restricted' || u.status === 'closed');
+  return [
+    { question: 'What is the latest travel information for McLeod Ganj and Dharamshala?',
+      answer: `As of ${nice(updatesChecked)}: ${latest}. Each update below has its date, the date we last checked it and its official source.` },
+    { question: 'Is anything closed or restricted in Dharamshala right now?',
+      answer: limits.length
+        ? `Yes: ${limits.map((u) => u.title).join('; ')}. Everything else on this page is open, seasonal or a changed rule. Last checked ${nice(updatesChecked)}.`
+        : `Nothing on our list is closed or restricted right now (last checked ${nice(updatesChecked)}). Seasonal notes and changed rules are listed below.` },
+    { question: 'How up to date are these Dharamshala travel updates?',
+      answer: `Every entry shows when the change happened and when our team in Dharamshala last checked it against an official or news source. The whole page was last checked on ${nice(updatesChecked)}.` },
+  ];
+}
+
 export function TravelUpdatesView() {
   const items = [...travelUpdates].sort((a, b) => b.checked.localeCompare(a.checked) || b.date.localeCompare(a.date));
+  const answers = updateAnswers(items);
   return (
     <>
       <JsonLd data={[
         breadcrumbSchema([{ name: 'Home', href: '/' }, { name: 'Travel updates', href: '/travel-updates' }]),
+        faqSchema(answers),
         {
           '@context': 'https://schema.org',
           '@type': 'CollectionPage',
@@ -149,6 +167,17 @@ export function TravelUpdatesView() {
       </section>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
+        <section aria-labelledby="quick-answers" className="mb-10 rounded-xl bg-brand-50 p-5">
+          <h2 id="quick-answers" className="font-heading font-bold text-xl text-slate-900">Quick answers</h2>
+          <dl className="mt-3 space-y-4">
+            {answers.map((a) => (
+              <div key={a.question}>
+                <dt className="font-semibold text-slate-900">{a.question}</dt>
+                <dd className="mt-1 text-slate-700 leading-relaxed">{a.answer}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
         <ol className="space-y-5">
           {items.map((u) => (
             <li key={u.id} id={u.id} className="scroll-mt-24 rounded-xl border border-slate-200 bg-white p-5">

@@ -654,12 +654,12 @@ For a longer trip through the valley, see our [five-day Kangra Valley itinerary]
 
 ## Where to Stay
 
-Base yourself in [Dharamshala](/destinations/dharamshala) or [McLeod Ganj](/destinations/mcleod-ganj) and treat the train as a day trip, or spend a night in Palampur or Bir to ride the eastern section in the morning. Browse [our hotels](/hotels), and see [places to visit in Kangra](/blog/places-to-visit-in-kangra) for the fort, Masroor temples and more along the same route. For general booking questions, visit our [FAQ](/faq).`,
+Base yourself in [Dharamshala](/destinations/dharamshala) or [McLeod Ganj](/destinations/mcleod-ganj) and treat the train as a day trip, or spend a night in Palampur or Bir to ride the eastern section in the morning. Browse [our hotels](/hotels), and see [places to visit in Kangra](/blog/places-to-visit-in-kangra) for the fort, Masroor temples and more along the same route. If you are heading up to McLeod Ganj afterwards, check the [Dalai Lama Temple timings](/blog/dalai-lama-temple-guide) first. For general booking questions, visit our [FAQ](/faq).`,
     category: 'Guides',
     tags: ['kangra toy train', 'kangra valley railway', 'kangra toy train timetable', 'pathankot to dharamshala toy train', 'pathankot joginder nagar', 'palampur', 'baijnath', 'heritage railway'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-09-24',
-    updated_at: '2026-10-22',
+    updated_at: '2026-10-24',
     image: placeImage('kangra-toy-train'),
     image_alt: 'Kangra Valley Railway narrow-gauge toy train crossing the Reond Nullah arch bridge with the Dhauladhar range behind',
     read_time: 10,

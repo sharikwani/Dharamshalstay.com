@@ -778,7 +778,7 @@ If you hope to see the Dalai Lama, the only realistic way is to attend a **publi
 
 ## What is the Tsuglagkhang complex?
 
-After the Dalai Lama fled Tibet in 1959, the Tibetan government in exile settled in Dharamshala, and McLeod Ganj became the centre of Tibetan life in India, often called Little Lhasa. The Tsuglagkhang, built in the 1960s, serves as the community's main temple, the equivalent of the Jokhang in Lhasa. The complex sits at the bottom of Temple Road, about a 10 minute walk downhill from the McLeod Ganj main square.
+The Tsuglagkhang is the main temple complex of the Tibetan community in McLeod Ganj, home to the Dalai Lama's residence and Namgyal Monastery. After the Dalai Lama fled Tibet in 1959, the Tibetan government in exile settled in Dharamshala, and McLeod Ganj became the centre of Tibetan life in India, often called Little Lhasa. The Tsuglagkhang, built in the 1960s, serves as the community's main temple, the equivalent of the Jokhang in Lhasa. The complex sits at the bottom of Temple Road, about a 10 minute walk downhill from the McLeod Ganj main square.
 
 ### What is inside
 
@@ -831,15 +831,19 @@ The **Tibet Museum** charges Rs 20, but it is a separate place at Gangchen Kyish
 
 ## Do the timings change in winter and summer?
 
-We found **no confirmed seasonal timetable**: the same 5 am to 8 pm figure is quoted all year. What does change is daylight. The sun sets around 5.30 pm in December and January and around 7.30 pm in June, so a winter evening visit is cold and dark, and the courtyard goes quiet well before 8 pm. In winter, go between 9 am and 4 pm.
+**No confirmed seasonal timetable exists**: the same 5 am to 8 pm figure is quoted all year. What does change is daylight. The sun sets around 5.30 pm in December and January and around 7.30 pm in June, so a winter evening visit is cold and dark, and the courtyard goes quiet well before 8 pm. In winter, go between 9 am and 4 pm.
 
 ## What time are prayers and monk debates?
+
+Morning prayers start at about 5 am, monk debates are in the courtyard from about 1 pm on some days, and evening prayers are reported at about 4.30 to 5.30 pm (unconfirmed).
 
 - **Morning prayers** start early, commonly reported from about 5 am. Tibetan elders and monks fill the halls and the kora at dawn; visitors can sit quietly at the back.
 - **Monk debates** in the Namgyal Monastery courtyard are the highlight for many visitors, but they are **not daily**. Lonely Planet lists them at 1.30 pm except Sundays; one blog gives 9 to 11 am. We suggest being in the courtyard from about 1 pm; if you hear loud clapping, a debate is on. They stop during holidays, ceremonies and when the monks are away.
 - **Evening prayers** at Namgyal are given by one guide as about 4.30 to 5.30 pm. We could not confirm this from the monastery.
 
 ## When is the temple closed or extra busy? Dates for 2026 and 2027
+
+It is busiest and may close to general visitors on ceremony and teaching days, such as the Long Life Offering Ceremony announced for 24 February 2027.
 
 - **Long Life Offering Ceremonies** at the main temple on the mornings of **21 October 2026** and **24 February 2027**, per the official dalailama.com schedule (checked 20 October 2026; dates can change at short notice). Expect queues, strict security and phones not allowed in.
 - **Tibet Museum closures** left in 2026: 1 November (Lhabab Duechen), 10 December (Nobel Peace Prize Day), 15 and 16 December, plus every Saturday (tibetmuseum.org).
@@ -876,7 +880,7 @@ On a normal day, **yes**: you can carry a phone, camera and a small day bag thro
 
 ## What is the kora and when should you walk it?
 
-The kora is a circular path around the entire Tsuglagkhang complex and the Dalai Lama's residence, about 30 to 45 minutes at a gentle pace. It winds through pine forest strung with thousands of prayer flags, past prayer wheels, chortens and stones carved with the mantra Om Mani Padme Hum.
+The kora is the circular walking path around the Tsuglagkhang complex and the Dalai Lama's residence, best walked in the early morning; it takes about 30 to 45 minutes at a gentle pace. It winds through pine forest strung with thousands of prayer flags, past prayer wheels, chortens and stones carved with the mantra Om Mani Padme Hum.
 **How to walk it:** from Temple Road, look for the path on the left just before the temple gate (as you face it) and follow the stream of walkers downhill. Always go clockwise. Early mornings, when elderly Tibetans walk it with prayer beads, are the most moving. Read more about the area in our [McLeod Ganj destination guide](/destinations/mcleod-ganj).
 
 ## How public teachings work
@@ -893,6 +897,8 @@ His Holiness the Dalai Lama, now in his nineties, gives fewer public teachings t
 Private audiences are rarely granted to individual tourists these days, so do not plan a trip around one.
 
 ## What is the best time to visit the Dalai Lama Temple?
+
+The best time is dawn (about 5 to 7 am) for prayers and the kora, or mid-morning (9 to 11 am) for a calm first visit; go from about 1 pm for monk debates.
 
 - **Dawn (about 5 to 7 am):** morning prayers inside and elderly Tibetans walking the Lingkhor kora with prayer beads. The most moving time to go.
 - **Mid-morning (9 to 11 am):** the halls are calm and Temple Road is still quiet. The easiest time for a first visit.
@@ -920,6 +926,7 @@ The temple is the anchor of any McLeod Ganj day. After your visit you can:
 - Read up on [Tibetan culture and etiquette](/blog/tibetan-culture-etiquette-guide) and the other [monasteries and meditation centres](/monasteries-meditation) around town.
 - Next morning, head up to Triund on a [guided Triund trek](/treks/triund-trek) or browse all [treks from McLeod Ganj](/treks).
 - Try **momos and thenthuk** at a family-run Tibetan kitchen; see our [Tibetan food guide](/blog/tibetan-food-mcleod-ganj).
+- If a match is on, check the [Dharamshala stadium timings](/blog/hpca-cricket-stadium-guide) for the HPCA ground in lower Dharamshala.
 - Explore more ideas in [things to do in McLeod Ganj](/blog/things-to-do-in-mcleod-ganj) and [places to visit in Dharamshala](/blog/places-to-visit-in-dharamshala).
 
 ## Where to stay near the temple
@@ -929,7 +936,7 @@ Temple Road and the streets just above it have guesthouses and hotels within a f
     tags: ['dalai lama temple', 'dalai lama temple timings', 'tsuglagkhang', 'mcleod ganj', 'namgyal monastery', 'tibet museum', 'kora', 'dalai lama teachings'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-09-24',
-    updated_at: '2026-10-22',
+    updated_at: '2026-10-24',
     image: placeImage('tsuglagkhang'),
     image_alt: 'Tsuglagkhang complex, the Dalai Lama Temple on Temple Road in McLeod Ganj',
     read_time: 10,

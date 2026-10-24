@@ -34,7 +34,7 @@ A few patterns hold most years:
 
 ## Will It Snow in McLeod Ganj in December?
 
-Honestly, probably not during a short trip, though it does happen. Here is the picture by altitude:
+Sometimes, but not every year: snow in McLeod Ganj itself is occasional in December and uncommon before about 20 December, so probably not during a short trip, though it does happen. Here is the picture by altitude:
 
 - **Lower Dharamshala (around 1,400 m):** settled snow is very rare.
 - **McLeod Ganj and Bhagsu (around 2,000 m):** occasional. Before about 20 December it is uncommon. In the last ten days it becomes possible, and some years bring a festive dusting around Christmas or New Year. Many years bring none at all in December.
@@ -154,7 +154,7 @@ Full options and timings are in our [how to reach Dharamshala guide](/blog/how-t
     tags: ['december', 'mcleod ganj', 'dharamshala', 'winter', 'snow', 'christmas', 'new year', 'weather'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-10-16',
-    updated_at: '2026-10-16',
+    updated_at: '2026-10-24',
     image: placeImage('dharamshala-snow'),
     image_alt: 'Snow on the Dhauladhar range above McLeod Ganj in winter',
     read_time: 10,
@@ -171,7 +171,7 @@ Full options and timings are in our [how to reach Dharamshala guide](/blog/how-t
     faqs: [
       {
         question: 'Does it snow in McLeod Ganj in December?',
-        answer: 'Sometimes, but not every year. Snow in McLeod Ganj before about 20 December is uncommon. In the last ten days of the month a light fall is possible if a western disturbance arrives, and it often melts in town within a day. January and early February give better odds. Triund and the upper slopes are far more likely to have snow, and the Dhauladhar peaks are white all winter.',
+        answer: 'Yes, sometimes, but not every year. Snow in McLeod Ganj before about 20 December is uncommon. In the last ten days of the month a light fall is possible if a western disturbance arrives, and it often melts in town within a day. January and early February give better odds. Triund and the upper slopes are far more likely to have snow, and the Dhauladhar peaks are white all winter.',
       },
       {
         question: 'How cold is McLeod Ganj in December?',

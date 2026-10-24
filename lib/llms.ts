@@ -229,7 +229,7 @@ function updatesBlock(): string {
 
 /** /llms.txt -- the curated index (https://llmstxt.org). */
 export async function llmsIndex(): Promise<string> {
-  const { hotels, destinations, treks, taxis } = await loadAll();
+  const { hotels, destinations, treks, taxis, paragliding } = await loadAll();
   const categories = getBlogCategories();
 
   return join(
@@ -247,7 +247,7 @@ export async function llmsIndex(): Promise<string> {
       ...COLLECTIONS.map((c) => link(c.title, '/hotels/' + c.slug, c.metaDescription)),
       link('Hotels & homestays', '/hotels', 'every listed property with prices and filters'),
       link('Treks', '/treks', 'guided treks from Dharamshala and McLeod Ganj'),
-      link('Paragliding', '/paragliding', 'Bir Billing and Dharamshala paragliding'),
+      link('Paragliding and adventure', '/paragliding', 'tandem paragliding at Bir Billing, Dharamshala, Kullu and Manali, plus Beas river rafting, zipline, sky cycle and ATV rides, priced per person'),
       link('Taxi', '/taxi', 'airport, local and outstation taxi fares'),
       link('Travel guides', '/blog', 'in-depth local guides'),
       link('Events 2026-27 and stay packages', '/events', 'DIFF, Kangra Valley Carnival, Losar, Long Life Prayer, Navratri and the snow season with checked dates and status'),
@@ -255,12 +255,17 @@ export async function llmsIndex(): Promise<string> {
       link('Monthly stays and workations', '/workation', 'Dharamkot, Bhagsu, McLeod Ganj and Naddi for a month: internet, best months, monthly rates'),
       link('Monasteries & meditation', '/monasteries-meditation', 'Dalai Lama Temple, Namgyal debates, Gyuto, Norbulingka, the kora, Tushita and Vipassana courses, temple etiquette'),
       link('Travel essentials', '/essentials', 'money, SIM, weather, food, health and local rules in quick answers'),
+      link('Traveller stories', '/stories', 'real trip stories and photos from Dharamshala and McLeod Ganj, shared by travellers and locals'),
+      link('Share your story', '/stories/share', 'travellers can add their own Dharamshala story and photos and get a memory card'),
+      link('Free online tambola and party games', '/play', 'tambola (housie), party quiz, lucky draw and Who is Most Likely To, played on phones with a 6-digit code; free'),
+      link('For hotels and homestays', '/for-hotels', 'free listing, direct enquiries and WhatsApp booking alerts for properties in Dharamshala'),
       link('FAQ', '/faq', 'hundreds of answered traveller questions'),
       link('About us', '/about'),
       link('Contact', '/contact'),
     ].join('\n'),
     '## Destinations\n\n' + destinations.map((d: any) => link(d.name, '/destinations/' + d.slug, d.description || d.tagline)).join('\n'),
     treks.length > 0 && '## Treks\n\n' + treks.map((t: any) => link(t.name, '/treks/' + t.slug, [t.difficulty, t.duration, t.max_altitude, t.price_per_person > 0 && 'from ' + rs(t.price_per_person)].filter(Boolean).join(', ') + '. ' + (t.short_description || ''))).join('\n'),
+    paragliding.length > 0 && '## Paragliding and adventure activities\n\nIndicative prices per person; all booked through ' + B + '/paragliding.\n\n' + paragliding.map((p) => '- **' + p.name + '** (' + p.destination + (p.duration ? ', ' + p.duration : '') + '): ' + rs(p.price_per_person) + ' per person.' + (p.description ? ' ' + p.description.replace(/\s+/g, ' ').trim() : '')).join('\n'),
     taxis.length > 0 && '## Taxi routes\n\n' + taxis.map((g) => link(g.from + ' to ' + g.to + ' taxi', '/taxi/' + g.slug, 'from ' + rs(g.minPrice) + (g.distanceKm ? ', ' + g.distanceKm + ' km' : '') + (g.duration ? ', ' + g.duration : ''))).join('\n'),
     hotels.length > 0 && '## Hotels & homestays\n\n' + hotels.map((h) => link(h.name, '/hotels/' + h.slug,
       [
@@ -274,7 +279,7 @@ export async function llmsIndex(): Promise<string> {
       link('Hindi version of the site', '/hi'),
       link('Blog RSS feed', '/feed.xml'),
       link('XML sitemap', '/sitemap.xml'),
-      link('Photo credits', '/photo-credits', 'photos are real photographs of each place, mostly from Wikimedia Commons'),
+      link('Photo credits', '/photo-credits', 'photos are real photographs of each place, from Wikimedia Commons and from local photographers credited by name'),
       link('Cancellation policy', '/cancellation-policy'),
       link('Terms', '/terms'),
       link('Privacy', '/privacy'),

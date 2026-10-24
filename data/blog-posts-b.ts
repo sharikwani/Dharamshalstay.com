@@ -120,7 +120,7 @@ Once you know how you are arriving, [browse hotels in Dharamshala and McLeod Gan
     tags: ['how to reach dharamshala', 'kangra airport', 'delhi to dharamshala bus', 'pathankot', 'mcleod ganj', 'travel planning'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-09-04',
-    updated_at: '2026-10-01',
+    updated_at: '2026-10-24',
     image: placeImage('kangra-airport'),
     image_alt: 'Kangra (Gaggal) Airport near Dharamshala with the Dhauladhar range behind',
     read_time: 9,
@@ -132,6 +132,10 @@ Once you know how you are arriving, [browse hotels in Dharamshala and McLeod Gan
       {
         question: 'Which is the nearest airport to Dharamshala?',
         answer: 'Kangra Airport at Gaggal (code DHM) is the nearest airport, about 12-15 km from Dharamshala town and around 20 km from McLeod Ganj. A taxi takes 30-60 minutes.',
+      },
+      {
+        question: 'How to reach Dharamshala by flight?',
+        answer: 'Fly to Kangra Airport at Gaggal (code DHM), about 12-15 km from Dharamshala town and roughly 20 km from McLeod Ganj. As of 2026 IndiGo operates the main scheduled services, with routes listed to Delhi, Chandigarh, Noida and Jaipur. From the airport a pre-arranged taxi costs approx. Rs 800-1,200 to Dharamshala town and approx. Rs 1,000-1,500 to McLeod Ganj, taking 30-60 minutes. Check airline schedules directly, as they change often.',
       },
       {
         question: 'Which is the nearest railway station to Dharamshala?',
@@ -175,7 +179,7 @@ Once you know how you are arriving, [browse hotels in Dharamshala and McLeod Gan
 
 ## When Does It Snow in Dharamshala?
 
-Snow in Dharamshala comes in short spells, not as a season of white streets. A western disturbance moves in, it rains in the valley and snows on the higher slopes for one to three days, and then the sky clears. Every dated snowfall in the town and its upper villages that we could confirm in news reports falls between **31 December and 9 February**, and most of them are in **January**.
+Snow in Dharamshala falls between late December and February, most often in January, but only in short spells, not as a season of white streets. A western disturbance moves in, it rains in the valley and snows on the higher slopes for one to three days, and then the sky clears. Every dated snowfall in the town and its upper villages that we could confirm in news reports falls between **31 December and 9 February**, and most of them are in **January**.
 
 What that means for planning:
 
@@ -201,6 +205,8 @@ No other guide we know of lists dated snowfalls, so here is what news reports ac
 Two patterns stand out. First, **Dharamkot and Naddi often get several times more snow than McLeod Ganj in the same storm** (1 ft against 2 inches in February 2010). Second, **gaps of a year or more without snow in town are normal**, which is why we never promise it. We add new snowfalls to this log as they are reported; for the latest conditions, also see our [travel updates](/travel-updates).
 
 ## Where Does It Snow? Altitude Is Everything
+
+It snows mainly in the upper villages, Dharamkot and Naddi first, then McLeod Ganj and Bhagsu, and reliably only at Triund; the higher you go, the more snow you get.
 
 | Area | Approx. altitude | Snow chance in winter | What to expect |
 |---|---|---|---|
@@ -263,6 +269,8 @@ If snow underfoot is the main goal, Manali is the surer bet. In the same storm o
 
 ## Are Roads Open After Snowfall?
 
+Mostly yes: the main highway stays open, but roads up to McLeod Ganj, Naddi and Dharamkot can be icy or blocked for a day or two after snow.
+
 - The main highway to Dharamshala via Kangra stays open all winter. Snow on this road is very rare.
 - The Dharamshala-McLeod Ganj roads (via Kotwali Bazaar or via Forsyth Ganj) can turn icy on the morning after snowfall. Taxis often wait for the sun or for the road to be cleared.
 - Roads to Naddi and Dharamkot are narrow and shaded; they may be blocked for a day or two after heavy snow (as in February 2010), and jams build when everyone drives up to see the snow (as on 1 February 2024). Walking is often easier.
@@ -272,7 +280,7 @@ If snow underfoot is the main goal, Manali is the surer bet. In the same storm o
 
 ## What Is Open in Winter?
 
-Almost everything. The Tsuglagkhang Complex, monasteries, the Tibet Museum, St. John in the Wilderness, cafes, restaurants and markets in McLeod Ganj all operate through winter, though some cafes and shops close for a few weeks in January or February when owners travel. Paragliding at Bir Billing continues on clear days, but flights can be cancelled in bad weather (see our [Bir Billing paragliding guide](/blog/bir-billing-paragliding-guide)), and short local tandem flights depend on conditions too, so check [paragliding options](/paragliding) before you go. Camping at Triund is more restricted in winter; confirm current rules before planning a night on the ridge.
+Almost everything. The Tsuglagkhang Complex, monasteries, the Tibet Museum, St. John in the Wilderness, cafes, restaurants and markets in McLeod Ganj all operate through winter, though some cafes and shops close for a few weeks in January or February when owners travel. Paragliding at Bir Billing continues on clear days, but flights can be cancelled in bad weather (see our [Bir Billing paragliding guide](/blog/bir-billing-paragliding-guide)), and short local tandem flights depend on conditions too, so check [paragliding options](/paragliding) before you go. If your trip includes a match day, see the [Dharamshala stadium timings](/blog/hpca-cricket-stadium-guide) for the HPCA ground. Camping at Triund is more restricted in winter; confirm current rules before planning a night on the ridge.
 
 ## Winter Packing List
 
@@ -307,7 +315,7 @@ Yes, if you like clear mountain views, quiet streets and cosy cafe afternoons. J
     tags: ['dharamshala snowfall', 'mcleod ganj snow', 'when does it snow in dharamshala', 'dharamshala me barf kab girti hai', 'winter travel', 'triund in winter', 'naddi', 'dharamkot snow'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-09-10',
-    updated_at: '2026-10-20',
+    updated_at: '2026-10-24',
     image: placeImage('dharamshala-snow'),
     image_alt: 'Fresh snow on the Dhauladhar range and rooftops above McLeod Ganj, Dharamshala, in winter',
     read_time: 10,
@@ -358,8 +366,8 @@ Yes, if you like clear mountain views, quiet streets and cosy cafe afternoons. J
         answer: 'Snow in McLeod Ganj in March is unlikely and melts fast. Triund and the upper slopes often keep snow into March, so a guided day hike is the way to see it.',
       },
       {
-        question: 'Does it snow in Dharamshala every year, and is snow guaranteed?',
-        answer: 'No. Some winters bring only a dusting or nothing in town: in 2023-24 the first snow in the upper villages came only on 1 February 2024, and in 2010 McLeod Ganj had gone two years without snow. Only Triund is near-certain from December to March.',
+        question: 'Is there any snowfall in Dharamshala?',
+        answer: 'Yes, but only on a few days a winter and only in the upper villages. McLeod Ganj, Naddi, Dharamkot and Bhagsu get snow between late December and February, most often in January, while lower Dharamshala almost never does. It is not guaranteed every year: some winters bring only a dusting or nothing in town. In 2023-24 the first snow in the upper villages came only on 1 February 2024, and in 2010 McLeod Ganj had gone two years without snow. Only Triund is near-certain from December to March.',
       },
       {
         question: 'Are roads to McLeod Ganj open after snowfall?',
@@ -600,7 +608,9 @@ July and August together average roughly 1,800 mm of rain in Dharamshala, more t
 
 If you are visiting in the rainy season, read our full [Dharamshala monsoon travel guide](/blog/dharamshala-monsoon-travel-guide) first.
 
-## What to Pack: Season by Season
+## What should I pack for Dharamshala?
+
+**Short answer:** Pack layers for the season: light cotton plus one warm layer in summer, a waterproof jacket and quick-dry clothes in the monsoon, a fleece and light down jacket in autumn, and a warm insulated jacket with thermals in winter. McLeod Ganj is cooler than the town, so always carry one more layer than you think you need. The season-by-season lists are below.
 
 ### Spring (March to mid-April)
 
@@ -703,7 +713,7 @@ Wherever you choose to stay, from lower [Dharamshala](/destinations/dharamshala)
     tags: ['dharamshala weather', 'mcleod ganj weather', 'what to pack', 'packing list', 'monsoon', 'trekking gear'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-09-22',
-    updated_at: '2026-10-01',
+    updated_at: '2026-10-24',
     image: placeImage('dhauladhar-hero'),
     image_alt: 'Snow-capped Dhauladhar range rising above Dharamshala and McLeod Ganj under a clear sky',
     read_time: 8,
@@ -723,6 +733,10 @@ Wherever you choose to stay, from lower [Dharamshala](/destinations/dharamshala)
       {
         question: 'How cold is McLeod Ganj compared with Dharamshala?',
         answer: 'McLeod Ganj is about 600 m higher than Dharamshala town and is usually 3-5 degrees Celsius cooler. Carry an extra warm layer if you are staying in McLeod Ganj, Dharamkot or Naddi.',
+      },
+      {
+        question: 'What clothes should I take to Dharamshala?',
+        answer: 'Take layers that suit the season. In summer, light cotton or quick-dry clothes plus one warm layer; in the monsoon, a waterproof jacket and quick-dry clothes; in autumn, a fleece and a light down jacket by November; in winter, a warm insulated jacket, thermals, a woollen cap and gloves. Add walking shoes with good grip all year.',
       },
       {
         question: 'What should I wear in Dharamshala in October?',
