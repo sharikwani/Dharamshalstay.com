@@ -562,6 +562,8 @@ If you are planning a wider winter trip, read [Dharamshala in winter](/blog/dhar
     excerpt: 'Planning Christmas or New Year in Dharamshala? Crowds, snow chances, prices and when to book, St John in the Wilderness, what is open for parties, traffic, weather and quieter alternatives.',
     content: `Christmas and New Year are among the **busiest weeks of the year** in Dharamshala and McLeod Ganj. This guide focuses on Christmas week; for New Year's Eve itself, the traffic plan and a 30 December to 2 January trip, see our [New Year in McLeod Ganj guide](/blog/new-year-in-mcleod-ganj). From about **December 23 to January 2**, hotel rates typically rise **1.5 to 2.5 times**, the McLeod Ganj road jams in the evenings, and good rooms sell out weeks in advance. In return you get crisp, clear days with the Dhauladhar fully snow-covered, a festive atmosphere in the cafes, a Christmas service at the historic **St John in the Wilderness** church, and New Year's Eve parties ranging from rooftop dinners to bonfire nights.
 
+Looking for a Christmas or New Year party to book? See [New Year and Christmas parties in McLeod Ganj and Dharamshala](/new-year-parties).
+
 What you probably will **not** get, despite what reels suggest, is guaranteed snow in town. Snowfall in McLeod Ganj at Christmas is possible but uncommon, and Dharamshala town itself rarely sees snow at all. This guide covers realistic snow chances, crowd timing, prices, booking, what is open, traffic and the quieter places (like Naddi and Dharamkot) where we would actually spend the week. Prices are approx. as of 2026.
 
 ## Quick Facts
