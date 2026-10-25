@@ -213,6 +213,8 @@ Makkar Luggage Storage and Luggage Holding Services is a small local business in
 | Pick-up and drop | Within 5 km, charged extra |
 | Contact | Viren Makkar, who runs it: +91 78330 00062 |
 
+See its profile and any other services on our [luggage storage in Dharamshala](/luggage-storage) page. Run a storage service yourself? You can [list it for free](/luggage-storage/list-your-service).
+
 ### Trek operators
 
 If you have booked a guided trek, the operator will normally store your main bag for the duration. Confirm when booking -- it is standard, but worth hearing out loud.

@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Home, Inbox, Building, PlusCircle, ShoppingBag, MessageSquare, Car, Mountain, Wind, Users, LogOut, ExternalLink, BadgeCheck, MessageCircle, BadgePercent, Star, Flag, Send, Mail, Instagram, BookHeart } from 'lucide-react';
+import { Home, Inbox, Building, PlusCircle, ShoppingBag, MessageSquare, Car, Mountain, Wind, Users, LogOut, ExternalLink, BadgeCheck, MessageCircle, BadgePercent, Star, Flag, Send, Mail, Instagram, BookHeart, Luggage } from 'lucide-react';
 import { authFetch, supabase } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
 
@@ -25,6 +25,7 @@ export const ADMIN_NAV: { title: string; items: NavItem[] }[] = [
       { href: '/admin/approvals', label: 'To review', hint: 'New listings from owners waiting for your OK', icon: Inbox, tone: 'bg-amber-500', badge: 'review' },
       { href: '/admin/reviews', label: 'Guest reviews', hint: 'Approve, hide and reply to hotel reviews', icon: Star, tone: 'bg-yellow-500', badge: 'reviews' },
       { href: '/admin/listing-requests', label: 'Claims & removals', hint: 'Owners claiming or removing their listing', icon: Flag, tone: 'bg-indigo-500', badge: 'listings' },
+      { href: '/admin/services', label: 'Local services', hint: 'Luggage storage sign-ups to approve', icon: Luggage, tone: 'bg-amber-500' },
       { href: '/admin/listing-outreach', label: 'Owner outreach', hint: 'WhatsApp listed hotels to claim or remove', icon: Send, tone: 'bg-green-700' },
       { href: '/admin/properties', label: 'All properties', hint: 'Edit, publish, hide or delete any listing', icon: Building, tone: 'bg-sky-500' },
       { href: '/admin/import', label: 'Add a property', hint: 'Copy a hotel in from its website', icon: PlusCircle, tone: 'bg-emerald-500' },

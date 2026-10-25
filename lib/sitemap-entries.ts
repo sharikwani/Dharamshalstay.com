@@ -17,6 +17,7 @@ import { normalizeImages, roomImageUrls } from '@/lib/images';
 import { placeImage, isStockImage } from '@/lib/place-images';
 import { monasteryPhotos } from '@/data/monastery-photos';
 import { listPublicStories } from '@/lib/stories/store';
+import { publishedServices } from '@/lib/services/store';
 
 // Must be the canonical (www) origin -- the bare domain 301s to www, and a
 // sitemap full of redirecting URLs is largely ignored by Google.
@@ -46,12 +47,13 @@ function date(value?: string | null, fallback = new Date()): Date {
 }
 
 export async function sitemapEntries(): Promise<SitemapEntry[]> {
-  const [hotels, destinations, treks, taxiRoutes, stories] = await Promise.all([
+  const [hotels, destinations, treks, taxiRoutes, stories, services] = await Promise.all([
     getPublishedProperties(),
     getDestinations(),
     getPublishedTreks(),
     getTaxiRouteGroups(),
     listPublicStories(1000).catch(() => []),
+    publishedServices('luggage_storage').catch(() => []),
   ]);
 
   const latestPost = blogPosts.reduce((max, b) => (b.updated_at > max ? b.updated_at : max), '2026-01-01');
@@ -75,6 +77,9 @@ export async function sitemapEntries(): Promise<SitemapEntry[]> {
     { url: B + '/groups', lastModified: date('2026-10-20'), changeFrequency: 'monthly', priority: 0.7 },
     { url: B + '/workation', lastModified: date('2026-10-20'), changeFrequency: 'monthly', priority: 0.7 },
     { url: B + '/play', lastModified: date('2026-10-22'), changeFrequency: 'monthly', priority: 0.6 },
+    { url: B + '/luggage-storage', lastModified: date('2026-10-25'), changeFrequency: 'weekly', priority: 0.6 },
+    { url: B + '/luggage-storage/list-your-service', lastModified: date('2026-10-25'), changeFrequency: 'yearly', priority: 0.3 },
+    ...services.map((x) => ({ url: B + '/luggage-storage/' + x.slug, lastModified: date(x.published_at, date('2026-10-25')), changeFrequency: 'monthly' as const, priority: 0.5 })),
     { url: B + '/new-year-parties', lastModified: date('2026-10-25'), changeFrequency: 'weekly', priority: 0.8 },
     { url: B + '/for-hotels', lastModified: date('2026-10-20'), changeFrequency: 'monthly', priority: 0.4 },
     { url: B + '/destinations', lastModified: contentDate, changeFrequency: 'monthly', priority: 0.8 },

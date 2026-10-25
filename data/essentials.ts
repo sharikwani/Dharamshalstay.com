@@ -85,7 +85,7 @@ export const essentialGroups: EssentialGroup[] = [
       {
         q: 'Can I leave my bags somewhere before a trek or night bus?',
         a: 'Yes. Almost every guesthouse will hold luggage for free or a token fee if you have stayed with them, and trek operators routinely store bags for clients. Lock your bag and keep your passport, cash and electronics with you. For paid storage, Makkar Luggage Storage in Kandi, lower Dharamshala, charges about Rs 80-100 per bag per day, with pick-up and drop within 5 km at extra cost (Viren Makkar, +91 78330 00062).',
-        href: '/blog/laundry-luggage-storage-water-dharamshala',
+        href: '/luggage-storage',
       },
       {
         q: 'Can I refill a bottle instead of buying plastic?',
