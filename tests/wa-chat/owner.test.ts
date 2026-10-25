@@ -22,3 +22,10 @@ describe('owner WhatsApp mode', () => {
     expect(r.needs_confirmation).toBe(true);
   });
 });
+
+describe('template context for the customer AI', async () => {
+  const { fillTemplate } = await import('@/lib/wa-chat/template-context');
+  it('fills a template body with the values we sent', () => {
+    expect(fillTemplate('Hello {{1}} about *{{2}}*.\n\n{{3}}', ['Amit', 'your stay', 'Reply 1 or 2'])).toBe('Hello Amit about your stay.\nReply 1 or 2');
+  });
+});

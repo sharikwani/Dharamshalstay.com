@@ -1,4 +1,5 @@
 import { siteConfig } from '@/lib/config';
+import { recentTemplatesNote } from './template-context';
 import { BOOKING_DISCOUNT_NOTE } from '@/lib/pricing';
 import { runTool, TOOL_DEFS, type ToolCtx } from './tools';
 import type { ChatMessage } from './types';
@@ -126,9 +127,9 @@ export async function recentBookingsNote(phone: string): Promise<string> {
 export async function reply(msgs: ChatMessage[], ctx: ToolCtx, note?: string): Promise<string> {
   if (!process.env.OPENAI_API_KEY) throw new Error('OPENAI_API_KEY is not set');
   const today = new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' });
-  const recent = await recentBookingsNote(ctx.phone);
+  const [recent, sent] = await Promise.all([recentBookingsNote(ctx.phone), recentTemplatesNote(ctx.phone)]);
   const messages: any[] = [
-    { role: 'system', content: `${SYSTEM_PROMPT}\n\nToday is ${today} (India time). Customer's WhatsApp name: ${ctx.profileName || 'unknown'}.${recent}` },
+    { role: 'system', content: `${SYSTEM_PROMPT}\n\nToday is ${today} (India time). Customer's WhatsApp name: ${ctx.profileName || 'unknown'}.${recent}${sent}` },
     ...toOpenAiMessages(msgs),
     ...(note ? [{ role: 'system', content: note }] : []),
     { role: 'system', content: REMINDER },
