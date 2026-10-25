@@ -17,7 +17,7 @@ export const PLACE_IMAGE_KEYS = [
   'jwalamukhi-temple', 'gyuto-monastery', 'kangra-toy-train', 'kangra-airport',
   'dharamshala-snow', 'tibetan-momos', 'mcleod-cafe', 'war-memorial',
   'tibet-museum', 'andretta', 'indrahar-pass', 'mountain-road', 'kangra-valley',
-  'prayer-flags',
+  'prayer-flags', 'luggage-storage',
   // Round 2
   'gallu-devi', 'laka-glacier', 'deer-park-bir', 'dalhousie', 'khajjiar', 'chamba',
   'barot-valley', 'gaddi-shepherds', 'kangra-painting', 'himachali-dham',
