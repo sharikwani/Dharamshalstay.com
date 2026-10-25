@@ -10,6 +10,7 @@ import { sendLogged } from './send';
 import { businessContact, businessReason, isAutoReply } from './business';
 import { answerHotel, hotelModeAllowed } from './hotel';
 import { handlePartnerMessage, partnerByPhone } from './partner-docs';
+import { handleOwnerMessage, ownerPhone } from './owner';
 import { unanswered, VOICE_FAILED, VOICE_PLACEHOLDER, type Conversation, type Inbound } from './types';
 
 const esc = (s: unknown) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
@@ -43,6 +44,9 @@ export async function handleInbound(m: Inbound, deadline = Date.now() + 50_000):
   const saved = await saveInbound(m, body, m.kind);
   if (!saved) return null;
   const { conversation, message, isNewConversation } = saved;
+  // The owner managing the business from their phone: an admin assistant answers, never the customer AI.
+  const owner = await ownerPhone();
+  if (owner && conversation.phone === owner) return { work: handleOwnerMessage(m, conversation, body, message.id) };
   // A hotel or partner number (usually its WhatsApp Business auto-reply to our invite or alert): the AI stays
   // out of it. The owner is emailed only when it looks like a real person replying, not the instant greeting.
   const settings = await getSettings();

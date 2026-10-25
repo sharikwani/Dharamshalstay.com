@@ -37,8 +37,9 @@ export function assigneePhones(rows: RecipientRows): string[] {
   return Array.from(new Set(raw.map((r) => normalizeIndianPhone(r)).filter((p): p is string => !!p)));
 }
 
-const rupees = (n: unknown) => `Rs.${Number(n || 0).toLocaleString('en-IN')}`;
 const TBC = 'To be confirmed';
+// A booking not priced yet (e.g. a group waiting for the hotel's quote) says so instead of Rs.0.
+const rupees = (n: unknown) => (Number(n) > 0 ? `Rs.${Number(n).toLocaleString('en-IN')}` : TBC);
 
 /** "2026-10-12" -> "Mon, 12 Oct 2026"; '' when missing or invalid. */
 function longDate(d?: string | null): string {
