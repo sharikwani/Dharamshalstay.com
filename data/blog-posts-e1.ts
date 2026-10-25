@@ -199,7 +199,7 @@ If you are staying a while, hand-washing small items and drying them indoors nea
 
 ## Luggage storage
 
-This is simpler than people expect. Most guesthouses hold bags free, and there is also one small paid luggage-storage business in Kandi, lower Dharamshala, if you need it.
+This is simpler than people expect: there is a small paid luggage-storage business in Kandi, lower Dharamshala.
 
 ### Paid luggage storage: Makkar Luggage Storage, Kandi
 
@@ -213,22 +213,13 @@ Makkar Luggage Storage and Luggage Holding Services is a small local business in
 | Pick-up and drop | Within 5 km, charged extra |
 | Contact | Viren Makkar, who runs it: +91 78330 00062 |
 
-### Your guesthouse will almost certainly hold your bags (free)
-
-Nearly every hotel, guesthouse and homestay here will store luggage for guests, usually free, typically in a back room or office. This covers the two situations that come up:
-
-- **Trekking Triund or beyond** and wanting to carry only a daypack
-- **A late checkout and a night bus**, with hours to fill in between
-
-Ask at check-in rather than on the day. If you are returning to the same place after a trek, most hosts will simply keep your room's bag without discussion.
-
 ### Trek operators
 
 If you have booked a guided trek, the operator will normally store your main bag for the duration. Confirm when booking -- it is standard, but worth hearing out loud.
 
 ### Bus and taxi stands
 
-Do not rely on finding storage at the bus stand. Plan around your guesthouse, or the Kandi storage above, instead.
+Do not rely on finding storage at the bus stand. Use the Kandi storage above instead.
 
 ### Keep these with you
 
