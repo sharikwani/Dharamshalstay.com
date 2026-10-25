@@ -13,12 +13,15 @@ export const revalidate = 3600;
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const s = await serviceBySlug(params.slug);
   if (!s) return {};
-  return generateSEO({
+  const meta = generateSEO({
     // Google cuts titles near 60 characters: long names are cut at ' and ' (e.g. '... and Luggage Holding Services').
     title: `${s.name.length > 30 ? s.name.split(' and ')[0] : s.name}, ${s.area}`.slice(0, 60),
     description: `${s.name}, ${s.area}: ${s.price_text || 'luggage storage'}. ${s.features.slice(0, 2).join('. ')}. Call or WhatsApp.`.slice(0, 155),
     path: '/luggage-storage/' + s.slug, lang: 'en', ogTag: 'Luggage storage',
   });
+  // The link preview (WhatsApp, Facebook) shows the business's own share card.
+  const card = { url: `${siteConfig.url.replace(/\/$/, '')}/luggage-storage/card/${s.slug}`, width: 1080, height: 1350, alt: s.name };
+  return { ...meta, openGraph: { ...(meta.openGraph || {}), images: [card] }, twitter: { ...(meta.twitter || {}), images: [card.url] } };
 }
 
 export default async function ServiceProfilePage({ params }: { params: { slug: string } }) {
@@ -54,6 +57,8 @@ export default async function ServiceProfilePage({ params }: { params: { slug: s
             <a href={'tel:+' + s.phone} className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 font-semibold text-brand-900"><Phone className="h-5 w-5" />Call {display}</a>
             <a href={wa} target="_blank" rel="noopener noreferrer" className="rounded-xl bg-green-600 px-5 py-3 font-semibold text-white">WhatsApp</a>
             {s.maps_url && <a href={s.maps_url} target="_blank" rel="noopener noreferrer" className="rounded-xl border border-white/40 px-5 py-3 font-semibold">Directions</a>}
+            <a href={`/luggage-storage/card/${s.slug}`} download={`${s.slug}-card.jpg`} className="rounded-xl border border-white/40 px-5 py-3 font-semibold">Download share card</a>
+            <a href={`https://wa.me/?text=${encodeURIComponent(`${s.name}, ${s.area}: ${s.price_text || 'luggage storage'}. Verified by Dharamshala Stay. See details and contact: ${siteConfig.url.replace(/\/$/, '')}/luggage-storage/${s.slug}`)}`} target="_blank" rel="noopener noreferrer" className="rounded-xl border border-white/40 px-5 py-3 font-semibold">Share on WhatsApp</a>
           </div>
         </div>
       </section>
