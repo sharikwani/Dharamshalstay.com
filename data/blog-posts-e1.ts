@@ -199,9 +199,21 @@ If you are staying a while, hand-washing small items and drying them indoors nea
 
 ## Luggage storage
 
-This is simpler than people expect: there is **no commercial left-luggage office**, and you do not need one.
+This is simpler than people expect. Most guesthouses hold bags free, and there is also one small paid luggage-storage business in Kandi, lower Dharamshala, if you need it.
 
-### Your guesthouse will almost certainly hold your bags
+### Paid luggage storage: Makkar Luggage Storage, Kandi
+
+Makkar Luggage Storage and Luggage Holding Services is a small local business in Kandi, in lower Dharamshala. Details as of 25 October 2026; confirm the rate and pick-up charge when you call.
+
+| Detail | Information |
+|---|---|
+| Location | Kandi, Dharamshala (lower Dharamshala) |
+| Price | About Rs 80 to 100 per bag per day |
+| What is accepted | All types of luggage |
+| Pick-up and drop | Within 5 km, charged extra |
+| Contact | Viren Makkar, who runs it: +91 78330 00062 |
+
+### Your guesthouse will almost certainly hold your bags (free)
 
 Nearly every hotel, guesthouse and homestay here will store luggage for guests, usually free, typically in a back room or office. This covers the two situations that come up:
 
@@ -216,7 +228,7 @@ If you have booked a guided trek, the operator will normally store your main bag
 
 ### Bus and taxi stands
 
-Do not rely on finding storage at the bus stand. Plan around your guesthouse instead.
+Do not rely on finding storage at the bus stand. Plan around your guesthouse, or the Kandi storage above, instead.
 
 ### Keep these with you
 
@@ -262,7 +274,7 @@ For where to buy everything else, see our guide to [groceries and daily essentia
     tags: ['laundry', 'luggage storage', 'drinking water', 'practical info', 'mcleod ganj', 'triund'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-10-06',
-    updated_at: '2026-10-06',
+    updated_at: '2026-10-25',
     image: placeImage('dharamkot'),
     image_alt: 'Guesthouses and lanes above McLeod Ganj',
     read_time: 7,
@@ -280,7 +292,7 @@ For where to buy everything else, see our guide to [groceries and daily essentia
       {
         question: 'Where can I leave my luggage while trekking Triund?',
         answer:
-          'At your guesthouse. Almost every hotel, guesthouse and homestay in McLeod Ganj, Bhagsu and Dharamkot will store bags for guests, usually free. Guided trek operators also store clients’ main bags as standard. There is no commercial left-luggage office in the area, and you do not need one.',
+          'At your guesthouse. Almost every hotel, guesthouse and homestay in McLeod Ganj, Bhagsu and Dharamkot will store bags for guests, usually free. Guided trek operators also store clients’ main bags as standard. If you need paid storage, Makkar Luggage Storage in Kandi, lower Dharamshala, takes all types of luggage at about Rs 80 to 100 per bag per day, with pick-up and drop within 5 km at extra cost. Call Viren Makkar on +91 78330 00062.',
       },
       {
         question: 'How much does laundry cost in McLeod Ganj?',
