@@ -10,6 +10,8 @@
  * Uses createServerClient (service role) to bypass RLS.
  * Each function adds its own WHERE filters for safety.
  */
+import { unstable_cache } from 'next/cache';
+import { PUBLISHED_PROPERTIES_TAG, refreshPublishedProperties } from './property-cache';
 import { createServerClient } from './supabase';
 import { Property } from '@/types';
 import { toPublicProperty } from './public-property';
@@ -60,6 +62,26 @@ export async function getPublishedProperties(options?: PropertyQuery): Promise<P
   return [...rows].sort((x, y) => rank(x) - rank(y));
 }
 
+/**
+ * Every published property, read once and shared for 5 minutes (Supabase free-plan disk budget: hotel pages
+ * rebuilding every minute for crawlers re-read the whole list thousands of times a day). Property edits clear
+ * it at once via refreshPublishedProperties(). A failed read throws, so it is never cached.
+ */
+const loadPublishedRows = unstable_cache(async (): Promise<Property[]> => {
+  const { data, error } = await createServerClient()
+    .from('properties')
+    .select('*')
+    .eq('status', 'published')
+    .order('is_sponsored', { ascending: false })
+    .order('priority_score', { ascending: false })
+    .order('rating', { ascending: false, nullsFirst: false })
+    .order('published_at', { ascending: false });
+  if (error) throw new Error(error.message);
+  return (data as Property[]) || [];
+}, ['published-properties-v1'], { revalidate: 300, tags: [PUBLISHED_PROPERTIES_TAG] });
+
+export { refreshPublishedProperties };
+
 /** Get all published partner properties, sorted by sponsored > priority > rating */
 async function getPartnerProperties(options?: {
   destination?: string;
@@ -77,28 +99,13 @@ async function getPartnerProperties(options?: {
   }
 
   try {
-    const sb = createServerClient();
-    let query = sb
-      .from('properties')
-      .select('*')
-      .eq('status', 'published')
-      .order('is_sponsored', { ascending: false })
-      .order('priority_score', { ascending: false })
-      .order('rating', { ascending: false, nullsFirst: false })
-      .order('published_at', { ascending: false });
-
-    if (options?.type) query = query.eq('type', options.type);
-    if (options?.featured) query = query.eq('featured', true);
-    if (options?.limit) query = query.limit(options.limit);
-
-    const { data, error } = await query;
     // Never fall back to the fictional seed hotels in production: a DB hiccup
-    // would otherwise publish fake listings that Google can index.
-    if (error) {
-      console.error('DB getPublishedProperties error:', error.message);
-      return [];
-    }
-    const rows = ((data as Property[]) || []).map((p) => toPublicProperty(normaliseDestination(p)));
+    // would otherwise publish fake listings that Google can index (the catch below returns []).
+    let data = await loadPublishedRows();
+    if (options?.type) data = data.filter((p) => p.type === options.type);
+    if (options?.featured) data = data.filter((p) => (p as any).featured === true);
+    if (options?.limit) data = data.slice(0, options.limit);
+    const rows = data.map((p) => toPublicProperty(normaliseDestination(p)));
     return options?.destination ? rows.filter((p) => p.destination_slug === options.destination) : rows;
   } catch (err) {
     console.error('DB getPublishedProperties exception:', err);
@@ -117,16 +124,9 @@ async function getPartnerPropertyBySlug(slug: string): Promise<Property | null> 
   }
 
   try {
-    const sb = createServerClient();
-    const { data, error } = await sb
-      .from('properties')
-      .select('*')
-      .eq('slug', slug)
-      .eq('status', 'published')
-      .single();
-
-    if (error || !data) return null;
-    return toPublicProperty(normaliseDestination(data as Property));
+    const data = (await loadPublishedRows()).find((p) => p.slug === slug);
+    if (!data) return null;
+    return toPublicProperty(normaliseDestination(data));
   } catch {
     return null;
   }
@@ -143,14 +143,7 @@ async function getPartnerSlugs(): Promise<string[]> {
   }
 
   try {
-    const sb = createServerClient();
-    const { data, error } = await sb
-      .from('properties')
-      .select('slug')
-      .eq('status', 'published');
-
-    if (error || !data) return [];
-    return data.map((d: { slug: string }) => d.slug);
+    return (await loadPublishedRows()).map((d) => d.slug);
   } catch {
     return [];
   }

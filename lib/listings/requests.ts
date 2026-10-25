@@ -3,6 +3,7 @@ import { serviceClient, HttpError } from '@/lib/server-auth';
 import { adminEmail, escHtml, sendEmail } from '@/lib/email';
 import { siteConfig } from '@/lib/config';
 import { verifyListingKey } from './links';
+import { refreshPublishedProperties } from '@/lib/property-cache';
 
 export const listingRequestSchema = z.object({
   slug: z.string().min(1).max(200),
@@ -53,6 +54,7 @@ export async function submitListingRequest(input: ListingRequestInput, ipHash: s
     const { error: upErr } = await sb.from('properties')
       .update({ status: 'suspended', updated_at: new Date().toISOString() })
       .eq('id', p.id).eq('status', 'published');
+    refreshPublishedProperties();
     if (upErr) throw new Error('Could not unpublish listing: ' + upErr.message);
   }
 

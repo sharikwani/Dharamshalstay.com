@@ -4,6 +4,7 @@ import { serviceClient } from '@/lib/server-auth';
 import { matchesRoom } from '@/lib/availability/calc';
 import { sendRenameCheckEmail } from './notify';
 import { priceRange, withIds, type RoomCategory, type RoomDiff } from './validate';
+import { refreshPublishedProperties } from '@/lib/property-cache';
 
 export type RoomsProperty = {
   id: string; name: string; owner_id: string | null; status: string;
@@ -42,6 +43,7 @@ export async function ensureRoomIds(p: RoomsProperty, sb: SupabaseClient = servi
   if (!changed) return p;
   const { data, error } = await sb.from('properties').update({ rooms, updated_at: new Date().toISOString() })
     .eq('id', p.id).eq('updated_at', p.updated_at).select('updated_at');
+  refreshPublishedProperties();
   if (error) throw error;
   const row = (data as any[] | null)?.[0];
   // Lost a race with another writer: the winner's write stands, so reload it.
@@ -138,6 +140,7 @@ export async function saveRooms(
   const patch = { rooms: next.rooms, total_rooms: next.total_rooms, ...range, updated_at: new Date().toISOString() };
   const { data, error } = await sb.from('properties').update(patch)
     .eq('id', p.id).eq('updated_at', p.updated_at).select('updated_at');
+  refreshPublishedProperties();
   if (error) throw error;
   const row = (data as any[] | null)?.[0];
   if (!row) return { ok: false, status: 409, error: CONFLICT };

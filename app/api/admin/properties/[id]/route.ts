@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { refreshPublishedProperties } from '@/lib/property-cache';
 
 export const fetchCache = 'force-no-store';
 
@@ -59,6 +60,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       .select('id, name')
       .eq('id', propertyId)
       .single();
+    refreshPublishedProperties();
 
     if (!existing) {
       return NextResponse.json({ error: 'Property not found' }, { status: 404 });
@@ -71,6 +73,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       .from('properties')
       .delete()
       .eq('id', propertyId);
+    refreshPublishedProperties();
 
     if (deleteErr) {
       console.error('Property delete error:', deleteErr);

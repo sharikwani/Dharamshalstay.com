@@ -6,6 +6,7 @@
  * row is read back by id to tell which: our own row counts as saved (a draft is brought up to date, so a lost
  * draft save followed by "submit" still submits), while a slug clash retries with a short suffix, same id.
  */
+import { refreshPublishedProperties } from '@/lib/property-cache';
 type Result = { data: { id: string; status: string } | null; error: any };
 
 const randomSuffix = () => Math.random().toString(36).slice(2, 6);
@@ -24,6 +25,7 @@ export async function insertNewProperty(
       // Only a draft can still be edited by the partner; a listing already in review stays as it is.
       if (mine.status !== 'draft') return { data: { id, status: String(mine.status) }, error: null };
       const { error } = await sb.from('properties').update(payload).eq('id', id);
+      refreshPublishedProperties();
       return error ? { data: null, error } : { data: { id, status }, error: null };
     }
     r = await tryInsert(`${baseSlug}-${suffix()}`);

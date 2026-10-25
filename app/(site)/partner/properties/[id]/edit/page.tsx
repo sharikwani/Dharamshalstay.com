@@ -8,6 +8,7 @@ import { slugify } from '@/lib/utils';
 import { roomCount } from '@/lib/availability/calc';
 import { PropertyInput, PropertyCheckbox, normalizePropertyNumbers, missingPropertyFields } from '@/components/forms/PropertyFormFields';
 import ImageUploader from '@/components/forms/ImageUploader';
+import { refreshPropertyPages } from '@/lib/indexnow-client';
 
 const STEPS = [
   { id: 'basic', label: 'Basic Info', icon: Building },
@@ -82,6 +83,7 @@ export default function EditPropertyPage() {
     // RLS turns a forbidden update (e.g. the listing is already under review) into "0 rows", not an error.
     if (error) { setSaving(false); alert('Error saving: ' + error.message); return; }
     if (!saved?.length) { setSaving(false); alert('This listing can no longer be edited — it may already be under review. Please refresh.'); return; }
+    await refreshPropertyPages();
     if (submitForReview) await notifyPropertySubmitted(String(params.id));
     setSaving(false);
     router.push('/partner/dashboard');

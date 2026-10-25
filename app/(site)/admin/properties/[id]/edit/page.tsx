@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { ArrowLeft, Save, Loader2, Trash2, Plus, X, LinkIcon, Check, Eye, ShieldCheck, ArrowUp, ArrowDown, Star, CalendarDays, BedDouble } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { slugify } from '@/lib/utils';
-import { notifyHotelChanged } from '@/lib/indexnow-client';
+import { notifyHotelChanged, refreshPropertyPages } from '@/lib/indexnow-client';
 
 export default function AdminEditPropertyPage() {
   const router = useRouter();
@@ -85,6 +85,7 @@ export default function AdminEditPropertyPage() {
     else {
       setSuccess('Saved successfully!');
       if (form.status === 'published') void notifyHotelChanged(slug);
+      else void refreshPropertyPages();
     }
   }
 

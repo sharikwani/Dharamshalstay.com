@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { refreshPublishedProperties } from '@/lib/property-cache';
 
 export const fetchCache = 'force-no-store';
 
@@ -51,6 +52,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       .eq('id', params.id)
       .select('id, name, owner_email')
       .single();
+    refreshPublishedProperties();
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
     return NextResponse.json({ success: true, property: data });

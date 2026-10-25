@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { HttpError, jsonError, requireCaller } from '@/lib/server-auth';
 import { hotelUrls, pingIndexNow } from '@/lib/indexnow';
+import { refreshPublishedProperties } from '@/lib/property-cache';
 
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supabase reads) in route handlers otherwise
@@ -14,6 +15,8 @@ export async function POST(req: Request) {
     await requireCaller(req, ['admin']);
     const body = schema.safeParse(await req.json().catch(() => null));
     if (!body.success) throw new HttpError(400, 'Invalid hotel');
+    // Clear the shared hotel list first, so the crawler IndexNow sends sees the saved version.
+    refreshPublishedProperties();
     const sent = await pingIndexNow(hotelUrls(body.data.slug));
     return NextResponse.json({ ok: true, sent });
   } catch (e) { return jsonError(e); }

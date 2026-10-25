@@ -10,6 +10,7 @@ import {
   PUBLIC_BUCKET, REVIEWS_PAGE_SIZE, UPLOAD_BUCKET, contentTypeFor, emptySummary, photoUrl,
   type PublicReview, type ReviewBundle, type ReviewInput, type ReviewRow, type ReviewStatus, type ReviewSummary,
 } from './types';
+import { refreshPublishedProperties } from '@/lib/property-cache';
 
 const PUBLIC_COLS = 'id, property_id, name, rating, rating_cleanliness, rating_location, rating_staff, rating_value, title, body, stay_month, trip_type, photos, verified_stay, owner_reply, owner_reply_at, partner_reply, partner_reply_at, created_at';
 const RATING_COLS = 'rating, rating_cleanliness, rating_location, rating_staff, rating_value';
@@ -110,6 +111,7 @@ export async function recomputePropertyRating(propertyId: string): Promise<Revie
   if (error) throw error;
   const s = summarize((data as any[]) || []);
   const { error: upErr } = await sb.from('properties').update({ rating: s.average, review_count: s.count }).eq('id', propertyId);
+  refreshPublishedProperties();
   if (upErr) throw upErr;
   return s;
 }

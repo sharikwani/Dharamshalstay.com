@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Building, Eye, Pencil, ToggleLeft, ToggleRight, Trash2, Loader2, Mail, Check, X, Search, ShieldCheck, ShieldAlert } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
-import { notifyHotelChanged } from '@/lib/indexnow-client';
+import { notifyHotelChanged, refreshPropertyPages } from '@/lib/indexnow-client';
 import { AdminPageHeader } from '@/components/admin/AdminShell';
 import { formatPrice, statusLabel, STATUS_COLORS, cn } from '@/lib/utils';
 
@@ -55,6 +55,7 @@ export default function AdminProperties() {
   async function toggleFeatured(id: string, current: boolean) {
     const { error } = await supabase.from('properties').update({ featured: !current }).eq('id', id);
     if (error) alert('Failed: ' + error.message);
+    else void refreshPropertyPages();
     load();
   }
 
@@ -64,6 +65,7 @@ export default function AdminProperties() {
     const { error } = await supabase.from('properties').update(updates).eq('id', id);
     if (error) alert('Failed: ' + error.message);
     else if (newStatus === 'published') void notifyHotelChanged(allProperties.find((p) => p.id === id)?.slug);
+    else void refreshPropertyPages();
     load();
   }
 

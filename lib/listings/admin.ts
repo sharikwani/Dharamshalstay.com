@@ -1,4 +1,5 @@
 import { serviceClient, HttpError } from '@/lib/server-auth';
+import { refreshPublishedProperties } from '@/lib/property-cache';
 
 export type AdminListingRequest = {
   id: string; kind: 'claim' | 'removal'; name: string; phone: string; email: string | null;
@@ -49,11 +50,13 @@ export async function actOnListingRequest(id: string, action: ListingAction, not
     const updates: Record<string, unknown> = { owner_email: email, updated_at: now };
     if (ownerId) updates.owner_id = ownerId;
     const { error } = await sb.from('properties').update(updates).eq('id', r.property_id);
+    refreshPublishedProperties();
     if (error) throw new Error(error.message);
     result = ownerId ? 'Linked to their partner login.' : 'Saved their email. The listing links to their login once they sign up and confirm ' + email + '.';
   } else if (action === 'remove_listing' || action === 'restore_listing') {
     const status = action === 'remove_listing' ? 'suspended' : 'published';
     const { error } = await sb.from('properties').update({ status, updated_at: now }).eq('id', r.property_id);
+    refreshPublishedProperties();
     if (error) throw new Error(error.message);
     result = action === 'remove_listing' ? 'Listing taken off the site.' : 'Listing is live again.';
   } else {

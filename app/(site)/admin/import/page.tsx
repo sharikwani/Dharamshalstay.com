@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Download, Loader2, Check, AlertCircle, Save, Send, Hotel, Sparkles, Copy, LinkIcon, X, ImageIcon } from 'lucide-react';
 import { supabase, authFetch } from '@/lib/supabase';
 import { slugify, formatPrice } from '@/lib/utils';
-import { notifyHotelChanged } from '@/lib/indexnow-client';
+import { notifyHotelChanged, refreshPropertyPages } from '@/lib/indexnow-client';
 
 type Step = 'input' | 'extracting' | 'review' | 'done';
 
@@ -85,6 +85,7 @@ export default function AdminImportPage() {
       });
       if (e) { setError('DB: ' + e.message); setSaving(false); return; }
       if (status === 'published') void notifyHotelChanged(slug);
+      else void refreshPropertyPages();
       setStep('done');
     } catch (err: any) { setError(err.message); }
     setSaving(false);
