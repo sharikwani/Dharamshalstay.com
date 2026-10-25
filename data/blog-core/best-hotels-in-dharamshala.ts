@@ -211,7 +211,7 @@ These are the questions our team asks before recommending any room:
 | Dharamshala bus stand | Walk or short taxi | Taxi approx. ₹300-500, 20-30 min, or local bus | Overnight Volvos from Delhi arrive early morning. See [Delhi to Dharamshala by bus](/blog/delhi-to-dharamshala-by-bus). |
 | Pathankot railway station | Taxi from approx. ₹3,200, 2.5-3 hrs | Taxi from approx. ₹3,500, 3-3.5 hrs | The nearest major railhead. |
 
-You can book a fixed-fare transfer on our [taxi page](/taxi): [Gaggal airport to Dharamshala](/taxi/gaggal-airport-to-dharamshala-taxi) or [Gaggal airport to McLeod Ganj](/taxi/gaggal-airport-to-mcleod-ganj-taxi). The [Dharamshala Skyway ropeway](/blog/dharamshala-skyway-ropeway-guide) between the lower and upper towns was suspended after a landslide in August 2025; it appeared to be running again when we checked on 16 October 2026, but confirm on the day before relying on it. For every route into town, see [how to reach Dharamshala](/blog/how-to-reach-dharamshala).
+You can book a fixed-fare transfer on our [taxi page](/taxi): [Gaggal airport to Dharamshala](/taxi/gaggal-airport-to-dharamshala-taxi) or [Gaggal airport to McLeod Ganj](/taxi/gaggal-airport-to-mcleod-ganj-taxi). The [Dharamshala Skyway ropeway](/blog/dharamshala-skyway-ropeway-guide) between the lower and upper towns was suspended after a landslide in August 2025; check its current status in the Skyway guide before relying on it (it was closed for maintenance until 30 October 2026). For every route into town, see [how to reach Dharamshala](/blog/how-to-reach-dharamshala).
 
 ## Our Local Recommendation
 

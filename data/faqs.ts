@@ -94,7 +94,7 @@ export const faqCategories: FAQCategory[] = [
       {
         question: 'How do I get from Dharamshala to McLeod Ganj?',
         answer:
-          "McLeod Ganj is roughly 8-10 km by road above the Dharamshala bus stand, a 20-30 minute drive depending on traffic. Local buses and shared taxis run through the day, and private taxis are easy to find. The Dharamshala Skyway ropeway (about 5 minutes, 9:30 am to 6 pm) was suspended in August 2025 after a landslide near one of its pillars; when we checked on 16 October 2026 it appeared to be running again but its online booking was down, so confirm on the day before counting on it.",
+          "McLeod Ganj is roughly 8-10 km by road above the Dharamshala bus stand, a 20-30 minute drive depending on traffic. Local buses and shared taxis run through the day, and private taxis are easy to find. The Dharamshala Skyway ropeway (about 5 minutes, 9:30 am to 6 pm) was suspended in August 2025 after a landslide near one of its pillars; check its current status in our Skyway guide before counting on it (it was closed for maintenance until 30 October 2026).",
         link: { href: '/blog/dharamshala-vs-mcleod-ganj', label: 'Dharamshala vs McLeod Ganj' },
       },
       {

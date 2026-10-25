@@ -106,7 +106,7 @@ Many visitors are surprised that "Dharamshala" is really two towns. Lower Dharam
 
 - **Local bus**: HRTC and local buses shuttle between Dharamshala bus stand and McLeod Ganj through the day. Approx. ₹20-40, 30-45 minutes. Cheap but crowded in peak season.
 - **Taxi**: approx. ₹300-500 for the 9-10 km road, 20-30 minutes. Taxi stands are at the Dharamshala bus stand and Kotwali Bazaar. Shared taxis also run on this route.
-- **Dharamshala Skyway (ropeway)**: the cable car opened in 2022 and links lower Dharamshala to McLeod Ganj in about 5 minutes. Operations were suspended in August 2025 after a landslide near one of its towers; it appeared to be running again when we checked on 16 October 2026 (9:30 am to 6 pm), but confirm on the day. See our [Dharamshala Skyway guide](/blog/dharamshala-skyway-ropeway-guide).
+- **Dharamshala Skyway (ropeway)**: the cable car opened in 2022 and links lower Dharamshala to McLeod Ganj in about 5 minutes. Operations were suspended in August 2025 after a landslide near one of its towers; listed hours are 9:30 am to 6 pm, but it was closed for maintenance until 30 October 2026, so check the current status before you go. See our [Dharamshala Skyway guide](/blog/dharamshala-skyway-ropeway-guide).
 
 ## Which Route Should You Choose?
 
@@ -147,7 +147,7 @@ Once you know how you are arriving, [browse hotels in Dharamshala and McLeod Gan
       },
       {
         question: 'Is the Dharamshala to McLeod Ganj ropeway working?',
-        answer: 'The Dharamshala Skyway was suspended in August 2025 after a landslide near one of its towers. It appeared to be running again when we checked on 16 October 2026, but confirm on the day; buses and taxis between Dharamshala and McLeod Ganj run every day.',
+        answer: 'The Dharamshala Skyway was suspended in August 2025 after a landslide near one of its towers. It was closed for maintenance until 30 October 2026, so check its current status in our Dharamshala Skyway guide before you go; buses and taxis between Dharamshala and McLeod Ganj run every day.',
       },
       {
         question: 'How much does a taxi from Delhi to Dharamshala cost?',
@@ -770,7 +770,7 @@ Many first-timers expect one town and find two very different places, a 20-30 mi
 - **Dharamkot** is a steep 2-3 km above McLeod Ganj, at about 2,100 m.
 - **Naddi** sits about 3-4 km west of McLeod Ganj, known for its view of the Dhauladhar.
 
-Getting between lower Dharamshala and McLeod Ganj takes 20-30 minutes by taxi (approx. ₹300-500) or about 30-45 minutes by local bus. The Dharamshala Skyway ropeway was suspended after a landslide in August 2025 and appeared to be running again when we checked on 16 October 2026; confirm on the day before counting on it ([Skyway guide](/blog/dharamshala-skyway-ropeway-guide)). Our [how to reach Dharamshala guide](/blog/how-to-reach-dharamshala) covers all the transport details.
+Getting between lower Dharamshala and McLeod Ganj takes 20-30 minutes by taxi (approx. ₹300-500) or about 30-45 minutes by local bus. The Dharamshala Skyway ropeway was suspended after a landslide in August 2025 ; check its current status before counting on it (it was closed for maintenance until 30 October 2026; [Skyway guide](/blog/dharamshala-skyway-ropeway-guide)). Our [how to reach Dharamshala guide](/blog/how-to-reach-dharamshala) covers all the transport details.
 
 ## Side-by-Side Comparison
 

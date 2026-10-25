@@ -64,7 +64,7 @@ McLeod Ganj does not shut down in winter. Most of what you came for runs through
 
 **Triund in December.** Early December can be one of the nicest times on the trail: dry, sharp views and cold air. Later in the month, ice can form on the steep section above Magic View, and nights at the campsite are well below freezing. In January 2026 the Kangra district administration banned trekking above 3,000 m and made prior permission from the SP Kangra office mandatory for Triund and Kareri, with permissions cancelled automatically when a weather warning is issued. Similar orders have been issued in past winters, so expect something like it again. Ask at the forest checkpost, your stay or a permitted operator before you go, and carry ID and cash for the entry fee and the refundable waste deposit. Details are in our [Triund trek guide](/blog/triund-trek-complete-guide).
 
-**The ropeway.** The Dharamshala Skyway between lower Dharamshala and McLeod Ganj was suspended after a landslide near one of its towers in August 2025. It appeared to be running again when we checked on 16 October 2026 (listed hours 9:30 am to 6 pm), but online booking was down and winter weather can stop it, so confirm on the day. Our [Skyway guide](/blog/dharamshala-skyway-ropeway-guide) has the details. Taxis and local buses run every day.
+**The ropeway.** The Dharamshala Skyway between lower Dharamshala and McLeod Ganj was suspended after a landslide near one of its towers in August 2025. Listed hours are 9:30 am to 6 pm, but it was closed for maintenance until 30 October 2026 and winter weather can stop it, so check the current status before you go. Our [Skyway guide](/blog/dharamshala-skyway-ropeway-guide) has the details. Taxis and local buses run every day.
 
 ## Heating, Hot Water and Power Cuts
 
@@ -199,7 +199,7 @@ Full options and timings are in our [how to reach Dharamshala guide](/blog/how-t
       },
       {
         question: 'Is the Dharamshala to McLeod Ganj ropeway running in December?',
-        answer: 'The Dharamshala Skyway was suspended after a landslide near one of its towers in August 2025. It appeared to be running again when we checked on 16 October 2026, but it stops in bad weather, so confirm on the day. Taxis and local buses between Dharamshala and McLeod Ganj run every day.',
+        answer: 'The Dharamshala Skyway was suspended after a landslide near one of its towers in August 2025. It was closed for maintenance until 30 October 2026 and it stops in bad weather, so check its current status in our Dharamshala Skyway guide before you go. Taxis and local buses between Dharamshala and McLeod Ganj run every day.',
       },
     ],
   },

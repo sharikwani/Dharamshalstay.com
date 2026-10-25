@@ -912,7 +912,7 @@ Weather wise, March to June and October to November give the clearest skies; see
 ## How to get to the Dalai Lama Temple
 
 - **From McLeod Ganj main square:** walk down Temple Road, about 800 m and 10 minutes. The return is uphill.
-- **From Dharamshala (lower town):** about 9 to 10 km by road. Take a local taxi or bus to McLeod Ganj, or use the [Dharamshala Skyway ropeway](/blog/dharamshala-skyway-ropeway-guide) when it is running (it appeared to be running when we checked on 16 October 2026), then walk.
+- **From Dharamshala (lower town):** about 9 to 10 km by road. Take a local taxi or bus to McLeod Ganj, or use the [Dharamshala Skyway ropeway](/blog/dharamshala-skyway-ropeway-guide) when it is running (check the current status in the guide before you go: it was closed for maintenance until 30 October 2026), then walk.
 - **From Kangra (Gaggal) Airport:** around 20 km to Dharamshala and another 9 km up to McLeod Ganj; allow about an hour. Pre-book a [taxi](/taxi).
 - **From Pathankot railway station:** roughly 85 to 90 km, about 3 hours by taxi.
 - **Parking:** very limited near the temple. Get dropped at the main square or at the top of Temple Road and walk.

@@ -37,7 +37,7 @@ export const EVENTS: DharamshalaEvent[] = [
     summary: 'The 15th edition of the independent film festival in the hills: Indian and international films, talks and filmmaker Q&As over four days.',
     pack: { title: 'Film festival stay', nights: '3-4 nights', includes: ['Hotel near TCV or McLeod Ganj', 'Pickup from Gaggal airport or the Dharamshala bus stand', 'Daily taxi to TCV on request', 'Help with festival passes (bought on the DIFF site)'] },
     sources: [{ label: 'Time Out India: DIFF 2026 passes on sale', url: 'https://www.timeout.com/india/news/tickets-for-diff-go-live-on-september-22-a-film-festival-in-the-hills-092126' }],
-    image: 'tibet-museum',
+    page: '/blog/dharamshala-film-festival-diff-2026', image: 'tibet-museum',
   },
   {
     id: 'kangra-valley-carnival-2026', name: 'Kangra Valley Carnival 2026', start: '2026-12-24', end: '2026-12-31', status: 'expected',

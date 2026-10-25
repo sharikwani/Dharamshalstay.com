@@ -664,7 +664,7 @@ Rain is common from late June to mid-September and afternoon showers can hit any
 - **Triund:** it needs a full day (5-7 hours return) on its own. Do it as a separate day; see our [Triund guide](/blog/triund-trek-complete-guide).
 - **Bir Billing:** 2-2.5 hours each way by road. Combine it with an overnight stay.
 - **Palampur and Baijnath:** a whole day on their own.
-- **Dharamshala Skyway (ropeway):** suspended after a landslide in August 2025, it appeared to be running again when we checked on 16 October 2026 (9:30 am to 6 pm). Confirm on the day; see our [Skyway guide](/blog/dharamshala-skyway-ropeway-guide).
+- **Dharamshala Skyway (ropeway):** suspended after a landslide in August 2025, listed hours are 9:30 am to 6 pm, but it was closed for maintenance until 30 October 2026. Check the current status before you go; see our [Skyway guide](/blog/dharamshala-skyway-ropeway-guide).
 
 ## Practical Tips
 

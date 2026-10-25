@@ -14,12 +14,13 @@ export const blogPostsW17: BlogPost[] = [
     slug: 'dharamshala-skyway-ropeway-guide',
     title: 'Dharamshala Skyway Ropeway: Status, Tickets & Timings (2026)',
     excerpt: 'Is the Dharamshala to McLeod Ganj ropeway open? Current status as we found it in October 2026, how to check before you go, the two stations, timings, tickets, and the taxi, bus and footpath alternatives.',
-    content: `> **Status, checked 16 October 2026: appears to be running, but online booking is down. Check before you go.**
+    content: `**Short answer:** As of 25 October 2026, the Dharamshala Skyway is **closed for scheduled maintenance from 21 to 30 October 2026**, and the operator's website says services will **resume on 31 October 2026, "subject to completion of maintenance"**. Listed hours when running are **9:30 am to 6 pm**. The official site does not publish fares (the operator's Instagram advertised round-trip special fares of ₹400 for students and ₹500 for Kangra district residents on 2 October 2026), and online booking has shown no bookable tickets, so plan to buy at the counter. We could not confirm the reopening on 31 October, so call the helpline on **+91-1892 223302** (10 am to 6 pm) before you go. Until then a [taxi](/taxi) or local bus covers the road in 20 to 45 minutes.
+
+> **What we confirmed on 25 October 2026 and what we did not**
 >
-> - The operator's official Instagram (Dharamshala Ropeway Ltd) was **posting rider videos and ride promotions through September and October 2026**, most recently on 12 October, and on 2 October it advertised round-trip special fares for students and Kangra residents. That strongly suggests the Skyway is carrying passengers, though we found no dated "we are open" notice.
-> - The **official website showed a "site under maintenance" notice**, and its online booking page offered **no bookable tickets** (no fares, ₹0.00 totals, or "no time-slots available") for every date we tried, from 16 October to 20 December 2026. Plan to buy at the station counter.
-> - It was **suspended on 20 August 2025** by order of the Kangra district administration after a landslide close to one of its pillars, and ran again in 2026.
-> - **To check today:** call the Skyway helpline on **+91-1892 223302** (10 am to 6 pm, all days), ask your hotel, or ask at either station. If it is not running, a [taxi](/taxi) or local bus covers the road in 20 to 45 minutes.
+> - **Confirmed (official website, 25 October 2026):** a notice that the Skyway "will remain closed for scheduled maintenance from 21 October 2026 to 30 October 2026" and that services "will resume on 31 October 2026, subject to completion of maintenance". The site also carries a general "site under maintenance" banner.
+> - **Not confirmed:** whether it actually reopens on 31 October, and the current standard fares. We found no news report of the closure or of the reopening.
+> - **Background:** it was suspended on 20 August 2025 by order of the Kangra district administration after a landslide close to one of its pillars, and ran again in 2026. On 16 October 2026 it appeared to be running.
 
 The Dharamshala Skyway is the cable car (ropeway) that links lower Dharamshala with McLeod Ganj. When it runs, it turns a slow, often jammed hill drive into a five-minute ride over pine forest, with the Kangra Valley opening up below you. When it does not run, you need a plan B, and that is the more useful thing to know before you arrive.
 
@@ -119,7 +120,7 @@ When it is running, yes, mainly as transport. It saves time on busy days, the vi
     tags: ['dharamshala skyway', 'ropeway', 'cable car', 'mcleod ganj', 'dharamshala', 'local transport', 'ropeway ticket price', 'ropeway timings'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-10-16',
-    updated_at: '2026-10-24',
+    updated_at: '2026-10-25',
     image: placeImage('mcleod-ganj'),
     image_alt: 'McLeod Ganj on its ridge above Dharamshala, the upper end of the Skyway ropeway',
     read_time: 7,
@@ -138,7 +139,7 @@ When it is running, yes, mainly as transport. It saves time on busy days, the vi
     faqs: [
       {
         question: 'Is the Dharamshala ropeway open now?',
-        answer: 'It appears to be running. When we checked on 16 October 2026, the operator\'s official Instagram was posting ride videos and fare offers through September and October 2026, but the official website showed a maintenance notice and its online booking offered no tickets for any date we tried. It was suspended on 20 August 2025 after a landslide near a pillar and ran again in 2026. Call the helpline on +91-1892 223302 or ask your hotel on the day, and plan to buy tickets at the counter.',
+        answer: 'Not until 31 October 2026 at the earliest. As of 25 October 2026 the official website says the Skyway is closed for scheduled maintenance from 21 to 30 October and will resume on 31 October 2026, subject to completion of maintenance. Before that, on 16 October 2026, the operator\'s official Instagram was posting ride videos and fare offers through September and October 2026, but the official website showed a maintenance notice and its online booking offered no tickets for any date we tried. It was suspended on 20 August 2025 after a landslide near a pillar and ran again in 2026. Call the helpline on +91-1892 223302 or ask your hotel on the day, and plan to buy tickets at the counter.',
       },
       {
         question: 'What is the Dharamshala ropeway ticket price?',

@@ -458,7 +458,7 @@ Properties that suit older travellers include **Fortune Park Moksha** at Satobar
 
 - Ask for a **sedan or Innova** rather than a small hatchback; the higher seat in an SUV is easier on knees.
 - Local taxis stand at the McLeod Ganj main square for short hops, and auto-rickshaws run on some lower routes. See [local transport in Dharamshala](/blog/local-transport-dharamshala).
-- The [Dharamshala Skyway ropeway](/blog/dharamshala-skyway-ropeway-guide) was suspended after a landslide in August 2025; it appeared to be running again when we checked on 16 October 2026, but confirm on the day.
+- The [Dharamshala Skyway ropeway](/blog/dharamshala-skyway-ropeway-guide) was suspended after a landslide in August 2025; check its current status in the guide before you go (it was closed for maintenance until 30 October 2026).
 - **Arriving:** flying into Kangra is far easier than a 10-12 hour road journey. If you come by road, break the trip overnight or choose a Volvo seat near the front. Our [how to reach Dharamshala guide](/blog/how-to-reach-dharamshala) compares options.
 
 ## A slow 5-day itinerary

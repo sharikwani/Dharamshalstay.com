@@ -51,7 +51,7 @@ Dharamshala is widely considered **the wettest place in Himachal Pradesh**, with
 - **Slippery trails and leeches.** Forest paths turn to mud and rock; leeches appear on some trails, so wear long socks.
 - **Flight disruption.** Flights into Kangra are more likely to be delayed or diverted by cloud, especially in the afternoon.
 - **Damp rooms.** Older buildings can smell musty; clothes take days to dry.
-- **Transport suspensions.** The Kangra Valley toy train has been repeatedly suspended by monsoon damage in recent years, and the [Dharamshala Skyway ropeway](/blog/dharamshala-skyway-ropeway-guide) was suspended after a landslide in August 2025 (it appeared to be running again when we checked on 16 October 2026). Check status locally before relying on either.
+- **Transport suspensions.** The Kangra Valley toy train has been repeatedly suspended by monsoon damage in recent years, and the [Dharamshala Skyway ropeway](/blog/dharamshala-skyway-ropeway-guide) was suspended after a landslide in August 2025 (check its current status in the guide: it was closed for maintenance until 30 October 2026). Check status locally before relying on either.
 
 ## Landslides and Road Safety
 

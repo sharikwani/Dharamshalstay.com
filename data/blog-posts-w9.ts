@@ -88,7 +88,7 @@ Read more: [How to reach Dharamshala](/blog/how-to-reach-dharamshala), [Delhi to
 
 There is no Uber or Ola in Dharamshala. Local movement relies on union taxis with fixed rates, HRTC and private buses, shared jeeps on a few routes, and your legs.
 
-- **Lower Dharamshala to McLeod Ganj**: local bus (cheap and slow), taxi (approx. 300 to 500 rupees as of 2026), or the **Dharamshala Skyway** ropeway when it runs. The Skyway was suspended in August 2025 after a landslide near one of its towers; it appeared to be running again when we checked on 16 October 2026, so confirm on the day ([Skyway guide](/blog/dharamshala-skyway-ropeway-guide)).
+- **Lower Dharamshala to McLeod Ganj**: local bus (cheap and slow), taxi (approx. 300 to 500 rupees as of 2026), or the **Dharamshala Skyway** ropeway when it runs. The Skyway was suspended in August 2025 after a landslide near one of its towers; check the current status before you go (it was closed for maintenance until 30 October 2026; [Skyway guide](/blog/dharamshala-skyway-ropeway-guide)).
 - **Within McLeod Ganj**: walk. The centre is a few hundred metres across, but steep.
 - **McLeod Ganj to Bhagsu, Dharamkot, Naddi**: walk (20 to 45 minutes) or a short taxi hop. Taxis cannot always reach Dharamkot's upper lanes.
 - **Valley sights**: hire a taxi for a half day (approx. 1,800 rupees) or full day (approx. 3,500 rupees for an SUV). Buses exist but connections eat a day.
@@ -497,7 +497,7 @@ Read more: [Rules, permits, dos and don'ts](/blog/rules-permits-dos-donts-dharam
 
 ## Practical matters
 
-- **Getting to McLeod Ganj**: from Gaggal airport, about 45 minutes by taxi (approx. 1,100 rupees as of 2026); from lower Dharamshala by local bus, taxi or the Skyway ropeway when it runs (it appeared to be running when we checked on 16 October 2026, after a 2025 landslide suspension, so confirm on the day). Pre-book a [taxi](/taxi) for late arrivals.
+- **Getting to McLeod Ganj**: from Gaggal airport, about 45 minutes by taxi (approx. 1,100 rupees as of 2026); from lower Dharamshala by local bus, taxi or the Skyway ropeway when it runs (check the current status in our [Skyway guide](/blog/dharamshala-skyway-ropeway-guide) before you go: it was closed for maintenance until 30 October 2026). Pre-book a [taxi](/taxi) for late arrivals.
 - **Overnight buses**: many Delhi buses terminate in or near McLeod Ganj, but some stop in lower Dharamshala; check your ticket.
 - **Money**: there are several ATMs around the square, but they can run out on long weekends. UPI is accepted almost everywhere.
 - **Connectivity**: Jio and Airtel 4G/5G is generally good in town; Wi-Fi is common in hotels and cafes.
@@ -1060,7 +1060,7 @@ App cabs do not operate here. Local taxis work on fixed union rates.
 
 ### 10. Counting on the ropeway
 
-The Dharamshala Skyway linking lower Dharamshala and McLeod Ganj was suspended in August 2025 after a landslide near one of its towers. It appeared to be running again when we checked on 16 October 2026, but online booking was down and it stops in bad weather.
+The Dharamshala Skyway linking lower Dharamshala and McLeod Ganj was suspended in August 2025 after a landslide near one of its towers. Check the current status in our [Skyway guide](/blog/dharamshala-skyway-ropeway-guide) before you go: it was closed for maintenance until 30 October 2026, and it stops in bad weather.
 
 **Fix**: confirm on the day before you plan around it. Taxis and local buses remain the fallback. See our [Dharamshala Skyway guide](/blog/dharamshala-skyway-ropeway-guide).
 
