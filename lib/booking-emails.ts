@@ -23,7 +23,9 @@ export async function sendBookingEmails(bookingId: string, stage: 'requested' | 
       property = prop || null;
     }
     await upsertContact({ email: booking.guest_email, phone: booking.guest_phone, name: booking.guest_name, source: booking.booking_source === 'whatsapp' ? 'whatsapp' : 'booking', interests: [booking.category], event: 'booking' }, sb);
-    if (booking.guest_email) {
+    // Party tickets get their own ticket email and WhatsApp card (lib/parties/tickets.ts), and no stay reminders.
+    const ticket = booking.category === 'event';
+    if (booking.guest_email && !ticket) {
       // A pay-later request is not confirmed yet: only the confirmed stage says "Booking Confirmed".
       await (stage === 'confirmed' ? sendBookingConfirmation : sendBookingRequestReceived)({
         id: booking.id, property,
@@ -36,14 +38,14 @@ export async function sendBookingEmails(bookingId: string, stage: 'requested' | 
         details_url: bookingPageUrlOrNull(booking) || undefined,
       });
     }
-    if (stage === 'confirmed') await scheduleBookingJourney(booking.id);
+    if (stage === 'confirmed' && !ticket) await scheduleBookingJourney(booking.id);
     await sendAdminNotification({
       id: booking.id,
       guest_name: booking.guest_name, guest_phone: booking.guest_phone, guest_email: booking.guest_email,
       booking_ref: booking.booking_ref, category: booking.category, amount: booking.amount,
       check_in: booking.check_in, check_out: booking.check_out, property_name: propertyName,
     });
-    await whatsappNewBooking(bookingId, { customer: stage === 'confirmed', partners: true });
+    await whatsappNewBooking(bookingId, { customer: stage === 'confirmed' && !ticket, partners: true });
   } catch (err) {
     console.error('Booking emails failed (non-fatal):', err);
   }

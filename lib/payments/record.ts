@@ -180,6 +180,8 @@ export async function recordOnlinePayment(sb: any, p: OnlinePayment): Promise<bo
       .eq('booking_id', booking.id).in('status', OPEN_RECORD);
     if (recErr) console.error(`${log}: commission record waive failed:`, recErr);
     await sendBookingEmails(booking.id, 'confirmed');
+    // Party tickets: the ticket code and card go out once the payment is in (lib/parties/tickets.ts).
+    if (booking.category === 'event') await (await import('@/lib/parties/tickets')).issuePartyTicket(booking.id);
     await overbookingAlert(sb, booking, log);
     // A WhatsApp offer booking paid late (after its code was released) takes its code back, or the owner is told.
     await settlePaidOffer(booking, log);

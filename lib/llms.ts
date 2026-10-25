@@ -257,6 +257,7 @@ export async function llmsIndex(): Promise<string> {
       link('Travel essentials', '/essentials', 'money, SIM, weather, food, health and local rules in quick answers'),
       link('Traveller stories', '/stories', 'real trip stories and photos from Dharamshala and McLeod Ganj, shared by travellers and locals'),
       link('Share your story', '/stories/share', 'travellers can add their own Dharamshala story and photos and get a memory card'),
+      link('New Year and Christmas parties 2026-27', '/new-year-parties', 'New Year Eve party tickets at Panchvati Cottages online, Kangra Valley Carnival 24-31 Dec 2026, McLeod Ganj and Bhagsu party venues, traffic tips'),
       link('Free online tambola and party games', '/play', 'tambola (housie), party quiz, lucky draw and Who is Most Likely To, played on phones with a 6-digit code; free'),
       link('For hotels and homestays', '/for-hotels', 'free listing, direct enquiries and WhatsApp booking alerts for properties in Dharamshala'),
       link('FAQ', '/faq', 'hundreds of answered traveller questions'),

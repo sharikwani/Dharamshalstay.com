@@ -5,7 +5,7 @@ import { serviceClient } from '@/lib/server-auth';
 import { holdsRoom, matchesRoom } from '@/lib/availability/calc';
 import { availabilityFor } from '@/lib/availability/store';
 
-const RETURN_PATH: Record<string, string> = { hotel: '/hotels', taxi: '/taxi', trek: '/treks', paragliding: '/paragliding' };
+const RETURN_PATH: Record<string, string> = { hotel: '/hotels', taxi: '/taxi', trek: '/treks', paragliding: '/paragliding', event: '/new-year-parties' };
 
 const DEAD = ['failed', 'cancelled', 'no_show'];
 /**
