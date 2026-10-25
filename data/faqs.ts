@@ -250,7 +250,7 @@ export const faqCategories: FAQCategory[] = [
       {
         question: 'How hard is the Kareri Lake trek?',
         answer:
-          "Kareri Lake is a moderate 2-3 day trek to a high lake at about 2,934 m in the Dhauladhar range. The usual route starts near Ghera village, about 20-25 km by road from Dharamshala, and follows the Nyund stream through Kareri village, roughly 13-16 km one way depending on where you start walking. Expect stream crossings and rocky sections. May-June and late September-October are the best months.",
+          "Kareri Lake is a moderate trek to a high lake at about 2,934 m in the Dhauladhar range. The usual route starts near Ghera village, about 20-25 km by road from Dharamshala, and follows the Nyund stream through Kareri village, roughly 13-16 km one way depending on where you start walking. Expect stream crossings and rocky sections. May-June and late September-October are the best months. Some hikers take 2-3 days; our package is overnight (1 day, 1 night) at Rs 3,000 per person with taxi or Rs 2,000 without, and each extra day is Rs 3,000 per person.",
         link: { href: '/treks/kareri-lake-trek', label: 'Kareri Lake trek package' },
       },
       {

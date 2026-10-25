@@ -660,7 +660,7 @@ For a deeper look at the cold months, see our [Dharamshala in winter and snowfal
 
 ## Trek Packing Checklist (Triund, Kareri Lake and Beyond)
 
-Whether you are doing [Triund](/treks/triund-trek) as a day hike or the multi-day [Kareri Lake trek](/treks/kareri-lake-trek), mountain weather changes fast. Pack:
+Whether you are doing [Triund](/treks/triund-trek) as a day hike or the overnight [Kareri Lake trek](/treks/kareri-lake-trek), mountain weather changes fast. Pack:
 
 1. A 20-30 litre daypack with a rain cover
 2. Trekking shoes with ankle support and good grip (not new, not slippery sneakers)
@@ -815,7 +815,7 @@ Getting between lower Dharamshala and McLeod Ganj takes 20-30 minutes by taxi (a
 
 ### Trekkers
 
-**Best base: Dharamkot or McLeod Ganj.** The Triund trail starts near Gallu Devi temple above Dharamkot, so staying here lets you start at first light. For multi-day treks like [Kareri Lake](/treks/kareri-lake-trek), lower Dharamshala can actually be closer to the road head. Our [Triund trek complete guide](/blog/triund-trek-complete-guide) has the full route.
+**Best base: Dharamkot or McLeod Ganj.** The Triund trail starts near Gallu Devi temple above Dharamkot, so staying here lets you start at first light. For overnight treks like [Kareri Lake](/treks/kareri-lake-trek), lower Dharamshala can actually be closer to the road head. Our [Triund trek complete guide](/blog/triund-trek-complete-guide) has the full route.
 
 ## Pros and Cons in Brief
 

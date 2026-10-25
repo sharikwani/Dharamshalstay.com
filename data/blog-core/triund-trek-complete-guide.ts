@@ -178,7 +178,7 @@ If Triund leaves you wanting more, the trail continues up the ridge:
 
 - **Snowline** (approx. 3,100-3,200 m) is 2-3 km above Triund, and **Laka Got** (approx. 3,350 m) about 1 km further, below the Laka glacier. Most people do it as a dawn walk from a Triund camp. See our [Snowline and Laka glacier guide](/blog/snowline-laka-glacier-trek) or book the [Triund to Snowline and Laka Got trek](/treks/triund-snowline-laka-got-trek).
 - **Indrahar Pass** (approx. 4,342 m) is a serious 3-4 day expert trek beyond Laka Got. Read the [Indrahar Pass trek guide](/blog/indrahar-pass-trek-guide) before considering the [guided Indrahar trek](/treks/indrahar-pass-trek).
-- **Kareri Lake** (approx. 2,934 m) is a quieter multi-day alternative on a different route; see the [Kareri Lake trek guide](/blog/kareri-lake-trek-guide).
+- **Kareri Lake** (approx. 2,934 m) is a quieter overnight alternative (our package is 1 day, 1 night) on a different route; see the [Kareri Lake trek guide](/blog/kareri-lake-trek-guide).
 
 All of these sit at or above the 3,000 m line in the January 2026 district order, so confirm they are open before planning.
 

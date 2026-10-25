@@ -167,7 +167,9 @@ For two people on a mid-range 7-day trip, a rough guide as of 2026: Volvo buses 
     slug: 'kareri-lake-trek-guide',
     title: 'Kareri Lake Trek Guide: Route, Distance, Best Season & Tips (2026)',
     excerpt: 'Everything you need for the Kareri Lake trek near Dharamshala: the route from Kareri village via Reoti, distances, altitude, difficulty, best months, permits, camping and safety.',
-    content: `The **Kareri Lake trek** is a 2 to 3 day hike from Kareri village, about 25 to 30 km from Dharamshala, to a shallow glacial lake at roughly **2,934 m (about 9,600 ft)** in the Dhauladhar range. The trail is around 13 km each way, follows the Nyund stream through oak and pine forest, and is rated **easy to moderate**. Best months are May to June and late September to November.
+    content: `**Short answer:** Our Kareri Lake trek is a 1 day, 1 night overnight trek: we drive you to Ghera, you trek through Kareri village to the lake, camp overnight beside it and walk back down the next morning. It costs **Rs 3,000 per person with a taxi** (taxi, guide, camping gear, meals and permits) or **Rs 2,000 per person without a taxi**. If you want to stay longer, each extra day is Rs 3,000 per person.
+
+The **Kareri Lake trek** is a hike from Kareri village, about 25 to 30 km from Dharamshala, to a shallow glacial lake at roughly **2,934 m (about 9,600 ft)** in the Dhauladhar range. The trail is around 13 km each way, follows the Nyund stream through oak and pine forest, and is rated **easy to moderate**. Some hikers take 2 to 3 days; our package is overnight, with longer stays available. Best months are May to June and late September to November.
 
 If you have done Triund and want something quieter, wilder and with a real lake at the end, Kareri is the natural next step. This guide covers the route, how to reach the trailhead, when to go, what it costs and how to stay safe, written from the perspective of a local team that sends trekkers up this valley every season.
 
@@ -178,7 +180,9 @@ If you have done Triund and want something quieter, wilder and with a real lake 
 | Start point | Kareri village (about 1,800 m), reached via Ghera |
 | Lake altitude | Approx. 2,934 m |
 | Distance | Approx. 13 km one way, 26 km round trip (varies by start point) |
-| Duration | 2 days (fit hikers) or 3 days (relaxed) |
+| Our package | 1 day and 1 night (overnight camp at the lake); each extra day Rs 3,000 per person |
+| Our price | Rs 3,000 per person with taxi (taxi, guide, camping gear, meals, permits); Rs 2,000 per person without taxi |
+| Typical duration (general) | 2 days (fit hikers) or 3 days (relaxed) |
 | Difficulty | Easy to moderate; long but not technical |
 | Best season | May–June and late September–November |
 | Avoid | July–August (monsoon) and deep winter (snow on the trail) |
@@ -215,18 +219,18 @@ Return the same way. Fit trekkers can descend from the lake to Kareri village in
 
 ## Suggested Itineraries
 
-### 2 days (fit trekkers)
+### Our package: 1 day and 1 night
 
-1. Day 1: Drive to Kareri, trek to Reoti and on to the lake (13 km, 7 to 9 hours). Camp at the lake.
-2. Day 2: Sunrise at the lake, descend to Kareri village and drive back to Dharamshala.
+1. Day 1: Drive to Ghera, trek through Kareri village and Reoti to the lake (13 km, 7 to 9 hours). Camp overnight by the lake.
+2. Day 2: Sunrise at the lake, walk back down to Kareri village and drive back to Dharamshala.
 
-### 3 days (recommended)
+### Longer option: 3 days (for a relaxed pace)
 
 1. Day 1: Drive to Kareri, trek to Reoti (6 km). Camp.
 2. Day 2: Reoti to the lake (7 km). Camp at the lake, or return to Reoti.
 3. Day 3: Descend to Kareri village and drive back.
 
-The 3-day plan gives you time at the lake, which is the whole point. Our [guided Kareri Lake trek](/treks/kareri-lake-trek) follows this pacing with tents, meals and a local guide included.
+A longer stay gives you more time at the lake, which is the whole point. Our [guided Kareri Lake trek](/treks/kareri-lake-trek) is the overnight plan above with tents, meals and a local guide included; if you want extra days at the lake, each extra day is Rs 3,000 per person.
 
 ## Best Time to Do the Kareri Lake Trek
 
@@ -246,7 +250,7 @@ Camping rules near popular trails in Kangra have been tightened in recent years 
 
 ## How Difficult Is Kareri Lake?
 
-Kareri is longer than [Triund](/blog/triund-trek-complete-guide) but less steep in its lower half. The challenge is distance and the bouldery upper section, not altitude. Anyone who can walk 6 to 7 hours with a daypack, and has done a hike or two, can manage it in 3 days. At about 2,934 m altitude sickness is uncommon, but take it slow if you have just arrived from the plains.
+Kareri is longer than [Triund](/blog/triund-trek-complete-guide) but less steep in its lower half. The challenge is distance and the bouldery upper section, not altitude. Anyone who can walk 6 to 7 hours with a daypack, and has done a hike or two, can manage it, whether as an overnight trip or over 3 days. At about 2,934 m altitude sickness is uncommon, but take it slow if you have just arrived from the plains.
 
 ## What to Pack
 
@@ -270,7 +274,9 @@ Our [weather and packing guide](/blog/dharamshala-weather-what-to-pack) has a fu
 | Local guide (per day) | ₹1,500–2,500 |
 | Tent hire at Reoti/lake (where available) | ₹300–600 per night |
 | Meals at seasonal shacks | ₹100–250 per plate |
-| Guided package with tents and meals | From approx. ₹4,500 per person |
+| Our guided overnight package (1 day, 1 night) with taxi, guide, camping gear, meals and permits | ₹3,000 per person |
+| Our guided package without taxi | ₹2,000 per person |
+| Each extra day if you stay longer | ₹3,000 per person per day |
 
 ## Safety Tips
 
@@ -288,18 +294,18 @@ Most trekkers spend a night in Dharamshala or McLeod Ganj before setting off. [M
     tags: ['kareri lake', 'kareri lake trek', 'dharamshala treks', 'dhauladhar', 'himachal trekking', 'camping'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-09-08',
-    updated_at: '2026-10-01',
+    updated_at: '2026-10-25',
     image: placeImage('kareri-lake'),
     image_alt: 'Clear waters of Kareri Lake in the Dhauladhar range near Dharamshala',
     read_time: 7,
     featured: false,
     meta_title: 'Kareri Lake Trek Guide 2026: Route, Distance & Best Season',
-    meta_description: 'Kareri Lake trek from Dharamshala: route via Reoti, 26 km round trip, 2,934 m altitude, best months, permits, costs, packing list and safety tips for 2026.',
+    meta_description: 'Kareri Lake trek from Dharamshala: overnight package Rs 3,000 with taxi, Rs 2,000 without. Route, 2,934 m, best months, permits and safety.',
     related_slugs: ['triund-trek-complete-guide', 'best-time-to-visit-dharamshala', 'dharamshala-weather-what-to-pack'],
     faqs: [
       {
-        question: 'How long is the Kareri Lake trek?',
-        answer: 'The trek is roughly 13 km each way from Kareri village, about 26 km round trip, though the exact distance depends on how far up the road your taxi can reach. Most people take 2 to 3 days.',
+        question: 'How long is the Kareri Lake trek and how much does it cost?',
+        answer: 'Our Kareri Lake trek is 1 day and 1 night: drive to Ghera, trek through Kareri village to the lake, camp overnight and walk down next morning. It costs Rs 3,000 per person with taxi (taxi, guide, camping gear, meals, permits) or Rs 2,000 per person without taxi. Each extra day is Rs 3,000 per person. The trail is roughly 13 km each way (about 26 km round trip), and some hikers take 2 to 3 days.',
       },
       {
         question: 'Is Kareri Lake trek difficult?',
@@ -315,7 +321,7 @@ Most trekkers spend a night in Dharamshala or McLeod Ganj before setting off. [M
       },
       {
         question: 'Can I do Kareri Lake in one day?',
-        answer: 'Very fit hikers occasionally do it as a long day, but it means 26 km with significant climbing and almost no time at the lake. We recommend at least one night, ideally at Reoti or the lake.',
+        answer: 'Very fit hikers occasionally do it as a long day, but it means 26 km with significant climbing and almost no time at the lake. We recommend at least one night at the lake, which is how our overnight package works.',
       },
     ],
   },

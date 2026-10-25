@@ -478,7 +478,7 @@ export const faqsExtra1: FAQCategory[] = [
       {
         question: 'How much does a trekking guide cost in Dharamshala?',
         answer:
-          "Local guides for day hikes such as Triund typically charge roughly ₹1,500-3,000 per day for a small group, while multi-day treks such as Kareri or Indrahar are usually sold as packages including guide, porters, tents and meals (approx., as of 2026). Prices depend on group size, season and route. Choose registered guides or operators, and confirm what is included before you pay.",
+          "Local guides for day hikes such as Triund typically charge roughly ₹1,500-3,000 per day for a small group, while overnight and multi-day treks such as Kareri or Indrahar are usually sold as packages including guide, porters, tents and meals (approx., as of 2026). Prices depend on group size, season and route. Choose registered guides or operators, and confirm what is included before you pay.",
         link: { href: '/treks', label: 'Guided treks and prices' },
       },
       {
