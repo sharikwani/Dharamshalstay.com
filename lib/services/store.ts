@@ -14,6 +14,9 @@ export type LocalService = {
   status: 'pending' | 'published' | 'rejected' | 'hidden'; created_at: string; published_at: string | null;
 };
 
+/** Businesses the team has verified in person (owner, 25 Oct 2026): shown with a Verified badge. */
+export const VERIFIED_SERVICES = new Set(['makkar-luggage-storage-kandi']);
+
 export const SERVICE_CATEGORIES = {
   luggage_storage: { label: 'Luggage storage', path: '/luggage-storage' },
 } as const;

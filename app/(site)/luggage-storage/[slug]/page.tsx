@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { Check, Clock, Luggage, MapPin, Phone } from 'lucide-react';
+import { BadgeCheck, Check, Clock, Luggage, MapPin, Phone } from 'lucide-react';
 import { Breadcrumb } from '@/components/ui/Cards';
 import JsonLd from '@/components/seo/JsonLd';
 import { generateSEO, breadcrumbSchema } from '@/lib/seo';
 import { siteConfig } from '@/lib/config';
-import { serviceBySlug } from '@/lib/services/store';
+import { serviceBySlug, VERIFIED_SERVICES } from '@/lib/services/store';
 
 export const revalidate = 3600;
 
@@ -46,6 +46,7 @@ export default async function ServiceProfilePage({ params }: { params: { slug: s
             <div>
               <h1 className="font-heading text-3xl font-bold">{s.name}</h1>
               <p className="mt-1 flex items-center gap-1 text-brand-100"><MapPin className="h-4 w-4" />{s.area}{s.address ? ', ' + s.address : ''}</p>
+              {VERIFIED_SERVICES.has(s.slug) && <p className="mt-2 inline-flex items-center gap-1 rounded-full bg-green-500/20 px-3 py-1 text-sm font-semibold text-green-100"><BadgeCheck className="h-4 w-4" />Verified by Dharamshala Stay</p>}
             </div>
           </div>
           {s.price_text && <p className="mt-4 text-xl font-semibold">{s.price_text}</p>}
@@ -76,7 +77,7 @@ export default async function ServiceProfilePage({ params }: { params: { slug: s
             ].map(([k, v]) => <tr key={k}><th scope="row" className="w-32 p-3 text-left font-semibold text-slate-800">{k}</th><td className="p-3 text-slate-700">{v}</td></tr>)}
           </tbody>
         </table>
-        <p className="mt-6 flex gap-2 text-sm text-slate-500"><Clock className="h-4 w-4 shrink-0 mt-0.5" />Details provided by the business. Confirm the rate and timings when you call, and keep your passport, cash and electronics with you.</p>
+        <p className="mt-6 flex gap-2 text-sm text-slate-500"><Clock className="h-4 w-4 shrink-0 mt-0.5" />{VERIFIED_SERVICES.has(s.slug) ? 'Business verified by the Dharamshala Stay team.' : 'Details provided by the business.'} Confirm the rate and timings when you call, and keep your passport, cash and electronics with you.</p>
         <p className="mt-6 text-sm text-slate-600">See all <Link href="/luggage-storage" className="text-brand-600 underline">luggage storage in Dharamshala</Link>, or plan your <Link href="/blog/triund-trek-complete-guide" className="text-brand-600 underline">Triund trek</Link> and <Link href="/taxi" className="text-brand-600 underline">taxi</Link>.</p>
       </div>
     </div>

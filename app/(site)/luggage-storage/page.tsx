@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import { Luggage, MapPin, Phone, Plus } from 'lucide-react';
+import { BadgeCheck, Luggage, MapPin, Phone, Plus } from 'lucide-react';
 import { Breadcrumb, FAQSection } from '@/components/ui/Cards';
 import JsonLd from '@/components/seo/JsonLd';
 import { generateSEO, faqSchema, breadcrumbSchema, itemListSchema } from '@/lib/seo';
-import { publishedServices } from '@/lib/services/store';
+import { publishedServices, VERIFIED_SERVICES } from '@/lib/services/store';
 
 export const revalidate = 3600;
 
@@ -50,6 +50,7 @@ export default async function LuggageStoragePage() {
                 <div>
                   <h3 className="font-heading text-lg font-bold text-slate-900"><Link href={'/luggage-storage/' + s.slug} className="hover:underline">{s.name}</Link></h3>
                   <p className="flex items-center gap-1 text-sm text-slate-500"><MapPin className="h-4 w-4" />{s.area}</p>
+                  {VERIFIED_SERVICES.has(s.slug) && <p className="mt-1 inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-0.5 text-xs font-semibold text-green-700"><BadgeCheck className="h-3.5 w-3.5" />Verified by Dharamshala Stay</p>}
                 </div>
               </div>
               {s.price_text && <p className="mt-3 font-semibold text-slate-900">{s.price_text}</p>}
