@@ -7,6 +7,7 @@
  * Everything is built from the same data the HTML pages use, so it never drifts.
  */
 import type { BlogPost, Property, Trek, FAQ } from '@/types';
+import { serviceCardMarkdown } from '@/data/service-cards';
 import { siteConfig } from './config';
 import { blogPosts, getBlogBySlug, getBlogCategories, NOINDEX_POSTS } from '@/data/blog';
 import { facts as verifiedFacts } from '@/data/facts';
@@ -30,7 +31,9 @@ const abs = (src?: string) => (!src ? '' : src.startsWith('http') ? src : B + sr
 
 /** Make root-relative Markdown links and images absolute so they work outside the site. */
 function absolutize(md: string): string {
-  return md.replace(/\]\((\/[^)\s]*)\)/g, (_, p) => '](' + B + p + ')');
+  // A ::service-card line in a guide becomes the business's details as a table (data/service-cards.ts).
+  return md.replace(/^::service-card\s+([a-z0-9-]+)\s*$/gm, (_, slug) => serviceCardMarkdown(slug))
+    .replace(/\]\((\/[^)\s]*)\)/g, (_, p) => '](' + B + p + ')');
 }
 
 function faqBlock(faqs?: FAQ[], heading = '## FAQs'): string {

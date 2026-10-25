@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Fragment, type ReactNode } from 'react';
 import { localizePath, type Lang } from '@/lib/i18n/core';
 import { OWN_PHOTO, photoCredits } from '@/data/photo-credits';
+import { SERVICE_CARDS, SERVICE_CARD_LINE, phoneDisplay } from '@/data/service-cards';
 
 /**
  * Renders the small markdown subset our guides are written in:
@@ -93,6 +94,32 @@ export default function MarkdownContent({ content, lang = 'en' }: { content: str
     if (line.startsWith('## ')) {
       const t = line.slice(3).trim();
       out.push(<h2 key={key} id={slugifyHeading(t)} className="text-2xl font-heading font-bold text-slate-900 mt-10 mb-3 scroll-mt-24">{inline(t, key, lang)}</h2>);
+      i++; continue;
+    }
+
+    // A verified local business as a highlighted card (data/service-cards.ts).
+    const svc = line.match(SERVICE_CARD_LINE);
+    if (svc && SERVICE_CARDS[svc[1]]) {
+      const c = SERVICE_CARDS[svc[1]];
+      const wa = `https://wa.me/${c.phone}?text=${encodeURIComponent('Hi, I found you on Dharamshala Stay. I would like to store my luggage.')}`;
+      out.push(
+        <div key={key} className="not-prose my-8 overflow-hidden rounded-2xl border-2 border-amber-300 bg-gradient-to-br from-[#0c1726] to-[#13243b] text-white shadow-xl">
+          <div className="p-6 sm:p-7">
+            {c.verified && <p className="inline-flex items-center gap-1.5 rounded-full border border-amber-300 px-3 py-1 text-xs font-bold tracking-wider text-amber-300">✔ VERIFIED BY DHARAMSHALA STAY</p>}
+            <p className="mt-4 text-xs font-semibold uppercase tracking-[0.2em] text-white/60">{c.kind}</p>
+            <p className="mt-1 font-heading text-2xl font-bold leading-tight">{c.name}</p>
+            <p className="mt-1 text-white/80">{c.area}</p>
+            <p className="mt-4 text-xl font-bold text-amber-300">{c.price}</p>
+            <ul className="mt-3 space-y-1.5">{c.features.map((f) => <li key={f} className="flex gap-2 text-white/90"><span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-amber-300" />{f}</li>)}</ul>
+            <p className="mt-4 text-white/80">Run by <strong className="text-white">{c.owner}</strong>: {phoneDisplay(c.phone)}</p>
+          </div>
+          <div className="flex flex-wrap gap-2 border-t border-white/10 bg-white/5 px-6 py-4 sm:px-7">
+            <a href={'tel:+' + c.phone} className="rounded-xl bg-amber-300 px-5 py-2.5 font-semibold text-[#0c1726] no-underline hover:bg-amber-200">Call {c.owner.split(' ')[0]}</a>
+            <a href={wa} target="_blank" rel="noopener noreferrer" className="rounded-xl bg-green-600 px-5 py-2.5 font-semibold text-white no-underline hover:bg-green-700">WhatsApp</a>
+            <Link href={localizePath(c.profile, lang)} className="rounded-xl border border-white/40 px-5 py-2.5 font-semibold text-white no-underline hover:bg-white/10">View profile</Link>
+          </div>
+        </div>
+      );
       i++; continue;
     }
 

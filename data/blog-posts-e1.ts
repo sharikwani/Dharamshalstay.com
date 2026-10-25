@@ -205,13 +205,7 @@ This is simpler than people expect: there is a small paid luggage-storage busine
 
 Makkar Luggage Storage and Luggage Holding Services is a small local business in Kandi, in lower Dharamshala. Details as of 25 October 2026; confirm the rate and pick-up charge when you call.
 
-| Detail | Information |
-|---|---|
-| Location | Kandi, Dharamshala (lower Dharamshala) |
-| Price | About Rs 80 to 100 per bag per day |
-| What is accepted | All types of luggage |
-| Pick-up and drop | Within 5 km, charged extra |
-| Contact | Viren Makkar, who runs it: +91 78330 00062 |
+::service-card makkar-luggage-storage-kandi
 
 See its profile and any other services on our [luggage storage in Dharamshala](/luggage-storage) page. Run a storage service yourself? You can [list it for free](/luggage-storage/list-your-service).
 
