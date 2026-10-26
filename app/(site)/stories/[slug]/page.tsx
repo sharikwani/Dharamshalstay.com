@@ -15,7 +15,7 @@ import { display } from '@/lib/fonts';
 import { excerptOf, featureState } from '@/lib/stories/rules';
 import { getPublicStory, listPublicStories } from '@/lib/stories/store';
 
-export const revalidate = 60;
+export const revalidate = 600;
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const s = await getPublicStory(params.slug);

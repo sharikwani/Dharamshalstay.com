@@ -13,7 +13,7 @@ import { FLAG_COLORS, excerptOf } from '@/lib/stories/rules';
 import { hubStats, listPublicStories, spotlightStory } from '@/lib/stories/store';
 import '@/components/stories/stories.css';
 
-export const revalidate = 60;
+export const revalidate = 600;
 
 export const metadata = generateSEO({
   title: 'Dharamshala Stories: Travellers & Locals in Their Own Words',

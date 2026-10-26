@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { DestinationDetailView, destinationMetadata } from '@/components/pages/DestinationViews';
 import { getDestinations } from '@/lib/db';
 
-export const revalidate = 60;
+export const revalidate = 600;
 export const dynamicParams = true;
 
 interface Props { params: { slug: string } }

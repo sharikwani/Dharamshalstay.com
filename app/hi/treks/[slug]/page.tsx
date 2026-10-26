@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { TrekDetailView, trekMetadata } from '@/components/pages/TrekViews';
 import { getPublishedTreks } from '@/lib/db';
 
-export const revalidate = 60;
+export const revalidate = 600;
 export const dynamicParams = true;
 
 interface Props { params: { slug: string } }
