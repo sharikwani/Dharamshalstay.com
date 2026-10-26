@@ -61,7 +61,7 @@ const TOOLS = [
     notify_partner: { type: 'boolean', description: 'Send the partner/hotel the booking update' }, notify_customer: { type: 'boolean', description: 'Send the customer the booking update' },
     confirmed: { type: 'boolean' } }, required: ['ref', 'confirmed'] } } },
   { type: 'function', function: { name: 'message_partner', description: 'WhatsApp a message about a booking to whoever is assigned (hotel, partner, driver), even if they have no open chat.', parameters: { type: 'object', properties: {
-    ref: { type: 'string' }, text: { type: 'string', description: 'The message, one paragraph' }, confirmed: { type: 'boolean' } }, required: ['ref', 'text', 'confirmed'] } } },
+    ref: { type: 'string' }, text: { type: 'string', description: 'The message, one paragraph, at most 300 characters' }, confirmed: { type: 'boolean' } }, required: ['ref', 'text', 'confirmed'] } } },
   { type: 'function', function: { name: 'request_payment', description: 'Create a secure online payment link for the unpaid booking amount and WhatsApp it to the customer.', parameters: { type: 'object', properties: {
     ref: { type: 'string' }, confirmed: { type: 'boolean' } }, required: ['ref', 'confirmed'] } } },
   { type: 'function', function: { name: 'record_refund', description: 'After the owner has refunded in Razorpay or by bank: record it and tell the customer the amount and refund reference.', parameters: { type: 'object', properties: {
@@ -72,11 +72,14 @@ const TOOLS = [
     ref: { type: 'string' }, confirmed: { type: 'boolean' } }, required: ['ref', 'confirmed'] } } },
   { type: 'function', function: { name: 'message_customer', description: 'Send a WhatsApp message to a customer (by booking ref or phone). Uses the open chat if the customer wrote in the last 24h, otherwise the approved enquiry reply template.', parameters: { type: 'object', properties: {
     ref: { type: 'string' }, phone: { type: 'string' }, name: { type: 'string', description: 'Customer first name, if no ref' }, about: { type: 'string', description: 'Short subject, e.g. "your Kareri trek"' },
-    text: { type: 'string', description: 'The message to send' }, confirmed: { type: 'boolean' } }, required: ['text', 'confirmed'] } } },
+    text: { type: 'string', description: 'The message to send; at most 300 characters unless the customer wrote in the last 24h' }, confirmed: { type: 'boolean' } }, required: ['text', 'confirmed'] } } },
   { type: 'function', function: { name: 'email_customer', description: 'Email a customer (by booking ref or email address).', parameters: { type: 'object', properties: {
     ref: { type: 'string' }, email: { type: 'string' }, subject: { type: 'string' }, text: { type: 'string' }, confirmed: { type: 'boolean' } }, required: ['subject', 'text', 'confirmed'] } } },
 ];
 
+// Template values are cut at 300 characters (cleanParam), so longer texts are refused rather than sent half-written.
+const TEMPLATE_TEXT_MAX = 300;
+const TOO_LONG = (s: string) => `Message is ${s.length} characters; WhatsApp template text must be ${TEMPLATE_TEXT_MAX} or fewer. Shorten it, or split it into two messages, and ask the owner again.`;
 const CHANGE_LABEL: Record<string, string> = { activity_date: 'Date', num_guests: 'Number of people', amount: 'Total price', commission_amount: 'Total price', partner_share_amount: 'Total price', price_overridden: 'Total price', pickup_time: 'Pickup time', special_requests: 'Booking note' };
 const digits = (s: unknown) => String(s ?? '').replace(/\D/g, '');
 const phone91 = (s: unknown) => { const d = digits(s); return d.length === 10 ? '91' + d : d; };
@@ -184,7 +187,9 @@ export async function runOwnerTool(name: string, args: any, ctx: { lastText: str
     case 'message_partner': {
       const b = await bookingByRef(args.ref);
       if (!b) return JSON.stringify({ error: 'No booking with that ref' });
-      const n = await whatsappMessagePartner(b.id, String(args.text || '').trim().slice(0, 900));
+      const text = String(args.text || '').trim();
+      if (text.length > TEMPLATE_TEXT_MAX) return JSON.stringify({ error: TOO_LONG(text) });
+      const n = await whatsappMessagePartner(b.id, text);
       return JSON.stringify(n ? { ok: true, sent_to: n } : { error: 'Nobody with WhatsApp alerts is assigned to this booking, or the send failed' });
     }
     case 'request_payment': {
@@ -234,6 +239,7 @@ export async function runOwnerTool(name: string, args: any, ctx: { lastText: str
       }
       const first = String(b?.guest_name || args.name || 'there').split(/\s+/)[0];
       const about = String(args.about || b?.room_name || 'your enquiry').slice(0, 120);
+      if (text.length > TEMPLATE_TEXT_MAX) return JSON.stringify({ error: TOO_LONG(text) + ' The chat is closed, so it goes as a template.' });
       const r = await sendTemplate({ to, template: 'enquiry_reply', params: [first, about, text.replace(/\s*\n+\s*/g, ' ')] });
       await sb.from('whatsapp_messages').insert({ booking_id: b?.id ?? null, recipient_kind: 'customer', to_phone: to, template: 'enquiry_reply', wa_message_id: r.ok ? r.id : null, status: r.ok ? 'sent' : 'failed', error: r.ok ? null : r.error || null });
       return JSON.stringify(r.ok ? { ok: true, via: 'template enquiry_reply' } : { error: r.error || 'Send failed' });
