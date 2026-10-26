@@ -12,7 +12,11 @@ type Player = { id: string; name: string; photo: string | null };
 const SPEEDS = [5, 8, 12, 20];
 
 /** Tambola host screen (HostRoom loads the room and checks this device is the host). */
-export default function HostConsole({ code, state, hostToken, setState }: { code: string; state: PublicState; hostToken: string; setState: (s: PublicState) => void }) {
+export default function HostConsole({ code, state, hostToken, setState, tv = false, autoCommand }: {
+  code: string; state: PublicState; hostToken: string; setState: (s: PublicState) => void;
+  /** On a TV (/tv/<code>): the host's phone switches auto-calling on and off from its remote. */
+  tv?: boolean; autoCommand?: { on: boolean; n: number };
+}) {
   const [players, setPlayers] = useState<Player[]>([]);
   const [auto, setAuto] = useState(false);
   const [speed, setSpeed] = useState(8);
@@ -24,6 +28,7 @@ export default function HostConsole({ code, state, hostToken, setState }: { code
   const announced = useRef(0);
 
   useEffect(() => { const a = store.get<string>('tambola-anchor'); if (a) setAnchor(a); }, []);
+  useEffect(() => { if (autoCommand) setAuto(autoCommand.on); }, [autoCommand]);
   useEffect(() => { if (voice) preloadVoice(anchor); }, [anchor, voice]);
   // Make each player's name in the anchor's voice as they join, ready for when they win.
   useEffect(() => { if (voice) warmNames(players.map((p) => p.name), anchor); }, [players, anchor, voice]);
@@ -104,7 +109,7 @@ export default function HostConsole({ code, state, hostToken, setState }: { code
               )}
               <div className="flex flex-wrap gap-3 text-sm">
                 <button onClick={() => setVoice(!voice)} className="inline-flex items-center gap-1 text-slate-600 hover:text-slate-900">{voice ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}{voice ? 'Voice on' : 'Voice off'}</button>
-                <button onClick={() => document.documentElement.requestFullscreen?.().catch(() => {})} className="inline-flex items-center gap-1 text-slate-600 hover:text-slate-900"><Maximize className="h-4 w-4" />Full screen</button>
+                {!tv && <button onClick={() => document.documentElement.requestFullscreen?.().catch(() => {})} className="inline-flex items-center gap-1 text-slate-600 hover:text-slate-900"><Maximize className="h-4 w-4" />Full screen</button>}
                 {!ended && <button onClick={end} className="inline-flex items-center gap-1 text-red-600 hover:text-red-700"><Square className="h-4 w-4" />End game</button>}
               </div>
               <div className="flex flex-wrap items-center gap-2 text-sm">

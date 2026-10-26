@@ -38,7 +38,9 @@ export default function HostSetup() {
     try {
       const r = await post<{ code: string; hostToken: string }>('/api/game/rooms', { game, options, party_name: partyName, party_type: partyType, host_name: hostName });
       store.set('tambola-host-' + r.code, r.hostToken);
-      router.push('/play/host/' + r.code);
+      // Started from a TV's QR (/play/tv/<id> → /play/host?tv=<id>): go back and send it straight to that TV.
+      const tv = new URLSearchParams(window.location.search).get('tv');
+      router.push(tv ? '/play/tv/' + encodeURIComponent(tv) : '/play/host/' + r.code);
     } catch (x: any) { setErr(x.message); setBusy(false); }
   }
 

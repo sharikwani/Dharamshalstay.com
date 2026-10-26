@@ -98,7 +98,7 @@ const big = 'inline-flex items-center gap-2 rounded-xl bg-orange-600 px-6 py-3 t
 
 /* ================================================================== Quiz */
 
-export function QuizHost({ code, state, hostToken, setState }: { code: string; state: PublicState; hostToken: string; setState: (s: PublicState) => void }) {
+export function QuizHost({ code, state, hostToken, setState }: { code: string; state: PublicState; hostToken: string; setState: (s: PublicState) => void; tv?: boolean }) {
   const r = state.round as Extract<RoundView, { kind: 'quiz' }>;
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -211,7 +211,7 @@ export function QuizPlayer({ code, state, me }: { code: string; state: PublicSta
 
 /* ================================================================== Who's Most Likely To */
 
-export function LikelyHost({ code, state, hostToken, setState }: { code: string; state: PublicState; hostToken: string; setState: (s: PublicState) => void }) {
+export function LikelyHost({ code, state, hostToken, setState }: { code: string; state: PublicState; hostToken: string; setState: (s: PublicState) => void; tv?: boolean }) {
   const r = state.round as Extract<RoundView, { kind: 'most_likely' }>;
   const roster = useRoster(code, state.players);
   const byId = new Map(roster.map((p) => [p.id, p]));
@@ -328,7 +328,7 @@ function Reel({ roster, winner, onSettled }: { roster: Player[]; winner: Player 
   );
 }
 
-export function DrawHost({ code, state, hostToken, setState }: { code: string; state: PublicState; hostToken: string; setState: (s: PublicState) => void }) {
+export function DrawHost({ code, state, hostToken, setState }: { code: string; state: PublicState; hostToken: string; setState: (s: PublicState) => void; tv?: boolean }) {
   const r = state.round as Extract<RoundView, { kind: 'lucky_draw' }>;
   const roster = useRoster(code, state.players);
   const [busy, setBusy] = useState(false);

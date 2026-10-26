@@ -9,7 +9,7 @@ import { join } from 'path';
  */
 const PRIVATE = [
   '/account', '/admin', '/auth', '/booking', '/claim', '/email', '/partner', '/remove-listing', // signed-in, one-off or tokens
-  '/play/host', '/play/certificate', // host screens and personal certificates (noindex)
+  '/play/host', '/play/certificate', '/play/tv', // host screens, personal certificates and TV pairing (noindex)
   '/stories/share', '/stories/me', // forms and private links
 ];
 

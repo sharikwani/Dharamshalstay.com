@@ -21,6 +21,8 @@ export const metadata = generateSEO({
 const inr = (n: number) => '₹' + n.toLocaleString('en-IN');
 
 const FAQS = [
+  { question: 'Can we play tambola on a TV?', answer: 'Yes. Open dharamshalastay.com/tv on the TV’s web browser (Android TV, Google TV, Samsung or LG), scan the QR on the TV with the phone that started the game and tap Show on this TV. The TV then hosts: it shows the big numbers and board, calls numbers out loud on Auto and celebrates each winner with their photo, while your phone becomes the remote. It works for all four games.' },
+  { question: 'Does it work with Chromecast?', answer: 'Yes. In Chrome on a laptop, open your game and tap Cast to TV on the host screen to send it to a Chromecast or Google TV; the laptop becomes the remote. On any phone or browser you can also use Chrome’s Cast tab or your phone’s Screen cast, then press Full screen on the host screen.' },
   { question: 'How do guests join the game?', answer: 'The host starts a game at dharamshalastay.com/play/host on a laptop or TV. It shows a 6-digit code and a QR code. Guests open dharamshalastay.com/play on their phones, type the code or scan the QR, and enter their name, photo, email and mobile number. No app to install.' },
   { question: 'Which party games can we play?', answer: 'Tambola (housie), Party Quiz (KBC-style with your own questions about the guest of honour, plus Bollywood, India and Himachal rounds), Lucky Draw (a reel of everyone’s photos picks up to 3 winners) and Who’s Most Likely To (funny votes about the guests).' },
   { question: 'Is it free?', answer: 'Yes. Hosting and playing are completely free, there is no entry fee and no money changes hands. Prizes are certificates and Dharamshala Stay discount codes.' },
@@ -131,6 +133,22 @@ export default function PlayPage() {
             ))}
           </ol>
 
+          <h2 className={`mt-16 ${PARTY} text-4xl font-extrabold`}>Can you play on a TV or Chromecast?</h2>
+          <p className="mt-2 max-w-3xl text-lg text-slate-700"><strong>Yes, all four games.</strong> The TV becomes the host: big numbers and board from across the room, numbers called out loud, a full-screen moment for every winner, and your phone works as the remote.</p>
+          <ol className="mt-6 grid gap-5 md:grid-cols-3">
+            {[
+              ['Smart TV', 'Open dharamshalastay.com/tv in the TV’s browser. Scan the QR on the TV with the phone that started the game and tap Show on this TV.'],
+              ['Chromecast or Google TV', 'In Chrome on a laptop, start the game and tap Cast to TV on the host screen. Or use Chrome’s Cast tab, or your phone’s Screen cast, and press Full screen.'],
+              ['Laptop on HDMI', 'Plug the laptop into the TV, start the game and press Full screen. Everything runs from the laptop.'],
+            ].map(([t, d]) => (
+              <li key={t} className="rounded-2xl bg-white p-5 ring-1 ring-[#2a0f3d]/10">
+                <h3 className={`${PARTY} text-2xl font-bold`}>{t}</h3>
+                <p className="mt-1 text-slate-600">{d}</p>
+              </li>
+            ))}
+          </ol>
+          <p className="mt-4 text-sm text-slate-600">On the TV, open <Link href="/tv" className="text-[#b21e62] underline">dharamshalastay.com/tv</Link>. No camera on your phone? Type the TV’s 8-letter code at <Link href="/play/tv" className="text-[#b21e62] underline">dharamshalastay.com/play/tv</Link>.</p>
+
           <h2 className={`mt-16 ${PARTY} text-4xl font-extrabold`}>What are the prizes?</h2>
           <p className="mt-2 text-slate-600">Tambola prizes are below. The quiz, lucky draw and Most Likely To give 1st, 2nd and 3rd places the same way.</p>
           <ol className="mt-8 grid max-w-3xl grid-cols-3 items-end gap-3 sm:gap-5">
@@ -157,7 +175,7 @@ export default function PlayPage() {
                   ['Price', 'Free to host and play, no entry fee'],
                   ['Games', games.map((g) => GAMES[g].name).join(', ')],
                   ['Players', `Up to ${MAX_PLAYERS.toLocaleString('en-IN')} phones per game`],
-                  ['What you need', 'One TV or laptop for the host and a phone for each guest (no app)'],
+                  ['What you need', 'One TV (smart TV browser or Chromecast) or a laptop for the host, and a phone for each guest (no app)'],
                   ['Prizes', `Certificates for the top 3, plus ${PLACE_AMOUNTS.map(inr).join(' / ')} discount codes when ${MIN_PLAYERS_FOR_CODES}+ play`],
                   ['Coupon validity', `${CODE_VALID_DAYS} days, on bookings of ${inr(CODE_MIN_BOOKING)} or more`],
                 ].map(([k, v]) => (

@@ -31,3 +31,6 @@ details summary { list-style: none; }
   .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
   .scrollbar-hide::-webkit-scrollbar { display: none; }
 }
+
+/* TV mode (/tv/<code>): a clear, thick focus ring so the TV remote's arrows and OK button are easy to follow. */
+.tv-mode button:focus-visible, .tv-mode select:focus-visible, .tv-mode a:focus-visible { outline: 4px solid #f97316; outline-offset: 3px; }
