@@ -1,6 +1,6 @@
 'use client';
-import { useState } from 'react';
-import { CheckCircle2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Camera, CheckCircle2 } from 'lucide-react';
 import { GUIDE_AREAS, GUIDE_LANGUAGES, GUIDE_SPECIALITIES } from '@/lib/guides/options';
 
 /** Local guide sign-up; the owner checks the guide and approves the profile before it appears on /local-guides. */
@@ -10,6 +10,14 @@ export default function GuideSignupForm() {
   const [specs, setSpecs] = useState<string[]>([]);
   const [areas, setAreas] = useState<string[]>([]);
   const [consent, setConsent] = useState(false);
+  const [photo, setPhoto] = useState<File | null>(null);
+  const [preview, setPreview] = useState('');
+  useEffect(() => {
+    if (!photo) { setPreview(''); return; }
+    const url = URL.createObjectURL(photo);
+    setPreview(url);
+    return () => URL.revokeObjectURL(url);
+  }, [photo]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [done, setDone] = useState(false);
@@ -21,9 +29,19 @@ export default function GuideSignupForm() {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    setError(''); setBusy(true);
+    setError('');
+    if (!photo) { setError('Please add a clear photo of yourself.'); return; }
+    if (photo.size > 5 * 1024 * 1024) { setError('Your photo must be 5 MB or smaller.'); return; }
+    setBusy(true);
     try {
-      const res = await fetch('/api/guides', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...f, languages, specializations: specs, areas, consent }) });
+      const body = new FormData();
+      Object.entries(f).forEach(([k, v]) => body.append(k, v));
+      languages.forEach((x) => body.append('languages', x));
+      specs.forEach((x) => body.append('specializations', x));
+      areas.forEach((x) => body.append('areas', x));
+      body.append('consent', String(consent));
+      body.append('photo', photo);
+      const res = await fetch('/api/guides', { method: 'POST', body });
       const j = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(j.error || 'Could not send your sign-up');
       setDone(true);
@@ -52,6 +70,18 @@ export default function GuideSignupForm() {
   return (
     <form onSubmit={submit} className="space-y-5">
       <input type="text" name="website" value={f.website} onChange={set('website')} className="hidden" tabIndex={-1} autoComplete="off" aria-hidden />
+      <div>
+        <p className={label}>Your photo</p>
+        <p className="text-xs text-slate-500">A clear, recent photo of your face, on its own (no group photos or logos). Travellers see it first on your profile.</p>
+        <label className="mt-2 flex cursor-pointer items-center gap-4 rounded-2xl border-2 border-dashed border-slate-300 p-4 hover:border-brand-500">
+          {preview
+            // eslint-disable-next-line @next/next/no-img-element
+            ? <img src={preview} alt="Your photo" className="h-24 w-24 rounded-xl object-cover" />
+            : <span className="flex h-24 w-24 items-center justify-center rounded-xl bg-slate-100 text-slate-400"><Camera className="h-8 w-8" /></span>}
+          <span className="text-sm text-slate-700"><span className="font-semibold text-brand-700">{preview ? 'Change photo' : 'Add your photo'}</span><br />JPG or PNG, up to 5 MB</span>
+          <input type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" onChange={(e) => setPhoto(e.target.files?.[0] || null)} />
+        </label>
+      </div>
       <label className={label}>Full name<input required className={input} value={f.name} onChange={set('name')} autoComplete="name" /></label>
       <div className="grid gap-4 sm:grid-cols-2">
         <label className={label}>Mobile number<input required className={input} type="tel" inputMode="tel" value={f.phone} onChange={set('phone')} placeholder="98765 43210" /></label>

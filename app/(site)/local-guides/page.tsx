@@ -23,31 +23,28 @@ const FAQS = [
   { question: 'I am a local guide. How do I join?', answer: 'Fill in the free form on /local-guides/register with your experience, languages, areas and day rate. We call you, check your ID and any registration certificate, and publish your profile once approved. Bookings come through Dharamshala Stay, which keeps a 15% commission.' },
 ];
 
-function initials(name: string) {
-  return name.split(/\s+/).map((w) => w[0]).filter(Boolean).slice(0, 2).join('').toUpperCase();
-}
-
 function GuideCard({ g }: { g: PublicGuide }) {
   return (
-    <article className="flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-      <div className="flex items-start gap-4">
-        {g.photo
-          // eslint-disable-next-line @next/next/no-img-element
-          ? <img src={g.photo} alt={`${g.name}, local guide in McLeod Ganj`} className="h-16 w-16 shrink-0 rounded-full object-cover" loading="lazy" />
-          : <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-brand-100 font-heading text-xl font-bold text-brand-700">{initials(g.name)}</span>}
-        <div>
-          <h3 className="font-heading text-lg font-bold text-slate-900"><Link href={'/local-guides/' + g.slug} className="hover:underline">{g.name}</Link></h3>
-          <p className="text-sm text-slate-500">{g.experience_years} years guiding{g.price_per_day ? ` · from ${formatPrice(g.price_per_day)} a day` : ''}</p>
-          <div className="mt-1 flex flex-wrap gap-1.5">
-            {g.verified && <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-0.5 text-xs font-semibold text-green-700"><BadgeCheck className="h-3.5 w-3.5" />Verified by Dharamshala Stay</span>}
-            {g.hp_registration_verified && <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-0.5 text-xs font-semibold text-blue-700"><ShieldCheck className="h-3.5 w-3.5" />Registered with HP Tourism</span>}
-          </div>
+    <article className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <Link href={'/local-guides/' + g.slug} className="block">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={g.photo!} alt={`${g.name}, local guide in ${g.areas[0] || 'McLeod Ganj'}`} className="aspect-square w-full object-cover" loading="lazy" />
+      </Link>
+      <div className="flex flex-1 flex-col p-5">
+        <h3 className="font-heading text-xl font-bold text-slate-900"><Link href={'/local-guides/' + g.slug} className="hover:underline">{g.name}</Link></h3>
+        <div className="mt-1.5 flex flex-wrap gap-1.5">
+          {g.verified && <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-0.5 text-xs font-semibold text-green-700"><BadgeCheck className="h-3.5 w-3.5" />Verified by Dharamshala Stay</span>}
+          {g.hp_registration_verified && <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-0.5 text-xs font-semibold text-blue-700"><ShieldCheck className="h-3.5 w-3.5" />Registered with HP Tourism</span>}
         </div>
+        <dl className="mt-3 space-y-1.5 text-sm text-slate-700">
+          <div className="flex gap-2"><dt className="w-24 shrink-0 font-semibold text-slate-900">Experience</dt><dd>{g.experience_years} years</dd></div>
+          {g.price_per_day ? <div className="flex gap-2"><dt className="w-24 shrink-0 font-semibold text-slate-900">Day rate</dt><dd>from {formatPrice(g.price_per_day)}</dd></div> : null}
+          <div className="flex gap-2"><dt className="w-24 shrink-0 font-semibold text-slate-900"><MapPin className="mr-1 inline h-3.5 w-3.5" />Areas</dt><dd>{g.areas.join(', ')}</dd></div>
+          <div className="flex gap-2"><dt className="w-24 shrink-0 font-semibold text-slate-900"><Languages className="mr-1 inline h-3.5 w-3.5" />Languages</dt><dd>{g.languages.join(', ')}</dd></div>
+        </dl>
+        <div className="mt-3 flex flex-wrap gap-1.5">{g.specializations.map((s) => <span key={s} className="rounded-full bg-slate-100 px-2.5 py-1 text-xs text-slate-700">{s}</span>)}</div>
+        <Link href={'/local-guides/' + g.slug} className="mt-auto pt-4"><span className="block rounded-lg bg-brand-700 px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-brand-800">See profile and book</span></Link>
       </div>
-      <p className="mt-3 flex items-start gap-1.5 text-sm text-slate-600"><MapPin className="mt-0.5 h-4 w-4 shrink-0" />{g.areas.join(' · ')}</p>
-      <p className="mt-1 flex items-start gap-1.5 text-sm text-slate-600"><Languages className="mt-0.5 h-4 w-4 shrink-0" />{g.languages.join(', ')}</p>
-      <div className="mt-3 flex flex-wrap gap-1.5">{g.specializations.slice(0, 4).map((s) => <span key={s} className="rounded-full bg-slate-100 px-2.5 py-1 text-xs text-slate-700">{s}</span>)}</div>
-      <Link href={'/local-guides/' + g.slug} className="mt-4 rounded-lg bg-brand-700 px-4 py-2 text-center text-sm font-semibold text-white hover:bg-brand-800">See profile and book</Link>
     </article>
   );
 }
@@ -71,10 +68,10 @@ export default async function LocalGuidesPage() {
 
       <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
         <h2 className="font-heading text-2xl font-bold text-slate-900">Choose a local guide</h2>
-        <div className="mt-5 grid gap-5 md:grid-cols-2">
+        <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {guides.map((g) => <GuideCard key={g.id} g={g} />)}
           {!guides.length && (
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 text-slate-700 md:col-span-2">
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 text-slate-700 sm:col-span-2">
               <p className="font-semibold text-slate-900">Our first guides are being checked and will appear here shortly.</p>
               <p className="mt-1">Need a guide now? <Link href="/contact" className="text-brand-600 underline">Message us</Link> with your date and plan, and we will match you with a local guide.</p>
             </div>

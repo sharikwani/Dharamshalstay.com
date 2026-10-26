@@ -20,11 +20,11 @@ export { GUIDE_AREAS, GUIDE_LANGUAGES, GUIDE_SPECIALITIES } from './options';
 const PUBLIC_COLS = 'id, slug, name, photo, bio, experience_years, languages, specializations, areas, price_per_day, verified, hp_registration_verified, rating, review_count, published_at';
 const arr = (v: unknown): string[] => (Array.isArray(v) ? v.map(String).filter(Boolean) : []);
 
-/** Approved guides, oldest first. Empty until migration v54 is run. */
+/** Approved guides with a profile photo, oldest first. Empty until migration v54 is run. */
 export async function publishedGuides(): Promise<PublicGuide[]> {
   try {
     const { data, error } = await serviceClient().from('guides').select(PUBLIC_COLS)
-      .eq('status', 'active').not('slug', 'is', null).order('published_at', { ascending: true, nullsFirst: false });
+      .eq('status', 'active').not('slug', 'is', null).not('photo', 'is', null).order('published_at', { ascending: true, nullsFirst: false });
     if (error) throw error;
     return (data || []).map((g: any) => ({
       ...g, languages: arr(g.languages), specializations: arr(g.specializations), areas: arr(g.areas),
@@ -62,7 +62,30 @@ export const guideSignupSchema = z.object({
 
 const slugify = (s: string) => s.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60);
 
-export async function submitGuide(input: z.infer<typeof guideSignupSchema>, ipHash: string | null) {
+export const GUIDE_UPLOAD_BUCKET = 'guide-uploads';
+export const GUIDE_PHOTO_BUCKET = 'guide-photos';
+
+/**
+ * The profile photo as a square portrait JPEG (900 px), cropped on the face/subject; re-encoding also drops the
+ * camera's hidden details such as where the photo was taken.
+ */
+export async function guidePortrait(bytes: Buffer): Promise<Buffer> {
+  const sharp = (await import('sharp')).default;
+  return sharp(bytes).rotate().resize(900, 900, { fit: 'cover', position: 'attention' }).jpeg({ quality: 84, mozjpeg: true }).toBuffer();
+}
+
+/** On approval: copy the private sign-up photo to the public bucket and return its URL (null when there is none). */
+export async function publishGuidePhoto(uploadPath: string | null | undefined): Promise<string | null> {
+  if (!uploadPath) return null;
+  const sb = serviceClient();
+  const { data, error } = await sb.storage.from(GUIDE_UPLOAD_BUCKET).download(uploadPath);
+  if (error || !data) throw new HttpError(409, 'The guide photo is missing from storage. Ask the guide to send it on WhatsApp and add it in Edit.');
+  const { error: upErr } = await sb.storage.from(GUIDE_PHOTO_BUCKET).upload(uploadPath, data, { contentType: 'image/jpeg', upsert: true });
+  if (upErr) throw new HttpError(500, 'Could not publish the guide photo');
+  return sb.storage.from(GUIDE_PHOTO_BUCKET).getPublicUrl(uploadPath).data.publicUrl;
+}
+
+export async function submitGuide(input: z.infer<typeof guideSignupSchema>, ipHash: string | null, photo: Buffer) {
   const sb = serviceClient();
   if (ipHash) {
     const since = new Date(Date.now() - 24 * 3600e3).toISOString();
@@ -80,13 +103,21 @@ export async function submitGuide(input: z.infer<typeof guideSignupSchema>, ipHa
     slug = `${base}-${i}`;
   }
   const languages = [...input.languages, ...String(input.other_languages || '').split(/[,/]/).map((s) => s.trim()).filter((s) => s.length > 1)].slice(0, 12);
+  const id = crypto.randomUUID();
+  const photoPath = `${id}.jpg`;
+  const { error: upErr } = await sb.storage.from(GUIDE_UPLOAD_BUCKET).upload(photoPath, photo, { contentType: 'image/jpeg', upsert: false });
+  if (upErr) {
+    console.error('Guide photo upload failed:', upErr);
+    throw new HttpError(500, 'Could not save your photo. Please try again or WhatsApp us.');
+  }
   const { error } = await sb.from('guides').insert({
-    slug, name: input.name, phone: input.phone, whatsapp: input.whatsapp || null, email: input.email || null,
+    id, photo_upload: photoPath, slug, name: input.name, phone: input.phone, whatsapp: input.whatsapp || null, email: input.email || null,
     experience_years: input.experience_years, languages, specializations: input.specializations, areas: input.areas,
     price_per_day: input.price_per_day, bio: input.bio, hp_registration_no: input.hp_registration_no || null,
     status: 'pending', ip_hash: ipHash, whatsapp_alerts: true,
   });
   if (error) {
+    await sb.storage.from(GUIDE_UPLOAD_BUCKET).remove([photoPath]);
     console.error('Guide sign-up failed:', error);
     throw new HttpError(500, 'Could not save your sign-up. Please try again or WhatsApp us.');
   }

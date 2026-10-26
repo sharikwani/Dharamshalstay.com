@@ -12,6 +12,16 @@ ALTER TABLE guides ADD COLUMN IF NOT EXISTS verified BOOLEAN NOT NULL DEFAULT FA
 ALTER TABLE guides ADD COLUMN IF NOT EXISTS ip_hash TEXT;
 ALTER TABLE guides ADD COLUMN IF NOT EXISTS admin_notes TEXT;
 ALTER TABLE guides ADD COLUMN IF NOT EXISTS published_at TIMESTAMPTZ;
+-- The photo a guide uploads at sign-up (private bucket path); copied to the public bucket and set as photo on approval.
+ALTER TABLE guides ADD COLUMN IF NOT EXISTS photo_upload TEXT;
+
+-- Photos: sign-up uploads stay private until the owner approves the guide, then are copied to the public bucket.
+INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+VALUES ('guide-uploads', 'guide-uploads', false, 5242880, ARRAY['image/jpeg'])
+ON CONFLICT (id) DO UPDATE SET public = false, file_size_limit = 5242880, allowed_mime_types = ARRAY['image/jpeg'];
+INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+VALUES ('guide-photos', 'guide-photos', true, 5242880, ARRAY['image/jpeg'])
+ON CONFLICT (id) DO UPDATE SET public = true, file_size_limit = 5242880, allowed_mime_types = ARRAY['image/jpeg'];
 
 CREATE UNIQUE INDEX IF NOT EXISTS guides_slug_key ON guides(slug) WHERE slug IS NOT NULL;
 
@@ -21,5 +31,5 @@ ALTER TABLE guides ADD CONSTRAINT guides_status_check CHECK (status IN ('pending
 
 -- Check: the new columns exist.
 SELECT column_name, data_type FROM information_schema.columns
-WHERE table_name = 'guides' AND column_name IN ('slug', 'whatsapp', 'areas', 'hp_registration_no', 'hp_registration_verified', 'verified', 'published_at')
+WHERE table_name = 'guides' AND column_name IN ('slug', 'whatsapp', 'areas', 'hp_registration_no', 'hp_registration_verified', 'verified', 'published_at', 'photo_upload')
 ORDER BY column_name;

@@ -47,26 +47,33 @@ export default async function GuideProfilePage({ params }: Props) {
       <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Local guides', href: '/local-guides' }, { label: g.name }]} />
       <div className="mt-4 grid gap-10 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <div className="flex items-center gap-5">
-            {g.photo
-              // eslint-disable-next-line @next/next/no-img-element
-              ? <img src={g.photo} alt={`${g.name}, local guide`} className="h-24 w-24 rounded-full object-cover" />
-              : <span className="flex h-24 w-24 items-center justify-center rounded-full bg-brand-100 font-heading text-3xl font-bold text-brand-700">{g.name.split(/\s+/).map((w) => w[0]).slice(0, 2).join('').toUpperCase()}</span>}
-            <div>
-              <h1 className="font-heading text-3xl font-bold text-slate-900">{g.name}</h1>
-              <p className="text-slate-600">Local guide · {g.experience_years} years{g.price_per_day ? ` · from ${formatPrice(g.price_per_day)} a day` : ''}</p>
-              <div className="mt-1 flex flex-wrap gap-1.5">
-                {g.verified && <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-0.5 text-xs font-semibold text-green-700"><BadgeCheck className="h-3.5 w-3.5" />Verified by Dharamshala Stay</span>}
-                {g.hp_registration_verified && <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-0.5 text-xs font-semibold text-blue-700"><ShieldCheck className="h-3.5 w-3.5" />Registered with HP Tourism</span>}
-              </div>
-            </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={g.photo!} alt={`${g.name}, local guide in ${g.areas[0] || 'McLeod Ganj'}`} className="aspect-square w-full max-w-md rounded-3xl object-cover shadow-md" />
+          <h1 className="mt-6 font-heading text-3xl font-bold text-slate-900 sm:text-4xl">{g.name}</h1>
+          <p className="mt-1 text-lg text-slate-600">Local guide in {g.areas[0] || 'McLeod Ganj'}{g.areas.length > 1 ? ` (also ${g.areas.slice(1).join(', ')})` : ''}</p>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {g.verified && <span className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2.5 py-1 text-sm font-semibold text-green-700"><BadgeCheck className="h-4 w-4" />Verified by Dharamshala Stay</span>}
+            {g.hp_registration_verified && <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2.5 py-1 text-sm font-semibold text-blue-700"><ShieldCheck className="h-4 w-4" />Registered with HP Tourism</span>}
           </div>
-          <p className="mt-6 text-lg text-slate-700"><strong>Short answer:</strong> {g.name} guides {g.specializations.slice(0, 3).join(', ').toLowerCase()} in {g.areas.slice(0, 3).join(', ')}, in {g.languages.join(', ')}. Send a request with your date and plan; we confirm the guide, the plan and the full price with you on WhatsApp before you book.</p>
+
+          <dl className="mt-6 divide-y divide-slate-100 overflow-hidden rounded-2xl bg-white text-slate-700 ring-1 ring-slate-200">
+            {([
+              ['Experience', `${g.experience_years} years guiding`],
+              ...(g.price_per_day ? [['Day rate', `From ${formatPrice(g.price_per_day)} for a full day (final price confirmed before you book)`]] : []),
+              ['Tours', g.specializations.join(', ')],
+              ['Areas', g.areas.join(', ')],
+              ['Languages', g.languages.join(', ')],
+              ['How to book', 'Send a request with your date and plan; we confirm the guide and the full price on WhatsApp'],
+            ] as [string, string][]).map(([k, v]) => (
+              <div key={k} className="grid grid-cols-[7.5rem_1fr] gap-3 p-4 sm:grid-cols-[9rem_1fr]">
+                <dt className="flex items-start gap-1.5 font-semibold text-slate-900">{k === 'Areas' ? <MapPin className="mt-1 h-4 w-4" /> : k === 'Languages' ? <Languages className="mt-1 h-4 w-4" /> : null}{k}</dt>
+                <dd>{v}</dd>
+              </div>
+            ))}
+          </dl>
+
+          <p className="mt-6 text-lg text-slate-700"><strong>Short answer:</strong> {g.name} is a local guide with {g.experience_years} years of experience, offering {g.specializations.slice(0, 3).join('; ')}. Areas: {g.areas.join(', ')}. Languages: {g.languages.join(', ')}. Send a request with your date and plan; we confirm the guide, the plan and the full price with you on WhatsApp before you book.</p>
           {g.bio && <><h2 className="mt-8 font-heading text-xl font-bold text-slate-900">About {g.name.split(/\s+/)[0]}</h2><p className="mt-2 whitespace-pre-line text-slate-700">{g.bio}</p></>}
-          <h2 className="mt-8 font-heading text-xl font-bold text-slate-900">Tours and areas</h2>
-          <div className="mt-3 flex flex-wrap gap-2">{g.specializations.map((s) => <span key={s} className="rounded-full bg-slate-100 px-3 py-1.5 text-sm text-slate-700">{s}</span>)}</div>
-          <p className="mt-3 flex items-start gap-1.5 text-slate-700"><MapPin className="mt-1 h-4 w-4 shrink-0" />{g.areas.join(' · ')}</p>
-          <p className="mt-1 flex items-start gap-1.5 text-slate-700"><Languages className="mt-1 h-4 w-4 shrink-0" />{g.languages.join(', ')}</p>
           <p className="mt-8 text-sm text-slate-600">Planning the day: <Link href="/monasteries-meditation" className="text-brand-600 underline">monasteries</Link>, <Link href="/blog/things-to-do-in-mcleod-ganj" className="text-brand-600 underline">things to do in McLeod Ganj</Link>, <Link href="/blog/triund-trek-complete-guide" className="text-brand-600 underline">Triund trek</Link>, <Link href="/hotels" className="text-brand-600 underline">where to stay</Link> and <Link href="/local-guides" className="text-brand-600 underline">all local guides</Link>.</p>
         </div>
         <aside className="self-start lg:sticky lg:top-24">

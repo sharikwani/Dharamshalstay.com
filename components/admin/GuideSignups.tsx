@@ -47,6 +47,10 @@ function GuideCard({ g, busy, act }: { g: any; busy: boolean; act: (id: string, 
   const list = (v: unknown) => (Array.isArray(v) ? v.join(', ') : '');
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-4 text-sm">
+      {g.photo_preview
+        // eslint-disable-next-line @next/next/no-img-element
+        ? <img src={g.photo_preview} alt={`Photo sent by ${g.name}`} className="mb-3 aspect-square w-40 rounded-xl object-cover" />
+        : <p className="mb-3 rounded-lg bg-red-50 px-3 py-2 text-red-700">No photo: ask the guide to send one before approving.</p>}
       <p className="font-semibold text-slate-900">{g.name} <span className="font-normal text-slate-500">· {g.experience_years} yrs · ₹{g.price_per_day}/day</span></p>
       <p className="text-slate-600">+{g.phone}{g.whatsapp ? ` · WhatsApp +${g.whatsapp}` : ''}{g.email ? ` · ${g.email}` : ''}</p>
       <p className="mt-1 text-slate-600"><b>Guides:</b> {list(g.specializations)}</p>
