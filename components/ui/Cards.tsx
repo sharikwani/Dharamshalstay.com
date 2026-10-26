@@ -173,7 +173,8 @@ export function FAQSection({ faqs }: { faqs: FAQ[] }) {
       {faqs.map((faq, i) => (
         <details key={i} className="group bg-white border border-slate-200 rounded-xl">
           <summary className="flex items-center justify-between cursor-pointer px-5 py-4 font-medium text-slate-800 hover:text-brand-600">
-            {faq.question}
+            {/* A real heading: answer boxes and AI Overviews quote a question heading with its answer right below. */}
+            <h3 className="text-base font-medium">{faq.question}</h3>
             <ChevronRight className="h-4 w-4 text-slate-400 group-open:rotate-90 transition-transform shrink-0 ml-2" />
           </summary>
           <div className="px-5 pb-4 text-sm text-slate-600 leading-relaxed">{faq.answer}</div>
