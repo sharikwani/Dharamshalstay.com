@@ -14,7 +14,7 @@ export type QuoteInput = { num_guests: number; check_in?: string | null; check_o
 export type HotelLike = { price_min?: number | null; rooms?: any[] | null; commission_pct?: number | null };
 
 // Hotels 15%, treks and paragliding 25% (owner decisions, 17 Oct 2026). Each trek and package also stores its own rate.
-const DEFAULT_COMMISSION: Record<BookingCategory, number> = { hotel: 15, taxi: 10, trek: 25, paragliding: 25, guide: 20 };
+const DEFAULT_COMMISSION: Record<BookingCategory, number> = { hotel: 15, taxi: 10, trek: 25, paragliding: 25, guide: 15 };
 
 export function nightsBetween(checkIn: string, checkOut: string): number {
   const a = Date.parse(checkIn + 'T00:00:00Z');
@@ -58,7 +58,7 @@ function pct(entity: Record<string, any> | null, category: BookingCategory): num
 
 export function quoteBooking(category: BookingCategory, entity: Record<string, any> | null, input: QuoteInput) {
   const guests = Math.max(1, Math.floor(input.num_guests || 1));
-  const commission_pct = category === 'guide' ? 20 : pct(entity, category);
+  const commission_pct = category === 'guide' ? 15 : pct(entity, category);
   if (!entity) return { amount: 0, commission_pct };
 
   let amount = 0;

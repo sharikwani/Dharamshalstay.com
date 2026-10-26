@@ -3,7 +3,7 @@ import { quoteBooking } from '@/lib/pricing';
 import { effectiveCollector, commissionRateFor, splitAmount, paymentFields, checkAssignment, isBeforeToday, todayIst } from '@/lib/manual-booking';
 
 describe('guide pricing', () => {
-  it('day rate × days', () => expect(quoteBooking('guide', { price_per_day: 2500 }, { num_guests: 3, guide_days: 2 })).toEqual({ amount: 5000, commission_pct: 20 }));
+  it('day rate × days', () => expect(quoteBooking('guide', { price_per_day: 2500 }, { num_guests: 3, guide_days: 2 })).toEqual({ amount: 5000, commission_pct: 15 }));
   it('clamps days to 1..30', () => {
     expect(quoteBooking('guide', { price_per_day: 1000 }, { num_guests: 1, guide_days: 0 }).amount).toBe(1000);
     expect(quoteBooking('guide', { price_per_day: 1000 }, { num_guests: 1, guide_days: 99 }).amount).toBe(30000);
@@ -22,7 +22,7 @@ describe('commissionRateFor', () => {
     expect(commissionRateFor('hotel', {})).toBe(15);
     expect(commissionRateFor('hotel', { propertyPct: 0 })).toBe(15);
   });
-  it('guides are 20', () => expect(commissionRateFor('guide', { partnerPct: 5 })).toBe(20));
+  it('guides are 15', () => expect(commissionRateFor('guide', { partnerPct: 5 })).toBe(15));
 });
 
 describe('splitAmount', () => {

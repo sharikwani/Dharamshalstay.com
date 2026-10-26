@@ -18,6 +18,7 @@ import { placeImage, isStockImage } from '@/lib/place-images';
 import { monasteryPhotos } from '@/data/monastery-photos';
 import { listPublicStories } from '@/lib/stories/store';
 import { publishedServices } from '@/lib/services/store';
+import { publishedGuides } from '@/lib/guides/store';
 
 // Must be the canonical (www) origin -- the bare domain 301s to www, and a
 // sitemap full of redirecting URLs is largely ignored by Google.
@@ -47,13 +48,14 @@ function date(value?: string | null, fallback = new Date()): Date {
 }
 
 export async function sitemapEntries(): Promise<SitemapEntry[]> {
-  const [hotels, destinations, treks, taxiRoutes, stories, services] = await Promise.all([
+  const [hotels, destinations, treks, taxiRoutes, stories, services, guides] = await Promise.all([
     getPublishedProperties(),
     getDestinations(),
     getPublishedTreks(),
     getTaxiRouteGroups(),
     listPublicStories(1000).catch(() => []),
     publishedServices('luggage_storage').catch(() => []),
+    publishedGuides().catch(() => []),
   ]);
 
   const latestPost = blogPosts.reduce((max, b) => (b.updated_at > max ? b.updated_at : max), '2026-01-01');
@@ -79,6 +81,9 @@ export async function sitemapEntries(): Promise<SitemapEntry[]> {
     { url: B + '/play', lastModified: date('2026-10-22'), changeFrequency: 'monthly', priority: 0.6 },
     { url: B + '/luggage-storage', lastModified: date('2026-10-25'), changeFrequency: 'weekly', priority: 0.6 },
     { url: B + '/luggage-storage/list-your-service', lastModified: date('2026-10-25'), changeFrequency: 'yearly', priority: 0.3 },
+    { url: B + '/local-guides', lastModified: date('2026-10-26'), changeFrequency: 'weekly', priority: 0.7 },
+    { url: B + '/local-guides/register', lastModified: date('2026-10-26'), changeFrequency: 'yearly', priority: 0.3 },
+    ...guides.map((g) => ({ url: B + '/local-guides/' + g.slug, lastModified: date(g.published_at, date('2026-10-26')), changeFrequency: 'monthly' as const, priority: 0.5 })),
     ...services.map((x) => ({ url: B + '/luggage-storage/' + x.slug, lastModified: date(x.published_at, date('2026-10-25')), changeFrequency: 'monthly' as const, priority: 0.5 })),
     { url: B + '/new-year-parties', lastModified: date('2026-10-25'), changeFrequency: 'weekly', priority: 0.8 },
     { url: B + '/for-hotels', lastModified: date('2026-10-20'), changeFrequency: 'monthly', priority: 0.4 },

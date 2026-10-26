@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Users, Plus, Pencil, Trash2, Save, Star } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { AdminPageHeader } from '@/components/admin/AdminShell';
+import GuideSignups from '@/components/admin/GuideSignups';
 
 export default function AdminGuides() {
   const router = useRouter();
@@ -18,7 +19,7 @@ export default function AdminGuides() {
   useEffect(() => { setSaveError(''); }, [editing?.id]);
 
   async function loadGuides() {
-    const { data } = await supabase.from('guides').select('*').order('name');
+    const { data } = await supabase.from('guides').select('*').neq('status', 'pending').order('name');
     setGuides(data || []);
     setLoading(false);
   }
@@ -60,8 +61,10 @@ export default function AdminGuides() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-      <AdminPageHeader title="Local guides" description="Trekking and local guides you work with."
+      <AdminPageHeader title="Local guides" description="Guides you work with. Active guides with a profile link appear on /local-guides; new sign-ups wait below for approval."
         action={<button onClick={() => setEditing({ id: 'new', name: '', phone: '', email: '', photo: '', bio: '', experience_years: 0, languages: '["Hindi","English"]', specializations: '["Triund","Kareri Lake"]', certifications: '[]', price_per_day: 0, status: 'active' })} className="flex items-center gap-2 bg-brand-600 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-brand-700"><Plus className="h-4 w-4" /> Add Guide</button>} />
+
+      <GuideSignups onChange={loadGuides} />
 
       {editing && (
         <div className="bg-white border border-slate-200 rounded-xl p-6 mb-6">
@@ -75,7 +78,11 @@ export default function AdminGuides() {
             <div><label className="block text-xs font-medium text-slate-700 mb-1">Price/Day (₹)</label><input type="number" value={editing.price_per_day} onChange={e => setEditing({ ...editing, price_per_day: +e.target.value })} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none" /></div>
             <div><label className="block text-xs font-medium text-slate-700 mb-1">Languages (JSON)</label><input value={editing.languages} onChange={e => setEditing({ ...editing, languages: e.target.value })} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none" /></div>
             <div><label className="block text-xs font-medium text-slate-700 mb-1">Specializations (JSON)</label><input value={editing.specializations} onChange={e => setEditing({ ...editing, specializations: e.target.value })} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none" /></div>
-            <div><label className="block text-xs font-medium text-slate-700 mb-1">Status</label><select value={editing.status} onChange={e => setEditing({ ...editing, status: e.target.value })} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none"><option value="active">Active</option><option value="inactive">Inactive</option></select></div>
+            <div><label className="block text-xs font-medium text-slate-700 mb-1">Status</label><select value={editing.status} onChange={e => setEditing({ ...editing, status: e.target.value })} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none"><option value="active">Active</option><option value="inactive">Inactive</option><option value="rejected">Rejected</option></select></div>
+          </div>
+          <div className="flex flex-wrap gap-5 mb-3 text-sm">
+            <label className="flex items-center gap-2"><input type="checkbox" checked={!!editing.verified} onChange={e => setEditing({ ...editing, verified: e.target.checked })} /> Verified by Dharamshala Stay badge</label>
+            <label className="flex items-center gap-2"><input type="checkbox" checked={!!editing.hp_registration_verified} onChange={e => setEditing({ ...editing, hp_registration_verified: e.target.checked })} /> HP Tourism registered (certificate seen)</label>
           </div>
           <label className="flex items-center gap-2 text-sm mb-4"><input type="checkbox" checked={!!editing.whatsapp_alerts} onChange={e => setEditing({ ...editing, whatsapp_alerts: e.target.checked })} /> Send booking alerts to this guide&apos;s phone on WhatsApp</label>
           <div className="mb-4"><label className="block text-xs font-medium text-slate-700 mb-1">Bio</label><textarea value={editing.bio || ''} onChange={e => setEditing({ ...editing, bio: e.target.value })} rows={3} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none resize-none" /></div>

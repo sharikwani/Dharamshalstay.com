@@ -12,7 +12,7 @@ const isActivity = (c: string): c is ActivityCategory => (ACTIVITY_CATEGORIES as
 const validPct = (v: unknown) => typeof v === 'number' && Number.isFinite(v) && v >= 0 && v <= 100;
 
 export function commissionRateFor(category: ManualCategory, opts: { partnerPct?: number | null; propertyPct?: number | null }): number {
-  if (category === 'guide') return 20;
+  if (category === 'guide') return 15; // owner, 26 Oct 2026
   if (category === 'hotel') return validPct(opts.propertyPct) && (opts.propertyPct as number) > 0 ? (opts.propertyPct as number) : 15;
   if (validPct(opts.partnerPct)) return opts.partnerPct as number;
   // Treks and paragliding: 25% (owner decision, 17 Oct 2026); taxis 20%.

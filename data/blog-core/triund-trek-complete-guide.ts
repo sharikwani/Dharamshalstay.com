@@ -14,7 +14,7 @@ export const override: Partial<BlogPost> = {
   related_slugs: ['triund-camping-guide', 'snowline-laka-glacier-trek', 'easy-hikes-near-mcleod-ganj', 'dharamshala-in-winter-snowfall', 'dharamkot-travel-guide'],
   content: `**Short answer:** Triund is a grassy ridge at **about 2,850 m** above McLeod Ganj. The trail starts at **Gallu Devi temple above Dharamkot** and is **about 6-7 km one way** (around **9 km** if you walk from McLeod Ganj), taking most people **3-5 hours up and 2-3 hours down**; it is **moderate**, with an easy first half and a steep, rocky last stretch. The Forest Department entry fee is **₹100 per person per day** and the best months are **March-June and September-November**. **Camping is allowed but regulated**: tents are capped and arranged through permitted operators, and in winter the district has repeatedly made Triund subject to police permission and cancelled permits on weather alerts.
 
-Want it organised for you? Our guided [Triund trek](/treks/triund-trek) starts from **₹1,500 per person** with a local guide and forest permits. For the night on the ridge itself, read the [Triund camping guide](/blog/triund-camping-guide).
+Want it organised for you? Our guided [Triund trek](/treks/triund-trek) starts from **₹1,500 per person** with a local guide and forest permits. Prefer a private guide for your group? Choose one of our approved [local guides in McLeod Ganj](/local-guides). For the night on the ridge itself, read the [Triund camping guide](/blog/triund-camping-guide).
 
 ## Triund Trek: Quick Facts (checked 26 October 2026)
 
