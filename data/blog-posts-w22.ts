@@ -74,7 +74,7 @@ Cultural evenings are a long tradition at the district Dussehra. In 2015 the Dus
 
 ### The "star nights" people remember are the Kangra Valley Carnival
 
-The big-name **star nights at the Police Ground belong to the Kangra Valley Carnival**, a separate event, not the Dussehra mela. Two examples:
+The big-name **star nights at the Police Ground belong to the Kangra Valley Carnival**, a separate event, not the Dussehra mela. The 2026 carnival is announced for 24-31 December: see our [Kangra Valley Carnival 2026 guide](/blog/kangra-valley-carnival-2026). Two examples:
 
 - **Kangra Valley Carnival 2024:** the star night featured Punjabi singer **Rashmeet Kaur**, Pahari folk singer **Ishant Bhardwaj**, **RJ Shanky** and **Anuj Sharma**, with **Satinder Sartaaj** and the Kerala band **Thaikkudam Bridge** billed for the following night (ETV Bharat).
 - **Kangra Valley Carnival 2025:** Punjabi singer **Garry Sandhu** and **Ishant Bhardwaj** performed (ETV Bharat).
@@ -131,7 +131,7 @@ Browse rooms on our [Dharamshala hotels page](/hotels) or read [where to stay in
     featured: true,
     meta_title: 'Dharamshala Dussehra 2026: Ravan Dahan at Police Ground',
     meta_description: 'Dussehra 2026 is on 20 Oct. Dharamshala mela at Police Ground 18-24 Oct: Lanka burnt 19 Oct, Ravan 20 Oct, fireworks. Singers not yet announced.',
-    related_slugs: ['ramlila-in-dharamshala', 'melas-fairs-dharamshala-kangra', 'festivals-events-calendar-dharamshala', 'dharamshala-in-october-november'],
+    related_slugs: ['ramlila-in-dharamshala', 'melas-fairs-dharamshala-kangra', 'festivals-events-calendar-dharamshala', 'dharamshala-in-october-november', 'kangra-valley-carnival-2026'],
     sources: [
       { title: 'Vijayadashami 2026 date and time (Drik Panchang)', url: 'https://www.drikpanchang.com/festivals/vijayadashami/vijayadashami-date-time.html?year=2026' },
       { title: 'Dussehra 2026 date, Ravan dahan shubh muhurat (Amar Ujala, 16 October 2026)', url: 'https://www.amarujala.com/photo-gallery/spirituality/festivals/dussehra-2026-date-ravan-dahan-shubh-muhurat-vijayadashami-kab-hai-2026-2026-10-16' },

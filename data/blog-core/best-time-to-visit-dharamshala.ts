@@ -9,9 +9,7 @@ export const override: Partial<BlogPost> = {
     'Best time to visit Dharamshala: Oct-Nov for clear views and treks, Mar-Jun for spring and summer, Jan-Feb for snow chances. Month-by-month weather and prices.',
   updated_at: '2026-10-07',
   tags: ['dharamshala', 'weather', 'travel planning', 'seasons', 'when to visit', 'dharamshala snowfall', 'dharamshala in july', 'mcleod ganj weather'],
-  content: `## The Short Answer
-
-The best time to visit Dharamshala is **October to mid-November**, when the post-monsoon air is the clearest of the year, days in McLeod Ganj sit around 20°C and the Triund trail is dry. **March to June** is the other great window, warmer and busier, with May-June the peak holiday season. For a chance of snow in McLeod Ganj, Naddi or Dharamkot, come in **January or the first half of February**; for the lowest prices, come in the **July-August monsoon**, accepting heavy rain and landslide risk.
+  content: `**Short answer:** The best time to visit Dharamshala is **October to mid-November**, when the post-monsoon air is the clearest of the year, days in McLeod Ganj sit around 20°C and the Triund trail is dry. **March to June** is the other great window, warmer and busier, with May-June the peak holiday season. For a chance of snow in McLeod Ganj, Naddi or Dharamkot, come in **January or the first half of February**; for the lowest prices, come in the **July-August monsoon**, accepting heavy rain and landslide risk.
 
 There is no truly bad month: the town never shuts down, and the Dalai Lama Temple, monasteries and cafes stay open all year. What changes is the weather, the crowds and what you can do outdoors. Below is the full picture from our local team, month by month.
 

@@ -8,7 +8,9 @@ export const blogPostsW2: BlogPost[] = [
     slug: 'indrahar-pass-trek-guide',
     title: 'Indrahar Pass Trek Guide: Route, Difficulty, Permits & Safety (2026)',
     excerpt: 'A stage-by-stage guide to the Indrahar Pass trek (approx. 4,342 m) from McLeod Ganj via Triund, Laka Got and Lahesh caves, with the crossing to the Chamba side, current 2026 restrictions, and an honest look at who should not attempt it.',
-    content: `**Indrahar Pass (approx. 4,342 m / 14,245 ft)** is the high crossing of the Dhauladhar range directly above McLeod Ganj. The classic route climbs from McLeod Ganj via **Triund, Snowline, Laka Got and the Lahesh caves** to the pass, then either returns the same way or drops into the **Chamba side** via Chhata and Kuarsi. Out and back takes **3 to 4 days**; the full crossing takes **4 to 5 days**. It is a **difficult, high-altitude trek** with a steep boulder-and-scree summit day, and it is not a "Triund plus a bit".
+    content: `**Short answer:** Indrahar Pass (approx. **4,342 m**) is a **difficult, high-altitude trek** above McLeod Ganj via Triund, Snowline, Laka Got and the Lahesh caves; out and back takes 3 to 4 days and the full crossing to the Chamba side 4 to 5 days. In January 2026 the Kangra District Disaster Management Authority banned trekking above 3,000 m. We could not confirm whether it has been relaxed, so check with the Superintendent of Police, Kangra, or a registered operator before planning.
+
+**Indrahar Pass (approx. 4,342 m / 14,245 ft)** is the high crossing of the Dhauladhar range directly above McLeod Ganj. The classic route climbs from McLeod Ganj via **Triund, Snowline, Laka Got and the Lahesh caves** to the pass, then either returns the same way or drops into the **Chamba side** via Chhata and Kuarsi. Out and back takes **3 to 4 days**; the full crossing takes **4 to 5 days**. It is a **difficult, high-altitude trek** with a steep boulder-and-scree summit day, and it is not a "Triund plus a bit".
 
 **The most important thing to know in 2026:** in January 2026 the Kangra District Disaster Management Authority banned trekking above 3,000 m in the district, and routes such as Triund and Kareri were placed under a police-clearance requirement. Indrahar is well above that line. We have not been able to confirm whether this order has since been relaxed for the autumn season, so before you plan anything, confirm the current position with the office of the Superintendent of Police, Kangra, or with a registered local operator. If the ban is in force, you cannot legally go above Laka Got.
 
@@ -105,7 +107,7 @@ Read our [best time to visit Dharamshala](/blog/best-time-to-visit-dharamshala) 
 
 - **Kangra DDMA order (January 2026):** a ban on trekking above 3,000 m in Kangra district, issued for safety and unpredictable weather, with permission for routes such as Triund and Kareri routed through the Superintendent of Police, Kangra. Permissions are automatically cancelled when weather warnings are issued. Disaster response teams and the Mountaineering Centre in McLeod Ganj are exempt. We could not confirm whether the order has been lifted or modified since; **check locally before you plan**.
 - **Forest entry fee at the Triund checkpoint:** a per-person forest and eco-tourism fee is collected; the amount has changed several times, so check at the checkpost.
-- **Carry-back waste deposit:** from **11 August 2026**, trekkers on the Triund route pay a **refundable ₹500 deposit** at the forest checkpost and receive a garbage bag; the deposit is refunded when you bring your non-biodegradable waste back down. Repeat violators can be blacklisted.
+- **Carry-back waste deposit (reported, not confirmed):** a refundable ₹500 deposit for Triund trekkers was reported in August 2026 but we could not find an official notice; carry ₹500 extra in cash in case it is collected, and bring your non-biodegradable waste back down either way.
 - **Chamba-side permits:** no separate permit is generally needed to descend into Chamba district, but ask your operator, as rules for camping in forest areas can differ.
 - **Carry photo ID** and register your trek plan with your guesthouse and operator.
 
@@ -152,7 +154,7 @@ Our [weather and packing guide](/blog/dharamshala-weather-what-to-pack) covers c
 3. **Going in cotton and sneakers.** Wet cotton at 4,000 m is dangerous.
 4. **Starting summit day late.** A 7 am start almost guarantees cloud on the pass.
 5. **Crossing to Chamba without a pick-up plan.** You can be stuck at Kuarsi for a day waiting for a jeep.
-6. **Leaving rubbish in the caves.** It is now also costly, thanks to the ₹500 deposit.
+6. **Leaving rubbish in the caves.** Bring everything down: a ₹500 refundable deposit was reported for Triund in August 2026, though we could not confirm it.
 
 ## Where to Stay Before and After
 
@@ -199,7 +201,9 @@ Stay in [Dharamkot](/destinations/dharamkot) or upper McLeod Ganj the night befo
     slug: 'snowline-laka-glacier-trek',
     title: 'Snowline & Laka Glacier Trek from Triund: Day or Overnight Guide (2026)',
     excerpt: 'How to extend Triund to Snowline and Laka Got below the Laka glacier: distances, altitudes, timings, day versus overnight plans, the 2026 rules above 3,000 m, and safety tips.',
-    content: `**Snowline and Laka Got** are the next step up from Triund. From the Triund ridge (approx. 2,850 m), a rocky path climbs about **2 to 3 km to Snowline** (approx. 3,100 to 3,200 m), and roughly **1 km further to Laka Got** (approx. 3,350 m) at the foot of the **Laka glacier**. From Triund it takes about **1.5 to 2.5 hours up** and **1 to 1.5 hours down**. Fit hikers can do McLeod Ganj to Snowline and back in one long day; most people do it as an overnight from Triund.
+    content: `**Short answer:** Snowline (approx. 3,100 to 3,200 m) is about **2 to 3 km above Triund**, and Laka Got (approx. 3,350 m) is roughly 1 km further, at the foot of the Laka glacier. From Triund it takes about 1.5 to 2.5 hours up. Both sit above 3,000 m, and in January 2026 the Kangra district authorities banned trekking above that height; we could not confirm whether it has been relaxed, so check at the Triund forest checkpost or with your operator before you set out.
+
+**Snowline and Laka Got** are the next step up from Triund. From the Triund ridge (approx. 2,850 m), a rocky path climbs about **2 to 3 km to Snowline** (approx. 3,100 to 3,200 m), and roughly **1 km further to Laka Got** (approx. 3,350 m) at the foot of the **Laka glacier**. From Triund it takes about **1.5 to 2.5 hours up** and **1 to 1.5 hours down**. Fit hikers can do McLeod Ganj to Snowline and back in one long day; most people do it as an overnight from Triund.
 
 **Before you plan, note the 2026 rules:** Snowline and Laka Got sit above 3,000 m, and in January 2026 the Kangra District Disaster Management Authority banned trekking above that height in the district, with Triund itself placed under a police-clearance requirement. We could not confirm whether the order has been relaxed since, so check at the Triund forest checkpost, with your operator or with the Superintendent of Police office in Kangra before you set out. If the ban is in force, Triund is your turn-around point.
 
@@ -216,7 +220,7 @@ Stay in [Dharamkot](/destinations/dharamkot) or upper McLeod Ganj the night befo
 | Time from Gallu Devi | 5–7 hours up to Laka Got |
 | Difficulty | Moderate (Triund section easy-moderate, above Triund rocky and steeper) |
 | Best months | May–June, mid-September–October (subject to 2026 restrictions) |
-| Fees | Forest entry fee at checkpost plus ₹500 refundable waste deposit (since Aug 2026) |
+| Fees | Forest entry fee at checkpost plus a reported ₹500 refundable waste deposit (Aug 2026, no official notice found) |
 
 ## Route Stage by Stage
 
@@ -277,7 +281,7 @@ From Triund upwards the trail is **moderate**: steeper, rockier and more exposed
 
 - **District order (January 2026):** Kangra DDMA banned trekking above 3,000 m, and the Triund route needs clearance from the Superintendent of Police, Kangra; permissions are cancelled automatically when weather warnings are issued. Status since then is unconfirmed: **check locally**.
 - **Forest entry fee:** collected at the forest checkpost on the Triund trail. The amount has changed several times; carry cash and check on the day.
-- **Waste deposit:** from 11 August 2026, a **₹500 refundable deposit** is collected at the checkpost; you get a garbage bag and the money back when you return with your non-biodegradable waste.
+- **Waste deposit (reported, not confirmed):** a ₹500 refundable deposit was reported in August 2026 but we could not find an official notice; carry ₹500 extra in cash in case it is collected.
 - **Camping:** tents at Triund are regulated; camping above Triund depends on current permission. Do not pitch at Snowline or Laka Got unless your operator confirms it is allowed.
 
 ## Camping, Water and Food
@@ -361,7 +365,7 @@ Stay in [Dharamkot](/destinations/dharamkot) or [Bhagsu](/destinations/bhagsu) f
     slug: 'easy-hikes-near-mcleod-ganj',
     title: '10 Easy Hikes Near McLeod Ganj & Dharamshala (with Times, 2026)',
     excerpt: 'Ten short walks and easy hikes around McLeod Ganj and Dharamshala, from Bhagsu waterfall and Gallu Devi to the Lingkhor kora, Naddi and Dal Lake, with a time and difficulty table and honest tips.',
-    content: `You do not need to climb Triund to enjoy the mountains here. Around McLeod Ganj and Dharamshala there are at least ten **easy walks and short hikes of 1 to 4 hours**, most of them starting right from town: **Bhagsu waterfall, Shiva Cafe, Gallu Devi, the Dharamkot loop, Naddi and Dal Lake, the Lingkhor kora, Kunal Pathri, Guna Devi, Tota Rani** and, for a longer day, **Thatharana**. Pick one or two for a relaxed day, a rest day before a bigger trek, or a family outing.
+    content: `**Short answer:** You do not need to climb Triund to enjoy the mountains here. Around McLeod Ganj and Dharamshala there are at least ten **easy walks and short hikes of 1 to 4 hours**, most of them starting right from town: **Bhagsu waterfall, Shiva Cafe, Gallu Devi, the Dharamkot loop, Naddi and Dal Lake, the Lingkhor kora, Kunal Pathri, Guna Devi, Tota Rani** and, for a longer day, **Thatharana**. Pick one or two for a relaxed day, a rest day before a bigger trek, or a family outing.
 
 Below is a comparison table, then each walk in detail with directions, what to see and what to watch out for. Times are walking time at an easy pace, not counting stops.
 
@@ -502,7 +506,7 @@ For walking access, stay in [McLeod Ganj](/destinations/mcleod-ganj), [Dharamkot
       },
       {
         question: 'Do I need a permit for these hikes?',
-        answer: 'No permit is needed for the town walks. Beyond Gallu Devi on the Triund trail you pass a forest checkpost where entry fees and a refundable waste deposit apply, and higher routes are subject to the 2026 district rules.',
+        answer: 'No permit is needed for the town walks. Beyond Gallu Devi on the Triund trail you pass a forest checkpost where entry fees apply (and a refundable waste deposit was reported in August 2026, not confirmed), and higher routes are subject to the 2026 district rules.',
       },
     ],
   },
@@ -513,7 +517,9 @@ For walking access, stay in [McLeod Ganj](/destinations/mcleod-ganj), [Dharamkot
     slug: 'bir-billing-rajgundha-trek',
     title: 'Bir Billing to Rajgundha Trek: Route, Stays & Barot Option (2026)',
     excerpt: 'A practical guide to trekking from Billing to Rajgundha in the Chhota Bhangal valley, with the route, times, homestays and camps, the optional descent to Barot, best season and safety.',
-    content: `The **Billing to Rajgundha trek** starts at the paragliding take-off at **Billing (approx. 2,400 m)**, 14 km above Bir, and follows forest and meadow trails over the ridge into the **Chhota Bhangal valley** to **Rajgundha (approx. 2,400 to 2,500 m)**, a small, remote village with homestays and camps. It is roughly **12 to 15 km one way** and takes **5 to 7 hours**, rated **easy to moderate**. Most people stay one night and return, or continue down to **Barot** in Mandi district on day two.
+    content: `**Short answer:** The Billing to Rajgundha trek runs from the paragliding take-off at **Billing (approx. 2,400 m)** over the ridge to **Rajgundha** in the Chhota Bhangal valley, roughly **12 to 15 km one way** in **5 to 7 hours**. It is rated easy to moderate, and most people stay one night in a Rajgundha homestay and return, or continue to Barot on day two. The best months are April to June and mid-September to November, and mobile signal is weak or none at Rajgundha.
+
+The **Billing to Rajgundha trek** starts at the paragliding take-off at **Billing (approx. 2,400 m)**, 14 km above Bir, and follows forest and meadow trails over the ridge into the **Chhota Bhangal valley** to **Rajgundha (approx. 2,400 to 2,500 m)**, a small, remote village with homestays and camps. It is roughly **12 to 15 km one way** and takes **5 to 7 hours**, rated **easy to moderate**. Most people stay one night and return, or continue down to **Barot** in Mandi district on day two.
 
 It is the perfect add-on to a [Bir Billing paragliding trip](/blog/bir-billing-paragliding-guide): a quiet, green trail with Dhauladhar views, almost no crowds, and a chance to see Gaddi shepherds and a village that still feels far from the road.
 
@@ -675,8 +681,10 @@ Stay in Bir or nearby for an early start; see our [Bir travel guide](/blog/bir-t
     id: 'blog-triund-camping-guide',
     slug: 'triund-camping-guide',
     title: 'Triund Camping Guide 2026: Rules, Fees, Tents & What to Expect',
-    excerpt: 'Everything about camping overnight at Triund in 2026: the current rules and fees, the new ₹500 waste deposit, tents versus the forest rest house, sunset and sunrise, cold, toilets, water, animals and winter snow.',
-    content: `Camping overnight at **Triund (approx. 2,850 m)**, the ridge above McLeod Ganj, is one of the best mountain nights in Himachal: sunset over the Kangra Valley, stars above the Dhauladhar wall and a pink sunrise on the snow peaks. But it is also **regulated**, and the rules have changed several times in recent years. In 2026: a forest entry fee is collected at the checkpost; since **11 August 2026** every trekker pays a **refundable ₹500 waste deposit**; tent numbers on the ridge have been capped and camping is arranged through permitted operators; and in January 2026 the Kangra district authorities placed the Triund route under a **police-clearance requirement** as part of wider trekking restrictions.
+    excerpt: 'Everything about camping overnight at Triund in 2026: the current rules and fees, the reported ₹500 waste deposit, tents versus the forest rest house, sunset and sunrise, cold, toilets, water, animals and winter snow.',
+    content: `**Short answer:** You can camp overnight at Triund (approx. **2,850 m**) in 2026, but it is regulated: a forest entry fee is collected at the checkpost, a **refundable ₹500 waste deposit** was reported in August 2026 (no official notice found), tent numbers are capped and camping goes through permitted operators. A typical package is approx. **₹2,000-4,000 per person** with tent, dinner, breakfast and guide. The January 2026 order requires police clearance for Triund, so confirm current rules before you walk up.
+
+Camping overnight at **Triund (approx. 2,850 m)**, the ridge above McLeod Ganj, is one of the best mountain nights in Himachal: sunset over the Kangra Valley, stars above the Dhauladhar wall and a pink sunrise on the snow peaks. But it is also **regulated**, and the rules have changed several times in recent years. In 2026: a forest entry fee is collected at the checkpost; a **refundable ₹500 waste deposit** was **reported in August 2026** but we could not find an official notice; tent numbers on the ridge have been capped and camping is arranged through permitted operators; and in January 2026 the Kangra district authorities placed the Triund route under a **police-clearance requirement** as part of wider trekking restrictions.
 
 This guide explains how overnight stays work, how much they cost, what the night is actually like and how to avoid the classic mistakes. Where we could not verify a current figure, we say so. Rules can change at short notice, so always confirm before you walk up.
 
@@ -686,8 +694,9 @@ This guide explains how overnight stays work, how much they cost, what the night
 |---|---|
 | Altitude | Approx. 2,850 m |
 | Trail | Approx. 6–7 km from Gallu Devi (9 km from McLeod Ganj), 3–5 h up |
-| Forest entry fee | Charged at the checkpost; amount revised from time to time, check on the day |
-| Waste deposit | ₹500 refundable, since 11 Aug 2026 |
+| Forest entry fee | ₹100 per person per day for a hike; ₹550 per two-person tent (₹275 per person) for camping, entry included (The Tribune, 15 Jan 2024; Aaj Tak, 6 Oct 2026; Ground Report, 30 Mar 2026) |
+| Registration | Mandatory at the Gallu checkpost (The Tribune, 15 Nov 2025); entry without a receipt can mean a ₹5,000 fine (Ground Report) |
+| Waste deposit | ₹500 refundable reported Aug 2026; no official notice found, carry ₹500 extra |
 | Tents | Capped in number; booked through permitted operators (check current arrangements) |
 | Typical camping package | Approx. ₹2,000–4,000 per person with tent, dinner, breakfast, guide |
 | Forest Rest House | Exists; rarely available to tourists, booking through the Forest Department |
@@ -700,13 +709,14 @@ This guide explains how overnight stays work, how much they cost, what the night
 
 Here is what we could confirm as of October 2026, and what you need to check locally.
 
-- **Carry-back waste deposit (confirmed):** from 11 August 2026, the forest checkposts collect a **₹500 refundable security deposit** from trekkers. You receive a garbage bag and a receipt; on the way down, officials check you have brought back your non-biodegradable waste, and the deposit is returned. Fail to do so and you lose the ₹500; repeat offenders can be blacklisted from trekking permits. The rule was brought in after the Forest Department recorded about 77,000 trekkers on Triund in the 2025–26 financial year.
+- **Entry fees and registration (verified):** the Forest Department charges ₹100 per person per day for a hike and ₹550 per two-person tent (₹275 per person) for camping, entry included. The Tribune reported the January 2024 cut from ₹200 to ₹100 and from ₹1,100 to ₹550; Ground Report (30 March 2026) still quotes ₹100 entry and ₹275 camping, and on 6 October 2026 Aaj Tak quoted the Dharamshala DFO giving the same ₹100 and ₹275 figures and a new cap of 1,000 visitors a day, with permit slips issued at the checkpost. Registration is mandatory at the Gallu checkpost, one of 10 Kangra checkposts set up under a district order reported by The Tribune on 15 November 2025.
+- **Carry-back waste deposit (reported, not confirmed by us):** the Hindi news site Khabargaon (17 August 2026, citing unnamed media reports) says that from 11 August 2026 the Dharamshala Forest Circle collects a **refundable ₹500 deposit** at the trek entry point, returned when trekkers bring their waste down. Some travel blogs add a garbage bag and a receipt. We could not find an official notice or the original report, and the Aaj Tak report of 6 October 2026 did not mention it. Carry ₹500 extra in cash in case it is collected, and bring all your waste down either way. The Forest Department recorded about 77,000 trekkers on Triund in 2025–26.
 - **Police clearance (January 2026 order):** the Kangra District Disaster Management Authority banned trekking above 3,000 m and said routes including Triund need clearance from the office of the Superintendent of Police, Kangra; permissions are automatically cancelled when weather warnings are issued. Triund itself is just under 3,000 m. In practice, registered operators handle this for their groups. We could not confirm how strictly it applies to independent day hikers in autumn 2026, so **check at the checkpost or with an operator**.
 - **Management changes:** in March 2026 there were media reports that the Triund trek had been leased to a private operator, and local tourism stakeholders protested. We have not been able to confirm the operator, the fee structure or booking channel under the new arrangement. **Ask your hotel or operator how tents are being allotted this season.**
 - **Tent cap:** in recent seasons overnight stays have been limited (historically around 20 tents or 40 people), with an overnight fee per tent on top of entry. These figures were last revised in 2024 and may have changed; treat them as indicative.
 - **Bans in bad weather:** in monsoon and after heavy snow, the district administration has repeatedly banned overnight stays and sometimes all trekking to Triund. In early 2025 there was a public dispute between hoteliers and the administration over a Triund ban. Expect closures during red or orange weather alerts.
 
-**Bottom line:** do not walk up with your own tent and assume you can pitch it. Book through a permitted operator, carry cash for the entry fee and ₹500 deposit, and carry photo ID.
+**Bottom line:** do not walk up with your own tent and assume you can pitch it. Book through a permitted operator, carry cash for the entry fee and an extra ₹500 in case the reported deposit is collected, and carry photo ID.
 
 ## Tents vs the Forest Rest House
 
@@ -741,7 +751,7 @@ Wake around 5 to 6 am (earlier in June) and walk to the eastern side of the mead
 
 ## Garbage: Why the Rules Got Strict
 
-Triund has long had a litter problem, with plastic bottles, wrappers and wet wipes in the bushes around the meadow. The ₹500 deposit is the result. Carry a bag, bring down everything including bottles and tissues, and do not burn waste. Bonfires on the ridge are generally not permitted and damage the fragile turf.
+Triund has long had a litter problem, with plastic bottles, wrappers and wet wipes in the bushes around the meadow. A ₹500 refundable deposit has been reported in response, though we could not confirm it. Carry a bag, bring down everything including bottles and tissues, and do not burn waste. Bonfires on the ridge are generally not permitted and damage the fragile turf.
 
 ## Monkeys, Dogs and Other Animals
 
@@ -770,7 +780,7 @@ From December to March Triund is often under snow. The trail above Magic View be
 1. **Decide your date**, ideally a weekday in September–October or May.
 2. **Check the weather alerts** and any district orders a day or two before.
 3. **Book through a permitted operator** that handles tents, clearance and the guide. You can book a guided [Triund trek](/treks/triund-trek) with us, or browse other [treks](/treks).
-4. **Carry cash** for the entry fee and the ₹500 deposit, plus photo ID.
+4. **Carry cash** for the entry fee and an extra ₹500 in case the reported deposit is collected, plus photo ID.
 5. **Stay nearby** the night before in [Dharamkot](/destinations/dharamkot) or [McLeod Ganj](/destinations/mcleod-ganj); browse [hotels](/hotels).
 
 ## What to Pack for a Night at Triund
@@ -791,7 +801,7 @@ Our [weather and packing guide](/blog/dharamshala-weather-what-to-pack) covers t
 1. **Arriving with your own tent** and expecting to pitch it anywhere.
 2. **Starting after noon** and walking the last steep section in the dark.
 3. **Under-packing warm clothes** because it was hot in McLeod Ganj.
-4. **Leaving rubbish behind**, which now costs you ₹500.
+4. **Leaving rubbish behind**, which may cost you a reported ₹500 deposit and is bad for the ridge.
 5. **Ignoring weather alerts**; storms on the ridge are dangerous and permissions are cancelled.
 6. **Camping during monsoon closures.**
 
@@ -800,13 +810,20 @@ For the full trek details, see our [Triund trek complete guide](/blog/triund-tre
     tags: ['triund camping', 'triund', 'camping', 'mcleod ganj treks', 'overnight trek', 'dharamshala'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-09-29',
-    updated_at: '2026-10-02',
+    updated_at: '2026-10-26',
     image: placeImage('triund'),
     image_alt: 'Tents on the Triund ridge with the Dhauladhar range above McLeod Ganj',
     read_time: 9,
     featured: false,
     meta_title: 'Triund Camping 2026: Rules, Fees, Tents & Tips',
-    meta_description: 'Triund camping guide for 2026: current rules, ₹500 waste deposit, tents vs rest house, sunset and sunrise, cold, toilets, water, animals, snow and booking.',
+    meta_description: 'Triund camping guide for 2026: verified fees, reported ₹500 waste deposit, tents vs rest house, cold, toilets, water, snow, booking.',
+    sources: [
+      { title: 'Himachal Pradesh Forest Dept slashes Triund trekking fee by half (The Tribune, 15 January 2024)', url: 'https://www.tribuneindia.com/news/himachal/himachal-pradesh-forest-dept-slashes-triund-trekking-fee-by-half-581249' },
+      { title: 'Triund trek: entry limited to 1,000 tourists a day, hiking permit Rs 100 and camping Rs 275 (Aaj Tak, 6 October 2026)', url: 'https://www.aajtak.in/india/himachal-pradesh/story/himachal-pradesh-triund-trek-entry-limited-to-1000-tourists-daily-lclar-strc-2663021-2026-10-06' },
+      { title: 'Famous Triund trek in Dharamshala is now privatised (Ground Report, 30 March 2026)', url: 'https://www.groundreport.in/viral/famous-triund-trek-in-dharamshala-is-now-privatised-check-new-rules/' },
+      { title: 'Check posts set up at 10 entry points to strengthen safety of trekkers in Kangra (The Tribune, 15 November 2025)', url: 'https://www.tribuneindia.com/news/himachal/check-posts-set-up-at-10-entry-points-to-strengthen-safety-of-trekkers-in-kangra/' },
+      { title: 'Triund trek carry-back waste rule, Rs 500 deposit (Khabargaon, Hindi, 17 August 2026; secondary report, no official notice found)', url: 'https://khabargaon.com/state/triund-trek-carry-back-waste-rule-rs-500-deposit-and-refund-himachal-pradesh/32885' },
+    ],
     related_slugs: ['triund-trek-complete-guide', 'snowline-laka-glacier-trek', 'dharamshala-weather-what-to-pack'],
     faqs: [
       {
@@ -815,11 +832,11 @@ For the full trek details, see our [Triund trek complete guide](/blog/triund-tre
       },
       {
         question: 'What is the Triund 500 rupee rule?',
-        answer: 'Since 11 August 2026, trekkers pay a refundable 500 rupee deposit at the forest checkpost and receive a garbage bag. The deposit is returned when you bring your non-biodegradable waste back down; otherwise it is forfeited and repeat offenders can be blacklisted.',
+        answer: 'A refundable 500 rupee waste deposit was reported in August 2026, but we could not find an official notice. Carry 500 rupees extra in cash in case it is collected, and bring all your waste back down either way.',
       },
       {
         question: 'How much does Triund camping cost?',
-        answer: 'As of 2026 a camping package with tent, sleeping bag, dinner, breakfast and guide typically costs approx. 2,000 to 4,000 rupees per person, plus the forest entry fee and the refundable 500 rupee waste deposit. Fees change, so check locally.',
+        answer: 'As of 2026 a camping package with tent, sleeping bag, dinner, breakfast and guide typically costs approx. 2,000 to 4,000 rupees per person, plus the forest entry fee (100 rupees per person for a hike, 550 rupees per two-person tent to camp) and, if collected, the reported refundable 500 rupee waste deposit. Fees change, so check locally.',
       },
       {
         question: 'Can I carry my own tent to Triund?',

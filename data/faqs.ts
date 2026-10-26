@@ -232,7 +232,7 @@ export const faqCategories: FAQCategory[] = [
       {
         question: 'What is the Triund trek entry fee?',
         answer:
-          "Under the Forest Department's 2024 revision, the Triund entry fee is ₹100 per person per day, and overnight tenting costs ₹550 for two people including entry. Since 11 August 2026 there is also a refundable ₹500 waste deposit, returned when you bring your rubbish back down. Carry cash and photo ID for the checkpoint. Rules changed several times in 2026, so check locally.",
+          "Under the Forest Department's 2024 revision, the Triund entry fee is ₹100 per person per day, and overnight tenting costs ₹550 for two people including entry. A refundable ₹500 waste deposit was reported in August 2026 but we could not find an official notice, so carry ₹500 extra in cash in case it is collected. Carry cash and photo ID for the checkpoint. Rules changed several times in 2026, so check locally.",
         link: { href: '/treks/triund-trek', label: 'Triund trek details' },
       },
       {

@@ -9,7 +9,9 @@ import InquiryForm from '@/components/forms/InquiryForm';
 import MarkdownContent from '@/components/blog/MarkdownContent';
 import JsonLd from '@/components/seo/JsonLd';
 import { getActiveTaxiRoutes } from '@/lib/db';
-import { getTaxiRouteGroup, getTaxiRouteGroups, getRouteNotes } from '@/lib/taxi';
+import { getTaxiRouteGroup, getTaxiRouteGroups, getRouteNotes, getRouteGuideSlugs } from '@/lib/taxi';
+import { getBlogBySlug } from '@/data/blog';
+import { localizePost } from '@/lib/i18n/content';
 import { generateSEO, breadcrumbSchema, faqSchema, itemListSchema } from '@/lib/seo';
 import { formatPrice, getWhatsAppLink } from '@/lib/utils';
 import { placeImage } from '@/lib/place-images';
@@ -99,6 +101,10 @@ export async function TaxiRouteView({ slug, lang }: { slug: string; lang: Lang }
   const others = (await getTaxiRouteGroups()).filter((o) => o.slug !== g.slug);
   g.duration = localizeUnits(g.duration, lang);
   const notes = getRouteNotes(g.from, g.to, lang);
+  const guides = getRouteGuideSlugs(g.from, g.to)
+    .map((s) => getBlogBySlug(s))
+    .filter((p): p is NonNullable<typeof p> => !!p)
+    .map((p) => localizePost(p, lang));
   const cheapest = g.vehicles[0];
   const includes = Array.from(new Set(g.vehicles.flatMap((v) => v.includes)));
   const excludes = Array.from(new Set(g.vehicles.flatMap((v) => v.excludes)));
@@ -189,6 +195,19 @@ export async function TaxiRouteView({ slug, lang }: { slug: string; lang: Lang }
                 <div><h2 className="font-heading font-semibold mb-2">{x.notIncluded}</h2>
                   <ul className="space-y-1.5 text-sm text-slate-700">{excludes.map((i) => <li key={i} className="flex gap-2"><XCircle className="h-4 w-4 text-slate-400 mt-0.5" />{t.amenities[i] || i}</li>)}</ul></div>
               )}
+            </section>
+          )}
+
+          {guides.length > 0 && (
+            <section>
+              <h2 className="text-xl font-heading font-bold text-slate-900 mb-3">{x.routeGuides}</h2>
+              <ul className="space-y-2">
+                {guides.map((p) => (
+                  <li key={p.slug}>
+                    <Link href={href('/blog/' + p.slug)} className="text-brand-600 font-medium underline underline-offset-2 hover:text-brand-700">{p.title}</Link>
+                  </li>
+                ))}
+              </ul>
             </section>
           )}
 

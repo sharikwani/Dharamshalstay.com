@@ -7,9 +7,7 @@ export const blogPostsB: BlogPost[] = [
     slug: 'how-to-reach-dharamshala',
     title: 'How to Reach Dharamshala: Flights, Trains, Buses and Road Routes (2026)',
     excerpt: 'Every practical way to reach Dharamshala and McLeod Ganj from Delhi, Chandigarh, Amritsar, Mumbai and Bangalore, with realistic times, approx. costs and a side-by-side comparison table.',
-    content: `## The Short Answer
-
-The fastest way to reach Dharamshala is to fly into **Kangra Airport at Gaggal** (airport code DHM), about 12-15 km from Dharamshala town and roughly 20 km from McLeod Ganj. The cheapest and most popular way, especially from Delhi, is an **overnight Volvo bus** from Delhi that drops you in Dharamshala or McLeod Ganj in the morning. There is no broad-gauge railway station in Dharamshala itself, so train travellers usually ride to **Pathankot** and finish the last 85-90 km by road.
+    content: `**Short answer:** The fastest way to reach Dharamshala is to fly into **Kangra Airport at Gaggal** (airport code DHM), about 12-15 km from Dharamshala town and roughly 20 km from McLeod Ganj. The cheapest and most popular way, especially from Delhi, is an **overnight Volvo bus** from Delhi that drops you in Dharamshala or McLeod Ganj in the morning. There is no broad-gauge railway station in Dharamshala itself, so train travellers usually ride to **Pathankot** and finish the last 85-90 km by road.
 
 Which option is best depends on where you start, how much time you have and your budget. Below we break down every route the way a local would explain it, with approx. costs as of 2026, then answer the question most people forget to ask: how do you get from Dharamshala up to McLeod Ganj?
 
@@ -91,7 +89,7 @@ One-way taxis are popular with families and groups because the per-person cost b
 | Delhi | 475-500 km | 9-11 hrs | ₹10,000-15,000 |
 | Chandigarh | approx. 240 km | 5-6 hrs | ₹5,000-6,500 |
 | Amritsar | approx. 200 km | 4.5-5.5 hrs | ₹4,500-6,000 |
-| Pathankot | approx. 90 km | 2.5-3 hrs | ₹2,500-3,500 |
+| Pathankot | approx. 90 km | 2.5-3 hrs | ₹3,200 (Alto) / ₹4,000 (sedan), our fixed fares |
 | Kangra Airport | 12-20 km | 30-60 min | ₹800-1,500 |
 
 Fares depend on vehicle size (hatchback, sedan, SUV), tolls and state taxes. For a detailed breakdown on the Delhi route, read our [Dharamshala to Delhi taxi guide](/blog/dharamshala-to-delhi-taxi-guide), or [get a fixed quote from our local taxi team](/taxi).
@@ -127,7 +125,7 @@ Once you know how you are arriving, [browse hotels in Dharamshala and McLeod Gan
     featured: true,
     meta_title: 'How to Reach Dharamshala (2026): Flight, Train, Bus, Road',
     meta_description: 'How to reach Dharamshala and McLeod Ganj from Delhi, Chandigarh, Amritsar, Mumbai and Bangalore: flights to Kangra, Volvo buses, trains, taxis and costs.',
-    related_slugs: ['dharamshala-to-delhi-taxi-guide', 'dharamshala-vs-mcleod-ganj', 'dharamshala-weekend-itinerary'],
+    related_slugs: ['dharamshala-to-delhi-taxi-guide', 'dharamshala-vs-mcleod-ganj', 'dharamshala-weekend-itinerary', 'pathankot-to-dharamshala'],
     faqs: [
       {
         question: 'Which is the nearest airport to Dharamshala?',
@@ -322,7 +320,7 @@ Yes, if you like clear mountain views, quiet streets and cosy cafe afternoons. J
     featured: false,
     meta_title: 'When Does It Snow in Dharamshala? Months & Places 2026',
     meta_description: 'McLeod Ganj, Naddi and Dharamkot get snow on a few days from late Dec to Feb, most often January; lower Dharamshala almost never. Dated snow log inside.',
-    related_slugs: ['best-time-to-visit-dharamshala', 'triund-trek-complete-guide', 'dharamshala-weather-what-to-pack', 'mcleod-ganj-in-december', 'naddi-dal-lake-guide'],
+    related_slugs: ['best-time-to-visit-dharamshala', 'triund-trek-complete-guide', 'dharamshala-weather-what-to-pack', 'mcleod-ganj-in-december', 'naddi-dal-lake-guide', 'himachal-snowfall-tracker', 'best-places-to-visit-in-himachal-in-winter'],
     sources: [
       { title: 'Snowfall grips McLeodganj, cold wave tightens hold on Kangra (The Tribune, 25 January 2026)', url: 'https://www.tribuneindia.com/news/himachal/snowfall-grips-mcleodganj-cold-wave-tightens-hold-on-kangra/' },
       { title: '58 bus routes suspended in Kangra as snowfall blankets McLeodganj (The Tribune, 24 January 2026)', url: 'https://www.tribuneindia.com/news/himachal/58-bus-routes-suspended-in-kangra-as-snowfall-blankets-mcleodganj/' },
@@ -390,7 +388,7 @@ Yes, if you like clear mountain views, quiet streets and cosy cafe afternoons. J
     excerpt: 'How much does a Dharamshala and McLeod Ganj trip really cost? Transport, hotels, food, Triund, paragliding and taxis, with sample 3-day budgets for backpackers, mid-range and comfort travellers.',
     content: `## How Much Does a Dharamshala Trip Cost?
 
-A 3-day trip to Dharamshala and McLeod Ganj from Delhi costs roughly **₹5,000-8,000 per person for a backpacker**, **₹13,000-21,000 per person for a mid-range traveller** and **₹30,000-50,000 or more per person for a comfort trip**, including return transport from Delhi. The two things that swing your budget most are how you travel from Delhi (overnight bus vs flight) and where you sleep (dorm vs boutique hotel). Food and local activities are comparatively cheap.
+**Short answer:** A 3-day trip to Dharamshala and McLeod Ganj from Delhi costs roughly **₹5,000-8,000 per person for a backpacker**, **₹13,000-21,000 per person for a mid-range traveller** and **₹30,000-50,000 or more per person for a comfort trip**, including return transport from Delhi. The two things that swing your budget most are how you travel from Delhi (overnight bus vs flight) and where you sleep (dorm vs boutique hotel). Food and local activities are comparatively cheap.
 
 Everything below is based on approx. prices as of 2026 for typical travel outside the Christmas and New Year week. Prices rise in peak periods (May-June, October, long weekends) and drop in the monsoon and in January-February.
 
@@ -751,7 +749,7 @@ Wherever you choose to stay, from lower [Dharamshala](/destinations/dharamshala)
     excerpt: 'Lower Dharamshala or McLeod Ganj? A local comparison for families, backpackers, spiritual seekers, cricket fans and nightlife lovers, plus Bhagsu, Dharamkot and Naddi alternatives.',
     content: `## Are Dharamshala and McLeod Ganj the same place?
 
-No. Dharamshala is the main town, at about 1,457 m. McLeod Ganj is its hilltop suburb, about 9 km up the road (around 4 km on the steep footpath) and spread from about 1,750 to 2,080 m. It is home to the Dalai Lama Temple and the Tibetan community.
+**Short answer:** No. Dharamshala is the main town, at about 1,457 m. McLeod Ganj is its hilltop suburb, about 9 km up the road (around 4 km on the steep footpath) and spread from about 1,750 to 2,080 m. It is home to the Dalai Lama Temple and the Tibetan community.
 
 Looking for McLeod Ganj itself, its streets, sights, cafes and day plans? See our full [McLeod Ganj guide](/blog/mcleod-ganj-complete-guide). This page is only about choosing where to stay.
 
@@ -867,7 +865,7 @@ Whichever you choose, you can [compare hotels in every area](/hotels) by price a
     read_time: 7,
     featured: false,
     meta_title: 'Dharamshala vs McLeod Ganj: Where to Stay in 2026',
-    meta_description: 'Dharamshala vs McLeod Ganj: which is better to stay in for families, backpackers, spiritual travellers and cricket fans, plus Bhagsu, Dharamkot and Naddi.',
+    meta_description: 'Not the same place: McLeod Ganj is Dharamshala’s hilltop suburb, about 9 km up. Stay up top for the temple and cafes, lower down for road access.',
     related_slugs: ['best-hotels-in-mcleod-ganj', 'best-hotels-in-dharamshala', 'how-to-reach-dharamshala'],
     faqs: [
       {

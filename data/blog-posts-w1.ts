@@ -10,7 +10,7 @@ export const blogPostsW1: BlogPost[] = [
     slug: 'bhagsu-travel-guide',
     title: 'Things to Do in Bhagsu: Waterfall, Temple & Cafés (2026)',
     excerpt: "Everything you need for Bhagsu near McLeod Ganj: the Bhagsunag temple and pools, the waterfall walk, the climb to Shiva Cafe, Upper Bhagsu's cafes and yoga, where to stay and what to skip.",
-    content: `Bhagsu (also written Bhagsunag or Bhagsu Nag) is a small village about **2 km east of McLeod Ganj's main square**, best known for the **Bhagsunag Shiva temple and its stone bathing pools**, the **Bhagsu waterfall** a 15 to 20 minute walk beyond it, and the hillside cafe, yoga and guesthouse scene of **Upper Bhagsu**. You can see the temple and waterfall in a relaxed half day from McLeod Ganj, but many travellers end up staying a week, because Bhagsu is cheaper, greener and slower than McLeod Ganj while still being a short walk from everything.
+    content: `**Short answer:** Bhagsu (also written Bhagsunag or Bhagsu Nag) is a small village about **2 km east of McLeod Ganj's main square**, best known for the **Bhagsunag Shiva temple and its stone bathing pools**, the **Bhagsu waterfall** a 15 to 20 minute walk beyond it, and the hillside cafe, yoga and guesthouse scene of **Upper Bhagsu**. You can see the temple and waterfall in a relaxed half day from McLeod Ganj, but many travellers end up staying a week, because Bhagsu is cheaper, greener and slower than McLeod Ganj while still being a short walk from everything.
 
 **Looking for a room?** Compare every [stay in Bhagsu](/destinations/bhagsu) side by side, or see [where to stay around Dharamshala](/blog/where-to-stay-in-dharamshala) area by area.
 
@@ -185,7 +185,7 @@ Bhagsu pairs well with a [Triund trek](/blog/triund-trek-complete-guide) (the tr
     slug: 'dharamkot-travel-guide',
     title: 'Things to Do in Dharamkot: Tushita, Gallu Devi & Trails (2026)',
     excerpt: "A local's guide to Dharamkot above McLeod Ganj: Upper vs Lower Dharamkot, Tushita and Dhamma Sikhara, the Gallu Devi start of the Triund trek, cafes, hostels, the Israeli backpacker scene and how to find the quiet side.",
-    content: `Dharamkot is a hillside village at roughly **2,100 m, about 3 km above McLeod Ganj**, known for three things: **meditation** (Tushita and the Dhamma Sikhara Vipassana centre are here), **the Triund trek** (the trail starts at Gallu Devi temple just above the village), and a long-running **backpacker and long-stay scene** of cafes, yoga shalas and cheap guesthouses that has been popular with Israeli travellers for decades. It is quieter and more forested than McLeod Ganj, with better mountain views, but the lanes are steep and many rooms can only be reached on foot.
+    content: `**Short answer:** Dharamkot is a hillside village at roughly **2,100 m, about 3 km above McLeod Ganj**, known for three things: **meditation** (Tushita and the Dhamma Sikhara Vipassana centre are here), **the Triund trek** (the trail starts at Gallu Devi temple just above the village), and a long-running **backpacker and long-stay scene** of cafes, yoga shalas and cheap guesthouses that has been popular with Israeli travellers for decades. It is quieter and more forested than McLeod Ganj, with better mountain views, but the lanes are steep and many rooms can only be reached on foot.
 
 **Looking for a room?** Compare every [stay in Dharamkot](/destinations/dharamkot) side by side, or see [where to stay around Dharamshala](/blog/where-to-stay-in-dharamshala) area by area.
 
@@ -359,7 +359,7 @@ Combine Dharamkot with a [Bhagsu stay or day](/blog/bhagsu-travel-guide), the [D
     slug: 'naddi-dal-lake-guide',
     title: 'Naddi Sunrise Point, Dharamshala: Dal Lake & Tota Rani (2026)',
     excerpt: 'An honest guide to Naddi and Dal Lake above Dharamshala: the Naddi viewpoint at sunrise and sunset, the real state of Dal Lake, Tota Rani village, the St. John in the Wilderness walk, Kunal Pathri and where to stay.',
-    content: `**If you are looking for the sunrise point in Dharamshala, it is the Naddi viewpoint** — a ridge above Naddi village, about **3 to 4 km west of McLeod Ganj** and a 10-minute drive up from it. There is no entry fee and no gate; you walk out onto the ridge. Arrive 20 to 30 minutes before sunrise, which means roughly **5:15 to 5:30 am in summer** and **6:30 to 6:45 am in winter**, and dress for cold even in May.
+    content: `**Short answer:** **If you are looking for the sunrise point in Dharamshala, it is the Naddi viewpoint** — a ridge above Naddi village, about **3 to 4 km west of McLeod Ganj** and a 10-minute drive up from it. There is no entry fee and no gate; you walk out onto the ridge. Arrive 20 to 30 minutes before sunrise, which means roughly **5:15 to 5:30 am in summer** and **6:30 to 6:45 am in winter**, and dress for cold even in May.
 
 **Looking for a room?** Compare every [stay in Naddi](/destinations/naddi) side by side, or see [where to stay around Dharamshala](/blog/where-to-stay-in-dharamshala) area by area.
 
@@ -538,7 +538,7 @@ Naddi works well with a [weekend in Dharamshala](/blog/dharamshala-weekend-itine
     slug: 'bir-travel-guide',
     title: 'Bir Travel Guide 2026: Beyond Paragliding, Monasteries, Billing & Where to Stay',
     excerpt: 'Bir is more than a paragliding launch. Our guide covers the Tibetan colony, Chokling and Sherab Ling monasteries, Deer Park Institute, cafes, Billing, the Rajgundha trek, tea gardens, how to reach from Dharamshala and where to stay.',
-    content: `**Bir** is a small Tibetan and Himachali village at roughly **1,400 m in the Kangra district, about 65 to 70 km (2 to 2.5 hours) east of Dharamshala**, world-famous as the landing site for paragliders launching from **Billing**, 14 km uphill. But people who stay a few days find a second Bir: a peaceful **Tibetan colony** with several **monasteries**, the **Deer Park Institute** for study and meditation, slow cafes, tea gardens and trails up to **Rajgundha** and beyond.
+    content: `**Short answer:** **Bir** is a small Tibetan and Himachali village at roughly **1,400 m in the Kangra district, about 65 to 70 km (2 to 2.5 hours) east of Dharamshala**, world-famous as the landing site for paragliders launching from **Billing**, 14 km uphill. But people who stay a few days find a second Bir: a peaceful **Tibetan colony** with several **monasteries**, the **Deer Park Institute** for study and meditation, slow cafes, tea gardens and trails up to **Rajgundha** and beyond.
 
 This guide covers Bir beyond the tandem flight: what to see, where to eat and stay, how to reach from Dharamshala, the best seasons and what to skip. Prices are approx. as of 2026. For flying, read our dedicated [Bir Billing paragliding guide](/blog/bir-billing-paragliding-guide).
 
@@ -703,7 +703,7 @@ Bir fits naturally into a [five-day Kangra Valley itinerary](/blog/five-day-kang
     featured: false,
     meta_title: 'Bir Travel Guide 2026: Monasteries, Billing & Where to Stay',
     meta_description: 'Bir travel guide 2026 beyond paragliding: Tibetan colony, Chokling and Sherab Ling, Deer Park Institute, cafes, Billing, Rajgundha, how to reach and stays.',
-    related_slugs: ['bir-billing-paragliding-guide', 'bir-billing-rajgundha-trek', 'palampur-travel-guide'],
+    related_slugs: ['bir-billing-paragliding-guide', 'bir-billing-rajgundha-trek', 'palampur-travel-guide', 'dharamshala-to-bir'],
     faqs: [
       { question: 'How far is Bir from Dharamshala?', answer: 'About 65 to 70 km, or 2 to 2.5 hours by taxi via Palampur and Baijnath. A one-way taxi costs approx. ₹3,000 to ₹4,500 per car as of 2026.' },
       { question: 'Is Bir worth visiting if I am not paragliding?', answer: 'Yes. Bir has a peaceful Tibetan colony, monasteries such as Chokling and Palpung Sherab Ling, the Deer Park Institute, good cafes, tea gardens and treks to Rajgundha.' },
@@ -721,7 +721,7 @@ Bir fits naturally into a [five-day Kangra Valley itinerary](/blog/five-day-kang
     slug: 'sidhbari-norbulingka-gyuto-guide',
     title: 'Sidhbari Guide 2026: Norbulingka Institute, Gyuto Monastery & Chamunda',
     excerpt: 'How to spend a half or full day in Sidhbari near Dharamshala: Norbulingka Institute and its arts workshops and doll museum, Gyuto Monastery and its Karmapa connection, Chinmaya Tapovan, and how to combine it all with Chamunda Devi.',
-    content: `**Sidhbari** is a quiet area **about 7 to 10 km south-east of Dharamshala**, on the way to Palampur, home to three very different places worth a half or full day: **Norbulingka Institute**, a centre preserving Tibetan arts with beautiful gardens and workshops; **Gyuto Monastery**, the seat of one of the great Tibetan tantric colleges and the former residence of the 17th Karmapa; and **Chinmaya Tapovan**, a Hindu ashram with a large Hanuman statue. With **Chamunda Devi** temple about 15 km from Dharamshala on the same side of the valley, this corner makes an ideal taxi day out.
+    content: `**Short answer:** **Sidhbari** is a quiet area **about 7 to 10 km south-east of Dharamshala**, on the way to Palampur, home to three very different places worth a half or full day: **Norbulingka Institute**, a centre preserving Tibetan arts with beautiful gardens and workshops; **Gyuto Monastery**, the seat of one of the great Tibetan tantric colleges and the former residence of the 17th Karmapa; and **Chinmaya Tapovan**, a Hindu ashram with a large Hanuman statue. With **Chamunda Devi** temple about 15 km from Dharamshala on the same side of the valley, this corner makes an ideal taxi day out.
 
 This guide explains what each place is, how long to spend, how to combine them in a sensible route, where to eat and stay, and what to skip. Prices are approx. as of 2026.
 

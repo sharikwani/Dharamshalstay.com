@@ -9,9 +9,7 @@ export const override: Partial<BlogPost> = {
     'A 2-3 day Dharamshala plan: Dalai Lama Temple and Bhagsu on day 1, Triund or Dharamkot on day 2, Norbulingka on day 3. Timings, Delhi bus tips and budget.',
   updated_at: '2026-10-07',
   tags: ['itinerary', 'weekend trip', 'dharamshala', 'mcleod ganj', 'travel planning', 'triund', '2 days in dharamshala', 'delhi to dharamshala'],
-  content: `## The Short Answer
-
-For a weekend in Dharamshala, **base yourself in McLeod Ganj** and keep it simple: **day 1** for the Dalai Lama Temple, the kora walk and Bhagsu waterfall, **day 2** for the Triund trek (or an easier Dharamkot and Naddi day), and, if you have a third day, **Norbulingka and Gyuto in Sidhbari** on your way out. From Delhi, the overnight Volvo on Friday night and back on Sunday night gives you two full days without using leave.
+  content: `**Short answer:** For a weekend in Dharamshala, **base yourself in McLeod Ganj** and keep it simple: **day 1** for the Dalai Lama Temple, the kora walk and Bhagsu waterfall, **day 2** for the Triund trek (or an easier Dharamkot and Naddi day), and, if you have a third day, **Norbulingka and Gyuto in Sidhbari** on your way out. From Delhi, the overnight Volvo on Friday night and back on Sunday night gives you two full days without using leave.
 
 Below are hour-by-hour plans for 2 and 3 days, how to get here from Delhi and Chandigarh, a realistic budget and versions for couples, families and trekkers, plus how the plan changes between summer and winter.
 
@@ -69,7 +67,7 @@ Useful reading: [Dalai Lama Temple timings and guide](/blog/dalai-lama-temple-gu
 | Time | Plan | Notes |
 |---|---|---|
 | 6:30 am | Early breakfast, taxi or walk to Gallu Devi temple above Dharamkot | Pack 2 litres of water, snacks, rain jacket, warm layer |
-| 7:00 am | Start trekking from Gallu Devi | Pay the forest entry fee (Rs.100) and the refundable Rs.500 waste deposit at the checkpost |
+| 7:00 am | Start trekking from Gallu Devi | Pay the forest entry fee (Rs.100); carry Rs.500 extra in cash in case the reported refundable waste deposit is collected |
 | 7:00-9:00 am | Gentle oak and rhododendron forest | Tea stalls on the way |
 | 9:00-11:30 am | Steeper, rocky final section to the ridge | About 6-7 km from Gallu Devi, 4-5 hours up at an easy pace |
 | 11:30 am-12:30 pm | Lunch on the Triund ridge (about 2,850 m) | Dhauladhar views up close |

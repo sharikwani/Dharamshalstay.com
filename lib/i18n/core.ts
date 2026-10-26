@@ -30,6 +30,9 @@ export const EN_ONLY_POSTS = [
   'kangra-slate-dharamshala',
   'kullu-dussehra-mela-2026',
   'dharamshala-film-festival-diff-2026',
+  'kangra-valley-carnival-2026', 'himachal-snowfall-tracker', 'manali-in-december-january', 'rohtang-pass-atal-tunnel-status',
+  'shimla-in-december-christmas-new-year', 'best-places-to-visit-in-himachal-in-winter', 'spiti-valley-in-winter', 'masroor-rock-cut-temple-guide',
+  'dharamshala-to-bir', 'pathankot-to-dharamshala', 'baijnath-temple-guide',
 ];
 
 /** English-only pages inside otherwise bilingual sections. */

@@ -7,7 +7,7 @@ export const blogPostsC: BlogPost[] = [
     slug: 'himachal-itinerary-delhi-dharamshala-manali',
     title: 'Himachal Itinerary: Delhi to Dharamshala, Bir & Manali in 7 or 10 Days (2026)',
     excerpt: 'A realistic day-by-day Himachal circuit from Delhi through Dharamshala, McLeod Ganj, Bir Billing and Manali, with drive times, transport options and where to stay, plus a 10-day version with Kasol or Shimla.',
-    content: `The classic Himachal circuit for first-timers is **Delhi → Dharamshala/McLeod Ganj → Bir Billing → Manali → Delhi**, and 7 days is the minimum to do it without spending the whole trip in a car. You get Tibetan culture and the Dhauladhar range in McLeod Ganj, paragliding and monasteries in Bir, and big snow peaks and the Atal Tunnel in Manali. With 10 days you can add Parvati Valley (Kasol) or end via Shimla.
+    content: `**Short answer:** The classic Himachal circuit for first-timers is **Delhi → Dharamshala/McLeod Ganj → Bir Billing → Manali → Delhi**, and 7 days is the minimum to do it without spending the whole trip in a car. You get Tibetan culture and the Dhauladhar range in McLeod Ganj, paragliding and monasteries in Bir, and big snow peaks and the Atal Tunnel in Manali. With 10 days you can add Parvati Valley (Kasol) or end via Shimla.
 
 Below is the exact route we suggest to guests, with honest road times. Himachal distances look short on a map, but mountain roads average 30 to 40 km/h, so every leg here is planned around daylight driving. All costs are approx. as of 2026.
 
@@ -142,7 +142,7 @@ For two people on a mid-range 7-day trip, a rough guide as of 2026: Volvo buses 
     featured: true,
     meta_title: 'Himachal Itinerary 7 & 10 Days: Delhi, Dharamshala, Manali',
     meta_description: 'Day-by-day Himachal itinerary from Delhi to Dharamshala, Bir Billing and Manali, with real drive times, transport options, costs and where to stay (2026).',
-    related_slugs: ['how-to-reach-dharamshala', 'bir-billing-paragliding-guide', 'dharamshala-weekend-itinerary'],
+    related_slugs: ['how-to-reach-dharamshala', 'bir-billing-paragliding-guide', 'dharamshala-weekend-itinerary', 'manali-in-december-january', 'best-places-to-visit-in-himachal-in-winter'],
     faqs: [
       {
         question: 'Is 7 days enough for Dharamshala and Manali?',
@@ -330,7 +330,7 @@ Most trekkers spend a night in Dharamshala or McLeod Ganj before setting off. [M
     slug: 'tibetan-food-mcleod-ganj',
     title: 'Tibetan Food in McLeod Ganj: Dishes to Try & Where to Eat (2026)',
     excerpt: 'A local guide to Tibetan food in McLeod Ganj: momos, thukpa, thenthuk, tingmo, shapaley, laphing and butter tea, with well-known places to eat, vegetarian tips and table etiquette.',
-    content: `McLeod Ganj is the best place in India to eat Tibetan food, because it is home to one of the largest Tibetan communities outside Tibet. The dishes to try are **momos, thukpa, thenthuk, tingmo, shapaley (sha phaley), laphing and butter tea**, and you will find them everywhere from family-run kitchens on Jogiwara Road to street carts near the main square.
+    content: `**Short answer:** McLeod Ganj is the best place in India to eat Tibetan food, because it is home to one of the largest Tibetan communities outside Tibet. The dishes to try are **momos, thukpa, thenthuk, tingmo, shapaley (sha phaley), laphing and butter tea**, and you will find them everywhere from family-run kitchens on Jogiwara Road to street carts near the main square.
 
 This guide explains what each dish actually is, how to order it, which long-running places locals and regular visitors point to, and what vegetarians should know. Prices are approx. as of 2026.
 
@@ -582,7 +582,7 @@ Not directly. **There is no railway station in Dharamshala or McLeod Ganj.** The
 2. Get off at **Kangra** (timetabled 09:09 or 11:09), after about 4 hours.
 3. Take a taxi or local bus up to Dharamshala or McLeod Ganj.
 
-It is cheap (about ₹50 for the train) and scenic, but slow. A [taxi](/taxi) from Pathankot to Dharamshala covers about 90 km in 2.5 to 3 hours (typically ₹2,500 to ₹3,500), so most travellers with luggage go by road and ride the train as a day trip instead.
+It is cheap (about ₹50 for the train) and scenic, but slow. A [taxi](/taxi) from Pathankot to Dharamshala covers about 90 km in 2.5 to 3 hours (our fixed fare is ₹3,200 in an Alto or ₹4,000 in a sedan), so most travellers with luggage go by road and ride the train as a day trip instead.
 
 **Pathankot Junction vs Pathankot Cantt:** the narrow-gauge trains start from **Pathankot Junction (PTK)**. Many long-distance broad-gauge trains towards Jammu stop only at **Pathankot Cantt** or **Chakki Bank**, which are separate stations a few kilometres away, so allow time for an auto or taxi between them. See [how to reach Dharamshala](/blog/how-to-reach-dharamshala) for the train options from Delhi.
 
@@ -672,7 +672,7 @@ Base yourself in [Dharamshala](/destinations/dharamshala) or [McLeod Ganj](/dest
     featured: false,
     meta_title: 'Kangra Toy Train: Running Now? Status & Timetable 2026',
     meta_description: 'Yes, partly: 4 of 7 Kangra toy train pairs run again since 11 Oct 2026. Timetable, stations, fares from ₹30, how to book and how to check live status.',
-    related_slugs: ['places-to-visit-in-kangra', 'palampur-travel-guide', 'how-to-reach-dharamshala', 'kangra-devi-temples-guide'],
+    related_slugs: ['places-to-visit-in-kangra', 'palampur-travel-guide', 'how-to-reach-dharamshala', 'kangra-devi-temples-guide', 'pathankot-to-dharamshala', 'baijnath-temple-guide'],
     sources: [
       { title: 'Connectivity to get a boost as four pairs of trains restored on Pathankot-Jogindernagar route (The Tribune, 12 Oct 2026)', url: 'https://www.tribuneindia.com/news/himachal/connectivity-to-get-a-boost-as-four-pairs-of-trains-restored-on-pathankot-jogindernagar-route' },
       { title: 'Rail services restored in Kangra valley; trains packed on the first day (Amar Ujala, 12 Oct 2026, Hindi)', url: 'https://www.amarujala.com/himachal-pradesh/kangra/rail-services-restored-in-kangra-valley-trains-packed-on-the-very-first-day-kangra-news-c-95-1-kng1037-260833-2026-10-11' },
@@ -730,7 +730,9 @@ Base yourself in [Dharamshala](/destinations/dharamshala) or [McLeod Ganj](/dest
     slug: 'kangra-devi-temples-guide',
     title: 'Kangra Devi Temples Guide: Chamunda, Brajeshwari, Jwalamukhi & Chintpurni Yatra (2026)',
     excerpt: 'Plan a Shakti temple yatra from Dharamshala: Chamunda Devi, Brajeshwari (Kangra Devi), Jwalamukhi and Chintpurni, plus notes on Naina Devi, with timings, route, a 1-2 day plan, dress and Navratri crowd tips.',
-    content: `The Kangra region is one of the most important Shakti pilgrimage areas in North India. From Dharamshala you can visit **Chamunda Devi, Brajeshwari Devi (Kangra Devi), Jwalamukhi and Chintpurni** in one long day or a relaxed two days by taxi. **Naina Devi** in Bilaspur district is often added to the same yatra, but it is about 165 km from Dharamshala, so it needs an extra day.
+    content: `**Short answer:** From Dharamshala you can visit **Chamunda Devi, Brajeshwari Devi (Kangra Devi), Jwalamukhi and Chintpurni** in one long day or a relaxed two days by taxi. Chamunda is the closest at 15-18 km and Brajeshwari is 18-20 km away, while Jwalamukhi is 55-60 km and Chintpurni 90-100 km. **Naina Devi** is about 165 km away and needs an extra day. Timings are approximate as of 2026, so confirm locally, especially on festival days.
+
+The Kangra region is one of the most important Shakti pilgrimage areas in North India. From Dharamshala you can visit **Chamunda Devi, Brajeshwari Devi (Kangra Devi), Jwalamukhi and Chintpurni** in one long day or a relaxed two days by taxi. **Naina Devi** in Bilaspur district is often added to the same yatra, but it is about 165 km from Dharamshala, so it needs an extra day.
 
 Below is the best route, distances, approximate darshan timings, a ready-made 1 and 2 day plan, and practical advice on dress, offerings and festival crowds, including **Sharad Navratri 2026 (11 to 19 October)**. Timings are approx. as of 2026 and change seasonally and on festival days, so confirm locally.
 
@@ -848,7 +850,7 @@ For the yatra, [Dharamshala town](/destinations/dharamshala) is the most practic
     featured: false,
     meta_title: 'Kangra Devi Temples Yatra: Chamunda, Jwalamukhi & More',
     meta_description: 'Plan a Kangra Devi temple yatra from Dharamshala: Chamunda, Brajeshwari, Jwalamukhi, Chintpurni and Naina Devi, with timings, route and Navratri 2026 tips.',
-    related_slugs: ['places-to-visit-in-kangra', 'kangra-toy-train-guide', 'places-to-visit-in-dharamshala'],
+    related_slugs: ['places-to-visit-in-kangra', 'kangra-toy-train-guide', 'places-to-visit-in-dharamshala', 'masroor-rock-cut-temple-guide', 'baijnath-temple-guide'],
     faqs: [
       {
         question: 'Can I visit Chamunda, Kangra Devi, Jwalamukhi and Chintpurni in one day?',

@@ -7,7 +7,9 @@ export const blogPostsW4: BlogPost[] = [
     slug: 'himachali-food-guide',
     title: 'Himachali Food Guide: Kangri Dham, Siddu, Babru & Where to Eat Them (2026)',
     excerpt: 'What to eat in Dharamshala beyond momos: Kangri dham, madra, mash dal, siddu, babru, chha gosht and trout, plus honest advice on where a visitor can actually taste real Himachali food.',
-    content: `Most visitors to Dharamshala eat momos, thukpa and cafe pasta for a week and leave without tasting a single Himachali dish. That is a shame, because the Kangra Valley has one of the most distinctive food traditions in the Himalaya: the **Kangri dham**, a feast cooked by hereditary cooks called **botis** and served on leaf plates to guests seated in rows on the floor. Around it sits a wider world of everyday hill food: **siddu** (stuffed steamed bread), **babru** (stuffed fried bread), **madra** (chickpeas in yoghurt), **mash dal** and **chha gosht** (mutton in buttermilk gravy).
+    content: `**Short answer:** The Himachali food to try is the **Kangri dham**, a vegetarian feast cooked by hereditary cooks called **botis** and served on leaf plates, alongside everyday dishes such as siddu, babru, madra, mash dal and chha gosht. Real Himachali food is mostly cooked at home, at weddings and at temple feasts, not in restaurants, so your best chances are village feasts, fairs and homestays that cook for you. A Himachali thali costs approx. **₹200–450** in a local restaurant (2026, check locally).
+
+Most visitors to Dharamshala eat momos, thukpa and cafe pasta for a week and leave without tasting a single Himachali dish. That is a shame, because the Kangra Valley has one of the most distinctive food traditions in the Himalaya: the **Kangri dham**, a feast cooked by hereditary cooks called **botis** and served on leaf plates to guests seated in rows on the floor. Around it sits a wider world of everyday hill food: **siddu** (stuffed steamed bread), **babru** (stuffed fried bread), **madra** (chickpeas in yoghurt), **mash dal** and **chha gosht** (mutton in buttermilk gravy).
 
 The honest catch is that real Himachali food is mostly cooked at home, at weddings and at temple feasts, not in restaurants. McLeod Ganj in particular is a Tibetan and backpacker food town. This guide tells you what each dish is, what is genuinely local to Kangra versus borrowed from other districts, and the realistic ways a traveller can taste it in 2026.
 
@@ -166,7 +168,9 @@ For more on the town itself, start with our [Dharamshala destination page](/dest
     slug: 'nightlife-bars-mcleod-ganj',
     title: 'Nightlife in McLeod Ganj: Bars, Live Music & Liquor Rules (2026)',
     excerpt: 'An honest guide to nightlife in McLeod Ganj and Dharamshala: what evenings are really like, rooftop bars and live music, closing times, dry days, drinking laws and how to get home safely.',
-    content: `If you are coming to McLeod Ganj expecting Goa or Kasol-style parties, adjust your expectations now. Nightlife here is **low-key**: rooftop restaurant-bars with Dhauladhar views, the occasional live music or open-mic night, a few places with a DJ on weekends in season, and a lot of people in cafes talking until the kitchen closes. Most of the town is quiet by around **10:30 to 11 pm**, and very few places stay open past midnight.
+    content: `**Short answer:** Nightlife in McLeod Ganj is **low-key**: rooftop restaurant-bars, the occasional live music or open-mic night and cafes, not clubs. Most of the town is quiet by about **10:30 to 11 pm**, last orders are usually around 10:30–11:30 pm, and the legal drinking age in Himachal Pradesh is **18**. Drinking in public is not allowed, and a beer in a bar costs approx. ₹250–450 (as of 2026, check locally).
+
+If you are coming to McLeod Ganj expecting Goa or Kasol-style parties, adjust your expectations now. Nightlife here is **low-key**: rooftop restaurant-bars with Dhauladhar views, the occasional live music or open-mic night, a few places with a DJ on weekends in season, and a lot of people in cafes talking until the kitchen closes. Most of the town is quiet by around **10:30 to 11 pm**, and very few places stay open past midnight.
 
 That is not a complaint. McLeod Ganj is the seat of the Tibetan government in exile and the home of the Dalai Lama, and the town's rhythm is set by monasteries, early-morning kora walks and trekkers getting up at dawn for [Triund](/blog/triund-trek-complete-guide). This guide gives you the honest picture: what a night out looks like, what the alcohol rules are in Himachal Pradesh, when bars close, how to stay safe walking back on dark hill lanes, and what to do instead if bars are not your thing.
 
@@ -311,7 +315,9 @@ If nightlife matters, stay central in [McLeod Ganj](/destinations/mcleod-ganj); 
     slug: 'kangra-painting-art-guide',
     title: 'Kangra Painting & Art Guide: Miniatures, Museums, Andretta & Norbulingka (2026)',
     excerpt: 'The story of Kangra miniature painting under Raja Sansar Chand, where to see it around Dharamshala, how to buy a genuine piece, and the art trail from Norbulingka thangkas to Andretta pottery.',
-    content: `**Kangra painting** is one of the great schools of Indian miniature art: tiny, luminous paintings of Krishna and Radha, lovers waiting in moonlit pavilions and lush green Himalayan landscapes, painted in mineral and vegetable colours with brushes so fine some had a single hair. It reached its peak in the late 18th and early 19th century under **Raja Sansar Chand Katoch** of Kangra, and its finest works now hang in museums from Delhi to Boston.
+    content: `**Short answer:** **Kangra painting** is a school of Pahari miniature art, in mineral and vegetable colours, that began at Guler in the early to mid 18th century and peaked under **Raja Sansar Chand** (ruled c. 1775–1823). Near Dharamshala you can see it at the **Kangra Art Museum** in Dharamshala town; Norbulingka (Tibetan thangka) and Andretta (pottery, Sobha Singh gallery) make a related art trail. Genuine miniatures start from a few thousand rupees for small works (approx., as of 2026).
+
+**Kangra painting** is one of the great schools of Indian miniature art: tiny, luminous paintings of Krishna and Radha, lovers waiting in moonlit pavilions and lush green Himalayan landscapes, painted in mineral and vegetable colours with brushes so fine some had a single hair. It reached its peak in the late 18th and early 19th century under **Raja Sansar Chand Katoch** of Kangra, and its finest works now hang in museums from Delhi to Boston.
 
 If you are staying in Dharamshala, you are in the heart of this tradition. This guide explains the history in plain language, where to see Kangra miniatures and other art around the valley (the Kangra Art Museum, Norbulingka for Tibetan art, and the Andretta artists' village with its pottery and the Sobha Singh gallery), how to tell a genuine hand-painted piece from a print, and where to look for workshops.
 
@@ -447,7 +453,9 @@ If you want a slower, creative trip, base yourself in [Dharamshala](/destination
     slug: 'gaddi-shepherds-culture',
     title: 'The Gaddi Shepherds of the Dhauladhar: Culture, Migration & Etiquette (2026)',
     excerpt: 'Who the Gaddi people are, how their flocks cross the Dhauladhar passes each year, what their dress and Shiva devotion mean, and how to meet shepherds respectfully on the trails around Dharamshala.',
-    content: `If you trek to Triund, Kareri Lake or Indrahar Pass, there is a good chance you will meet a **Gaddi shepherd**: a man in a long cream woollen coat tied at the waist with a thick black rope, walking behind hundreds of sheep and goats, with a big shaggy dog at his side. The **Gaddis** are the original people of the Dharamshala hills and of the Bharmour region of Chamba, and their seasonal migration over the Dhauladhar range is one of the oldest living traditions in the western Himalaya.
+    content: `**Short answer:** The **Gaddis** are a semi-pastoral community of Himachal Pradesh, the original people of the Dharamshala hills and of the Bharmour area of Chamba, numbering around **1.78 lakh** in the state (2011 Census). Their flocks move up to high pastures in summer and down to the Kangra and lower valleys in winter, so you may meet shepherds on the Triund, Kareri Lake and Indrahar Pass trails. They are Hindu with deep devotion to Shiva; meet them respectfully.
+
+If you trek to Triund, Kareri Lake or Indrahar Pass, there is a good chance you will meet a **Gaddi shepherd**: a man in a long cream woollen coat tied at the waist with a thick black rope, walking behind hundreds of sheep and goats, with a big shaggy dog at his side. The **Gaddis** are the original people of the Dharamshala hills and of the Bharmour region of Chamba, and their seasonal migration over the Dhauladhar range is one of the oldest living traditions in the western Himalaya.
 
 This guide explains who the Gaddis are, how and when their flocks move, what their clothing and beliefs mean, where their villages are around Dharamshala, how to meet shepherds respectfully on the trail and where to buy genuine Gaddi wool.
 
@@ -585,7 +593,9 @@ For broader shopping advice, see our [shopping in McLeod Ganj guide](/blog/shopp
     slug: 'festivals-events-calendar-dharamshala',
     title: 'Dharamshala Festivals & Events Calendar: Month by Month (2026–27)',
     excerpt: 'A month-by-month calendar of festivals and events in Dharamshala, McLeod Ganj and the Kangra Valley: Losar, Shivratri, Navratri, the Dalai Lama\'s birthday, DIFF, cricket and Bir paragliding, with variable dates clearly marked.',
-    content: `Dharamshala sits where two calendars meet. The **Tibetan Buddhist calendar** of McLeod Ganj brings Losar, Saga Dawa and the Dalai Lama's birthday; the **Hindu calendar** of the Kangra Valley brings Lohri, Shivratri, Holi, Navratri at the great Devi temples, Dussehra and Diwali. Add the **Dharamshala International Film Festival**, cricket at the HPCA Stadium and the autumn flying season at Bir Billing, and there is something happening in almost every month.
+    content: `**Short answer:** Dharamshala has something on in almost every month, from Losar (February-March) and Maha Shivratri (6 March 2027) to the Dalai Lama's birthday on **6 July**, Dussehra (20 October 2026) and Diwali (**8 November 2026**). The **Dharamshala International Film Festival** is confirmed for **29 October to 1 November 2026**. Most festivals follow lunar calendars, so dates move each year; check the exact date locally before you book.
+
+Dharamshala sits where two calendars meet. The **Tibetan Buddhist calendar** of McLeod Ganj brings Losar, Saga Dawa and the Dalai Lama's birthday; the **Hindu calendar** of the Kangra Valley brings Lohri, Shivratri, Holi, Navratri at the great Devi temples, Dussehra and Diwali. Add the **Dharamshala International Film Festival**, cricket at the HPCA Stadium and the autumn flying season at Bir Billing, and there is something happening in almost every month.
 
 The catch is that most of these festivals follow **lunar calendars**, so dates move every year. This calendar shows the typical month for each event, gives confirmed dates where we have them for late 2026 and early 2027, and clearly marks everything that varies. Always check the exact date locally before you book travel around a festival.
 
@@ -733,7 +743,7 @@ For more on the town itself, see our [McLeod Ganj destination page](/destination
     featured: false,
     meta_title: 'Dharamshala Festivals & Events Calendar (2026–27)',
     meta_description: 'Month-by-month festivals and events in Dharamshala and Kangra: Losar, Shivratri, Navratri, Dalai Lama\'s birthday, DIFF, Diwali, cricket and Bir, dates marked.',
-    related_slugs: ['losar-tibetan-festivals-guide', 'kangra-devi-temples-guide', 'best-time-to-visit-dharamshala'],
+    related_slugs: ['losar-tibetan-festivals-guide', 'kangra-devi-temples-guide', 'best-time-to-visit-dharamshala', 'kangra-valley-carnival-2026'],
     faqs: [
       { question: 'When is the Dharamshala International Film Festival in 2026?', answer: 'The 15th Dharamshala International Film Festival runs from 29 October to 1 November 2026 at the Tibetan Children\'s Village, Upper Dharamshala, according to the festival website. Book accommodation early as the town fills up.' },
       { question: 'When is Losar celebrated in McLeod Ganj?', answer: 'Losar, the Tibetan New Year, follows the Tibetan lunar calendar and usually falls in February or early March. In 2026 it was on 18 February. Check the exact 2027 date closer to the time, as many Tibetan shops and restaurants close for the first days.' },

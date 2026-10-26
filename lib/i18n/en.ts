@@ -397,7 +397,7 @@ export const en = {
     faqStopQ: 'Can I stop on the way?', faqStopA: 'Short stops for food, photos or a viewpoint are fine. For longer detours or sightseeing stops, tell us when booking so we can quote correctly.',
     routeH1: '{from} to {to} Taxi: Fare & Booking', fixedFrom: 'Fixed fare from', distance: 'Distance', onRequest: 'On request', driveTime: 'Drive time',
     varies: 'Varies', fareFrom: 'Fare from', faresByVehicle: 'Fares by vehicle', vehicle: 'Vehicle', seats: 'Seats', fare: 'Fare',
-    aboutRoute: 'About this route', included: 'Included', notIncluded: 'Not included', otherRoutes: 'Other taxi routes',
+    aboutRoute: 'About this route', routeGuides: 'Guides for this route', included: 'Included', notIncluded: 'Not included', otherRoutes: 'Other taxi routes',
     planning: 'Planning the whole trip?', bookThis: 'Book this taxi', bookThisSub: 'Share your date and pickup time -- we confirm quickly.',
   },
   blog: {

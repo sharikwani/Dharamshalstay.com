@@ -7,7 +7,7 @@ export const blogPostsW13: BlogPost[] = [
     slug: 'dharamshala-3-day-itinerary',
     title: 'Dharamshala 3-Day Itinerary: McLeod Ganj, Triund & Naddi',
     excerpt: 'Two tested 3-day plans for Dharamshala and McLeod Ganj: one for temples, the Tibet Museum, Bhagsu, Dharamkot and Naddi, and one with a night camping on Triund. Timings, transport, where to sleep and costs for a couple.',
-    content: `**Three days is enough for Dharamshala** if you base yourself in McLeod Ganj and keep the plan local: the Dalai Lama Temple and kora, Bhagsu, Dharamkot, a Naddi sunset and the Tibetan institutions further down the hill, with time left for long café lunches. It is also exactly the right length for a night camping on Triund. It will not stretch to Bir and Palampur as well without living in a car.
+    content: `**Short answer:** **Three days is enough for Dharamshala** if you base yourself in McLeod Ganj and keep the plan local: the Dalai Lama Temple and kora, Bhagsu, Dharamkot, a Naddi sunset and the Tibetan institutions further down the hill, with time left for long café lunches. It is also exactly the right length for a night camping on Triund. It will not stretch to Bir and Palampur as well without living in a car.
 
 Below are two versions of the same three days:
 
@@ -110,7 +110,7 @@ For anyone reasonably fit who wants one mountain night. **Triund** is a grassy r
 
 ### Day 2: Up to Triund
 
-**Morning (7:30–9 am).** Breakfast, then walk 20–30 minutes up to **Gallu Devi temple**, where the forest trail begins. At the forest checkpost, pay the entry fee (₹100 per person per day, 2024 revision; check locally) and the **₹500 refundable waste deposit** each, collected since 11 August 2026. Bring all your non-biodegradable waste back down to get it refunded. Carry cash and photo ID.
+**Morning (7:30–9 am).** Breakfast, then walk 20–30 minutes up to **Gallu Devi temple**, where the forest trail begins. At the forest checkpost, pay the entry fee (₹100 per person per day, 2024 revision; check locally) and carry ₹500 extra each in cash: a refundable waste deposit was reported in August 2026 but we could not find an official notice. Bring all your non-biodegradable waste back down. Carry cash and photo ID.
 
 **Late morning to early afternoon (9 am–2 pm).** Climb through oak and rhododendron forest past tea stalls to Magic View cafe, then up the steeper final section to the ridge. In May and June, aim to arrive before afternoon storms. Carry about 2 litres of water each.
 
@@ -146,7 +146,7 @@ For anyone reasonably fit who wants one mountain night. **Triund** is a grassy r
 > | Local taxis (Version A, incl. day 3 loop) | Walk plus buses, approx. ₹600–1,200 | Approx. ₹3,000–5,000 | Approx. ₹6,000–10,000 |
 > | Delhi return by bus, two people | Non-AC, approx. ₹3,000–4,000 | AC Volvo, approx. ₹5,600–8,000 | Flights instead, approx. ₹16,000–32,000 |
 >
-> **Version B changes:** you pay for one room night instead of two. For Triund, budget either about ₹2,000–4,000 per person for a camping package (tent, sleeping bag, dinner, breakfast, guide), or our guided [Triund trek](/treks/triund-trek) from ₹1,500 per person. On top, each person pays the ₹100 entry fee and a ₹500 refundable waste deposit at the checkpost. Camping has been about ₹550 per two-person tent including entry where the cap allows, but treat that as indicative.
+> **Version B changes:** you pay for one room night instead of two. For Triund, budget either about ₹2,000–4,000 per person for a camping package (tent, sleeping bag, dinner, breakfast, guide), or our guided [Triund trek](/treks/triund-trek) from ₹1,500 per person. On top, each person pays the ₹100 entry fee, and should carry ₹500 extra in cash in case a reported refundable waste deposit (no official notice found) is collected. Camping has been about ₹550 per two-person tent including entry where the cap allows, but treat that as indicative.
 >
 > **Airport transfer:** about ₹1,500 (Alto) or ₹1,800 (Swift Dzire sedan) per car each way between Gaggal and McLeod Ganj.
 
@@ -202,7 +202,7 @@ For rooms by area, see the [hotels page](/hotels).`,
       },
       {
         question: 'Can Triund be done in a day?',
-        answer: 'Yes. From Gallu Devi temple above Dharamkot it is about 6–7 km one way, 3–5 hours up and 2–3 hours down, so start by 7–8 am and you are back by mid-afternoon. Each person pays a ₹100 entry fee and a ₹500 refundable waste deposit at the checkpost; check current rules locally.',
+        answer: 'Yes. From Gallu Devi temple above Dharamkot it is about 6–7 km one way, 3–5 hours up and 2–3 hours down, so start by 7–8 am and you are back by mid-afternoon. Each person pays a ₹100 entry fee; a ₹500 refundable waste deposit was reported in August 2026 but we could not find an official notice, so carry extra cash and check locally.',
       },
       {
         question: 'What is the best order to see McLeod Ganj, Triund and Naddi?',

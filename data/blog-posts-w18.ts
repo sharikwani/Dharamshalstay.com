@@ -7,7 +7,9 @@ export const blogPostsW18: BlogPost[] = [
     slug: 'tibet-museum-dharamshala-guide',
     title: 'Tibet Museum, Dharamshala: Timings, Ticket & New Location',
     excerpt: 'The Tibet Museum is no longer in the Dalai Lama Temple complex. Since February 2022 it has been at the Central Tibetan Administration in Gangchen Kyishong. Timings, ticket price, closed days, what you will see and how to get there.',
-    content: `The **Tibet Museum** is the museum of the Central Tibetan Administration (CTA), and it is the best single place in Dharamshala to understand why there is a Tibetan town on this hillside at all. One thing has changed that many maps, blogs and even some hotel desks have not caught up with: **the museum is no longer in the Tsuglagkhang (Dalai Lama Temple) complex in McLeod Ganj.** It moved down the hill to the CTA campus at **Gangchen Kyishong**, where the new museum was inaugurated on 9 February 2022.
+    content: `**Short answer:** The Tibet Museum is at **Gangchen Kyishong** (the CTA campus, between lower Dharamshala and McLeod Ganj), not in the Tsuglagkhang complex where it used to be; the new museum opened on 9 February 2022. It is open 9 am to 5 pm, closed 1 pm to 2 pm and on Saturdays, and a ticket is **Rs 20** for adults (checked October 2026). Allow 1 to 1.5 hours.
+
+The **Tibet Museum** is the museum of the Central Tibetan Administration (CTA), and it is the best single place in Dharamshala to understand why there is a Tibetan town on this hillside at all. One thing has changed that many maps, blogs and even some hotel desks have not caught up with: **the museum is no longer in the Tsuglagkhang (Dalai Lama Temple) complex in McLeod Ganj.** It moved down the hill to the CTA campus at **Gangchen Kyishong**, where the new museum was inaugurated on 9 February 2022.
 
 If someone tells you it is "next to the temple", they are describing the old museum. Go to Gangchen Kyishong instead.
 

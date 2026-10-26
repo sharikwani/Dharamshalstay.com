@@ -7,7 +7,9 @@ export const blogPostsW8: BlogPost[] = [
     slug: 'dalhousie-khajjiar-from-dharamshala',
     title: 'Dalhousie & Khajjiar from Dharamshala: Route, Day Trip or Overnight (2026)',
     excerpt: 'How to do Dalhousie and Khajjiar from Dharamshala: the road route, honest drive times, whether a day trip works, what to see, adding Chamba, and winter road conditions.',
-    content: `Dalhousie is roughly **115–125 km from Dharamshala**, about **4 to 4.5 hours by road** via Shahpur, Nurpur and Banikhet. Khajjiar, the meadow people call "Mini Switzerland", is another **22–24 km (about 1 hour)** beyond Dalhousie. That means a same-day Dharamshala → Dalhousie → Khajjiar → Dharamshala loop is around 280 km and 9 to 10 hours in the car. It is possible, but it is a tiring day where you see Khajjiar for an hour and Dalhousie through a windscreen.
+    content: `**Short answer:** Dalhousie is roughly **115–125 km from Dharamshala**, about **4 to 4.5 hours by road**, and Khajjiar is another 22–24 km beyond. A same-day loop is around 280 km and 9 to 10 hours in the car, so we recommend an overnight stay. A sedan taxi from Dharamshala is approx. ₹5,500–7,000 for a day trip or ₹8,000–11,000 for two days.
+
+Dalhousie is roughly **115–125 km from Dharamshala**, about **4 to 4.5 hours by road** via Shahpur, Nurpur and Banikhet. Khajjiar, the meadow people call "Mini Switzerland", is another **22–24 km (about 1 hour)** beyond Dalhousie. That means a same-day Dharamshala → Dalhousie → Khajjiar → Dharamshala loop is around 280 km and 9 to 10 hours in the car. It is possible, but it is a tiring day where you see Khajjiar for an hour and Dalhousie through a windscreen.
 
 Our honest advice: **do it as an overnight (or two nights)**. Stay one night in Dalhousie or Khajjiar, see Khajjiar in the soft morning light before the crowds, and either return to Dharamshala or continue to Chamba. Below is the full route, a day-trip plan for people who are short on time, what is actually worth seeing, and how winter snow changes everything. Distances, times and costs are approx. as of 2026.
 
@@ -157,7 +159,7 @@ Dalhousie–Khajjiar works well at the start or end of a Kangra trip because it 
     featured: false,
     meta_title: 'Dalhousie & Khajjiar from Dharamshala: Route & Plan 2026',
     meta_description: 'Dharamshala to Dalhousie and Khajjiar: route, distance, drive times, day trip vs overnight, Chamba extension, taxi costs and winter road conditions.',
-    related_slugs: ['five-day-kangra-valley-itinerary', 'places-to-visit-in-kangra', 'dharamshala-in-winter-snowfall'],
+    related_slugs: ['five-day-kangra-valley-itinerary', 'places-to-visit-in-kangra', 'dharamshala-in-winter-snowfall', 'best-places-to-visit-in-himachal-in-winter'],
     faqs: [
       {
         question: 'How far is Dalhousie from Dharamshala?',
@@ -186,7 +188,9 @@ Dalhousie–Khajjiar works well at the start or end of a Kangra trip because it 
     slug: 'barot-valley-guide',
     title: 'Barot Valley Guide 2026: Uhl River, Trout, Haulage Trolley & How to Reach',
     excerpt: 'A complete guide to Barot Valley in Mandi district: reaching from Bir and Dharamshala, the Uhl river and trout farm, the Shanan haulage trolley story, stays, and the trek link to Rajgundha.',
-    content: `Barot is a small river village at about **1,830 m** in Mandi district, set on the **Uhl river** where the Dhauladhar foothills close in on both sides. It is roughly **2–2.5 hours (approx. 60–65 km) from Bir** and **4–4.5 hours (approx. 125–135 km) from Dharamshala**, via Joginder Nagar. People come for the river, trout, deodar forest, the Nargu Wildlife Sanctuary across the water, and the history of one of India's oldest hydroelectric projects.
+    content: `**Short answer:** Barot is a small river village at about **1,830 m** on the Uhl river in Mandi district, roughly 4 to 4.5 hours (approx. 125–135 km) from Dharamshala via Joginder Nagar and 2 to 2.5 hours from Bir. It suits quiet riverside walks, fresh trout and forest, and is best in April–June and late September–November. As of 2026 the famous haulage trolley is **not operating for tourists**.
+
+Barot is a small river village at about **1,830 m** in Mandi district, set on the **Uhl river** where the Dhauladhar foothills close in on both sides. It is roughly **2–2.5 hours (approx. 60–65 km) from Bir** and **4–4.5 hours (approx. 125–135 km) from Dharamshala**, via Joginder Nagar. People come for the river, trout, deodar forest, the Nargu Wildlife Sanctuary across the water, and the history of one of India's oldest hydroelectric projects.
 
 If you are expecting a buzzing hill station, Barot is not that. It is a place to sit by the river, walk to villages, eat fresh trout and sleep in near-total quiet. Below: how to get there, what is actually open, the truth about the famous haulage trolley, where to stay and how Barot links with the Bir–Billing–Rajgundha trek. Times and prices are approx. as of 2026.
 
@@ -369,7 +373,9 @@ Food here is simple and local. Expect dal, rajma, seasonal vegetables, rice and 
     slug: 'pong-dam-bird-sanctuary-guide',
     title: 'Pong Dam Bird Sanctuary Guide 2026: Migratory Birds, Best Spots & Day Trip',
     excerpt: 'Everything you need to visit Pong Dam (Maharana Pratap Sagar) from Dharamshala: when the migratory birds arrive, species to look for, the best viewing spots, Ransar island, permits and a day-trip plan.',
-    content: `Pong Dam Lake, officially **Maharana Pratap Sagar**, is a huge reservoir on the Beas river in Kangra district and one of North India's most important wetlands for wintering birds. It is a **Ramsar site (since 2002)** and a wildlife sanctuary, and in a good winter it hosts **well over a lakh (100,000+) waterbirds**, led by thousands of **bar-headed geese** that fly over the Himalaya from Central Asia and Tibet.
+    content: `**Short answer:** Pong Dam Lake (Maharana Pratap Sagar) is a **Ramsar wetland (since 2002)** and wildlife sanctuary on the Beas, about 55–65 km (1.5–2 hours) from Dharamshala, and hosts well over a lakh (100,000+) waterbirds in a good winter. The season is roughly **November to March**, with the peak in December–February, led by bar-headed geese. Shorelines are open, but boats, rest houses and restricted zones need permission.
+
+Pong Dam Lake, officially **Maharana Pratap Sagar**, is a huge reservoir on the Beas river in Kangra district and one of North India's most important wetlands for wintering birds. It is a **Ramsar site (since 2002)** and a wildlife sanctuary, and in a good winter it hosts **well over a lakh (100,000+) waterbirds**, led by thousands of **bar-headed geese** that fly over the Himalaya from Central Asia and Tibet.
 
 From Dharamshala the nearest good birding shores are about **55–65 km (1.5–2 hours)** away, so it is an easy day trip. The season that matters is **November to March**, with the peak in **December–February**. Outside that window you will see a beautiful lake but far fewer birds. This guide covers when to go, where to stand, what you will see, permits, boats, Ransar island and a realistic day plan. Prices and times are approx. as of 2026.
 
@@ -531,7 +537,7 @@ If you are planning a wider winter trip, read [Dharamshala in winter](/blog/dhar
     featured: false,
     meta_title: 'Pong Dam Bird Sanctuary Guide 2026: Season & Spots',
     meta_description: 'Pong Dam (Maharana Pratap Sagar) bird sanctuary guide: migratory bird season, species, best viewing spots, Ransar island, permits and a Dharamshala day trip.',
-    related_slugs: ['places-to-visit-in-kangra', 'five-day-kangra-valley-itinerary', 'dharamshala-in-winter-snowfall'],
+    related_slugs: ['places-to-visit-in-kangra', 'five-day-kangra-valley-itinerary', 'dharamshala-in-winter-snowfall', 'masroor-rock-cut-temple-guide'],
     faqs: [
       {
         question: 'When is the best time to see birds at Pong Dam?',
@@ -560,7 +566,7 @@ If you are planning a wider winter trip, read [Dharamshala in winter](/blog/dhar
     slug: 'dharamshala-christmas-new-year',
     title: 'Christmas in Dharamshala & McLeod Ganj 2026: Church, Crowds, Tips',
     excerpt: 'Planning Christmas or New Year in Dharamshala? Crowds, snow chances, prices and when to book, St John in the Wilderness, what is open for parties, traffic, weather and quieter alternatives.',
-    content: `Christmas and New Year are among the **busiest weeks of the year** in Dharamshala and McLeod Ganj. This guide focuses on Christmas week; for New Year's Eve itself, the traffic plan and a 30 December to 2 January trip, see our [New Year in McLeod Ganj guide](/blog/new-year-in-mcleod-ganj). From about **December 23 to January 2**, hotel rates typically rise **1.5 to 2.5 times**, the McLeod Ganj road jams in the evenings, and good rooms sell out weeks in advance. In return you get crisp, clear days with the Dhauladhar fully snow-covered, a festive atmosphere in the cafes, a Christmas service at the historic **St John in the Wilderness** church, and New Year's Eve parties ranging from rooftop dinners to bonfire nights.
+    content: `**Short answer:** Christmas and New Year are among the **busiest weeks of the year** in Dharamshala and McLeod Ganj. This guide focuses on Christmas week; for New Year's Eve itself, the traffic plan and a 30 December to 2 January trip, see our [New Year in McLeod Ganj guide](/blog/new-year-in-mcleod-ganj). From about **December 23 to January 2**, hotel rates typically rise **1.5 to 2.5 times**, the McLeod Ganj road jams in the evenings, and good rooms sell out weeks in advance. In return you get crisp, clear days with the Dhauladhar fully snow-covered, a festive atmosphere in the cafes, a Christmas service at the historic **St John in the Wilderness** church, and New Year's Eve parties ranging from rooftop dinners to bonfire nights.
 
 Looking for a Christmas or New Year party to book? See [New Year and Christmas parties in McLeod Ganj and Dharamshala](/new-year-parties).
 
@@ -719,7 +725,7 @@ Booking questions are answered in our [FAQ](/faq).`,
     featured: false,
     meta_title: 'Christmas in Dharamshala & McLeod Ganj 2026: Guide',
     meta_description: 'Christmas in Dharamshala and McLeod Ganj: St John church, crowds, real snow chances, hotel prices and booking, what is open, traffic and quieter alternatives.',
-    related_slugs: ['dharamshala-in-winter-snowfall', 'nightlife-bars-mcleod-ganj', 'naddi-dal-lake-guide'],
+    related_slugs: ['dharamshala-in-winter-snowfall', 'nightlife-bars-mcleod-ganj', 'naddi-dal-lake-guide', 'kangra-valley-carnival-2026'],
     faqs: [
       {
         question: 'Does it snow in McLeod Ganj at Christmas?',

@@ -7,7 +7,9 @@ export const blogPostsW9: BlogPost[] = [
     slug: 'dharamshala-complete-travel-guide',
     title: 'Dharamshala Travel Guide 2026: The Complete Local Handbook',
     excerpt: "Everything you need to plan a Dharamshala and McLeod Ganj trip in 2026: which area to stay in, when to go, how to get there and around, the sights and treks worth your time, food, costs, safety and ready-made itineraries.",
-    content: `Dharamshala is not one place but a stack of them: a busy Indian hill town at the bottom, the Tibetan exile town of **McLeod Ganj** about 9 km up the mountain, and a ring of smaller villages (**Bhagsu**, **Dharamkot**, **Naddi**, **Forsyth Ganj**) above that, all under the 4,000 m-plus wall of the **Dhauladhar range**. Below them spreads the Kangra Valley, with its forts, temples, tea gardens and the paragliding hills of Bir. Get the geography right and almost every other decision (where to stay, how to get around, what you can see in two or three days) falls into place.
+    content: `**Short answer:** Dharamshala is a stack of places: lower Dharamshala (approx. 1,250 to 1,450 m), the Tibetan town of **McLeod Ganj** (approx. 2,000 m) about 9 km above it, and villages such as Bhagsu, Dharamkot and Naddi higher up. The best months are March to June and late September to November. Allow 3 days minimum, or 5 to 7 with the Kangra Valley and Bir; Delhi is approx. 475 to 500 km (10 to 12 hours) by road.
+
+Dharamshala is not one place but a stack of them: a busy Indian hill town at the bottom, the Tibetan exile town of **McLeod Ganj** about 9 km up the mountain, and a ring of smaller villages (**Bhagsu**, **Dharamkot**, **Naddi**, **Forsyth Ganj**) above that, all under the 4,000 m-plus wall of the **Dhauladhar range**. Below them spreads the Kangra Valley, with its forts, temples, tea gardens and the paragliding hills of Bir. Get the geography right and almost every other decision (where to stay, how to get around, what you can see in two or three days) falls into place.
 
 This is our master guide. It covers the whole picture in one read: areas, history, seasons, transport, stays by budget, sights, treks, culture, food, shopping, costs, safety and sample itineraries. Every section ends with links to the deeper guides we have written on that topic, so treat this page as the hub and dive in wherever you need detail. Prices are approximate and as of 2026; anything that changes often (trek fees, flight schedules, the ropeway, temple timings) is flagged with "check locally".
 
@@ -299,7 +301,9 @@ The best Dharamshala trips are slow. Pick one base, walk a lot, eat at the small
     slug: 'mcleod-ganj-complete-guide',
     title: 'McLeod Ganj Complete Guide (2026): Streets, Sights, Food, Stays and Day Plans',
     excerpt: "The definitive McLeod Ganj guide: how the town is laid out street by street, Tibetan life and etiquette, sights, cafes and food, where to stay, the best walks, local rules and ready-made day plans.",
-    content: `McLeod Ganj (also written McLeodganj, and called "Little Lhasa" or Upper Dharamshala) is the small, steep Tibetan town above Dharamshala where the 14th Dalai Lama has lived since 1960. In practical terms it is a hub of about half a dozen lanes radiating from one crowded main square, wrapped around a hill, with the Tsuglagkhang temple at the bottom of one lane, the Bhagsu and Dharamkot villages above another, and forest walks in every direction. You can cross the centre on foot in ten minutes, yet still find something new on a tenth visit.
+    content: `**Short answer:** McLeod Ganj is the small, steep Tibetan town at approx. **2,000 m** where the 14th Dalai Lama has lived since 1960, about 9 to 10 km by road above lower Dharamshala and approx. 18 km (45 minutes by taxi) from Gaggal airport. Its heart is the Tsuglagkhang Complex (free entry) and the 30 to 45 minute Lingkhor kora. It is walkable but steep, and best for first-timers, culture, food and access to Bhagsu, Dharamkot, Naddi and Triund.
+
+McLeod Ganj (also written McLeodganj, and called "Little Lhasa" or Upper Dharamshala) is the small, steep Tibetan town above Dharamshala where the 14th Dalai Lama has lived since 1960. In practical terms it is a hub of about half a dozen lanes radiating from one crowded main square, wrapped around a hill, with the Tsuglagkhang temple at the bottom of one lane, the Bhagsu and Dharamkot villages above another, and forest walks in every direction. You can cross the centre on foot in ten minutes, yet still find something new on a tenth visit.
 
 This guide is the deep dive. It explains how the streets connect (the thing that confuses every first-timer), what daily Tibetan life looks like and how to fit in, every sight that is worth your time, where and what to eat, which area of town to sleep in, the walks you can do from your hotel door, the rules locals expect you to know, and three day plans. For the wider region (Kangra Valley, Bir, Palampur), see our [complete Dharamshala travel guide](/blog/dharamshala-complete-travel-guide). Prices are approximate and as of 2026.
 
@@ -612,7 +616,9 @@ Yes, if you take it on its own terms. It is not a pristine village; it is a crow
     slug: 'photography-spots-sunset-points-dharamshala',
     title: 'Best Photography Spots and Sunset Points in Dharamshala (2026)',
     excerpt: "Where and when to shoot in Dharamshala and McLeod Ganj: the best sunrise, sunset and Dhauladhar viewpoints, timings by season, monastery photo etiquette, drone rules and dark-sky spots for astrophotography.",
-    content: `The best sunset point in Dharamshala is **Naddi viewpoint**, where the last light turns the Dhauladhar peaks pink and gold while the valley below goes blue. For sunrise, go to **Triund** (if you camp legally or start in the dark) or, closer to town, the upper lanes of **Dharamkot**. For the most iconic single frame, it is the **HPCA cricket stadium** with snow peaks behind the stands, shot in the morning on a clear winter or autumn day. Season matters more than gear here: October to February gives crisp, haze-free air, while summer brings dust and forest-fire haze and the monsoon hides the mountains for weeks.
+    content: `**Short answer:** The best sunset point in Dharamshala is **Naddi viewpoint**, about 3 to 4 km from McLeod Ganj past Dal Lake, where the snow takes warm alpenglow for 10 to 20 minutes after the valley falls into shadow. For sunrise, go to Triund (about 2,850 m) or the upper lanes of Dharamkot. The clearest air is mid-October to February; sunset is around 7.30 pm in June and 5.30 pm in December.
+
+The best sunset point in Dharamshala is **Naddi viewpoint**, where the last light turns the Dhauladhar peaks pink and gold while the valley below goes blue. For sunrise, go to **Triund** (if you camp legally or start in the dark) or, closer to town, the upper lanes of **Dharamkot**. For the most iconic single frame, it is the **HPCA cricket stadium** with snow peaks behind the stands, shot in the morning on a clear winter or autumn day. Season matters more than gear here: October to February gives crisp, haze-free air, while summer brings dust and forest-fire haze and the monsoon hides the mountains for weeks.
 
 Below is a local photographer's guide to the area: a ranked list of viewpoints with timings, how the light changes through the year, etiquette at monasteries and temples, the honest situation with drones, and where to go for the night sky. Times are approximate; check a sun-tracking app for your exact date.
 
@@ -803,7 +809,9 @@ Planning tips:
     slug: 'dharamshala-in-summer',
     title: 'Dharamshala in Summer (May to June 2026): Weather, Crowds, Prices and Tips',
     excerpt: "What Dharamshala and McLeod Ganj are really like in May and June: temperatures in the hills versus the plains, crowds and traffic, hotel prices, the best things to do, pre-monsoon storms and how to book smart.",
-    content: `Summer in Dharamshala means **May and June**, and it is the busiest time of the year. Days in McLeod Ganj are pleasantly warm (roughly 18 to 30 C), nights are cool enough for a light jacket, and the Dhauladhar still carries patches of snow, while the plains of Punjab, Haryana and Delhi swelter at 40 C and above. That contrast is exactly why the town fills up: expect higher hotel prices, weekend traffic jams in McLeod Ganj and Bhagsu, and a crowded Triund trail. Book early, travel midweek, stay in the upper villages or Naddi, and start everything early in the day, and summer here is genuinely lovely.
+    content: `**Short answer:** Summer in Dharamshala means **May and June**, the busiest and most expensive time of year outside Christmas and New Year week. McLeod Ganj is pleasant at approx. 20 to 28 C by day, lower Dharamshala is warmer (approx. 26 to 33 C), and the plains commonly reach 40 to 45 C. Travel midweek and start early; thunderstorms build in late June before the monsoon usually arrives in late June or early July.
+
+Summer in Dharamshala means **May and June**, and it is the busiest time of the year. Days in McLeod Ganj are pleasantly warm (roughly 18 to 30 C), nights are cool enough for a light jacket, and the Dhauladhar still carries patches of snow, while the plains of Punjab, Haryana and Delhi swelter at 40 C and above. That contrast is exactly why the town fills up: expect higher hotel prices, weekend traffic jams in McLeod Ganj and Bhagsu, and a crowded Triund trail. Book early, travel midweek, stay in the upper villages or Naddi, and start everything early in the day, and summer here is genuinely lovely.
 
 This guide covers the weather reality (including the difference between lower Dharamshala and McLeod Ganj), crowds and prices, what is at its best in summer, what to skip, the pre-monsoon storms in late June, and practical booking tips. Prices are approximate and as of 2026.
 
@@ -981,7 +989,9 @@ For a fuller plan, see the [five-day Kangra Valley itinerary](/blog/five-day-kan
     slug: 'first-time-visitor-tips-mistakes',
     title: '27 Mistakes First-Time Visitors Make in Dharamshala (and How to Avoid Them)',
     excerpt: "Staying in the wrong area, driving into McLeod Ganj on a Saturday, starting Triund at noon, running out of cash, feeding monkeys: the most common first-timer mistakes in Dharamshala and the simple fixes locals use.",
-    content: `Most first-time visitors to Dharamshala make the same handful of mistakes: they book a hotel in the wrong part of town, try to drive through McLeod Ganj on a weekend, start the Triund trek far too late, rely on a single ATM, and treat the monkeys as a photo opportunity until one steals their lunch. None of these ruin a trip, but each costs time, money or comfort. The fixes are simple once you know them.
+    content: `**Short answer:** The most common first-time mistakes in Dharamshala are booking in lower Dharamshala expecting the Tibetan vibe, driving into McLeod Ganj on weekends, starting the Triund trek at 10 am or later, and relying on cards and one ATM. The fixes: stay in **McLeod Ganj, Dharamkot, Bhagsu or Naddi**, park at the hotel and walk, be on the trail by **7 am**, and carry cash and use UPI. This guide lists 27 mistakes with a practical fix for each.
+
+Most first-time visitors to Dharamshala make the same handful of mistakes: they book a hotel in the wrong part of town, try to drive through McLeod Ganj on a weekend, start the Triund trek far too late, rely on a single ATM, and treat the monkeys as a photo opportunity until one steals their lunch. None of these ruin a trip, but each costs time, money or comfort. The fixes are simple once you know them.
 
 We are locals who host travellers every week, and these are the 27 mistakes we see most often, grouped by stage of the trip, each with a practical fix. Prices and rules are approximate and as of 2026; anything that changes often is marked "check locally".
 
@@ -1206,7 +1216,7 @@ Read our [complete Dharamshala travel guide](/blog/dharamshala-complete-travel-g
     slug: 'budget-hotels-in-dharamshala',
     title: 'Budget Hotels in Dharamshala 2026: Compare Affordable Stays',
     excerpt: 'A practical shortlist of budget hotels, guesthouses and hostels in Dharamshala, McLeod Ganj, Bhagsu, Dharamkot and Naddi, with prices we checked on MakeMyTrip, EaseMyTrip, Booking.com and Hostelworld, what the total really costs, and which area suits a tight budget.',
-    content: `**In short:** a dorm bed in McLeod Ganj, Bhagsu or Dharamkot costs from about **₹350 to ₹700** a night, a basic private room in a guesthouse about **₹700 to ₹1,300**, and a simple budget hotel about **₹1,000 to ₹2,000**, plus taxes and fees. **Bhagsu and Dharamkot** have the most hostels and cheap guesthouses, **McLeod Ganj** has budget hotels within walking distance of everything, and **lower Dharamshala** is best for late arrivals, the bus stand and cricket days.
+    content: `**Short answer:** a dorm bed in McLeod Ganj, Bhagsu or Dharamkot costs from about **₹350 to ₹700** a night, a basic private room in a guesthouse about **₹700 to ₹1,300**, and a simple budget hotel about **₹1,000 to ₹2,000**, plus taxes and fees. **Bhagsu and Dharamkot** have the most hostels and cheap guesthouses, **McLeod Ganj** has budget hotels within walking distance of everything, and **lower Dharamshala** is best for late arrivals, the bus stand and cricket days.
 
 > **Prices checked on 9 October 2026** on MakeMyTrip, EaseMyTrip, Booking.com, Hostelworld and Tripadvisor for upcoming dates. Online rates change daily and jump on weekends and holidays, so treat them as a guide and check the total for your own dates before you pay.
 
@@ -1338,7 +1348,7 @@ If you are arriving by air or a late bus, pre-book a [taxi](/taxi) so you are no
     image_alt: 'Guesthouses and budget hotels on the hillside in McLeod Ganj, Dharamshala',
     read_time: 9,
     featured: false,
-    meta_title: 'Budget Hotels in Dharamshala: Compare Affordable Stays (2026)',
+    meta_title: 'Budget Hotels in Dharamshala: Affordable Stays (2026)',
     meta_description: 'Budget hotels in Dharamshala and McLeod Ganj: dorm beds from about ₹350, private rooms ₹700–1,300 plus tax, compared across booking sites.',
     related_slugs: ['best-hotels-in-dharamshala', 'best-hotels-in-mcleod-ganj', 'dharamshala-vs-mcleod-ganj'],
     faqs: [

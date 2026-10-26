@@ -7,7 +7,9 @@ export const blogPostsW10: BlogPost[] = [
     slug: 'amritsar-to-dharamshala',
     title: 'Amritsar to Dharamshala: Distance, Route & Transport (2026)',
     excerpt: 'Complete guide to reaching Dharamshala from Amritsar by bus, taxi, train or self-drive, with three route options, real travel times, costs and stops worth making along the way.',
-    content: `Amritsar to Dharamshala is roughly **200 to 210 km** by the most common route, and takes about **5 to 6 hours** by road depending on traffic and which route you choose. It is one of the shorter approaches to Dharamshala and a natural combination if you are visiting the Golden Temple before heading to the mountains. Many international travellers fly into Amritsar (Sri Guru Ram Dass Jee International Airport) specifically because it is the closest major airport to Dharamshala with good domestic and international connections.
+    content: `**Short answer:** Amritsar to Dharamshala is roughly **200 to 210 km** by the most common route via Pathankot and takes about **5 to 6 hours** by road, depending on traffic. A one-way sedan taxi costs approx. **₹4,000 to ₹6,000** as of 2026, HRTC buses take about 6 to 7 hours (ordinary approx. ₹350 to ₹450), and you can also take a train to Pathankot and a bus or taxi onward.
+
+Amritsar is one of the shorter approaches to Dharamshala and a natural combination if you are visiting the Golden Temple before heading to the mountains. Many international travellers fly into Amritsar (Sri Guru Ram Dass Jee International Airport) specifically because it is the closest major airport to Dharamshala with good domestic and international connections.
 
 Below is a practical breakdown of every way to make this journey, with honest timings and costs as of 2026. For a wider view of all the ways to reach Dharamshala, see our [how to reach Dharamshala guide](/blog/how-to-reach-dharamshala).
 
@@ -62,7 +64,7 @@ You can book an [Amritsar to Dharamshala taxi](/taxi/amritsar-to-dharamshala-tax
 Several trains run daily from Amritsar Junction to Pathankot (Chakki Bank or Pathankot Junction), taking about 2 to 3 hours. The Jammu Mail and Jan Shatabdi are popular options. From Pathankot, you have two choices:
 
 - **Bus**: HRTC buses to Dharamshala leave every 30 to 60 minutes (approx. ₹200 to ₹300, 3 hours).
-- **Taxi**: Pathankot to Dharamshala taxis cost approx. ₹2,500 to ₹3,500 for a sedan.
+- **Taxi**: our fixed Pathankot to Dharamshala fare is ₹3,200 in an Alto or ₹4,000 in a sedan (see [Pathankot to Dharamshala](/blog/pathankot-to-dharamshala)).
 
 The train option is cheaper overall but adds a transfer. It makes sense if you are on a tight budget or if you want to experience the scenic rail approach into the Himalayan foothills.
 
@@ -99,7 +101,7 @@ For getting around in Dharamshala and McLeod Ganj, read our [local transport gui
     featured: false,
     meta_title: 'Amritsar to Dharamshala: Route, Distance & Transport 2026',
     meta_description: 'Amritsar to Dharamshala is 200 km, 5-6 hours by road. Bus from ₹350, taxi from ₹4,000. Three routes compared with honest drive times and tips.',
-    related_slugs: ['how-to-reach-dharamshala', 'local-transport-dharamshala', 'places-to-visit-in-kangra'],
+    related_slugs: ['how-to-reach-dharamshala', 'local-transport-dharamshala', 'places-to-visit-in-kangra', 'pathankot-to-dharamshala'],
     faqs: [
       {
         question: 'How far is Dharamshala from Amritsar?',
@@ -123,77 +125,76 @@ For getting around in Dharamshala and McLeod Ganj, read our [local transport gui
     id: 'blog-shimla-to-dharamshala',
     slug: 'shimla-to-dharamshala',
     title: 'Shimla to Dharamshala by Road: Route, Bus & Taxi (2026)',
-    excerpt: 'How to get from Shimla to Dharamshala by HRTC bus, taxi or self-drive. Two route options compared with real distances, drive times, costs and scenic stops.',
-    content: `Shimla to Dharamshala is roughly **310 to 330 km** by road and takes about **8 to 10 hours** of driving depending on your route and stops. There is no rail link or direct flight between the two, so the road is your only option. The journey is long but scenic — you cross the heart of Himachal through apple country, river valleys and small hill towns before the Dhauladhar range appears ahead.
+    excerpt: 'How to get from Shimla to Dharamshala by HRTC bus, taxi or self-drive. Two routes compared with distances, drive times (6-7 hours by car, 8-9 by bus), costs and stops.',
+    content: `**Short answer:** Shimla to Dharamshala is about **230 to 240 km** by road and takes roughly **6 to 7 hours** by car with a tea stop, or **8 to 9 hours** by HRTC bus. The usual road runs south-west from Shimla through Bilaspur, Hamirpur and Nadaun to Kangra, then up to Dharamshala. There is no rail link or direct flight between the two, so the road is your only option. Map apps often show about 4.5 hours, but that assumes no stops and no slow trucks on the hill sections; plan for more.
 
-This guide covers the two practical routes, bus and taxi options, costs as of 2026, and how to break the journey if you want a more relaxed trip. If you are planning a wider Himachal circuit, our [Delhi to Dharamshala, Bir and Manali itinerary](/blog/himachal-itinerary-delhi-dharamshala-manali) maps the whole loop.
+This guide covers the two practical routes, bus and taxi options, costs as of 2026, and how to break the journey. If you are planning a wider Himachal circuit, our [Delhi to Dharamshala, Bir and Manali itinerary](/blog/himachal-itinerary-delhi-dharamshala-manali) maps the whole loop.
+
+## How far is Shimla from Dharamshala?
+
+| Quick fact | Detail |
+|---|---|
+| Road distance | About 230 to 240 km (Rome2rio: 228.6 km; distancebetween2: about 237 km; SOTC: 240 km) |
+| Car or taxi | About 6 to 7 hours with a tea or lunch stop |
+| HRTC bus | About 8 to 9 hours (Rome2rio lists 8 h 20 min; bus listings show about 8 to 8.5 hours via Hamirpur and Kangra) |
+| Rail or air | None direct. Nearest rail is Pathankot (about 85 to 90 km from Dharamshala); Kangra (Gaggal) airport is about 12 km away |
+| Taxi fare, one way | About ₹7,000 to ₹10,000 (sedan), ₹9,000 to ₹13,000 (SUV), 2026 |
+| Best start | Before 7 am, so you arrive in daylight |
 
 ## Two Routes Compared
 
-| Route | Distance (approx.) | Drive time (approx.) | Road quality | Notes |
-|---|---|---|---|---|
-| **Via Mandi and Hamirpur (NH-21 / NH-154)** | 310–320 km | 8–10 hrs | Mostly national highway; winding near Mandi | Most common route; HRTC buses use this |
-| **Via Bilaspur and Una** | 330–350 km | 9–11 hrs | Wider plains section but longer | Useful if Mandi road is blocked by landslides |
+| Route | Distance (approx.) | Drive time (approx.) | Notes |
+|---|---|---|---|
+| **Via Bilaspur, Hamirpur and Kangra** | 230-240 km | 6-7 hrs by car, 8-9 hrs by bus | The usual and shortest route; HRTC buses on this sector use it |
+| **Via Mandi, Jogindernagar, Baijnath and Palampur** | About 270 km | 7-8 hrs by car | Longer but more scenic; good if you want to stop at Mandi, Baijnath or Palampur |
 
-### Route 1: Via Mandi and Hamirpur (Recommended)
+### Route 1: Via Bilaspur, Hamirpur and Kangra (Recommended)
 
-This is the standard route and the one all HRTC buses take. From Shimla you descend through Solan and Bilaspur to **Sundernagar**, then continue to **Mandi** (the junction town of Himachal). From Mandi the road turns north-west through **Jogindernagar**, **Baijnath** (ancient Shiva temple worth a 15-minute stop), **Palampur** (tea gardens), and finally up to Dharamshala.
-
-The Shimla-to-Mandi leg (about 150 km) takes 4 to 5 hours and follows the Sutlej and then the Beas river valleys. The Mandi-to-Dharamshala leg (about 160 to 170 km) takes another 4 to 5 hours because the road narrows and curves through the Kangra Valley.
+From Shimla you drop south-west through the lower hills to **Bilaspur** (near Gobind Sagar lake), continue to **Hamirpur** and **Nadaun** on the Beas, and join the Kangra valley road at **Kangra**. From Kangra it is a short climb to Dharamshala and then McLeod Ganj. The road is mostly two-lane highway with winding stretches out of Shimla and around Bilaspur, so average speeds stay around 35 to 40 km/h.
 
 **Key stops:**
-- **Sundernagar** (about 120 km from Shimla): Small lake, good for a tea break and a stretch.
-- **Mandi** (about 150 km): Lunch stop. The town sits at the confluence of the Beas and Suketi rivers and has several dhabas near the bus stand. The Rewalsar lake detour (about 25 km each way) is worth it if you have time.
-- **Baijnath** (about 230 km): The 9th-century Shiva temple is right on the highway. A 15-minute walk-through is all it takes.
-- **Palampur** (about 260 km): Kangra tea country. The tea gardens are beautiful between April and November.
+- **Bilaspur:** Views of Gobind Sagar lake; a good tea break.
+- **Hamirpur:** The largest town on the route, with plenty of dhabas for lunch.
+- **Kangra:** Brajeshwari Devi temple and Kangra Fort; read our [Kangra devi temples guide](/blog/kangra-devi-temples-guide).
 
-### Route 2: Via Bilaspur and Una
+### Route 2: Via Mandi, Jogindernagar, Baijnath and Palampur
 
-If the Mandi road is blocked (monsoon landslides are common in July and August), this route swings south-east through Bilaspur, then across the plains via Una and Amb Andaura, before climbing to Dharamshala from the south. It is about 20 to 30 km longer and the plains section is flat and hot, but the road is wider and less landslide-prone. This route is more useful as a fallback than a first choice.
+This route heads north to **Mandi**, then west through **Jogindernagar**, **Baijnath** (ancient Shiva temple) and **Palampur** (tea gardens) before reaching Dharamshala. It is about 270 km, so budget at least 7 to 8 hours. It is a fallback if the Hamirpur road is disrupted, or a deliberate scenic choice. Monsoon landslides (July and August) are possible on the Mandi sector.
 
 ## By HRTC Bus
 
-HRTC runs 2 to 4 direct buses daily from Shimla (Tutikandi or old bus stand) to Dharamshala. A few continue to McLeod Ganj. Options include:
+HRTC runs a few direct buses daily from Shimla (ISBT Tutikandi) to Dharamshala; some continue to McLeod Ganj. Listings show about 8 to 8.5 hours for services via Hamirpur and Kangra. Fares run from roughly ₹460 to ₹950 depending on bus type (ordinary to Volvo AC). Check the HRTC portal or the Shimla bus stand counter for current times; seats fill fast on weekends and holidays.
 
-| Type | Fare (approx.) | Time | Comfort |
-|---|---|---|---|
-| **Ordinary** | ₹500–600 | 9–11 hrs | Basic seats, frequent stops |
-| **Semi-deluxe** | ₹650–800 | 8–10 hrs | Better seats, fewer stops |
-| **AC Volvo** | ₹900–1,200 | 8–9 hrs | Pushback seats, limited stops |
-
-The earliest buses depart around 5 to 6 am and reach Dharamshala by 3 to 4 pm. This is the best departure if you want to arrive in daylight. There are usually one or two evening departures as well, arriving late at night, which we do not recommend for first-time visitors.
-
-Check the HRTC online booking portal for current schedules, or buy tickets at the Shimla bus stand counter. Seats fill up fast on weekends and holidays — book a day in advance if possible.
+The earliest buses leave around 5 to 6 am and reach Dharamshala by mid-afternoon. Evening departures arrive late at night, which we do not recommend for first-time visitors.
 
 ## By Taxi
 
-A one-way taxi from Shimla to Dharamshala costs approx. **₹7,000 to ₹10,000** for a sedan and **₹9,000 to ₹13,000** for an SUV as of 2026. The drive takes 8 to 9 hours with stops. Taxis are available through the Shimla taxi union, hotel desks, and online aggregators.
+A one-way taxi from Shimla to Dharamshala costs approx. **₹7,000 to ₹10,000** for a sedan and **₹9,000 to ₹13,000** for an SUV as of 2026. The drive takes 6 to 7 hours with stops. Taxis are available through the Shimla taxi union, hotel desks, and online aggregators.
 
-The taxi option makes sense if you are in a group of 3 to 4 people (cost splits to about ₹2,000 to ₹2,500 per head) or if you want to stop at Mandi, Baijnath, or Palampur on the way. Agree on stops before you start so the driver does not rush.
+The taxi option makes sense for a group of 3 to 4 people (about ₹2,000 to ₹3,000 per head). Agree on stops before you start so the driver does not rush.
 
 You can also [book a taxi through us](/taxi) for the reverse journey or for onward travel from Dharamshala.
 
 ## Driving Your Own Car
 
-The Shimla-to-Dharamshala drive is scenic but tiring — 8 to 10 hours of mountain roads with hundreds of turns. Tips:
+The drive is scenic but tiring: 6 to 7 hours of mountain road with many bends. Tips:
 
-- **Start by 6 am.** You want to clear the Shimla suburbs before the morning traffic and reach Dharamshala before dark.
-- **Fuel up at Shimla or Sundernagar.** Petrol pumps exist in Mandi and Palampur too, but the gap between Sundernagar and Mandi has limited options.
-- **The Mandi town bypass saves 20 to 30 minutes** of crawling through the old market. Follow signs for the Mandi bypass towards Jogindernagar.
-- **Night driving is strongly discouraged.** The road between Mandi and Dharamshala has unlit stretches, sharp drops, and occasional stray animals. Pull over and stay somewhere if you fall behind schedule.
-- **Monsoon warning:** Rockfall zones between Sundernagar and Mandi are active in July and August. Check the HRTC or BRO (Border Roads Organisation) alerts before starting.
+- **Start by 6 to 7 am.** Clear the Shimla suburbs before morning traffic and reach Dharamshala before dark.
+- **Fuel up in Shimla, Bilaspur or Hamirpur.** Pumps are frequent in the towns but sparse on hill stretches.
+- **Night driving is discouraged.** Hill sections have sharp drops and occasional stray animals.
+- **Monsoon warning:** Landslides can close short stretches in July and August. Check local alerts and BRO updates before starting.
 
 ## Breaking the Journey
 
-If 10 hours of driving sounds like too much, break the trip with an overnight stay:
+If you prefer a slower trip, break it with an overnight stay:
 
-- **Mandi** (halfway point): Several budget hotels near the bus stand. Visit Rewalsar lake in the evening.
-- **Palampur** (about 2 hours before Dharamshala): Stay in a tea estate bungalow and arrive fresh in Dharamshala the next morning. Read our [Palampur travel guide](/blog/palampur-travel-guide) for where to stay and what to see.
-- **Bir** (detour from Baijnath, about 3 hours before Dharamshala): If you plan to include Bir Billing in your trip, stay a night there and continue to Dharamshala next day. See our [Bir travel guide](/blog/bir-travel-guide).
+- **Hamirpur or Kangra:** Stay overnight and arrive in Dharamshala fresh the next morning.
+- **Palampur** (if you take Route 2): Stay in a tea estate bungalow. Read our [Palampur travel guide](/blog/palampur-travel-guide).
+- **Bir** (detour from Baijnath): If you plan to include Bir Billing, stay a night there. See our [Bir travel guide](/blog/bir-travel-guide).
 
 ## Shimla + Dharamshala: How to Combine Them
 
-If you are visiting both Shimla and Dharamshala on the same trip, the most efficient loop from Delhi is: **Delhi → Shimla (2 to 3 nights) → Dharamshala (2 to 3 nights) → Delhi**. The Delhi-to-Shimla leg is about 350 km (7 to 8 hours or an overnight bus), and Dharamshala-to-Delhi is about 475 km (10 to 12 hours or an overnight Volvo). Our [Chandigarh to Dharamshala guide](/blog/chandigarh-to-dharamshala) is useful if you drive back via Chandigarh.
+If you are visiting both on the same trip, the most efficient loop from Delhi is: **Delhi to Shimla (2 to 3 nights) to Dharamshala (2 to 3 nights) to Delhi**. The Delhi-to-Shimla leg is about 350 km (7 to 8 hours or an overnight bus), and Dharamshala-to-Delhi is about 475 km (10 to 12 hours or an overnight Volvo). Our [Chandigarh to Dharamshala guide](/blog/chandigarh-to-dharamshala) is useful if you drive back via Chandigarh.
 
 ## Getting Around After You Arrive
 
@@ -202,27 +203,33 @@ Once in Dharamshala, our [local transport guide](/blog/local-transport-dharamsha
     tags: ['shimla to dharamshala', 'transport', 'HRTC bus', 'himachal road trip', 'taxi', 'shimla', 'dharamshala'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-10-11',
-    updated_at: '2026-10-11',
+    updated_at: '2026-10-26',
     image: placeImage('kangra-valley'),
     image_alt: 'Kangra Valley with Dhauladhar mountains in the background',
-    read_time: 9,
+    read_time: 8,
     featured: false,
     meta_title: 'Shimla to Dharamshala: Route, Bus & Taxi Guide 2026',
-    meta_description: 'Shimla to Dharamshala is 310-330 km, 8-10 hours. HRTC bus from ₹500, taxi from ₹7,000. Two routes, scenic stops and how to break the journey.',
-    related_slugs: ['how-to-reach-dharamshala', 'chandigarh-to-dharamshala', 'himachal-itinerary-delhi-dharamshala-manali'],
+    meta_description: 'Shimla to Dharamshala is about 230-240 km: 6-7 hours by car, 8-9 by HRTC bus. Fares, two routes, stops and tips.',
+    related_slugs: ['how-to-reach-dharamshala', 'chandigarh-to-dharamshala', 'himachal-itinerary-delhi-dharamshala-manali', 'shimla-in-december-christmas-new-year', 'spiti-valley-in-winter'],
     faqs: [
       {
         question: 'How far is Shimla from Dharamshala?',
-        answer: 'Shimla to Dharamshala is approximately 310 to 330 km by road via Mandi. The drive takes about 8 to 10 hours depending on traffic, road conditions and stops.',
+        answer: 'Shimla to Dharamshala is about 230 to 240 km by road via Bilaspur, Hamirpur and Kangra. By car it takes about 6 to 7 hours with a tea stop; by HRTC bus about 8 to 9 hours. The Mandi and Palampur route is about 270 km.',
       },
       {
         question: 'Is there a direct bus from Shimla to Dharamshala?',
-        answer: 'Yes, HRTC runs 2 to 4 direct buses daily from Shimla to Dharamshala, including ordinary, semi-deluxe and Volvo AC options. The earliest departures are around 5 to 6 am and the journey takes 8 to 11 hours depending on the bus type.',
+        answer: 'Yes, HRTC runs 2 to 4 direct buses daily from Shimla to Dharamshala, including ordinary, semi-deluxe and Volvo AC options. The earliest departures are around 5 to 6 am and the journey takes about 8 to 9 hours.',
       },
       {
         question: 'Is the Shimla to Dharamshala road safe?',
-        answer: 'The road is safe for most of the year. It follows national highways for the majority of the distance and is well-maintained. During monsoon (July to September) there is a risk of landslides between Sundernagar and Mandi. Avoid night driving, especially after Mandi, as the road has unlit stretches and sharp turns.',
+        answer: 'The road is safe for most of the year. It follows national highways for the majority of the distance and is well-maintained. During monsoon (July to September) there is a risk of landslides on short hill stretches. Avoid night driving as the hill sections have unlit stretches and sharp turns.',
       },
+    ],
+    sources: [
+      { title: 'Rome2rio: Shimla to Dharamshala (road 228.6 km, bus about 8 h 20 min)', url: 'https://www.rome2rio.com/s/Shimla/Dharamshala' },
+      { title: 'distancebetween2: Shimla to Dharamshala driving distance (about 237 km)', url: 'https://distancebetween2.com/shimla/dharamshala' },
+      { title: 'SOTC: How to reach Dharamshala (Shimla about 240 km by road)', url: 'https://www.sotc.in/tourism/dharamshala-tourism/how-to-reach-dharamshala' },
+      { title: 'AbhiBus: HRTC Dharamshala-Shimla services via Hamirpur and Kangra', url: 'https://www.abhibus.com/bus-tickets/hrtc-dharamshala-shimla-bus-booking' },
     ],
   },
   {
@@ -230,7 +237,7 @@ Once in Dharamshala, our [local transport guide](/blog/local-transport-dharamsha
     slug: 'dharamshala-to-manali',
     title: 'Dharamshala to Manali: Distance, Best Routes & Transport (2026)',
     excerpt: 'Three ways to get from Dharamshala to Manali by bus, taxi or self-drive, with real drive times, costs, scenic detours through Bir and Palampur, and tips for breaking the long mountain journey.',
-    content: `Dharamshala to Manali is roughly **230 to 250 km** by the direct route and takes about **7 to 9 hours** of driving. There is no direct flight or rail link between the two, so the road through the Kangra and Kullu valleys is the only practical option. The journey is long but crosses some of the most beautiful country in Himachal — tea gardens, ancient temples, river gorges, and apple orchards.
+    content: `**Short answer:** Dharamshala to Manali is roughly **230 to 250 km** by the direct route and takes about **7 to 9 hours** of driving. There is no direct flight or rail link between the two, so the road through the Kangra and Kullu valleys is the only practical option. The journey is long but crosses some of the most beautiful country in Himachal — tea gardens, ancient temples, river gorges, and apple orchards.
 
 We send guests on this route regularly, and the advice below is based on real travel times, not optimistic Google Maps estimates. For a complete multi-destination Himachal trip, see our [Delhi-Dharamshala-Bir-Manali itinerary](/blog/himachal-itinerary-delhi-dharamshala-manali).
 
@@ -330,7 +337,7 @@ If you are combining Dharamshala and Manali, give each place at least 2 to 3 nig
     featured: false,
     meta_title: 'Dharamshala to Manali: Routes, Distance & Transport 2026',
     meta_description: 'Dharamshala to Manali is 230-250 km, 7-9 hours. Bus from ₹400, taxi from ₹5,000. Three routes compared, with stops at Bir, Palampur and Baijnath.',
-    related_slugs: ['himachal-itinerary-delhi-dharamshala-manali', 'bir-travel-guide', 'palampur-travel-guide'],
+    related_slugs: ['himachal-itinerary-delhi-dharamshala-manali', 'bir-travel-guide', 'palampur-travel-guide', 'manali-in-december-january', 'rohtang-pass-atal-tunnel-status'],
     faqs: [
       {
         question: 'Is there a direct bus from Dharamshala to Manali?',
@@ -351,7 +358,9 @@ If you are combining Dharamshala and Manali, give each place at least 2 to 3 nig
     slug: 'best-restaurants-in-dharamshala',
     title: 'Best Restaurants in Dharamshala & McLeod Ganj (2026)',
     excerpt: 'From Tibetan momos and thukpa to Himachali dham and wood-fired pizza, here are the best places to eat in Dharamshala and McLeod Ganj, organized by cuisine, budget and area.',
-    content: `Dharamshala and McLeod Ganj have one of the most diverse food scenes of any hill station in India. You can have Tibetan momos for breakfast, a Himachali thali for lunch, Japanese ramen for a snack, and Italian pasta for dinner, all within walking distance in McLeod Ganj. The quality is genuinely good — several of these places have been run by the same families for decades.
+    content: `**Short answer:** The best sit-down restaurants in Dharamshala and McLeod Ganj include **Tibet Kitchen** (Bhagsu Road) for thukpa and shaphaley, **Lung Ta** (Jogiwara Road) for thenthuk and ramen, and **Nick's Italian Kitchen** for wood-fired pizza. Budget restaurants cost about ₹150–300 a meal, mid-range ₹300–600, and street momos ₹40–80 a plate. Midtown and Ashoka are reliable Indian options.
+
+Dharamshala and McLeod Ganj have one of the most diverse food scenes of any hill station in India. You can have Tibetan momos for breakfast, a Himachali thali for lunch, Japanese ramen for a snack, and Italian pasta for dinner, all within walking distance in McLeod Ganj. The quality is genuinely good — several of these places have been run by the same families for decades.
 
 This guide covers sit-down restaurants, not cafes. For cafe culture (coffee, baked goods, working spots), read our [top cafes in McLeod Ganj guide](/blog/top-cafes-in-mcleod-ganj). For a deep dive into Tibetan cuisine specifically, see [Tibetan food in McLeod Ganj](/blog/tibetan-food-mcleod-ganj). For Himachali food, see our [Himachali food guide](/blog/himachali-food-guide). For a cost breakdown of eating out, see [what eating out in Dharamshala costs](/blog/eating-out-dharamshala-what-it-costs). Want a band or an acoustic set with your dinner? See [restaurants with live music in McLeod Ganj](/blog/live-music-restaurants-mcleod-ganj).
 

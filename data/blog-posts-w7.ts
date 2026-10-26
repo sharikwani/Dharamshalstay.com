@@ -10,9 +10,9 @@ export const blogPostsW7: BlogPost[] = [
     slug: 'chandigarh-to-dharamshala',
     title: 'Chandigarh to Dharamshala: Bus, Taxi, Self-Drive, Train and Flight Guide (2026)',
     excerpt: "Every way to get from Chandigarh to Dharamshala and McLeod Ganj: HRTC buses from ISBT Sector 43, taxis, the self-drive route via Ropar, Nangal and Una, flights to Kangra and the Una rail option, with times, costs and the best stops.",
-    content: `## The Short Answer
+    content: `**Short answer:** Chandigarh to Dharamshala is roughly **235-250 km by road** and takes **5.5-7 hours by car** or **7-9 hours by bus**. Solo or on a budget, take an HRTC bus from ISBT Sector 43; a one-way taxi costs approx. ₹5,000-6,500 per car (as of 2026). Add another 9 km and 20-30 minutes if you are going up to McLeod Ganj.
 
-Chandigarh to Dharamshala is roughly **235-250 km by road** and takes **5.5-7 hours by car** or **7-9 hours by bus**. The usual road runs Chandigarh - Ropar - Kiratpur Sahib - Anandpur Sahib - Nangal - Una - Amb - Dehra/Ranital - Kangra - Dharamshala. Add another 9 km and 20-30 minutes if you are going up to McLeod Ganj.
+The usual road runs Chandigarh - Ropar - Kiratpur Sahib - Anandpur Sahib - Nangal - Una - Amb - Dehra/Ranital - Kangra - Dharamshala. Add another 9 km and 20-30 minutes if you are going up to McLeod Ganj.
 
 For most people the choice is simple. Travelling solo or on a budget? Take an **HRTC bus from ISBT Sector 43**. Two to four people, or travelling with kids or elders? A **one-way taxi** (approx. ₹5,000-6,500 per car as of 2026) is the most comfortable and costs about the same per head as two AC bus seats once you add the local transfer at the other end. Short on time and the fare is right? IndiGo has listed a **Chandigarh - Kangra (Gaggal)** flight, which turns a day of driving into about an hour in the air.
 
@@ -185,9 +185,9 @@ For more general questions about planning your visit, see our [FAQ page](/faq) a
     slug: 'delhi-to-dharamshala-by-bus',
     title: 'Delhi to Dharamshala by Bus: HRTC Volvo and Majnu ka Tilla Guide (2026)',
     excerpt: "The complete guide to the overnight Volvo from Delhi to Dharamshala and McLeod Ganj: HRTC Himsuta from Kashmere Gate vs private buses from Majnu ka Tilla, booking, fares, drop points, comfort tips and the return trip.",
-    content: `## The Short Answer
+    content: `**Short answer:** The overnight Volvo is the classic way from Delhi to Dharamshala: roughly **475-500 km** in **10-13 hours**. HRTC AC buses from ISBT Kashmere Gate cost approx. ₹1,400-1,600, and private Volvos from Majnu ka Tilla approx. ₹1,000-2,000 (as of 2026). Book 3-7 days ahead for normal weekends and 2-3 weeks ahead for long weekends, Christmas, New Year and May-June.
 
-The overnight Volvo is the classic way to get from Delhi to Dharamshala: you board in the evening, sleep (or try to) through Haryana and Punjab, and wake up to the Dhauladhar range. Two choices dominate:
+On the overnight Volvo you board in the evening, sleep (or try to) through Haryana and Punjab, and wake up to the Dhauladhar range. Two choices dominate:
 
 - **HRTC (Himachal government) AC buses from ISBT Kashmere Gate**, sold under the **Himsuta** name for the premium Volvo/Scania coaches. Fixed fares, approx. ₹1,400-1,600 as of 2026, and most end at the **Dharamshala bus stand** in lower town.
 - **Private Volvos from Majnu ka Tilla**, Delhi's Tibetan colony. Fares approx. ₹1,000-2,000 depending on season and seat type, and many are marketed as going **to McLeod Ganj**.
@@ -537,9 +537,9 @@ Land in the morning and you can be at the Dalai Lama Temple by lunch. Our [one d
     slug: 'one-day-in-dharamshala',
     title: 'One Day in Dharamshala and McLeod Ganj: Full-Day and Half-Day Itinerary (2026)',
     excerpt: "Only have a day or a few hours? A tight, realistic one-day itinerary for Dharamshala and McLeod Ganj with timings, plus a half-day plan for transit travellers arriving by bus or flight.",
-    content: `## The Short Answer
+    content: `**Short answer:** With one day, base yourself in **McLeod Ganj**: the Dalai Lama Temple (Tsuglagkhang) and kora walk in the morning, Bhagsu waterfall before lunch, then St. John in the Wilderness church and Naddi for sunset. Do not add Triund, Kangra Fort and Bir to the same day. Budget approx. **₹1,500-3,000** per person, excluding stay (2026).
 
-With one day, base yourself in **McLeod Ganj** and keep everything within a few kilometres: the **Dalai Lama Temple (Tsuglagkhang) and the kora walk** in the morning, **Bhagsu waterfall** before lunch, **lunch and cafes** in McLeod Ganj, then **St. John in the Wilderness church and Naddi** for the sunset. Do not try to add Triund, Kangra Fort and Bir to the same day; you will spend it in a car.
+Keep everything within a few kilometres: the **Dalai Lama Temple (Tsuglagkhang) and the kora walk** in the morning, **Bhagsu waterfall** before lunch, **lunch and cafes** in McLeod Ganj, then **St. John in the Wilderness church and Naddi** for the sunset. Do not try to add Triund, Kangra Fort and Bir to the same day; you will spend it in a car.
 
 If you only have half a day, for example between an overnight bus and an afternoon flight, do the temple and kora, a Tibetan lunch and one viewpoint. Both plans are below with timings.
 
@@ -716,9 +716,9 @@ One day gives you a taste. Two days lets you add Triund or a Kangra loop; our [w
     slug: 'five-day-kangra-valley-itinerary',
     title: '5-Day Kangra Valley Itinerary: McLeod Ganj, Triund, Kangra, Palampur and Bir (2026)',
     excerpt: "A practical five-day Kangra Valley itinerary covering McLeod Ganj, the Triund trek, Norbulingka, Kangra Fort and Masroor, Palampur and Baijnath, and Bir Billing, with driving times, where to base yourself and winter and monsoon variants.",
-    content: `## The Short Answer
+    content: `**Short answer:** Five days is the right amount of time for the Kangra Valley. Spend **3 nights in McLeod Ganj** (or Bhagsu/Dharamkot) and 1-2 nights in Bir or Palampur, covering McLeod Ganj and Bhagsu, the Triund trek, Norbulingka, Kangra Fort and Masroor, Palampur and Baijnath, then Bir Billing paragliding. Budget approx. ₹40,000-65,000 per couple, mid-range (2026); you never drive more than about 2.5 hours in a day.
 
-Five days is the right amount of time for the Kangra Valley. The plan that works best for most travellers:
+The plan that works best for most travellers:
 
 1. **Day 1:** McLeod Ganj, the Dalai Lama Temple, Bhagsu and the Naddi sunset
 2. **Day 2:** Triund trek (or an easier hike)
@@ -881,7 +881,7 @@ Costs drop noticeably in July-August and January-February, when hotels discount.
     featured: false,
     meta_title: '5-Day Kangra Valley Itinerary (2026): Dharamshala to Bir',
     meta_description: 'A 5-day Kangra Valley itinerary: McLeod Ganj, Triund, Kangra Fort and Masroor, Palampur, Baijnath and Bir Billing, with driving times, bases and season tips.',
-    related_slugs: ['dharamshala-weekend-itinerary', 'places-to-visit-in-kangra', 'bir-travel-guide'],
+    related_slugs: ['dharamshala-weekend-itinerary', 'places-to-visit-in-kangra', 'bir-travel-guide', 'masroor-rock-cut-temple-guide', 'baijnath-temple-guide'],
     faqs: [
       {
         question: 'Is 5 days enough for Dharamshala and the Kangra Valley?',

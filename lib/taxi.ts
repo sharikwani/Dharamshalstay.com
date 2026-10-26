@@ -141,3 +141,26 @@ export function getRouteNotes(from: string, to: string, lang: 'en' | 'hi' = 'en'
   if (!hit) return [];
   return lang === 'hi' && hit.notesHi ? hit.notesHi : hit.notes;
 }
+
+/** Our travel guides for either end of a route; the taxi page links them so each fare page sits inside its topic. */
+const ROUTE_GUIDES: { place: RegExp; slugs: string[] }[] = [
+  { place: /gaggal|airport/i, slugs: ['kangra-airport-gaggal-guide'] },
+  { place: /pathankot|chakki/i, slugs: ['pathankot-to-dharamshala', 'kangra-toy-train-guide'] },
+  { place: /kangra railway|amb andaura/i, slugs: ['kangra-toy-train-guide', 'how-to-reach-dharamshala'] },
+  { place: /amritsar/i, slugs: ['amritsar-to-dharamshala'] },
+  { place: /chandigarh/i, slugs: ['chandigarh-to-dharamshala'] },
+  { place: /delhi/i, slugs: ['dharamshala-to-delhi-taxi-guide', 'delhi-to-dharamshala-by-bus'] },
+  { place: /manali/i, slugs: ['dharamshala-to-manali', 'manali-in-december-january'] },
+  { place: /dalhousie|khajjiar/i, slugs: ['dalhousie-khajjiar-from-dharamshala'] },
+  { place: /\bbir\b/i, slugs: ['dharamshala-to-bir', 'bir-billing-paragliding-guide'] },
+  { place: /palampur/i, slugs: ['palampur-travel-guide', 'baijnath-temple-guide'] },
+  { place: /devi|kangra fort/i, slugs: ['kangra-devi-temples-guide', 'masroor-rock-cut-temple-guide'] },
+  { place: /sightseeing|local/i, slugs: ['places-to-visit-in-dharamshala', 'one-day-in-dharamshala'] },
+  { place: /shimla/i, slugs: ['shimla-to-dharamshala'] },
+  { place: /mcleod/i, slugs: ['mcleod-ganj-complete-guide'] },
+];
+
+export function getRouteGuideSlugs(from: string, to: string): string[] {
+  const slugs = [from, to].flatMap((p) => ROUTE_GUIDES.filter((r) => r.place.test(p)).flatMap((r) => r.slugs));
+  return Array.from(new Set(slugs)).slice(0, 4);
+}

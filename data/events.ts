@@ -41,12 +41,12 @@ export const EVENTS: DharamshalaEvent[] = [
   },
   {
     id: 'kangra-valley-carnival-2026', name: 'Kangra Valley Carnival 2026', start: '2026-12-24', end: '2026-12-31', status: 'expected',
-    venue: 'Dharamshala (opening concert proposed at HPCA Stadium)', where: 'HPCA Stadium is about 5 km below McLeod Ganj, in Dharamshala town',
+    venue: 'Dharamshala (opening concert proposed at HPCA Stadium)', where: 'HPCA Stadium is in Dharamshala town, about 1.5-2 km below Kotwali Bazaar and 8-10 km by road from McLeod Ganj',
     summary: 'A week of music, food and culture across Dharamshala over Christmas and New Year, announced by the Kangra district administration.',
     pack: { title: 'Christmas and New Year week', nights: '3-7 nights', includes: ['Hotel in McLeod Ganj, Dharamkot or Dharamshala town', 'Airport or bus stand pickup and drop', 'A local sightseeing day by taxi', 'Optional Triund trek or paragliding'] },
     note: 'Dates from one news report; the final programme is not out yet. Hotels fill early for 24-31 December, so ask soon.',
     sources: [{ label: 'UNI: Kangra Valley Carnival plans', url: 'https://www.uniindia.com/north-india/culture-himachal-kangra-valley-carnival/198184' }],
-    page: '/blog/new-year-in-mcleod-ganj', image: 'mcleod-ganj',
+    page: '/blog/kangra-valley-carnival-2026', image: 'mcleod-ganj',
   },
   {
     id: 'snow-season-2027', name: 'Snow season in McLeod Ganj, Naddi and Triund', start: '2027-01-01', end: '2027-02-28', status: 'usual',

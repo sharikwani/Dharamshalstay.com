@@ -132,7 +132,7 @@ For more checked facts about the area, see our [Dharamshala facts page](/facts).
     featured: false,
     meta_title: 'New Year in McLeod Ganj 2027: NYE, Christmas & Trip Tips',
     meta_description: 'New Year and Christmas in McLeod Ganj: what NYE is like, St. John church, traffic on 30-31 Dec, getting up from Delhi, where to stay and a 3-night plan.',
-    related_slugs: ['mcleod-ganj-in-december', 'dharamshala-in-december-january', 'where-to-stay-in-dharamshala', 'how-to-reach-dharamshala'],
+    related_slugs: ['mcleod-ganj-in-december', 'dharamshala-in-december-january', 'where-to-stay-in-dharamshala', 'how-to-reach-dharamshala', 'kangra-valley-carnival-2026'],
     sources: [
       { title: 'Hotel bookings in McLeodganj down 20 per cent over Punjab bandh call, with Kangra police one-way plan (The Tribune, 1 January 2025)', url: 'https://www.tribuneindia.com/news/himachal/hotel-bookings-in-mcleodganj-down-20-over-farmers-punjab-bandh-call' },
       { title: 'To tackle influx of tourists, one-way traffic system in upper Dharamsala (The Tribune, December 2022)', url: 'https://www.tribuneindia.com/news/himachal/to-tackle-influx-of-tourists-one-way-traffic-system-in-upper-dharamsala-465211/amp' },

@@ -8,7 +8,9 @@ export const override: Partial<BlogPost> = {
   meta_description:
     'Bir Billing tandem paragliding 2026: ₹3,500 for 15-25 min, ₹5,500 for 30-45 min, no flying 15 Jul-15 Sep. Taxi from Dharamshala ₹2,800, 2-2.5 hrs.',
   updated_at: '2026-10-07',
-  content: `Bir Billing is India's best-known paragliding site: you take off from the **Billing meadow at about 2,400 m** and land in **Bir at about 1,400 m**, roughly 1,000 m lower, after a tandem flight of about **15 to 45 minutes** with a registered pilot. As of 2026, our tandem packages cost **₹3,500 per person for a 15-25 minute flight** and **₹5,500 for a 30-45 minute long flight**, with GoPro video included. Flying is banned every year from **15 July to 15 September** for the monsoon, and Bir is about **70 km (2-2.5 hours) from Dharamshala**.
+  content: `**Short answer:** Bir Billing paragliding is a tandem flight from the **Billing meadow at about 2,400 m** to Bir at about 1,400 m, lasting about 15 to 45 minutes with a registered pilot and needing no experience. As of 2026, our packages cost **₹3,500** for 15-25 minutes and **₹5,500** for 30-45 minutes. Flying is banned from 15 July to 15 September, and Bir is about 70 km (2-2.5 hours) from Dharamshala.
+
+Bir Billing is India's best-known paragliding site: you take off from the **Billing meadow at about 2,400 m** and land in **Bir at about 1,400 m**, roughly 1,000 m lower, after a tandem flight of about **15 to 45 minutes** with a registered pilot. As of 2026, our tandem packages cost **₹3,500 per person for a 15-25 minute flight** and **₹5,500 for a 30-45 minute long flight**, with GoPro video included. Flying is banned every year from **15 July to 15 September** for the monsoon, and Bir is about **70 km (2-2.5 hours) from Dharamshala**.
 
 No experience is needed for a tandem flight. Your pilot handles the launch, the flying and the landing; you run a few steps on take-off, sit back in the harness and enjoy the Kangra Valley below. Prices below are indicative; confirm the current rate and availability on our [paragliding page](/paragliding) before you travel.
 

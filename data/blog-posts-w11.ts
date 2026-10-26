@@ -7,7 +7,9 @@ export const blogPostsW11: BlogPost[] = [
     slug: 'dharamshala-in-october-november',
     title: 'Dharamshala in October & November 2026: Weather, Crowds & What to Do',
     excerpt: 'October and November are the best months to visit Dharamshala. Post-monsoon clarity, comfortable temperatures, the clearest Dhauladhar views all year, Diwali in the hills, and thinner crowds than summer. Here is what to expect week by week.',
-    content: `If you can pick only one window for Dharamshala, pick **October or November**. The monsoon retreats by late September, the dust washes off, and the Dhauladhar range stands out in the kind of razor-sharp detail you will not see in any other season. Temperatures are comfortable during the day, nights get pleasantly cool, hotel prices have not yet hit winter lows but are far below summer peaks, and the trekking season is at its absolute best.
+    content: `**Short answer:** **October and November** are the best months to visit Dharamshala: the monsoon has gone, the Dhauladhar is sharply clear, and it is the last trekking window before winter. Days run from about 20–25°C in early October to 10–16°C in late November, with nights from 10–14°C down to 2–6°C. A mid-range double in McLeod Ganj costs approximately ₹2,000 to ₹3,500 in October and ₹1,500 to ₹3,000 in November; book Diwali week 2 to 3 weeks ahead.
+
+If you can pick only one window for Dharamshala, pick **October or November**. The monsoon retreats by late September, the dust washes off, and the Dhauladhar range stands out in the kind of razor-sharp detail you will not see in any other season. Temperatures are comfortable during the day, nights get pleasantly cool, hotel prices have not yet hit winter lows but are far below summer peaks, and the trekking season is at its absolute best.
 
 This guide covers weather, crowd patterns, what to do, what to pack, and a suggested itinerary for each month, all based on our experience living here year-round. For the full twelve-month picture, see our [best time to visit Dharamshala guide](/blog/best-time-to-visit-dharamshala).
 
@@ -128,7 +130,9 @@ October and November have the most reliable road and flight conditions of the ye
     slug: 'dharamshala-in-december-january',
     title: 'Dharamshala in January: Snow, New Year & Winter Guide (2026)',
     excerpt: 'A winter trip to Dharamshala means snow on the Dhauladhar, Christmas celebrations, cosy cafes, and hotel discounts of 20 to 40 percent. Here is everything you need to know about visiting in December and January, including snowfall chances, what is open, and how to stay warm.',
-    content: `Winter in Dharamshala is a different world from the summer crowds. The Dhauladhar range is white, the air is bitingly clear, McLeod Ganj is quiet enough to hear monastery bells from the main road, and hotel prices drop 20 to 40 percent outside Christmas and New Year week. The trade-off is cold, especially at night. If you come prepared, December and January offer some of the most dramatic scenery and most peaceful days of the year.
+    content: `**Short answer:** December and January are cold and quiet in Dharamshala, with clear Dhauladhar views and hotel prices 20 to 40 percent lower outside Christmas and New Year week. McLeod Ganj typically gets **2 to 5 snowfall episodes** per winter, and you have roughly a 40 to 50 percent chance of seeing snow in a week-long visit; Triund almost certainly has snow. Nights in January range from about −2 to 4°C, so check your room has a heater.
+
+Winter in Dharamshala is a different world from the summer crowds. The Dhauladhar range is white, the air is bitingly clear, McLeod Ganj is quiet enough to hear monastery bells from the main road, and hotel prices drop 20 to 40 percent outside Christmas and New Year week. The trade-off is cold, especially at night. If you come prepared, December and January offer some of the most dramatic scenery and most peaceful days of the year.
 
 January is the coldest month and the most likely time to see snow in McLeod Ganj itself; this guide covers it alongside the run-up from late December. Travelling earlier? Our [McLeod Ganj in December guide](/blog/mcleod-ganj-in-december) covers Christmas week and the first snow in detail. For the full year-round comparison, see our [best time to visit guide](/blog/best-time-to-visit-dharamshala). For detailed snowfall information, see the [winter snowfall guide](/blog/dharamshala-in-winter-snowfall).
 
@@ -247,7 +251,7 @@ The reward for braving the cold is Dharamshala at its most beautiful and least c
     featured: false,
     meta_title: 'Dharamshala & McLeod Ganj in January: Snow & Weather',
     meta_description: 'Dharamshala and McLeod Ganj in January: the best snow chances, New Year, 20-40% hotel discounts, what is open, roads and packing tips (2026).',
-    related_slugs: ['dharamshala-in-winter-snowfall', 'dharamshala-christmas-new-year', 'dharamshala-weather-what-to-pack'],
+    related_slugs: ['dharamshala-in-winter-snowfall', 'dharamshala-christmas-new-year', 'dharamshala-weather-what-to-pack', 'himachal-snowfall-tracker', 'kangra-valley-carnival-2026'],
     faqs: [
       {
         question: 'Does it snow in McLeod Ganj in December and January?',
@@ -272,7 +276,9 @@ The reward for braving the cold is Dharamshala at its most beautiful and least c
     slug: 'backpacking-dharamshala-budget-guide',
     title: 'Backpacking Dharamshala on ₹1,000/Day: Budget Guide (2026)',
     excerpt: 'Dharamshala and McLeod Ganj are among the cheapest mountain destinations in India if you know where to look. Here is how to eat, sleep, trek and explore for ₹1,000 a day or less, with a sample 5-day itinerary.',
-    content: `Dharamshala is one of the most budget-friendly hill stations in India, especially for backpackers who do not mind a basic room and street food. McLeod Ganj, Bhagsu and Dharamkot are packed with hostels, cheap guesthouses and ₹60 momo plates. Most of the best experiences — the Dalai Lama temple, the Bhagsu waterfall, the Triund hike, the Lingkor kora — are free. With some local knowledge, ₹1,000 per day is realistic and ₹700 is possible in the off-season.
+    content: `**Short answer:** Backpacking Dharamshala costs roughly **₹600 to ₹1,100 per person per day**, with the average landing around ₹800 to ₹1,000. A dorm bed or shared room is ₹300–500, food ₹200–350 (momo plates ₹40–80, thali ₹80–120), and most sights, including the Tsuglagkhang Complex, the Lingkor kora and Bhagsu Waterfall, are free. Bhagsu, Dharamkot and lower McLeod Ganj have the cheapest beds.
+
+Dharamshala is one of the most budget-friendly hill stations in India, especially for backpackers who do not mind a basic room and street food. McLeod Ganj, Bhagsu and Dharamkot are packed with hostels, cheap guesthouses and ₹60 momo plates. Most of the best experiences — the Dalai Lama temple, the Bhagsu waterfall, the Triund hike, the Lingkor kora — are free. With some local knowledge, ₹1,000 per day is realistic and ₹700 is possible in the off-season.
 
 This guide is the backpacker companion to our general [Dharamshala trip cost guide](/blog/dharamshala-trip-cost-budget). If you want budget accommodation options specifically, also see [budget hotels in Dharamshala](/blog/budget-hotels-in-dharamshala).
 
@@ -422,7 +428,9 @@ For more on what to do, see [things to do in McLeod Ganj](/blog/things-to-do-in-
     slug: 'tea-gardens-kangra-palampur',
     title: 'Kangra Tea Gardens & Palampur Tea Tourism Guide (2026)',
     excerpt: 'Kangra tea is one of India\'s oldest and rarest teas, grown in the foothills of the Dhauladhar since the 1850s. Visit the tea estates near Palampur, watch the plucking and processing, taste the green and black varieties, and buy the real thing. Here is how.',
-    content: `Most visitors to Dharamshala do not realise that just 35 km south, around the town of **Palampur**, lies one of India's oldest tea-growing regions. **Kangra tea** has been cultivated here since the 1850s, long before Darjeeling became famous. The high altitude (900 to 1,400 m), the Dhauladhar microclimate and the mineral-rich soil produce a distinctive light-bodied green tea that earned a **Geographical Indication (GI) tag** — meaning only tea grown in the Kangra Valley can legally be called Kangra tea.
+    content: `**Short answer:** Kangra tea is grown around **Palampur**, about 35 km south of Dharamshala at 900 to 1,400 m, and has been cultivated since around 1849. You can visit Wah Tea Estate (about 40 km from Dharamshala), Mann Tea Estate and the Palampur Cooperative Tea Factory, usually by turning up during working hours (9 am to 5 pm). The best months are late March through May (first flush) and September through October (second flush).
+
+Most visitors to Dharamshala do not realise that just 35 km south, around the town of **Palampur**, lies one of India's oldest tea-growing regions. **Kangra tea** has been cultivated here since the 1850s, long before Darjeeling became famous. The high altitude (900 to 1,400 m), the Dhauladhar microclimate and the mineral-rich soil produce a distinctive light-bodied green tea that earned a **Geographical Indication (GI) tag** — meaning only tea grown in the Kangra Valley can legally be called Kangra tea.
 
 Tea tourism in Kangra is still uncommon, which means you get an authentic experience without crowds. You can walk through working plantations, watch leaves being plucked and processed, taste fresh-made tea, and buy directly from the source. This guide covers the best tea gardens to visit, what you will see, when to go, and how to combine it with a Dharamshala trip.
 
@@ -526,13 +534,13 @@ A tea gardens visit works perfectly as a half-day or full-day excursion from Dha
 Drive to Palampur, visit one tea estate (1 to 2 hours including tasting), have lunch in Palampur town, drive back.
 
 **Full-day option (7 to 8 hours):**
-Drive to Palampur via Norbulingka Institute in Sidhbari (stop for 1 hour). Visit a tea estate. Continue to Baijnath Temple (16 km from Palampur, an ancient Shiva temple from the 9th century). Optionally stop at Andretta pottery village on the way back. This is essentially the route in our [5-day Kangra Valley itinerary](/blog/five-day-kangra-valley-itinerary), compressed into a day.
+Drive to Palampur via Norbulingka Institute in Sidhbari (stop for 1 hour). Visit a tea estate. Continue to Baijnath Temple (16 km from Palampur, a Shiva temple built in 1204 CE). Optionally stop at Andretta pottery village on the way back. This is essentially the route in our [5-day Kangra Valley itinerary](/blog/five-day-kangra-valley-itinerary), compressed into a day.
 
 **Nearby attractions to combine:**
 
 | Place | Distance from Palampur | What to see |
 |---|---|---|
-| **Baijnath Temple** | 16 km | 9th-century Shiva temple, one of the oldest in Himachal |
+| **Baijnath Temple** | 16 km | Shiva temple built in 1204 CE, one of the finest old stone temples in Himachal |
 | **Tashi Jong Monastery** | 12 km | Active Tibetan monastery with a printing press and nuns' community |
 | **Andretta** | 13 km | Artists' village known for pottery; Norah Richards' house |
 | **Bir Billing** | 30 km | Paragliding, monasteries, cafes. [Bir travel guide](/blog/bir-travel-guide) |

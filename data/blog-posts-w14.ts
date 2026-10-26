@@ -62,7 +62,7 @@ McLeod Ganj does not shut down in winter. Most of what you came for runs through
 | Kareri Lake | Not a December trek |
 | Kangra valley sights | Open, and noticeably warmer |
 
-**Triund in December.** Early December can be one of the nicest times on the trail: dry, sharp views and cold air. Later in the month, ice can form on the steep section above Magic View, and nights at the campsite are well below freezing. In January 2026 the Kangra district administration banned trekking above 3,000 m and made prior permission from the SP Kangra office mandatory for Triund and Kareri, with permissions cancelled automatically when a weather warning is issued. Similar orders have been issued in past winters, so expect something like it again. Ask at the forest checkpost, your stay or a permitted operator before you go, and carry ID and cash for the entry fee and the refundable waste deposit. Details are in our [Triund trek guide](/blog/triund-trek-complete-guide).
+**Triund in December.** Early December can be one of the nicest times on the trail: dry, sharp views and cold air. Later in the month, ice can form on the steep section above Magic View, and nights at the campsite are well below freezing. In January 2026 the Kangra district administration banned trekking above 3,000 m and made prior permission from the SP Kangra office mandatory for Triund and Kareri, with permissions cancelled automatically when a weather warning is issued. Similar orders have been issued in past winters, so expect something like it again. Ask at the forest checkpost, your stay or a permitted operator before you go, and carry ID and cash for the entry fee, plus an extra ₹500 in case the reported (unconfirmed) refundable waste deposit is collected. Details are in our [Triund trek guide](/blog/triund-trek-complete-guide).
 
 **The ropeway.** The Dharamshala Skyway between lower Dharamshala and McLeod Ganj was suspended after a landslide near one of its towers in August 2025. Listed hours are 9:30 am to 6 pm, but it was closed for maintenance until 30 October 2026 and winter weather can stop it, so check the current status before you go. Our [Skyway guide](/blog/dharamshala-skyway-ropeway-guide) has the details. Taxis and local buses run every day.
 
@@ -161,7 +161,7 @@ Full options and timings are in our [how to reach Dharamshala guide](/blog/how-t
     featured: false,
     meta_title: 'McLeod Ganj in December 2026: Snow, Weather & Tips',
     meta_description: 'McLeod Ganj in December: week-by-week weather, honest snow odds, what is open, warm rooms, Christmas and New Year crowds, packing and winter travel tips.',
-    related_slugs: ['dharamshala-in-winter-snowfall', 'dharamshala-in-december-january', 'best-time-to-visit-dharamshala', 'triund-trek-complete-guide'],
+    related_slugs: ['dharamshala-in-winter-snowfall', 'dharamshala-in-december-january', 'best-time-to-visit-dharamshala', 'triund-trek-complete-guide', 'himachal-snowfall-tracker', 'kangra-valley-carnival-2026'],
     sources: [
       { title: 'Kangra district bans trekking above 3,000 m (The Tribune, December 2022)', url: 'https://www.tribuneindia.com/news/himachal/trekking-beyond-3-000-m-banned-in-kangra-district-466046' },
       { title: 'Himachal: Kangra administration bans trekking above 3,000 metres (The Week / PTI, 6 January 2026)', url: 'https://www.theweek.in/wire-updates/national/2026/01/06/himachal-kangra-administration-bans-trekking-above-3-000-metres.amp.html' },

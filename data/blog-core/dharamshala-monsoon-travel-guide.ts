@@ -9,9 +9,7 @@ export const override: Partial<BlogPost> = {
     'Dharamshala in monsoon: July-August bring approx. 1,800 mm of rain, landslides and no Bir flying, but hotels drop 20-40%. Late September is the sweet spot.',
   updated_at: '2026-10-07',
   tags: ['monsoon', 'dharamshala', 'rainy season', 'budget travel', 'weather', 'dharamshala in july', 'dharamshala in august', 'landslides'],
-  content: `## The Short Answer
-
-Dharamshala in the monsoon is **worth it for a slow, cheap, green trip, not for trekking or big views**. July and August are the wettest months, with roughly 1,800 mm of rain between them, landslide delays on the roads, Bir paragliding closed from 15 July to 15 September and treks like Triund best avoided. In return, hotels are typically **approx. 20-40% cheaper**, the waterfalls are at full force and McLeod Ganj is calm. If you can choose, **the second half of September** gives you most of the upside with far less rain.
+  content: `**Short answer:** Dharamshala in the monsoon is **worth it for a slow, cheap, green trip, not for trekking or big views**. July and August are the wettest months, with roughly 1,800 mm of rain between them, landslide delays on the roads, Bir paragliding closed from 15 July to 15 September and treks like Triund best avoided. In return, hotels are typically **approx. 20-40% cheaper**, the waterfalls are at full force and McLeod Ganj is calm. If you can choose, **the second half of September** gives you most of the upside with far less rain.
 
 This is our local team's honest take on what is good, what is bad and how to travel safely between July and September.
 
@@ -79,7 +77,7 @@ For routes and alternatives, see [how to reach Dharamshala](/blog/how-to-reach-d
 | Kora around Tsuglagkhang | Paved and sheltered by trees; the best rainy-day walk in town. |
 | Naddi and Dal Lake | Good for a drive or short walk when the cloud lifts. |
 
-Triund also has a forest entry fee (Rs.100 per person) and, since 11 August 2026, a **refundable Rs.500 waste deposit** at the checkpost. Rules have been changing through 2026, so confirm at the Gallu checkpost. Our [Triund trek guide](/blog/triund-trek-complete-guide) and [easy hikes near McLeod Ganj](/blog/easy-hikes-near-mcleod-ganj) have more detail.
+Triund also has a forest entry fee (Rs.100 per person) and a refundable Rs.500 waste deposit was reported in August 2026 but we could not find an official notice, so carry Rs.500 extra in cash in case it is collected. Rules have been changing through 2026, so confirm at the Gallu checkpost. Our [Triund trek guide](/blog/triund-trek-complete-guide) and [easy hikes near McLeod Ganj](/blog/easy-hikes-near-mcleod-ganj) have more detail.
 
 ## Paragliding at Bir Billing: Closed
 

@@ -32,6 +32,11 @@ import { blogPostsW24 } from './blog-posts-w24';
 import { blogPostsW25 } from './blog-posts-w25';
 import { blogPostsW26 } from './blog-posts-w26';
 import { blogPostsW27 } from './blog-posts-w27';
+import { blogPostsW28 } from './blog-posts-w28';
+import { blogPostsW29 } from './blog-posts-w29';
+import { blogPostsW30 } from './blog-posts-w30';
+import { blogPostsW31 } from './blog-posts-w31';
+import { blogPostsW32 } from './blog-posts-w32';
 import { coreOverrides } from './blog-core';
 
 // Real photos of each place (see lib/place-images.ts).
@@ -144,7 +149,7 @@ The standard route starts from Gallu Devi temple above Dharamkot. From there the
 
 Forest Department entry fee: Rs.100 per person per day. Overnight tent fee: about Rs.550 for two people (includes entry). Overnight stays at the top are capped (about 20 tents / 40 people), so book camping through a registered operator. Fees were last revised in 2024 -- check locally before you go.
 
-**2026 updates:** since 11 August 2026 trekkers on the Triund route also pay a **refundable Rs.500 waste deposit** at the forest checkpost and get a garbage bag -- bring your non-biodegradable waste back down to get the deposit back. In January 2026 the Kangra District Disaster Management Authority also restricted trekking above 3,000 m and routed permission for Triund and Kareri through the SP Kangra office during bad-weather spells. Rules have been changing through 2026, so confirm the current position at the Gallu checkpost or with us before you set out. See our [Triund camping guide](/blog/triund-camping-guide) for overnight rules.
+**2026 updates:** a refundable Rs.500 waste deposit for Triund trekkers was reported in August 2026 but we could not find an official notice, so carry Rs.500 extra in cash in case it is collected -- and bring your non-biodegradable waste back down either way. In January 2026 the Kangra District Disaster Management Authority also restricted trekking above 3,000 m and routed permission for Triund and Kareri through the SP Kangra office during bad-weather spells. Rules have been changing through 2026, so confirm the current position at the Gallu checkpost or with us before you set out. See our [Triund camping guide](/blog/triund-camping-guide) for overnight rules.
 
 ## Best Time to Trek
 
@@ -202,7 +207,7 @@ Visit in October or early November. Best weather, uncrowded trails, reasonable r
     read_time: 7, featured: false,
     meta_title: 'Best Time to Visit Dharamshala 2026 - Month-by-Month Guide',
     meta_description: 'When to visit Dharamshala? March-June for trekking, Oct-Nov for fewer crowds, Dec-Feb for snow. Complete season guide with prices.',
-    related_slugs: ['triund-trek-complete-guide', 'dharamshala-monsoon-travel-guide'],
+    related_slugs: ['triund-trek-complete-guide', 'dharamshala-monsoon-travel-guide', 'best-places-to-visit-in-himachal-in-winter'],
   },
   {
     id: 'blog-5', slug: 'top-cafes-in-mcleod-ganj',
@@ -315,7 +320,7 @@ Absolutely. Most guests say it was the highlight of their trip. Combine it with 
     read_time: 8, featured: false,
     meta_title: 'Bir Billing Paragliding from Dharamshala 2026 - Costs, Season, Safety',
     meta_description: 'Complete Bir Billing paragliding guide. Tandem flights from Rs.3,000, best season March-June. Book from Dharamshala with taxi included.',
-    related_slugs: ['triund-trek-complete-guide', 'dharamshala-weekend-itinerary'],
+    related_slugs: ['triund-trek-complete-guide', 'dharamshala-weekend-itinerary', 'dharamshala-to-bir'],
   },
   {
     id: 'blog-8', slug: 'dharamshala-to-delhi-taxi-guide',
@@ -483,7 +488,7 @@ function withPhotoAlt(post: BlogPost): BlogPost {
 }
 
 /** All guides, newest first. */
-export const blogPosts: BlogPost[] = [...blogPostsA, ...blogPostsB, ...blogPostsC, ...blogPostsW1, ...blogPostsW2, ...blogPostsW3, ...blogPostsW4, ...blogPostsW5, ...blogPostsW6, ...blogPostsW7, ...blogPostsW8, ...blogPostsW9, ...blogPostsE1, ...blogPostsW10, ...blogPostsW11, ...blogPostsW12, ...blogPostsW13, ...blogPostsW14, ...blogPostsW15, ...blogPostsW16, ...blogPostsW17, ...blogPostsW18, ...blogPostsW19, ...blogPostsW20, ...blogPostsW21, ...blogPostsW22, ...blogPostsW23, ...blogPostsW24, ...blogPostsW25, ...blogPostsW26, ...blogPostsW27, ...corePosts]
+export const blogPosts: BlogPost[] = [...blogPostsA, ...blogPostsB, ...blogPostsC, ...blogPostsW1, ...blogPostsW2, ...blogPostsW3, ...blogPostsW4, ...blogPostsW5, ...blogPostsW6, ...blogPostsW7, ...blogPostsW8, ...blogPostsW9, ...blogPostsE1, ...blogPostsW10, ...blogPostsW11, ...blogPostsW12, ...blogPostsW13, ...blogPostsW14, ...blogPostsW15, ...blogPostsW16, ...blogPostsW17, ...blogPostsW18, ...blogPostsW19, ...blogPostsW20, ...blogPostsW21, ...blogPostsW22, ...blogPostsW23, ...blogPostsW24, ...blogPostsW25, ...blogPostsW26, ...blogPostsW27, ...blogPostsW28, ...blogPostsW29, ...blogPostsW30, ...blogPostsW31, ...blogPostsW32, ...corePosts]
   .map((p) => (coreOverrides[p.slug] ? { ...p, ...coreOverrides[p.slug] } : p))
   .map(withPhotoAlt)
   .sort((a, b) => b.published_at.localeCompare(a.published_at));

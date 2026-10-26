@@ -16,7 +16,9 @@ export const blogPostsE1: BlogPost[] = [
     title: 'Groceries & Daily Essentials in Dharamshala and McLeod Ganj (2026)',
     excerpt:
       'Where to buy vegetables, drinking water, toiletries, medicines and kitchen basics in McLeod Ganj, Bhagsu, Dharamkot and Dharamshala town -- shop timings, what costs more up the hill, and what shuts in winter.',
-    content: `Most Dharamshala guides will tell you where to watch the sunset. Almost none tell you where to buy a toothbrush at 9pm, or how to feed yourself for a fortnight in a Dharamkot homestay with a kitchenette. This page covers the unglamorous half of a trip.
+    content: `**Short answer:** Small general stores in McLeod Ganj, Bhagsu and Dharamkot cover snacks, toiletries, bottled water and basic medicines, but **fresh produce, bulk groceries and hardware are better and cheaper in Dharamshala town, especially Kotwali Bazaar**. Everything costs more the higher you go, and from roughly late December through February many smaller Dharamkot and upper-Bhagsu shops close or keep short hours. Packaged goods carry a printed MRP, which you should not be charged above.
+
+Most Dharamshala guides will tell you where to watch the sunset. Almost none tell you where to buy a toothbrush at 9pm, or how to feed yourself for a fortnight in a Dharamkot homestay with a kitchenette. This page covers the unglamorous half of a trip.
 
 ## The short version
 
@@ -118,7 +120,7 @@ If you are still working out the basics, start with our [complete Dharamshala tr
     image_alt: 'Shops and street life in McLeod Ganj',
     read_time: 8,
     featured: false,
-    meta_title: 'Groceries & Daily Essentials in Dharamshala and McLeod Ganj (2026)',
+    meta_title: 'Groceries & Daily Essentials in Dharamshala (2026)',
     meta_description:
       'Where to buy vegetables, water, toiletries and medicines in McLeod Ganj, Bhagsu and Dharamkot: shop timings, winter closures and what costs more uphill.',
     related_slugs: [
@@ -167,7 +169,9 @@ If you are still working out the basics, start with our [complete Dharamshala tr
     title: 'Laundry, Luggage Storage & Drinking Water in Dharamshala (2026)',
     excerpt:
       'The three practical questions nobody answers: where to get washing done and roughly what it costs, where to leave your bags before a trek or night bus, and how to drink water here without buying a bottle a day.',
-    content: `Three small problems that can genuinely disrupt a trip: dirty clothes, a rucksack you cannot carry up Triund, and the realisation that you have bought fourteen plastic bottles in a week. All three are easy to solve here once you know how it works.
+    content: `**Short answer:** Laundry shops in McLeod Ganj, Bhagsu and (in season) Dharamkot charge **per kilo for wash-and-fold**, so ask the rate and whether drying is included, and hand clothes in at least **two days before you leave** in the monsoon. For luggage, Makkar Luggage Storage in Kandi, lower Dharamshala, is a small paid storage business (details as of 25 October 2026; confirm the rate when you call). **The tap water is not safe to drink**, so refill a bottle at guesthouses and cafes or use filtered water.
+
+Three small problems that can genuinely disrupt a trip: dirty clothes, a rucksack you cannot carry up Triund, and the realisation that you have bought fourteen plastic bottles in a week. All three are easy to solve here once you know how it works.
 
 ## Laundry
 
@@ -266,7 +270,7 @@ For where to buy everything else, see our guide to [groceries and daily essentia
     image_alt: 'Suitcases and bags neatly stacked in luggage storage, kept safe for travellers in Dharamshala',
     read_time: 7,
     featured: false,
-    meta_title: 'Laundry, Luggage Storage & Drinking Water in Dharamshala (2026)',
+    meta_title: 'Luggage Storage, Laundry & Water in Dharamshala 2026',
     meta_description:
       'Laundry in McLeod Ganj, where to leave bags before a Triund trek or night bus, and how to drink water safely without buying plastic bottles.',
     related_slugs: [
@@ -315,7 +319,9 @@ For where to buy everything else, see our guide to [groceries and daily essentia
     title: 'Eating Out in Dharamshala: What You Will Find and What It Costs (2026)',
     excerpt:
       'An honest orientation to eating in McLeod Ganj, Bhagsu and Dharamkot: the cuisines you will actually find, the three price tiers, vegan and Jain options, meal timings, alcohol, and how not to get ill.',
-    content: `Dharamshala eats far better than a town this size has any right to. Decades of travellers, a large Tibetan community and a steady flow of long-stay visitors have left McLeod Ganj with a food scene that ranges from ten-rupee street momos to candlelit Italian with a valley view. This page is the orientation: what exists, roughly what it costs, and what to watch for. For specific cafes, see our [McLeod Ganj cafe guide](/blog/top-cafes-in-mcleod-ganj).
+    content: `**Short answer:** Eating out in Dharamshala splits into three price tiers: cheap **dhabas and street stalls**, middle-priced **traveller cafes** (Bhagsu Road, Jogiwara Road, Dharamkot) and **hotel restaurants or view terraces**, where you pay for the setting. The gap between the first and third tier is several times over, so a budget traveller eats extremely well while terraces can cost metro prices. Tibetan food is the cuisine to prioritise, and vegetarian and vegan eating is easy. We give the shape of prices rather than exact figures because menus change every season.
+
+Dharamshala eats far better than a town this size has any right to. Decades of travellers, a large Tibetan community and a steady flow of long-stay visitors have left McLeod Ganj with a food scene that ranges from ten-rupee street momos to candlelit Italian with a valley view. This page is the orientation: what exists, roughly what it costs, and what to watch for. For specific cafes, see our [McLeod Ganj cafe guide](/blog/top-cafes-in-mcleod-ganj).
 
 ## What you will actually find
 
@@ -412,7 +418,7 @@ For a sense of scale rather than exact numbers: a traveller eating at dhabas and
     image_alt: 'Tibetan momos, the staple dish of McLeod Ganj',
     read_time: 9,
     featured: false,
-    meta_title: 'Eating Out in Dharamshala: What You Will Find and What It Costs (2026)',
+    meta_title: 'Eating Out in Dharamshala: What It Costs (2026)',
     meta_description:
       'Eating out in McLeod Ganj and Dharamkot: three price tiers, vegan, Jain and gluten-free options, meal times, alcohol rules and staying well.',
     related_slugs: [
@@ -461,7 +467,9 @@ For a sense of scale rather than exact numbers: a traveller eating at dhabas and
     title: 'Dharamshala with Limited Mobility: An Honest Accessibility Guide (2026)',
     excerpt:
       'A straight answer on what Dharamshala and McLeod Ganj are actually like with a wheelchair, a stroller, a knee injury or elderly parents -- the gradients, which areas work, where to stay, and what to skip.',
-    content: `Most accessibility information about Indian hill stations is either absent or optimistic. This page tries to be neither. Dharamshala is a **difficult destination for anyone with limited mobility** -- and it is still a very doable one if you plan around the terrain rather than fight it.
+    content: `**Short answer:** Dharamshala is a **difficult destination for anyone with limited mobility**, but it is still doable if you plan around the terrain. McLeod Ganj is built on a steep slope with inconsistent footpaths, many stairs and rare accessible toilets. Treat **taxis** as your default, choose a road-level hotel (ask how many steps lie between the taxi stop and the room door), and expect lower Dharamshala to be flatter than McLeod Ganj. Dharamkot is effectively off the table for wheelchair users, and Bhagsu waterfall itself is not accessible.
+
+Most accessibility information about Indian hill stations is either absent or optimistic. This page tries to be neither. Dharamshala is a **difficult destination for anyone with limited mobility** -- and it is still a very doable one if you plan around the terrain rather than fight it.
 
 ## The honest assessment
 
@@ -573,7 +581,7 @@ Accessibility details change with renovations and new builds, and no page can st
     image_alt: 'Dharamshala town below the Dhauladhar range',
     read_time: 10,
     featured: false,
-    meta_title: 'Dharamshala with Limited Mobility: An Honest Accessibility Guide (2026)',
+    meta_title: 'Dharamshala with Limited Mobility: Access Guide 2026',
     meta_description:
       'Dharamshala and McLeod Ganj with a wheelchair, stroller or bad knees: gradients, which sights you can reach, choosing a hotel and what to skip.',
     related_slugs: [

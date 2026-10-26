@@ -9,7 +9,7 @@ export const override: Partial<BlogPost> = {
     'Remote work from Dharamshala in 2026: Jio and Airtel 5G in town, best areas, work-friendly cafes, power cuts and a monthly budget of approx. ₹30,000-50,000.',
   updated_at: '2026-10-07',
   tags: ['digital nomad', 'remote work', 'dharamshala', 'coworking', 'wifi', 'workation', 'mcleod ganj', 'long stay'],
-  content: `Yes, you can work remotely from Dharamshala, and a lot of people do. **Jio and Airtel give 4G and 5G in the main town areas**, many guesthouses have fibre broadband, a month costs **approx. ₹30,000-50,000** for a comfortable solo stay, and the Dhauladhar is outside your window. The catches are real but manageable: power cuts, WiFi that varies hugely between buildings, steep lanes, and seasons (monsoon and deep winter) when connectivity and comfort both drop.
+  content: `**Short answer:** Yes, you can work remotely from Dharamshala, and a lot of people do. **Jio and Airtel give 4G and 5G in the main town areas**, many guesthouses have fibre broadband, a month costs **approx. ₹30,000-50,000** for a comfortable solo stay, and the Dhauladhar is outside your window. The catches are real but manageable: power cuts, WiFi that varies hugely between buildings, steep lanes, and seasons (monsoon and deep winter) when connectivity and comfort both drop.
 
 This guide is for Indian remote workers planning a workation and for international nomads. It covers which area to base yourself in, how good the internet really is, where to work, a monthly budget, long-stay accommodation, the best months and how to fill your weekends. Prices are approx. as of 2026.
 

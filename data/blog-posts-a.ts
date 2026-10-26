@@ -7,7 +7,7 @@ export const blogPostsA: BlogPost[] = [
     slug: 'places-to-visit-in-dharamshala',
     title: '24 Best Places to Visit in Dharamshala & McLeod Ganj (2026 Local Guide)',
     excerpt: 'The places worth your time in Dharamshala and McLeod Ganj, from the Dalai Lama Temple and Bhagsu waterfall to Triund, Naddi and Kangra Fort, with timings, entry fees and how long each one really takes.',
-    content: `Short on time? The places most visitors should not miss in Dharamshala are the **Tsuglagkhang (Dalai Lama Temple) complex**, the **Lingkhor kora walk**, **Bhagsunag temple and waterfall**, **Dharamkot**, **Naddi viewpoint** at sunset, **St. John in the Wilderness church**, and, if you have a full day and decent legs, the **Triund trek**. Add **Norbulingka Institute** and **Kangra Fort** if you have a car for half a day. That list covers the Tibetan heart of McLeod Ganj, the mountains, and the older Kangra history in two to three days.
+    content: `**Short answer:** Short on time? The places most visitors should not miss in Dharamshala are the **Tsuglagkhang (Dalai Lama Temple) complex**, the **Lingkhor kora walk**, **Bhagsunag temple and waterfall**, **Dharamkot**, **Naddi viewpoint** at sunset, **St. John in the Wilderness church**, and, if you have a full day and decent legs, the **Triund trek**. Add **Norbulingka Institute** and **Kangra Fort** if you have a car for half a day. That list covers the Tibetan heart of McLeod Ganj, the mountains, and the older Kangra history in two to three days.
 
 Below are 24 places in and around Dharamsala, grouped by area so you can plan a sensible route, with what each place is, why it is worth it, how long to budget, entry fees (approx., as of 2026) and the small tips locals give friends. There is a quick summary table near the end.
 
@@ -275,7 +275,7 @@ McLeod Ganj, Bhagsu and Dharamkot are best explored on foot. For Norbulingka, Ka
     slug: 'things-to-do-in-mcleod-ganj',
     title: '20 Best Things to Do in McLeod Ganj (2026): Experiences Locals Recommend',
     excerpt: 'Walk the kora with Tibetan grandmothers, learn to fold momos, sit a meditation course, hike to Triund and spend an hour helping Tibetans practise English. The best things to do in McLeod Ganj, beyond the checklist.',
-    content: `The best things to do in McLeod Ganj are experiences rather than sights: walking the **kora** at dawn, joining monks and pilgrims at the **Dalai Lama Temple**, taking a **Tibetan cooking class**, sitting an **introductory meditation course** in Dharamkot, hiking to **Triund**, and spending an afternoon in the **cafes of Jogiwara Road**. If you have a little more time, volunteer for an hour at an **English conversation class** for Tibetan refugees. It is one of the most rewarding things you can do here.
+    content: `**Short answer:** The best things to do in McLeod Ganj are experiences rather than sights: walking the **kora** at dawn, joining monks and pilgrims at the **Dalai Lama Temple**, taking a **Tibetan cooking class**, sitting an **introductory meditation course** in Dharamkot, hiking to **Triund**, and spending an afternoon in the **cafes of Jogiwara Road**. If you have a little more time, volunteer for an hour at an **English conversation class** for Tibetan refugees. It is one of the most rewarding things you can do here.
 
 This guide lists 20 things to do in McLeodganj, with what each involves, approximate costs (as of 2026), how much time to give it, and honest notes on what is worth it. If you want a list of sights with entry fees instead, read our companion guide to the [best places to visit in Dharamshala](/blog/places-to-visit-in-dharamshala).
 
@@ -444,7 +444,7 @@ Stay central in McLeod Ganj for walkability to the temple, kora and cafes; Dhara
     slug: 'palampur-travel-guide',
     title: 'Palampur Travel Guide (2026): Tea Gardens, Day Trips and Where to Stay',
     excerpt: 'Palampur is the quiet tea town of the Kangra Valley, about 35 to 40 km from Dharamshala. Here is how to see the tea gardens and factory, Neugal Khad, Bundla, Andretta and Baijnath, plus a Bir day trip.',
-    content: `Palampur is a small, green town in the Kangra Valley at around 1,470 m, best known for its **tea gardens**, open views of the Dhauladhar, and an easy, unhurried pace. It is about **35 to 40 km from Dharamshala** (roughly 1 to 1.5 hours by road), so you can see the highlights on a long day trip, but it is much nicer with one or two nights. The essentials are a walk through the **tea estates**, a visit to the **Palampur Co-operative Tea Factory**, the **Neugal Khad** gorge and **Bundla** stream, the artists' village of **Andretta**, and the ancient **Baijnath temple**, with **Bir Billing** another 30-odd km beyond.
+    content: `**Short answer:** Palampur is a small, green town in the Kangra Valley at around 1,470 m, best known for its **tea gardens**, open views of the Dhauladhar, and an easy, unhurried pace. It is about **35 to 40 km from Dharamshala** (roughly 1 to 1.5 hours by road), so you can see the highlights on a long day trip, but it is much nicer with one or two nights. The essentials are a walk through the **tea estates**, a visit to the **Palampur Co-operative Tea Factory**, the **Neugal Khad** gorge and **Bundla** stream, the artists' village of **Andretta**, and the ancient **Baijnath temple**, with **Bir Billing** another 30-odd km beyond.
 
 This guide covers what to see, how to get there, a sample day plan, and where to stay, from a local perspective.
 
@@ -566,7 +566,7 @@ Palampur has a mix of tea-estate bungalows, heritage properties, mid-range hotel
     featured: false,
     meta_title: 'Palampur Travel Guide 2026: Tea Gardens & Day Trips',
     meta_description: 'Plan a Palampur trip: tea gardens and factory visit, Neugal Khad, Bundla, Andretta, Baijnath and Bir, distance from Dharamshala, best time and where to stay.',
-    related_slugs: ['places-to-visit-in-kangra', 'bir-billing-paragliding-guide', 'places-to-visit-in-dharamshala'],
+    related_slugs: ['places-to-visit-in-kangra', 'bir-billing-paragliding-guide', 'places-to-visit-in-dharamshala', 'baijnath-temple-guide', 'dharamshala-to-bir'],
     faqs: [
       {
         question: 'How far is Palampur from Dharamshala?',
@@ -591,7 +591,7 @@ Palampur has a mix of tea-estate bungalows, heritage properties, mid-range hotel
     slug: 'places-to-visit-in-kangra',
     title: 'Places to Visit in Kangra (2026): Fort, Temples, Masroor and a 1-Day Loop',
     excerpt: 'Kangra Fort, Brajeshwari Devi, the Masroor rock-cut temples, Chamunda, Jwalamukhi, Baijnath and Pong Dam, with distances from Dharamshala, timings, entry fees and a practical one-day Kangra loop.',
-    content: `The best places to visit in Kangra are **Kangra Fort**, the **Brajeshwari (Bajreshwari) Devi temple**, the 8th century **Masroor rock-cut temples**, **Chamunda Devi**, **Jwalamukhi**, **Baijnath temple**, and, in winter, the birdlife of **Pong Dam (Maharana Pratap Sagar)**. Kangra town is only about 18 to 20 km from Dharamshala, so the easiest plan is to stay in Dharamshala or McLeod Ganj and explore the valley on day trips by taxi.
+    content: `**Short answer:** The best places to visit in Kangra are **Kangra Fort**, the **Brajeshwari (Bajreshwari) Devi temple**, the 8th century **Masroor rock-cut temples**, **Chamunda Devi**, **Jwalamukhi**, **Baijnath temple**, and, in winter, the birdlife of **Pong Dam (Maharana Pratap Sagar)**. Kangra town is only about 18 to 20 km from Dharamshala, so the easiest plan is to stay in Dharamshala or McLeod Ganj and explore the valley on day trips by taxi.
 
 Below you will find what each place is, why it matters, how long to give it, approximate entry fees as of 2026, and a tested **one-day Kangra loop** that covers the fort, Brajeshwari and Masroor without rushing.
 
@@ -730,7 +730,7 @@ Kangra town itself has limited good accommodation, while Dharamshala and McLeod 
     featured: false,
     meta_title: 'Places to Visit in Kangra: Fort, Temples & 1-Day Loop',
     meta_description: 'Best places to visit in Kangra: Kangra Fort, Brajeshwari, Masroor, Chamunda, Jwalamukhi, Baijnath and Pong Dam, with distances, fees and a 1-day loop (2026).',
-    related_slugs: ['kangra-devi-temples-guide', 'palampur-travel-guide', 'places-to-visit-in-dharamshala'],
+    related_slugs: ['kangra-devi-temples-guide', 'palampur-travel-guide', 'places-to-visit-in-dharamshala', 'masroor-rock-cut-temple-guide', 'baijnath-temple-guide'],
     faqs: [
       {
         question: 'How far is Kangra from Dharamshala?',

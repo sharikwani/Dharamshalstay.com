@@ -20,9 +20,7 @@ export const override: Partial<BlogPost> = {
     'family hotels',
   ],
   related_slugs: ['best-hotels-in-mcleod-ganj', 'dharamshala-vs-mcleod-ganj', 'luxury-dharamshala-guide'],
-  content: `## The Quick Answer
-
-The best hotels in Dharamshala depend on which part of town you stay in. **Lower Dharamshala** (Kotwali Bazaar, Civil Lines and the resorts on Khaniyara Road) suits families with a car, cricket fans and anyone who wants easy road access; **McLeod Ganj** suits first-timers who want to walk to the Dalai Lama Temple and the cafes; **Naddi and Dharamkot** have the biggest Dhauladhar views and the quietest nights. In 2026 expect approx. ₹900-1,800 a night for a clean budget room, ₹2,000-4,500 for a good mid-range hotel and ₹5,000-25,000+ for upscale hotels and resorts, with peak-season weekends at the top of each range.
+  content: `**Short answer:** The best hotels in Dharamshala depend on which part of town you stay in. **Lower Dharamshala** (Kotwali Bazaar, Civil Lines and the resorts on Khaniyara Road) suits families with a car, cricket fans and anyone who wants easy road access; **McLeod Ganj** suits first-timers who want to walk to the Dalai Lama Temple and the cafes; **Naddi and Dharamkot** have the biggest Dhauladhar views and the quietest nights. In 2026 expect approx. ₹900-1,800 a night for a clean budget room, ₹2,000-4,500 for a good mid-range hotel and ₹5,000-25,000+ for upscale hotels and resorts, with peak-season weekends at the top of each range.
 
 Every hotel named below is listed on our [hotels page](/hotels), where you can check rooms and send us your dates. We are a local team based in Dharamshala, so we have written this the way we would brief a friend: what each place is good at, and what it is not.
 

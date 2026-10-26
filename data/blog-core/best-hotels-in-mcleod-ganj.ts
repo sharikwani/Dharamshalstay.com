@@ -20,9 +20,7 @@ export const override: Partial<BlogPost> = {
     'bhagsu',
   ],
   related_slugs: ['best-hotels-in-dharamshala', 'mcleod-ganj-complete-guide', 'triund-trek-complete-guide'],
-  content: `## The Quick Answer
-
-The best hotels in McLeod Ganj are the ones that match how you want to spend your days. Stay **near the main square or Temple Road** to walk to the Dalai Lama Temple and the cafes; choose **Dharamkot or Upper Bhagsu** for cosy, quieter stays closest to the Triund trail; and pick **Naddi or the Dal Lake side** for big Dhauladhar views and easy parking. In 2026 a clean budget room costs approx. ₹900-1,800 a night, a good mid-range hotel ₹2,000-4,500, and upscale stays ₹5,000 and up.
+  content: `**Short answer:** The best hotels in McLeod Ganj are the ones that match how you want to spend your days. Stay **near the main square or Temple Road** to walk to the Dalai Lama Temple and the cafes; choose **Dharamkot or Upper Bhagsu** for cosy, quieter stays closest to the Triund trail; and pick **Naddi or the Dal Lake side** for big Dhauladhar views and easy parking. In 2026 a clean budget room costs approx. ₹900-1,800 a night, a good mid-range hotel ₹2,000-4,500, and upscale stays ₹5,000 and up.
 
 Every hotel named here is listed on our [hotels page](/hotels). We are a local team in Dharamshala, and we have tried to be straight about each one, including the steps, the noise and the parking that glossy listings leave out.
 

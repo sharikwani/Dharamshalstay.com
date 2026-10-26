@@ -8,7 +8,7 @@ export const override: Partial<BlogPost> = {
   meta_description:
     'Dharamshala to Delhi taxi: ₹10,000 sedan, ₹13,000 Ertiga/Innova, driver allowance included, tolls extra. About 480 km, 10-12 hrs via Una or Pathankot.',
   updated_at: '2026-10-07',
-  content: `A one-way taxi from Dharamshala to Delhi costs **from ₹10,000 in a Swift Dzire or Etios sedan (up to 4 passengers)** and **₹13,000 in an Ertiga or Innova (up to 6)**, as a fixed fare that includes the AC car and the driver allowance; tolls, parking and any Delhi entry tax are extra. The trip is about **480 km** and takes **10-12 hours** with meal breaks, usually via **Una and Chandigarh** or via **Pathankot and Jalandhar (NH44)**. Leave by 5-6 am to reach Delhi in the afternoon, before the evening traffic.
+  content: `**Short answer:** A one-way taxi from Dharamshala to Delhi costs **from ₹10,000 in a Swift Dzire or Etios sedan (up to 4 passengers)** and **₹13,000 in an Ertiga or Innova (up to 6)**, as a fixed fare that includes the AC car and the driver allowance; tolls, parking and any Delhi entry tax are extra. The trip is about **480 km** and takes **10-12 hours** with meal breaks, usually via **Una and Chandigarh** or via **Pathankot and Jalandhar (NH44)**. Leave by 5-6 am to reach Delhi in the afternoon, before the evening traffic.
 
 Fares below are our published fares as of 2026 and are indicative; the exact price is confirmed when you book on our [Dharamshala to Delhi taxi page](/taxi/dharamshala-to-delhi-taxi).
 
