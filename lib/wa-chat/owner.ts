@@ -11,7 +11,8 @@ import { markReadTyping, downloadMedia, sendTemplate } from '@/lib/whatsapp-clou
 import { confirmBooking } from '@/lib/bookings/confirm';
 import { commissionRateFor, splitAmount } from '@/lib/manual-booking';
 import { sendManualBookingEmails } from '@/lib/manual-booking-emails';
-import { whatsappNewBooking } from '@/lib/booking-whatsapp';
+import { whatsappBookingUpdated, whatsappCommissionDue, whatsappMessagePartner, whatsappNewBooking, whatsappPaymentRequest, whatsappRefundProcessed, whatsappReviewRequest } from '@/lib/booking-whatsapp';
+import { createCheckoutLink } from '@/lib/bookings/checkout';
 import { transcribe } from './assistant';
 import { history } from './store';
 import { sendLogged } from './send';
@@ -33,11 +34,11 @@ export function isAffirmative(text: string): boolean {
   return /^\s*(yes|y|yeah|yep|yup|ok|okay|okk|haan|han|ha|ji|ji haan|done|go|go ahead|do it|send|send it|sure|confirm|confirmed|proceed|👍)\s*[.!]*\s*$/i.test(text);
 }
 
-const WRITE_TOOLS = new Set(['confirm_booking', 'assign_booking', 'update_booking', 'message_customer', 'email_customer']);
+const WRITE_TOOLS = new Set(['confirm_booking', 'assign_booking', 'update_booking', 'message_customer', 'email_customer', 'message_partner', 'request_payment', 'record_refund', 'remind_commission', 'request_review']);
 
 const SYSTEM = `You are the admin assistant of Dharamshala Stay (hotels, taxis, treks, paragliding, party tickets in Dharamshala and McLeod Ganj). You are talking on WhatsApp with the OWNER, who manages the business from their phone.
 - Use the tools to look things up; never guess booking details, prices or phone numbers.
-- Changes (confirm, assign, update, message or email a customer) need the owner's explicit YES. First describe EXACTLY what you will do (booking ref, who gets what message, the full message text), then ask "Reply YES to do it." Only after the owner's next message is a plain yes, call the tool with confirmed=true.
+- Changes (confirm, assign, update, message or email a customer, message a partner or hotel, send a payment link, record a refund, remind a partner about commission, ask for a review) need the owner's explicit YES. First describe EXACTLY what you will do (booking ref, who gets what message, the full message text), then ask "Reply YES to do it." Only after the owner's next message is a plain yes, call the tool with confirmed=true.
 - Messages you write to customers: polite, short, professional Indian English, signed as Dharamshala Stay; never promise refunds, discounts or prices the owner did not give.
 - Keep replies to the owner short, with *bold* refs, and say what was done and anything that failed.
 - If the owner refers to "this" or "it", use the most recent alert or booking in the context.`;
@@ -55,7 +56,20 @@ const TOOLS = [
   { type: 'function', function: { name: 'assign_booking', description: 'Assign a booking to a partner by name; the partner gets the booking WhatsApp and email.', parameters: { type: 'object', properties: { ref: { type: 'string' }, partner_name: { type: 'string' }, confirmed: { type: 'boolean' } }, required: ['ref', 'partner_name', 'confirmed'] } } },
   { type: 'function', function: { name: 'update_booking', description: 'Change date, people, total amount, pickup time or the note of a booking. Optionally re-send the partner alert.', parameters: { type: 'object', properties: {
     ref: { type: 'string' }, activity_date: { type: 'string', description: 'YYYY-MM-DD' }, num_guests: { type: 'number' }, amount: { type: 'number', description: 'New TOTAL in rupees' },
-    pickup_time: { type: 'string' }, note: { type: 'string', description: 'Replaces the booking note the partner sees' }, notify_partner: { type: 'boolean' }, confirmed: { type: 'boolean' } }, required: ['ref', 'confirmed'] } } },
+    pickup_time: { type: 'string' }, note: { type: 'string', description: 'Replaces the booking note the partner sees' },
+    change_summary: { type: 'string', description: 'What changed, in a few words, for the WhatsApp updates, e.g. "Date moved to 2 Nov; now 3 people"' },
+    notify_partner: { type: 'boolean', description: 'Send the partner/hotel the booking update' }, notify_customer: { type: 'boolean', description: 'Send the customer the booking update' },
+    confirmed: { type: 'boolean' } }, required: ['ref', 'confirmed'] } } },
+  { type: 'function', function: { name: 'message_partner', description: 'WhatsApp a message about a booking to whoever is assigned (hotel, partner, driver), even if they have no open chat.', parameters: { type: 'object', properties: {
+    ref: { type: 'string' }, text: { type: 'string', description: 'The message, one paragraph' }, confirmed: { type: 'boolean' } }, required: ['ref', 'text', 'confirmed'] } } },
+  { type: 'function', function: { name: 'request_payment', description: 'Create a secure online payment link for the unpaid booking amount and WhatsApp it to the customer.', parameters: { type: 'object', properties: {
+    ref: { type: 'string' }, confirmed: { type: 'boolean' } }, required: ['ref', 'confirmed'] } } },
+  { type: 'function', function: { name: 'record_refund', description: 'After the owner has refunded in Razorpay or by bank: record it and tell the customer the amount and refund reference.', parameters: { type: 'object', properties: {
+    ref: { type: 'string' }, amount: { type: 'number', description: 'Refunded amount in rupees' }, reference: { type: 'string', description: 'Refund reference or UTR from Razorpay or the bank' }, confirmed: { type: 'boolean' } }, required: ['ref', 'amount', 'reference', 'confirmed'] } } },
+  { type: 'function', function: { name: 'remind_commission', description: 'WhatsApp the partner or hotel that our commission on a booking is due.', parameters: { type: 'object', properties: {
+    ref: { type: 'string' }, due_by: { type: 'string', description: 'Due date, e.g. "30 Oct 2026"' }, confirmed: { type: 'boolean' } }, required: ['ref', 'due_by', 'confirmed'] } } },
+  { type: 'function', function: { name: 'request_review', description: 'WhatsApp the customer a review request after their trip. Only goes to guests who agreed to hear from us; otherwise it is refused.', parameters: { type: 'object', properties: {
+    ref: { type: 'string' }, confirmed: { type: 'boolean' } }, required: ['ref', 'confirmed'] } } },
   { type: 'function', function: { name: 'message_customer', description: 'Send a WhatsApp message to a customer (by booking ref or phone). Uses the open chat if the customer wrote in the last 24h, otherwise the approved enquiry reply template.', parameters: { type: 'object', properties: {
     ref: { type: 'string' }, phone: { type: 'string' }, name: { type: 'string', description: 'Customer first name, if no ref' }, about: { type: 'string', description: 'Short subject, e.g. "your Kareri trek"' },
     text: { type: 'string', description: 'The message to send' }, confirmed: { type: 'boolean' } }, required: ['text', 'confirmed'] } } },
@@ -63,6 +77,7 @@ const TOOLS = [
     ref: { type: 'string' }, email: { type: 'string' }, subject: { type: 'string' }, text: { type: 'string' }, confirmed: { type: 'boolean' } }, required: ['subject', 'text', 'confirmed'] } } },
 ];
 
+const CHANGE_LABEL: Record<string, string> = { activity_date: 'Date', num_guests: 'Number of people', amount: 'Total price', commission_amount: 'Total price', partner_share_amount: 'Total price', price_overridden: 'Total price', pickup_time: 'Pickup time', special_requests: 'Booking note' };
 const digits = (s: unknown) => String(s ?? '').replace(/\D/g, '');
 const phone91 = (s: unknown) => { const d = digits(s); return d.length === 10 ? '91' + d : d; };
 
@@ -159,8 +174,53 @@ export async function runOwnerTool(name: string, args: any, ctx: { lastText: str
       if (typeof args.note === 'string') patch.special_requests = args.note.slice(0, 2000);
       const { error } = await sb.from('bookings').update(patch).eq('id', b.id);
       if (error) return JSON.stringify({ error: 'Could not update the booking' });
-      if (args.notify_partner && b.partner_id) await whatsappNewBooking(b.id, { customer: false, partners: true }).catch(() => {});
-      return JSON.stringify({ ok: true, changed: Object.keys(patch).filter((k) => k !== 'updated_at'), partner_notified: !!(args.notify_partner && b.partner_id) });
+      const changed = Object.keys(patch).filter((k) => k !== 'updated_at');
+      const summary = String(args.change_summary || '').trim() || Array.from(new Set(changed.map((k) => CHANGE_LABEL[k] || k))).join(', ') + ' updated';
+      const sent = (args.notify_partner || args.notify_customer)
+        ? await whatsappBookingUpdated(b.id, summary.slice(0, 300), { customer: !!args.notify_customer, partners: !!args.notify_partner })
+        : { customer: false, partners: 0 };
+      return JSON.stringify({ ok: true, changed, customer_notified: sent.customer, partners_notified: sent.partners });
+    }
+    case 'message_partner': {
+      const b = await bookingByRef(args.ref);
+      if (!b) return JSON.stringify({ error: 'No booking with that ref' });
+      const n = await whatsappMessagePartner(b.id, String(args.text || '').trim().slice(0, 900));
+      return JSON.stringify(n ? { ok: true, sent_to: n } : { error: 'Nobody with WhatsApp alerts is assigned to this booking, or the send failed' });
+    }
+    case 'request_payment': {
+      const b = await bookingByRef(args.ref);
+      if (!b) return JSON.stringify({ error: 'No booking with that ref' });
+      const link = await createCheckoutLink(b.id);
+      if (!link.ok) return JSON.stringify({ error: link.error });
+      const ok = await whatsappPaymentRequest(b.id, link.url);
+      return JSON.stringify(ok ? { ok: true, link: link.url } : { error: 'Link created but the WhatsApp failed', link: link.url });
+    }
+    case 'record_refund': {
+      const b = await bookingByRef(args.ref);
+      if (!b) return JSON.stringify({ error: 'No booking with that ref' });
+      const amount = Math.round(Number(args.amount) || 0);
+      const reference = String(args.reference || '').trim().slice(0, 80);
+      if (amount <= 0 || !reference) return JSON.stringify({ error: 'Need the refunded amount and the refund reference' });
+      const full = amount >= (Number(b.paid_amount) || Number(b.amount) || 0);
+      if (full) {
+        const { error } = await sb.from('bookings').update({ payment_status: 'refunded', updated_at: new Date().toISOString() }).eq('id', b.id);
+        if (error) return JSON.stringify({ error: 'Could not mark the booking refunded' });
+      }
+      const ok = await whatsappRefundProcessed(b.id, amount, reference);
+      return JSON.stringify({ ok: true, marked_refunded: full, customer_notified: ok });
+    }
+    case 'remind_commission': {
+      const b = await bookingByRef(args.ref);
+      if (!b) return JSON.stringify({ error: 'No booking with that ref' });
+      if (!(Number(b.commission_amount) > 0) || ['paid', 'waived', 'not_applicable'].includes(b.commission_status)) return JSON.stringify({ error: `No commission is owed (status ${b.commission_status || 'none'})` });
+      const n = await whatsappCommissionDue(b.id, String(args.due_by || '').slice(0, 40));
+      return JSON.stringify(n ? { ok: true, sent_to: n, amount: b.commission_amount } : { error: 'No partner number with WhatsApp alerts, or the send failed' });
+    }
+    case 'request_review': {
+      const b = await bookingByRef(args.ref);
+      if (!b) return JSON.stringify({ error: 'No booking with that ref' });
+      const r = await whatsappReviewRequest(b.id);
+      return JSON.stringify(r.ok ? { ok: true } : { error: r.reason });
     }
     case 'message_customer': {
       const b = args.ref ? await bookingByRef(args.ref) : null;

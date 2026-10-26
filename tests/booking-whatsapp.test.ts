@@ -299,3 +299,39 @@ describe('notifiers', () => {
     expect(h.sendTemplate).not.toHaveBeenCalled();
   });
 });
+
+describe('templates approved 26 Oct 2026', () => {
+  it('fill every placeholder, in template order, without line breaks', async () => {
+    const m = await import('@/lib/booking-whatsapp');
+    const v = { ...view, staff_text: 'Ravi, 98160', vehicle_text: 'Swift Dzire · HP01D5803', pickup_location: 'Gaggal Airport', paid_amount: 2500 };
+    const cases: [string[], number][] = [
+      [m.requestReceivedParams(v), 4], [m.updatedCustomerParams(v, 'Date moved'), 4], [m.updatedPartnerParams(v, 'Date moved'), 4],
+      [m.messagePartnerParams(v, 'Please call the guest'), 3], [m.paymentRequestParams(v, 10000, 'https://rzp.io/x'), 5],
+      [m.paymentReceivedParams(v, 2500, 'pay_1'), 4], [m.refundParams(v, 2500, 'rfnd_1'), 4], [m.tripReminderParams(v), 5],
+      [m.assignedParams(v), 5], [m.commissionParams({ ...v, commission_amount: 2500, partner_contact: { name: 'Karan', email: null, phone: null } }, '30 Oct 2026'), 4],
+    ];
+    for (const [params, n] of cases) {
+      expect(params).toHaveLength(n);
+      for (const p of params) { expect(p.trim()).not.toBe(''); expect(p).not.toMatch(/\n/); }
+    }
+  });
+
+  it('greet by first name and say who to call', async () => {
+    const m = await import('@/lib/booking-whatsapp');
+    const v = { ...view, staff_text: 'Ravi, 98160', vehicle_text: 'Swift Dzire', pickup_location: 'Gaggal Airport' };
+    expect(m.requestReceivedParams(v)[0]).toBe('Asha');
+    expect(m.assignedParams(v).slice(2)).toEqual(['Driver Ravi, 98160', 'Swift Dzire', '9:00 AM, Gaggal Airport']);
+    expect(m.tripReminderParams(v)[4]).toBe('Driver Ravi, 98160');
+    expect(m.detailsLine(v)).toContain('2 people');
+    expect(m.paymentReceivedParams(v, 2500, '')[3]).toBe('Recorded by our team');
+  });
+
+  it('send a review request only to guests who agreed to hear from us', async () => {
+    h.configured.mockReturnValue(true);
+    h.loadBookingView.mockResolvedValue({ ...view, guest_email: 'a@b.in' });
+    const m = await import('@/lib/booking-whatsapp');
+    // The mocked client has no .or(), so the consent lookup throws and the request is refused, never sent.
+    expect((await m.whatsappReviewRequest('b1')).ok).toBe(false);
+    expect(h.sendTemplate).not.toHaveBeenCalledWith(expect.objectContaining({ template: 'review_request' }));
+  });
+});

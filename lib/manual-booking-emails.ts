@@ -60,9 +60,13 @@ function buildView(b: Record<string, any>, r: Related): BookingView {
   else if (b.category === 'guide' && guide) partner_contact = { name: guide.name, email: guide.email || null, phone: guide.phone || null };
   else if (partner) partner_contact = { name: partner.legal_name || partner.business_name || partner.full_name, email: partner.email || null, phone: partner.phone || null };
 
+  // Separate lines for the driver / guide WhatsApp ("Assigned" and "Vehicle").
+  const staff_text = staff ? staff.full_name + (staff.phone ? `, ${staff.phone}` : '') : null;
+  const vehicle_text = vehicle ? [vehicle.make_model, vehicle.registration_no].filter(Boolean).join(' · ') || null : null;
+
   return {
-    ...b, item_name, date_text, assignee_text, payment_text, effective_collector, partner_contact,
-    property_check_in_time: property?.check_in_time ?? null, property_check_out_time: property?.check_out_time ?? null,
+    ...b, item_name, date_text, assignee_text, staff_text, vehicle_text, payment_text, effective_collector, partner_contact,
+    property_slug: property?.slug ?? null, property_check_in_time: property?.check_in_time ?? null, property_check_out_time: property?.check_out_time ?? null,
   };
 }
 
@@ -72,7 +76,7 @@ export async function loadBookingView(bookingId: string): Promise<BookingView | 
   if (!b) return null;
 
   const [property, route, trek, pkg, guide, partner, staff, vehicle] = await Promise.all([
-    one('properties', b.property_id, 'name, contact_email, contact_phone, check_in_time, check_out_time'),
+    one('properties', b.property_id, 'name, slug, contact_email, contact_phone, check_in_time, check_out_time'),
     one('taxi_routes', b.taxi_route_id, 'from_location, to_location'),
     one('treks', b.trek_id, 'name'),
     one('paragliding_packages', b.paragliding_id, 'name'),

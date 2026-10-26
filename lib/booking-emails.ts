@@ -1,6 +1,6 @@
 import { serviceClient } from '@/lib/server-auth';
 import { sendBookingConfirmation, sendBookingRequestReceived, sendAdminNotification } from '@/lib/email';
-import { whatsappNewBooking } from '@/lib/booking-whatsapp';
+import { whatsappNewBooking, whatsappRequestReceived } from '@/lib/booking-whatsapp';
 import { bookingPageUrlOrNull, loadStayContact } from '@/lib/bookings/stay-details';
 import { upsertContact } from '@/lib/email/contacts';
 import { scheduleBookingJourney } from '@/lib/email/jobs';
@@ -10,7 +10,7 @@ import { scheduleBookingJourney } from '@/lib/email/jobs';
  * 'requested' (default): the booking is awaiting confirmation, so the guest gets no WhatsApp.
  * 'confirmed': the booking is confirmed, so the guest also gets the WhatsApp confirmation.
  */
-export async function sendBookingEmails(bookingId: string, stage: 'requested' | 'confirmed' = 'requested'): Promise<void> {
+export async function sendBookingEmails(bookingId: string, stage: 'requested' | 'confirmed' = 'requested', opts: { customerWhatsApp?: boolean } = {}): Promise<void> {
   try {
     const sb = serviceClient();
     const { data: booking } = await sb.from('bookings').select('*').eq('id', bookingId).single();
@@ -45,7 +45,9 @@ export async function sendBookingEmails(bookingId: string, stage: 'requested' | 
       booking_ref: booking.booking_ref, category: booking.category, amount: booking.amount,
       check_in: booking.check_in, check_out: booking.check_out, property_name: propertyName,
     });
-    await whatsappNewBooking(bookingId, { customer: stage === 'confirmed' && !ticket, partners: true });
+    await whatsappNewBooking(bookingId, { customer: stage === 'confirmed' && !ticket && opts.customerWhatsApp !== false, partners: true });
+    // A request awaiting confirmation: tell the guest we have it (WhatsApp bookings already hear this in the chat).
+    if (stage === 'requested' && !ticket && booking.booking_source !== 'whatsapp') await whatsappRequestReceived(bookingId);
   } catch (err) {
     console.error('Booking emails failed (non-fatal):', err);
   }

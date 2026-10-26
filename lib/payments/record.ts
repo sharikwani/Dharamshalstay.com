@@ -1,4 +1,5 @@
 import { sendBookingEmails } from '@/lib/booking-emails';
+import { whatsappPaymentReceived } from '@/lib/booking-whatsapp';
 import { adminEmail, sendEmail } from '@/lib/email';
 import { settlePaidOffer } from '@/lib/offers/paid';
 import { availabilityFor } from '@/lib/availability/store';
@@ -179,7 +180,10 @@ export async function recordOnlinePayment(sb: any, p: OnlinePayment): Promise<bo
     const { error: recErr } = await sb.from('commission_records').update({ status: 'waived' })
       .eq('booking_id', booking.id).in('status', OPEN_RECORD);
     if (recErr) console.error(`${log}: commission record waive failed:`, recErr);
-    await sendBookingEmails(booking.id, 'confirmed');
+    // Already confirmed before this payment (pay-later link): the guest gets a payment receipt, not a second confirmation.
+    const wasConfirmed = found.status === 'confirmed';
+    await sendBookingEmails(booking.id, 'confirmed', { customerWhatsApp: !wasConfirmed });
+    if (wasConfirmed && booking.category !== 'event') await whatsappPaymentReceived(booking.id, p.amount, p.paymentId || '');
     // Party tickets: the ticket code and card go out once the payment is in (lib/parties/tickets.ts).
     if (booking.category === 'event') await (await import('@/lib/parties/tickets')).issuePartyTicket(booking.id);
     await overbookingAlert(sb, booking, log);

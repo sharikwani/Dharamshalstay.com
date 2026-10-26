@@ -4,6 +4,7 @@ import { queueUnpaidReminders, runDueJobs } from '@/lib/email/jobs';
 import { runMarketingAutopilot } from '@/lib/email/autopilot';
 import { runSocialAutopilot } from '@/lib/social/autopilot';
 import { runStoriesAutopilot } from '@/lib/stories/feature';
+import { runTripReminders } from '@/lib/booking-whatsapp';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -27,6 +28,8 @@ async function run(req: NextRequest) {
   const started = Date.now();
   const unpaid = await queueUnpaidReminders().catch((e) => { console.error('unpaid reminders failed:', e); return 0; });
   const jobs = await runDueJobs();
+  // Evening before a trip: WhatsApp reminder with who to call (5-9 pm IST only, once per booking).
+  const reminders = await runTripReminders().catch((e) => { console.error('trip reminders failed:', e); return 0; });
   // Instagram/Facebook: publish what is due, or write the next post. Gets the time booking emails left.
   const social = Date.now() - started < 15_000
     ? await runSocialAutopilot({ deadline: started + 55_000 }).catch((e) => { console.error('social autopilot failed:', e); return { error: String(e?.message || e) }; })
@@ -39,7 +42,7 @@ async function run(req: NextRequest) {
   const marketing = Date.now() - started < 30_000
     ? await runMarketingAutopilot({ deadline: started + 55_000 }).catch((e) => { console.error('marketing autopilot failed:', e); return { error: String(e?.message || e) }; })
     : { skipped: 'out of time' };
-  return NextResponse.json({ ok: true, unpaid, jobs, social, stories, marketing, ms: Date.now() - started });
+  return NextResponse.json({ ok: true, unpaid, jobs, reminders, social, stories, marketing, ms: Date.now() - started });
 }
 
 export const GET = run;

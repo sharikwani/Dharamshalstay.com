@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { HttpError, jsonError, requireCaller, serviceClient } from '@/lib/server-auth';
 import { ACTIVITY_CATEGORIES, checkAssignment, commissionRateFor, paymentFields, splitAmount } from '@/lib/manual-booking';
-import { whatsappNewBooking, whatsappReassignedAway } from '@/lib/booking-whatsapp';
+import { whatsappAssigned, whatsappNewBooking, whatsappPaymentReceived, whatsappReassignedAway } from '@/lib/booking-whatsapp';
 import { loadBookingView, sendManualBookingEmails, sendReassignedAwayEmail } from '@/lib/manual-booking-emails';
 
 import { cancelBooking } from '@/lib/bookings/cancel';
@@ -246,8 +246,13 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
         if (partnerChanged || (booking.staff_id && booking.staff_id !== update.staff_id)) {
           await whatsappReassignedAway(id, { partner_id: booking.partner_id ?? null, staff_id: booking.staff_id ?? null });
         }
+        // A confirmed guest gets their driver, pilot or guide and the vehicle once someone new is assigned.
+        if (update.staff_id && update.staff_id !== booking.staff_id && booking.status === 'confirmed') await whatsappAssigned(id);
       }
-      if (body.action === 'payment' && body.notify && changed) await sendManualBookingEmails(id, { customer: true, partner: false, subjectPrefix: 'Updated: ' });
+      if (body.action === 'payment' && body.notify && changed) {
+        await sendManualBookingEmails(id, { customer: true, partner: false, subjectPrefix: 'Updated: ' });
+        if (body.choice === 'platform_paid') await whatsappPaymentReceived(id, Number(body.amount_received) || Number(booking.amount) || 0, String(body.reference || ''));
+      }
     } catch (e) { console.error('Booking update emails failed:', e); }
 
     return NextResponse.json({ booking: await loadBookingView(id) });

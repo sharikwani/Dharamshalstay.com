@@ -8,6 +8,7 @@ import { serviceClient } from '@/lib/server-auth';
 import { deliver } from './send';
 import { livePaymentLink, loadBookingData, loadEnquiryData } from './data';
 import { enquiryFollowUp, paymentFailed, preArrival, reviewRequest, type Built } from './templates';
+import { whatsappEnquiryFollowUp } from '@/lib/wa-chat/enquiry-follow-up';
 
 export type JobTemplate = 'enquiry_follow_up' | 'pre_arrival' | 'review_request' | 'review_reminder' | 'payment_reminder';
 
@@ -62,7 +63,7 @@ async function prepare(sb: SupabaseClient, job: any): Promise<Outcome> {
 
   if (job.template === 'enquiry_follow_up') {
     const e = await loadEnquiryData(job.inquiry_id);
-    if (!e?.email) return { skip: 'no email' };
+    if (!e?.email && !e?.phone) return { skip: 'no email or phone' };
     if (['converted', 'closed'].includes(e.status || '')) return { skip: 'enquiry ' + e.status };
     const since = e.created_at;
     const or = [e.email ? `guest_email.ilike.${e.email}` : '', e.phone ? `guest_phone.eq.${e.phone}` : ''].filter(Boolean).join(',');
@@ -70,6 +71,9 @@ async function prepare(sb: SupabaseClient, job: any): Promise<Outcome> {
       const { count } = await sb.from('bookings').select('id', { count: 'exact', head: true }).or(or).gte('created_at', since);
       if (count) return { skip: 'guest has booked' };
     }
+    // WhatsApp too, unless they are already chatting with us (claimed once per enquiry, so an email retry never re-sends it).
+    if (job.attempts === 0) await whatsappEnquiryFollowUp(e);
+    if (!e.email) return { skip: 'no email (WhatsApp only)' };
     return { send: { to: e.email, built: enquiryFollowUp(e), inquiryId: e.id } };
   }
 

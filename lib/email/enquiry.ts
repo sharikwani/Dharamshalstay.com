@@ -23,8 +23,9 @@ export async function afterEnquiry(inquiryId: string, opts: { consent?: boolean;
   if (e.email) {
     const { subject, doc } = enquiryReceived(e);
     await deliver({ to: e.email, subject, doc, kind: 'transactional', template: 'enquiry_received', inquiryId: e.id });
-    await scheduleEnquiryFollowUp(e.id);
   }
+  // Follow-up two days later by email and/or WhatsApp (phone-only enquiries get the WhatsApp one).
+  if (e.email || e.phone) await scheduleEnquiryFollowUp(e.id);
   if (opts.adminAlert !== false) {
     const a = adminNewEnquiry(e);
     await deliver({ to: ADMIN_TO(), subject: a.subject, doc: a.doc, kind: 'admin', template: 'admin_new_enquiry', inquiryId: e.id });

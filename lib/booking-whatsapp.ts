@@ -3,6 +3,7 @@ import { loadBookingView, type BookingView } from '@/lib/manual-booking-emails';
 import { cleanParam, isWhatsAppConfigured, sendTemplate } from '@/lib/whatsapp-cloud';
 import { normalizeIndianPhone } from '@/lib/whatsapp';
 import { bookingPageUrlOrNull, hotelPhoneVisible } from '@/lib/bookings/stay-details';
+import { siteConfig } from '@/lib/config';
 
 export type RecipientKind = 'partner' | 'staff' | 'hotel' | 'guide';
 export type Recipient = { kind: RecipientKind; phone: string };
@@ -186,9 +187,9 @@ export async function currentAssigneePhones(a: Assignment): Promise<string[]> {
  * attempt is recorded even if the send never returns; it is then updated to 'sent' or 'failed'.
  * Nothing is logged when WhatsApp is not configured. Never throws.
  */
-async function sendAndLog(bookingId: string, kind: RecipientKind | 'customer', to: string, msg: Msg) {
+async function sendAndLog(bookingId: string, kind: RecipientKind | 'customer', to: string, msg: Msg): Promise<boolean> {
   try {
-    if (!isWhatsAppConfigured()) return;
+    if (!isWhatsAppConfigured()) return false;
     const sb = serviceClient();
     let template = msg.template;
     const base = { booking_id: bookingId, recipient_kind: kind, to_phone: to, template };
@@ -204,7 +205,7 @@ async function sendAndLog(bookingId: string, kind: RecipientKind | 'customer', t
         const { error } = await sb.from('whatsapp_messages').delete().eq('id', queued.id);
         if (error) console.error('WhatsApp: could not remove skipped message:', error);
       }
-      return;
+      return false;
     }
     const result = {
       template, wa_message_id: r.ok ? r.id : null, status: r.ok ? 'sent' : 'failed', error: r.ok ? null : r.error || 'Unknown error',
@@ -213,12 +214,14 @@ async function sendAndLog(bookingId: string, kind: RecipientKind | 'customer', t
       ? await sb.from('whatsapp_messages').update({ ...result, updated_at: new Date().toISOString() }).eq('id', queued.id)
       : await sb.from('whatsapp_messages').insert({ ...base, ...result });
     if (error) console.error('WhatsApp: could not log message:', error);
-  } catch (e) { console.error('WhatsApp send failed:', e); }
+    return r.ok;
+  } catch (e) { console.error('WhatsApp send failed:', e); return false; }
 }
 
 /** Send to every recipient at once so one slow number does not hold up the others. */
-async function sendAll(bookingId: string, recipients: Recipient[], msg: Msg) {
-  await Promise.allSettled(recipients.map((r) => sendAndLog(bookingId, r.kind, r.phone, msg)));
+async function sendAll(bookingId: string, recipients: Recipient[], msg: Msg): Promise<number> {
+  const res = await Promise.allSettled(recipients.map((r) => sendAndLog(bookingId, r.kind, r.phone, msg)));
+  return res.filter((x) => x.status === 'fulfilled' && x.value).length;
 }
 
 /**
@@ -282,4 +285,152 @@ export async function whatsappReassignedAway(bookingId: string, prev: { partner_
     const reason = partnerChanged ? 'Reassigned to another partner - you no longer need to take it' : 'Reassigned to someone else - you no longer need to take it';
     await sendAll(bookingId, to, cancelledMsg(v, reason));
   } catch (e) { console.error('WhatsApp reassignment alert failed:', e); }
+}
+
+// ===== Templates approved 26 Oct 2026 (all utility except review_request, which is marketing) =====
+
+const firstName = (v: BookingView) => String(v.guest_name || '').trim().split(/\s+/)[0] || 'there';
+const roleOf = (v: BookingView) => (v.category === 'taxi' ? 'Driver' : v.category === 'paragliding' ? 'Pilot' : 'Guide');
+
+/** The booking as it stands now, on one line: item, date, time, people, total. */
+export function detailsLine(v: BookingView): string {
+  const { date, time } = bookingWhen(v);
+  const n = Number(v.num_guests) || 0;
+  return [v.item_name, date, time !== TBC ? time : '', n ? `${n} ${n === 1 ? 'person' : 'people'}` : '', `Total ${rupees(v.amount)}`].filter(Boolean).join(' · ');
+}
+
+/** Who to call on the day: the driver/guide, else the hotel, else the partner, else us. */
+export function dayContact(v: BookingView): string {
+  if (v.staff_text) return `${roleOf(v)} ${v.staff_text}`;
+  if (v.category === 'hotel') return hotelContactLine(v) || `Dharamshala Stay ${siteConfig.phone}`;
+  if (v.partner_contact?.phone) return `${v.partner_contact.name} ${v.partner_contact.phone}`;
+  return `Dharamshala Stay ${siteConfig.phone}`;
+}
+
+export const requestReceivedParams = (v: BookingView) => [firstName(v), v.booking_ref, v.item_name, bookingWhen(v).date].map(cleanParam);
+export const updatedCustomerParams = (v: BookingView, changed: string) => [firstName(v), v.booking_ref, changed, detailsLine(v)].map(cleanParam);
+export const updatedPartnerParams = (v: BookingView, changed: string) => [v.booking_ref, partnerServiceLine(v), changed, detailsLine(v)].map(cleanParam);
+export const messagePartnerParams = (v: BookingView, text: string) => [v.booking_ref, v.item_name, text].map(cleanParam);
+export const paymentRequestParams = (v: BookingView, due: number, url: string) => [firstName(v), v.booking_ref, v.item_name, rupees(due), url].map(cleanParam);
+export const paymentReceivedParams = (v: BookingView, amount: number, reference: string) => [firstName(v), rupees(amount), v.booking_ref, reference || 'Recorded by our team'].map(cleanParam);
+export const refundParams = (v: BookingView, amount: number, reference: string) => [firstName(v), rupees(amount), v.booking_ref, reference].map(cleanParam);
+export function tripReminderParams(v: BookingView): string[] {
+  const { date, time } = bookingWhen(v);
+  return [firstName(v), v.booking_ref, v.item_name, time !== TBC ? `${date}, ${time}` : date, dayContact(v)].map(cleanParam);
+}
+export function assignedParams(v: BookingView): string[] {
+  const pickup = [clock(v.pickup_time), v.pickup_location].filter(Boolean).join(', ');
+  return [firstName(v), v.booking_ref, `${roleOf(v)} ${v.staff_text}`, v.vehicle_text || 'Shared on the day', pickup || TBC].map(cleanParam);
+}
+export const commissionParams = (v: BookingView, dueBy: string) => [v.partner_contact?.name || 'Partner', v.booking_ref, rupees(v.commission_amount), dueBy].map(cleanParam);
+
+/** Where a guest leaves a review: the hotel page's review form, else a WhatsApp message to us. */
+export function reviewUrl(v: BookingView): string {
+  const site = siteConfig.url.replace(/\/$/, '');
+  if (v.category === 'hotel' && v.property_slug) return `${site}/hotels/${v.property_slug}?review=1#reviews`;
+  return `https://wa.me/${siteConfig.whatsapp}?text=` + encodeURIComponent(`Feedback for booking ${v.booking_ref}: `);
+}
+
+/** One template to the booking's customer. Returns whether it was sent. Never throws. */
+async function toCustomer(bookingId: string, template: string, build: (v: BookingView) => string[] | null): Promise<boolean> {
+  try {
+    if (!isWhatsAppConfigured()) return false;
+    const v = await loadBookingView(bookingId);
+    const to = v ? normalizeIndianPhone(v.guest_phone) : null;
+    const params = v && to ? build(v) : null;
+    if (!v || !to || !params) return false;
+    return await sendAndLog(bookingId, 'customer', to, { template, params });
+  } catch (e) { console.error(`WhatsApp ${template} failed:`, e); return false; }
+}
+
+/** "We have your request" for a booking awaiting confirmation (pay later, pay at hotel). */
+export const whatsappRequestReceived = (bookingId: string) => toCustomer(bookingId, 'booking_request_received', requestReceivedParams);
+
+/** A changed booking: the customer and/or whoever is assigned get what changed and the new details. Never throws. */
+export async function whatsappBookingUpdated(bookingId: string, changed: string, opts: { customer: boolean; partners: boolean }): Promise<{ customer: boolean; partners: number }> {
+  const out = { customer: false, partners: 0 };
+  try {
+    if (!isWhatsAppConfigured()) return out;
+    const v = await loadBookingView(bookingId);
+    if (!v) return out;
+    const to = opts.customer ? normalizeIndianPhone(v.guest_phone) : null;
+    const [c, p] = await Promise.all([
+      to ? sendAndLog(bookingId, 'customer', to, { template: 'booking_updated_customer', params: updatedCustomerParams(v, changed) }) : false,
+      opts.partners ? loadRecipients(v).then((r) => sendAll(bookingId, r, { template: 'booking_updated_partner', params: updatedPartnerParams(v, changed) })) : 0,
+    ]);
+    return { customer: c, partners: p };
+  } catch (e) { console.error('WhatsApp booking update failed:', e); return out; }
+}
+
+/** A message from us to whoever is assigned to the booking (hotel, partner, driver), even with no open chat. */
+export async function whatsappMessagePartner(bookingId: string, text: string): Promise<number> {
+  try {
+    if (!isWhatsAppConfigured()) return 0;
+    const v = await loadBookingView(bookingId);
+    if (!v) return 0;
+    return await sendAll(bookingId, await loadRecipients(v), { template: 'booking_message_partner', params: messagePartnerParams(v, text) });
+  } catch (e) { console.error('WhatsApp partner message failed:', e); return 0; }
+}
+
+export const whatsappPaymentRequest = (bookingId: string, url: string, due?: number) =>
+  toCustomer(bookingId, 'payment_request', (v) => paymentRequestParams(v, due ?? Math.max(0, Number(v.amount) - Number(v.paid_amount || 0)), url));
+export const whatsappPaymentReceived = (bookingId: string, amount: number, reference: string) =>
+  toCustomer(bookingId, 'payment_received', (v) => paymentReceivedParams(v, amount, reference));
+export const whatsappRefundProcessed = (bookingId: string, amount: number, reference: string) =>
+  toCustomer(bookingId, 'refund_processed', (v) => refundParams(v, amount, reference));
+/** The driver, pilot or guide and vehicle, once one is assigned. */
+export const whatsappAssigned = (bookingId: string) => toCustomer(bookingId, 'driver_guide_assigned', (v) => (v.staff_text ? assignedParams(v) : null));
+export const whatsappTripReminder = (bookingId: string) => toCustomer(bookingId, 'trip_reminder', tripReminderParams);
+
+/** Commission reminder to the partner or hotel that collected the money. Never throws. */
+export async function whatsappCommissionDue(bookingId: string, dueBy: string): Promise<number> {
+  try {
+    if (!isWhatsAppConfigured()) return 0;
+    const v = await loadBookingView(bookingId);
+    if (!v || !(Number(v.commission_amount) > 0)) return 0;
+    const to = (await loadRecipients(v)).filter((r) => r.kind === 'partner' || r.kind === 'hotel');
+    return await sendAll(bookingId, to, { template: 'commission_due_partner', params: commissionParams(v, dueBy) });
+  } catch (e) { console.error('WhatsApp commission reminder failed:', e); return 0; }
+}
+
+async function hasMarketingConsent(email?: string | null, phone?: string | null): Promise<boolean> {
+  const p = normalizeIndianPhone(phone);
+  const or = [email ? `email.ilike.${String(email).trim()}` : '', p ? `phone.eq.${p}` : ''].filter(Boolean).join(',');
+  if (!or) return false;
+  const { data } = await serviceClient().from('contacts').select('marketing_consent, unsubscribed_at').or(or).limit(5);
+  return (data || []).some((c: any) => c.marketing_consent && !c.unsubscribed_at);
+}
+
+/** Marketing template: only for guests who agreed to hear from us (contacts.marketing_consent, not unsubscribed). */
+export async function whatsappReviewRequest(bookingId: string): Promise<{ ok: boolean; reason?: string }> {
+  try {
+    if (!isWhatsAppConfigured()) return { ok: false, reason: 'WhatsApp not configured' };
+    const v = await loadBookingView(bookingId);
+    if (!v) return { ok: false, reason: 'booking not found' };
+    if (!(await hasMarketingConsent(v.guest_email, v.guest_phone))) return { ok: false, reason: 'no marketing consent' };
+    const ok = await toCustomer(bookingId, 'review_request', (x) => [firstName(x), x.item_name, reviewUrl(x)].map(cleanParam));
+    return ok ? { ok } : { ok, reason: 'send failed' };
+  } catch (e) { console.error('WhatsApp review request failed:', e); return { ok: false, reason: 'error' }; }
+}
+
+/**
+ * Evening before the trip (5-9 pm IST): one reminder per confirmed booking starting tomorrow, with who to call.
+ * Called by the cron heartbeat; the whatsapp_messages log stops a second send.
+ */
+export async function runTripReminders(now = new Date()): Promise<number> {
+  try {
+    if (!isWhatsAppConfigured()) return 0;
+    const ist = new Date(now.getTime() + 5.5 * 3600e3);
+    if (ist.getUTCHours() < 17 || ist.getUTCHours() >= 21) return 0;
+    const tomorrow = new Date(ist.getTime() + 86400e3).toISOString().slice(0, 10);
+    const sb = serviceClient();
+    const { data } = await sb.from('bookings').select('id, category').eq('status', 'confirmed').or(`check_in.eq.${tomorrow},activity_date.eq.${tomorrow}`).limit(50);
+    const due = (data || []).filter((b: any) => b.category !== 'event');
+    if (!due.length) return 0;
+    const { data: sent } = await sb.from('whatsapp_messages').select('booking_id').eq('template', 'trip_reminder').in('booking_id', due.map((b: any) => b.id));
+    const done = new Set((sent || []).map((s: any) => s.booking_id));
+    let n = 0;
+    for (const b of due) if (!done.has(b.id) && (await whatsappTripReminder(b.id))) n++;
+    return n;
+  } catch (e) { console.error('Trip reminders failed:', e); return 0; }
 }
