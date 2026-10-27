@@ -19,6 +19,7 @@ import { monasteryPhotos } from '@/data/monastery-photos';
 import { listPublicStories } from '@/lib/stories/store';
 import { publishedServices } from '@/lib/services/store';
 import { publishedGuides } from '@/lib/guides/store';
+import { TRAVEL_PARTNERS } from '@/data/travel-partners';
 
 // Must be the canonical (www) origin -- the bare domain 301s to www, and a
 // sitemap full of redirecting URLs is largely ignored by Google.
@@ -81,6 +82,8 @@ export async function sitemapEntries(): Promise<SitemapEntry[]> {
     { url: B + '/play', lastModified: date('2026-10-22'), changeFrequency: 'monthly', priority: 0.6 },
     { url: B + '/luggage-storage', lastModified: date('2026-10-25'), changeFrequency: 'weekly', priority: 0.6 },
     { url: B + '/luggage-storage/list-your-service', lastModified: date('2026-10-25'), changeFrequency: 'yearly', priority: 0.3 },
+    { url: B + '/travel-partners', lastModified: date('2026-10-27'), changeFrequency: 'monthly', priority: 0.5 },
+    ...TRAVEL_PARTNERS.filter((p) => p.indexable).map((p) => ({ url: B + '/travel-partners/' + p.slug, lastModified: date(p.added), changeFrequency: 'monthly' as const, priority: 0.4 })),
     { url: B + '/local-guides', lastModified: date('2026-10-26'), changeFrequency: 'weekly', priority: 0.7 },
     { url: B + '/local-guides/register', lastModified: date('2026-10-26'), changeFrequency: 'yearly', priority: 0.3 },
     ...guides.map((g) => ({ url: B + '/local-guides/' + g.slug, lastModified: date(g.published_at, date('2026-10-26')), changeFrequency: 'monthly' as const, priority: 0.5 })),

@@ -260,6 +260,7 @@ export async function llmsIndex(): Promise<string> {
       link('Travel essentials', '/essentials', 'money, SIM, weather, food, health and local rules in quick answers'),
       link('Traveller stories', '/stories', 'real trip stories and photos from Dharamshala and McLeod Ganj, shared by travellers and locals'),
       link('Share your story', '/stories/share', 'travellers can add their own Dharamshala story and photos and get a memory card'),
+      link('Verified travel partners', '/travel-partners', 'local trek, paragliding and taxi operators verified by Dharamshala Stay, with the group trips they have completed with us'),
       link('Local guides', '/local-guides', 'book an approved local guide in McLeod Ganj and Dharamshala for monastery walks, Triund and day treks, and Kangra temple tours; guides register free on /local-guides/register'),
       link('Luggage storage', '/luggage-storage', 'where to leave bags in Dharamshala and McLeod Ganj: local luggage storage from about Rs 80-100 per bag per day, with pick-up and drop'),
       link('New Year and Christmas parties 2026-27', '/new-year-parties', 'New Year Eve party tickets at Panchvati Cottages online, Kangra Valley Carnival 24-31 Dec 2026, McLeod Ganj and Bhagsu party venues, traffic tips'),
