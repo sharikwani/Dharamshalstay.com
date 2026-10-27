@@ -5,7 +5,7 @@
 export const en = {
   nav: {
     tagline: 'Your home in the Himalayas',
-    hotels: 'Hotels', treks: 'Treks', paragliding: 'Paragliding', taxi: 'Taxi',
+    hotels: 'Hotels', treks: 'Treks', paragliding: 'Paragliding', taxi: 'Taxi', localGuides: 'Local Guides',
     guides: 'Travel Guides', monasteries: 'Monasteries', essentials: 'Essentials', stories: 'Stories', faq: 'FAQ', contact: 'Contact',
     listProperty: 'Become a Partner', myAccount: 'My Account', login: 'Login', loginSignup: 'Login / Sign Up',
     enquire: 'Enquire Now', menu: 'Menu',
