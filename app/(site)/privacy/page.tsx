@@ -37,7 +37,7 @@ export default function PrivacyPage() {
         </section>
         <section>
           <h2 className="text-xl font-heading font-semibold text-slate-900 mb-3">4. Do we use cookies and tracking?</h2>
-          <p>We use essential cookies for website functionality and analytics cookies to understand usage patterns. You can control cookies through your browser settings.</p>
+          <p>We use essential cookies for website functionality and analytics cookies to understand usage patterns. Some links to airline, bus and other travel booking sites are affiliate links through our partner Travelpayouts: if you book through them we may earn a small commission at no extra cost to you, and Travelpayouts may set its own cookies to track that referral. Its script runs only on our public pages, never on booking, payment, account or admin pages. You can control cookies through your browser settings.</p>
         </section>
         <section>
           <h2 className="text-xl font-heading font-semibold text-slate-900 mb-3">5. How do we keep your data secure?</h2>

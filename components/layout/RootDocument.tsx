@@ -4,6 +4,7 @@ import Footer from '@/components/layout/Footer';
 import WhatsAppButton from '@/components/layout/WhatsAppButton';
 import JsonLd from '@/components/seo/JsonLd';
 import Analytics from '@/components/seo/Analytics';
+import Travelpayouts from '@/components/seo/Travelpayouts';
 import { heading, body } from '@/lib/fonts';
 import { organizationSchema, websiteSchema, localBusinessSchema } from '@/lib/seo';
 import { HTML_LANG, type Lang } from '@/lib/i18n/core';
@@ -28,6 +29,7 @@ export default function RootDocument({ lang, fontClassName = '', children }: { l
         <Footer lang={lang} />
         <WhatsAppButton lang={lang} />
         <Analytics />
+        <Travelpayouts />
       </body>
     </html>
   );
