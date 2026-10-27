@@ -128,7 +128,7 @@ October and November have the most reliable road and flight conditions of the ye
   {
     id: 'blog-dharamshala-in-december-january',
     slug: 'dharamshala-in-december-january',
-    title: 'Dharamshala in January: Snow, New Year & Winter Guide (2026)',
+    title: 'Dharamshala in December & January 2026-27: Snow, New Year & Winter Guide',
     excerpt: 'A winter trip to Dharamshala means snow on the Dhauladhar, Christmas celebrations, cosy cafes, and hotel discounts of 20 to 40 percent. Here is everything you need to know about visiting in December and January, including snowfall chances, what is open, and how to stay warm.',
     content: `**Short answer:** December and January are cold and quiet in Dharamshala, with clear Dhauladhar views and hotel prices 20 to 40 percent lower outside Christmas and New Year week. McLeod Ganj typically gets **2 to 5 snowfall episodes** per winter, and you have roughly a 40 to 50 percent chance of seeing snow in a week-long visit; Triund almost certainly has snow. Nights in January range from about −2 to 4°C, so check your room has a heater.
 
@@ -249,8 +249,8 @@ The reward for braving the cold is Dharamshala at its most beautiful and least c
     image_alt: 'Snow-covered McLeod Ganj with the Dhauladhar range in winter',
     read_time: 10,
     featured: false,
-    meta_title: 'Dharamshala & McLeod Ganj in January: Snow & Weather',
-    meta_description: 'Dharamshala and McLeod Ganj in January: the best snow chances, New Year, 20-40% hotel discounts, what is open, roads and packing tips (2026).',
+    meta_title: 'Dharamshala in December & January: Snow & Weather',
+    meta_description: 'Dharamshala in December and January: snow chances by week, Christmas and New Year, 20-40% hotel discounts, what is open, roads and packing (2026-27).',
     related_slugs: ['dharamshala-in-winter-snowfall', 'dharamshala-christmas-new-year', 'dharamshala-weather-what-to-pack', 'himachal-snowfall-tracker', 'kangra-valley-carnival-2026'],
     faqs: [
       {

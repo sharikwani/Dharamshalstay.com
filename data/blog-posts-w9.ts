@@ -599,8 +599,8 @@ Yes, if you take it on its own terms. It is not a pristine village; it is a crow
     image_alt: 'Busy main square and lanes of McLeod Ganj above Dharamshala with Tibetan shops and prayer flags',
     read_time: 18,
     featured: true,
-    meta_title: 'McLeod Ganj Guide 2026: Streets, Sights, Food & Stays',
-    meta_description: 'The definitive McLeod Ganj guide for 2026: street-by-street layout, Tibetan culture, sights, cafes, food, where to stay, walks, rules and day plans.',
+    meta_title: 'McLeod Ganj (McLeodganj) Guide 2026: Sights, Food, Stays',
+    meta_description: 'McLeodganj, the Tibetan hill town above Dharamshala, street by street: Dalai Lama Temple, sights, cafes, food, where to stay and day plans (2026).',
     related_slugs: ['dharamshala-complete-travel-guide', 'things-to-do-in-mcleod-ganj', 'best-hotels-in-mcleod-ganj'],
     faqs: [
       { question: 'How far is McLeod Ganj from Dharamshala?', answer: 'About 9 to 10 km by the main road from lower Dharamshala, a 25 to 40 minute drive depending on traffic. A shorter, steeper road also links the two, and the Skyway ropeway connects them when it is operating.' },
