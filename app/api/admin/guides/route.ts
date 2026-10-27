@@ -3,6 +3,7 @@ import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { HttpError, jsonError, requireCaller, serviceClient } from '@/lib/server-auth';
 import { GUIDE_UPLOAD_BUCKET, publishGuidePhoto } from '@/lib/guides/store';
+import { emailGuideLive } from '@/lib/guides/emails';
 
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
@@ -40,7 +41,7 @@ export async function PATCH(req: Request) {
     if (!body.success) throw new HttpError(400, 'Invalid request');
     const b = body.data;
     const sb = serviceClient();
-    const { data: g, error: loadErr } = await sb.from('guides').select('id, slug, photo, photo_upload').eq('id', b.id).maybeSingle();
+    const { data: g, error: loadErr } = await sb.from('guides').select('id, slug, name, email, status, photo, photo_upload').eq('id', b.id).maybeSingle();
     if (loadErr || !g) throw new HttpError(404, 'Guide not found');
 
     const now = new Date().toISOString();
@@ -59,6 +60,8 @@ export async function PATCH(req: Request) {
     if (b.note) patch.admin_notes = b.note;
     const { data, error } = await sb.from('guides').update(patch).eq('id', b.id).select('slug, status').single();
     if (error) throw new HttpError(500, 'Could not update the guide');
+    // First approval only: tell the guide their profile is live.
+    if (b.action === 'approve' && g.status !== 'active') await emailGuideLive({ name: g.name, email: g.email, slug: data.slug });
     revalidatePath('/local-guides');
     if (data.slug) revalidatePath('/local-guides/' + data.slug);
     return NextResponse.json({ ok: true, status: data.status });

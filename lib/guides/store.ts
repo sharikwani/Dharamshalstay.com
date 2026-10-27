@@ -8,6 +8,7 @@ import { serviceClient, HttpError } from '@/lib/server-auth';
 import { adminEmail, escHtml, sendEmail } from '@/lib/email';
 import { siteConfig } from '@/lib/config';
 import { GUIDE_AREAS, GUIDE_LANGUAGES, GUIDE_SPECIALITIES } from './options';
+import { emailGuideReceived } from './emails';
 
 export type PublicGuide = {
   id: string; slug: string; name: string; photo: string | null; bio: string | null; experience_years: number;
@@ -129,5 +130,6 @@ export async function submitGuide(input: z.infer<typeof guideSignupSchema>, ipHa
       + `<p>HP Tourism registration: ${escHtml(input.hp_registration_no || 'not given')}</p>`
       + `<p>Approve or reject it here: <a href="${siteConfig.url}/admin/guides">${siteConfig.url}/admin/guides</a></p>`,
   }).catch((e) => console.error('Guide sign-up email failed:', e));
+  await emailGuideReceived({ name: input.name, email: input.email || null });
   return { slug };
 }
