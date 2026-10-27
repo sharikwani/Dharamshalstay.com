@@ -16,7 +16,7 @@ export type Fact = {
   /** Our page with the full detail. */
   page?: string;
 };
-export type FactTopic = 'basics' | 'getting-there' | 'triund' | 'temple' | 'museum' | 'meditation' | 'skyway' | 'weather' | 'stays';
+export type FactTopic = 'basics' | 'getting-there' | 'triund' | 'temple' | 'museum' | 'meditation' | 'skyway' | 'stadium' | 'weather' | 'stays';
 
 export const FACT_TOPICS: { id: FactTopic; title: string }[] = [
   { id: 'basics', title: 'Dharamshala and McLeod Ganj basics' },
@@ -26,6 +26,7 @@ export const FACT_TOPICS: { id: FactTopic; title: string }[] = [
   { id: 'museum', title: 'Tibet Museum' },
   { id: 'meditation', title: 'Meditation courses' },
   { id: 'skyway', title: 'Dharamshala Skyway (ropeway)' },
+  { id: 'stadium', title: 'HPCA Cricket Stadium' },
   { id: 'weather', title: 'Weather and when to go' },
   { id: 'stays', title: 'Where to stay' },
 ];
@@ -77,6 +78,20 @@ export const facts: Fact[] = [
     verified: '2026-10-16', sources: [OURS('guided Triund trek', '/treks/triund-trek')], page: '/treks/triund-trek' },
 
   // temple
+  // stadium
+  { id: 'stadium-timings', topic: 'stadium', question: 'What are the Dharamshala cricket stadium timings?',
+    answer: 'On non-match days the HPCA Cricket Stadium is open to tourists from about 9:30 am to 5 pm (Kangra district administration, page updated April 2026). It closes to visitors on match days and around big matches, so check before you go.',
+    verified: '2026-10-20', sources: [SITE('Kangra district administration: HPCA Cricket Stadium', 'https://hpkangra.nic.in/tourist-place/hpca-cricket-stadium/'), OURS('cricket stadium guide', '/blog/hpca-cricket-stadium-guide')], page: '/blog/hpca-cricket-stadium-guide' },
+  { id: 'stadium-fee', topic: 'stadium', question: 'What is the entry fee for the Dharamshala cricket stadium?',
+    answer: 'About ₹30 per person for a tourist visit on a non-match day (Kangra district administration, 2026). Match tickets are sold separately for each match.',
+    verified: '2026-10-20', sources: [SITE('Kangra district administration: HPCA Cricket Stadium', 'https://hpkangra.nic.in/tourist-place/hpca-cricket-stadium/'), OURS('cricket stadium guide', '/blog/hpca-cricket-stadium-guide')], page: '/blog/hpca-cricket-stadium-guide' },
+  { id: 'stadium-closed', topic: 'stadium', question: 'Is the Dharamshala cricket stadium open to visitors on match days?',
+    answer: 'No. Walk-in visits stop on match days and the days around big matches; HPCA closed the ground to visitors from 4 May 2026 for IPL games. No weekly closing day is listed by any official source.',
+    verified: '2026-10-20', sources: [SITE('HPCA website, archived 19 May 2026', 'https://web.archive.org/web/20260519132534/https://www.hpcricket.org/aboutus/1'), OURS('cricket stadium guide', '/blog/hpca-cricket-stadium-guide')], page: '/blog/hpca-cricket-stadium-guide' },
+  { id: 'stadium-where', topic: 'stadium', question: 'Where is the Dharamshala cricket stadium and how far is it from McLeod Ganj?',
+    answer: 'The HPCA Cricket Stadium is in Jawahar Nagar, lower Dharamshala, next to the War Memorial and 1.5-2 km below Kotwali Bazaar. It is 8-10 km by road from McLeod Ganj (25-40 minutes by taxi) and 12-14 km from Kangra Airport at Gaggal.',
+    verified: '2026-10-20', sources: [OURS('cricket stadium guide', '/blog/hpca-cricket-stadium-guide')], page: '/blog/hpca-cricket-stadium-guide' },
+
   { id: 'temple-timings', topic: 'temple', question: 'What are the Dalai Lama Temple timings?',
     answer: 'No official visiting hours are published. The Tsuglagkhang complex is usually open every day from early morning to early evening, and entry is free; it can close for special events, so check at the gate.',
     verified: '2026-10-20', sources: [OURS('Dalai Lama Temple guide', '/blog/dalai-lama-temple-guide')], page: '/blog/dalai-lama-temple-guide' },
