@@ -126,7 +126,7 @@ For getting around in Dharamshala and McLeod Ganj, read our [local transport gui
     slug: 'shimla-to-dharamshala',
     title: 'Shimla to Dharamshala by Road: Route, Bus & Taxi (2026)',
     excerpt: 'How to get from Shimla to Dharamshala by HRTC bus, taxi or self-drive. Two routes compared with distances, drive times (6-7 hours by car, 8-9 by bus), costs and stops.',
-    content: `**Short answer:** Shimla to Dharamshala is about **230 to 240 km** by road and takes roughly **6 to 7 hours** by car with a tea stop, or **8 to 9 hours** by HRTC bus. The usual road runs south-west from Shimla through Bilaspur, Hamirpur and Nadaun to Kangra, then up to Dharamshala. There is no rail link or direct flight between the two, so the road is your only option. Map apps often show about 4.5 hours, but that assumes no stops and no slow trucks on the hill sections; plan for more.
+    content: `**Short answer:** Shimla to Dharamshala is about **230 to 240 km** by road and takes roughly **6 to 7 hours** by car with a tea stop, or **8 to 9 hours** by HRTC bus. The usual road runs south-west from Shimla through Bilaspur, Hamirpur and Nadaun to Kangra, then up to Dharamshala. There is no rail link, but Alliance Air has flown Shimla to Kangra (Gaggal) since May 2026, about 50 minutes and five days a week (The Tribune, 9 May 2026); check the current schedule before you plan around it. Otherwise the road is the way. Map apps often show about 4.5 hours, but that assumes no stops and no slow trucks on the hill sections; plan for more.
 
 This guide covers the two practical routes, bus and taxi options, costs as of 2026, and how to break the journey. If you are planning a wider Himachal circuit, our [Delhi to Dharamshala, Bir and Manali itinerary](/blog/himachal-itinerary-delhi-dharamshala-manali) maps the whole loop.
 
@@ -137,7 +137,7 @@ This guide covers the two practical routes, bus and taxi options, costs as of 20
 | Road distance | About 230 to 240 km (Rome2rio: 228.6 km; distancebetween2: about 237 km; SOTC: 240 km) |
 | Car or taxi | About 6 to 7 hours with a tea or lunch stop |
 | HRTC bus | About 8 to 9 hours (Rome2rio lists 8 h 20 min; bus listings show about 8 to 8.5 hours via Hamirpur and Kangra) |
-| Rail or air | None direct. Nearest rail is Pathankot (about 85 to 90 km from Dharamshala); Kangra (Gaggal) airport is about 12 km away |
+| Rail or air | No rail link. Alliance Air flies Shimla to Kangra (Gaggal) since May 2026, about 50 minutes, five days a week: check it is still running. Gaggal is about 12 km from Dharamshala |
 | Taxi fare, one way | About ₹7,000 to ₹10,000 (sedan), ₹9,000 to ₹13,000 (SUV), 2026 |
 | Best start | Before 7 am, so you arrive in daylight |
 
@@ -210,7 +210,7 @@ Once in Dharamshala, our [local transport guide](/blog/local-transport-dharamsha
     featured: false,
     meta_title: 'Shimla to Dharamshala: Route, Bus & Taxi Guide 2026',
     meta_description: 'Shimla to Dharamshala is about 230-240 km: 6-7 hours by car, 8-9 by HRTC bus. Fares, two routes, stops and tips.',
-    related_slugs: ['how-to-reach-dharamshala', 'chandigarh-to-dharamshala', 'himachal-itinerary-delhi-dharamshala-manali', 'shimla-in-december-christmas-new-year', 'spiti-valley-in-winter'],
+    related_slugs: ['how-to-reach-dharamshala', 'chandigarh-to-dharamshala', 'himachal-itinerary-delhi-dharamshala-manali', 'shimla-in-december-christmas-new-year', 'spiti-valley-in-winter', 'shimla-travel-guide', 'how-to-reach-shimla'],
     faqs: [
       {
         question: 'How far is Shimla from Dharamshala?',
@@ -337,7 +337,7 @@ If you are combining Dharamshala and Manali, give each place at least 2 to 3 nig
     featured: false,
     meta_title: 'Dharamshala to Manali: Routes, Distance & Transport 2026',
     meta_description: 'Dharamshala to Manali is 230-250 km, 7-9 hours. Bus from ₹400, taxi from ₹5,000. Three routes compared, with stops at Bir, Palampur and Baijnath.',
-    related_slugs: ['himachal-itinerary-delhi-dharamshala-manali', 'bir-travel-guide', 'palampur-travel-guide', 'manali-in-december-january', 'rohtang-pass-atal-tunnel-status'],
+    related_slugs: ['himachal-itinerary-delhi-dharamshala-manali', 'bir-travel-guide', 'palampur-travel-guide', 'manali-in-december-january', 'rohtang-pass-atal-tunnel-status', 'manali-travel-guide', 'how-to-reach-manali', 'solang-valley-guide'],
     faqs: [
       {
         question: 'Is there a direct bus from Dharamshala to Manali?',

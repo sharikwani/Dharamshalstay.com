@@ -537,7 +537,7 @@ If you are planning a wider winter trip, read [Dharamshala in winter](/blog/dhar
     featured: false,
     meta_title: 'Pong Dam Bird Sanctuary Guide 2026: Season & Spots',
     meta_description: 'Pong Dam (Maharana Pratap Sagar) bird sanctuary guide: migratory bird season, species, best viewing spots, Ransar island, permits and a Dharamshala day trip.',
-    related_slugs: ['places-to-visit-in-kangra', 'five-day-kangra-valley-itinerary', 'dharamshala-in-winter-snowfall', 'masroor-rock-cut-temple-guide'],
+    related_slugs: ['places-to-visit-in-kangra', 'five-day-kangra-valley-itinerary', 'dharamshala-in-winter-snowfall', 'masroor-rock-cut-temple-guide', 'kangra-fort-guide'],
     faqs: [
       {
         question: 'When is the best time to see birds at Pong Dam?',

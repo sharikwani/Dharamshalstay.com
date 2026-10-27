@@ -173,7 +173,7 @@ For other fairs this season, see our [melas and fairs in Dharamshala and Kangra]
     featured: false,
     meta_title: 'Kullu Dussehra 2026: Dates, Rath Yatra, Mela Guide',
     meta_description: 'Kullu Dussehra 2026 runs 21-27 Oct at Dhalpur Maidan: Raghunath rath yatra, 347 devtas invited, Lanka Dahan on 27 Oct. How to reach from Dharamshala.',
-    related_slugs: ['dharamshala-dussehra-police-ground', 'melas-fairs-dharamshala-kangra', 'dharamshala-to-manali', 'himachal-itinerary-delhi-dharamshala-manali'],
+    related_slugs: ['dharamshala-dussehra-police-ground', 'melas-fairs-dharamshala-kangra', 'dharamshala-to-manali', 'himachal-itinerary-delhi-dharamshala-manali', 'manali-travel-guide', 'kasol-travel-guide'],
     sources: [
       { title: 'International Kullu Dussehra 2026 (21-27 October), District Administration Kullu (updated 17 October 2026)', url: 'https://hpkullu.nic.in/event/international-kullu-dussehra-2026-21-27-october/' },
       { title: 'History of Kullu Dussehra (official Kullu Dussehra website, Government of Himachal Pradesh)', url: 'https://kulludussehra.hp.gov.in/?p=78' },

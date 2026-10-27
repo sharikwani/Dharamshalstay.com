@@ -174,7 +174,7 @@ On the Dharamshala leg of your trip, browse our checked [hotels in Dharamshala a
     featured: false,
     meta_title: 'Manali in December & January 2026-27: Snow Guide',
     meta_description: 'Snow in Manali town is not guaranteed in December; Solang and the Atal Tunnel get it first. Rohtang is shut, roads get restricted. 2026-27 guide.',
-    related_slugs: ['rohtang-pass-atal-tunnel-status', 'dharamshala-to-manali', 'himachal-itinerary-delhi-dharamshala-manali', 'dharamshala-in-december-january'],
+    related_slugs: ['rohtang-pass-atal-tunnel-status', 'dharamshala-to-manali', 'himachal-itinerary-delhi-dharamshala-manali', 'dharamshala-in-december-january', 'manali-travel-guide', 'solang-valley-guide'],
     sources: [
       { title: 'Snowfall transforms Manali into dazzling winter wonderland (The Tribune, 25 January 2026; checked 26 October 2026)', url: 'https://www.tribuneindia.com/news/himachal/snowfall-transforms-manali-into-dazzling-winter-wonderland/' },
       { title: 'Fresh snowfall at Atal Tunnel, Rohtang Pass, Sissu on New Year’s Day cheers up tourists (The Tribune, 2 January 2026; checked 26 October 2026)', url: 'https://www.tribuneindia.com/news/himachal/fresh-snowfall-at-atal-tunnel-rohtang-pass-sissu-on-new-years-day-cheers-up-tourists' },
@@ -378,7 +378,7 @@ We found **no official fixed opening hours** for tourists at the Atal Tunnel. It
     featured: false,
     meta_title: 'Rohtang Pass & Atal Tunnel Status 2026: Open or Closed?',
     meta_description: '26 Oct 2026: no official Rohtang winter closure order found yet; snow at Atal Tunnel. Permit ₹500 + ₹50 online, 1,200 vehicles a day. How to check.',
-    related_slugs: ['manali-in-december-january', 'dharamshala-to-manali', 'himachal-itinerary-delhi-dharamshala-manali', 'bir-travel-guide'],
+    related_slugs: ['manali-in-december-january', 'dharamshala-to-manali', 'himachal-itinerary-delhi-dharamshala-manali', 'bir-travel-guide', 'solang-valley-guide', 'manali-travel-guide'],
     sources: [
       { title: 'Rohtang Pass online permits, District Administration Kullu (official portal, checked 26 October 2026)', url: 'https://rohtangpermits.hp.gov.in/' },
       { title: 'Rohtang permit fees, quota, booking slots and documents (official portal, checked 26 October 2026)', url: 'https://rohtangpermits.hp.gov.in/Home/InformatoryScreen' },

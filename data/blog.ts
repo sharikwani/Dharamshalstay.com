@@ -37,6 +37,10 @@ import { blogPostsW29 } from './blog-posts-w29';
 import { blogPostsW30 } from './blog-posts-w30';
 import { blogPostsW31 } from './blog-posts-w31';
 import { blogPostsW32 } from './blog-posts-w32';
+import { blogPostsW33 } from './blog-posts-w33';
+import { blogPostsW34 } from './blog-posts-w34';
+import { blogPostsW35 } from './blog-posts-w35';
+import { blogPostsW36 } from './blog-posts-w36';
 import { coreOverrides } from './blog-core';
 
 // Real photos of each place (see lib/place-images.ts).
@@ -488,7 +492,7 @@ function withPhotoAlt(post: BlogPost): BlogPost {
 }
 
 /** All guides, newest first. */
-export const blogPosts: BlogPost[] = [...blogPostsA, ...blogPostsB, ...blogPostsC, ...blogPostsW1, ...blogPostsW2, ...blogPostsW3, ...blogPostsW4, ...blogPostsW5, ...blogPostsW6, ...blogPostsW7, ...blogPostsW8, ...blogPostsW9, ...blogPostsE1, ...blogPostsW10, ...blogPostsW11, ...blogPostsW12, ...blogPostsW13, ...blogPostsW14, ...blogPostsW15, ...blogPostsW16, ...blogPostsW17, ...blogPostsW18, ...blogPostsW19, ...blogPostsW20, ...blogPostsW21, ...blogPostsW22, ...blogPostsW23, ...blogPostsW24, ...blogPostsW25, ...blogPostsW26, ...blogPostsW27, ...blogPostsW28, ...blogPostsW29, ...blogPostsW30, ...blogPostsW31, ...blogPostsW32, ...corePosts]
+export const blogPosts: BlogPost[] = [...blogPostsA, ...blogPostsB, ...blogPostsC, ...blogPostsW1, ...blogPostsW2, ...blogPostsW3, ...blogPostsW4, ...blogPostsW5, ...blogPostsW6, ...blogPostsW7, ...blogPostsW8, ...blogPostsW9, ...blogPostsE1, ...blogPostsW10, ...blogPostsW11, ...blogPostsW12, ...blogPostsW13, ...blogPostsW14, ...blogPostsW15, ...blogPostsW16, ...blogPostsW17, ...blogPostsW18, ...blogPostsW19, ...blogPostsW20, ...blogPostsW21, ...blogPostsW22, ...blogPostsW23, ...blogPostsW24, ...blogPostsW25, ...blogPostsW26, ...blogPostsW27, ...blogPostsW28, ...blogPostsW29, ...blogPostsW30, ...blogPostsW31, ...blogPostsW32, ...blogPostsW33, ...blogPostsW34, ...blogPostsW35, ...blogPostsW36, ...corePosts]
   .map((p) => (coreOverrides[p.slug] ? { ...p, ...coreOverrides[p.slug] } : p))
   .map(withPhotoAlt)
   .sort((a, b) => b.published_at.localeCompare(a.published_at));

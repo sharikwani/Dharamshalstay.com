@@ -142,7 +142,7 @@ For two people on a mid-range 7-day trip, a rough guide as of 2026: Volvo buses 
     featured: true,
     meta_title: 'Himachal Itinerary 7 & 10 Days: Delhi, Dharamshala, Manali',
     meta_description: 'Day-by-day Himachal itinerary from Delhi to Dharamshala, Bir Billing and Manali, with real drive times, transport options, costs and where to stay (2026).',
-    related_slugs: ['how-to-reach-dharamshala', 'bir-billing-paragliding-guide', 'dharamshala-weekend-itinerary', 'manali-in-december-january', 'best-places-to-visit-in-himachal-in-winter'],
+    related_slugs: ['how-to-reach-dharamshala', 'bir-billing-paragliding-guide', 'dharamshala-weekend-itinerary', 'manali-in-december-january', 'best-places-to-visit-in-himachal-in-winter', 'manali-travel-guide', 'kasol-travel-guide'],
     faqs: [
       {
         question: 'Is 7 days enough for Dharamshala and Manali?',
@@ -728,91 +728,181 @@ Base yourself in [Dharamshala](/destinations/dharamshala) or [McLeod Ganj](/dest
   {
     id: 'blog-kangra-devi-temples-guide',
     slug: 'kangra-devi-temples-guide',
-    title: 'Kangra Devi Temples Guide: Chamunda, Brajeshwari, Jwalamukhi & Chintpurni Yatra (2026)',
-    excerpt: 'Plan a Shakti temple yatra from Dharamshala: Chamunda Devi, Brajeshwari (Kangra Devi), Jwalamukhi and Chintpurni, plus notes on Naina Devi, with timings, route, a 1-2 day plan, dress and Navratri crowd tips.',
-    content: `**Short answer:** From Dharamshala you can visit **Chamunda Devi, Brajeshwari Devi (Kangra Devi), Jwalamukhi and Chintpurni** in one long day or a relaxed two days by taxi. Chamunda is the closest at 15-18 km and Brajeshwari is 18-20 km away, while Jwalamukhi is 55-60 km and Chintpurni 90-100 km. **Naina Devi** is about 165 km away and needs an extra day. Timings are approximate as of 2026, so confirm locally, especially on festival days.
+    title: 'Kangra Devi Temples & Shaktipeeth Yatra from Dharamshala (2026-27): Chamunda, Brajeshwari, Jwalamukhi, Chintpurni & Naina Devi',
+    excerpt: 'The definitive Shaktipeeth yatra from Dharamshala: Chamunda Devi, Brajeshwari (Kangra Devi), Kangra Fort and Jwalamukhi in one day, Chintpurni and Naina Devi on a second day. Temple-by-temple distances, darshan and aarti timings from official sources, dress and darshan-slip rules, crowd days, Navratri 2027 dates and our fixed ₹6,000 temple taxi.',
+    content: `**Short answer:** From Dharamshala the Kangra Shaktipeeth yatra covers **Chamunda Devi** (about 15 km), **Brajeshwari Devi, the Kangra Devi** (18 to 20 km), **Jwalamukhi** (about 56 km) and **Chintpurni** in Una district (about 35 km beyond Jwalamukhi). **Chamunda, Brajeshwari, Kangra Fort and Jwalamukhi fit in one day** by taxi; add **Chintpurni and Naina Devi** (115 km beyond Chintpurni) for a two-day yatra. Our [Four Devi Temples and Kangra Fort taxi tour](/taxi/dharamshala-to-four-devi-temples-and-kangra-fort-tour-taxi) is a fixed **₹6,000** for the day. The next Navratris are **7 to 15 April 2027** (Chaitra) and **30 September to 8 October 2027** (Sharad).
 
-The Kangra region is one of the most important Shakti pilgrimage areas in North India. From Dharamshala you can visit **Chamunda Devi, Brajeshwari Devi (Kangra Devi), Jwalamukhi and Chintpurni** in one long day or a relaxed two days by taxi. **Naina Devi** in Bilaspur district is often added to the same yatra, but it is about 165 km from Dharamshala, so it needs an extra day.
+![Chamunda Devi temple beside the Baner river with the Dhauladhar range behind](/images/places/chamunda-devi.jpg)
 
-Below is the best route, distances, approximate darshan timings, a ready-made 1 and 2 day plan, and practical advice on dress, offerings and festival crowds, including **Sharad Navratri 2026 (11 to 19 October)**. Timings are approx. as of 2026 and change seasonally and on festival days, so confirm locally.
+The Kangra Valley is one of the great Shakti pilgrimage regions of north India, and Dharamshala is the natural base for it. This guide gives distances, darshan and aarti timings from the official temple and district websites where they exist, realistic one-day and two-day plans, the rules you will meet at the gates, and the dates to avoid or aim for. It was checked on **27 October 2026**; where an official timing was not available we say so instead of guessing.
 
-## The Temples at a Glance
+## Shaktipeeth yatra from Dharamshala: quick facts
 
-| Temple | Location | Distance from Dharamshala (approx.) | Why it is special |
+| Question | Answer | Source / status |
+|---|---|---|
+| Classic circuit | Chamunda, Brajeshwari (Kangra), Jwalamukhi, Chintpurni, back to Dharamshala: about 183 km, at least 2 days | HPTDC "Dharamshala Chamunda Tour" |
+| One-day circuit | Chamunda, Brajeshwari, Kangra Fort, Jwalamukhi | Our plan below |
+| Two-day yatra | Add Chintpurni and Naina Devi; end towards Chandigarh or return to Dharamshala | Our plan below |
+| Our temple taxi | ₹6,000 fixed, full day (10 to 11 hours, about 220 km), Alto for up to 4 | Our route page, 27 Oct 2026 |
+| Chaitra Navratri 2027 | Wednesday 7 April to Thursday 15 April (Ram Navami) | Drik Panchang, New Delhi |
+| Sharad Navratri 2027 | Thursday 30 September to Friday 8 October; Dussehra Saturday 9 October | Drik Panchang, New Delhi |
+| Best season | October to March, outside Navratri | Our advice |
+| Dress | Shoulders and knees covered, head covering, shoes off | Common practice at all five temples |
+
+## Which temples are on the Kangra Shaktipeeth yatra?
+
+| Temple | Where | From Dharamshala (approx.) | Drive time (our estimate) | Time at temple (normal day) |
+|---|---|---|---|---|
+| Chamunda Devi (Chamunda Nandikeshwar Dham) | Padar (Dadh) village, on the Baner river | About 15 km | 30 to 40 min | 45 min to 1 hr |
+| Brajeshwari Devi (Kangra Devi, Bajreshwari) | Old bazaar, Kangra town | 18 to 20 km | 40 to 45 min | 45 min to 1 hr |
+| Kangra Fort (not a temple, on the route) | Edge of Kangra town, about 3 km from the town | About 20 km | 45 min | 1.5 to 2 hrs |
+| Jwalamukhi (Jwala Ji) | Jwalamukhi town, about 30 km from Kangra | About 56 km | 1.5 to 2 hrs | 1 hr (much more in Navratri) |
+| Chintpurni (Chhinnamastika Devi) | Chintpurni, Amb tehsil, Una district; about 35 km from Jwalamukhi | About 90 to 100 km by road via Jwalamukhi | 2.5 to 3 hrs | 1 to 2 hrs (slip queue) |
+| Naina Devi | Hilltop in Bilaspur district above Gobind Sagar; about 115 km from Chintpurni | About 200 to 215 km via Chintpurni | 3 to 3.5 hrs from Chintpurni | 1.5 to 2 hrs including ropeway |
+
+Distances for Chamunda and Jwalamukhi are from the Kangra district website, Kangra Fort from Wikipedia and Himachal Tourism, and Chintpurni to Jwalamukhi and Naina Devi from the Chintpurni temple trust website. Drive times are our estimates for normal traffic; Navratri and weekend traffic can double them.
+
+## What are the darshan and aarti timings at each temple?
+
+| Temple | Darshan timings | Aarti | Status |
 |---|---|---|---|
-| Chamunda Devi | Near Palampur road, on the Baner river | 15–18 km | Fierce form of Durga; Dhauladhar backdrop |
-| Brajeshwari Devi (Kangra Devi) | Kangra town | 18–20 km | Revered Shakti Peetha; ghee festival at Makar Sankranti |
-| Jwalamukhi (Jwala Ji) | Jwalamukhi town | 55–60 km | Natural eternal flames; no idol |
-| Chintpurni (Chhinnamastika) | Una district | 90–100 km | Wish-fulfilling Devi; very popular with Punjab pilgrims |
-| Naina Devi | Bilaspur district | Approx. 165 km | Hilltop Shakti Peetha with ropeway |
+| Chamunda Devi | 6 am to 12 noon and 1 pm to 9 pm (Incredible India). The district website says generally 6 am to 7 or 8 pm | Morning and evening; times not published officially | Sources differ on closing time |
+| Brajeshwari Devi | Summer 5 am to 12 noon and 12:30 pm to 9 pm; winter 5:30 am to 12 noon and 12:30 pm to 8 pm; closed 12 to 12:30 pm for bhog | Summer: Mangal aarti 5 am, evening aarti 7 to 8 pm. Winter: Mangal aarti 5:45 am, evening aarti 6:30 to 7:30 pm | Official Kangra temples portal |
+| Jwalamukhi | Generally 5 am to 10 pm, varying by season | Mangal aarti 5 to 6 am (summer) or 6 to 7 am (winter); bhog aarti about 11:30 am to 12:30 pm; evening aarti 7 to 8 pm; Shaiyan aarti about 10 pm | Kangra district website, updated 30 March 2026; the temples portal lists shorter winter hours, so confirm |
+| Chintpurni | Not published on the trust website; the temple opens early and closes late evening | Three daily aartis (morning, day and evening); times not published | Call the temple: 01976-255818 |
+| Naina Devi | 5 am to 9 pm (Incredible India). The tourism ministry’s Utsav portal lists darshan from 4 am on normal days and from 2 am in Navratri | Times not published officially | Sources differ |
+| Kangra Fort | 6 am to 6 pm, ticket from ₹20 | Not applicable | ASI-organised ticket listing |
 
-## Chamunda Devi Temple
+**Aarti means a pause in darshan.** At Jwalamukhi and Brajeshwari the queue stops during the main aartis and the bhog break, so do not arrive at 11:45 am and expect to walk in.
 
-**Chamunda Devi**, also called Chamunda Nandikeshwar Dham, sits beside the Baner river with the Dhauladhar range rising behind it. It honours Chamunda, the form of Durga who slew the demons Chanda and Munda. There is also a Shiva shrine in a cave-like space below the main temple, and a ghat by the river.
+![Golden dome and marble courtyard of the Jwalamukhi (Jwala Ji) temple](/images/places/jwalamukhi-temple.jpg)
 
-- **Timings (approx.):** early morning to around 9 pm, with a short midday closure for bhog. Aarti in the morning and evening.
-- **Tip:** It is the closest of the circuit and easy to combine with Norbulingka Institute or a drive to Palampur. Arrive before 9 am on weekends.
-- **Time needed:** the complex is compact, so outside festival days darshan usually takes under an hour even with a queue.
+## What should I know about each temple?
 
-## Brajeshwari Devi Temple (Kangra Devi)
+### Chamunda Devi (Chamunda Nandikeshwar Dham)
 
-In the old town of Kangra, the **Brajeshwari (Bajreshwari) Devi temple** is counted among the Shakti Peethas and was once famous for its wealth, which drew invaders including Mahmud of Ghazni. The present structure was rebuilt after the devastating **1905 Kangra earthquake**.
+**Chamunda Devi** stands beside the Baner river at Padar (Dadh) village, about 15 km from Dharamshala, with the Dhauladhar behind it. It honours Chamunda, the form of Durga who slew the demons Chanda and Munda, and there is a Shiva shrine in a cave-like space below the main temple.
 
-- **Timings (approx.):** around 5 am to 9 pm, with Mangal Aarti at dawn and main aartis morning and evening; exact times shift between summer and winter.
-- **Festival:** At **Makar Sankranti** (mid-January), the pindi is covered in ghee and butter for several days, a tradition unique to this temple.
-- **Langar:** The temple trust has run a free community meal; ask locally for current serving times.
-- **Tip:** The approach lane is a busy bazaar with prasad and chunri shops. Park outside and walk the last few minutes. Pair it with **Kangra Fort** (about 3 km away); see our [places to visit in Kangra](/blog/places-to-visit-in-kangra).
+- **Timings:** 6 am to 12 noon and 1 pm to 9 pm according to Incredible India; the Kangra district website says generally 6 am to 7 or 8 pm. Go in the morning to be safe.
+- **History:** the district website says the present temple is about 400 to 700 years old, and that local legend tells of the shrine moving down from Aadi Himani Chamunda, high on the ridge, to this easier site in the 16th century.
+- **Is it a Shaktipeeth?** Local tradition treats it as one, but the district website notes it is not always on the classic list of 51 Shaktipeeths.
+- **Tip:** it is the closest stop, so start here at opening. It also pairs with the Norbulingka Institute or a drive to Palampur.
 
-## Jwalamukhi Temple (Jwala Ji)
+### Brajeshwari Devi (Kangra Devi)
 
-The **Jwalamukhi temple** has no idol. Instead, natural blue flames emerge from fissures in the rock inside the sanctum, worshipped as the goddess herself. It is one of the most visited temples in Himachal, and the story of Emperor Akbar's offering of a golden canopy (chhatra) is told to every visitor.
+In the old bazaar of Kangra town, **Brajeshwari (Bajreshwari or Vajreshwari) Devi** is counted among the 51 Shaktipeeths; local tradition holds that Sati’s left breast fell here (Wikipedia). The original temple was destroyed in the **1905 Kangra earthquake** and rebuilt in the 1930s.
 
-- **Timings (approx.):** around 5 am to 8 pm or later in summer, with several aartis a day beginning with the Mangal Aarti at opening.
-- **Distance:** About 55 to 60 km from Dharamshala, roughly 1.5 to 2 hours via Kangra and Ranital.
-- **Tip:** Queues can be very long on weekends and in Navratri. Go early or late on a weekday. Gorakh Dibbi, a small shrine with a pool of seemingly bubbling water nearby, is usually included in the visit.
+- **Timings (official Kangra temples portal):** summer 5 am to 9 pm, winter 5:30 am to 8 pm, closed 12 noon to 12:30 pm for bhog.
+- **Ghee festival:** around **Makar Sankranti** (mid-January) ghee is applied to the pindi in a week-long festival. The Kangra district website tells the legend: the goddess, wounded fighting Mahishasura, healed herself with ghee. Expect crowds that week.
+- **Temple office:** 01892-265073 (Kangra temples portal).
+- **Tip:** the approach is a busy bazaar lane; park below and walk. **Kangra Mandir** station on the toy train is the stop for this temple. Kangra Fort is about 3 km away; read our [Kangra Fort guide](/blog/kangra-fort-guide) for its timings, ticket and history.
 
-## Chintpurni Temple (Chhinnamastika Devi)
+### Jwalamukhi (Jwala Ji)
 
-In Una district, **Chintpurni** is dedicated to Chhinnamastika Devi and is believed to fulfil wishes and remove worries (chinta). It is extremely popular with pilgrims from Punjab, so weekends and festivals are crowded.
+The **Jwalamukhi temple** has no idol. Natural flames issue from the rock in the sanctum, typically nine, and are worshipped as the goddess. The Kangra district website says tradition places Sati’s tongue here, and it records the legend of Emperor Akbar trying to put out the flames and then making offerings, presenting it as legend rather than history.
 
-- **Timings (approx.):** opens very early (around 4 to 5 am in summer, slightly later in winter) and closes late evening; morning and evening aarti.
-- **Distance:** About 35 km from Jwalamukhi and 90 to 100 km from Dharamshala.
-- **Tip:** Vehicles stop below the temple; the last stretch is a walk up a bazaar lane with steps. On peak days queue barriers stretch far down the hill.
+- **Distance:** about 56 km from Dharamshala and 30 km from Kangra (Kangra district website), roughly 1.5 to 2 hours by road.
+- **Timings:** the district website (updated 30 March 2026) gives generally 5 am to 10 pm, varying by season, with Mangal aarti at 5 to 6 am in summer and 6 to 7 am in winter, a bhog aarti around 11:30 am to 12:30 pm, evening aarti 7 to 8 pm and Shaiyan aarti about 10 pm. The state temples portal lists shorter winter hours (opening at 7 am), so check locally in winter.
+- **Coming changes:** in November 2025 the Kangra administration said a master plan for Jwalamukhi was being drafted with NIT Hamirpur, with online langar booking and online darshan to follow in phases (The Tribune, 16 November 2025). We have not seen these services go live.
+- **Tip:** queues are longest on weekends and in Navratri. Gorakh Dibbi, a small shrine with seemingly boiling water, is usually part of the visit.
 
-## Naina Devi Temple (Optional, Further Away)
+### Chintpurni (Chhinnamastika Devi)
 
-**Naina Devi** stands on a hilltop above the Gobind Sagar area in Bilaspur district. It is a major Shakti Peetha and is often grouped with the Kangra temples, but it is approx. 165 km from Dharamshala and about 115 km from Chintpurni. A ropeway helps with the final climb when operating. Add a full day, or visit it on your way to or from Chandigarh or Delhi rather than as a day trip from Dharamshala.
+**Chintpurni** in Una district is dedicated to Chhinnamastika Devi and is believed to remove worries (chinta). It is about 35 km from Jwalamukhi (temple trust website) and hugely popular with pilgrims from Punjab, so weekends are busy all year.
 
-## Best Route from Dharamshala
+- **Timings:** not published on the official trust website. The temple opens early and closes late in the evening, with three daily aartis (morning, day and evening). Call **01976-255818** before an early or late visit.
+- **Darshan slip:** the trust’s rules say to join the queue only **after taking a darshan parchi (slip) from the temple security**, and never to pay anyone for back-door darshan.
+- **Other trust rules:** donate only in the boxes or at the office against a receipt, do not feed monkeys, no polythene, no smoking or alcohol, and watch for pickpockets and chain snatchers.
+- **Tip:** vehicles stop below the temple and the last stretch is a walk up a bazaar lane with steps.
 
-The logical loop is:
+### Naina Devi (Bilaspur district)
 
-**Dharamshala → Chamunda Devi → Kangra (Brajeshwari) → Jwalamukhi → Chintpurni → back to Dharamshala** (or onward to Una, Chandigarh or Delhi).
+**Naina Devi** crowns a hill above Gobind Sagar lake in Bilaspur district. Tradition holds that Sati’s eyes fell here (Incredible India). It is about **115 km from Chintpurni** (temple trust website), about 20 km from Anandpur Sahib and about 100 km from Chandigarh (Incredible India), so it fits best at the end of a yatra heading towards Chandigarh or Delhi.
 
-Total driving for the full loop back to Dharamshala is roughly 230 to 260 km. Doing Chamunda first in the early morning avoids its queues, and ending at Chintpurni works well if you are leaving Himachal, since Chintpurni is on the way to Una and the plains.
+- **Timings:** 5 am to 9 pm (Incredible India); the tourism ministry’s Utsav portal lists darshan from 4 am on normal days and from 2 am during Navratri.
+- **Ropeway:** a cable car runs from the base to the top. The Rupnagar district page gives its hours as 8 am to 7 pm (March to September), 8 am to 6:30 pm (October), 8:15 am to 5:30 pm (November) and 9 am to 5:30 pm (December to February), but that page was last updated in 2018, so confirm on the day.
+- **Crowd safety:** on 3 August 2008, during the Sawan (Shravan) fair, at least 123 people died in a stampede on the path to the temple (Wikipedia). Keep children close, agree a meeting point and avoid the busiest fair days with elderly family.
 
-## Yatra Plans
+## What is the best route for the yatra?
 
-### 1-day yatra (long day)
+The logical loop is **Dharamshala → Chamunda Devi → Kangra (Brajeshwari and Kangra Fort) → Jwalamukhi → Chintpurni**, then back to Dharamshala or onward to Naina Devi and the plains. HPTDC lists the same four-temple loop from Dharamshala as about **183 km** and at least two days.
 
-1. 6:00 am: Leave Dharamshala; darshan at Chamunda Devi.
-2. 8:30 am: Brajeshwari Devi in Kangra; breakfast in Kangra.
-3. 11:30 am: Jwalamukhi; lunch in town.
-4. 3:00 pm: Chintpurni.
-5. 7:00 to 8:00 pm: Back in Dharamshala, or continue to Una and onward.
+Start at Chamunda because it is closest and opens early. End at Chintpurni or Naina Devi if you are leaving Himachal, as both are on the way to Una, Anandpur Sahib and Chandigarh.
 
-This is tiring and depends on short queues. It works on weekdays outside festival seasons; do not try it during Navratri.
+## Can I do the Kangra devi temples in one day?
 
-### 2-day yatra (recommended)
+**Yes: Chamunda, Brajeshwari, Kangra Fort and Jwalamukhi make a full but comfortable day** on a weekday outside Navratri. Times below are a plan, not a promise; queues decide the day.
 
-- **Day 1:** Chamunda Devi in the morning, Brajeshwari Devi and Kangra Fort in the afternoon. Night in Dharamshala or Kangra.
-- **Day 2:** Jwalamukhi early, Chintpurni by early afternoon, then return to Dharamshala or travel onward.
+| Time | Stop | Notes |
+|---|---|---|
+| 6:30 am | Leave Dharamshala | McLeod Ganj pickups leave about 20 to 30 minutes earlier |
+| 7:00 to 8:00 am | Chamunda Devi | About 15 km; quiet before 9 am on weekdays |
+| 8:00 to 9:00 am | Drive to Kangra | Breakfast in Kangra town |
+| 9:00 to 10:00 am | Brajeshwari Devi | Done well before the 12 noon bhog break |
+| 10:15 am to 12:15 pm | Kangra Fort | ASI ticket; 1.5 to 2 hours for the climb |
+| 12:15 to 1:15 pm | Lunch in Kangra | |
+| 1:15 to 2:30 pm | Drive to Jwalamukhi | About 30 km from Kangra |
+| 2:30 to 4:00 pm | Jwalamukhi darshan | After the midday bhog aarti and before the evening aarti |
+| 4:00 to 6:00 pm | Drive back to Dharamshala | About 56 km |
 
-Add **Day 3** for Naina Devi if you are continuing towards Chandigarh or Delhi.
+**Want Chintpurni the same day?** It is about 35 km beyond Jwalamukhi. Skip Kangra Fort, reach Chintpurni by mid-afternoon and expect to be back in Dharamshala late in the evening. Do it only on a weekday, and never in Navratri.
 
-A private taxi is the easiest way to do this yatra. As of 2026, a full-day sedan for the four-temple loop from Dharamshala typically costs approx. ₹4,500–6,500 depending on the vehicle and season. Book through our [taxi page](/taxi) or [contact us](/contact) for a fixed quote. HRTC buses connect all four towns but need multiple changes.
+## What is a good two-day Shaktipeeth yatra plan?
 
-## Dress Code, Offerings and Etiquette
+**Day 1: Chamunda, Brajeshwari, Kangra Fort, Jwalamukhi.** Follow the one-day plan, but sleep in Jwalamukhi instead of driving back, or return to Dharamshala if you will not go on to Naina Devi.
+
+**Day 2: Chintpurni and Naina Devi.**
+
+| Time | Stop | Notes |
+|---|---|---|
+| 6:00 am | Leave Jwalamukhi | About 35 km, roughly 1 hour |
+| 7:00 to 9:00 am | Chintpurni | Take your darshan slip first; earlier is quieter |
+| 9:00 am to 12:30 pm | Drive to Naina Devi | About 115 km via the Una side |
+| 12:30 to 3:00 pm | Naina Devi | Ropeway or steps to the top, darshan, lunch |
+| From 3:00 pm | Continue to Chandigarh (about 100 km) or stay near Anandpur Sahib | Driving back to Dharamshala the same evening is not realistic |
+
+**Returning to Dharamshala instead?** Do Chintpurni on Day 2 morning and drive back (about 2.5 to 3 hours), and keep Naina Devi for a trip from the Chandigarh side. While you are in the valley, the 13th-century Shiva temple at Baijnath makes a calmer third day: see our [Baijnath temple guide](/blog/baijnath-temple-guide).
+
+## How do I book the ₹6,000 Four Devi Temples and Kangra Fort taxi?
+
+Our [Dharamshala to Four Devi Temples and Kangra Fort tour taxi](/taxi/dharamshala-to-four-devi-temples-and-kangra-fort-tour-taxi) is built for the one-day circuit.
+
+| Detail | What you get (27 October 2026) |
+|---|---|
+| Fare | ₹6,000 fixed, confirmed at booking |
+| Car | Alto 800 hatchback, up to 4 passengers |
+| Day | About 10 to 11 hours and 220 km |
+| Included | Car and driver for the day, fuel, tolls, parking, hotel pickup and drop |
+| Not included | Kangra Fort ticket, temple offerings and meals |
+
+**How to book:**
+
+1. Open the [route page](/taxi/dharamshala-to-four-devi-temples-and-kangra-fort-tour-taxi) and send the enquiry form, or message us on WhatsApp.
+2. Give your date, pickup time (we suggest 6:30 am), number of passengers and pickup point.
+3. Tell us which four temples you want (for example Chamunda, Brajeshwari, Jwalamukhi and Chintpurni) and any long stops, so the plan fits the day.
+4. We confirm the car and driver before the trip.
+
+For a two-day yatra, a drop at Chandigarh or a bigger car, ask for a quote on the [taxi page](/taxi). Staying a few days? Our [full-day Dharamshala sightseeing taxi](/taxi/dharamshala-to-full-day-sightseeing-10-points-taxi) is ₹4,000 for 10 local stops in Dharamshala and McLeod Ganj. HRTC buses connect all these towns too, but need several changes.
+
+## When is Navratri in 2027, and how crowded are the temples?
+
+| Festival | Dates (2027) | Peak days |
+|---|---|---|
+| Chaitra Navratri | Wednesday 7 April to Thursday 15 April (Ram Navami) | Ashtami, Wednesday 14 April, and Navami |
+| Sharad Navratri | Thursday 30 September to Friday 8 October | Durga Ashtami, Thursday 7 October, and Maha Navami, 8 October |
+| Dussehra (Vijayadashami) | Saturday 9 October | |
+
+Dates are from Drik Panchang for New Delhi; local temple calendars can differ by a day. For reference, Sharad Navratri 2026 ran from 11 to 19 October 2026.
+
+**Crowd advice for Navratri:**
+
+- **Expect hours, not minutes,** at Jwalamukhi and Chintpurni, worst on Ashtami, Navami and weekends.
+- **Start before 6 am** and do the furthest temple first, or split the yatra over two days.
+- **Stay in Dharamshala** and book early: rooms in Kangra, Jwalamukhi and Chintpurni fill up.
+- **Follow fair rules.** The district administrations set up queues, darshan slips and traffic diversions. During the 2023 Navratri fair, coconuts were banned inside the Chintpurni temple (Deccan Herald, 2023), so check current rules before buying offerings.
+- **Other busy dates:** the seven-day Makar Sankranti fair at Brajeshwari in mid-January, the Sawan (Shravan) fairs in July and August, especially at Naina Devi, and weekends at Chintpurni.
+
+## What should I wear, and what are the temple rules?
 
 - **Dress modestly:** shoulders and knees covered. Head covering is common for women and appreciated for men in some temples; carry a scarf or dupatta.
 - **Shoes off** before entering; most temples have shoe counters (small fee or free).
@@ -821,56 +911,95 @@ A private taxi is the easiest way to do this yatra. As of 2026, a full-day sedan
 - **Photography:** usually not allowed inside the sanctum. Follow signs and staff instructions.
 - **Donations:** use official temple trust counters or donation boxes and ask for a receipt.
 - **Phones and bags:** some temples restrict them in the inner area or provide lockers; keep valuables minimal.
+- **At Chintpurni:** take a darshan slip from the temple security before you queue, and do not feed the monkeys (temple trust rules).
 
-## Navratri and Festival Crowds
+These are common practice rather than one published code; follow the signs and the staff at each gate.
 
-Navratri is the most auspicious and the most crowded time for these temples.
-
-- **Sharad Navratri 2026:** approximately **11 to 19 October 2026**, with Dussehra on 20 October. Chaitra Navratri falls in March/April each year.
-- Temples open earlier and close later, and the administration often sets up queue systems, special darshan arrangements and traffic diversions.
-- Expect waits of several hours at Jwalamukhi and Chintpurni, especially on Ashtami and Navami.
-- Hotels in Kangra and Jwalamukhi fill up; stay in Dharamshala and start very early.
-- **Shravan Ashtami** (July/August) and **Makar Sankranti** at Brajeshwari also draw large crowds.
-
-## Best Time to Do the Yatra
+## What is the best time for the yatra?
 
 October to March is comfortable for long temple days, apart from Navratri crowds. April to June is hot in the lower towns of Jwalamukhi and Chintpurni, so start early. During the monsoon (July to mid-September), landslides can affect the Kangra roads; see our [monsoon guide](/blog/dharamshala-monsoon-travel-guide) and our [best time to visit Dharamshala](/blog/best-time-to-visit-dharamshala).
 
-## Where to Stay
+## Where should I stay for the Kangra temples?
 
-For the yatra, [Dharamshala town](/destinations/dharamshala) is the most practical base, being closer to Kangra and Chamunda than McLeod Ganj. If you also want monasteries and cafes, stay in [McLeod Ganj](/destinations/mcleod-ganj) and add 20 to 30 minutes each way. Browse [our verified hotels](/hotels) and our [best hotels in Dharamshala](/blog/best-hotels-in-dharamshala). Want to add a heritage train ride? The Kangra Mandir station is near Brajeshwari; read the [Kangra toy train guide](/blog/kangra-toy-train-guide). Check the [FAQ](/faq) for payments and cancellations.`,
+For the yatra, [Dharamshala town](/destinations/dharamshala) is the most practical base, being closer to Kangra and Chamunda than McLeod Ganj. If you also want monasteries and cafes, stay in [McLeod Ganj](/destinations/mcleod-ganj) and add 20 to 30 minutes each way. Browse [our verified hotels](/hotels) and our [best hotels in Dharamshala](/blog/best-hotels-in-dharamshala).
+
+**Add more of the valley:** the [Kangra Fort guide](/blog/kangra-fort-guide), the 8th-century [Masroor rock-cut temples](/blog/masroor-rock-cut-temple-guide), the [Baijnath temple guide](/blog/baijnath-temple-guide), our [places to visit in Kangra](/blog/places-to-visit-in-kangra) and the [five-day Kangra Valley itinerary](/blog/five-day-kangra-valley-itinerary). Want a heritage train ride? Kangra Mandir station is the stop for Brajeshwari; read the [Kangra toy train guide](/blog/kangra-toy-train-guide). Check the [FAQ](/faq) for payments and cancellations.
+
+## What is confirmed and what is not (27 October 2026)
+
+| Detail | Status |
+|---|---|
+| Brajeshwari timings and aarti | Official Kangra temples portal (the portal did not load for us directly on 27 October; figures as indexed) |
+| Jwalamukhi timings and aarti | Kangra district website, updated 30 March 2026; the temples portal differs in winter |
+| Chamunda timings | Incredible India and the district website disagree on closing time |
+| Chintpurni timings | Not published on the trust website; darshan slip rule confirmed |
+| Naina Devi timings | Incredible India and the Utsav portal differ; ropeway hours from a 2018 page |
+| Navratri 2027 dates | Drik Panchang (New Delhi) |
+| Distances | District and trust websites and HPTDC; drive times are our estimates |
+| Our ₹6,000 temple taxi | Confirmed on our route page, 27 October 2026 |`,
     category: 'Temples & Heritage',
-    tags: ['kangra devi temples', 'chamunda devi', 'brajeshwari devi', 'jwalamukhi', 'chintpurni', 'naina devi', 'navratri', 'shakti peeth'],
+    tags: ['kangra devi temples', 'shaktipeeth yatra', 'chamunda devi', 'brajeshwari devi', 'kangra devi', 'jwalamukhi', 'chintpurni', 'naina devi', 'kangra fort', 'navratri 2027', 'shakti peeth'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-09-28',
-    updated_at: '2026-10-01',
+    updated_at: '2026-10-27',
     image: placeImage('chamunda-devi'),
     image_alt: 'Chamunda Devi temple near Dharamshala with the Dhauladhar range behind',
-    read_time: 7,
+    read_time: 11,
     featured: false,
-    meta_title: 'Kangra Devi Temples Yatra: Chamunda, Jwalamukhi & More',
-    meta_description: 'Plan a Kangra Devi temple yatra from Dharamshala: Chamunda, Brajeshwari, Jwalamukhi, Chintpurni and Naina Devi, with timings, route and Navratri 2026 tips.',
-    related_slugs: ['places-to-visit-in-kangra', 'kangra-toy-train-guide', 'places-to-visit-in-dharamshala', 'masroor-rock-cut-temple-guide', 'baijnath-temple-guide'],
+    meta_title: 'Shaktipeeth Yatra from Dharamshala: Kangra Devi Temples',
+    meta_description: 'Shaktipeeth yatra from Dharamshala: Chamunda, Brajeshwari, Kangra Fort, Jwalamukhi in 1 day, Chintpurni and Naina Devi in 2. Timings, Navratri 2027.',
+    related_slugs: ['kangra-fort-guide', 'places-to-visit-in-kangra', 'baijnath-temple-guide', 'masroor-rock-cut-temple-guide', 'kangra-toy-train-guide', 'five-day-kangra-valley-itinerary'],
+    sources: [
+      { title: 'Shri Jawalamukhi Mata Temple: timings, aarti, distances (Kangra district administration, official; updated 30 March 2026)', url: 'https://hpkangra.nic.in/tourist-place/shri-jawalamukhi-mata-temple/' },
+      { title: 'Shri Chamunda Nandikeshwar Dham: timings, location, history (Kangra district administration, official; updated 19 December 2025)', url: 'https://hpkangra.nic.in/tourist-place/shri-chamunda-nandikeshwar-dham/' },
+      { title: 'Fairs and festivals: seven-day Makar Sankranti fair at Brajeshwari, ghee legend (Kangra district administration, official)', url: 'https://hpkangra.nic.in/?p=25713' },
+      { title: 'Shri Bajreshwari Devi: timings and aarti (Kangra temples portal, Government of Himachal Pradesh)', url: 'https://kangratemples.hp.gov.in/about-bajreshwariji/' },
+      { title: 'Chamunda Devi: opening hours (Incredible India, Ministry of Tourism)', url: 'https://www.incredibleindia.gov.in/en/himachal-pradesh/dharamshala/chamunda-devi' },
+      { title: 'Mata Shri Chintpurni temple trust: contact, aartis, dos and don’ts, darshan slip (official)', url: 'https://matashrichintpurni.com/dos_and_donts.php' },
+      { title: 'Mata Shri Chintpurni: distances to Jwalamukhi, Brajeshwari and Naina Devi (temple trust, official)', url: 'https://www.matashrichintpurni.com/important-places-at-temple-site.php' },
+      { title: 'Shree Naina Devi Temple: timings and distances (Incredible India, Ministry of Tourism)', url: 'https://www.incredibleindia.gov.in/en/himachal-pradesh/bilaspur/shree-naina-devi-temple' },
+      { title: 'Shri Naina Devi Ji Temple, Bilaspur: darshan hours (Utsav portal, Ministry of Tourism)', url: 'https://utsav.gov.in/view-darshan/shri-naina-devi-ji-temple-bilaspur-1' },
+      { title: 'Shri Naina Devi temple: ropeway hours and access (Rupnagar district administration; last updated 2018)', url: 'https://rupnagar.nic.in/?p=25648' },
+      { title: 'Naina Devi: legend, ropeway and the 3 August 2008 stampede (Wikipedia)', url: 'https://en.wikipedia.org/wiki/Naina_Devi' },
+      { title: 'Vajreshvari (Brajeshwari) Devi: Shakti pitha tradition, destroyed in 1905 and rebuilt in the 1930s (Wikipedia)', url: 'https://en.wikipedia.org/wiki/Vajreshvari_Devi' },
+      { title: 'Tourist circuits: Dharamshala Chamunda Tour, about 183 km, minimum 2 days (HPTDC, official)', url: 'https://hptdc.hp.gov.in/tourist-circuits-detail/2' },
+      { title: 'Kangra’s shaktipeeths set for major makeover (The Tribune, 16 November 2025)', url: 'https://www.tribuneindia.com/news/himachal/kangras-shaktipeeths-set-for-major-makeover/amp' },
+      { title: 'Chaitra Navratri 2027 dates, New Delhi (Drik Panchang)', url: 'https://www.drikpanchang.com/navratri/chaitra-vasant-navratri-dates.html?year=2027' },
+      { title: 'Sharad (Shardiya) Navratri 2027 dates, New Delhi (Drik Panchang)', url: 'https://www.drikpanchang.com/navratri/ashwin-shardiya-navratri-dates.html?year=2027' },
+      { title: 'Coconuts banned inside temple in Himachal’s Chintpurni during Navratri fair (Deccan Herald, 2023)', url: 'https://www.deccanherald.com/amp/story/india%2Fcoconuts-banned-inside-temple-in-himachals-chintpurni-during-navratri-fair-1201318.html' },
+    ],
     faqs: [
       {
-        question: 'Can I visit Chamunda, Kangra Devi, Jwalamukhi and Chintpurni in one day?',
-        answer: 'Yes, by private taxi on a weekday outside festival season, starting around 6 am from Dharamshala and returning in the evening. It is a long day of roughly 230 to 260 km, so two days is more comfortable, and one day is not realistic during Navratri.',
+        question: 'Can I visit Chamunda, Kangra Devi, Kangra Fort and Jwalamukhi in one day?',
+        answer: 'Yes, by private taxi on a weekday outside Navratri. Leave Dharamshala around 6:30 am, visit Chamunda Devi, Brajeshwari Devi and Kangra Fort in the morning, lunch in Kangra, see Jwalamukhi in the afternoon and be back by about 6 pm. Adding Chintpurni makes a much longer day.',
       },
       {
         question: 'How far is Jwalamukhi temple from Dharamshala?',
-        answer: 'Jwalamukhi is about 55 to 60 km from Dharamshala, roughly 1.5 to 2 hours by road via Kangra.',
+        answer: 'About 56 km according to the Kangra district website, roughly 1.5 to 2 hours by road via Kangra. Jwalamukhi is about 30 km from Kangra town and about 35 km from Chintpurni.',
       },
       {
         question: 'How far is Naina Devi from Dharamshala?',
-        answer: 'Naina Devi in Bilaspur district is approximately 165 km from Dharamshala and about 115 km from Chintpurni. It is best visited as an extra day or on the way to Chandigarh or Delhi.',
+        answer: 'Naina Devi in Bilaspur district is about 115 km beyond Chintpurni (temple trust website), so roughly 200 to 215 km from Dharamshala on the usual yatra route. It is about 100 km from Chandigarh, so it fits best on a second day that ends towards Chandigarh or Delhi.',
       },
       {
-        question: 'When is Navratri in 2026?',
-        answer: 'Sharad Navratri 2026 runs approximately from 11 to 19 October, with Dussehra on 20 October. Expect very large crowds and long queues at all the Kangra Devi temples during this period.',
+        question: 'When is Navratri in 2027?',
+        answer: 'Chaitra Navratri 2027 runs from Wednesday 7 April to Thursday 15 April (Ram Navami), and Sharad Navratri 2027 from Thursday 30 September to Friday 8 October, with Dussehra on Saturday 9 October (Drik Panchang, New Delhi). Expect the biggest crowds at the Kangra temples on Ashtami and Navami.',
+      },
+      {
+        question: 'What are the Brajeshwari (Kangra Devi) temple timings?',
+        answer: 'The official Kangra temples portal lists 5 am to 9 pm in summer and 5:30 am to 8 pm in winter, with the temple closed from 12 noon to 12:30 pm for bhog. Evening aarti is at 7 to 8 pm in summer and 6:30 to 7:30 pm in winter.',
+      },
+      {
+        question: 'How much is a taxi for the Kangra devi temples from Dharamshala?',
+        answer: 'Dharamshala Stay’s Four Devi Temples and Kangra Fort taxi tour is a fixed ₹6,000 for a full day of about 10 to 11 hours and 220 km in an Alto for up to 4 people, with fuel, tolls, parking and hotel pickup included. The Kangra Fort ticket, offerings and meals are extra.',
+      },
+      {
+        question: 'Do I need a darshan slip at Chintpurni?',
+        answer: 'Yes. The Chintpurni temple trust’s rules say to take a darshan parchi (slip) from the temple security before joining the queue, and not to pay anyone for back-door darshan. Donate only in the boxes or at the office against a receipt.',
       },
       {
         question: 'What should I wear to the Kangra Devi temples?',
-        answer: 'Wear modest clothing covering shoulders and knees, carry a scarf to cover your head, and be ready to remove your shoes. Avoid carrying leather items into the inner sanctum.',
+        answer: 'Wear modest clothing covering shoulders and knees, carry a scarf to cover your head, and be ready to remove your shoes. Avoid carrying leather items into the inner sanctum and keep phones and bags to a minimum.',
       },
     ],
   },

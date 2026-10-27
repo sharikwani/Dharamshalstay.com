@@ -881,7 +881,7 @@ Costs drop noticeably in July-August and January-February, when hotels discount.
     featured: false,
     meta_title: '5-Day Kangra Valley Itinerary (2026): Dharamshala to Bir',
     meta_description: 'A 5-day Kangra Valley itinerary: McLeod Ganj, Triund, Kangra Fort and Masroor, Palampur, Baijnath and Bir Billing, with driving times, bases and season tips.',
-    related_slugs: ['dharamshala-weekend-itinerary', 'places-to-visit-in-kangra', 'bir-travel-guide', 'masroor-rock-cut-temple-guide', 'baijnath-temple-guide'],
+    related_slugs: ['dharamshala-weekend-itinerary', 'places-to-visit-in-kangra', 'bir-travel-guide', 'masroor-rock-cut-temple-guide', 'baijnath-temple-guide', 'kangra-fort-guide'],
     faqs: [
       {
         question: 'Is 5 days enough for Dharamshala and the Kangra Valley?',

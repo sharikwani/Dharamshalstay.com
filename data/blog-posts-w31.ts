@@ -185,7 +185,7 @@ Start and end your Himachal trip in comfort: browse [hotels in Dharamshala and M
     featured: false,
     meta_title: 'Spiti Valley in Winter 2026-27: Route, Permits, Cold',
     meta_description: 'In winter Spiti is reached only via Shimla and Kinnaur; Kunzum Pass shut on 15 Oct 2026. Roads, buses, permits, Kibber fee, cold and snow leopards.',
-    related_slugs: ['shimla-to-dharamshala', 'dharamshala-to-manali', 'himachal-itinerary-delhi-dharamshala-manali', 'dharamshala-in-december-january'],
+    related_slugs: ['shimla-to-dharamshala', 'dharamshala-to-manali', 'himachal-itinerary-delhi-dharamshala-manali', 'dharamshala-in-december-january', 'shimla-travel-guide'],
     sources: [
       { title: 'Himachal: 100 vehicles evacuated from Gondhla amid heavy snowfall in Lahaul-Spiti; Kunzum, Shinku La and Baralacha La closed (The Tribune, 15 October 2026; checked 26 October 2026)', url: 'https://www.tribuneindia.com/news/himachal/himachal-100-vehicles-evacuated-from-gondhla-amid-heavy-snowfall-in-lahaul-spiti/' },
       { title: 'Snowfall shuts 3 key passes in Himachal’s Lahaul-Spiti (The North News, 15 October 2026; checked 26 October 2026)', url: 'https://www.thenorthnews.in/snowfall-shuts-3-key-passes-in-himachals-lahaul-spiti/' },
@@ -365,7 +365,7 @@ Most visitors do Masroor as a day trip from **Dharamshala or McLeod Ganj**, wher
     featured: false,
     meta_title: 'Masroor Rock Cut Temple 2026: Timings, Fee, How to Reach',
     meta_description: 'Masroor rock-cut temples: 8th-century ASI site 40-45 km from Dharamshala. Listed open 6 am-6 pm, online ticket from Rs 20. Route, best light, tips.',
-    related_slugs: ['places-to-visit-in-kangra', 'pong-dam-bird-sanctuary-guide', 'kangra-devi-temples-guide', 'five-day-kangra-valley-itinerary'],
+    related_slugs: ['places-to-visit-in-kangra', 'pong-dam-bird-sanctuary-guide', 'kangra-devi-temples-guide', 'five-day-kangra-valley-itinerary', 'kangra-fort-guide'],
     sources: [
       { title: 'Masrur Temples: date, architecture, 1905 earthquake, tank, location (Wikipedia; checked 26 October 2026)', url: 'https://en.wikipedia.org/wiki/Masrur_Temples' },
       { title: 'Centre proposes revised list of ticketed ASI monuments: 30 in Category A, 136 in Category B (UNI, 9 September 2026)', url: 'https://www.uniindia.com/north-india/centre-proposes-revised-list-of-ticketed-asi-monuments-30-in-category-a-136-in-category-b/173558' },

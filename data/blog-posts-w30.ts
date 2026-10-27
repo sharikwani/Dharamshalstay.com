@@ -179,7 +179,7 @@ More on each: [Manali in December and January](/blog/manali-in-december-january)
     featured: false,
     meta_title: 'Shimla in December 2026: Christmas, New Year & Snow',
     meta_description: 'Snow in Shimla in December is not guaranteed: 3 of the last 4 winters had first snow later. Christmas, New Year, ice rink, Kufri, Narkanda, toy train.',
-    related_slugs: ['shimla-to-dharamshala', 'dharamshala-christmas-new-year', 'dharamshala-in-december-january', 'himachal-itinerary-delhi-dharamshala-manali'],
+    related_slugs: ['shimla-to-dharamshala', 'dharamshala-christmas-new-year', 'dharamshala-in-december-january', 'himachal-itinerary-delhi-dharamshala-manali', 'shimla-travel-guide', 'places-to-visit-in-shimla'],
     sources: [
       { title: 'How to Reach Shimla: distances and times by road, rail and air (District Shimla, Government of Himachal Pradesh; checked 26 October 2026)', url: 'https://hpshimla.nic.in/how-to-reach/' },
       { title: 'Kufri: altitude, distance from Shimla, winter sports (Incredible India, Ministry of Tourism; checked 26 October 2026)', url: 'https://www.incredibleindia.gov.in/en/himachal-pradesh/shimla/kufri' },
@@ -223,7 +223,7 @@ More on each: [Manali in December and January](/blog/manali-in-december-january)
       },
       {
         question: 'How far is Shimla from Dharamshala?',
-        answer: 'About 230 to 240 km by road, which takes 6 to 7 hours by car or 8 to 9 by bus via Bilaspur, Hamirpur and Kangra. There is no train or flight between the two, so most people take a taxi or an HRTC bus and set off early to finish in daylight.',
+        answer: 'About 230 to 240 km by road, which takes 6 to 7 hours by car or 8 to 9 by bus via Bilaspur, Hamirpur and Kangra. There is no train; Alliance Air has flown Shimla to Kangra (Gaggal) about five days a week since May 2026, so check the current schedule. Otherwise most people take a taxi or an HRTC bus and set off early to finish in daylight.',
       },
       {
         question: 'How far is Shimla from Delhi and Chandigarh?',
@@ -408,7 +408,7 @@ We can arrange every leg by road: [Delhi to Dharamshala taxi](/taxi/delhi-to-dha
     featured: false,
     meta_title: 'Best Places to Visit in Himachal in Winter 2026-27',
     meta_description: 'For snow in Himachal, go high: Solang, Sissu, Narkanda, Kufri, Triund. Without snow: Dharamshala, Bir, Palampur. Snow odds, closed roads, 3-7 day plans.',
-    related_slugs: ['dharamshala-in-winter-snowfall', 'dharamshala-in-december-january', 'dalhousie-khajjiar-from-dharamshala', 'himachal-itinerary-delhi-dharamshala-manali'],
+    related_slugs: ['dharamshala-in-winter-snowfall', 'dharamshala-in-december-january', 'dalhousie-khajjiar-from-dharamshala', 'himachal-itinerary-delhi-dharamshala-manali', 'manali-travel-guide', 'shimla-travel-guide'],
     sources: [
       { title: 'Lahaul-Spiti district administration: routes to Kaza, Kunzum closure, Shimla-Kaza Blue Route (official; checked 26 October 2026)', url: 'https://hplahaulspiti.nic.in/?p=2807' },
       { title: 'Gramphu-Kaza highway officially closed for traffic via Kunzum Pass (The Tribune, 23 November 2024)', url: 'https://tribuneindia.com/news/gramphu-kaza-highway-officially-closed-for-traffic-via-kunzum-pass' },

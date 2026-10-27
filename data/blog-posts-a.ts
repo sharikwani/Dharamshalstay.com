@@ -730,7 +730,7 @@ Kangra town itself has limited good accommodation, while Dharamshala and McLeod 
     featured: false,
     meta_title: 'Places to Visit in Kangra: Fort, Temples & 1-Day Loop',
     meta_description: 'Best places to visit in Kangra: Kangra Fort, Brajeshwari, Masroor, Chamunda, Jwalamukhi, Baijnath and Pong Dam, with distances, fees and a 1-day loop (2026).',
-    related_slugs: ['kangra-devi-temples-guide', 'palampur-travel-guide', 'places-to-visit-in-dharamshala', 'masroor-rock-cut-temple-guide', 'baijnath-temple-guide'],
+    related_slugs: ['kangra-devi-temples-guide', 'palampur-travel-guide', 'places-to-visit-in-dharamshala', 'masroor-rock-cut-temple-guide', 'baijnath-temple-guide', 'kangra-fort-guide'],
     faqs: [
       {
         question: 'How far is Kangra from Dharamshala?',

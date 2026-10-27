@@ -33,6 +33,8 @@ export const EN_ONLY_POSTS = [
   'kangra-valley-carnival-2026', 'himachal-snowfall-tracker', 'manali-in-december-january', 'rohtang-pass-atal-tunnel-status',
   'shimla-in-december-christmas-new-year', 'best-places-to-visit-in-himachal-in-winter', 'spiti-valley-in-winter', 'masroor-rock-cut-temple-guide',
   'dharamshala-to-bir', 'pathankot-to-dharamshala', 'baijnath-temple-guide',
+  'manali-travel-guide', 'places-to-visit-in-manali', 'how-to-reach-manali', 'solang-valley-guide', 'kasol-travel-guide',
+  'shimla-travel-guide', 'places-to-visit-in-shimla', 'how-to-reach-shimla', 'kangra-fort-guide',
 ];
 
 /** English-only pages inside otherwise bilingual sections. */
