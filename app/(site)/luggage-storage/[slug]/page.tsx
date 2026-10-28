@@ -83,6 +83,19 @@ export default async function ServiceProfilePage({ params }: { params: { slug: s
           </tbody>
         </table>
         <p className="mt-6 flex gap-2 text-sm text-slate-500"><Clock className="h-4 w-4 shrink-0 mt-0.5" />{VERIFIED_SERVICES.has(s.slug) ? 'Business verified by the Dharamshala Stay team.' : 'Details provided by the business.'} Confirm the rate and timings when you call, and keep your passport, cash and electronics with you.</p>
+        <h2 className="mt-8 font-heading text-xl font-bold text-slate-900">How to store your bags with {s.name.split(' and ')[0]}</h2>
+        <ol className="mt-3 list-decimal space-y-2 pl-5 text-slate-700">
+          <li>Call or WhatsApp {display} before you arrive. Say how many bags, their size and the day and time you will collect them.</li>
+          <li>Agree the price per bag per day{s.price_text ? ` (listed as ${s.price_text})` : ''} and the collection time, including whether early morning or late evening pick-up is possible.</li>
+          <li>Lock each bag and take a photo of it. Ask for a receipt or a WhatsApp message confirming your bags and the rate.</li>
+          <li>Carry your passport, cash, cards, medicines and electronics with you. Storage is for clothes and trekking gear.</li>
+        </ol>
+        <h2 className="mt-8 font-heading text-xl font-bold text-slate-900">When travellers use luggage storage in {s.area}</h2>
+        <ul className="mt-3 list-disc space-y-2 pl-5 text-slate-700">
+          <li>Before an overnight <Link href="/blog/triund-trek-complete-guide" className="text-brand-600 underline">Triund trek</Link> or a camping trip, so you walk up with a light day pack.</li>
+          <li>After hotel check-out, when the bus to Delhi or the train from Pathankot leaves in the evening. See <Link href="/blog/how-to-reach-dharamshala" className="text-brand-600 underline">how to reach Dharamshala</Link> for timings.</li>
+          <li>On a day trip to <Link href="/blog/bir-billing-paragliding-guide" className="text-brand-600 underline">Bir Billing</Link> or around the Kangra Valley, when you return to McLeod Ganj the same night.</li>
+        </ul>
         <p className="mt-6 text-sm text-slate-600">See all <Link href="/luggage-storage" className="text-brand-600 underline">luggage storage in Dharamshala</Link>, or plan your <Link href="/blog/triund-trek-complete-guide" className="text-brand-600 underline">Triund trek</Link> and <Link href="/taxi" className="text-brand-600 underline">taxi</Link>.</p>
       </div>
     </div>

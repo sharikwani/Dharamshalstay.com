@@ -7,6 +7,7 @@ import { BlogCard, Breadcrumb, FAQSection } from '@/components/ui/Cards';
 import MarkdownContent, { extractHeadings } from '@/components/blog/MarkdownContent';
 import GuideSearch from '@/components/blog/GuideSearch';
 import FlightSearch from '@/components/blog/FlightSearch';
+import LocalGuidesStrip from '@/components/blog/LocalGuidesStrip';
 import JsonLd from '@/components/seo/JsonLd';
 import PreferredSourceButton from '@/components/seo/PreferredSourceButton';
 import { FESTIVE_POSTS, Toran, DiyaRow, Rangoli } from '@/components/blog/FestiveDecor';
@@ -266,6 +267,7 @@ export function BlogPostView({ slug, lang }: { slug: string; lang: Lang }) {
         </div>
 
         <FlightSearch slug={post.slug} lang={lang} />
+        <LocalGuidesStrip slug={post.slug} lang={lang} />
 
         {diwali && <div className="flex justify-center mt-10"><Rangoli /></div>}
 
