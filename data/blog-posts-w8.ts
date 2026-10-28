@@ -756,7 +756,7 @@ Booking questions are answered in our [FAQ](/faq).`,
     excerpt: 'Dharamshala (HPCA) cricket stadium is open to tourists on non-match days, about 9:30 am to 5 pm, for a small fee of about Rs 30 (Kangra district, April 2026). It shuts to visitors around matches, as it did from 4 May 2026 for IPL, so check before you go. Timings, fee, distance from McLeod Ganj, tickets and tips.',
     content: `**Short answer:** On non-match days the HPCA Cricket Stadium in Dharamshala is open to tourists roughly **9:30 am to 5 pm**, for a small entry fee of **about ₹30 per person** (Kangra district administration, page updated 1 April 2026). It **closes to visitors around matches**: HPCA shut the ground to visitors **from 4 May 2026** for IPL games, and that notice was gone from its website by early June. Published hours differ between sources, so plan to be there **between 10 am and 4 pm** and confirm on the day.
 
-> **Before you go (checked 20 October 2026):** we could not confirm today's status. The HPCA website (hpcricket.org) was returning an error, and we found no closure notice for October 2026. Ask your hotel or taxi driver to check with the stadium gate the same morning, especially if a domestic match or camp is on.
+> **Before you go (checked 28 October 2026):** the HPCA website (hpcricket.org) is online again after being down on 20 October, and the Kangra district page still gives the entry fee as about ₹30. Neither shows the gate status for a given day, so ask your hotel or taxi driver to check with the stadium gate the same morning, especially if a domestic match or camp is on.
 
 The **HPCA Cricket Stadium** in Dharamshala is often called the most beautiful cricket ground in the world: a compact stadium at about **1,457 m**, with the snow-covered **Dhauladhar range** rising directly behind the pavilion. On **non-match days** you can usually walk into the stands; on **match days** it holds a crowd of about 21,000-23,000 with strict security, road closures and no walk-ins.
 
@@ -937,7 +937,7 @@ For other questions, see our [FAQ](/faq).`,
     tags: ['HPCA Stadium', 'Cricket', 'IPL', 'Dharamshala', 'War Memorial', 'Sightseeing'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-10-01',
-    updated_at: '2026-10-24',
+    updated_at: '2026-10-28',
     image: placeImage('hpca-stadium'),
     image_alt: 'HPCA Cricket Stadium in Dharamshala with the snow-capped Dhauladhar range behind the pavilion',
     read_time: 10,

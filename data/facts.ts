@@ -84,7 +84,7 @@ export const facts: Fact[] = [
     verified: '2026-10-20', sources: [SITE('Kangra district administration: HPCA Cricket Stadium', 'https://hpkangra.nic.in/tourist-place/hpca-cricket-stadium/'), OURS('cricket stadium guide', '/blog/hpca-cricket-stadium-guide')], page: '/blog/hpca-cricket-stadium-guide' },
   { id: 'stadium-fee', topic: 'stadium', question: 'What is the entry fee for the Dharamshala cricket stadium?',
     answer: 'About ₹30 per person for a tourist visit on a non-match day (Kangra district administration, 2026). Match tickets are sold separately for each match.',
-    verified: '2026-10-20', sources: [SITE('Kangra district administration: HPCA Cricket Stadium', 'https://hpkangra.nic.in/tourist-place/hpca-cricket-stadium/'), OURS('cricket stadium guide', '/blog/hpca-cricket-stadium-guide')], page: '/blog/hpca-cricket-stadium-guide' },
+    verified: '2026-10-28', sources: [SITE('Kangra district administration: HPCA Cricket Stadium', 'https://hpkangra.nic.in/tourist-place/hpca-cricket-stadium/'), OURS('cricket stadium guide', '/blog/hpca-cricket-stadium-guide')], page: '/blog/hpca-cricket-stadium-guide' },
   { id: 'stadium-closed', topic: 'stadium', question: 'Is the Dharamshala cricket stadium open to visitors on match days?',
     answer: 'No. Walk-in visits stop on match days and the days around big matches; HPCA closed the ground to visitors from 4 May 2026 for IPL games. No weekly closing day is listed by any official source.',
     verified: '2026-10-20', sources: [SITE('HPCA website, archived 19 May 2026', 'https://web.archive.org/web/20260519132534/https://www.hpcricket.org/aboutus/1'), OURS('cricket stadium guide', '/blog/hpca-cricket-stadium-guide')], page: '/blog/hpca-cricket-stadium-guide' },
