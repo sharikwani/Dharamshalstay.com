@@ -56,6 +56,15 @@ export async function notifyOwner(input: { subject: string; template: string; do
     const { mode, phone } = await settings();
     if (!phone || !shouldAlert(mode, input.template, input.subject)) return;
     const { title, detail, link } = alertParts(input.subject, input.doc);
+    // Meta moved owner_alert to the Marketing category (27 Oct 2026), so it can be held back ("healthy ecosystem
+    // engagement"). While the owner's chat is open (they wrote in the last 24 h, e.g. to the admin assistant) a plain
+    // chat message has no such limit and also lands in the admin assistant's history.
+    const { data: chat } = await serviceClient().from('whatsapp_conversations').select('id, phone, last_customer_at').eq('phone', phone).maybeSingle();
+    if (chat?.last_customer_at && Date.now() - Date.parse(chat.last_customer_at) < 23.5 * 3600e3) {
+      const { sendLogged } = await import('@/lib/wa-chat/send');
+      const sent = await sendLogged(chat as any, `🔔 *${title}*\n\n${detail}\n\nOpen it in admin: ${link}`);
+      if (sent.ok) return;
+    }
     const r = await sendTemplate({ to: phone, template: 'owner_alert', params: [title, detail, link] });
     if (!r.ok && r.skipped) return;
     const { error } = await serviceClient().from('whatsapp_messages').insert({
