@@ -191,10 +191,12 @@ export const en = {
   gallery: { more: 'more', viewAll: 'View all {n} photos' },
   vehicles: { sedan: 'Sedan', suv: 'SUV', innova: 'Innova', tempo: 'Tempo Traveller', bus: 'Bus' } as Record<string, string>,
   search: {
-    tabs: { hotels: 'Hotels', treks: 'Treks', paragliding: 'Paragliding', taxi: 'Taxi' } as Record<string, string>,
+    tabs: { hotels: 'Hotels', treks: 'Treks', paragliding: 'Paragliding', taxi: 'Taxi', flights: 'Flights' } as Record<string, string>,
     destination: 'Destination', allDestinations: 'All Destinations', checkIn: 'Check-in', checkOut: 'Check-out', search: 'Search',
     pickup: 'Pickup', selectPickup: 'Select Pickup', drop: 'Drop', selectDrop: 'Select Drop', pickupDate: 'Pickup Date',
     trek: 'Trek', pkg: 'Package', allTreks: 'All Treks', allPackages: 'All Packages',
+    flyFrom: 'Flying from', flyTo: 'Flying to', flyDate: 'Departure', searchFlights: 'Search flights',
+    flightNote: 'Opens fares on our partner Aviasales; no extra cost to you.',
     // Keys are trek slugs: picking one opens that trek's page.
     trekOptions: { 'triund-trek': 'Triund Trek', 'kareri-lake-trek': 'Kareri Lake Trek', 'indrahar-pass-trek': 'Indrahar Pass', 'triund-snowline-laka-got-trek': 'Snowline & Laka Got', 'guna-devi-temple-hike': 'Guna Devi Hike', 'bir-billing-rajgundha-trek': 'Bir to Rajgundha' } as Record<string, string>,
     pkgOptions: { tandem: 'Tandem Flight', scenic: 'Scenic Long Flight', solo: 'Solo Course' } as Record<string, string>,

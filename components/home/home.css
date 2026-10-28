@@ -65,8 +65,8 @@
 .hm .book-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:4px 4px 0;flex-wrap:wrap}
 .hm .book-h p{font:600 22px/1.1 var(--display)}
 .hm .book-h span{font-size:13px;color:#56677d}
-.hm .tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:#eef3f8;border-radius:14px;padding:4px}
-.hm .tab{display:flex;flex-direction:column;align-items:center;gap:5px;padding:9px 4px;border-radius:10px;border:0;background:none;color:#56677d;font:600 12.5px/1 var(--body);cursor:pointer;transition:background .2s,color .2s}
+.hm .tabs{display:grid;grid-template-columns:repeat(5,auto);justify-content:space-between;gap:4px;background:#eef3f8;border-radius:14px;padding:4px}
+.hm .tab{display:flex;flex-direction:column;align-items:center;gap:5px;padding:9px 7px;border-radius:10px;border:0;background:none;color:#56677d;font:600 12px/1 var(--body);cursor:pointer;transition:background .2s,color .2s}
 .hm .tab[aria-selected="true"]{background:#fff;color:#13243a;box-shadow:0 2px 8px -3px rgba(15,33,56,.3)}
 .hm .tab[aria-selected="true"] svg{color:var(--saffron)}
 .hm .tab:hover:not([aria-selected="true"]){color:#13243a}

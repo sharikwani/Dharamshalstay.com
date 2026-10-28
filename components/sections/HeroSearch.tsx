@@ -1,7 +1,7 @@
 'use client';
 import { useId, useRef, useState, type FormEvent, type KeyboardEvent, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
-import { Search, Building, Mountain, Car, Wind, ShieldCheck, MessageCircle } from 'lucide-react';
+import { Search, Building, Mountain, Car, Wind, Plane, ShieldCheck, MessageCircle } from 'lucide-react';
 import { getMinDate, getMinCheckoutDate, enforceCheckIn, enforceCheckOut, enforceActivityDate } from '@/lib/date-helpers';
 import { useT } from '@/lib/i18n/client';
 
@@ -10,6 +10,7 @@ const TABS = [
   { key: 'treks', icon: Mountain, href: '/treks' },
   { key: 'paragliding', icon: Wind, href: '/paragliding' },
   { key: 'taxi', icon: Car, href: '/taxi' },
+  { key: 'flights', icon: Plane, href: '' },
 ] as const;
 type TabKey = (typeof TABS)[number]['key'];
 
@@ -17,6 +18,14 @@ type TabKey = (typeof TABS)[number]['key'];
 const PICKUPS = ['Gaggal Airport', 'Pathankot Railway Station', 'Chakki Bank Railway Station', 'Amb Andaura Railway Station', 'Kangra Railway Station', 'Dharamshala', 'Delhi', 'Chandigarh', 'Amritsar'];
 const DROPS = ['Dharamshala', 'McLeod Ganj', 'Bir Billing', 'Palampur', 'Manali', 'Dalhousie', 'Delhi', 'Chandigarh', 'Amritsar'];
 const DESTINATIONS = ['dharamshala', 'mcleod-ganj', 'bhagsu', 'dharamkot', 'naddi'];
+// Flights: airport codes. Fares open on Aviasales through our Travelpayouts partner link (project 591777).
+const FLY_FROM: [string, string][] = [['DEL', 'Delhi'], ['BOM', 'Mumbai'], ['BLR', 'Bengaluru'], ['HYD', 'Hyderabad'], ['MAA', 'Chennai'], ['CCU', 'Kolkata'], ['AMD', 'Ahmedabad'], ['PNQ', 'Pune'], ['JAI', 'Jaipur'], ['GOI', 'Goa'], ['IXC', 'Chandigarh'], ['ATQ', 'Amritsar']];
+const FLY_TO: [string, string][] = [['DHM', 'Dharamshala'], ['KUU', 'Kullu-Manali'], ['SLV', 'Shimla'], ['DEL', 'Delhi']];
+function flightUrl(from: string, to: string, date: string): string {
+  const [, mm, dd] = date.split('-');
+  const search = `https://www.aviasales.com/search/${from}${dd}${mm}${to}1?currency=inr&locale=en`;
+  return `https://tp.media/r?marker=796306&trs=591777&p=4114&campaign_id=100&sub_id=home&u=${encodeURIComponent(search)}`;
+}
 
 // Styled by .book .field in components/home/home.css.
 const INPUT = '';
@@ -50,6 +59,8 @@ export default function HeroSearch() {
   const [trek, setTrek] = useState('');
   const [pkg, setPkg] = useState('');
   const [people, setPeople] = useState('1');
+  const [flyFrom, setFlyFrom] = useState('DEL');
+  const [flyTo, setFlyTo] = useState('DHM');
 
   const minDate = getMinDate();
   const minCheckout = getMinCheckoutDate(checkIn);
@@ -83,6 +94,11 @@ export default function HeroSearch() {
 
   function handleSearch(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (activeTab === 'flights') {
+      // Fares and booking are on Aviasales: open them in a new tab so the visitor keeps our page.
+      window.open(flightUrl(flyFrom, flyTo === flyFrom ? 'DHM' : flyTo, activityDate), '_blank', 'noopener');
+      return;
+    }
     const params = new URLSearchParams();
     let path: string = TABS.find((x) => x.key === activeTab)!.href;
     let hash = '';
@@ -207,10 +223,31 @@ export default function HeroSearch() {
           </>
         )}
 
+        {activeTab === 'flights' && (
+          <>
+            <Field id={id('fly-from')} label={s.flyFrom}>
+              <select id={id('fly-from')} value={flyFrom} onChange={(e) => setFlyFrom(e.target.value)} className={INPUT}>
+                {FLY_FROM.map(([code, name]) => <option key={code} value={code}>{place(name)} ({code})</option>)}
+              </select>
+            </Field>
+            <Field id={id('fly-to')} label={s.flyTo}>
+              <select id={id('fly-to')} value={flyTo} onChange={(e) => setFlyTo(e.target.value)} className={INPUT}>
+                {FLY_TO.map(([code, name]) => <option key={code} value={code}>{place(name)} ({code})</option>)}
+              </select>
+            </Field>
+            <Field id={id('date')} label={s.flyDate} full>
+              <input id={id('date')} type="date" value={activityDate} required
+                onChange={(e) => handleActivityDateChange(e.target.value)}
+                min={minDate} className={INPUT} />
+            </Field>
+          </>
+        )}
+
         </div>
         <button type="submit" className="btn btn-sf">
-          <Search className="h-5 w-5" aria-hidden="true" /> {s.search}
+          {activeTab === 'flights' ? <><Plane className="h-5 w-5" aria-hidden="true" /> {s.searchFlights}</> : <><Search className="h-5 w-5" aria-hidden="true" /> {s.search}</>}
         </button>
+        {activeTab === 'flights' && <p className="book-note" style={{ marginTop: 8 }}>{s.flightNote}</p>}
         <div className="book-note">
           <span><ShieldCheck aria-hidden="true" />{v.panelChecked}</span>
           <span><MessageCircle aria-hidden="true" />{v.panelHelp}</span>

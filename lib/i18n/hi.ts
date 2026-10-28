@@ -192,10 +192,12 @@ export const hi: Dict = {
   gallery: { more: 'और', viewAll: 'सभी {n} फ़ोटो देखें' },
   vehicles: { sedan: 'सेडान', suv: 'एसयूवी', innova: 'इनोवा', tempo: 'टेम्पो ट्रैवलर', bus: 'बस' } as Record<string, string>,
   search: {
-    tabs: { hotels: 'होटल', treks: 'ट्रेक', paragliding: 'पैराग्लाइडिंग', taxi: 'टैक्सी' } as Record<string, string>,
+    tabs: { hotels: 'होटल', treks: 'ट्रेक', paragliding: 'पैराग्लाइडिंग', taxi: 'टैक्सी', flights: 'फ्लाइट' } as Record<string, string>,
     destination: 'जगह', allDestinations: 'सभी जगहें', checkIn: 'चेक-इन', checkOut: 'चेक-आउट', search: 'खोजें',
     pickup: 'पिकअप', selectPickup: 'पिकअप चुनें', drop: 'ड्रॉप', selectDrop: 'ड्रॉप चुनें', pickupDate: 'पिकअप की तारीख',
     trek: 'ट्रेक', pkg: 'पैकेज', allTreks: 'सभी ट्रेक', allPackages: 'सभी पैकेज',
+    flyFrom: 'कहाँ से', flyTo: 'कहाँ तक', flyDate: 'जाने की तारीख', searchFlights: 'फ्लाइट खोजें',
+    flightNote: 'हमारे पार्टनर Aviasales पर दाम खुलते हैं; आपसे कोई अतिरिक्त शुल्क नहीं।',
     trekOptions: { 'triund-trek': 'त्रिउंड ट्रेक', 'kareri-lake-trek': 'करेरी झील ट्रेक', 'indrahar-pass-trek': 'इंद्रहार पास', 'triund-snowline-laka-got-trek': 'स्नोलाइन और लाका गोट', 'guna-devi-temple-hike': 'गुना देवी हाइक', 'bir-billing-rajgundha-trek': 'बीर से राजगुंधा' } as Record<string, string>,
     pkgOptions: { tandem: 'टैंडम फ़्लाइट', scenic: 'लंबी सीनिक फ़्लाइट', solo: 'सोलो कोर्स' } as Record<string, string>,
     date: 'तारीख', people: 'लोग', peopleOptions: ['1 व्यक्ति', '2 लोग', '3 लोग', '4 लोग', '5+ लोग'],
