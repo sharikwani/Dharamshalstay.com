@@ -53,9 +53,9 @@ export const PARTIES: Party[] = [
     propertySlug: 'panchvati-cottages',
     area: 'Khaniara, Dharamshala',
     date: '2026-12-31',
-    // Owner's poster (27 Oct 2026): gates open 7 pm; closing time not announced.
+    // Owner's poster (27 Oct 2026): gates open 7 pm; owner (29 Oct): ends around 2 am.
     startTime: '7:00 pm',
-    endTime: '',
+    endTime: '2:00 am',
     summary: 'NYE Gala Night at Panchvati Cottages, our own property in Khaniara, Dharamshala: a DJ, a bonfire, starters and a main-course dinner (drinks are chargeable at the bar), and the countdown to 2027 under the Dhauladhar sky.',
     highlights: [
       'Gates open at 7 pm',

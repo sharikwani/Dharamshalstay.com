@@ -80,7 +80,7 @@ export default function NewYearPartiesPage() {
         faqSchema(FAQS),
         {
           '@context': 'https://schema.org', '@type': 'Event', name: featured.name,
-          startDate: featured.date + 'T19:00:00+05:30', image: [siteConfig.url + featured.image], eventStatus: 'https://schema.org/EventScheduled', eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+          startDate: featured.date + 'T19:00:00+05:30', endDate: '2027-01-01T02:00:00+05:30', image: [siteConfig.url + featured.image], eventStatus: 'https://schema.org/EventScheduled', eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
           location: { '@type': 'Place', name: featured.venue, address: { '@type': 'PostalAddress', streetAddress: 'Khaniara', addressLocality: 'Dharamshala', addressRegion: 'Himachal Pradesh', addressCountry: 'IN' } },
           organizer: { '@id': siteConfig.url + '/#organization' }, url: siteConfig.url + '/new-year-parties', description: featured.summary,
           ...(onSale ? { offers: featured.ticketTypes.map((t) => ({ '@type': 'Offer', name: t.name, price: ticketPrice(t.price, featured.discountPct), priceCurrency: 'INR', availability: 'https://schema.org/InStock', validFrom: '2026-10-29T00:00:00+05:30', url: siteConfig.url + '/new-year-parties' })) } : {}),
@@ -104,7 +104,7 @@ export default function NewYearPartiesPage() {
             <span className="nye-h1-lead block">New Year Party in Dharamshala 2026</span>
             <span className="nye-title mt-2 block">NYE <em>Gala</em> Night</span>
           </h1>
-          <p className="nye-date mt-4">Thursday 31 December 2026 · gates open {featured.startTime || '7:00 pm'}</p>
+          <p className="nye-date mt-4">Thursday 31 December 2026 · {featured.startTime || '7:00 pm'} till {featured.endTime || 'late'}</p>
           <div className="mt-8"><Countdown to={COUNTDOWN_TO} done="Happy New Year 2027!" /></div>
           <div className="mt-9 flex flex-wrap items-center gap-3">
             <a href="#tickets" className="nye-cta"><Ticket className="h-5 w-5" aria-hidden="true" />{onSale ? `Book tickets · ${featured.discountPct || 0}% off online` : 'Tickets open soon'}</a>
