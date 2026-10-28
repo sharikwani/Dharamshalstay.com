@@ -1,0 +1,132 @@
+/* /new-year-parties: a Himalayan New Year night. Fireworks and fairy lights are the page's one animated moment. */
+.nye {
+  --night: #0d0a24;
+  --plum: #2a1240;
+  --gold: #f2c46d;
+  --ember: #ff8a3d;
+  --cream: #fbf3e4;
+  --gala: var(--font-gala), Georgia, serif;
+  background: var(--night);
+}
+
+/* Hero */
+.nye-hero {
+  position: relative;
+  overflow: hidden;
+  color: var(--cream);
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 0%, rgba(242, 196, 109, 0.18), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 85% 30%, rgba(214, 48, 111, 0.22), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 10% 40%, rgba(96, 72, 220, 0.22), transparent 70%),
+    linear-gradient(180deg, var(--night) 0%, var(--plum) 78%, #3a1a3a 100%);
+}
+.nye-hero-inner { position: relative; z-index: 2; }
+.nye-kicker { font-weight: 600; letter-spacing: 0.04em; color: var(--gold); }
+.nye-title {
+  font-family: var(--gala);
+  font-weight: 800;
+  line-height: 0.92;
+  font-size: clamp(3.4rem, 11vw, 8.5rem);
+  background: linear-gradient(180deg, #fff6df 0%, var(--gold) 55%, #c98d2e 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 60px rgba(242, 196, 109, 0.25);
+}
+.nye-title em { font-style: italic; font-weight: 700; }
+.nye-date { font-family: var(--gala); font-size: clamp(1.4rem, 3.2vw, 2.1rem); color: var(--cream); }
+
+/* Countdown */
+.nye-count { display: flex; gap: clamp(0.5rem, 2vw, 1rem); min-height: 5.5rem; }
+.nye-count-cell {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-width: clamp(4.1rem, 16vw, 6rem); padding: 0.7rem 0.5rem;
+  border-radius: 18px; border: 1px solid rgba(242, 196, 109, 0.45);
+  background: rgba(13, 10, 36, 0.55); backdrop-filter: blur(6px);
+}
+.nye-count-n { font-family: var(--gala); font-weight: 800; font-size: clamp(1.9rem, 6vw, 3rem); line-height: 1; color: #fff6df; font-variant-numeric: tabular-nums; }
+.nye-count-l { margin-top: 0.3rem; font-size: 0.72rem; color: rgba(251, 243, 228, 0.7); }
+.nye-count-done { font-family: var(--gala); font-size: 2.4rem; color: var(--gold); }
+
+.nye-cta {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  border-radius: 999px; padding: 0.95rem 1.7rem; font-weight: 700; font-size: 1.05rem;
+  color: var(--night); background: linear-gradient(180deg, #ffe3a3, var(--gold));
+  box-shadow: 0 10px 30px -8px rgba(242, 196, 109, 0.7);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.nye-cta:hover { transform: translateY(-2px); box-shadow: 0 14px 36px -8px rgba(242, 196, 109, 0.85); }
+.nye-cta:focus-visible, .nye-ghost:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.nye-ghost { display: inline-flex; align-items: center; gap: 0.5rem; border-radius: 999px; padding: 0.95rem 1.4rem; font-weight: 600; color: var(--cream); border: 1px solid rgba(251, 243, 228, 0.35); }
+.nye-ghost:hover { background: rgba(251, 243, 228, 0.08); }
+
+/* Mountains and fairy lights along the bottom of the hero */
+.nye-ridge { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: clamp(110px, 18vw, 220px); z-index: 1; pointer-events: none; }
+.nye-lights { position: absolute; left: 0; right: 0; top: 0; width: 100%; height: 70px; z-index: 1; pointer-events: none; }
+.nye-bulb { fill: #ffd27a; filter: drop-shadow(0 0 6px rgba(255, 210, 122, 0.9)); animation: nye-twinkle 2.6s ease-in-out infinite; }
+.nye-bulb:nth-child(3n) { fill: #ff9a5c; animation-delay: 0.6s; }
+.nye-bulb:nth-child(4n) { fill: #ffe9b8; animation-delay: 1.3s; }
+@keyframes nye-twinkle { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+/* Fireworks: each burst is a ring of sparks drawn with box-shadows, expanding and fading on a loop */
+.nye-fw { position: absolute; z-index: 0; width: 6px; height: 6px; border-radius: 50%; pointer-events: none; opacity: 0; animation: nye-burst 3.6s ease-out infinite; }
+.nye-fw::before, .nye-fw::after { content: ''; position: absolute; inset: 0; border-radius: 50%; }
+.nye-fw {
+  --c: var(--gold);
+  box-shadow:
+    0 -60px 0 0 var(--c), 42px -42px 0 0 var(--c), 60px 0 0 0 var(--c), 42px 42px 0 0 var(--c),
+    0 60px 0 0 var(--c), -42px 42px 0 0 var(--c), -60px 0 0 0 var(--c), -42px -42px 0 0 var(--c),
+    0 -30px 0 -1px var(--c), 30px 0 0 -1px var(--c), 0 30px 0 -1px var(--c), -30px 0 0 -1px var(--c),
+    21px -21px 0 -1px var(--c), 21px 21px 0 -1px var(--c), -21px 21px 0 -1px var(--c), -21px -21px 0 -1px var(--c);
+}
+.nye-fw.f2 { --c: #ff7aa8; animation-delay: 1.2s; }
+.nye-fw.f3 { --c: #9fd7ff; animation-delay: 2.1s; }
+.nye-fw.f4 { --c: #ffb46b; animation-delay: 0.6s; }
+@keyframes nye-burst {
+  0% { transform: scale(0.1); opacity: 0; }
+  12% { opacity: 1; }
+  70% { opacity: 0.85; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* Inclusions */
+.nye-chip {
+  display: flex; flex-direction: column; align-items: center; gap: 0.6rem; text-align: center;
+  padding: 1.25rem 0.75rem; border-radius: 20px; color: var(--cream);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(242, 196, 109, 0.25);
+}
+.nye-chip svg { color: var(--gold); }
+.nye-chip.ember svg { color: var(--ember); }
+
+/* Ticket stubs: notched edges like a printed ticket */
+.nye-stub {
+  position: relative; display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: 1rem 1.25rem; border-radius: 16px; color: var(--night);
+  background: linear-gradient(135deg, #fff6df, #f6dca0);
+  -webkit-mask: radial-gradient(circle 11px at 0 50%, transparent 98%, #000) left / 51% 100% no-repeat,
+                radial-gradient(circle 11px at 100% 50%, transparent 98%, #000) right / 51% 100% no-repeat;
+          mask: radial-gradient(circle 11px at 0 50%, transparent 98%, #000) left / 51% 100% no-repeat,
+                radial-gradient(circle 11px at 100% 50%, transparent 98%, #000) right / 51% 100% no-repeat;
+}
+.nye-stub-price { font-family: var(--gala); font-weight: 800; font-size: 1.6rem; line-height: 1; }
+.nye-stub-was { font-size: 0.85rem; text-decoration: line-through; opacity: 0.55; }
+.nye-stub + .nye-stub { margin-top: 0.75rem; }
+
+.nye-panel { border-radius: 28px; border: 1px solid rgba(242, 196, 109, 0.4); background: rgba(255, 255, 255, 0.04); }
+
+/* The guide half of the page: warm paper with gold section marks */
+.nye-paper { background: var(--cream); }
+.nye-paper h2 { font-family: var(--gala); font-weight: 800; color: #1d1236; }
+.nye-paper h2::before { content: '✦ '; color: #c98d2e; font-size: 0.8em; }
+
+@media (prefers-reduced-motion: reduce) {
+  .nye-fw { display: none; }
+  .nye-bulb { animation: none; }
+  .nye-cta { transition: none; }
+}
+
+.nye-h2 { font-family: var(--gala); font-weight: 800; font-size: clamp(1.9rem, 4vw, 2.6rem); color: var(--gold); display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; }
+.nye-off { font-family: var(--font-heading), system-ui, sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--night); background: var(--gold); border-radius: 999px; padding: 0.3rem 0.8rem; }
+.nye-sample { display: block; width: 100%; max-width: 380px; margin: 0 auto; border-radius: 20px; box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(242, 196, 109, 0.35); transform: rotate(-2deg); }
+.nye-stub + .nye-stub { margin-top: 0; }

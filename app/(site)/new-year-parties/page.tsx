@@ -1,8 +1,11 @@
 import Link from 'next/link';
-import { CalendarDays, MapPin, Clock, Sparkles, Ticket } from 'lucide-react';
+import { BedDouble, CalendarDays, ChefHat, Clock, CupSoda, Flame, MapPin, Music, Salad, Sparkles, Ticket, Wine, type LucideIcon } from 'lucide-react';
 import { Breadcrumb, FAQSection } from '@/components/ui/Cards';
 import JsonLd from '@/components/seo/JsonLd';
 import TicketForm from '@/components/parties/TicketForm';
+import Countdown from '@/components/parties/Countdown';
+import '@/components/parties/party.css';
+import { gala } from '@/lib/fonts';
 import { generateSEO, faqSchema, breadcrumbSchema } from '@/lib/seo';
 import { siteConfig } from '@/lib/config';
 import { PARTIES, partyDateLabel, partyOnSale, ticketPrice } from '@/data/parties';
@@ -16,6 +19,34 @@ export const metadata = generateSEO({
 });
 
 const CHECKED = '29 October 2026';
+/** A sample of the ticket card customers receive (drawn by /tickets/card-render; its QR opens this page). */
+const SAMPLE_TICKET = '/tickets/card-render?' + new URLSearchParams({
+  p: 'NYE Gala Night 2026 at Panchvati Cottages', d: 'Thursday 31 December 2026, 7:00 pm', v: 'Panchvati Cottages, Khaniara, Dharamshala',
+  n: 'Your name here', t: 'Couple × 1 (admits 2)', c: 'NYE-SAMP-LE26', f: 'Booking ref', tot: '3799', pd: '3799',
+  u: 'https://www.dharamshalastay.com/new-year-parties',
+}).toString();
+
+/** Midnight, India time, when 31 December 2026 turns into 2027. */
+const COUNTDOWN_TO = '2027-01-01T00:00:00+05:30';
+
+const INCLUDED: [LucideIcon, string, boolean][] = [
+  [Music, 'DJ all night', false],
+  [Flame, 'Bonfire', true],
+  [Salad, '3 veg & 3 non-veg starters', false],
+  [ChefHat, 'Main course dinner', false],
+  [CupSoda, 'Soft beverages', false],
+  [Wine, 'IMFL beverages', true],
+];
+
+/** Fairy lights: three swags of bulbs hanging across the top of the hero. */
+const SWAGS = 3;
+const SPAN = 1440 / SWAGS;
+const WIRE = 'M0 6 ' + Array.from({ length: SWAGS }, (_, i) => `Q${(i + 0.5) * SPAN} 70 ${(i + 1) * SPAN} 6`).join(' ');
+const BULBS: [number, number][] = Array.from({ length: 36 }, (_, k) => {
+  const per = 12, i = Math.floor(k / per), t = ((k % per) + 0.5) / per;
+  // On the quadratic curve from (x0, 6) through the control point (mid, 70) to (x1, 6).
+  return [i * SPAN + SPAN * t, (1 - t) * (1 - t) * 6 + 2 * (1 - t) * t * 70 + t * t * 6];
+});
 
 /** Venues travel guides list for New Year nights. Their 2026 plans are not announced yet; we re-check from late November. */
 const VENUES: [string, string, string][] = [
@@ -42,7 +73,7 @@ export default function NewYearPartiesPage() {
   const featured = PARTIES[0];
   const onSale = partyOnSale(featured);
   return (
-    <div>
+    <div className={'nye ' + gala.variable}>
       <JsonLd data={[
         breadcrumbSchema([{ name: 'Home', href: '/' }, { name: 'Events', href: '/events' }, { name: 'New Year parties', href: '/new-year-parties' }]),
         faqSchema(FAQS),
@@ -55,39 +86,93 @@ export default function NewYearPartiesPage() {
         },
       ]} />
 
-      <section className="bg-[#120a26] text-white">
-        <div className="mx-auto max-w-5xl px-4 pb-12 pt-8 sm:px-6">
-          <div className="[&_a]:text-white/70 [&_span]:text-white/90 [&_svg]:text-white/50"><Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Events', href: '/events' }, { label: 'New Year parties' }]} /></div>
-          <h1 className="font-heading text-3xl font-bold sm:text-5xl">New Year &amp; Christmas Parties in McLeod Ganj &amp; Dharamshala 2026–27</h1>
-          <p className="mt-4 max-w-3xl text-lg text-white/80"><strong className="text-white">Short answer:</strong> book the NYE Gala Night at <strong className="text-white">Panchvati Cottages, Khaniara, Dharamshala</strong> on <strong className="text-white">31 December 2026</strong> (gates 7 pm; couple ₹3,999, stag ₹2,499, 5% off online) online below and get your ticket card on WhatsApp and email. The <strong className="text-white">Kangra Valley Carnival</strong> is announced for <strong className="text-white">24 to 31 December 2026</strong>, and McLeod Ganj and Bhagsu bars, cafes and hotels usually announce their Christmas and New Year nights from late November. Checked {CHECKED}.</p>
+      <section className="nye-hero">
+        <svg className="nye-lights" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true">
+          <path d={WIRE} fill="none" stroke="rgba(251,243,228,0.35)" strokeWidth="1.5" />
+          {BULBS.map(([x, y], i) => <circle key={i} className="nye-bulb" cx={x} cy={y + 5} r="4.5" />)}
+        </svg>
+        <span className="nye-fw" style={{ left: '12%', top: '22%' }} aria-hidden="true" />
+        <span className="nye-fw f2" style={{ left: '82%', top: '16%' }} aria-hidden="true" />
+        <span className="nye-fw f3" style={{ left: '68%', top: '42%' }} aria-hidden="true" />
+        <span className="nye-fw f4" style={{ left: '28%', top: '50%' }} aria-hidden="true" />
 
-          <div className="mt-8 grid gap-6 rounded-[28px] border-2 border-[#f2c46d] bg-white/5 p-6 sm:p-8 md:grid-cols-[1fr_1.1fr]">
+        <div className="nye-hero-inner mx-auto max-w-5xl px-4 pb-44 pt-14 sm:px-6 sm:pb-56">
+          <div className="[&_a]:text-white/70 [&_span]:text-white/90 [&_svg]:text-white/50"><Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Events', href: '/events' }, { label: 'New Year parties' }]} /></div>
+          <p className="nye-kicker mt-6">{featured.venue} · {featured.area}</p>
+          <h1 className="mt-3">
+            <span className="nye-title block">NYE <em>Gala</em> Night</span>
+            <span className="sr-only"> 2026: New Year &amp; Christmas Parties in McLeod Ganj &amp; Dharamshala</span>
+          </h1>
+          <p className="nye-date mt-4">Thursday 31 December 2026 · gates open {featured.startTime || '7:00 pm'}</p>
+          <div className="mt-8"><Countdown to={COUNTDOWN_TO} done="Happy New Year 2027!" /></div>
+          <div className="mt-9 flex flex-wrap items-center gap-3">
+            <a href="#tickets" className="nye-cta"><Ticket className="h-5 w-5" aria-hidden="true" />{onSale ? `Book tickets · ${featured.discountPct || 0}% off online` : 'Tickets open soon'}</a>
+            {onSale && featured.depositAmount ? <span className="text-sm text-white/75">Book with just ₹{featured.depositAmount}, pay the rest at the entry</span> : null}
+          </div>
+        </div>
+
+        <svg className="nye-ridge" viewBox="0 0 1440 220" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 150 L120 96 L210 130 L330 52 L420 104 L520 40 L640 112 L760 60 L860 118 L990 34 L1090 100 L1200 64 L1320 120 L1440 80 L1440 220 L0 220 Z" fill="#3b2357" opacity="0.75" />
+          <path d="M330 52 L355 66 L372 60 L395 80 L420 104 L404 84 L380 76 L362 70 Z M990 34 L1018 52 L1036 46 L1060 70 L1090 100 L1068 80 L1044 64 L1022 58 Z M520 40 L548 60 L566 54 L590 80 L606 96 L582 76 L560 68 L540 62 Z" fill="#f4ecff" opacity="0.55" />
+          <path d="M0 190 L160 150 L300 176 L470 128 L640 170 L800 136 L980 178 L1150 140 L1300 172 L1440 150 L1440 220 L0 220 Z" fill="#1a0f2e" />
+          <path d="M0 220 L0 206 L260 196 L520 210 L780 198 L1040 212 L1300 200 L1440 208 L1440 220 Z" fill="#0d0a24" />
+        </svg>
+      </section>
+
+      <section className="text-white">
+        <div className="mx-auto max-w-5xl px-4 pb-6 sm:px-6">
+          <p className="max-w-3xl text-lg text-white/80"><strong className="text-white">Short answer:</strong> book the NYE Gala Night at <strong className="text-white">Panchvati Cottages, Khaniara, Dharamshala</strong> on <strong className="text-white">31 December 2026</strong> (gates 7 pm; couple ₹3,999, stag ₹2,499, 5% off online) on this page and get your ticket card on WhatsApp and email. The <strong className="text-white">Kangra Valley Carnival</strong> is announced for <strong className="text-white">24 to 31 December 2026</strong>, and McLeod Ganj and Bhagsu bars, cafes and hotels usually announce their Christmas and New Year nights from late November. Checked {CHECKED}.</p>
+
+          <h2 className="nye-h2 mt-14">What is in the night</h2>
+          <p className="mt-2 max-w-2xl text-white/75">{featured.summary}</p>
+          <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+            {INCLUDED.map(([Icon, label, ember]) => (
+              <li key={label} className={'nye-chip' + (ember ? ' ember' : '')}><Icon className="h-8 w-8" aria-hidden="true" /><span className="text-sm font-semibold">{label}</span></li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section id="tickets" className="scroll-mt-20 text-white">
+        <div className="mx-auto max-w-5xl px-4 pb-16 pt-12 sm:px-6">
+          <h2 className="nye-h2">Tickets{featured.discountPct ? <span className="nye-off">{featured.discountPct}% off online</span> : null}</h2>
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {featured.ticketTypes.map((t) => (
+              <div key={t.id} className="nye-stub">
+                <div><p className="font-bold leading-tight">{t.name}</p><p className="text-xs opacity-75">Admits {t.admits}</p></div>
+                <div className="text-right">
+                  {featured.discountPct ? <p className="nye-stub-was">₹{t.price.toLocaleString('en-IN')}</p> : null}
+                  <p className="nye-stub-price">₹{ticketPrice(t.price, featured.discountPct).toLocaleString('en-IN')}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="nye-panel mt-6 grid gap-8 p-5 sm:p-8 md:grid-cols-[0.9fr_1.1fr]">
             <div>
-              <p className="inline-flex items-center gap-2 rounded-full bg-[#f2c46d] px-3 py-1 text-sm font-bold text-[#120a26]"><Sparkles className="h-4 w-4" />Featured party</p>
-              <h2 className="mt-3 font-heading text-2xl font-bold sm:text-3xl">{featured.name}</h2>
-              <p className="mt-2 text-white/80">{featured.summary}</p>
-              <ul className="mt-4 space-y-2 text-white/90">
-                <li className="flex gap-2"><CalendarDays className="h-5 w-5 shrink-0 text-[#f2c46d]" />{partyDateLabel(featured)}{!featured.startTime && ' (timings coming soon)'}</li>
-                <li className="flex gap-2"><MapPin className="h-5 w-5 shrink-0 text-[#f2c46d]" />{featured.venue}, {featured.area}{featured.propertySlug && <> · <Link href={'/hotels/' + featured.propertySlug} className="underline">see the property</Link></>}</li>
-                {featured.highlights.map((h) => <li key={h} className="flex gap-2"><Ticket className="h-5 w-5 shrink-0 text-[#f2c46d]" />{h}</li>)}
-              </ul>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={SAMPLE_TICKET} alt="Sample NYE Gala Night ticket: guest name, date, venue, tickets, payment status, ticket code and QR code" width={1080} height={1350} loading="lazy" className="nye-sample" />
+              <p className="mt-2 text-center text-sm text-white/70">Your ticket looks like this, with your name, a unique ticket code and a QR code for the entry.</p>
               {featured.rooms?.length ? (
-                <div className="mt-5 rounded-2xl bg-white/5 p-4">
-                  <p className="font-semibold text-white">Staying over on New Year Eve?</p>
+                <div className="mt-6 rounded-2xl border border-white/15 bg-white/5 p-4">
+                  <p className="flex items-center gap-2 font-semibold text-white"><BedDouble className="h-5 w-5 text-[#f2c46d]" aria-hidden="true" />Stay the night at {featured.venue}</p>
                   <ul className="mt-2 space-y-1 text-sm text-white/85">
                     {featured.rooms.map((r) => <li key={r.id}>{r.name}: {featured.discountPct ? <><s className="text-white/50">₹{r.price.toLocaleString('en-IN')}</s>{' '}</> : null}<strong className="text-[#f2c46d]">₹{ticketPrice(r.price, featured.discountPct).toLocaleString('en-IN')}</strong> a night, {r.note}</li>)}
                   </ul>
                   <p className="mt-2 text-sm text-white/70">Add the room to your tickets in the booking form: you pay once, with {featured.discountPct || 0}% off the whole booking.{featured.depositAmount ? ` Pay in full, or just ₹${featured.depositAmount} online to book and the rest at the entry.` : ''}</p>
                 </div>
-              ) : (
-                <p className="mt-4 text-sm text-white/70">Staying over? Rooms at Panchvati Cottages can be booked on its <Link href={'/hotels/' + (featured.propertySlug || '')} className="underline">property page</Link>.</p>
-              )}
+              ) : null}
+              <ul className="mt-6 space-y-2 text-sm text-white/80">
+                <li className="flex gap-2"><CalendarDays className="h-5 w-5 shrink-0 text-[#f2c46d]" aria-hidden="true" />{partyDateLabel(featured)}</li>
+                <li className="flex gap-2"><MapPin className="h-5 w-5 shrink-0 text-[#f2c46d]" aria-hidden="true" /><span>{featured.venue}, {featured.area}{featured.propertySlug && <> · <Link href={'/hotels/' + featured.propertySlug} className="underline">see the property</Link></>}</span></li>
+                <li className="flex gap-2"><Sparkles className="h-5 w-5 shrink-0 text-[#f2c46d]" aria-hidden="true" />Your ticket card with a QR code arrives on WhatsApp and email right after payment</li>
+              </ul>
             </div>
             <TicketForm party={featured.slug} types={featured.ticketTypes} onSale={onSale} discountPct={featured.discountPct} rooms={featured.rooms} deposit={featured.depositAmount} venue={featured.venue} />
           </div>
         </div>
       </section>
 
+      <div className="nye-paper">
       <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
         <h2 className="font-heading text-2xl font-bold text-slate-900">Quick facts</h2>
         <div className="mt-4 overflow-x-auto">
@@ -138,7 +223,9 @@ export default function NewYearPartiesPage() {
         </ul>
       </div>
 
-      <section className="bg-slate-50 py-12">
+      </div>
+
+      <section className="nye-paper border-t border-[#e9dcc0] py-12">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
           <h2 className="mb-6 text-center font-heading text-2xl font-bold text-slate-900">New Year party questions</h2>
           <FAQSection faqs={FAQS} />
