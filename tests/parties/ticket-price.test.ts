@@ -18,3 +18,16 @@ describe('party ticket discount', () => {
     expect(ticketPrice(2 * 3999 + 6999, p.discountPct)).toBe(Math.round(14997 * 0.95));
   });
 });
+
+describe('party deposit and balance', () => {
+  it('charges only the deposit online when the customer chose to pay part now', async () => {
+    const { onlineCharge, ticketMoney } = await import('@/data/parties');
+    const ev = { category: 'event', event_slug: 'panchvati-new-year-eve-2026', amount: 8548 };
+    expect(onlineCharge({ ...ev, payment_method: 'partial_online' })).toBe(500);
+    expect(onlineCharge({ ...ev, payment_method: 'online' })).toBe(8548);
+    expect(onlineCharge({ ...ev, amount: 400, payment_method: 'partial_online' })).toBe(400);
+    expect(onlineCharge({ category: 'hotel', payment_method: 'partial_online', amount: 3000 })).toBe(3000);
+    expect(ticketMoney({ amount: 8548, paid_amount: 500 })).toEqual({ total: 8548, paid: 500, balance: 8048 });
+    expect(ticketMoney({ amount: 8548, paid_amount: 8548 }).balance).toBe(0);
+  });
+});

@@ -7,10 +7,11 @@ import { siteConfig } from '@/lib/config';
 const inr = (n: number) => '₹' + n.toLocaleString('en-IN');
 
 /** Pick tickets, then pay online (Razorpay); the ticket card arrives by email and WhatsApp once paid. */
-export default function TicketForm({ party, types, onSale, discountPct = 0, rooms = [] }: { party: string; types: TicketType[]; onSale: boolean; discountPct?: number; rooms?: PartyRoom[] }) {
+export default function TicketForm({ party, types, onSale, discountPct = 0, rooms = [], deposit = 0, venue = 'the venue' }: { party: string; types: TicketType[]; onSale: boolean; discountPct?: number; rooms?: PartyRoom[]; deposit?: number; venue?: string }) {
   const [type, setType] = useState(types[0]?.id || '');
   const [qty, setQty] = useState(1);
   const [room, setRoom] = useState('');
+  const [pay, setPay] = useState<'full' | 'deposit'>('full');
   const [f, setF] = useState({ name: '', email: '', phone: '' });
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -33,14 +34,16 @@ export default function TicketForm({ party, types, onSale, discountPct = 0, room
   const full = t ? t.price * qty + (r?.price || 0) : 0;
   const total = ticketPrice(full, discountPct);
   const saved = full - total;
+  const canDeposit = deposit > 0 && deposit < total;
+  const now = canDeposit && pay === 'deposit' ? deposit : total;
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement>) => setF((x) => ({ ...x, [k]: e.target.value }));
   const input = 'w-full rounded-xl border border-white/20 bg-white px-4 py-3 text-slate-900 outline-none focus:ring-2 focus:ring-[#f2c46d]';
 
-  async function pay(e: React.FormEvent) {
+  async function submit(e: React.FormEvent) {
     e.preventDefault();
     setError(''); setBusy(true);
     try {
-      const res = await fetch('/api/party-tickets', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ party, ticketType: type, qty, ...(room ? { room } : {}), ...f }) });
+      const res = await fetch('/api/party-tickets', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ party, ticketType: type, qty, ...(room ? { room } : {}), pay: canDeposit ? pay : 'full', ...f }) });
       const j = await res.json().catch(() => ({}));
       if (!res.ok || !j.url) throw new Error(j.error || 'Could not start payment');
       window.location.href = j.url;
@@ -48,7 +51,7 @@ export default function TicketForm({ party, types, onSale, discountPct = 0, room
   }
 
   return (
-    <form onSubmit={pay} className="space-y-4">
+    <form onSubmit={submit} className="space-y-4">
       <fieldset className="space-y-2">
         <legend className="mb-1 text-sm font-semibold text-white/80">Choose your ticket</legend>
         {discountPct > 0 && <p className="rounded-lg bg-[#f2c46d] px-3 py-1.5 text-center text-sm font-bold text-[#120a26]">{discountPct}% off your whole booking online: tickets and room</p>}
@@ -93,6 +96,17 @@ export default function TicketForm({ party, types, onSale, discountPct = 0, room
           ))}
         </fieldset>
       )}
+      {canDeposit && (
+        <fieldset className="space-y-2">
+          <legend className="mb-1 text-sm font-semibold text-white/80">How would you like to pay?</legend>
+          {([['full', `Pay the full ${inr(total)} now`, 'Nothing to pay at the entry'], ['deposit', `Pay ${inr(deposit)} now to book`, `${inr(total - deposit)} to pay at ${venue} at the entry`]] as const).map(([id, title, note]) => (
+            <label key={id} className={'flex cursor-pointer items-start gap-3 rounded-xl border-2 p-3 ' + (pay === id ? 'border-[#f2c46d] bg-white/10' : 'border-white/15')}>
+              <input type="radio" name="pay" value={id} checked={pay === id} onChange={() => setPay(id)} className="mt-1 accent-[#f2c46d]" />
+              <span><span className="block font-semibold text-white">{title}</span><span className="block text-sm text-white/70">{note}</span></span>
+            </label>
+          ))}
+        </fieldset>
+      )}
       <div className="grid gap-3 sm:grid-cols-3">
         <input className={input} required placeholder="Full name" autoComplete="name" value={f.name} onChange={set('name')} />
         <input className={input} required type="email" placeholder="Email" autoComplete="email" value={f.email} onChange={set('email')} />
@@ -101,7 +115,7 @@ export default function TicketForm({ party, types, onSale, discountPct = 0, room
       {saved > 0 && <p className="text-center text-sm font-semibold text-green-300">You save {inr(saved)} with the {discountPct}% online discount</p>}
       {error && <p className="rounded-lg bg-red-500/15 px-3 py-2 text-sm text-red-200">{error}</p>}
       <button disabled={busy} className="w-full rounded-xl bg-[#f2c46d] px-6 py-4 text-lg font-bold text-[#120a26] hover:bg-[#f6d48e] disabled:opacity-60">
-        {busy ? 'Opening secure payment…' : `Pay ${inr(total)} and get your ticket`}
+        {busy ? 'Opening secure payment…' : `Pay ${inr(now)} and get your ticket`}
       </button>
       <p className="text-center text-xs text-white/60">Secure payment by Razorpay. Your ticket card comes to your email and WhatsApp right after payment.</p>
     </form>

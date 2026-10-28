@@ -4,6 +4,7 @@ import { bookingKey } from './stay-details';
 import { serviceClient } from '@/lib/server-auth';
 import { holdsRoom, matchesRoom } from '@/lib/availability/calc';
 import { availabilityFor } from '@/lib/availability/store';
+import { onlineCharge } from '@/data/parties';
 
 const RETURN_PATH: Record<string, string> = { hotel: '/hotels', taxi: '/taxi', trek: '/treks', paragliding: '/paragliding', event: '/new-year-parties' };
 
@@ -44,7 +45,7 @@ async function razorpayLink(b: any, title: string, description: string, now: Dat
   if (b.guest_email && EMAIL.test(b.guest_email)) customer.email = b.guest_email;
   if (/^\+?\d{10,15}$/.test(phone)) customer.contact = phone;
   const link = await razorpay<{ id: string; short_url: string }>('POST', '/payment_links', {
-    amount: Math.round(b.amount * 100),
+    amount: Math.round(onlineCharge(b) * 100),
     currency: 'INR',
     accept_partial: false,
     expire_by: Math.floor((now.getTime() + SESSION_MS) / 1000),
@@ -96,7 +97,7 @@ export async function createCheckoutLink(bookingId: string): Promise<CheckoutRes
     mode: 'payment',
     expires_at: Math.floor((now.getTime() + SESSION_MS) / 1000),
     currency: 'inr',
-    line_items: [{ quantity: 1, price_data: { currency: 'inr', unit_amount: Math.round(b.amount * 100), product_data: { name: title, description: description.slice(0, 500) || undefined } } }],
+    line_items: [{ quantity: 1, price_data: { currency: 'inr', unit_amount: Math.round(onlineCharge(b) * 100), product_data: { name: title, description: description.slice(0, 500) || undefined } } }],
     customer_email: b.guest_email || undefined,
     metadata: { booking_id: b.id, booking_ref: b.booking_ref || '' },
     success_url: process.env.NEXT_PUBLIC_SITE_URL + '/booking/success?session_id={CHECKOUT_SESSION_ID}&ref=' + encodeURIComponent(b.booking_ref || '') + '&k=' + bookingKey(b.id),

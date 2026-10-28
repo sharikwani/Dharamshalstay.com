@@ -6,6 +6,7 @@ import { ticketByCode, ticketCardUrl } from '@/lib/parties/tickets';
 import { partyDateLabel } from '@/data/parties';
 
 export const dynamic = 'force-dynamic';
+const rs = (n: number) => '₹' + n.toLocaleString('en-IN');
 export const metadata: Metadata = { title: 'Your party ticket', robots: { index: false, follow: false } };
 
 /** The buyer's own ticket page (linked from the ticket email and WhatsApp). The code is the key. */
@@ -23,7 +24,27 @@ export default async function TicketPage({ params }: { params: { code: string } 
         <a href={card} download={`ticket-${t.booking.ticket_code}.jpg`} className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#f2c46d] px-6 py-3 font-semibold text-[#120a26]">
           <Download className="h-4 w-4" />Save your ticket
         </a>
-        <p className="mt-4 text-sm text-white/70">Show this card or the code <strong className="text-white">{t.booking.ticket_code}</strong> at the entry. Booking ref {t.booking.booking_ref}.</p>
+        <div className={'mt-6 rounded-2xl p-5 text-left ' + (t.money.balance > 0 ? 'bg-amber-400 text-[#120a26]' : 'bg-green-600 text-white')}>
+          {t.money.balance > 0 ? (
+            <>
+              <p className="text-lg font-bold">Balance due at the entry: {rs(t.money.balance)}</p>
+              <p className="mt-1 text-sm">Paid online {rs(t.money.paid)} of {rs(t.money.total)}. {t.party.venue} collects the balance when you arrive.</p>
+            </>
+          ) : (
+            <>
+              <p className="text-lg font-bold">Paid in full: {rs(t.money.total)}</p>
+              <p className="mt-1 text-sm">Nothing to pay at the entry.</p>
+            </>
+          )}
+        </div>
+        <dl className="mt-4 space-y-1 rounded-2xl bg-white/5 p-5 text-left text-sm">
+          <div className="flex justify-between gap-4"><dt className="text-white/60">Guest</dt><dd className="font-semibold">{t.booking.guest_name}</dd></div>
+          <div className="flex justify-between gap-4"><dt className="text-white/60">Tickets</dt><dd className="text-right">{t.line}</dd></div>
+          {t.room && <div className="flex justify-between gap-4"><dt className="text-white/60">Room</dt><dd className="text-right">{t.room}</dd></div>}
+          <div className="flex justify-between gap-4"><dt className="text-white/60">Ticket code</dt><dd className="font-mono font-semibold">{t.booking.ticket_code}</dd></div>
+          <div className="flex justify-between gap-4"><dt className="text-white/60">Booking ref</dt><dd className="font-mono">{t.booking.booking_ref}</dd></div>
+        </dl>
+        <p className="mt-4 text-sm text-white/70">Show this card or the code <strong className="text-white">{t.booking.ticket_code}</strong> at the entry.</p>
         <p className="mt-6 text-sm"><Link href="/new-year-parties" className="underline text-white/80">Christmas and New Year parties in Dharamshala</Link></p>
       </div>
     </div>

@@ -39,13 +39,15 @@ export type Party = {
   rooms?: PartyRoom[];
   /** Percent off the whole online order (tickets plus room), applied once; customers see the full price struck through. */
   discountPct?: number;
+  /** Customers may pay just this much online to book; the rest is paid at the venue at entry. */
+  depositAmount?: number;
   image: string;
 };
 
 export const PARTIES: Party[] = [
   {
     slug: 'panchvati-new-year-eve-2026',
-    name: 'New Year Eve Party 2026 at Panchvati Cottages',
+    name: 'NYE Gala Night 2026 at Panchvati Cottages',
     kind: 'new-year',
     venue: 'Panchvati Cottages',
     propertySlug: 'panchvati-cottages',
@@ -70,6 +72,7 @@ export const PARTIES: Party[] = [
     ],
     bookingOpen: true,
     discountPct: 5, // owner, 29 Oct 2026: 5% off all plans and rooms; tickets + room together still only 5% in total
+    depositAmount: 500, // owner, 29 Oct 2026: pay in full or Rs 500 online, the rest at Panchvati
     rooms: [
       { id: 'super-deluxe', name: 'Super Deluxe Room', price: 4999, note: 'double sharing, with breakfast' },
       { id: 'family-suite', name: 'Family Suite', price: 6999, note: 'four people sharing, with breakfast' },
@@ -79,6 +82,23 @@ export const PARTIES: Party[] = [
 ];
 
 export const partyBySlug = (slug: string) => PARTIES.find((p) => p.slug === slug);
+
+/**
+ * What the online payment link charges for a booking: the deposit for an event booking the customer chose to pay
+ * partly online (payment_method 'partial_online'), otherwise the full amount.
+ */
+export function onlineCharge(b: { category?: string | null; payment_method?: string | null; event_slug?: string | null; amount: number }): number {
+  if (b.category !== 'event' || b.payment_method !== 'partial_online') return b.amount;
+  const deposit = partyBySlug(b.event_slug || '')?.depositAmount;
+  return deposit && deposit < b.amount ? deposit : b.amount;
+}
+
+/** Paid so far and still due at the venue, for a paid ticket booking. */
+export function ticketMoney(b: { amount: number; paid_amount?: number | null }): { total: number; paid: number; balance: number } {
+  const total = Number(b.amount) || 0;
+  const paid = b.paid_amount === null || b.paid_amount === undefined ? total : Number(b.paid_amount) || 0;
+  return { total, paid, balance: Math.max(0, total - paid) };
+}
 
 /** A price after the party discount (whole rupees). Apply it once to an order total, never twice. */
 export function ticketPrice(price: number, discountPct = 0): number {

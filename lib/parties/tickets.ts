@@ -10,7 +10,7 @@ import { siteConfig } from '@/lib/config';
 import { escHtml, sendEmail } from '@/lib/email';
 import { isWhatsAppConfigured, sendTemplate } from '@/lib/whatsapp-cloud';
 import { normalizeIndianPhone } from '@/lib/whatsapp';
-import { partyBySlug, partyDateLabel, partyOnSale, ticketPrice, type Party, type TicketType } from '@/data/parties';
+import { onlineCharge, partyBySlug, partyDateLabel, partyOnSale, ticketMoney, ticketPrice, type Party, type TicketType } from '@/data/parties';
 
 const SITE = () => siteConfig.url.replace(/\/$/, '');
 
@@ -20,6 +20,8 @@ export const ticketSchema = z.object({
   qty: z.number().int().min(1).max(10),
   /** Optional room for the party night (PartyRoom id). */
   room: z.string().max(40).optional(),
+  /** Pay everything now, or only the party deposit now and the rest at the venue. */
+  pay: z.enum(['full', 'deposit']).default('full'),
   name: z.string().trim().min(2).max(80),
   email: z.string().trim().email().max(120),
   phone: z.string().trim().min(10).max(20),
@@ -36,6 +38,9 @@ export function newTicketCode(prefix = 'NYE'): string {
 
 export const ticketPageUrl = (code: string) => `${SITE()}/tickets/${encodeURIComponent(code)}`;
 export const ticketCardUrl = (code: string) => `${SITE()}/tickets/card/${encodeURIComponent(code)}`;
+
+/** The room added to a ticket booking ("Super Deluxe Room, night of 31 Dec"), if any. */
+export const roomPart = (roomName: unknown): string => String(roomName || '').split(' + ')[1] || '';
 
 const nextDay = (d: string) => new Date(Date.parse(d + 'T00:00:00Z') + 86400e3).toISOString().slice(0, 10);
 
@@ -55,7 +60,9 @@ export async function createTicketBooking(input: TicketInput): Promise<{ ok: tru
   const room = input.room ? party.rooms?.find((r) => r.id === input.room) : undefined;
   if (input.room && !room) return { ok: false, error: 'Choose a room from the list', status: 400 };
   // One discount on the whole order: tickets and room together get the party discount once.
-  const amount = ticketPrice(type.price * input.qty + (room?.price || 0), party.discountPct);
+  const listAmount = type.price * input.qty + (room?.price || 0);
+  const amount = ticketPrice(listAmount, party.discountPct);
+  const partly = input.pay === 'deposit' && !!party.depositAmount && party.depositAmount < amount;
   const sb = serviceClient();
   let propertyId: string | null = null;
   if (party.propertySlug) {
@@ -70,7 +77,8 @@ export async function createTicketBooking(input: TicketInput): Promise<{ ok: tru
     property_id: propertyId,
     room_name: `${party.name}: ${ticketLine(type, input.qty)}${room ? ` + ${room.name}, night of 31 Dec` : ''}`.slice(0, 200),
     ...(room ? { check_in: party.date, check_out: nextDay(party.date) } : {}),
-    amount, payment_method: 'online', payment_status: 'pending', status: 'pending', booking_source: 'website',
+    amount, payment_method: partly ? 'partial_online' : 'online', payment_status: 'pending', status: 'pending', booking_source: 'website',
+    ...(party.discountPct ? { list_amount: listAmount, offer_percent: party.discountPct } : {}),
     commission_pct: 0, commission_amount: 0, commission_status: 'not_applicable',
     event_slug: party.slug, ticket_type: type.id, ticket_qty: input.qty,
   }).select('id, booking_ref').single();
@@ -100,12 +108,26 @@ export async function issuePartyTicket(bookingId: string): Promise<void> {
     }
     if (!code) return;
     const type = party.ticketTypes.find((t) => t.id === b.ticket_type);
-    const roomPart = String(b.room_name || '').split(' + ')[1];
-    const line = type ? ticketLine(type, b.ticket_qty || 1) + (roomPart ? ' + ' + roomPart : '') : String(b.room_name || '');
+    const room = roomPart(b.room_name);
+    const line = type ? ticketLine(type, b.ticket_qty || 1) + (room ? ' + ' + room : '') : String(b.room_name || '');
     await sendTicketEmail(b, party, line, code);
     await sendTicketWhatsApp(b, party, line, code);
     await sb.from('bookings').update({ ticket_sent_at: new Date().toISOString() }).eq('id', b.id);
   } catch (e) { console.error('Party ticket issue failed:', e); }
+}
+
+const rs = (n: number) => '₹' + n.toLocaleString('en-IN');
+
+/** "Paid in full online" or "₹500 paid online, ₹7,048 to pay at the venue at entry". */
+export function paidLine(b: { amount: number; paid_amount?: number | null }): string {
+  const m = ticketMoney(b);
+  return m.balance > 0 ? `${rs(m.paid)} paid online, ${rs(m.balance)} to pay at the venue at entry` : 'Paid in full online';
+}
+
+function moneyHtml(b: any): string {
+  const m = ticketMoney(b);
+  return `<li><strong>Total:</strong> ${rs(m.total)}</li><li><strong>Paid online:</strong> ${rs(m.paid)}</li>`
+    + (m.balance > 0 ? `<li><strong>Balance to pay at the venue at entry:</strong> ${rs(m.balance)}</li>` : '<li><strong>Balance:</strong> nothing, paid in full</li>');
 }
 
 async function sendTicketEmail(b: any, party: Party, line: string, code: string) {
@@ -123,6 +145,7 @@ async function sendTicketEmail(b: any, party: Party, line: string, code: string)
 <li><strong>When:</strong> ${escHtml(partyDateLabel(party))}</li>
 <li><strong>Where:</strong> ${escHtml(party.venue)}, ${escHtml(party.area)}</li>
 <li><strong>Booking ref:</strong> ${escHtml(b.booking_ref)}</li>
+${moneyHtml(b)}
 </ul>
 <p>Show this card or your ticket code at the entry. You can open, save or share your ticket here: <a href="${ticketPageUrl(code)}">${ticketPageUrl(code)}</a></p>`,
   });
@@ -144,7 +167,7 @@ async function sendTicketWhatsApp(b: any, party: Party, line: string, code: stri
     r = await sendTemplate({
       to: b.guest_phone, template,
       params: [code, party.name + ' (party ticket)', date, [party.startTime, party.endTime].filter(Boolean).join(' to ') || 'As on your ticket', line,
-        'Your ticket card: ' + ticketPageUrl(code), '₹' + Number(b.amount || 0).toLocaleString('en-IN'), 'Paid online'],
+        'Your ticket card: ' + ticketPageUrl(code), '₹' + ticketMoney(b).total.toLocaleString('en-IN'), paidLine(b)],
     });
   }
   if (!r.ok && r.skipped) return;
@@ -157,11 +180,11 @@ async function sendTicketWhatsApp(b: any, party: Party, line: string, code: stri
 /** What the ticket card and page show, by code (null when unknown or unpaid). */
 export async function ticketByCode(code: string) {
   const { data: b } = await serviceClient().from('bookings')
-    .select('booking_ref, guest_name, num_guests, event_slug, ticket_type, ticket_qty, ticket_code, payment_status, status')
+    .select('booking_ref, guest_name, num_guests, event_slug, ticket_type, ticket_qty, ticket_code, payment_status, status, amount, paid_amount, room_name')
     .eq('ticket_code', code).maybeSingle();
   if (!b || b.payment_status !== 'paid' || b.status === 'cancelled') return null;
   const party = partyBySlug(b.event_slug);
   if (!party) return null;
   const type = party.ticketTypes.find((t) => t.id === b.ticket_type);
-  return { booking: b, party, line: type ? ticketLine(type, b.ticket_qty || 1) : '' };
+  return { booking: b, party, line: type ? ticketLine(type, b.ticket_qty || 1) : '', room: roomPart(b.room_name), money: ticketMoney(b) };
 }
