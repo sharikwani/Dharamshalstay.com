@@ -1,15 +1,16 @@
 'use client';
 import { useState } from 'react';
 import { Minus, Plus, Ticket } from 'lucide-react';
-import { ticketPrice, type TicketType } from '@/data/parties';
+import { ticketPrice, type PartyRoom, type TicketType } from '@/data/parties';
 import { siteConfig } from '@/lib/config';
 
 const inr = (n: number) => '₹' + n.toLocaleString('en-IN');
 
 /** Pick tickets, then pay online (Razorpay); the ticket card arrives by email and WhatsApp once paid. */
-export default function TicketForm({ party, types, onSale, discountPct = 0 }: { party: string; types: TicketType[]; onSale: boolean; discountPct?: number }) {
+export default function TicketForm({ party, types, onSale, discountPct = 0, rooms = [] }: { party: string; types: TicketType[]; onSale: boolean; discountPct?: number; rooms?: PartyRoom[] }) {
   const [type, setType] = useState(types[0]?.id || '');
   const [qty, setQty] = useState(1);
+  const [room, setRoom] = useState('');
   const [f, setF] = useState({ name: '', email: '', phone: '' });
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -27,8 +28,11 @@ export default function TicketForm({ party, types, onSale, discountPct = 0 }: { 
   }
 
   const t = types.find((x) => x.id === type)!;
-  const total = t ? ticketPrice(t.price, discountPct) * qty : 0;
-  const saved = t ? (t.price - ticketPrice(t.price, discountPct)) * qty : 0;
+  const r = rooms.find((x) => x.id === room);
+  // One discount on the whole order (tickets plus room), never added up per item. The server charges the same.
+  const full = t ? t.price * qty + (r?.price || 0) : 0;
+  const total = ticketPrice(full, discountPct);
+  const saved = full - total;
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement>) => setF((x) => ({ ...x, [k]: e.target.value }));
   const input = 'w-full rounded-xl border border-white/20 bg-white px-4 py-3 text-slate-900 outline-none focus:ring-2 focus:ring-[#f2c46d]';
 
@@ -36,7 +40,7 @@ export default function TicketForm({ party, types, onSale, discountPct = 0 }: { 
     e.preventDefault();
     setError(''); setBusy(true);
     try {
-      const res = await fetch('/api/party-tickets', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ party, ticketType: type, qty, ...f }) });
+      const res = await fetch('/api/party-tickets', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ party, ticketType: type, qty, ...(room ? { room } : {}), ...f }) });
       const j = await res.json().catch(() => ({}));
       if (!res.ok || !j.url) throw new Error(j.error || 'Could not start payment');
       window.location.href = j.url;
@@ -47,7 +51,7 @@ export default function TicketForm({ party, types, onSale, discountPct = 0 }: { 
     <form onSubmit={pay} className="space-y-4">
       <fieldset className="space-y-2">
         <legend className="mb-1 text-sm font-semibold text-white/80">Choose your ticket</legend>
-        {discountPct > 0 && <p className="rounded-lg bg-[#f2c46d] px-3 py-1.5 text-center text-sm font-bold text-[#120a26]">{discountPct}% off every ticket when you book online</p>}
+        {discountPct > 0 && <p className="rounded-lg bg-[#f2c46d] px-3 py-1.5 text-center text-sm font-bold text-[#120a26]">{discountPct}% off your whole booking online: tickets and room</p>}
         {types.map((x) => (
           <label key={x.id} className={'flex cursor-pointer items-start justify-between gap-3 rounded-xl border-2 p-3 ' + (type === x.id ? 'border-[#f2c46d] bg-white/10' : 'border-white/15')}>
             <span className="flex gap-3">
@@ -70,6 +74,25 @@ export default function TicketForm({ party, types, onSale, discountPct = 0 }: { 
           <button type="button" aria-label="More tickets" onClick={() => setQty((n) => Math.min(10, n + 1))} className="rounded-full bg-white/15 p-1.5 text-white"><Plus className="h-4 w-4" /></button>
         </span>
       </div>
+      {rooms.length > 0 && (
+        <fieldset className="space-y-2">
+          <legend className="mb-1 text-sm font-semibold text-white/80">Add a room for the night of 31 December (optional)</legend>
+          {[{ id: '', name: 'No room, party only', price: 0, note: '' }, ...rooms].map((x) => (
+            <label key={x.id || 'none'} className={'flex cursor-pointer items-start justify-between gap-3 rounded-xl border-2 p-3 ' + (room === x.id ? 'border-[#f2c46d] bg-white/10' : 'border-white/15')}>
+              <span className="flex gap-3">
+                <input type="radio" name="room" value={x.id} checked={room === x.id} onChange={() => setRoom(x.id)} className="mt-1 accent-[#f2c46d]" />
+                <span><span className="block font-semibold text-white">{x.name}</span>{x.note && <span className="block text-sm text-white/70">{x.note}</span>}</span>
+              </span>
+              {x.price > 0 && (
+                <span className="whitespace-nowrap text-right">
+                  {discountPct > 0 && <s className="block text-sm text-white/50">{inr(x.price)}</s>}
+                  <span className="font-bold text-[#f2c46d]">{inr(ticketPrice(x.price, discountPct))}</span>
+                </span>
+              )}
+            </label>
+          ))}
+        </fieldset>
+      )}
       <div className="grid gap-3 sm:grid-cols-3">
         <input className={input} required placeholder="Full name" autoComplete="name" value={f.name} onChange={set('name')} />
         <input className={input} required type="email" placeholder="Email" autoComplete="email" value={f.email} onChange={set('email')} />

@@ -31,7 +31,7 @@ const VENUES: [string, string, string][] = [
 const FAQS = [
   { question: 'Where can I celebrate New Year 2027 in McLeod Ganj or Dharamshala?', answer: 'Book a ticket for the New Year Eve party at Panchvati Cottages in Dharamshala on this page, or choose from the bars, cafes and hotels in McLeod Ganj and Bhagsu that usually host New Year nights. Most venues announce their 2026 programmes and prices in late November or December.' },
   { question: 'When is the Kangra Valley Carnival 2026?', answer: 'The Kangra district administration has announced the Kangra Valley Carnival for 24 to 31 December 2026 in Dharamshala, with an opening concert proposed at the HPCA cricket stadium. The full schedule and entry details were not published when we checked on ' + CHECKED + '.' },
-  { question: 'How much are the New Year Eve party tickets at Panchvati Cottages?', answer: 'For the NYE Gala Night on 31 December 2026: Couple ₹3,999, Stag ₹2,499 (only with a couple), Child 12 to 18 years ₹1,499 and Kid 6 to 12 years ₹999, with 5% off every ticket when you book online here (Couple ₹3,799, Stag ₹2,374, Child ₹1,424, Kid ₹949). Gates open at 7 pm. The package includes a DJ, a bonfire, 3 vegetarian and 3 non-vegetarian starters, a main-course dinner, soft beverages and IMFL beverages. Rooms for the night are ₹4,999 (Super Deluxe, double sharing) and ₹6,999 (Family Suite, four sharing), both with breakfast.' },
+  { question: 'How much are the New Year Eve party tickets at Panchvati Cottages?', answer: 'For the NYE Gala Night on 31 December 2026: Couple ₹3,999, Stag ₹2,499 (only with a couple), Child 12 to 18 years ₹1,499 and Kid 6 to 12 years ₹999, with 5% off when you book online here (Couple ₹3,799, Stag ₹2,374, Child ₹1,424, Kid ₹949). Gates open at 7 pm. The package includes a DJ, a bonfire, 3 vegetarian and 3 non-vegetarian starters, a main-course dinner, soft beverages and IMFL beverages. Rooms for the night are ₹4,999 (Super Deluxe, double sharing) and ₹6,999 (Family Suite, four sharing), both with breakfast; add one to your tickets online and the 5% discount applies once to the whole booking.' },
   { question: 'How do I book New Year party tickets at Panchvati Cottages?', answer: 'Choose your ticket type and number of tickets on this page and pay online. Your ticket card with a ticket code reaches your email and WhatsApp right after payment; show it at the entry. If tickets are not on sale yet, WhatsApp us to be told when bookings open.' },
   { question: 'Is McLeod Ganj crowded on New Year Eve?', answer: 'Yes. The week from Christmas to New Year is one of the busiest of the year, with heavy traffic on 30 and 31 December. Book your stay and taxi early, and check the police traffic plan, which is usually announced on 30 or 31 December.' },
   { question: 'Does it snow in McLeod Ganj at New Year?', answer: 'Sometimes, but not every year. Snow in McLeod Ganj itself is occasional in late December and more common in January; the higher villages such as Naddi and Dharamkot see it more often. See our snowfall guide for dated records.' },
@@ -75,15 +75,15 @@ export default function NewYearPartiesPage() {
                 <div className="mt-5 rounded-2xl bg-white/5 p-4">
                   <p className="font-semibold text-white">Staying over on New Year Eve?</p>
                   <ul className="mt-2 space-y-1 text-sm text-white/85">
-                    {featured.rooms.map((r) => <li key={r.name}>{r.name}: <strong className="text-[#f2c46d]">₹{r.price.toLocaleString('en-IN')}</strong> a night, {r.note}</li>)}
+                    {featured.rooms.map((r) => <li key={r.id}>{r.name}: {featured.discountPct ? <><s className="text-white/50">₹{r.price.toLocaleString('en-IN')}</s>{' '}</> : null}<strong className="text-[#f2c46d]">₹{ticketPrice(r.price, featured.discountPct).toLocaleString('en-IN')}</strong> a night, {r.note}</li>)}
                   </ul>
-                  <p className="mt-2 text-sm text-white/70">Book the room on the <Link href={'/hotels/' + (featured.propertySlug || '')} className="underline">Panchvati Cottages page</Link> or WhatsApp us.</p>
+                  <p className="mt-2 text-sm text-white/70">Add the room to your tickets in the booking form: you pay once, with {featured.discountPct || 0}% off the whole booking.</p>
                 </div>
               ) : (
                 <p className="mt-4 text-sm text-white/70">Staying over? Rooms at Panchvati Cottages can be booked on its <Link href={'/hotels/' + (featured.propertySlug || '')} className="underline">property page</Link>.</p>
               )}
             </div>
-            <TicketForm party={featured.slug} types={featured.ticketTypes} onSale={onSale} discountPct={featured.discountPct} />
+            <TicketForm party={featured.slug} types={featured.ticketTypes} onSale={onSale} discountPct={featured.discountPct} rooms={featured.rooms} />
           </div>
         </div>
       </section>

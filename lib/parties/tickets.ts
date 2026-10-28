@@ -18,6 +18,8 @@ export const ticketSchema = z.object({
   party: z.string().min(1).max(80),
   ticketType: z.string().min(1).max(40),
   qty: z.number().int().min(1).max(10),
+  /** Optional room for the party night (PartyRoom id). */
+  room: z.string().max(40).optional(),
   name: z.string().trim().min(2).max(80),
   email: z.string().trim().email().max(120),
   phone: z.string().trim().min(10).max(20),
@@ -35,6 +37,8 @@ export function newTicketCode(prefix = 'NYE'): string {
 export const ticketPageUrl = (code: string) => `${SITE()}/tickets/${encodeURIComponent(code)}`;
 export const ticketCardUrl = (code: string) => `${SITE()}/tickets/card/${encodeURIComponent(code)}`;
 
+const nextDay = (d: string) => new Date(Date.parse(d + 'T00:00:00Z') + 86400e3).toISOString().slice(0, 10);
+
 export function ticketLine(t: TicketType, qty: number): string {
   return `${t.name} × ${qty} (admits ${t.admits * qty})`;
 }
@@ -48,7 +52,10 @@ export async function createTicketBooking(input: TicketInput): Promise<{ ok: tru
   if (!type) return { ok: false, error: 'Choose a ticket type', status: 400 };
   const phone = normalizeIndianPhone(input.phone);
   if (!phone) return { ok: false, error: 'Please enter a valid Indian mobile number', status: 400 };
-  const amount = ticketPrice(type.price, party.discountPct) * input.qty;
+  const room = input.room ? party.rooms?.find((r) => r.id === input.room) : undefined;
+  if (input.room && !room) return { ok: false, error: 'Choose a room from the list', status: 400 };
+  // One discount on the whole order: tickets and room together get the party discount once.
+  const amount = ticketPrice(type.price * input.qty + (room?.price || 0), party.discountPct);
   const sb = serviceClient();
   let propertyId: string | null = null;
   if (party.propertySlug) {
@@ -61,7 +68,8 @@ export async function createTicketBooking(input: TicketInput): Promise<{ ok: tru
     num_guests: type.admits * input.qty,
     activity_date: party.date,
     property_id: propertyId,
-    room_name: `${party.name}: ${ticketLine(type, input.qty)}`.slice(0, 200),
+    room_name: `${party.name}: ${ticketLine(type, input.qty)}${room ? ` + ${room.name}, night of 31 Dec` : ''}`.slice(0, 200),
+    ...(room ? { check_in: party.date, check_out: nextDay(party.date) } : {}),
     amount, payment_method: 'online', payment_status: 'pending', status: 'pending', booking_source: 'website',
     commission_pct: 0, commission_amount: 0, commission_status: 'not_applicable',
     event_slug: party.slug, ticket_type: type.id, ticket_qty: input.qty,
@@ -92,7 +100,8 @@ export async function issuePartyTicket(bookingId: string): Promise<void> {
     }
     if (!code) return;
     const type = party.ticketTypes.find((t) => t.id === b.ticket_type);
-    const line = type ? ticketLine(type, b.ticket_qty || 1) : String(b.room_name || '');
+    const roomPart = String(b.room_name || '').split(' + ')[1];
+    const line = type ? ticketLine(type, b.ticket_qty || 1) + (roomPart ? ' + ' + roomPart : '') : String(b.room_name || '');
     await sendTicketEmail(b, party, line, code);
     await sendTicketWhatsApp(b, party, line, code);
     await sb.from('bookings').update({ ticket_sent_at: new Date().toISOString() }).eq('id', b.id);

@@ -13,6 +13,9 @@ export type TicketType = {
   includes?: string;
 };
 
+/** A room for the party night, sold with the tickets in the same checkout. */
+export type PartyRoom = { id: string; name: string; price: number; note: string };
+
 export type Party = {
   slug: string;
   name: string;
@@ -33,8 +36,8 @@ export type Party = {
   /** Last day tickets are sold online (YYYY-MM-DD). */
   salesEnd?: string;
   /** Room offers for party guests who stay over (booked on the property page). */
-  rooms?: { name: string; price: number; note: string }[];
-  /** Percent off every ticket type; customers see the full price struck through. */
+  rooms?: PartyRoom[];
+  /** Percent off the whole online order (tickets plus room), applied once; customers see the full price struck through. */
   discountPct?: number;
   image: string;
 };
@@ -66,10 +69,10 @@ export const PARTIES: Party[] = [
       { id: 'kid', name: 'Kid, 6 to 12 years', price: 999, admits: 1 },
     ],
     bookingOpen: true,
-    discountPct: 5, // owner, 29 Oct 2026: 5% off all ticket plans
+    discountPct: 5, // owner, 29 Oct 2026: 5% off all plans and rooms; tickets + room together still only 5% in total
     rooms: [
-      { name: 'Super Deluxe Room', price: 4999, note: 'double sharing, with breakfast' },
-      { name: 'Family Suite', price: 6999, note: 'four people sharing, with breakfast' },
+      { id: 'super-deluxe', name: 'Super Deluxe Room', price: 4999, note: 'double sharing, with breakfast' },
+      { id: 'family-suite', name: 'Family Suite', price: 6999, note: 'four people sharing, with breakfast' },
     ],
     image: '/images/places/dharamshala-town.jpg',
   },
@@ -77,7 +80,7 @@ export const PARTIES: Party[] = [
 
 export const partyBySlug = (slug: string) => PARTIES.find((p) => p.slug === slug);
 
-/** What a customer pays for one ticket after the party discount (whole rupees). */
+/** A price after the party discount (whole rupees). Apply it once to an order total, never twice. */
 export function ticketPrice(price: number, discountPct = 0): number {
   return discountPct > 0 ? Math.round((price * (100 - discountPct)) / 100) : price;
 }

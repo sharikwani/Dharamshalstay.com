@@ -12,5 +12,9 @@ describe('party ticket discount', () => {
     const p = PARTIES.find((x) => x.slug === 'panchvati-new-year-eve-2026')!;
     expect(p.discountPct).toBe(5);
     expect(p.ticketTypes.map((t) => ticketPrice(t.price, p.discountPct))).toEqual([3799, 2374, 1424, 949]);
+    // Tickets plus a room: one 5% off the whole order, not stacked.
+    const room = p.rooms!.find((r) => r.id === 'super-deluxe')!;
+    expect(ticketPrice(3999 + room.price, p.discountPct)).toBe(8548);
+    expect(ticketPrice(2 * 3999 + 6999, p.discountPct)).toBe(Math.round(14997 * 0.95));
   });
 });
