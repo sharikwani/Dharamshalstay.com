@@ -15,7 +15,7 @@ const latest = (fs: FactWithTopic[]) => fs.reduce((m, f) => (f.verified > m ? f.
 export function factsMetadata(): Metadata {
   return generateSEO({
     title: 'Dharamshala Facts & Figures, Verified',
-    description: 'Checked, dated and sourced answers for Dharamshala and McLeod Ganj: Triund distance and fees, temple and museum timings, meditation courses, ropeway, taxi fares, weather.',
+    description: 'Dated, sourced answers for Dharamshala and McLeod Ganj: Triund distance and fees, temple and museum timings, meditation courses, ropeway, taxi fares.',
     path: '/facts',
     hindi: false,
   });
@@ -109,7 +109,7 @@ const STATUS: Record<UpdateStatus, { label: string; cls: string }> = {
 export function travelUpdatesMetadata(): Metadata {
   return generateSEO({
     title: 'Dharamshala Travel Updates: Latest News & Status',
-    description: 'Latest travel information for Dharamshala and McLeod Ganj: Skyway ropeway status, Triund trekking rules and fees, meditation course dates and seasonal tips, each dated.',
+    description: 'Latest Dharamshala and McLeod Ganj travel updates, each dated: Skyway ropeway status, Triund rules and fees, meditation course dates, seasonal tips.',
     path: '/travel-updates',
     hindi: false,
   });

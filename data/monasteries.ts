@@ -44,7 +44,7 @@ export const monasteries: Monastery[] = [
     visit: 'Free. No official hours are published; it is usually open from early morning to early evening. No photos inside the Kalachakra Temple; courtyards are usually fine. The Dalai Lama\'s residence behind the guarded gate is not open to visitors.',
     lat: 32.2324, lng: 76.3244,
     photo: 'tsuglagkhang-courtyard',
-    official: 'https://www.namgyalmonastery.org/',
+    // namgyalmonastery.org was offline on 28 Oct 2026 (domain not found); add it back when it returns.
   },
   {
     id: 'gyuto',
@@ -264,7 +264,7 @@ export const monasteryFaqs: { question: string; answer: string }[] = [
 /** Shown at the foot of the page: where the facts were checked. */
 export const monasterySources: { name: string; url: string }[] = [
   { name: 'Office of His Holiness the Dalai Lama: schedule and registration', url: 'https://www.dalailama.com/schedule' },
-  { name: 'Namgyal Monastery', url: 'https://www.namgyalmonastery.org/' },
+  { name: 'Namgyal Monastery (archived copy of its site, July 2026)', url: 'https://web.archive.org/web/20260704031730/https://namgyalmonastery.org/' },
   { name: 'Central Tibetan Administration', url: 'https://tibet.net/' },
   { name: 'Tibet Museum: visiting', url: 'https://tibetmuseum.org/your-visit/' },
   { name: 'Tushita Meditation Centre', url: 'https://tushita.info/' },

@@ -946,12 +946,12 @@ Temple Road and the streets just above it have guesthouses and hotels within a f
     related_slugs: ['tibet-museum-dharamshala-guide', 'tibetan-culture-etiquette-guide', 'things-to-do-in-mcleod-ganj', 'best-hotels-in-mcleod-ganj'],
     sources: [
       { title: 'Office of His Holiness the Dalai Lama: schedule and teaching registration', url: 'https://www.dalailama.com/schedule' },
-      { title: 'Namgyal Monastery (official site)', url: 'https://namgyalmonastery.org/' },
+      { title: 'Namgyal Monastery official site (archived copy, July 2026; the site was offline on 28 October 2026)', url: 'https://web.archive.org/web/20260704031730/https://namgyalmonastery.org/' },
       { title: 'Tibet Museum: plan your visit (timings, fees, 2026 closures)', url: 'https://tibetmuseum.org/your-visit/' },
       { title: 'Lonely Planet: Tsuglagkhang Complex', url: 'https://www.lonelyplanet.com/india/dharamsala/mcleod-ganj/attractions/tsuglagkhang-complex/a/poi-sig/478060/356298' },
       { title: 'Travel Coffee: Dalai Lama Temple McLeodganj guide (July 2026)', url: 'https://travelcoffee.in/blog/dalai-lama-temple-mcleodganj-guide' },
       { title: 'The Hosteller: Tibetan culture spots in McLeod Ganj (July 2024)', url: 'https://www.thehosteller.com/blogs/must-visit-tibetan-culture-mcleod-ganj' },
-      { title: 'Buddhistdoor: Tsuglagkhang temple closes over coronavirus risk (March 2020)', url: 'https://www2.buddhistdoor.net/news/tsuglhakhang-temple-in-dharamsala-to-close-over-coronavirus-risk' },
+      { title: 'Buddhistdoor: Tsuglagkhang temple closes over coronavirus risk (March 2020)', url: 'https://www.buddhistdoor.net/news/tsuglhakhang-temple-in-dharamsala-to-close-over-coronavirus-risk/' },
     ],
     faqs: [
       {

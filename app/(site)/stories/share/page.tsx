@@ -8,6 +8,7 @@ export const metadata = generateSEO({
   title: 'Share Your Dharamshala Story',
   description: 'Tell your story from Dharamshala or McLeod Ganj with your photos. One story is chosen every day for our homepage and Instagram.',
   path: '/stories/share',
+  noindex: true, // a form, not something to rank
 });
 
 export default function ShareStoryPage() {

@@ -30,6 +30,8 @@ const nextConfig = {
         destination: 'https://www.dharamshalastay.com/:path*',
         permanent: true,
       },
+      // Someone linked our guides without "https://", so the domain ended up inside the path.
+      { source: '/:lang(hi)?/:section(blog|treks|hotels|taxi)/:host(www.dharamshalastay.com|dharamshalastay.com)/:rest*', destination: '/:rest*', permanent: true },
     ];
   },
 };

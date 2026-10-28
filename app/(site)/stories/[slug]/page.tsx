@@ -17,12 +17,23 @@ import { getPublicStory, listPublicStories } from '@/lib/stories/store';
 
 export const revalidate = 600;
 
+const STORY_TAIL = 'A traveller story from Dharamshala and McLeod Ganj, shared on Dharamshala Stay.';
+
+// Short stories get a standard sentence appended so the meta description is not left thin; capped at 155 chars on a word boundary.
+function storyDescription(body: string): string {
+  const ex = excerptOf(body, 155);
+  if (ex.length >= 120) return ex;
+  const full = (ex.replace(/[\s…]+$/, '') + (/[.!?]$/.test(ex) ? ' ' : '. ') + STORY_TAIL).replace(/\s+/g, ' ').trim();
+  if (full.length <= 155) return full;
+  return full.slice(0, 155).replace(/\s+\S*$/, '').replace(/[,;:\s-]+$/, '');
+}
+
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const s = await getPublicStory(params.slug);
   if (!s) return { title: 'Story not found', robots: { index: false } };
   return generateSEO({
     title: `${s.title}: a Dharamshala story by ${s.author_name}`,
-    description: excerptOf(s.body, 155),
+    description: storyDescription(s.body),
     path: `/stories/${s.slug}`,
     image: `${siteConfig.url}/stories/card/${s.slug}?f=og`,
     type: 'article',

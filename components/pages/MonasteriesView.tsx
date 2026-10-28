@@ -73,7 +73,7 @@ function Motes({ n = 26 }: { n?: number }) {
 export function monasteriesMetadata(): Metadata {
   return generateSEO({
     title: 'Monasteries & Meditation in Dharamshala and McLeod Ganj',
-    description: 'The Dalai Lama Temple, Namgyal debates, Gyuto, Norbulingka and the kora, plus Tushita and Vipassana courses: timings, how to book and temple etiquette, checked October 2026.',
+    description: 'Dalai Lama Temple, Namgyal debates, Gyuto, Norbulingka, the kora, plus Tushita and Vipassana courses: timings, booking and etiquette, checked October 2026.',
     path: PATH,
     image: photo(HERO).src,
     keywords: [

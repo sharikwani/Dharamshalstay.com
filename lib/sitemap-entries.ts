@@ -12,7 +12,7 @@ import { eventsChecked } from '@/data/events';
 import { siteConfig } from '@/lib/config';
 import { getTaxiRouteGroups } from '@/lib/taxi';
 import { hasHindiVersion, localizePath } from '@/lib/i18n/core';
-import { hasHindiPost } from '@/lib/i18n/content';
+import { hasHindiPost, hasHindiTrek } from '@/lib/i18n/content';
 import { normalizeImages, roomImageUrls } from '@/lib/images';
 import { placeImage, isStockImage } from '@/lib/place-images';
 import { monasteryPhotos } from '@/data/monastery-photos';
@@ -161,7 +161,8 @@ function withHindi(entries: SitemapEntry[]): SitemapEntry[] {
     const blogSlug = path.startsWith('/blog/') ? path.slice(6) : null;
     // Hotel detail pages: the Hindi page canonicalises to English (lib/seo.ts), so it is not listed.
     const hotelDetail = path.startsWith('/hotels/') && !COLLECTIONS.some((c) => path === '/hotels/' + c.slug);
-    const hindi = !hotelDetail && hasHindiVersion(path) && (!blogSlug || hasHindiPost(blogSlug));
+    const trekSlug = path.startsWith('/treks/') ? path.slice(7) : null;
+    const hindi = !hotelDetail && hasHindiVersion(path) && (!blogSlug || hasHindiPost(blogSlug)) && (!trekSlug || hasHindiTrek(trekSlug));
     if (!hindi) { out.push(e); continue; }
     const enUrl = e.url;
     const hiUrl = B + localizePath(path, 'hi');

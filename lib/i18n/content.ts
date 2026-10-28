@@ -16,6 +16,11 @@ export function hasHindiPost(slug: string): boolean {
   return !!hiPosts[slug];
 }
 
+/** Treks with a real Hindi translation (the others redirect from /hi to the English page). */
+export function hasHindiTrek(slug: string): boolean {
+  return !!hiTreksData[slug];
+}
+
 export function localizePost(post: BlogPost, lang: Lang): BlogPost & { translated: boolean } {
   if (lang === 'en') return { ...post, translated: true };
   const h = hiPosts[post.slug];

@@ -108,6 +108,15 @@ const ROUTE_NOTES: { from: RegExp; to: RegExp; notes: string[]; notesHi?: string
     ],
   },
   {
+    from: /.*/, to: /chandigarh/i,
+    notes: [
+      'The usual road to Chandigarh runs from Kangra via Una or Anandpur Sahib and out of the hills into Punjab. Our [Chandigarh to Dharamshala guide](/blog/chandigarh-to-dharamshala) compares the bus, taxi, train and flight options.',
+    ],
+    notesHi: [
+      'चंडीगढ़ का आम रास्ता कांगड़ा से ऊना या आनंदपुर साहिब होते हुए पहाड़ों से निकलकर पंजाब में जाता है। बस, टैक्सी, ट्रेन और फ़्लाइट के विकल्प हमारी [चंडीगढ़ से धर्मशाला गाइड](/blog/chandigarh-to-dharamshala) में देखें।',
+    ],
+  },
+  {
     from: /.*/, to: /amritsar/i,
     notes: [
       'The route descends via Kangra and Pathankot into the Punjab plains. Many travellers time arrival in Amritsar for the evening at the Golden Temple or the Wagah-Attari border ceremony.',

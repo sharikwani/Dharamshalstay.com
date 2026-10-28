@@ -12,7 +12,7 @@ import { placeImage } from '@/lib/place-images';
 import { formatPrice, getWhatsAppLink, cn } from '@/lib/utils';
 import { serverT } from '@/lib/i18n/server';
 import { fmt } from '@/lib/i18n/dict';
-import { localizeTrek } from '@/lib/i18n/content';
+import { hasHindiTrek, localizeTrek } from '@/lib/i18n/content';
 import type { Lang } from '@/lib/i18n/core';
 
 /** Full written guide for each bookable trek, where one exists. */
@@ -71,7 +71,7 @@ export async function trekMetadata(slug: string, lang: Lang): Promise<Metadata> 
   const raw = await getTrekBySlug(slug);
   if (!raw) return {};
   const x = localizeTrek(raw, lang);
-  return generateSEO({ title: x.meta_title || x.name, description: x.meta_description || x.short_description, path: '/treks/' + x.slug, image: x.images?.[0], lang, ogTag: [x.duration, x.difficulty].filter(Boolean).join(' · ') || undefined, markdown: true });
+  return generateSEO({ title: x.meta_title || x.name, description: x.meta_description || x.short_description, path: '/treks/' + x.slug, image: x.images?.[0], lang, ogTag: [x.duration, x.difficulty].filter(Boolean).join(' · ') || undefined, markdown: true, hindi: hasHindiTrek(x.slug) });
 }
 
 export async function TrekDetailView({ slug, lang }: { slug: string; lang: Lang }) {

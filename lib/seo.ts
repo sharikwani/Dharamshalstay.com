@@ -159,10 +159,11 @@ export function generateHotelSEO(hotel: {
   const tail = ' ' + (hotel.short_description || '') + ' Direct booking, best prices, local support.';
 
   const autoTitle = templated || hotel.name + ' – ' + starText + typeLabel + ' in ' + area + priceText;
-  const autoDescription = ((templated
+  const autoDescriptionFull = ((templated
     ? templated + '.'
     : 'Book ' + hotel.name + ', a ' + starText.toLowerCase() + typeLabel.toLowerCase() + ' in ' + area + priceText + '.'
-  ) + tail).replace(/\s+/g, ' ').trim().substring(0, 160);
+  ) + tail).replace(/\s+/g, ' ').trim();
+  const autoDescription = autoDescriptionFull.length <= 155 ? autoDescriptionFull : autoDescriptionFull.slice(0, 155).replace(/\s+\S*$/, '').replace(/[,;:.\s-]+$/, '');
 
   const title = hotel.meta_title || autoTitle;
   const description = hotel.meta_description || autoDescription;

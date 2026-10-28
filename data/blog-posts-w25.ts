@@ -219,7 +219,7 @@ For more of the valley’s heritage, read our [Kangra painting and art guide](/b
       { title: 'Ban on Khaniyara slate quarrying ignored (The Tribune, 25 October 1998)', url: 'https://www.tribuneindia.com/1998/98oct25/himachal.htm' },
       { title: 'Khaniyara slate mining: 25 ha cleared, conditions pending (The Tribune, 11 January 2001)', url: 'https://www.tribuneindia.com/2001/20010111/himachal.htm' },
       { title: 'Dhumal on restoring Khaniyara mining rights to panchayats (The Tribune, 16 February 2001)', url: 'https://www.tribuneindia.com/2001/20010216/himachal.htm' },
-      { title: 'Riches to rags: Khaniara after the slate ban (The Tribune, 1 October 2008)', url: 'https://tribuneindia.com/2008/20081001/himplus1.htm' },
+      { title: 'Riches to rags: Khaniara after the slate ban (The Tribune, 1 October 2008)', url: 'https://web.archive.org/web/20081206082448/http://www.tribuneindia.com/2008/20081001/himplus1.htm' },
       { title: 'Illegal slate mining goes on in Dharamsala (The Tribune, 27 July 2015)', url: 'https://www.tribuneindia.com/news/archive/features/illegal-slate-mining-goes-on-in-dharamsala-111647' },
       { title: 'Priyanka’s house to have Dharamsala slate on roof (The Tribune, 9 August 2015)', url: 'https://www.tribuneindia.com/news/archive/himachal/priyanka-s-house-to-have-dharamsala-slate-on-roof-117301/' },
       { title: 'Mining persists in Khaniara despite SC orders (The Tribune, 23 April 2018)', url: 'https://www.tribuneindia.com/news/archive/himachal/mining-persists-in-khaniara-despite-sc-orders-577933' },
