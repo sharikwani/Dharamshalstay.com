@@ -51,6 +51,7 @@ export default function Footer({ lang }: { lang: Lang }) {
               {lang === 'en' && <li><Link href="/events" className="hover:text-orange-400">Event packages</Link></li>}
               {lang === 'en' && <li><Link href="/groups" className="hover:text-orange-400">Groups & offsites</Link></li>}
               {lang === 'en' && <li><Link href="/workation" className="hover:text-orange-400">Monthly stays</Link></li>}
+              {lang === 'en' && <li><Link href="/new-year-parties" className="hover:text-orange-400">New Year party 2026</Link></li>}
               {lang === 'en' && <li><Link href="/play" className="hover:text-orange-400">Free tambola game</Link></li>}
               {lang === 'en' && <li><Link href="/travel-partners" className="hover:text-orange-400">Verified travel partners</Link></li>}
               {lang === 'en' && <li><Link href="/luggage-storage" className="hover:text-orange-400">Luggage storage</Link></li>}

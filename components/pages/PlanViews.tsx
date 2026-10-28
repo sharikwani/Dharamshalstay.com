@@ -107,6 +107,11 @@ export function EventsView() {
         answer={`The next big events in Dharamshala are ${events.slice(0, 3).map((e) => e.name.replace(/ \(.*\)| 20\d\d$/g, '') + ' (' + nice(e.start) + ')').join(', ')}. We put together the hotel, airport or bus pickup and local taxi for each one, quoted for your dates. Dates below are checked against official sources, and we say clearly which ones are not confirmed yet.`} />
 
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+        <Link href="/new-year-parties" className="mb-8 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-[#120a26] px-5 py-4 text-white hover:bg-[#1d1236]">
+          <span><span className="block font-heading text-lg font-bold text-[#f2c46d]">New Year party in Dharamshala 2026: tickets open</span>
+            <span className="text-sm text-white/80">NYE Gala Night at Panchvati Cottages, 31 December, gates 7 pm. Book online with 5% off, from ₹500.</span></span>
+          <span className="rounded-full bg-[#f2c46d] px-4 py-2 text-sm font-bold text-[#120a26]">See tickets</span>
+        </Link>
         <h2 className="text-2xl font-heading font-bold text-slate-900">What events are coming up in Dharamshala?</h2>
         <p className="text-sm text-slate-500 mt-1">Dates checked {nice(eventsChecked)}. Confirmed = announced by the organiser; Expected = from published calendars, not yet announced.</p>
         <div className="overflow-x-auto mt-5">

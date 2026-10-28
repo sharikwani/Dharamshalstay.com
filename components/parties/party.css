@@ -130,3 +130,4 @@
 .nye-off { font-family: var(--font-heading), system-ui, sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--night); background: var(--gold); border-radius: 999px; padding: 0.3rem 0.8rem; }
 .nye-sample { display: block; width: 100%; max-width: 380px; margin: 0 auto; border-radius: 20px; box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(242, 196, 109, 0.35); transform: rotate(-2deg); }
 .nye-stub + .nye-stub { margin-top: 0; }
+.nye-h1-lead { font-family: var(--font-heading), system-ui, sans-serif; font-weight: 700; font-size: clamp(1rem, 2.2vw, 1.25rem); color: var(--cream); }

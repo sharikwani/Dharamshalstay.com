@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { BedDouble, CalendarDays, ChefHat, Clock, CupSoda, Flame, MapPin, Music, Salad, Sparkles, Ticket, Wine, type LucideIcon } from 'lucide-react';
+import { BedDouble, CalendarDays, ChefHat, Clock, Flame, MapPin, Music, PartyPopper, Salad, Sparkles, Ticket, Wine, type LucideIcon } from 'lucide-react';
 import { Breadcrumb, FAQSection } from '@/components/ui/Cards';
 import JsonLd from '@/components/seo/JsonLd';
 import TicketForm from '@/components/parties/TicketForm';
@@ -13,8 +13,8 @@ import { PARTIES, partyDateLabel, partyOnSale, ticketPrice } from '@/data/partie
 export const revalidate = 300;
 
 export const metadata = generateSEO({
-  title: 'New Year & Christmas Parties in McLeod Ganj & Dharamshala 2026',
-  description: 'New Year Eve 2026 and Christmas parties in McLeod Ganj and Dharamshala: Panchvati Cottages tickets online, Kangra Valley Carnival 24-31 Dec, venues and tips.',
+  title: 'New Year Party in Dharamshala & McLeod Ganj 2026: Tickets',
+  description: 'New Year party in Dharamshala 2026: NYE Gala Night at Panchvati Cottages on 31 Dec, gates 7 pm, DJ, bonfire, dinner. Book online, 5% off, from Rs 500.',
   path: '/new-year-parties', lang: 'en', ogTag: 'NYE 2026 tickets',
 });
 
@@ -34,8 +34,8 @@ const INCLUDED: [LucideIcon, string, boolean][] = [
   [Flame, 'Bonfire', true],
   [Salad, '3 veg & 3 non-veg starters', false],
   [ChefHat, 'Main course dinner', false],
-  [CupSoda, 'Soft beverages', false],
-  [Wine, 'IMFL beverages', true],
+  [PartyPopper, 'Countdown to 2027', true],
+  [Wine, 'Bar open · drinks chargeable', false],
 ];
 
 /** Fairy lights: three swags of bulbs hanging across the top of the hero. */
@@ -60,9 +60,10 @@ const VENUES: [string, string, string][] = [
 ];
 
 const FAQS = [
+  { question: 'Where is there a New Year party in Dharamshala in 2026?', answer: 'The NYE Gala Night at Panchvati Cottages, Khaniara, Dharamshala, on Thursday 31 December 2026 (gates open 7 pm) has tickets on sale on this page: Couple ₹3,799 and Stag ₹2,374 after the 5% online discount, with a DJ, a bonfire, starters and a main-course dinner. You can book with ₹500 and pay the rest at the entry. The Kangra Valley Carnival runs 24 to 31 December 2026, and McLeod Ganj and Bhagsu bars announce their New Year nights from late November.' },
   { question: 'Where can I celebrate New Year 2027 in McLeod Ganj or Dharamshala?', answer: 'Book a ticket for the New Year Eve party at Panchvati Cottages in Dharamshala on this page, or choose from the bars, cafes and hotels in McLeod Ganj and Bhagsu that usually host New Year nights. Most venues announce their 2026 programmes and prices in late November or December.' },
   { question: 'When is the Kangra Valley Carnival 2026?', answer: 'The Kangra district administration has announced the Kangra Valley Carnival for 24 to 31 December 2026 in Dharamshala, with an opening concert proposed at the HPCA cricket stadium. The full schedule and entry details were not published when we checked on ' + CHECKED + '.' },
-  { question: 'How much are the New Year Eve party tickets at Panchvati Cottages?', answer: 'For the NYE Gala Night on 31 December 2026: Couple ₹3,999, Stag ₹2,499 (only with a couple), Child 12 to 18 years ₹1,499 and Kid 6 to 12 years ₹999, with 5% off when you book online here (Couple ₹3,799, Stag ₹2,374, Child ₹1,424, Kid ₹949). Gates open at 7 pm. The package includes a DJ, a bonfire, 3 vegetarian and 3 non-vegetarian starters, a main-course dinner, soft beverages and IMFL beverages. Rooms for the night are ₹4,999 (Super Deluxe, double sharing) and ₹6,999 (Family Suite, four sharing), both with breakfast; add one to your tickets online and the 5% discount applies once to the whole booking. You can pay in full online, or pay ₹500 online to book and the rest at Panchvati at the entry.' },
+  { question: 'How much are the New Year Eve party tickets at Panchvati Cottages?', answer: 'For the NYE Gala Night on 31 December 2026: Couple ₹3,999, Stag ₹2,499 (only with a couple), Child 12 to 18 years ₹1,499 and Kid 6 to 12 years ₹999, with 5% off when you book online here (Couple ₹3,799, Stag ₹2,374, Child ₹1,424, Kid ₹949). Gates open at 7 pm. The package includes a DJ, a bonfire, 3 vegetarian and 3 non-vegetarian starters and a main-course dinner; drinks are chargeable at the bar. Rooms for the night are ₹4,999 (Super Deluxe, double sharing) and ₹6,999 (Family Suite, four sharing), both with breakfast; add one to your tickets online and the 5% discount applies once to the whole booking. You can pay in full online, or pay ₹500 online to book and the rest at Panchvati at the entry.' },
   { question: 'How do I book New Year party tickets at Panchvati Cottages?', answer: 'Choose your ticket type and number of tickets on this page and pay online. Your ticket card with a ticket code reaches your email and WhatsApp right after payment; show it at the entry. If tickets are not on sale yet, WhatsApp us to be told when bookings open.' },
   { question: 'Is McLeod Ganj crowded on New Year Eve?', answer: 'Yes. The week from Christmas to New Year is one of the busiest of the year, with heavy traffic on 30 and 31 December. Book your stay and taxi early, and check the police traffic plan, which is usually announced on 30 or 31 December.' },
   { question: 'Does it snow in McLeod Ganj at New Year?', answer: 'Sometimes, but not every year. Snow in McLeod Ganj itself is occasional in late December and more common in January; the higher villages such as Naddi and Dharamkot see it more often. See our snowfall guide for dated records.' },
@@ -79,10 +80,10 @@ export default function NewYearPartiesPage() {
         faqSchema(FAQS),
         {
           '@context': 'https://schema.org', '@type': 'Event', name: featured.name,
-          startDate: featured.date, eventStatus: 'https://schema.org/EventScheduled', eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-          location: { '@type': 'Place', name: featured.venue, address: { '@type': 'PostalAddress', addressLocality: 'Dharamshala', addressRegion: 'Himachal Pradesh', addressCountry: 'IN' } },
+          startDate: featured.date + 'T19:00:00+05:30', image: [siteConfig.url + featured.image], eventStatus: 'https://schema.org/EventScheduled', eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+          location: { '@type': 'Place', name: featured.venue, address: { '@type': 'PostalAddress', streetAddress: 'Khaniara', addressLocality: 'Dharamshala', addressRegion: 'Himachal Pradesh', addressCountry: 'IN' } },
           organizer: { '@id': siteConfig.url + '/#organization' }, url: siteConfig.url + '/new-year-parties', description: featured.summary,
-          ...(onSale ? { offers: featured.ticketTypes.map((t) => ({ '@type': 'Offer', name: t.name, price: ticketPrice(t.price, featured.discountPct), priceCurrency: 'INR', availability: 'https://schema.org/InStock', url: siteConfig.url + '/new-year-parties' })) } : {}),
+          ...(onSale ? { offers: featured.ticketTypes.map((t) => ({ '@type': 'Offer', name: t.name, price: ticketPrice(t.price, featured.discountPct), priceCurrency: 'INR', availability: 'https://schema.org/InStock', validFrom: '2026-10-29T00:00:00+05:30', url: siteConfig.url + '/new-year-parties' })) } : {}),
         },
       ]} />
 
@@ -100,8 +101,8 @@ export default function NewYearPartiesPage() {
           <div className="[&_a]:text-white/70 [&_span]:text-white/90 [&_svg]:text-white/50"><Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Events', href: '/events' }, { label: 'New Year parties' }]} /></div>
           <p className="nye-kicker mt-6">{featured.venue} · {featured.area}</p>
           <h1 className="mt-3">
-            <span className="nye-title block">NYE <em>Gala</em> Night</span>
-            <span className="sr-only"> 2026: New Year &amp; Christmas Parties in McLeod Ganj &amp; Dharamshala</span>
+            <span className="nye-h1-lead block">New Year Party in Dharamshala 2026</span>
+            <span className="nye-title mt-2 block">NYE <em>Gala</em> Night</span>
           </h1>
           <p className="nye-date mt-4">Thursday 31 December 2026 · gates open {featured.startTime || '7:00 pm'}</p>
           <div className="mt-8"><Countdown to={COUNTDOWN_TO} done="Happy New Year 2027!" /></div>
