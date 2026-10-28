@@ -10,7 +10,7 @@ import { siteConfig } from '@/lib/config';
 import { escHtml, sendEmail } from '@/lib/email';
 import { isWhatsAppConfigured, sendTemplate } from '@/lib/whatsapp-cloud';
 import { normalizeIndianPhone } from '@/lib/whatsapp';
-import { partyBySlug, partyDateLabel, partyOnSale, type Party, type TicketType } from '@/data/parties';
+import { partyBySlug, partyDateLabel, partyOnSale, ticketPrice, type Party, type TicketType } from '@/data/parties';
 
 const SITE = () => siteConfig.url.replace(/\/$/, '');
 
@@ -48,7 +48,7 @@ export async function createTicketBooking(input: TicketInput): Promise<{ ok: tru
   if (!type) return { ok: false, error: 'Choose a ticket type', status: 400 };
   const phone = normalizeIndianPhone(input.phone);
   if (!phone) return { ok: false, error: 'Please enter a valid Indian mobile number', status: 400 };
-  const amount = type.price * input.qty;
+  const amount = ticketPrice(type.price, party.discountPct) * input.qty;
   const sb = serviceClient();
   let propertyId: string | null = null;
   if (party.propertySlug) {

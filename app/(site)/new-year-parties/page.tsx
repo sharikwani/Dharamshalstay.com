@@ -5,7 +5,7 @@ import JsonLd from '@/components/seo/JsonLd';
 import TicketForm from '@/components/parties/TicketForm';
 import { generateSEO, faqSchema, breadcrumbSchema } from '@/lib/seo';
 import { siteConfig } from '@/lib/config';
-import { PARTIES, partyDateLabel, partyOnSale } from '@/data/parties';
+import { PARTIES, partyDateLabel, partyOnSale, ticketPrice } from '@/data/parties';
 
 export const revalidate = 300;
 
@@ -15,7 +15,7 @@ export const metadata = generateSEO({
   path: '/new-year-parties', lang: 'en', ogTag: 'NYE 2026 tickets',
 });
 
-const CHECKED = '25 October 2026';
+const CHECKED = '29 October 2026';
 
 /** Venues travel guides list for New Year nights. Their 2026 plans are not announced yet; we re-check from late November. */
 const VENUES: [string, string, string][] = [
@@ -31,6 +31,7 @@ const VENUES: [string, string, string][] = [
 const FAQS = [
   { question: 'Where can I celebrate New Year 2027 in McLeod Ganj or Dharamshala?', answer: 'Book a ticket for the New Year Eve party at Panchvati Cottages in Dharamshala on this page, or choose from the bars, cafes and hotels in McLeod Ganj and Bhagsu that usually host New Year nights. Most venues announce their 2026 programmes and prices in late November or December.' },
   { question: 'When is the Kangra Valley Carnival 2026?', answer: 'The Kangra district administration has announced the Kangra Valley Carnival for 24 to 31 December 2026 in Dharamshala, with an opening concert proposed at the HPCA cricket stadium. The full schedule and entry details were not published when we checked on ' + CHECKED + '.' },
+  { question: 'How much are the New Year Eve party tickets at Panchvati Cottages?', answer: 'For the NYE Gala Night on 31 December 2026: Couple ₹3,999, Stag ₹2,499 (only with a couple), Child 12 to 18 years ₹1,499 and Kid 6 to 12 years ₹999, with 5% off every ticket when you book online here (Couple ₹3,799, Stag ₹2,374, Child ₹1,424, Kid ₹949). Gates open at 7 pm. The package includes a DJ, a bonfire, 3 vegetarian and 3 non-vegetarian starters, a main-course dinner, soft beverages and IMFL beverages. Rooms for the night are ₹4,999 (Super Deluxe, double sharing) and ₹6,999 (Family Suite, four sharing), both with breakfast.' },
   { question: 'How do I book New Year party tickets at Panchvati Cottages?', answer: 'Choose your ticket type and number of tickets on this page and pay online. Your ticket card with a ticket code reaches your email and WhatsApp right after payment; show it at the entry. If tickets are not on sale yet, WhatsApp us to be told when bookings open.' },
   { question: 'Is McLeod Ganj crowded on New Year Eve?', answer: 'Yes. The week from Christmas to New Year is one of the busiest of the year, with heavy traffic on 30 and 31 December. Book your stay and taxi early, and check the police traffic plan, which is usually announced on 30 or 31 December.' },
   { question: 'Does it snow in McLeod Ganj at New Year?', answer: 'Sometimes, but not every year. Snow in McLeod Ganj itself is occasional in late December and more common in January; the higher villages such as Naddi and Dharamkot see it more often. See our snowfall guide for dated records.' },
@@ -50,7 +51,7 @@ export default function NewYearPartiesPage() {
           startDate: featured.date, eventStatus: 'https://schema.org/EventScheduled', eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
           location: { '@type': 'Place', name: featured.venue, address: { '@type': 'PostalAddress', addressLocality: 'Dharamshala', addressRegion: 'Himachal Pradesh', addressCountry: 'IN' } },
           organizer: { '@id': siteConfig.url + '/#organization' }, url: siteConfig.url + '/new-year-parties', description: featured.summary,
-          ...(onSale ? { offers: featured.ticketTypes.map((t) => ({ '@type': 'Offer', name: t.name, price: t.price, priceCurrency: 'INR', availability: 'https://schema.org/InStock', url: siteConfig.url + '/new-year-parties' })) } : {}),
+          ...(onSale ? { offers: featured.ticketTypes.map((t) => ({ '@type': 'Offer', name: t.name, price: ticketPrice(t.price, featured.discountPct), priceCurrency: 'INR', availability: 'https://schema.org/InStock', url: siteConfig.url + '/new-year-parties' })) } : {}),
         },
       ]} />
 
@@ -58,7 +59,7 @@ export default function NewYearPartiesPage() {
         <div className="mx-auto max-w-5xl px-4 pb-12 pt-8 sm:px-6">
           <div className="[&_a]:text-white/70 [&_span]:text-white/90 [&_svg]:text-white/50"><Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Events', href: '/events' }, { label: 'New Year parties' }]} /></div>
           <h1 className="font-heading text-3xl font-bold sm:text-5xl">New Year &amp; Christmas Parties in McLeod Ganj &amp; Dharamshala 2026–27</h1>
-          <p className="mt-4 max-w-3xl text-lg text-white/80"><strong className="text-white">Short answer:</strong> book the New Year Eve party at <strong className="text-white">Panchvati Cottages, Dharamshala</strong> online below and get your ticket card on WhatsApp and email. The <strong className="text-white">Kangra Valley Carnival</strong> is announced for <strong className="text-white">24 to 31 December 2026</strong>, and McLeod Ganj and Bhagsu bars, cafes and hotels usually announce their Christmas and New Year nights from late November. Checked {CHECKED}.</p>
+          <p className="mt-4 max-w-3xl text-lg text-white/80"><strong className="text-white">Short answer:</strong> book the NYE Gala Night at <strong className="text-white">Panchvati Cottages, Khaniara, Dharamshala</strong> on <strong className="text-white">31 December 2026</strong> (gates 7 pm; couple ₹3,999, stag ₹2,499, 5% off online) online below and get your ticket card on WhatsApp and email. The <strong className="text-white">Kangra Valley Carnival</strong> is announced for <strong className="text-white">24 to 31 December 2026</strong>, and McLeod Ganj and Bhagsu bars, cafes and hotels usually announce their Christmas and New Year nights from late November. Checked {CHECKED}.</p>
 
           <div className="mt-8 grid gap-6 rounded-[28px] border-2 border-[#f2c46d] bg-white/5 p-6 sm:p-8 md:grid-cols-[1fr_1.1fr]">
             <div>
@@ -70,9 +71,19 @@ export default function NewYearPartiesPage() {
                 <li className="flex gap-2"><MapPin className="h-5 w-5 shrink-0 text-[#f2c46d]" />{featured.venue}, {featured.area}{featured.propertySlug && <> · <Link href={'/hotels/' + featured.propertySlug} className="underline">see the property</Link></>}</li>
                 {featured.highlights.map((h) => <li key={h} className="flex gap-2"><Ticket className="h-5 w-5 shrink-0 text-[#f2c46d]" />{h}</li>)}
               </ul>
-              <p className="mt-4 text-sm text-white/70">Staying over? Rooms at Panchvati Cottages can be booked on its <Link href={'/hotels/' + (featured.propertySlug || '')} className="underline">property page</Link>.</p>
+              {featured.rooms?.length ? (
+                <div className="mt-5 rounded-2xl bg-white/5 p-4">
+                  <p className="font-semibold text-white">Staying over on New Year Eve?</p>
+                  <ul className="mt-2 space-y-1 text-sm text-white/85">
+                    {featured.rooms.map((r) => <li key={r.name}>{r.name}: <strong className="text-[#f2c46d]">₹{r.price.toLocaleString('en-IN')}</strong> a night, {r.note}</li>)}
+                  </ul>
+                  <p className="mt-2 text-sm text-white/70">Book the room on the <Link href={'/hotels/' + (featured.propertySlug || '')} className="underline">Panchvati Cottages page</Link> or WhatsApp us.</p>
+                </div>
+              ) : (
+                <p className="mt-4 text-sm text-white/70">Staying over? Rooms at Panchvati Cottages can be booked on its <Link href={'/hotels/' + (featured.propertySlug || '')} className="underline">property page</Link>.</p>
+              )}
             </div>
-            <TicketForm party={featured.slug} types={featured.ticketTypes} onSale={onSale} />
+            <TicketForm party={featured.slug} types={featured.ticketTypes} onSale={onSale} discountPct={featured.discountPct} />
           </div>
         </div>
       </section>

@@ -1,13 +1,13 @@
 'use client';
 import { useState } from 'react';
 import { Minus, Plus, Ticket } from 'lucide-react';
-import type { TicketType } from '@/data/parties';
+import { ticketPrice, type TicketType } from '@/data/parties';
 import { siteConfig } from '@/lib/config';
 
 const inr = (n: number) => '₹' + n.toLocaleString('en-IN');
 
 /** Pick tickets, then pay online (Razorpay); the ticket card arrives by email and WhatsApp once paid. */
-export default function TicketForm({ party, types, onSale }: { party: string; types: TicketType[]; onSale: boolean }) {
+export default function TicketForm({ party, types, onSale, discountPct = 0 }: { party: string; types: TicketType[]; onSale: boolean; discountPct?: number }) {
   const [type, setType] = useState(types[0]?.id || '');
   const [qty, setQty] = useState(1);
   const [f, setF] = useState({ name: '', email: '', phone: '' });
@@ -27,7 +27,8 @@ export default function TicketForm({ party, types, onSale }: { party: string; ty
   }
 
   const t = types.find((x) => x.id === type)!;
-  const total = t ? t.price * qty : 0;
+  const total = t ? ticketPrice(t.price, discountPct) * qty : 0;
+  const saved = t ? (t.price - ticketPrice(t.price, discountPct)) * qty : 0;
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement>) => setF((x) => ({ ...x, [k]: e.target.value }));
   const input = 'w-full rounded-xl border border-white/20 bg-white px-4 py-3 text-slate-900 outline-none focus:ring-2 focus:ring-[#f2c46d]';
 
@@ -46,6 +47,7 @@ export default function TicketForm({ party, types, onSale }: { party: string; ty
     <form onSubmit={pay} className="space-y-4">
       <fieldset className="space-y-2">
         <legend className="mb-1 text-sm font-semibold text-white/80">Choose your ticket</legend>
+        {discountPct > 0 && <p className="rounded-lg bg-[#f2c46d] px-3 py-1.5 text-center text-sm font-bold text-[#120a26]">{discountPct}% off every ticket when you book online</p>}
         {types.map((x) => (
           <label key={x.id} className={'flex cursor-pointer items-start justify-between gap-3 rounded-xl border-2 p-3 ' + (type === x.id ? 'border-[#f2c46d] bg-white/10' : 'border-white/15')}>
             <span className="flex gap-3">
@@ -53,7 +55,10 @@ export default function TicketForm({ party, types, onSale }: { party: string; ty
               <span><span className="block font-semibold text-white">{x.name}</span>
                 <span className="block text-sm text-white/70">Admits {x.admits}{x.includes ? ' · ' + x.includes : ''}</span></span>
             </span>
-            <span className="whitespace-nowrap font-bold text-[#f2c46d]">{inr(x.price)}</span>
+            <span className="whitespace-nowrap text-right">
+              {discountPct > 0 && <s className="block text-sm text-white/50">{inr(x.price)}</s>}
+              <span className="font-bold text-[#f2c46d]">{inr(ticketPrice(x.price, discountPct))}</span>
+            </span>
           </label>
         ))}
       </fieldset>
@@ -70,6 +75,7 @@ export default function TicketForm({ party, types, onSale }: { party: string; ty
         <input className={input} required type="email" placeholder="Email" autoComplete="email" value={f.email} onChange={set('email')} />
         <input className={input} required type="tel" inputMode="tel" placeholder="Mobile (WhatsApp)" autoComplete="tel" value={f.phone} onChange={set('phone')} />
       </div>
+      {saved > 0 && <p className="text-center text-sm font-semibold text-green-300">You save {inr(saved)} with the {discountPct}% online discount</p>}
       {error && <p className="rounded-lg bg-red-500/15 px-3 py-2 text-sm text-red-200">{error}</p>}
       <button disabled={busy} className="w-full rounded-xl bg-[#f2c46d] px-6 py-4 text-lg font-bold text-[#120a26] hover:bg-[#f6d48e] disabled:opacity-60">
         {busy ? 'Opening secure payment…' : `Pay ${inr(total)} and get your ticket`}
