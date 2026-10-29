@@ -181,7 +181,7 @@ If snow underfoot matters most, come in January or the first half of February, k
 
 **Kangra Valley Carnival (24-31 December 2026).** The Kangra district administration has announced its winter carnival for 24 to 31 December 2026 in Dharamshala, with an opening concert proposed at the cricket stadium (UNI, 30 September 2026). No programme or venue plan had been published when we checked on 29 October 2026. See the [Kangra Valley Carnival 2026 guide](/blog/kangra-valley-carnival-2026) for what is confirmed.
 
-**New Year Eve.** The week from Christmas to New Year is the busiest of the winter, with heavy traffic on 30 and 31 December. Our own pick is the **NYE Gala Night at Panchvati Cottages, Khaniara**, on Thursday 31 December 2026, from 7 pm to about 2 am: DJ, bonfire and dinner, with drinks chargeable at the bar. Tickets are booked on our [New Year parties page](/new-year-parties), from ₹500 online, with 5% off when you book there. Bars, cafes and hotels in McLeod Ganj and Bhagsu also host nights; most announce programmes in late November or December.
+**New Year Eve.** The week from Christmas to New Year is the busiest of the winter, with heavy traffic on 30 and 31 December. Our own pick is the **NYE Gala Night at Panchvati Cottages, Khaniara**, on Thursday 31 December 2026, from 7 pm to about 2 am: DJ, bonfire and dinner, with soft drinks included and alcohol charged separately at the bar. Tickets are booked on our [New Year parties page](/new-year-parties), from ₹500 online, with 5% off when you book there. Bars, cafes and hotels in McLeod Ganj and Bhagsu also host nights; most announce programmes in late November or December.
 
 **Book well ahead** for 23 December to 2 January, both rooms and taxis. The rest of the winter is usually easy to book at short notice.
 
@@ -285,7 +285,7 @@ The reward is Dharamshala at its clearest and least crowded.
       },
       {
         question: 'Where can I celebrate New Year 2027 in Dharamshala?',
-        answer: 'One option is the NYE Gala Night at Panchvati Cottages, Khaniara, on 31 December 2026 from 7 pm to about 2 am, with a DJ, bonfire and dinner; drinks are chargeable. Tickets are on the dharamshalastay.com New Year parties page, from Rs 500 online with 5% off. Bars, cafes and hotels in McLeod Ganj and Bhagsu also host New Year nights.',
+        answer: 'One option is the NYE Gala Night at Panchvati Cottages, Khaniara, on 31 December 2026 from 7 pm to about 2 am, with a DJ, bonfire and dinner; soft drinks are included and alcohol is charged separately. Tickets are on the dharamshalastay.com New Year parties page, from Rs 500 online with 5% off. Bars, cafes and hotels in McLeod Ganj and Bhagsu also host New Year nights.',
       },
       {
         question: 'When is the Kangra Valley Carnival 2026?',
