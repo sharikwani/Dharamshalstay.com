@@ -564,26 +564,37 @@ If you are planning a wider winter trip, read [Dharamshala in winter](/blog/dhar
   {
     id: 'blog-dharamshala-christmas-new-year',
     slug: 'dharamshala-christmas-new-year',
-    title: 'Christmas in Dharamshala & McLeod Ganj 2026: Church, Crowds, Tips',
-    excerpt: 'Planning Christmas or New Year in Dharamshala? Crowds, snow chances, prices and when to book, St John in the Wilderness, what is open for parties, traffic, weather and quieter alternatives.',
-    content: `**Short answer:** Christmas and New Year are among the **busiest weeks of the year** in Dharamshala and McLeod Ganj. This guide focuses on Christmas week; for New Year's Eve itself, the traffic plan and a 30 December to 2 January trip, see our [New Year in McLeod Ganj guide](/blog/new-year-in-mcleod-ganj). From about **December 23 to January 2**, hotel rates typically rise **1.5 to 2.5 times**, the McLeod Ganj road jams in the evenings, and good rooms sell out weeks in advance. In return you get crisp, clear days with the Dhauladhar fully snow-covered, a festive atmosphere in the cafes, a Christmas service at the historic **St John in the Wilderness** church, and New Year's Eve parties ranging from rooftop dinners to bonfire nights.
+    title: 'Christmas in Dharamshala & McLeod Ganj 2026: Church, Carnival, Tips',
+    excerpt: 'Christmas 2026 in Dharamshala and McLeod Ganj: Christmas Eve is Thursday 24 December and Christmas Day Friday 25 December, in the same week as the Kangra Valley Carnival (announced for 24-31 December). St John in the Wilderness, cafés, crowds, snow odds, booking, the NYE Gala Night and quieter places to stay.',
+    content: `**Short answer:** Christmas Eve 2026 is **Thursday 24 December** and Christmas Day is **Friday 25 December**. In Dharamshala and McLeod Ganj that means decorated cafés with Christmas menus, visitors of all faiths at the 1852 **St John in the Wilderness** church at Forsyth Ganj, and the start of the **Kangra Valley Carnival**, announced for **24 to 31 December 2026** in Dharamshala (programme not yet published). It is one of the busiest weeks of the year, so book rooms early, and do not count on snow in town. For New Year Eve, our ticketed **[NYE Gala Night at Panchvati Cottages](/new-year-parties)** runs on 31 December from 7 pm to about 2 am.
 
-Looking for a Christmas or New Year party to book? See [New Year and Christmas parties in McLeod Ganj and Dharamshala](/new-year-parties).
+This guide focuses on Christmas week. For New Year Eve itself, the traffic plan and a 30 December to 2 January trip, see our [New Year in McLeod Ganj 2026 guide](/blog/new-year-in-mcleod-ganj).
 
-What you probably will **not** get, despite what reels suggest, is guaranteed snow in town. Snowfall in McLeod Ganj at Christmas is possible but uncommon, and Dharamshala town itself rarely sees snow at all. This guide covers realistic snow chances, crowd timing, prices, booking, what is open, traffic and the quieter places (like Naddi and Dharamkot) where we would actually spend the week. Prices are approx. as of 2026.
+What you probably will **not** get, despite what reels suggest, is guaranteed snow in town. Snow in McLeod Ganj in late December is occasional, more common in January, and Dharamshala town itself rarely sees snow at all. Below: what Christmas looks like here, the church, crowds, snow odds, booking, traffic and the quieter places (like Naddi and Dharamkot) where we would actually spend the week.
 
-## Quick Facts
+## Christmas in Dharamshala 2026: Quick Facts
 
-| | |
+| Question | Answer (checked 29 October 2026) |
 |---|---|
-| Peak crush | December 24–26 and December 30–January 1 |
-| Typical McLeod Ganj temperatures | approx. 12–16°C day, 1–5°C night |
-| Snow in McLeod Ganj at Christmas | possible but uncommon; more likely in January–February |
-| Snow nearby | regular on the Dhauladhar; often at Triund and above; sometimes at Naddi and Dharamkot after a storm |
-| Hotel price jump | approx. 1.5–2.5x normal rates |
-| Book by | late October to mid-November for best choice |
-| Christmas service | St John in the Wilderness, Forsyth Ganj (check timings locally) |
-| Flights | Kangra (Gaggal) flights can be hit by Delhi fog; keep buffers |
+| Christmas Eve | Thursday 24 December 2026 |
+| Christmas Day | Friday 25 December 2026 |
+| Church | St John in the Wilderness, Forsyth Ganj, between lower Dharamshala and McLeod Ganj; service times not published online |
+| Festival the same week | Kangra Valley Carnival, announced for 24-31 December 2026 in Dharamshala (UNI, 30 Sep 2026); schedule not published |
+| New Year Eve party | [NYE Gala Night](/new-year-parties), Panchvati Cottages, Khaniara, Thu 31 Dec, 7 pm to about 2 am; couple ₹3,999 (5% off online) |
+| Peak crowds | 24-26 December and 30 December to 1 January |
+| Snow in McLeod Ganj | Occasional in late December, more common in January; never guaranteed |
+| Snow nearby | Dhauladhar peaks usually white; Triund ridge often has snow by December |
+| Traffic | Heavy evenings; police one-way plans at peak times |
+| Flights | Kangra (Gaggal) flights can be delayed or cancelled by low visibility; keep buffers |
+
+## How is Christmas celebrated in McLeod Ganj?
+
+McLeod Ganj is a Tibetan and Himachali town, so Christmas is not a local festival in the way Losar or Diwali are. It still has a warm, low-key feel, mostly thanks to the cafés and the many Indian and foreign visitors.
+
+- **At the church:** on Christmas Day 2025, ANI reported locals and tourists of different faiths visiting St John in the Wilderness, some "beginning their day from the church" before heading up to McLeod Ganj.
+- **In the cafés:** many cafés in McLeod Ganj, Bhagsu and Dharamkot put up lights and serve Christmas specials such as cakes, roasts and hot drinks; some hold small music evenings.
+- **At the monasteries:** Tibetan institutions do not celebrate Christmas, but the Tsuglagkhang complex and its kora path carry on as normal, a calm counterpoint to the crowds.
+- **In lower Dharamshala:** the Kangra Valley Carnival is announced to open on 24 December 2026. In 2025 it opened on 24 December with a procession to the Police Ground and held the Dharamshala Marathon on 25 December. See our [Kangra Valley Carnival 2026 guide](/blog/kangra-valley-carnival-2026) for what is confirmed.
 
 ## Crowds: What to Expect
 
@@ -597,15 +608,17 @@ Late December brings domestic tourists from Punjab, Delhi NCR, Haryana and Gujar
 
 If you can shift your trip to **mid-December** or **the first half of January**, you get the same weather and views at a fraction of the cost and stress.
 
-## Snow Chances: Honest Answer
+## Will it snow in Dharamshala at Christmas?
 
-- **Dharamshala town (approx. 1,200–1,450 m):** snow is rare in any month.
-- **McLeod Ganj (approx. 2,000 m):** light snowfall happens some winters, usually after a strong western disturbance, and more often in January and February than at Christmas.
+- **Lower Dharamshala (about 1,457 m):** snow is rare in any month.
+- **McLeod Ganj (about 1,750-2,080 m):** light snowfall happens some winters, usually after a strong western disturbance, and more often in January and February than at Christmas.
 - **Naddi and Dharamkot:** slightly higher and more exposed; a little more likely to get a dusting.
 - **Triund (approx. 2,850 m) and beyond:** snow is common from late December; the trek can be icy and sometimes closed after heavy snow.
 - **The Dhauladhar range** is reliably snow-covered and looks spectacular from almost everywhere.
 
-If seeing snow underfoot is the main goal, plan a flexible day for a snow trip (Triund with a guide when conditions allow, or a drive towards higher points after a snowfall). Read our [Dharamshala winter snowfall guide](/blog/dharamshala-in-winter-snowfall) and [Triund trek guide](/blog/triund-trek-complete-guide) before you go.
+If seeing snow underfoot is the main goal, plan a flexible day for a snow trip (Triund with a guide when conditions allow, or a drive towards higher points after a snowfall). Read our [Dharamshala winter snowfall guide](/blog/dharamshala-in-winter-snowfall) and [Triund trek guide](/blog/triund-trek-complete-guide) before you go, and check the dated [Himachal snowfall tracker](/blog/himachal-snowfall-tracker) in the week of your trip. As of late October 2026, snow this season had fallen only on the high passes and the Dhauladhar peaks, not in town.
+
+Winter treks need care: a Kangra district order of 6 January 2026 made SP Kangra permission mandatory for Triund, Kareri and Adi Himani Chamunda, with permissions cancelled on weather alerts. Check the current rules and book [guided treks](/treks) only with a permitted operator.
 
 ## Weather and What to Pack
 
@@ -619,48 +632,53 @@ Late December days are usually sunny and pleasant in the sun, cold in the shade.
 
 Our [weather and packing guide](/blog/dharamshala-weather-what-to-pack) has a full list. Ask hotels whether rooms have heaters and whether there is a charge for them.
 
-## St John in the Wilderness at Christmas
+## Is there a Christmas service at St John in the Wilderness?
 
-**St John in the Wilderness**, the 1852 neo-Gothic stone church in the deodar forest at Forsyth Ganj (between Dharamshala and McLeod Ganj), is the most atmospheric place in the area at Christmas. It is an active church of the Church of North India, and services are held around Christmas.
+**St John in the Wilderness**, the 1852 neo-Gothic stone church in the deodar forest at Forsyth Ganj (on the road between lower Dharamshala and McLeod Ganj), is the most atmospheric place in the area at Christmas. It is a Protestant church under the Diocese of Amritsar, and on Christmas Day it draws locals and visitors of many faiths.
 
-- **Service timings** vary year to year; check the notice at the church or ask locally a few days before.
+- **Service timings** for Christmas 2026 are not published online that we could find (checked 29 October 2026). Check the notice at the church or ask your hotel a few days before.
 - **Visitors are welcome** at services; dress modestly, keep phones silent and avoid photography during worship.
 - The churchyard holds the memorial of **Lord Elgin**, Viceroy of India, who died in Dharamshala in 1863.
 - Midday visits are calmer; the road outside can jam around service times.
 
-## Prices and Booking Ahead
+## When should I book for Christmas in Dharamshala?
 
-| Item | Normal winter (approx.) | Christmas–New Year (approx.) |
-|---|---|---|
-| Budget room, McLeod Ganj | ₹1,200–2,000 | ₹2,500–4,000 |
-| Mid-range hotel | ₹3,000–5,500 | ₹6,000–10,000 |
-| Upscale / boutique | ₹8,000–15,000 | ₹15,000–30,000+ |
-| Gala dinner packages (Dec 31) | not applicable | often bundled; ₹2,000–6,000 per person |
-| Taxi Gaggal Airport → McLeod Ganj | ₹1,500 (Alto) or ₹1,800 (Swift Dzire sedan), fixed fare | can be higher at peak; book ahead |
+**Now.** Room rates rise in the Christmas and New Year week and good rooms with heaters and parking go first. We do not publish a single price range because rates change by hotel and by night; compare live options in our [hotels finder](/hotels) or browse [mountain-view stays](/hotels/mountain-view).
 
 Booking tips:
 
-- **Book by late October or early November** for the best choice. By mid-December, good mid-range rooms are scarce.
+- **Book in October or early November** for the best choice. By mid-December, good mid-range rooms are scarce.
 - **Check for compulsory gala dinners** on December 24 and 31. Many hotels add them to the room rate.
 - **Minimum stays** of two or three nights are common over New Year.
 - **Read cancellation terms carefully**; peak-season bookings are often non-refundable.
 - Compare options on our [hotels page](/hotels) and our guide to the [best hotels in McLeod Ganj](/blog/best-hotels-in-mcleod-ganj).
 
-## Parties and What Is Open
+## What parties are on over Christmas and New Year?
 
-- **Christmas Eve and Day:** many cafes in McLeod Ganj, Bhagsu and Dharamkot put up decorations and serve Christmas specials (cakes, roasts, mulled-wine-style drinks where licensed).
-- **New Year's Eve:** hotels run gala dinners with DJs or live music; licensed bars and rooftop restaurants host parties. Our [nightlife guide](/blog/nightlife-bars-mcleod-ganj) covers the scene.
-- **Late-night timings:** in recent years the state government has often allowed licensed bars and hotels to stay open later on Christmas Eve and New Year's Eve. The specific order is issued each year, so check locally rather than assuming.
+- **Christmas Eve and Day:** many cafés in McLeod Ganj, Bhagsu and Dharamkot put up decorations and serve Christmas specials (cakes, roasts, hot drinks, mulled wine where licensed). No McLeod Ganj venue had announced a 2026 Christmas programme by 29 October 2026.
+- **New Year Eve, ticketed:** our **NYE Gala Night 2026** at Panchvati Cottages, Khaniara, Dharamshala (our own property) runs on Thursday 31 December from 7 pm to about 2 am, with a DJ, a bonfire, 3 vegetarian and 3 non-vegetarian starters and a main-course dinner; drinks are chargeable at the bar.
+
+| NYE Gala Night ticket | Price | Booked online (5% off) |
+|---|---|---|
+| Couple | ₹3,999 | ₹3,799 |
+| Stag (only with a couple) | ₹2,499 | ₹2,374 |
+| Child, 12 to 18 years | ₹1,499 | ₹1,424 |
+| Kid, 6 to 12 years | ₹999 | ₹949 |
+
+You can add a room for the night (Super Deluxe ₹4,999 for two, Family Suite ₹6,999 for four, both with breakfast), and pay in full or ₹500 online with the rest at entry. Tickets with a QR code arrive by WhatsApp and email. [Book on our New Year parties page](/new-year-parties).
+
+- **New Year Eve in McLeod Ganj:** hotels run gala dinners and bars and rooftop restaurants usually host parties; 2026 plans were not announced by 29 October 2026. Our [nightlife guide](/blog/nightlife-bars-mcleod-ganj) covers the regular bars.
+- **Kangra Valley Carnival:** announced for 24-31 December 2026 in Dharamshala (venue not yet announced); in 2025 it ended with fireworks on 31 December. See the [carnival guide](/blog/kangra-valley-carnival-2026).
+- **Late-night timings:** shops and commercial establishments in Himachal were exempted from working-hour limits for 24x7 operation for a year from 22 September 2026 (state labour department notification, as reported by TeamLease RegTech). Liquor licence hours and noise rules are separate, so ask your venue about bar and music timings.
 - **Dharamkot and Bhagsu** host more informal, backpacker-style events; quality and legality vary. Stick to licensed venues.
-- **Tibetan institutions** do not celebrate Christmas, but monasteries and the Tsuglagkhang stay open as normal; it is a calm counterpoint to the party scene.
 
 **Safety:** drink driving checks are common, open-air drinking in public places is not allowed, and narrow hill roads at 1 am are dangerous. Book a taxi back in advance, and travel back in a group if you can.
 
-## Traffic and Getting Around
+## How bad is the traffic at Christmas?
 
-- **Dharamshala to McLeod Ganj** (approx. 9–10 km via the main road) can take over an hour in the evening at peak. Walking parts of it, or using the cable car when operating, can be faster.
+- **Dharamshala to McLeod Ganj** (about 9 km by road) can take over an hour in the evening at peak. Walking parts of it, or using the Skyway ropeway in its daytime hours, can be faster.
 - **McLeod Ganj to Bhagsu** jams near Bhagsu in the evenings; walk if your bags are light.
-- **Parking** in McLeod Ganj is scarce; police divert vehicles and enforce one-way rules at peak times. If you are driving, choose a hotel with parking.
+- **Parking** in McLeod Ganj is scarce: a Tribune report of December 2022 put public parking for tourist vehicles at about 300 vehicles, against roughly 2,000 entering in peak season. Police divert vehicles and run one-way plans at peak times; for the New Year of 2024-25, vehicles went in by the Dal Lake road and out by the Forsyth Ganj road (The Tribune, 1 January 2025). If you are driving, choose a hotel with parking.
 - **Arrive in daylight.** Long Delhi–Dharamshala drives on December 24 and 30 see heavy traffic at Una, Mubarakpur and Kangra.
 - **Flights:** Delhi fog can delay or cancel flights to Kangra in late December; see our [Kangra airport guide](/blog/kangra-airport-gaggal-guide).
 
@@ -683,7 +701,7 @@ The holiday week is a good time for the classic sights, provided you go early in
 - **Bhagsu waterfall:** go before 10 am; by noon the path is packed.
 - **Dal Lake and Naddi sunset point:** best at sunset, but traffic on the way back can be slow.
 - **Norbulingka Institute and Gyuto Monastery:** lower and warmer, and much less crowded than McLeod Ganj.
-- **Short treks:** Triund is possible on clear days with proper shoes and an early start; check snow and ice conditions with a local guide. Gallu Devi and the forest trails above Dharamkot make a gentler option.
+- **Short treks:** Triund is possible on clear days with proper shoes, an early start and any permission required that winter; check snow and ice conditions with a local guide. Gallu Devi and the forest trails above Dharamkot make a gentler option.
 - **Cafe hopping:** McLeod Ganj and Dharamkot cafes are at their cosiest in winter.
 
 ## Christmas vs New Year: Which Week Is Better?
@@ -691,7 +709,7 @@ The holiday week is a good time for the classic sights, provided you go early in
 | | Christmas week (Dec 22–27) | New Year week (Dec 29–Jan 1) |
 |---|---|---|
 | Crowds | High, mainly families | Highest; families plus large groups |
-| Atmosphere | Festive, church service, cafes decorated | Party focus, gala dinners and DJ nights at some hotels and cafes |
+| Atmosphere | Festive, church visits, cafés decorated, carnival opening (announced for 24 Dec) | Party focus: the [NYE Gala Night](/new-year-parties) at Panchvati, hotel gala dinners, DJ nights |
 | Hotel prices | High | Highest; minimum stays common |
 | Traffic | Heavy evenings | Heaviest, especially Dec 30–31 |
 | Best for | Couples, families, slower travellers | Groups who want parties |
@@ -706,45 +724,77 @@ If you want both festive spirit and space, arrive around December 21 and leave b
 - Booking a hotel with no parking when you are driving your own car.
 - Forgetting that many budget rooms have no heating.
 
-## A Sample 4-Day Christmas Plan
+## A Sample 4-Day Christmas Plan (23-26 December 2026)
 
-1. **December 23:** arrive, check in, evening walk on Jogiwara Road and Temple Road.
-2. **December 24:** morning at the Tsuglagkhang, afternoon at St John in the Wilderness, Christmas Eve dinner.
-3. **December 25:** day trip to Naddi and Dal Lake, or a guided snow walk if conditions allow.
-4. **December 26:** Norbulingka and Gyuto in Sidhbari, then depart or extend.
+1. **Wednesday 23 December:** arrive, check in, evening walk on Jogiwara Road and Temple Road.
+2. **Thursday 24 December (Christmas Eve):** morning at the Tsuglagkhang, afternoon at St John in the Wilderness, Christmas Eve dinner. The Kangra Valley Carnival is announced to open that day; check the programme once it is published.
+3. **Friday 25 December (Christmas Day):** day trip to Naddi and Dal Lake, or a guided snow walk if conditions allow.
+4. **Saturday 26 December:** Norbulingka and Gyuto in Sidhbari, then depart or extend to New Year.
+
+Staying on for New Year? Read [New Year in McLeod Ganj 2026](/blog/new-year-in-mcleod-ganj) and book the [NYE Gala Night](/new-year-parties). For transfers, [book a taxi](/taxi); for rooms, see [hotels in Dharamshala and McLeod Ganj](/hotels).
+
+## What is confirmed and what is not (29 October 2026)
+
+| Detail | Status |
+|---|---|
+| Christmas Eve Thu 24 Dec, Christmas Day Fri 25 Dec 2026 | Calendar dates |
+| St John in the Wilderness Christmas 2026 service times | Not published online |
+| Kangra Valley Carnival 24-31 December 2026 | Announced (UNI, 30 Sep 2026); programme and venue not published |
+| NYE Gala Night at Panchvati Cottages, 31 Dec, 7 pm to about 2 am | Confirmed (our own event) |
+| McLeod Ganj café and bar Christmas or NYE programmes | Not announced |
+| Snow at Christmas | Cannot be predicted; check the tracker that week |
 
 Booking questions are answered in our [FAQ](/faq).`,
     category: 'Planning',
-    tags: ['Christmas', 'New Year', 'Winter', 'McLeod Ganj', 'Festivals', 'Snow'],
+    tags: ['christmas in dharamshala', 'christmas in mcleod ganj 2026', 'christmas dharamshala 2026', 'St John in the Wilderness', 'New Year', 'Winter', 'McLeod Ganj', 'Festivals', 'Snow'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-09-28',
-    updated_at: '2026-10-07',
+    updated_at: '2026-10-29',
     image: placeImage('dharamshala-snow'),
     image_alt: 'Snow on the Dhauladhar above Dharamshala and McLeod Ganj in winter around Christmas and New Year',
     read_time: 9,
     featured: false,
-    meta_title: 'Christmas in Dharamshala & McLeod Ganj 2026: Guide',
-    meta_description: 'Christmas in Dharamshala and McLeod Ganj: St John church, crowds, real snow chances, hotel prices and booking, what is open, traffic and quieter alternatives.',
-    related_slugs: ['dharamshala-in-winter-snowfall', 'nightlife-bars-mcleod-ganj', 'naddi-dal-lake-guide', 'kangra-valley-carnival-2026'],
+    meta_title: 'Christmas in Dharamshala & McLeod Ganj 2026: Events',
+    meta_description: 'Christmas 2026 in Dharamshala is Fri 25 Dec, in the week of the Kangra Valley Carnival (24-31 Dec). St John church, crowds, snow odds and tips.',
+    related_slugs: ['new-year-in-mcleod-ganj', 'kangra-valley-carnival-2026', 'dharamshala-in-winter-snowfall', 'himachal-snowfall-tracker', 'nightlife-bars-mcleod-ganj', 'naddi-dal-lake-guide'],
+    sources: [
+      { title: 'Christmas in Dharamshala: St John church unites faiths in celebration (Asianet Newsable / ANI, 25 December 2025; checked 29 October 2026)', url: 'https://newsable.asianetnews.com/india/christmas-in-dharamshala-st-john-church-unites-faiths-in-celebration-articleshow-020aei3' },
+      { title: 'St. John in the Wilderness Church, Dharamshala: built 1852, Diocese of Amritsar, Lord Elgin grave (Wikipedia; checked 29 October 2026)', url: 'https://en.wikipedia.org/wiki/St._John_in_the_Wilderness_Church_(Dharamshala)' },
+      { title: 'Kangra Valley Carnival to be held in Dharamsala from December 24 to 31 (UNI, 30 September 2026; checked 29 October 2026)', url: 'https://www.uniindia.com/north-india/culture-himachal-kangra-valley-carnival/198184' },
+      { title: 'Kangra Winter Carnival at Dharamshala kicks off with grand procession (Hill Post, 25 December 2025)', url: 'https://hillpost.in/2025/12/kangra-winter-carnival-at-dharamshala-kicks-off-with-grand-procession/168092/' },
+      { title: 'NYE Gala Night 2026 at Panchvati Cottages: date, timings, inclusions and ticket prices (Dharamshala Stay, our own event; checked 29 October 2026)', url: 'https://dharamshalastay.com/new-year-parties' },
+      { title: 'Hotel bookings in McLeodganj down 20 per cent over Punjab bandh call, with the Kangra police New Year traffic plan (The Tribune, 1 January 2025; checked 29 October 2026)', url: 'https://www.tribuneindia.com/news/himachal/hotel-bookings-in-mcleodganj-down-20-over-farmers-punjab-bandh-call' },
+      { title: 'To tackle influx of tourists, one-way traffic system in upper Dharamsala; parking for 300 vehicles (The Tribune, 28 December 2022; checked 29 October 2026)', url: 'https://www.tribuneindia.com/news/himachal/to-tackle-influx-of-tourists-one-way-traffic-system-in-upper-dharamsala-465211/amp' },
+      { title: 'Himachal Pradesh exempts shops and commercial establishments for 24x7 operations, notification of 22 September 2026 (TeamLease RegTech; checked 29 October 2026)', url: 'https://teamleaseregtech.com/updates/article/59860/department-of-labour-employment-overseas-placement-himachal-pradesh-is' },
+      { title: 'Kangra district bans trekking above 3,000 m (The Tribune, January 2026)', url: 'https://www.tribuneindia.com/news/himachal/trekking-beyond-3-000-m-banned-in-kangra-district-466046' },
+    ],
     faqs: [
       {
-        question: 'Does it snow in McLeod Ganj at Christmas?',
-        answer: 'Sometimes, but not reliably. Light snow in McLeod Ganj is more common in January and February. The Dhauladhar peaks are almost always snow-covered and Triund often has snow by late December.',
-      },
-      {
-        question: 'How early should I book a hotel for New Year in Dharamshala?',
-        answer: 'Book by late October or early November for the best choice. By mid-December good mid-range rooms are scarce and prices are typically 1.5 to 2.5 times normal.',
+        question: 'How is Christmas celebrated in McLeod Ganj and Dharamshala?',
+        answer: 'Quietly and warmly. Cafés in McLeod Ganj, Bhagsu and Dharamkot put up lights and serve Christmas menus, and locals and visitors of many faiths visit the 1852 St John in the Wilderness church at Forsyth Ganj on Christmas Day. In 2026 the Kangra Valley Carnival is also announced to open in Dharamshala on 24 December.',
       },
       {
         question: 'Is there a Christmas service at St John in the Wilderness?',
-        answer: 'Yes, it is an active Church of North India parish and holds services around Christmas. Timings vary each year, so check the notice at the church or ask locally a few days before.',
+        answer: 'St John in the Wilderness is a working Protestant church under the Diocese of Amritsar and is the focus of Christmas in the area. Service times for Christmas 2026 are not published online, so check the notice at the church or ask your hotel a few days before. Visitors are welcome; avoid photos during worship.',
       },
       {
-        question: 'Are there New Year parties in McLeod Ganj?',
-        answer: 'Yes. Hotels run gala dinners and licensed bars and rooftop restaurants host parties. Late-night permission is issued by the state each year, so confirm timings locally and book a return taxi in advance.',
+        question: 'Does it snow in McLeod Ganj at Christmas?',
+        answer: 'Sometimes, but not reliably. Snow in McLeod Ganj is occasional in late December and more common in January. The Dhauladhar peaks are usually snow-covered and Triund often has snow by December. Check a dated snowfall tracker in the week of your trip.',
       },
       {
-        question: 'Where can I stay to avoid New Year crowds near Dharamshala?',
+        question: 'What events are on in Dharamshala at Christmas 2026?',
+        answer: 'The Kangra Valley Carnival is announced for 24 to 31 December 2026 in Dharamshala (UNI, 30 September 2026), with an opening concert proposed at the cricket stadium; the programme was not published by 29 October 2026. On 31 December the ticketed NYE Gala Night runs at Panchvati Cottages, Khaniara, from 7 pm to about 2 am.',
+      },
+      {
+        question: 'Is there a Christmas or New Year party in Dharamshala I can book?',
+        answer: 'Yes, for New Year Eve: the NYE Gala Night at Panchvati Cottages, Khaniara, Dharamshala, on Thursday 31 December 2026, 7 pm to about 2 am, with a DJ, bonfire, starters and dinner (drinks extra). Couple tickets are 3,999 rupees, 5% less online at dharamshalastay.com/new-year-parties. No McLeod Ganj venue had announced 2026 plans by 29 October.',
+      },
+      {
+        question: 'How early should I book a hotel for Christmas in Dharamshala?',
+        answer: 'As early as you can, ideally in October or early November. The week from Christmas to New Year is one of the busiest of the year, rates rise, minimum stays of two or three nights are common, and by mid-December good mid-range rooms are scarce.',
+      },
+      {
+        question: 'Where can I stay to avoid Christmas crowds near Dharamshala?',
         answer: 'Naddi, Sidhbari and lower Dharamshala are much quieter than McLeod Ganj and Bhagsu. Palampur and Bir are good options for a slower holiday week.',
       },
     ],

@@ -129,94 +129,110 @@ October and November have the most reliable road and flight conditions of the ye
     id: 'blog-dharamshala-in-december-january',
     slug: 'dharamshala-in-december-january',
     title: 'Dharamshala in December & January 2026-27: Snow, New Year & Winter Guide',
-    excerpt: 'A winter trip to Dharamshala means snow on the Dhauladhar, Christmas celebrations, cosy cafes, and hotel discounts of 20 to 40 percent. Here is everything you need to know about visiting in December and January, including snowfall chances, what is open, and how to stay warm.',
-    content: `**Short answer:** December and January are cold and quiet in Dharamshala, with clear Dhauladhar views and hotel prices 20 to 40 percent lower outside Christmas and New Year week. McLeod Ganj typically gets **2 to 5 snowfall episodes** per winter, and you have roughly a 40 to 50 percent chance of seeing snow in a week-long visit; Triund almost certainly has snow. Nights in January range from about −2 to 4°C, so check your room has a heater.
+    excerpt: 'December and January are the coldest, quietest and clearest months in Dharamshala. Snow falls in McLeod Ganj on only a few days a winter, mostly in January, while Triund is usually white. For 2026-27 there is the Kangra Valley Carnival (24-31 Dec), New Year parties and a quiet, cheaper January. Weather, snow odds, events, what is open, roads and packing.',
+    content: `**Short answer:** December and January are the coldest and quietest months in Dharamshala: the town averages about **16-18°C by day and 6-7°C at night** (IMD normals), and McLeod Ganj (about 2,000 m) is roughly 3-5°C colder, with frosty nights. **Snow in McLeod Ganj falls on only a few days a winter, most often in January, and is never guaranteed**; Triund ridge is usually white from December to March. For 2026-27, the **Kangra Valley Carnival is announced for 24-31 December** and our [NYE Gala Night at Panchvati Cottages](/new-year-parties) runs on **31 December from 7 pm to about 2 am**. Book early for about 23 December to 2 January; rates usually drop after the New Year week, so ask hotels for winter rates.
 
-Winter in Dharamshala is a different world from the summer crowds. The Dhauladhar range is white, the air is bitingly clear, McLeod Ganj is quiet enough to hear monastery bells from the main road, and hotel prices drop 20 to 40 percent outside Christmas and New Year week. The trade-off is cold, especially at night. If you come prepared, December and January offer some of the most dramatic scenery and most peaceful days of the year.
+Winter in Dharamshala is a different world from the summer crowds. The Dhauladhar range is white, the air is clear, McLeod Ganj is quiet enough to hear monastery bells from the main road, and outside the holiday week rooms are easy to find. The trade-off is cold, especially at night. Come prepared and December and January give you some of the most dramatic scenery and calmest days of the year.
 
-January is the coldest month and the most likely time to see snow in McLeod Ganj itself; this guide covers it alongside the run-up from late December. Travelling earlier? Our [McLeod Ganj in December guide](/blog/mcleod-ganj-in-december) covers Christmas week and the first snow in detail. For the full year-round comparison, see our [best time to visit guide](/blog/best-time-to-visit-dharamshala). For detailed snowfall information, see the [winter snowfall guide](/blog/dharamshala-in-winter-snowfall).
+January is the coldest month and the likeliest time to see snow in McLeod Ganj itself; this guide covers it alongside the run-up from late December. Travelling earlier? Our [McLeod Ganj in December guide](/blog/mcleod-ganj-in-december) covers Christmas week in detail. For the dated snow log and altitude-by-altitude odds, see [when does it snow in Dharamshala](/blog/dharamshala-in-winter-snowfall), and for what is falling this week across the state, the [Himachal snowfall tracker](/blog/himachal-snowfall-tracker).
 
-## Weather: What to Expect
+## Dharamshala in December and January: Quick Facts (checked 29 October 2026)
 
-| Period | Day (approx.) | Night (approx.) | Snow chance at McLeod Ganj | Snow at Triund |
-|---|---|---|---|---|
-| Early Dec | 10–16°C | 2–6°C | Low | Moderate |
-| Late Dec | 6–12°C | 0–4°C | Moderate (1–2 spells typical) | High |
-| Early Jan | 4–10°C | −2 to 3°C | Moderate to high | Very high |
-| Late Jan | 5–12°C | −1 to 4°C | Moderate | High |
+| Question | Answer |
+|---|---|
+| December averages, Dharamshala town | About 18°C by day, 7°C at night; one of the driest months (about 37 mm of rain) (IMD normals 1991-2020) |
+| January averages, Dharamshala town | About 16°C by day, 6°C at night; the coldest month (IMD normals 1991-2020) |
+| McLeod Ganj (about 2,000 m) | Roughly 3-5°C colder than the lower town; nights near or below freezing |
+| Snow in McLeod Ganj | A few days a winter at most, mostly January and early February; some winters bring none until February |
+| Most recent snow in town | 23-24 January 2026: 1-2 inches in parts of McLeod Ganj, about 3 inches in Dharamkot (The Tribune) |
+| Snow at Triund (about 2,850 m) | Usually from December to March on the ridge |
+| Busiest dates | About 23 December to 2 January; 30 and 31 December are the peak |
+| Kangra Valley Carnival 2026 | 24-31 December 2026, Dharamshala (announced by the Kangra DC; schedule not yet published) |
+| New Year party | [NYE Gala Night, Panchvati Cottages](/new-year-parties), 31 Dec 2026, 7 pm to about 2 am |
+| Sunset | Around 5:15-5:30 pm |
+| Getting here | Kangra Airport (Gaggal), about 13 km from Dharamshala town; Pathankot railhead about 90 km; book a [winter taxi](/taxi) |
 
-McLeod Ganj (about 2,000 m) typically gets 2 to 5 snowfall episodes per winter, concentrated in late December through February. Each spell usually lasts 1 to 3 days, leaving a few centimetres that melts within a day or two in town. **Triund** (about 2,850 m) and higher areas get substantially more snow and it sticks longer.
+## How cold is Dharamshala in December and January?
 
-Lower Dharamshala (about 1,300 m) rarely gets snow. If it does, it is a once-in-a-few-years event and melts within hours.
+| Month | Dharamshala town (about 1,450 m), IMD averages | McLeod Ganj (about 2,000 m), our estimate | What it feels like |
+|---|---|---|---|
+| December | About 18°C day, 7°C night | About 3-5°C colder; nights close to freezing by late December | Sunny, dry, sharp mornings |
+| January | About 16°C day, 6°C night | About 3-5°C colder; frosty nights are normal | Coldest month, a few grey, wet days between clear spells |
 
-Sunshine hours are shorter — expect sunset around 5:15 to 5:30 pm. Mornings are foggy on some days, clearing by 10 am. When the sky is clear, the winter light on the snow peaks is extraordinary for photography.
+The record lows for the lower town are only around −1 to −2°C (IMD), but McLeod Ganj, Dharamkot and Naddi sit 500-700 m higher and are noticeably colder. December is one of the driest months; January is wetter, which is why it brings most of the snow.
 
-## Snowfall: Will You See Snow?
+Sunset is around 5:15 to 5:30 pm. Mornings can be hazy in the valley, usually clearing by mid-morning. When the sky is clear, the winter light on the snow peaks is superb for photography.
 
-This is the question everyone asks. The honest answer:
+## Will you see snow in McLeod Ganj in December or January?
 
-- **At McLeod Ganj level (about 2,000 m):** You have roughly a 40 to 50 percent chance of seeing at least one snowfall episode during a week-long December or January visit. It is unpredictable. You might get a picture-perfect snow day, or you might get a week of sunshine with snow only on the peaks above.
-- **At Triund (about 2,850 m):** Snow is almost certain from late December through February. The trail may be snow-covered and slippery. Camping may be restricted or inadvisable without winter gear.
-- **On the Dhauladhar peaks:** White all winter. You will see snow-capped mountains from McLeod Ganj even if it does not snow in town.
+Possibly, but nobody can promise it. Snow here comes with a western disturbance: rain in the valley, snow on the higher slopes for one to three days, then clear skies. What the record shows:
 
-Read our [detailed snowfall guide](/blog/dharamshala-in-winter-snowfall) for altitude-by-altitude breakdown and historical patterns.
+- **McLeod Ganj and Bhagsu (about 1,750-2,000 m):** a few snowy days in a good winter, most often in January. The latest fall was on **23-24 January 2026**, when parts of McLeod Ganj got 1-2 inches and Dharamkot about 3 inches. In winter 2023-24 the first snow in the upper villages came only on **1 February 2024**.
+- **Late December:** possible but uncommon. The 31 December 2010 fall is the December event in our dated log.
+- **Lower Dharamshala and Kotwali Bazaar:** very rare. The last time was **8 February 2019**, the first in more than six years.
+- **Triund (about 2,850 m):** the most reliable snow you can reach in a day, usually from December to March. The trail can be icy above Magic View.
+- **The Dhauladhar peaks:** white all winter, so you see snow from town even without any underfoot.
 
-## Christmas and New Year in Dharamshala
+If snow underfoot matters most, come in January or the first half of February, keep a flexible day, and watch IMD Shimla warnings for Kangra. Our [winter and snowfall guide](/blog/dharamshala-in-winter-snowfall) has the full dated log.
 
-**Christmas** is low-key but charming. The colonial-era churches — **St. John in the Wilderness** in Forsythganj and the church near McLeod Ganj — hold services. Cafes in McLeod Ganj and Bhagsu put up lights and run special menus. It is a warm, communal feel rather than a commercial spectacle. Read our [Christmas and New Year guide](/blog/dharamshala-christmas-new-year) for specific events and church service timings.
+## What is on for Christmas and New Year 2026-27?
 
-**New Year** is the busiest winter week. McLeod Ganj fills up with visitors from Punjab and Delhi. Hotels charge a 50 to 100 percent premium for 30 and 31 December. Bonfires and parties run at several hotels and cafes. **Book well in advance** if you plan to be here for New Year — at least 3 to 4 weeks ahead. The rest of winter is easy to book on short notice.
+**Christmas** is low-key but charming. **St. John in the Wilderness** at Forsyth Ganj, between lower Dharamshala and McLeod Ganj, holds services, and cafes in McLeod Ganj and Bhagsu put up lights and run festive menus. Our [Christmas and New Year guide](/blog/dharamshala-christmas-new-year) has more detail.
 
-## What Is Open and What Is Closed
+**Kangra Valley Carnival (24-31 December 2026).** The Kangra district administration has announced its winter carnival for 24 to 31 December 2026 in Dharamshala, with an opening concert proposed at the cricket stadium (UNI, 30 September 2026). No programme or venue plan had been published when we checked on 29 October 2026. See the [Kangra Valley Carnival 2026 guide](/blog/kangra-valley-carnival-2026) for what is confirmed.
 
-| Attraction / Activity | December–January Status |
+**New Year Eve.** The week from Christmas to New Year is the busiest of the winter, with heavy traffic on 30 and 31 December. Our own pick is the **NYE Gala Night at Panchvati Cottages, Khaniara**, on Thursday 31 December 2026, from 7 pm to about 2 am: DJ, bonfire and dinner, with drinks chargeable at the bar. Tickets are booked on our [New Year parties page](/new-year-parties), from ₹500 online, with 5% off when you book there. Bars, cafes and hotels in McLeod Ganj and Bhagsu also host nights; most announce programmes in late November or December.
+
+**Book well ahead** for 23 December to 2 January, both rooms and taxis. The rest of the winter is usually easy to book at short notice.
+
+## What is open in Dharamshala in December and January?
+
+| Attraction / Activity | December-January status |
 |---|---|
 | Tsuglagkhang Complex (Dalai Lama Temple) | Open |
-| Tibet Museum | Open |
+| Tibet Museum, Gangchen Kyishong | Open; closed on Saturdays |
 | Norbulingka Institute | Open |
 | Bhagsu Waterfall | Open (reduced flow) |
-| Triund Trek | Usually open but snow-covered; may be restricted after heavy snowfall |
-| Indrahar Pass Trek | Closed (deep snow) |
-| Kareri Lake Trek | Closed or very difficult |
-| Bir Billing Paragliding | Usually operational on clear days |
-| HPCA Cricket Stadium | Open for visits; match schedule varies |
-| Cafes and Restaurants | Most open; some smaller places in Dharamkot close for winter |
-| [Kangra Toy Train](/blog/kangra-toy-train-guide) | Runs year-round |
-| [Kangra Fort](/blog/places-to-visit-in-kangra) | Open; warm and sunny at lower altitude |
+| Triund Trek | Often open but snowy and icy; past winters have needed SP Kangra permission. See the [Triund trek guide](/blog/triund-trek-complete-guide) |
+| Indrahar Pass, Snowline and other treks above 3,000 m | Not for winter; banned above 3,000 m under past winter orders |
+| Kareri Lake Trek | Snowbound and covered by past winter permission orders |
+| Bir Billing Paragliding | Clear days only; flights cancelled in bad weather |
+| HPCA Cricket Stadium | Open for visits on non-match days |
+| Cafes and Restaurants | Most open; some smaller places in Dharamkot close for a few weeks |
+| [Kangra Toy Train](/blog/kangra-toy-train-guide) | Check the current status; the line has had landslide closures |
+| [Kangra Fort](/blog/places-to-visit-in-kangra) | Open; warmer and sunnier at lower altitude |
 
-## Hotel Prices and Heating
+## Are hotels cheaper in Dharamshala in winter?
 
-Winter is the low season (outside Christmas and New Year week). Expect:
+Yes, outside the holiday week. December before about 20 December and most of January are low season, and rates usually drop after the New Year week, so ask for winter rates and longer-stay deals. From about 23 December to 2 January the town fills up and prices rise sharply. Compare live rates on our [Dharamshala and McLeod Ganj hotels page](/hotels).
 
-- **Mid-range double room:** approximately ₹1,500 to ₹3,000 per night, down from ₹3,000 to ₹5,000 in summer
-- **Budget room:** approximately ₹600 to ₹1,200
-- **Christmas/New Year week:** add 50 to 100 percent to the above
+**Heating matters.** Not every room has a heater. Before booking, confirm:
 
-**Heating matters.** Not all rooms come with heaters. Before booking, confirm:
-- Room heater (electric or blower) included or available for a charge (typically ₹200 to ₹500 per night)
-- 24-hour hot water (solar heaters may not suffice on cloudy winter days; electric geysers are more reliable)
-- Extra blankets or electric blankets
+- Room heater (electric or blower): included, or charged extra per night
+- 24-hour hot water (solar heaters struggle on cloudy winter days; electric geysers are more reliable)
+- Extra blankets or an electric blanket, and power backup
+- How you reach the door: some stays in Dharamkot and upper Bhagsu are up steps that turn icy after snow
 
-Read our [best hotels in Dharamshala guide](/blog/best-hotels-in-dharamshala) and filter for winter-friendly options, or [contact us](/contact) for recommendations.
+Read our [best hotels in Dharamshala guide](/blog/best-hotels-in-dharamshala), or [contact us](/contact) and we will tell you which properties stay warmest.
 
-## Road Conditions and Getting Here
+## Are the roads open in winter?
 
-Roads to Dharamshala are generally open all winter. However:
+Roads to Dharamshala stay open through winter, with a few caveats:
 
-- **Black ice** can form on the road between lower Dharamshala and McLeod Ganj, especially on early mornings after a cold night. Drive slowly or take a taxi.
-- **After heavy snowfall,** the McLeod Ganj road may be closed for a few hours until cleared. This is rare but happens 1 to 3 times per winter.
-- **Fog** in the Punjab plains can delay overnight buses from Delhi by 1 to 3 hours. If flying to [Kangra Airport](/blog/kangra-airport-gaggal-guide), fog-related cancellations happen occasionally in January.
+- **Black ice** can form on the road between lower Dharamshala and McLeod Ganj on early mornings after a cold night. Drive slowly or take a local taxi.
+- **After snowfall,** the roads to McLeod Ganj, Naddi and Dharamkot can be icy or blocked for a day. On 23-24 January 2026, 58 HRTC bus routes were suspended in Kangra district (The Tribune).
+- **Fog** in the Punjab plains can delay overnight buses from Delhi, and poor visibility sometimes disrupts flights to [Kangra Airport](/blog/kangra-airport-gaggal-guide) in winter.
 
-The safest winter travel approach: arrive by afternoon, do not drive the hill roads after dark, and keep a buffer day if you have a fixed return. Full transport details in our [how to reach guide](/blog/how-to-reach-dharamshala) and [Delhi to Dharamshala by bus](/blog/delhi-to-dharamshala-by-bus).
+Arrive by afternoon, avoid driving the hill roads after dark, and keep a buffer day if you have a fixed return. Not used to icy hill roads? Book a [local taxi with a driver who knows them](/taxi). Full details in our [how to reach guide](/blog/how-to-reach-dharamshala) and [Delhi to Dharamshala by bus](/blog/delhi-to-dharamshala-by-bus).
 
-## Best Winter Activities
+## What to do in Dharamshala in winter
 
 - **Snow photography** — When snow falls in McLeod Ganj, the prayer flags, monasteries and pine forests under white are unforgettable. The [photography guide](/blog/photography-spots-sunset-points-dharamshala) has the best vantage points.
-- **Kangra Valley in winter sun** — While McLeod Ganj is cold, the lower valley around Kangra Fort and Palampur is pleasantly warm (15 to 20°C during the day). A perfect day trip to escape the chill. [Kangra guide](/blog/places-to-visit-in-kangra).
+- **Kangra Valley in winter sun** — The lower valley around Kangra Fort and Palampur is noticeably warmer than McLeod Ganj, a good day trip to escape the chill. [Kangra guide](/blog/places-to-visit-in-kangra).
 - **Tibetan butter tea and thukpa** — The right season for hot Tibetan comfort food. [Tibetan food guide](/blog/tibetan-food-mcleod-ganj).
 - **Cafe hopping** — Settle into a window seat at a McLeod Ganj cafe with a view of snow-dusted rooftops. [Cafe guide](/blog/top-cafes-in-mcleod-ganj).
 - **Meditation and yoga retreats** — Winter is the quietest and most introspective season. Tushita and other centres run sessions through winter. [Meditation and yoga guide](/blog/meditation-yoga-retreats-dharamshala).
-- **Triund snow trek** — If trails are open and you have proper gear (waterproof boots, gaiters, trekking poles), a snowy Triund is spectacular. Do not attempt it after fresh heavy snowfall or without checking conditions locally. [Triund guide](/blog/triund-trek-complete-guide).
+- **Triund snow trek** — On a clear day, with microspikes, poles and ideally a guide, a snowy Triund is spectacular. Check the current permission rules first (past winter orders required SP Kangra permission and cancelled it on weather alerts) and never go after fresh heavy snow. Read the [Triund guide](/blog/triund-trek-complete-guide) or book a [guided Triund trek](/treks/triund-trek).
 
 ## What to Pack for Winter Dharamshala
 
@@ -232,43 +248,79 @@ The safest winter travel approach: arrive by afternoon, do not drive the hill ro
 
 If you plan to trek to Triund in snow, add gaiters, trekking poles, and a warm sleeping bag (comfort rating −5°C or lower). Full packing guidance in our [weather and packing guide](/blog/dharamshala-weather-what-to-pack).
 
-## Is December or January Too Cold?
+## Is December or January too cold to visit?
 
-It depends on what you are used to. If you live in Delhi, Jaipur or Mumbai, yes, it will feel very cold, especially at night. But during the day, with sunshine and no wind, it is actually pleasant to walk around in a jacket. The cold is manageable if you:
+It depends on what you are used to. Coming from Delhi, Jaipur or Mumbai, it will feel very cold, especially at night. But on a sunny, still day it is pleasant to walk around in a jacket. The cold is manageable if you:
 - Stay in a room with a heater
 - Dress in layers and carry a warm jacket everywhere
-- Plan outdoor activities for the 10 am to 4 pm window when the sun is out
+- Plan outdoor time for the 10 am to 4 pm window when the sun is out
 
-The reward for braving the cold is Dharamshala at its most beautiful and least crowded.`,
+The reward is Dharamshala at its clearest and least crowded.
+
+## What is confirmed and what is not (29 October 2026)
+
+- **Confirmed:** IMD long-term averages for Dharamshala town; the dated snowfalls in our log (latest 23-24 January 2026); the NYE Gala Night at Panchvati Cottages on 31 December 2026, 7 pm to about 2 am.
+- **Announced, details pending:** Kangra Valley Carnival, 24-31 December 2026 (no programme, venue plan or entry details yet).
+- **Not known yet:** whether it will snow in McLeod Ganj this winter (no one can say this far ahead; watch IMD Shimla), and whether the Kangra administration will issue a fresh winter order for treks above 3,000 m, as it did on 27 November 2024 and 6 January 2026.`,
     category: 'Seasons',
-    tags: ['december', 'january', 'winter', 'snow', 'dharamshala', 'christmas', 'new year', 'weather'],
+    tags: ['december', 'january', 'winter', 'snow', 'dharamshala', 'christmas', 'new year', 'weather', 'dharamshala in january', 'mcleod ganj snow', 'kangra valley carnival'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-10-11',
-    updated_at: '2026-10-11',
+    updated_at: '2026-10-29',
     image: placeImage('dharamshala-snow'),
     image_alt: 'Snow-covered McLeod Ganj with the Dhauladhar range in winter',
     read_time: 10,
     featured: false,
     meta_title: 'Dharamshala in December & January: Snow & Weather',
-    meta_description: 'Dharamshala in December and January: snow chances by week, Christmas and New Year, 20-40% hotel discounts, what is open, roads and packing (2026-27).',
-    related_slugs: ['dharamshala-in-winter-snowfall', 'dharamshala-christmas-new-year', 'dharamshala-weather-what-to-pack', 'himachal-snowfall-tracker', 'kangra-valley-carnival-2026'],
+    meta_description: 'Dharamshala in Dec-Jan 2026-27: cold clear days, snow in McLeod Ganj on a few days (mostly January), NYE parties, the 24-31 Dec carnival and packing.',
+    related_slugs: ['dharamshala-in-winter-snowfall', 'himachal-snowfall-tracker', 'kangra-valley-carnival-2026', 'dharamshala-christmas-new-year', 'mcleod-ganj-in-december', 'triund-trek-complete-guide', 'dharamshala-weather-what-to-pack'],
     faqs: [
       {
         question: 'Does it snow in McLeod Ganj in December and January?',
-        answer: 'McLeod Ganj (about 2,000 m) typically receives 2 to 5 snowfall episodes per winter, mostly between late December and February. During a week-long visit, you have roughly a 40 to 50 percent chance of seeing at least one snowfall. The snow usually melts in town within a day or two. Triund and higher areas get significantly more snow.',
+        answer: 'Sometimes, but only on a few days a winter and never guaranteed. Snow in McLeod Ganj falls mostly in January and early February; in late December it is possible but uncommon. The latest fall was on 23-24 January 2026, with 1-2 inches in parts of McLeod Ganj and about 3 inches in Dharamkot. Triund ridge (about 2,850 m) is usually white from December to March.',
       },
       {
-        question: 'Is December too cold to visit Dharamshala?',
-        answer: 'December is cold — daytime temperatures around 6 to 16°C and nights near or below freezing at McLeod Ganj — but perfectly manageable with warm clothing and a heated room. Daytime with sunshine is pleasant for walking and sightseeing. The trade-off is dramatic snow views, empty streets, and hotel rates 20 to 40 percent below summer.',
+        question: 'Is December or January better for snow in Dharamshala?',
+        answer: 'January. It is the coldest month and wetter than December, and five of the six dated snowfalls in our McLeod Ganj, Naddi and Dharamkot log fell between 21 January and 9 February. December is drier and sunnier, with clearer views but lower snow odds in town. For snow you can almost count on, go up to Triund.',
+      },
+      {
+        question: 'Where can I celebrate New Year 2027 in Dharamshala?',
+        answer: 'One option is the NYE Gala Night at Panchvati Cottages, Khaniara, on 31 December 2026 from 7 pm to about 2 am, with a DJ, bonfire and dinner; drinks are chargeable. Tickets are on the dharamshalastay.com New Year parties page, from Rs 500 online with 5% off. Bars, cafes and hotels in McLeod Ganj and Bhagsu also host New Year nights.',
+      },
+      {
+        question: 'When is the Kangra Valley Carnival 2026?',
+        answer: 'The Kangra district administration has announced the Kangra Valley Carnival for 24 to 31 December 2026 in Dharamshala, with an opening concert proposed at the cricket stadium (UNI, 30 September 2026). The programme, venue plan and entry details had not been published on 29 October 2026.',
+      },
+      {
+        question: 'Is Triund open in December and January?',
+        answer: 'Often, but check before you go. Triund is snowy and icy in midwinter, and in recent winters (27 November 2024 and 6 January 2026) the Kangra administration banned trekking above 3,000 m and required SP Kangra permission for Triund, cancelling permissions on weather alerts. Go on a clear day with microspikes and preferably a local guide.',
+      },
+      {
+        question: 'Are hotels cheaper in Dharamshala in January?',
+        answer: 'Usually, yes. Rates rise sharply from about 23 December to 2 January and usually drop after the New Year week, so January after the first few days is low season. Ask hotels for winter rates, and confirm a room heater, 24-hour hot water and power backup before you book.',
       },
       {
         question: 'Are roads to Dharamshala safe in winter?',
-        answer: 'The main roads to Dharamshala from Delhi, Chandigarh and Pathankot are open all winter and generally safe. The short stretch from lower Dharamshala to McLeod Ganj can have black ice on cold mornings — drive slowly or take a local taxi. After heavy snowfall, the McLeod Ganj road may close for a few hours until cleared. Fog in the Punjab plains can delay buses and flights.',
+        answer: 'The main roads from Delhi, Chandigarh and Pathankot stay open all winter. The stretch from lower Dharamshala to McLeod Ganj can have black ice on cold mornings, and after snowfall the roads to McLeod Ganj, Naddi and Dharamkot can be blocked for a day; on 23-24 January 2026, 58 HRTC bus routes were suspended in Kangra district. Fog in the plains can delay buses and flights.',
       },
       {
-        question: 'What is there to do in Dharamshala in winter?',
-        answer: 'Winter highlights include snow photography, Tibetan butter tea and thukpa in cosy cafes, visiting the Dalai Lama temple complex, meditation retreats (the quietest season), day trips to warmer Kangra Valley (Kangra Fort, tea gardens), Christmas services at colonial churches, and New Year celebrations. If conditions allow, a snowy Triund trek is spectacular with proper gear.',
+        question: 'Is December too cold to visit Dharamshala?',
+        answer: 'It is cold but manageable. Dharamshala town averages about 18°C by day and 7°C at night in December (IMD), and McLeod Ganj is roughly 3-5°C colder, with nights near freezing. Sunny days are pleasant for sightseeing in a jacket; pack thermals and book a room with a heater.',
       },
+    ],
+    sources: [
+      { title: 'Dharamshala climate normals 1991-2020, India Meteorological Department (via Wikipedia climate table; checked 29 October 2026)', url: 'https://en.wikipedia.org/wiki/Dharamshala' },
+      { title: 'IMD Meteorological Centre Shimla: forecasts and district warnings for Himachal Pradesh', url: 'https://mausam.imd.gov.in/shimla/' },
+      { title: 'Snowfall grips McLeodganj, cold wave tightens hold on Kangra (The Tribune, 25 January 2026)', url: 'https://www.tribuneindia.com/news/himachal/snowfall-grips-mcleodganj-cold-wave-tightens-hold-on-kangra/' },
+      { title: '58 bus routes suspended in Kangra as snowfall blankets McLeodganj (The Tribune, 24 January 2026)', url: 'https://www.tribuneindia.com/news/himachal/58-bus-routes-suspended-in-kangra-as-snowfall-blankets-mcleodganj/' },
+      { title: 'Naddi, Dal Lake draped in white (The Tribune, 2 February 2024)', url: 'https://www.tribuneindia.com/news/himachal/naddi-dal-lake-draped-in-white-586419' },
+      { title: 'Lower Dharamsala experiences snow after 6 years (The Tribune, 9 February 2019)', url: 'https://www.tribuneindia.com/news/archive/himachal/lower-dharamsala-experiences-snow-after-6-years-726214' },
+      { title: 'Snow at Dharamkot, Naddi, McLeodganj (The Tribune, 1 January 2011)', url: 'https://www.tribuneindia.com/2011/20110101/himachal.htm' },
+      { title: 'Kangra Valley Carnival to be held in Dharamsala from December 24 to 31 (UNI, 30 September 2026; checked 29 October 2026)', url: 'https://www.uniindia.com/north-india/culture-himachal-kangra-valley-carnival/198184' },
+      { title: 'Trekking above 3K metres in Kangra temporarily banned (The Hans India, 28 November 2024)', url: 'https://www.thehansindia.com/news/national/trekking-above-3k-metres-in-kangra-temporarily-banned-925286' },
+      { title: 'Himachal: Kangra administration bans trekking above 3,000 metres (The Week / PTI, 6 January 2026)', url: 'https://www.theweek.in/wire-updates/national/2026/01/06/himachal-kangra-administration-bans-trekking-above-3-000-metres.amp.html' },
+      { title: 'NYE Gala Night 2026 at Panchvati Cottages: tickets, timings and inclusions (Dharamshala Stay)', url: 'https://www.dharamshalastay.com/new-year-parties' },
+      { title: 'Tibet Museum: your visit (closed on Saturdays)', url: 'https://tibetmuseum.org/your-visit/' },
     ],
   },
   {

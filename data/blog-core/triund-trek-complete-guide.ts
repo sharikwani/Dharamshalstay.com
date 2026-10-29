@@ -7,7 +7,7 @@ export const override: Partial<BlogPost> = {
   meta_title: 'Triund Trek 2026: Distance, Fees, Winter Rules & Route',
   meta_description:
     'Triund trek: about 6-7 km (3-5 h) from Gallu Devi or 9 km from McLeod Ganj to 2,850 m. ₹100 entry, camping rules, winter snow and how to book.',
-  updated_at: '2026-10-26',
+  updated_at: '2026-10-29',
   read_time: 14,
   image_alt: 'Triund ridge meadow at about 2,850 m with the snow-streaked Dhauladhar wall behind it, above McLeod Ganj',
   tags: ['triund', 'triund trek', 'triund trek 2026', 'triund in winter', 'trekking', 'dharamshala', 'mcleod ganj treks', 'hiking', 'camping'],
@@ -16,7 +16,9 @@ export const override: Partial<BlogPost> = {
 
 Want it organised for you? Our guided [Triund trek](/treks/triund-trek) starts from **₹1,500 per person** with a local guide and forest permits. Prefer a private guide for your group? Choose one of our approved [local guides in McLeod Ganj](/local-guides). For the night on the ridge itself, read the [Triund camping guide](/blog/triund-camping-guide).
 
-## Triund Trek: Quick Facts (checked 26 October 2026)
+> **Triund status (checked 29 October 2026):** **Open; we found no closure order.** **Entry:** a permit slip from the Forest Department checkpost at Gallu, ₹100 per person for a day hike or ₹275 per person to camp, with your ID details recorded; entry is now capped at **1,000 people a day** (DFO Dharamshala, reported 5-6 October 2026). **Registration:** compulsory at the Gallu Temple checkpost under the District Magistrate's order of November 2025. **Camping:** allowed with the camping slip and within the caps; we found no 2026 order banning it, and no specific rule for winter camping. **Winter order:** on 6 January 2026 the Kangra District Disaster Management Authority banned all trekking above 3,000 m and made prior SP Kangra permission mandatory for Triund, Kareri and Adi Himani Chamunda, with permissions cancelled whenever the Shimla Met office issues a warning or alert (The Week / PTI). No end date was published and we have not seen it withdrawn, nor a new order for winter 2026-27 yet; the previous one came on 27 November 2024, so expect one from late November. **Not confirmed:** the ₹500 waste deposit reported in August 2026. **Snow:** the ridge usually holds snow and ice from December to March; carry microspikes, start by 8 am and be heading down by about 1 pm. Unsure? [Book a guided trek](/treks) or [ask us](/contact) for that week's position.
+
+## Triund Trek: Quick Facts (checked 29 October 2026)
 
 | Detail | Info |
 |---|---|
@@ -27,8 +29,9 @@ Want it organised for you? Our guided [Triund trek](/treks/triund-trek) starts f
 | Height gain | About 750 m from Gallu Devi; about 1,000 m from McLeod Ganj |
 | Time | 3-5 h up, 2-3 h down from Gallu Devi |
 | Difficulty | Moderate: gentle forest to Magic View, then steep switchbacks (the "22 bends") |
-| Entry fee | ₹100 per person per day (Forest Department, cut from ₹200 in January 2024; still quoted at ₹100 in March 2026 reports) |
-| Camping fee | ₹550 per two-person tent including entry (January 2024 revision), quoted as ₹275 per person per day in March 2026 |
+| Entry fee | ₹100 per person per day (Forest Department, cut from ₹200 in January 2024; confirmed by the DFO in October 2026) |
+| Camping fee | ₹275 per person (DFO, October 2026), which matches the ₹550 per two-person tent of the January 2024 revision |
+| Daily cap | 1,000 visitors a day, slips issued at the checkpost (DFO Dharamshala, October 2026) |
 | Waste deposit | ₹500 refundable deposit reported in August 2026; we could not find an official notice, so carry ₹500 extra in cash (see below) |
 | Permit / registration | Register and pay at the Gallu checkpost; carry photo ID and keep the receipt. Winter orders have required SP Kangra permission |
 | Best months | October-November (clearest), April-June; avoid July-August |
@@ -36,7 +39,7 @@ Want it organised for you? Our guided [Triund trek](/treks/triund-trek) starts f
 | Parking | Limited roadside space near the Gallu Devi road head; a taxi drop is simpler |
 | Mobile signal | Patchy on the trail, often back near the top; none beyond Triund |
 | Water and toilets | No piped water on the ridge; shacks sell bottled water in season. Toilets very limited |
-| Status on 26 Oct 2026 | No closure order for Triund found. The January 2026 winter order had no published end date; expect fresh winter orders from late December |
+| Status on 29 Oct 2026 | No closure order for Triund found. The January 2026 winter order had no published end date; past winter orders came on 27 Nov 2024 and 6 Jan 2026, so expect a fresh one from late November |
 | Book a guided trek | From ₹1,500 per person: [Triund trek](/treks/triund-trek) |
 
 ## Where does the Triund trek start?
@@ -105,7 +108,7 @@ What we could confirm, with dates:
 - **Entry fee: ₹100 per person per day.** The Dharamsala Forest Circle cut it from ₹200 to ₹100 in January 2024 (The Tribune, 15 January 2024), collected at the Gallu checkpost. A March 2026 report still lists ₹100 and says entering without a valid receipt can bring a ₹5,000 fine.
 - **Camping (tenting) fee: ₹550 for a two-person tent including entry** (January 2024), which matches the ₹275 per person per day quoted in March 2026.
 - **Exemptions:** registered local guides of recognised adventure operators (registered under the HP Miscellaneous Adventure Activities Rules, 2021) pay no fee, per the January 2024 report.
-- **Daily cap:** Aaj Tak reported on 6 October 2026, quoting the Dharamshala DFO, that entry is now limited to **1,000 visitors a day**, with permit slips issued at the checkpost (₹100 for a day hike, ₹275 for camping). An earlier proposal (January 2024) by the Eco Tourism Society was 400 trekkers a day, 40 overnight visitors and 20 tents. In peak weeks, start early so you are not turned back.
+- **Daily cap:** The North News (5 October 2026) and Aaj Tak (6 October 2026) reported DFO Dharamshala Amit Sharma saying entry is now limited to **1,000 visitors a day**, the approved carrying capacity of the Triund landscape, after about 1,700 slips were issued over a long weekend. Slips are issued at the checkpost after ID details are recorded (₹100 for a day hike, ₹275 for camping), no one may go up without one, and operators are asked to check with the Forest Department before taking advance bookings. The department also plans drinking water on top by 31 December 2026, plus a gazebo and dry toilets. The earlier rule (agreed by the Eco Tourism Society in November 2023) was 400 trekkers a day, 40 overnight visitors and 20 tents. In peak weeks, start early so you are not turned back.
 - **Waste deposit (reported, not confirmed by us):** the Hindi news site Khabargaon (17 August 2026, citing unnamed media reports) says the Dharamshala Forest Circle began a "carry back waste" rule on **11 August 2026**: a **refundable ₹500 deposit** at the trek entry point, returned when trekkers bring their waste back down. Some travel blogs add that a garbage bag is handed out and attribute the rule to The Tribune, but we could not find that report or any official notice, and the Aaj Tak report of 6 October 2026 on the Forest Department daily cap did not mention a deposit. Carry an extra ₹500 in cash in case it is collected and confirm at the checkpost.
 - **Management:** in late March 2026 the Forest Department opened tenders to hand day-to-day trek management (entry and operations) to a private operator, and tourism groups protested on 31 March 2026. We have not been able to confirm who won or whether the fees changed; the March reports say fees remain fixed by the Forest Department.
 
@@ -113,7 +116,7 @@ If you book our [guided Triund trek](/treks/triund-trek), forest permits are inc
 
 ## Is Triund open now? Rules for 2026
 
-As of **26 October 2026** we found **no order closing Triund**. What applies:
+As of **29 October 2026** we found **no order closing Triund**. What applies:
 
 - **Register at Gallu.** Since November 2025, registration at the Gallu Temple checkpost is mandatory under District Magistrate orders, and trekking without it can lead to action under the Disaster Management Act.
 - **The 3,000 m rule.** On **6 January 2026** the Kangra District Disaster Management Authority banned all trekking above 3,000 m and required prior permission from the **SP Kangra** office for Triund, Kareri and Adi Himani Chamunda, with all permissions cancelled automatically when the Shimla Met office issues a warning or alert. No end date was published. Triund ridge itself is just under 3,000 m; Snowline and Laka Got are above it.
@@ -132,8 +135,10 @@ As of **26 October 2026** we found **no order closing Triund**. What applies:
 | Date | What happened | Source |
 |---|---|---|
 | 30 Dec 2022 | Kangra administration banned trekking above 3,000 m to stop people going beyond Triund; the DC called it more of an advisory | The Tribune |
-| Dec 2024 - Jan 2025 | Ban above 3,000 m with SP Kangra permission; the DC said there was no ban on Triund areas below 3,000 m; nine tour operators were booked for taking tourists to Triund despite the ban | The Tribune, 3 Jan 2025 |
-| 6 Jan 2026 | Ban above 3,000 m; SP Kangra permission for Triund, permissions cancelled on any weather alert | The Tribune / PTI, 6 Jan 2026 |
+| 27 Nov 2024 | Ban above 3,000 m "until further notice"; SP Kangra permission for Triund, Kareri and Adi Himani Chamunda, cancelled automatically on weather alerts; paragliding near the Dhauladhar barred | The Hans India, 28 Nov 2024 |
+| Jan 2025 | The DC said there was no ban on Triund areas below 3,000 m; nine tour operators were booked for taking tourists to Triund despite the ban | The Tribune, 3 Jan 2025 |
+| 6 Jan 2026 | Ban above 3,000 m; SP Kangra permission for Triund, permissions cancelled on any weather alert; no end date | The Tribune / PTI, 6 Jan 2026 |
+| 29 Oct 2026 | No new order for winter 2026-27 seen yet | Our check of news reports |
 
 **Snow by month (Triund ridge):**
 
@@ -210,23 +215,23 @@ Our [weather and packing guide](/blog/dharamshala-weather-what-to-pack) and [ATM
 
 **Dharamkot** puts you closest to Gallu Devi and suits early starts; **McLeod Ganj** has the most rooms, food and taxis; **Bhagsu** sits in between. Browse [hotels in Dharamkot and McLeod Ganj](/hotels), read our [best hotels in McLeod Ganj](/blog/best-hotels-in-mcleod-ganj) guide, or plan the whole weekend with our [Dharamshala weekend itinerary](/blog/dharamshala-weekend-itinerary).
 
-## What is confirmed and what is not (26 October 2026)
+## What is confirmed and what is not (29 October 2026)
 
-- **Confirmed:** ₹100 entry fee and ₹550 two-person tent fee (Jan 2024, still quoted March 2026); registration at Gallu (Nov 2025); the January 2026 SP-permission rule for Triund; the March 2026 tender for private management.
-- **Not confirmed by us:** the ₹500 waste deposit from 11 August 2026 (reported, no official notice found); who now runs the trek under the tender; whether the 2024 tent caps were revised; any checkpost cut-off time.
-- **Likely but not yet issued:** a new winter order for 2026-27 restricting trekking above 3,000 m.
+- **Confirmed:** ₹100 day-hike and ₹275 camping slips and the 1,000-a-day cap (DFO Dharamshala, October 2026); registration at Gallu (Nov 2025); the January 2026 SP-permission rule for Triund; the March 2026 tender for private management.
+- **Not confirmed by us:** the ₹500 waste deposit from 11 August 2026 (reported, no official notice found); who now runs the trek under the tender; whether the 2023 caps of 20 tents and 40 overnight visitors still apply alongside the new daily cap; any checkpost cut-off time; any winter-specific camping rule.
+- **Likely but not yet issued:** a new winter order for 2026-27 restricting trekking above 3,000 m (previous ones: 27 November 2024 and 6 January 2026).
 
 Rules here change at short notice. If you are unsure, ask at the Gallu checkpost or [message us](/contact) and we will tell you what we hear locally that week.`,
   faqs: [
     {
       question: 'How long is the Triund trek?',
       answer:
-        'About 6-7 km one way from Gallu Devi temple above Dharamkot, where the trail starts, or about 9 km if you walk from McLeod Ganj. Most people take 3-5 hours up and 2-3 hours down from Gallu Devi, climbing about 750 m to the 2,850 m ridge.',
+        'About 6-7 km one way from Gallu Devi temple above Dharamkot, where the trail and the forest checkpost are (about 2.5 km by road from McLeod Ganj main square), or about 9 km if you walk from McLeod Ganj. Most people take 3-5 hours up and 2-3 hours down from Gallu Devi, climbing about 750 m to the 2,850 m ridge.',
     },
     {
       question: 'What is the Triund trek fee in 2026?',
       answer:
-        'The Forest Department entry fee is ₹100 per person per day, paid at the Gallu checkpost, and camping is ₹550 per two-person tent including entry (the January 2024 rates, still quoted in March 2026). A refundable ₹500 waste deposit from 11 August 2026 has been reported but we could not find the official notice, so carry extra cash and photo ID.',
+        'A permit slip from the Forest Department checkpost at Gallu costs ₹100 per person for a day hike and ₹275 per person to camp, and entry is capped at 1,000 people a day (DFO Dharamshala, October 2026). Carry photo ID. A refundable ₹500 waste deposit from 11 August 2026 has been reported, but we could not find an official notice, so carry extra cash in case it is collected.',
     },
     {
       question: 'Is Triund trek difficult for beginners?',
@@ -239,19 +244,19 @@ Rules here change at short notice. If you are unsure, ask at the Gallu checkpost
         'Yes. Leave Gallu Devi by about 8 am and most fit walkers reach the top by late morning and are back down before dark. An overnight camp adds sunset and sunrise, but tents are capped and must be arranged through a permitted operator.',
     },
     {
-      question: 'Is Triund open in winter?',
+      question: 'Is Triund open in December and January?',
       answer:
-        'Often, but not always. In recent winters (December 2022, December 2024 and January 2026) the Kangra administration banned trekking above 3,000 m and required SP Kangra permission for Triund, with permissions cancelled on weather alerts. Triund ridge usually has snow from December to March, so go on a clear day with microspikes and a guide.',
+        'Often, but check first. As of 29 October 2026 no closure order was in force, but in recent winters (30 December 2022, 27 November 2024 and 6 January 2026) the Kangra administration banned trekking above 3,000 m and required SP Kangra permission for Triund, with permissions cancelled on any weather alert. A new order for winter 2026-27 is likely. Go on a clear day, with microspikes and preferably a local guide.',
+    },
+    {
+      question: 'Is there snow at Triund in winter?',
+      answer:
+        'Usually, yes. Triund ridge (about 2,850 m) is the most reliable snow you can reach in a day from McLeod Ganj, typically from December to March, with January the likeliest month for deep snow. The 22 bends below the ridge hold ice longest, so carry microspikes and poles, start by 8 am and be heading down by about 1 pm.',
     },
     {
       question: 'Is camping allowed at Triund in 2026?',
       answer:
-        'Yes, within limits. Overnight stays are capped (reported as 20 tents and 40 people) and arranged through permitted operators at about ₹550 per two-person tent. We found no official order banning camping in 2026, but permissions can be cancelled in bad weather and winter camping depends on the orders for that season.',
-    },
-    {
-      question: 'Where does the Triund trek start?',
-      answer:
-        'At Gallu Devi temple above Dharamkot, about 2.5 km by road from McLeod Ganj main square, where the forest checkpost and trekker registration are. Take a taxi to Dharamkot (approx. ₹200-300 per vehicle) or walk up from McLeod Ganj, which adds 1-1.5 hours.',
+        'Yes, within limits. Camping needs a ₹275 per person slip from the Forest Department checkpost (October 2026), and the 2023 rules capped the ridge at 20 tents and 40 overnight visitors. We found no official order banning camping in 2026, but permissions can be cancelled in bad weather and winter camping depends on the orders for that season.',
     },
     {
       question: 'How do I book a guided Triund trek?',
@@ -264,10 +269,14 @@ Rules here change at short notice. If you are unsure, ask at the Gallu checkpost
     { title: 'Himachal Pradesh Forest Dept slashes Triund trekking fee by half (The Tribune, 15 January 2024)', url: 'https://www.tribuneindia.com/news/himachal/himachal-pradesh-forest-dept-slashes-triund-trekking-fee-by-half-581249' },
     { title: 'Kangra administration bans trekking above 3,000 m to ensure tourist safety (The Tribune / PTI, 6 January 2026)', url: 'https://www.tribuneindia.com/news/himachal/kangra-administration-bans-trekking-above-3000-m-to-ensure-tourist-safety/' },
     { title: 'Himachal: Kangra administration bans trekking above 3,000 metres (The Week / PTI, 6 January 2026)', url: 'https://www.theweek.in/wire-updates/national/2026/01/06/himachal-kangra-administration-bans-trekking-above-3-000-metres.amp.html' },
+    { title: 'Trekking above 3K metres in Kangra temporarily banned (The Hans India, 28 November 2024)', url: 'https://www.thehansindia.com/news/national/trekking-above-3k-metres-in-kangra-temporarily-banned-925286' },
     { title: 'Tiff among hoteliers, admin over ban on trekking to Triund (The Tribune, 3 January 2025)', url: 'https://www.tribuneindia.com/news/himachal/tiff-among-hoteliers-admin-over-ban-on-trekking-to-triund/' },
     { title: 'Trekking beyond 3,000 m banned in Kangra district (The Tribune, 31 December 2022)', url: 'https://www.tribuneindia.com/news/himachal/trekking-beyond-3-000-m-banned-in-kangra-district-466046' },
     { title: 'Check posts set up at 10 entry points to strengthen safety of trekkers in Kangra (The Tribune, 15 November 2025)', url: 'https://www.tribuneindia.com/news/himachal/check-posts-set-up-at-10-entry-points-to-strengthen-safety-of-trekkers-in-kangra/' },
-    { title: 'Triund trek: entry limited to 1,000 tourists a day, hiking permit Rs 100 and camping Rs 275 (Aaj Tak, 6 October 2026)', url: 'https://www.aajtak.in/india/himachal-pradesh/story/himachal-pradesh-triund-trek-entry-limited-to-1000-tourists-daily-lclar-strc-2663021-2026-10-06' },
+    { title: 'Triund trek: entry limited to 1,000 tourists a day, hiking permit Rs 100 and camping Rs 275 (Aaj Tak, 6 October 2026; checked 29 October 2026)', url: 'https://www.aajtak.in/india/himachal-pradesh/story/himachal-pradesh-triund-trek-entry-limited-to-1000-tourists-daily-lclar-strc-2663021-2026-10-06' },
+    { title: 'Triund tourist entry capped at 1,000 per day after long weekend rush (The North News, 5 October 2026; checked 29 October 2026)', url: 'https://www.thenorthnews.in/triund-tourist-entry-capped-at-1000-per-day-after-long-weekend-rush/' },
+    { title: 'Triund trek faces new regulations, backlash: 400 a day, 20 tents, 40 overnight (Tibet Express citing The Tribune, 5 December 2023)', url: 'https://tibetexpress.net/triund-trek-faces-new-regulations-backlash/' },
+    { title: 'IMD Meteorological Centre Shimla: forecasts and district warnings (the alerts that cancel trek permissions)', url: 'https://mausam.imd.gov.in/shimla/' },
     { title: 'Triund trek carry-back waste rule, Rs 500 deposit (Khabargaon, Hindi, 17 August 2026; secondary report, no official notice found)', url: 'https://khabargaon.com/state/triund-trek-carry-back-waste-rule-rs-500-deposit-and-refund-himachal-pradesh/32885' },
     { title: 'Kangra administration makes registration compulsory for trekkers (The Tribune, 8 July 2026)', url: 'https://www.tribuneindia.com/news/himachal/kangra-administration-makes-registration-compulsory-for-trekkers/' },
     { title: 'Famous Triund trek in Dharamshala is now privatised (Ground Report, 30 March 2026)', url: 'https://www.groundreport.in/viral/famous-triund-trek-in-dharamshala-is-now-privatised-check-new-rules/' },
