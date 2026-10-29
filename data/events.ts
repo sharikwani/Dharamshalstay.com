@@ -26,6 +26,10 @@ export type DharamshalaEvent = {
   /** Our related guide. */
   page?: string;
   image: PlaceImageKey;
+  /** Who runs it, only when a source names them (Google Events: organizer). */
+  organizer?: string;
+  /** Open to the public without a ticket (Google Events: a free offer). */
+  free?: boolean;
 };
 
 export const eventsChecked = '2026-10-20';
@@ -37,7 +41,7 @@ export const EVENTS: DharamshalaEvent[] = [
     summary: 'The 15th edition of the independent film festival in the hills: Indian and international films, talks and filmmaker Q&As over four days.',
     pack: { title: 'Film festival stay', nights: '3-4 nights', includes: ['Hotel near TCV or McLeod Ganj', 'Pickup from Gaggal airport or the Dharamshala bus stand', 'Daily taxi to TCV on request', 'Help with festival passes (bought on the DIFF site)'] },
     sources: [{ label: 'Time Out India: DIFF 2026 passes on sale', url: 'https://www.timeout.com/india/news/tickets-for-diff-go-live-on-september-22-a-film-festival-in-the-hills-092126' }],
-    page: '/blog/dharamshala-film-festival-diff-2026', image: 'tibet-museum',
+    page: '/blog/dharamshala-film-festival-diff-2026', image: 'tibet-museum', organizer: 'Dharamshala International Film Festival',
   },
   {
     id: 'kangra-valley-carnival-2026', name: 'Kangra Valley Carnival 2026', start: '2026-12-24', end: '2026-12-31', status: 'expected',
@@ -46,7 +50,7 @@ export const EVENTS: DharamshalaEvent[] = [
     pack: { title: 'Christmas and New Year week', nights: '3-7 nights', includes: ['Hotel in McLeod Ganj, Dharamkot or Dharamshala town', 'Airport or bus stand pickup and drop', 'A local sightseeing day by taxi', 'Optional Triund trek or paragliding'] },
     note: 'Dates from one news report; the final programme is not out yet. Hotels fill early for 24-31 December, so ask soon.',
     sources: [{ label: 'UNI: Kangra Valley Carnival plans', url: 'https://www.uniindia.com/north-india/culture-himachal-kangra-valley-carnival/198184' }],
-    page: '/blog/kangra-valley-carnival-2026', image: 'mcleod-ganj',
+    page: '/blog/kangra-valley-carnival-2026', image: 'mcleod-ganj', organizer: 'Kangra district administration',
   },
   {
     id: 'snow-season-2027', name: 'Snow season in McLeod Ganj, Naddi and Triund', start: '2027-01-01', end: '2027-02-28', status: 'usual',
@@ -64,7 +68,7 @@ export const EVENTS: DharamshalaEvent[] = [
     pack: { title: 'Losar in McLeod Ganj', nights: '3 nights', includes: ['Hotel walking distance from the temple', 'Pickup and drop', 'A monastery day: Tsuglagkhang, Norbulingka and Gyuto by taxi', 'Tibetan food tips from our team'] },
     note: 'Expected date from published calendars; the Men-Tsee-Khang Tibetan calendar fixes it. Some shops and restaurants close for the first days.',
     sources: [{ label: 'Office Holidays: Losar dates', url: 'https://www.officeholidays.com/holidays/losar' }],
-    page: '/monasteries-meditation', image: 'prayer-flags',
+    page: '/monasteries-meditation', image: 'prayer-flags', free: true,
   },
   {
     id: 'long-life-prayer-2027-02', name: 'Long Life Prayer for the Dalai Lama', start: '2027-02-24', status: 'confirmed',
@@ -73,7 +77,7 @@ export const EVENTS: DharamshalaEvent[] = [
     pack: { title: 'Temple visit stay', nights: '2-3 nights', includes: ['Hotel near Temple Road', 'Pickup and drop', 'Early-morning taxi to the temple if you stay further away', 'Advice on security checks and what to carry'] },
     note: 'His official schedule says events are subject to change. Phones and bags are usually not allowed inside; plan to queue early.',
     sources: [{ label: 'dalailama.com schedule', url: 'https://www.dalailama.com/schedule' }],
-    page: '/blog/dalai-lama-temple-guide', image: 'tsuglagkhang',
+    page: '/blog/dalai-lama-temple-guide', image: 'tsuglagkhang', free: true,
   },
   {
     id: 'chaitra-navratri-2027', name: 'Chaitra Navratri 2027 at Chamunda Devi and Jwalaji', start: '2027-04-07', end: '2027-04-15', status: 'expected',
@@ -82,7 +86,7 @@ export const EVENTS: DharamshalaEvent[] = [
     pack: { title: 'Navratri temple circuit', nights: '2-3 nights', includes: ['Hotel in Dharamshala town (closest to the temples)', 'Full-day taxi: Chamunda Devi, Kangra Devi and Jwalaji', 'Early start to beat the queues', 'Pickup from Gaggal airport or Pathankot station'] },
     note: 'Start date from a published panchang; temple timings change during Navratri.',
     sources: [{ label: 'Dekho Panchang: Chaitra Navratri 2027', url: 'https://dekhopanchang.com/en/festivals/chaitra-navratri/2027' }],
-    image: 'chamunda-devi',
+    image: 'chamunda-devi', free: true,
   },
   {
     id: 'saga-dawa-2027', name: 'Saga Dawa Duchen 2027', start: '2027-05-20', status: 'expected',
@@ -91,7 +95,7 @@ export const EVENTS: DharamshalaEvent[] = [
     pack: { title: 'Saga Dawa stay', nights: '2 nights', includes: ['Hotel near the temple and kora', 'Pickup and drop', 'A quiet monastery day by taxi'] },
     note: 'Expected date from published calendars; confirm with the Tibetan calendar nearer the time.',
     sources: [{ label: 'Office Holidays: Buddha Purnima / Saga Dawa', url: 'https://www.officeholidays.com/holidays/india/sikkim/buddha-purnima' }],
-    page: '/monasteries-meditation', image: 'tibetan-monks-ceremony',
+    page: '/monasteries-meditation', image: 'tibetan-monks-ceremony', free: true,
   },
   {
     id: 'dalai-lama-birthday-2027', name: 'Dalai Lama’s birthday (6 July)', start: '2027-07-06', status: 'usual',
@@ -100,7 +104,7 @@ export const EVENTS: DharamshalaEvent[] = [
     pack: { title: 'Birthday celebrations', nights: '2-3 nights', includes: ['Hotel near Temple Road', 'Pickup and drop', 'Monsoon-safe taxi'] },
     note: 'The 2027 programme is not announced, and His Holiness is not always in Dharamshala on the day. July is monsoon season.',
     sources: [{ label: 'Daily Pioneer: 91st birthday in Himachal (2026)', url: 'https://dailypioneer.com/news/dalai-lama---s-91st-birthday-celebrated-across-himachal-pradesh' }],
-    image: 'tsuglagkhang',
+    image: 'tsuglagkhang', free: true,
   },
 ];
 
