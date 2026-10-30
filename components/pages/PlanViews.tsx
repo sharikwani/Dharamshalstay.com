@@ -100,9 +100,9 @@ export function EventsView() {
           startDate: e.start, endDate: e.end || e.start, eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
           eventStatus: 'https://schema.org/EventScheduled', location: placeLd(e.venue, e.venue.includes('Dharamshala') ? 'Dharamshala' : 'McLeod Ganj'),
           image: siteConfig.url + placeImage(e.image), url: siteConfig.url + '/events#' + e.id,
-          ...(e.organizer ? { organizer: { '@type': 'Organization', name: e.organizer } } : {}),
+          ...(e.organizer ? { organizer: { '@type': 'Organization', name: e.organizer, ...(e.organizerUrl ? { url: e.organizerUrl } : {}) } } : {}),
           // Free public events say so; ticketed ones without a published price get no offer rather than a guessed one.
-          ...(e.free ? { isAccessibleForFree: true, offers: { '@type': 'Offer', price: 0, priceCurrency: 'INR', availability: 'https://schema.org/InStock', url: siteConfig.url + '/events#' + e.id } } : {}),
+          ...(e.free ? { isAccessibleForFree: true, offers: { '@type': 'Offer', price: 0, priceCurrency: 'INR', availability: 'https://schema.org/InStock', validFrom: eventsChecked + 'T00:00:00+05:30', url: siteConfig.url + '/events#' + e.id } } : {}),
         })),
         faqSchema(EVENTS_FAQS),
       ]} />

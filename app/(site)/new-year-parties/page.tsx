@@ -82,7 +82,7 @@ export default function NewYearPartiesPage() {
           '@context': 'https://schema.org', '@type': 'Event', name: featured.name,
           startDate: featured.date + 'T19:00:00+05:30', endDate: '2027-01-01T02:00:00+05:30', image: [siteConfig.url + featured.image], eventStatus: 'https://schema.org/EventScheduled', eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
           location: { '@type': 'Place', name: featured.venue, address: { '@type': 'PostalAddress', streetAddress: 'Khaniara', addressLocality: 'Dharamshala', addressRegion: 'Himachal Pradesh', addressCountry: 'IN' } },
-          organizer: { '@id': siteConfig.url + '/#organization' }, url: siteConfig.url + '/new-year-parties', description: featured.summary,
+          organizer: { '@type': 'Organization', '@id': siteConfig.url + '/#organization', name: siteConfig.name, url: siteConfig.url }, url: siteConfig.url + '/new-year-parties', description: featured.summary,
           ...(onSale ? { offers: featured.ticketTypes.map((t) => ({ '@type': 'Offer', name: t.name, price: ticketPrice(t.price, featured.discountPct), priceCurrency: 'INR', availability: 'https://schema.org/InStock', validFrom: '2026-10-29T00:00:00+05:30', url: siteConfig.url + '/new-year-parties' })) } : {}),
         },
       ]} />

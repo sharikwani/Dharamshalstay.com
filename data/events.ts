@@ -28,6 +28,8 @@ export type DharamshalaEvent = {
   image: PlaceImageKey;
   /** Who runs it, only when a source names them (Google Events: organizer). */
   organizer?: string;
+  /** The organizer's official website (Google Events: organizer.url). */
+  organizerUrl?: string;
   /** Open to the public without a ticket (Google Events: a free offer). */
   free?: boolean;
 };
@@ -41,7 +43,7 @@ export const EVENTS: DharamshalaEvent[] = [
     summary: 'The 15th edition of the independent film festival in the hills: Indian and international films, talks and filmmaker Q&As over four days.',
     pack: { title: 'Film festival stay', nights: '3-4 nights', includes: ['Hotel near TCV or McLeod Ganj', 'Pickup from Gaggal airport or the Dharamshala bus stand', 'Daily taxi to TCV on request', 'Help with festival passes (bought on the DIFF site)'] },
     sources: [{ label: 'Time Out India: DIFF 2026 passes on sale', url: 'https://www.timeout.com/india/news/tickets-for-diff-go-live-on-september-22-a-film-festival-in-the-hills-092126' }],
-    page: '/blog/dharamshala-film-festival-diff-2026', image: 'tibet-museum', organizer: 'Dharamshala International Film Festival',
+    page: '/blog/dharamshala-film-festival-diff-2026', image: 'tibet-museum', organizer: 'Dharamshala International Film Festival', organizerUrl: 'https://diff.co.in/',
   },
   {
     id: 'kangra-valley-carnival-2026', name: 'Kangra Valley Carnival 2026', start: '2026-12-24', end: '2026-12-31', status: 'expected',
@@ -50,7 +52,7 @@ export const EVENTS: DharamshalaEvent[] = [
     pack: { title: 'Christmas and New Year week', nights: '3-7 nights', includes: ['Hotel in McLeod Ganj, Dharamkot or Dharamshala town', 'Airport or bus stand pickup and drop', 'A local sightseeing day by taxi', 'Optional Triund trek or paragliding'] },
     note: 'Dates from one news report; the final programme is not out yet. Hotels fill early for 24-31 December, so ask soon.',
     sources: [{ label: 'UNI: Kangra Valley Carnival plans', url: 'https://www.uniindia.com/north-india/culture-himachal-kangra-valley-carnival/198184' }],
-    page: '/blog/kangra-valley-carnival-2026', image: 'mcleod-ganj', organizer: 'Kangra district administration',
+    page: '/blog/kangra-valley-carnival-2026', image: 'mcleod-ganj', organizer: 'Kangra district administration', organizerUrl: 'https://hpkangra.nic.in/',
   },
   {
     id: 'snow-season-2027', name: 'Snow season in McLeod Ganj, Naddi and Triund', start: '2027-01-01', end: '2027-02-28', status: 'usual',
