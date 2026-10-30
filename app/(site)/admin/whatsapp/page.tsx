@@ -24,6 +24,15 @@ async function api(path: string, init?: RequestInit) {
   return json;
 }
 
+/** Run fn now and every ms while the tab is visible; paused in the background, re-run on return. Returns the cleanup. */
+function whileVisible(fn: () => void, ms: number) {
+  fn();
+  const t = setInterval(() => { if (document.visibilityState === 'visible') fn(); }, ms);
+  const wake = () => { if (document.visibilityState === 'visible') fn(); };
+  document.addEventListener('visibilitychange', wake);
+  return () => { clearInterval(t); document.removeEventListener('visibilitychange', wake); };
+}
+
 function Inbox() {
   const params = useSearchParams();
   const [convs, setConvs] = useState<Conv[]>([]);
@@ -53,8 +62,9 @@ function Inbox() {
     try { setThread(await api(`/api/admin/whatsapp/conversations/${openId}`)); } catch (e: any) { setError(e.message); }
   }, [openId]);
 
-  useEffect(() => { loadList(); const t = setInterval(loadList, 5000); return () => clearInterval(t); }, [loadList]);
-  useEffect(() => { loadThread(); const t = setInterval(loadThread, 5000); return () => clearInterval(t); }, [loadThread]);
+  // Poll only while the tab is on screen (a forgotten background tab drained the Supabase Disk IO budget), and catch up on return.
+  useEffect(() => whileVisible(loadList, 15000), [loadList]);
+  useEffect(() => whileVisible(loadThread, 8000), [loadThread]);
   useEffect(() => { bottom.current?.scrollIntoView({ block: 'end' }); }, [thread?.messages.length]);
   useEffect(() => {
     api('/api/admin/whatsapp/settings')
