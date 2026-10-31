@@ -32,7 +32,7 @@ This guide covers the New Year trip: parties, traffic, getting here, where to st
 
 - **When:** Thursday 31 December 2026, gates open 7 pm, ends around 2 am
 - **Included:** DJ, bonfire, 3 vegetarian and 3 non-vegetarian starters, and a main-course dinner
-- **Drinks:** soft drinks are included; alcohol is charged separately at the bar
+- **Drinks:** all drinks, including alcohol and soft drinks, are included in the ticket; nothing is charged separately
 - **How to pay:** pay in full online, or pay ₹500 online to book and the rest at Panchvati at entry
 - **Your ticket:** a ticket card with a QR code, sent by WhatsApp and email
 
@@ -183,7 +183,7 @@ More checked facts are on our [Dharamshala facts page](/facts).`,
     faqs: [
       {
         question: 'Where is the New Year party in Dharamshala 2026?',
-        answer: 'The NYE Gala Night 2026 is at Panchvati Cottages in Khaniara, Dharamshala, on Thursday 31 December 2026 from 7 pm to about 2 am, with a DJ, bonfire, starters and dinner (soft drinks included, alcohol extra). Couple tickets are 3,999 rupees, or 3,799 rupees booked online at dharamshalastay.com/new-year-parties. McLeod Ganj bars and hotels had not announced 2026 nights by 29 October 2026.',
+        answer: 'The NYE Gala Night 2026 is at Panchvati Cottages in Khaniara, Dharamshala, on Thursday 31 December 2026 from 7 pm to about 2 am, with a DJ, bonfire, starters and dinner (all drinks, including alcohol, included in the ticket). Couple tickets are 3,999 rupees, or 3,799 rupees booked online at dharamshalastay.com/new-year-parties. McLeod Ganj bars and hotels had not announced 2026 nights by 29 October 2026.',
       },
       {
         question: 'How much is the New Year party ticket at Panchvati Cottages?',

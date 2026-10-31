@@ -656,7 +656,7 @@ Booking tips:
 ## What parties are on over Christmas and New Year?
 
 - **Christmas Eve and Day:** many cafés in McLeod Ganj, Bhagsu and Dharamkot put up decorations and serve Christmas specials (cakes, roasts, hot drinks, mulled wine where licensed). No McLeod Ganj venue had announced a 2026 Christmas programme by 29 October 2026.
-- **New Year Eve, ticketed:** our **NYE Gala Night 2026** at Panchvati Cottages, Khaniara, Dharamshala (our own property) runs on Thursday 31 December from 7 pm to about 2 am, with a DJ, a bonfire, 3 vegetarian and 3 non-vegetarian starters and a main-course dinner; soft drinks are included and alcohol is charged separately at the bar.
+- **New Year Eve, ticketed:** our **NYE Gala Night 2026** at Panchvati Cottages, Khaniara, Dharamshala (our own property) runs on Thursday 31 December from 7 pm to about 2 am, with a DJ, a bonfire, 3 vegetarian and 3 non-vegetarian starters and a main-course dinner; all drinks, including alcohol and soft drinks, are included in the ticket, with nothing charged separately.
 
 | NYE Gala Night ticket | Price | Booked online (5% off) |
 |---|---|---|
@@ -787,7 +787,7 @@ Booking questions are answered in our [FAQ](/faq).`,
       },
       {
         question: 'Is there a Christmas or New Year party in Dharamshala I can book?',
-        answer: 'Yes, for New Year Eve: the NYE Gala Night at Panchvati Cottages, Khaniara, Dharamshala, on Thursday 31 December 2026, 7 pm to about 2 am, with a DJ, bonfire, starters and dinner (soft drinks included, alcohol extra). Couple tickets are 3,999 rupees, 5% less online at dharamshalastay.com/new-year-parties. No McLeod Ganj venue had announced 2026 plans by 29 October.',
+        answer: 'Yes, for New Year Eve: the NYE Gala Night at Panchvati Cottages, Khaniara, Dharamshala, on Thursday 31 December 2026, 7 pm to about 2 am, with a DJ, bonfire, starters and dinner (all drinks, including alcohol, included in the ticket). Couple tickets are 3,999 rupees, 5% less online at dharamshalastay.com/new-year-parties. No McLeod Ganj venue had announced 2026 plans by 29 October.',
       },
       {
         question: 'How early should I book a hotel for Christmas in Dharamshala?',

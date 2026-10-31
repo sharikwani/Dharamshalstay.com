@@ -56,13 +56,13 @@ export const PARTIES: Party[] = [
     // Owner's poster (27 Oct 2026): gates open 7 pm; owner (29 Oct): ends around 2 am.
     startTime: '7:00 pm',
     endTime: '2:00 am',
-    summary: 'NYE Gala Night at Panchvati Cottages, our own property in Khaniara, Dharamshala: a DJ, a bonfire, starters and a main-course dinner (soft drinks included; alcohol charged separately at the bar), and the countdown to 2027 under the Dhauladhar sky.',
+    summary: 'NYE Gala Night at Panchvati Cottages, our own property in Khaniara, Dharamshala: a DJ, a bonfire, starters and a main-course dinner (all drinks, including alcohol, included in the ticket), and the countdown to 2027 under the Dhauladhar sky.',
     highlights: [
       'Gates open at 7 pm',
       'DJ and bonfire',
       '3 vegetarian and 3 non-vegetarian starters',
       'Variety of main course dishes',
-      'Soft drinks included; alcohol charged separately at the bar',
+      'All drinks included, alcohol too; nothing charged separately',
     ],
     ticketTypes: [
       { id: 'couple', name: 'Couple', price: 3999, admits: 2, includes: 'entry for two with all package inclusions' },
