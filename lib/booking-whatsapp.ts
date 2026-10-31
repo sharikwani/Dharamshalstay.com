@@ -10,7 +10,8 @@ export type Recipient = { kind: RecipientKind; phone: string };
 export type RecipientRows = {
   partner?: { whatsapp_number?: string | null; whatsapp_alerts?: boolean | null; phone?: string | null } | null;
   staff?: { phone?: string | null; whatsapp_alerts?: boolean | null } | null;
-  property?: { contact_phone?: string | null; whatsapp_alerts?: boolean | null } | null;
+  /** contact_whatsapp: a second hotel number (e.g. the manager's) that also gets the hotel alerts. */
+  property?: { contact_phone?: string | null; contact_whatsapp?: string | null; whatsapp_alerts?: boolean | null } | null;
   guide?: { phone?: string | null; whatsapp_alerts?: boolean | null } | null;
 };
 
@@ -26,7 +27,7 @@ export function recipientsFor(_view: BookingView, rows: RecipientRows): Recipien
     add('partner', partner.whatsapp_number || partner.phone);
     if (staff?.whatsapp_alerts) add('staff', staff.phone);
   }
-  if (property?.whatsapp_alerts) add('hotel', property.contact_phone);
+  if (property?.whatsapp_alerts) { add('hotel', property.contact_phone); add('hotel', property.contact_whatsapp); }
   if (guide?.whatsapp_alerts) add('guide', guide.phone);
   return out;
 }
@@ -34,7 +35,7 @@ export function recipientsFor(_view: BookingView, rows: RecipientRows): Recipien
 /** Every number currently assigned to the booking, alerts on or off: replies are only accepted from these. */
 export function assigneePhones(rows: RecipientRows): string[] {
   const { partner, staff, property, guide } = rows;
-  const raw = [partner?.whatsapp_number, partner?.phone, staff?.phone, property?.contact_phone, guide?.phone];
+  const raw = [partner?.whatsapp_number, partner?.phone, staff?.phone, property?.contact_phone, property?.contact_whatsapp, guide?.phone];
   return Array.from(new Set(raw.map((r) => normalizeIndianPhone(r)).filter((p): p is string => !!p)));
 }
 
@@ -167,7 +168,7 @@ async function loadRows(a: Assignment): Promise<RecipientRows> {
   const [partner, staff, property, guide] = await Promise.all([
     row('profiles', a.partner_id, 'whatsapp_number, whatsapp_alerts, phone'),
     row('partner_staff', a.staff_id, 'phone, whatsapp_alerts'),
-    row('properties', a.property_id, 'contact_phone, whatsapp_alerts'),
+    row('properties', a.property_id, 'contact_phone, contact_whatsapp, whatsapp_alerts'),
     row('guides', a.guide_id, 'phone, whatsapp_alerts'),
   ]);
   return { partner, staff, property, guide };

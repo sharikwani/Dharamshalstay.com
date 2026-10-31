@@ -59,6 +59,10 @@ describe('recipientsFor', () => {
   it('handles hotel and guide with consent', () => {
     expect(recipientsFor(view, { property: { ...ok, contact_phone: '9816000005' } })).toEqual([{ kind: 'hotel', phone: '919816000005' }]);
     expect(recipientsFor(view, { property: { whatsapp_alerts: false, contact_phone: '9816000005' } })).toEqual([]);
+    // A second hotel number (the manager's WhatsApp) gets the same alerts; same consent switch, no duplicates.
+    expect(recipientsFor(view, { property: { ...ok, contact_phone: '9816000005', contact_whatsapp: '+91 73032 00123' } })).toEqual([{ kind: 'hotel', phone: '919816000005' }, { kind: 'hotel', phone: '917303200123' }]);
+    expect(recipientsFor(view, { property: { ...ok, contact_phone: '9816000005', contact_whatsapp: '9816000005' } })).toEqual([{ kind: 'hotel', phone: '919816000005' }]);
+    expect(recipientsFor(view, { property: { whatsapp_alerts: false, contact_phone: '9816000005', contact_whatsapp: '7303200123' } })).toEqual([]);
     expect(recipientsFor(view, { guide: { ...ok, phone: '9816000006' } })).toEqual([{ kind: 'guide', phone: '919816000006' }]);
     expect(recipientsFor(view, { guide: { whatsapp_alerts: false, phone: '9816000006' } })).toEqual([]);
   });
@@ -73,9 +77,9 @@ describe('assigneePhones', () => {
     expect(assigneePhones({
       partner: { whatsapp_alerts: false, whatsapp_number: '9816000002', phone: '9816000003' },
       staff: { whatsapp_alerts: false, phone: '+91 98160 00004' },
-      property: { contact_phone: '09816000005' },
+      property: { contact_phone: '09816000005', contact_whatsapp: '7303200123' },
       guide: { phone: '9816000006' },
-    })).toEqual(['919816000002', '919816000003', '919816000004', '919816000005', '919816000006']);
+    })).toEqual(['919816000002', '919816000003', '919816000004', '919816000005', '917303200123', '919816000006']);
   });
   it('drops invalid numbers and duplicates', () => {
     expect(assigneePhones({ partner: { whatsapp_number: '123', phone: '9816000002' }, staff: { phone: '9816000002' } })).toEqual(['919816000002']);

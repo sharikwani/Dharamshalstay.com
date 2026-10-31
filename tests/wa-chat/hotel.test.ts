@@ -4,7 +4,7 @@ const s = vi.hoisted(() => ({
   decision: {} as any, latest: 'm1', lock: 'tok' as string | null, sent: [] as any[], statuses: [] as any[], emails: [] as any[], prompts: [] as string[],
 }));
 vi.mock('@/lib/server-auth', () => {
-  const q: any = { select: () => q, eq: () => q, not: () => q, order: () => q, limit: () => Promise.resolve({ data: [{ id: 'p1', name: 'Young Monk Hostel', slug: 'young-monk', contact_phone: '+919193191934', owner_id: 'admin1', owner_email: null }] }), maybeSingle: () => Promise.resolve({ data: null }) };
+  const q: any = { select: () => q, eq: () => q, neq: () => q, not: () => q, or: () => q, order: () => q, limit: () => Promise.resolve({ data: [{ id: 'p1', name: 'Young Monk Hostel', slug: 'young-monk', contact_phone: '+919193191934', owner_id: 'admin1', owner_email: null }] }), maybeSingle: () => Promise.resolve({ data: null }) };
   return { serviceClient: () => ({ from: () => q }) };
 });
 vi.mock('@/lib/listings/ownership', () => ({ adminIds: async () => new Set(['admin1']), isUnclaimed: (p: any, a: Set<string>) => !p.owner_email && a.has(p.owner_id) }));
@@ -18,7 +18,7 @@ vi.mock('@/lib/wa-chat/send', () => ({ sendLogged: async (_c: any, t: string) =>
 vi.mock('@/lib/wa-chat/assistant', () => ({ toOpenAiMessages: (m: any[]) => m.map((x) => ({ role: 'user', content: x.body })) }));
 vi.mock('@/lib/email', () => ({ sendEmail: async (m: any) => { s.emails.push(m); }, adminEmail: () => 'a@x' }));
 
-import { answerHotel, hotelModeAllowed, hotelPrompt } from '@/lib/wa-chat/hotel';
+import { answerHotel, bookingLines, hotelModeAllowed, hotelPrompt } from '@/lib/wa-chat/hotel';
 
 const conv: any = { id: 'c1', phone: '919193191934', profile_name: 'Young Monk', status: 'human', handover_reason: 'Hotel or business number (Young Monk Hostel): the AI does not reply' };
 
@@ -39,10 +39,30 @@ describe('hotel mode', () => {
     expect(hotelModeAllowed({ status: 'needs_human', handover_reason: 'Hotel: wants a call' })).toBe(false);
   });
   it('gives the AI the hotel claim link and the no-numbers rule', () => {
-    const p = hotelPrompt({ id: 'p1', name: 'Young Monk Hostel', slug: 'young-monk', claimed: false }, 'Monday');
+    const p = hotelPrompt({ id: 'p1', name: 'Young Monk Hostel', slug: 'young-monk', claimed: false, contact: true }, 'Monday');
     expect(p).toMatch(/claim\/young-monk\?t=KEY/);
     expect(p).toMatch(/NOT a guest/);
     expect(p).toMatch(/commission/);
+  });
+  it('lets a claimed property’s own contact ask about its bookings, and nobody else', () => {
+    const l = { id: 'p1', name: 'Panchvati Cottages', slug: 'panchvati-cottages', claimed: true, contact: true };
+    const list = '- HTL-1 | confirmed | 2026-12-29 to 2027-01-01 | Nitin (+919969182986) | Super Deluxe, 2 guests | total Rs.14,997, payment pending';
+    const p = hotelPrompt(l, 'Saturday', list);
+    expect(p).toMatch(/registered contact .* of Panchvati Cottages/);
+    expect(p).toContain(list);
+    expect(p).toMatch(/Never share anything about any other property/);
+    expect(p).toMatch(/\/play\/host/);
+    expect(hotelPrompt({ ...l, contact: false }, 'Saturday', list)).not.toContain('HTL-1');
+    expect(hotelPrompt(l, 'Saturday', null)).not.toMatch(/registered contact/);
+    expect(hotelPrompt({ ...l, claimed: false }, 'Saturday')).not.toMatch(/Party games portal/);
+  });
+  it('writes one line per booking, stays and tickets', () => {
+    const out = bookingLines([
+      { booking_ref: 'HTL-1', status: 'confirmed', check_in: '2026-12-29', check_out: '2027-01-01', guest_name: 'Nitin', guest_phone: '9969182986', num_guests: 2, room_name: 'Super Deluxe', amount: 14997, paid_amount: 0, payment_status: 'pending' },
+      { booking_ref: 'EVT-2', status: 'confirmed', check_in: '2026-12-31', guest_name: 'Asha', event_slug: 'nye-gala-night-2026', ticket_type: 'couple', ticket_qty: 1, ticket_code: 'AB12', amount: 3799, paid_amount: 500 },
+    ]).split('\n');
+    expect(out[0]).toBe('- HTL-1 | confirmed | 2026-12-29 to 2027-01-01 | Nitin (+919969182986) | Super Deluxe, 2 guests | total Rs.14,997, payment pending');
+    expect(out[1]).toMatch(/EVT-2 .* 1 x couple ticket, nye-gala-night-2026, code AB12 .* paid Rs.500/);
   });
   it('replies, hands a call request to the owner, and emails what it said', async () => {
     expect(await answerHotel(conv, 'm1', 'Can we have a call today?', 'Young Monk Hostel', { settleMs: 0 })).toBe('handed over');

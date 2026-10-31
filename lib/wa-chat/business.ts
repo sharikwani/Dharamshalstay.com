@@ -4,7 +4,7 @@ import { serviceClient } from '@/lib/server-auth';
  * Hotels, partners and guides use WhatsApp Business, which answers our own messages (claim invites, booking
  * alerts) with an automatic greeting: "Thank you for contacting Hotel X! How can we help you?". The assistant
  * must never treat that as a guest. A number counts as a business when we have sent it a business message
- * (any whatsapp_messages row that is not for a customer) or it is a listed hotel's contact number.
+ * (any whatsapp_messages row that is not for a customer) or it is a listed hotel's contact or WhatsApp number.
  */
 export type BusinessContact = { name: string | null; lastSentAt: string | null };
 
@@ -22,12 +22,12 @@ export async function businessContact(phone: string): Promise<BusinessContact | 
       // Only messages about a real hotel or booking: a one-off test send to the owner's own phone has neither.
       .eq('to_phone', phone).neq('recipient_kind', 'customer').or('property_id.not.is.null,booking_id.not.is.null')
       .order('created_at', { ascending: false }).limit(1),
-    sb.from('properties').select('name, contact_phone').not('contact_phone', 'is', null).limit(5000),
+    sb.from('properties').select('name, contact_phone, contact_whatsapp').or('contact_phone.not.is.null,contact_whatsapp.not.is.null').limit(5000),
   ]);
   if (sent.error) throw sent.error;
   if (props.error) throw props.error;
   const row = (sent.data || [])[0] as any;
-  const prop = ((props.data || []) as any[]).find((p) => last10(p.contact_phone) === tail);
+  const prop = ((props.data || []) as any[]).find((p) => last10(p.contact_phone) === tail || last10(p.contact_whatsapp) === tail);
   if (!row && !prop) return null;
   return { name: row?.properties?.name ?? prop?.name ?? null, lastSentAt: row?.created_at ?? null };
 }

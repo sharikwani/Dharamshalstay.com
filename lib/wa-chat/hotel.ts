@@ -2,6 +2,7 @@ import { serviceClient } from '@/lib/server-auth';
 import { sendEmail, adminEmail } from '@/lib/email';
 import { siteConfig } from '@/lib/config';
 import { claimUrl } from '@/lib/listings/links';
+import { normalizeIndianPhone } from '@/lib/whatsapp';
 import { adminIds, isUnclaimed } from '@/lib/listings/ownership';
 import { acquireTurnLock, history, latestInboundId, releaseTurnLock, setStatus } from './store';
 import { sendLogged } from './send';
@@ -24,7 +25,8 @@ export function hotelModeAllowed(c: Pick<Conversation, 'status' | 'handover_reas
 /** Two quick messages ("Hello", "Can we talk?") get one reply: wait, and let the newest message answer. */
 const SETTLE_MS = 8_000;
 
-export type HotelListing = { id: string; name: string; slug: string; claimed: boolean };
+/** contact: the number is this property's own contact or WhatsApp number (owner, manager or front desk). */
+export type HotelListing = { id: string; name: string; slug: string; claimed: boolean; contact: boolean };
 export type HotelDecision = { skip: boolean; reply: string; handover: boolean; reason: string };
 
 const last10 = (p: unknown) => String(p ?? '').replace(/\D/g, '').slice(-10);
@@ -35,17 +37,50 @@ async function listingFor(phone: string): Promise<HotelListing | null> {
   const sb = serviceClient();
   const { data: sent } = await sb.from('whatsapp_messages').select('property_id').eq('to_phone', phone)
     .not('property_id', 'is', null).order('created_at', { ascending: false }).limit(1);
+  const cols = 'id, name, slug, owner_id, owner_email, contact_phone, contact_whatsapp';
+  const ours = (x: any) => !!x && (last10(x.contact_phone) === last10(phone) || last10(x.contact_whatsapp) === last10(phone));
   let p: any = null;
-  if (sent?.[0]?.property_id) p = (await sb.from('properties').select('id, name, slug, owner_id, owner_email').eq('id', sent[0].property_id).maybeSingle()).data;
-  if (!p) {
-    const { data } = await sb.from('properties').select('id, name, slug, owner_id, owner_email, contact_phone').not('contact_phone', 'is', null).limit(5000);
-    p = (data || []).find((x: any) => last10(x.contact_phone) === last10(phone)) || null;
+  if (sent?.[0]?.property_id) p = (await sb.from('properties').select(cols).eq('id', sent[0].property_id).maybeSingle()).data;
+  // A number listed on the property itself wins over one we only messaged about it.
+  if (!ours(p)) {
+    const { data } = await sb.from('properties').select(cols).or('contact_phone.not.is.null,contact_whatsapp.not.is.null').limit(5000);
+    p = (data || []).find(ours) || p;
   }
   if (!p) return null;
-  return { id: p.id, name: p.name, slug: p.slug, claimed: !isUnclaimed(p, await adminIds()) };
+  return { id: p.id, name: p.name, slug: p.slug, claimed: !isUnclaimed(p, await adminIds()), contact: ours(p) };
 }
 
-export function hotelPrompt(l: HotelListing | null, today: string): string {
+const rs = (n: unknown) => (Number(n) > 0 ? `Rs.${Number(n).toLocaleString('en-IN')}` : '-');
+
+/** One line per current or upcoming booking (stays and event tickets) at this property, for its own staff. */
+export function bookingLines(rows: any[]): string {
+  return rows.map((b) => {
+    const when = b.check_in ? `${b.check_in}${b.check_out ? ` to ${b.check_out}` : ''}` : b.activity_date || 'date not set';
+    const what = b.event_slug ? `${b.ticket_qty || 1} x ${b.ticket_type || 'ticket'} ticket, ${b.event_slug}${b.ticket_code ? `, code ${b.ticket_code}` : ''}` : `${b.room_name || 'room not set'}, ${b.num_guests || '?'} guests`;
+    const paid = Number(b.paid_amount) > 0 ? `paid ${rs(b.paid_amount)}` : `payment ${b.payment_status || 'pending'}`;
+    return `- ${b.booking_ref} | ${b.status} | ${when} | ${b.guest_name || '-'} ${b.guest_phone ? `(+${normalizeIndianPhone(b.guest_phone) || b.guest_phone})` : ''} | ${what} | total ${rs(b.amount)}, ${paid}${b.special_requests ? ` | request: ${String(b.special_requests).replace(/\s+/g, ' ').slice(0, 150)}` : ''}`;
+  }).join('\n');
+}
+
+/** Bookings at the property that are not cancelled and not over: from yesterday on, soonest first. */
+async function upcomingBookings(propertyId: string): Promise<string> {
+  const since = new Date(Date.now() + 5.5 * 3600e3 - 86400e3).toISOString().slice(0, 10);
+  const { data, error } = await serviceClient().from('bookings')
+    .select('booking_ref, status, check_in, check_out, activity_date, guest_name, guest_phone, num_guests, room_name, amount, paid_amount, payment_status, special_requests, event_slug, ticket_type, ticket_qty, ticket_code')
+    .eq('property_id', propertyId).neq('status', 'cancelled').or(`check_out.gte.${since},check_in.gte.${since},activity_date.gte.${since}`)
+    .order('check_in', { ascending: true, nullsFirst: false }).limit(40);
+  if (error) throw error;
+  return bookingLines(data || []);
+}
+
+const GAMES_PORTAL = `Party games portal (free, for their guests): ${siteConfig.url}/play
+- Games: Tambola (housie), Party Quiz (KBC-style, with Bollywood, India and Himachal rounds or their own questions), Lucky Draw (spins through guests' photos to pick winners) and Who's Most Likely To (funny votes).
+- The host starts a game at ${siteConfig.url}/play/host; guests join on their own phones with a 6-digit code or QR, no app needed.
+- The TV can be the host: open ${siteConfig.url}/tv on a smart TV browser (Android TV, Google TV, Samsung, LG) or cast with Chromecast; it shows the board and calls the numbers out loud. A phone or laptop connected to a speaker works too.
+- Claims are checked automatically, winners get a certificate to share on WhatsApp and Dharamshala Stay discount codes. Completely free, no fees, no money involved.
+- Good for kitty parties, birthdays, anniversaries, family groups, bonfire nights and New Year Eve.`;
+
+export function hotelPrompt(l: HotelListing | null, today: string, bookings: string | null = null): string {
   const site = siteConfig.url;
   const listing = l
     ? `This number belongs to ${l.name}. Their listing: ${site}/hotels/${l.slug}. ${l.claimed
@@ -55,8 +90,16 @@ export function hotelPrompt(l: HotelListing | null, today: string): string {
   return `You answer WhatsApp messages from hotels, homestays and travel partners for Dharamshala Stay (${site}), a local booking site for Dharamshala and McLeod Ganj. The person writing is hotel staff or an owner, NOT a guest. Never try to sell them rooms, taxis or treks.
 ${listing}
 Today is ${today} (India time).
+${l && l.contact && bookings !== null ? `
+This number is a registered contact (owner, manager or front desk) of ${l.name}. They may ask about their own property's bookings: answer from this list only, giving the guest's name, phone, dates, room or tickets, guests, amounts and requests as written. Never share anything about any other property or guest, and never guess: if a booking is not in the list, say you will check with the team and hand over. Confirming, changing or cancelling a booking, prices and payments to them always go to the team (hand over).
+Current and upcoming bookings at ${l.name} (not cancelled):
+${bookings || '- none right now'}
+` : ''}${l?.claimed ? `
+${GAMES_PORTAL}
+If they ask about entertaining guests, games, kitty parties or the TV, explain the portal from these points and share the links.
+` : ''}
 
-What you can say (only this):
+What you can say (only this, plus the booking list and games portal above when they are given):
 - We list hotels in Dharamshala for free. Claiming the listing is free: no listing fee, no contract to sign to claim.
 - After claiming, guest enquiries and booking alerts come straight to them on WhatsApp and email, and they can update photos, rooms and prices from their partner account.
 - Their claim link (above) takes about two minutes. If they do not want to be listed, the same link has a remove option, and it is taken down straight away.
@@ -106,7 +149,9 @@ export async function answerHotel(c: Conversation, messageId: string, body: stri
     if (!token) return 'busy';
     const listing = await listingFor(c.phone).catch(() => null);
     const today = new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' });
-    const d = await decide([{ role: 'system', content: hotelPrompt(listing, today) }, ...toOpenAiMessages(await history(c.id, 20))]);
+    // The property's own contacts (owner, manager, front desk) can ask about its bookings.
+    const bookings = listing?.contact && listing.claimed ? await upcomingBookings(listing.id).catch((e) => { console.error('WhatsApp hotel bookings failed:', e); return null; }) : null;
+    const d = await decide([{ role: 'system', content: hotelPrompt(listing, today, bookings) }, ...toOpenAiMessages(await history(c.id, 20))]);
     if (d.skip || !d.reply) return 'skipped';
     const r = await sendLogged(c, d.reply);
     if (d.handover) await setStatus(c.id, 'needs_human', `Hotel: ${d.reason || 'needs the team'}`);
