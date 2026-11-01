@@ -34,6 +34,8 @@ export async function hotelMetadata(slug: string, lang: Lang): Promise<Metadata>
       image: (h.images?.[0] as any)?.url,
       ogTag: typeLabel + ' in ' + areaName(h.destination_slug),
       markdown: true,
+      // Hotel descriptions are not translated: no Hindi alternate (the /hi page canonicalises here).
+      hindi: false,
       keywords: [h.name, h.name + ' ' + areaName(h.destination_slug), typeLabel.toLowerCase() + ' in ' + areaName(h.destination_slug), 'where to stay in ' + areaName(h.destination_slug)],
     });
   }

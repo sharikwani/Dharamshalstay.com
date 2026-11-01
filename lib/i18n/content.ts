@@ -88,7 +88,8 @@ export function localizeHotel<T extends { slug: string; rooms?: any[] }>(p: T, l
 export function localizeTrek<T extends { slug: string }>(t: T, lang: Lang): T {
   if (lang === 'en') return t;
   const h = hiTreksData[t.slug];
-  const base: any = h ? { ...t, ...h } : { ...t };
+  // translated=false: no Hindi trek page (/hi redirects to English), so links go straight to English.
+  const base: any = h ? { ...t, ...h, translated: true } : { ...t, translated: false };
   // Short measurement fields come from the database in English.
   for (const k of ['max_altitude', 'distance', 'duration']) if (base[k]) base[k] = localizeUnits(base[k], lang);
   return base;

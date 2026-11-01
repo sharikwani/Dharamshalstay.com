@@ -94,7 +94,7 @@ export function TrekCard({ trek, lang = 'en', priority = false }: { trek: Trek; 
   const trekImg = trek.images?.[0] || '/images/places/dhauladhar-hero.jpg';
   const imgSrc = typeof trekImg === 'string' ? trekImg : ((trekImg as any)?.url || '/images/places/dhauladhar-hero.jpg');
   return (
-    <Link href={localizePath('/treks/' + trek.slug, lang)} className="group block">
+    <Link href={localizePath('/treks/' + trek.slug, (trek as any).translated === false ? 'en' : lang)} className="group block">
       <div className="bg-white rounded-xl overflow-hidden border border-slate-200 hover:shadow-lg transition-all">
         <div className="relative aspect-[16/9]">
           <Image src={imgSrc} alt={trek.name} fill priority={priority} className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw" />
