@@ -25,7 +25,7 @@ export default function Countdown({ to, done = 'Happy New Year!' }: { to: string
     <div className="nye-count" role="timer" aria-label={`${parts[0][0]} days and ${parts[1][0]} hours to midnight`}>
       {parts.map(([n, label]) => (
         <div key={label} className="nye-count-cell">
-          <span className="nye-count-n">{String(n).padStart(2, '0')}</span>
+          <span key={n} className="nye-count-n">{String(n).padStart(2, '0')}</span>
           <span className="nye-count-l">{label}</span>
         </div>
       ))}

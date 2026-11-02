@@ -4,6 +4,8 @@ import { Breadcrumb, FAQSection } from '@/components/ui/Cards';
 import JsonLd from '@/components/seo/JsonLd';
 import TicketForm from '@/components/parties/TicketForm';
 import Countdown from '@/components/parties/Countdown';
+import Fireworks from '@/components/parties/Fireworks';
+import Reveal from '@/components/parties/Reveal';
 import '@/components/parties/party.css';
 import { gala } from '@/lib/fonts';
 import { generateSEO, faqSchema, breadcrumbSchema } from '@/lib/seo';
@@ -87,8 +89,11 @@ export default function NewYearPartiesPage() {
           ...(onSale ? { offers: featured.ticketTypes.map((t) => ({ '@type': 'Offer', name: t.name, price: ticketPrice(t.price, featured.discountPct), priceCurrency: 'INR', availability: 'https://schema.org/InStock', validFrom: '2026-10-29T00:00:00+05:30', url: siteConfig.url + '/new-year-parties' })) } : {}),
         },
       ]} />
+      <Reveal />
 
       <section className="nye-hero">
+        <Fireworks />
+        <span className="nye-moon" aria-hidden="true" />
         <svg className="nye-lights" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true">
           <path d={WIRE} fill="none" stroke="rgba(251,243,228,0.35)" strokeWidth="1.5" />
           {BULBS.map(([x, y], i) => <circle key={i} className="nye-bulb" cx={x} cy={y + 5} r="4.5" />)}
@@ -100,14 +105,14 @@ export default function NewYearPartiesPage() {
 
         <div className="nye-hero-inner mx-auto max-w-5xl px-4 pb-44 pt-14 sm:px-6 sm:pb-56">
           <div className="[&_a]:text-white/70 [&_span]:text-white/90 [&_svg]:text-white/50"><Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Events', href: '/events' }, { label: 'New Year parties' }]} /></div>
-          <p className="nye-kicker mt-6">{featured.venue} · {featured.area}</p>
-          <h1 className="mt-3">
+          <p className="nye-kicker nye-in mt-6" style={{ animationDelay: '0.05s' }}>{featured.venue} · {featured.area}</p>
+          <h1 className="nye-in mt-3" style={{ animationDelay: '0.15s' }}>
             <span className="nye-h1-lead block">New Year Party in Dharamshala 2026</span>
             <span className="nye-title mt-2 block">NYE <em>Gala</em> Night</span>
           </h1>
-          <p className="nye-date mt-4">Thursday 31 December 2026 · {featured.startTime || '7:00 pm'} till {featured.endTime || 'late'}</p>
-          <div className="mt-8"><Countdown to={COUNTDOWN_TO} done="Happy New Year 2027!" /></div>
-          <div className="mt-9 flex flex-wrap items-center gap-3">
+          <p className="nye-date nye-in mt-4" style={{ animationDelay: '0.3s' }}>Thursday 31 December 2026 · {featured.startTime || '7:00 pm'} till {featured.endTime || 'late'}</p>
+          <div className="nye-in mt-8" style={{ animationDelay: '0.42s' }}><Countdown to={COUNTDOWN_TO} done="Happy New Year 2027!" /></div>
+          <div className="nye-in mt-9 flex flex-wrap items-center gap-3" style={{ animationDelay: '0.55s' }}>
             <a href="#tickets" className="nye-cta"><Ticket className="h-5 w-5" aria-hidden="true" />{onSale ? `Book tickets · ${featured.discountPct || 0}% off online` : 'Tickets open soon'}</a>
             {onSale && featured.depositAmount ? <span className="text-sm text-white/75">Book with just ₹{featured.depositAmount}, pay the rest at the entry</span> : null}
           </div>
@@ -123,13 +128,13 @@ export default function NewYearPartiesPage() {
 
       <section className="text-white">
         <div className="mx-auto max-w-5xl px-4 pb-6 sm:px-6">
-          <p className="max-w-3xl text-lg text-white/80"><strong className="text-white">Short answer:</strong> book the NYE Gala Night at <strong className="text-white">Panchvati Cottages, Khaniara, Dharamshala</strong> on <strong className="text-white">31 December 2026</strong> (gates 7 pm; couple ₹3,999, stag ₹2,499, 5% off online) on this page and get your ticket card on WhatsApp and email. The <strong className="text-white">Kangra Valley Carnival</strong> is announced for <strong className="text-white">24 to 31 December 2026</strong>, and McLeod Ganj and Bhagsu bars, cafes and hotels usually announce their Christmas and New Year nights from late November. Checked {CHECKED}.</p>
+          <p className="nye-rv max-w-3xl text-lg text-white/80"><strong className="text-white">Short answer:</strong> book the NYE Gala Night at <strong className="text-white">Panchvati Cottages, Khaniara, Dharamshala</strong> on <strong className="text-white">31 December 2026</strong> (gates 7 pm; couple ₹3,999, stag ₹2,499, 5% off online) on this page and get your ticket card on WhatsApp and email. The <strong className="text-white">Kangra Valley Carnival</strong> is announced for <strong className="text-white">24 to 31 December 2026</strong>, and McLeod Ganj and Bhagsu bars, cafes and hotels usually announce their Christmas and New Year nights from late November. Checked {CHECKED}.</p>
 
-          <h2 className="nye-h2 mt-14">What is in the night</h2>
-          <p className="mt-2 max-w-2xl text-white/75">{featured.summary}</p>
+          <h2 className="nye-h2 nye-rv mt-14">What is in the night</h2>
+          <p className="nye-rv mt-2 max-w-2xl text-white/75">{featured.summary}</p>
           <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-            {INCLUDED.map(([Icon, label, ember]) => (
-              <li key={label} className={'nye-chip' + (ember ? ' ember' : '')}><Icon className="h-8 w-8" aria-hidden="true" /><span className="text-sm font-semibold">{label}</span></li>
+            {INCLUDED.map(([Icon, label, ember], i) => (
+              <li key={label} className={'nye-chip nye-rv' + (ember ? ' ember' : '')} style={{ transitionDelay: i * 70 + 'ms', ['--i' as string]: i }}><Icon className="h-8 w-8" aria-hidden="true" /><span className="text-sm font-semibold">{label}</span></li>
             ))}
           </ul>
         </div>
@@ -137,10 +142,10 @@ export default function NewYearPartiesPage() {
 
       <section id="tickets" className="scroll-mt-20 text-white">
         <div className="mx-auto max-w-5xl px-4 pb-16 pt-12 sm:px-6">
-          <h2 className="nye-h2">Tickets{featured.discountPct ? <span className="nye-off">{featured.discountPct}% off online</span> : null}</h2>
+          <h2 className="nye-h2 nye-rv">Tickets{featured.discountPct ? <span className="nye-off">{featured.discountPct}% off online</span> : null}</h2>
           <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {featured.ticketTypes.map((t) => (
-              <div key={t.id} className="nye-stub">
+            {featured.ticketTypes.map((t, i) => (
+              <div key={t.id} className="nye-stub nye-rv" style={{ transitionDelay: i * 80 + 'ms' }}>
                 <div><p className="font-bold leading-tight">{t.name}</p><p className="text-xs opacity-75">Admits {t.admits}</p></div>
                 <div className="text-right">
                   {featured.discountPct ? <p className="nye-stub-was">₹{t.price.toLocaleString('en-IN')}</p> : null}
@@ -149,7 +154,7 @@ export default function NewYearPartiesPage() {
               </div>
             ))}
           </div>
-          <div className="nye-panel mt-6 grid gap-8 p-5 sm:p-8 md:grid-cols-[0.9fr_1.1fr]">
+          <div className="nye-panel nye-rv mt-6 grid gap-8 p-5 sm:p-8 md:grid-cols-[0.9fr_1.1fr]">
             <div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={SAMPLE_TICKET} alt="Sample NYE Gala Night ticket: guest name, date, venue, tickets, payment status, ticket code and QR code" width={1080} height={1350} loading="lazy" className="nye-sample" />
@@ -176,8 +181,8 @@ export default function NewYearPartiesPage() {
 
       <div className="nye-paper">
       <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
-        <h2 className="font-heading text-2xl font-bold text-slate-900">Quick facts</h2>
-        <div className="mt-4 overflow-x-auto">
+        <h2 className="nye-rv font-heading text-2xl font-bold text-slate-900">Quick facts</h2>
+        <div className="nye-rv mt-4 overflow-x-auto">
           <table className="w-full overflow-hidden rounded-xl bg-white text-sm ring-1 ring-slate-200">
             <tbody className="divide-y divide-slate-100">
               {[
@@ -193,14 +198,14 @@ export default function NewYearPartiesPage() {
           </table>
         </div>
 
-        <h2 className="mt-12 font-heading text-2xl font-bold text-slate-900">When is the Kangra Valley Carnival 2026?</h2>
-        <p className="mt-3 text-slate-700">The Kangra district administration has announced the carnival for <strong>24 to 31 December 2026</strong> in Dharamshala, with an opening concert proposed at the <Link href="/blog/hpca-cricket-stadium-guide" className="text-brand-600 underline">HPCA cricket stadium</Link> (UNI, 30 September 2026). The full schedule, artists and entry details were not published when we checked on {CHECKED}; past editions have had a procession through the town, a food festival, a craft market and evening concerts. We will add the programme here as soon as it is out.</p>
+        <h2 className="nye-rv mt-12 font-heading text-2xl font-bold text-slate-900">When is the Kangra Valley Carnival 2026?</h2>
+        <p className="nye-rv mt-3 text-slate-700">The Kangra district administration has announced the carnival for <strong>24 to 31 December 2026</strong> in Dharamshala, with an opening concert proposed at the <Link href="/blog/hpca-cricket-stadium-guide" className="text-brand-600 underline">HPCA cricket stadium</Link> (UNI, 30 September 2026). The full schedule, artists and entry details were not published when we checked on {CHECKED}; past editions have had a procession through the town, a food festival, a craft market and evening concerts. We will add the programme here as soon as it is out.</p>
 
-        <h2 className="mt-12 font-heading text-2xl font-bold text-slate-900">Where are the New Year parties in McLeod Ganj and Bhagsu?</h2>
-        <p className="mt-3 text-slate-700">These bars, cafes and hotels are listed by travel guides as popular for New Year nights. <strong>None has announced its 2026 plans or prices yet</strong>, so check with the venue closer to the date; we re-check them from late November.</p>
+        <h2 className="nye-rv mt-12 font-heading text-2xl font-bold text-slate-900">Where are the New Year parties in McLeod Ganj and Bhagsu?</h2>
+        <p className="nye-rv mt-3 text-slate-700">These bars, cafes and hotels are listed by travel guides as popular for New Year nights. <strong>None has announced its 2026 plans or prices yet</strong>, so check with the venue closer to the date; we re-check them from late November.</p>
         <ul className="mt-4 grid gap-3 sm:grid-cols-2">
-          {VENUES.map(([n, a, d]) => (
-            <li key={n} className="rounded-xl border border-slate-200 bg-white p-4">
+          {VENUES.map(([n, a, d], i) => (
+            <li key={n} className="nye-venue nye-rv rounded-xl border border-slate-200 bg-white p-4" style={{ transitionDelay: (i % 2) * 90 + 'ms' }}>
               <p className="font-semibold text-slate-900">{n}</p>
               <p className="text-sm text-slate-500 flex gap-1"><MapPin className="h-4 w-4 shrink-0 mt-0.5" />{a}</p>
               <p className="mt-1 text-sm text-slate-700">Known for {d}.</p>
@@ -208,16 +213,16 @@ export default function NewYearPartiesPage() {
           ))}
         </ul>
 
-        <h2 className="mt-12 font-heading text-2xl font-bold text-slate-900">How is Christmas celebrated in McLeod Ganj?</h2>
-        <p className="mt-3 text-slate-700">Christmas Eve and Christmas Day bring special dinners and parties in the cafes and hotels, and the town fills up from 24 December onwards. Our <Link href="/blog/dharamshala-christmas-new-year" className="text-brand-600 underline">Christmas in Dharamshala guide</Link> and <Link href="/blog/new-year-in-mcleod-ganj" className="text-brand-600 underline">New Year in McLeod Ganj guide</Link> cover crowds, weather and what is open.</p>
+        <h2 className="nye-rv mt-12 font-heading text-2xl font-bold text-slate-900">How is Christmas celebrated in McLeod Ganj?</h2>
+        <p className="nye-rv mt-3 text-slate-700">Christmas Eve and Christmas Day bring special dinners and parties in the cafes and hotels, and the town fills up from 24 December onwards. Our <Link href="/blog/dharamshala-christmas-new-year" className="text-brand-600 underline">Christmas in Dharamshala guide</Link> and <Link href="/blog/new-year-in-mcleod-ganj" className="text-brand-600 underline">New Year in McLeod Ganj guide</Link> cover crowds, weather and what is open.</p>
 
-        <h2 className="mt-12 font-heading text-2xl font-bold text-slate-900">What about traffic on New Year Eve?</h2>
-        <p className="mt-3 text-slate-700 flex gap-2"><Clock className="h-5 w-5 shrink-0 mt-0.5 text-slate-400" /><span>Expect jams on 30 and 31 December. For New Year 2024–25 the Kangra police ran a one-way system: vehicles entered McLeod Ganj by the Dal Lake road and left by the Forsyth Ganj road (Tribune, 1 January 2025). The 2026 plan is usually announced on 30 or 31 December. Leave the car at your hotel, or book a <Link href="/taxi" className="text-brand-600 underline">taxi</Link> in advance.</span></p>
+        <h2 className="nye-rv mt-12 font-heading text-2xl font-bold text-slate-900">What about traffic on New Year Eve?</h2>
+        <p className="nye-rv mt-3 text-slate-700 flex gap-2"><Clock className="h-5 w-5 shrink-0 mt-0.5 text-slate-400" /><span>Expect jams on 30 and 31 December. For New Year 2024–25 the Kangra police ran a one-way system: vehicles entered McLeod Ganj by the Dal Lake road and left by the Forsyth Ganj road (Tribune, 1 January 2025). The 2026 plan is usually announced on 30 or 31 December. Leave the car at your hotel, or book a <Link href="/taxi" className="text-brand-600 underline">taxi</Link> in advance.</span></p>
 
-        <h2 className="mt-12 font-heading text-2xl font-bold text-slate-900">Plan the rest of your New Year trip</h2>
-        <p className="mt-3 text-slate-700">Find a room in <Link href="/hotels" className="text-brand-600 underline">Dharamshala and McLeod Ganj hotels</Link>, see the <Link href="/events" className="text-brand-600 underline">events calendar</Link>, check <Link href="/blog/dharamshala-in-winter-snowfall" className="text-brand-600 underline">when it snows</Link>, or add a <Link href="/treks" className="text-brand-600 underline">winter trek</Link> or <Link href="/paragliding" className="text-brand-600 underline">paragliding flight</Link>.</p>
+        <h2 className="nye-rv mt-12 font-heading text-2xl font-bold text-slate-900">Plan the rest of your New Year trip</h2>
+        <p className="nye-rv mt-3 text-slate-700">Find a room in <Link href="/hotels" className="text-brand-600 underline">Dharamshala and McLeod Ganj hotels</Link>, see the <Link href="/events" className="text-brand-600 underline">events calendar</Link>, check <Link href="/blog/dharamshala-in-winter-snowfall" className="text-brand-600 underline">when it snows</Link>, or add a <Link href="/treks" className="text-brand-600 underline">winter trek</Link> or <Link href="/paragliding" className="text-brand-600 underline">paragliding flight</Link>.</p>
 
-        <h2 className="mt-12 font-heading text-2xl font-bold text-slate-900">Sources</h2>
+        <h2 className="nye-rv mt-12 font-heading text-2xl font-bold text-slate-900">Sources</h2>
         <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-slate-600">
           <li>UNI India, 30 September 2026: Kangra Valley Carnival 24-31 December (uniindia.com)</li>
           <li>The Tribune, 1 January 2025: New Year traffic plan and crowds in McLeod Ganj (tribuneindia.com)</li>
@@ -229,8 +234,8 @@ export default function NewYearPartiesPage() {
 
       <section className="nye-paper border-t border-[#e9dcc0] py-12">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <h2 className="mb-6 text-center font-heading text-2xl font-bold text-slate-900">New Year party questions</h2>
-          <FAQSection faqs={FAQS} />
+          <h2 className="nye-rv mb-6 text-center font-heading text-2xl font-bold text-slate-900">New Year party questions</h2>
+          <div className="nye-rv"><FAQSection faqs={FAQS} /></div>
         </div>
       </section>
     </div>
