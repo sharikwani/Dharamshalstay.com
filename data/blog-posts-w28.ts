@@ -308,11 +308,11 @@ Snow closes roads quickly, sometimes within hours, and they reopen only after cl
 | Snow on the high passes and at the Atal Tunnel north portal in October 2026 | Confirmed by several news reports |
 | Fresh snow on the Dhauladhar peaks in mid-October 2026 | Confirmed (The North News; PTI) |
 | Snow in Dharamshala, McLeod Ganj, Shimla or Manali towns this season | None reported so far |
-| Rain or snow on 30 and 31 October 2026 | Forecast only |
+| Rain or snow on 30 and 31 October 2026 | Forecast; we found no dated report of what fell (checked 2 November 2026) |
 | Whether Rohtang Pass is open to tourists today | Not confirmed; check police updates |
 | First snow date in McLeod Ganj this winter | Unknown; usually late December to February |
 
-This page is updated through the 2026-27 season. Last checked: 26 October 2026.`,
+This page is updated through the 2026-27 season. Last checked: 2 November 2026 (no new dated snow reports found since 26 October).`,
     category: 'Seasons',
     tags: ['snowfall in himachal', 'himachal snowfall 2026', 'snowfall update', 'where is it snowing', 'snow report himachal', 'atal tunnel snow', 'rohtang snow', 'manali snowfall', 'shimla snowfall', 'dharamshala snowfall', 'mcleod ganj snow', 'winter'],
     author: 'Dharamshala Stay Team',

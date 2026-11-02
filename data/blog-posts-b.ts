@@ -104,7 +104,7 @@ Many visitors are surprised that "Dharamshala" is really two towns. Lower Dharam
 
 - **Local bus**: HRTC and local buses shuttle between Dharamshala bus stand and McLeod Ganj through the day. Approx. ₹20-40, 30-45 minutes. Cheap but crowded in peak season.
 - **Taxi**: approx. ₹300-500 for the 9-10 km road, 20-30 minutes. Taxi stands are at the Dharamshala bus stand and Kotwali Bazaar. Shared taxis also run on this route.
-- **Dharamshala Skyway (ropeway)**: the cable car opened in 2022 and links lower Dharamshala to McLeod Ganj in about 5 minutes. Operations were suspended in August 2025 after a landslide near one of its towers; listed hours are 9:30 am to 6 pm, but it was closed for maintenance until 30 October 2026, so check the current status before you go. See our [Dharamshala Skyway guide](/blog/dharamshala-skyway-ropeway-guide).
+- **Dharamshala Skyway (ropeway)**: the cable car opened in 2022 and links lower Dharamshala to McLeod Ganj in about 5 minutes. Operations were suspended in August 2025 after a landslide near one of its towers; listed hours are 9:30 am to 6 pm, but it was closed for maintenance from 21 to 30 October 2026, and its reopening was not confirmed when we checked on 2 November 2026, so check the current status before you go. See our [Dharamshala Skyway guide](/blog/dharamshala-skyway-ropeway-guide).
 
 ## Which Route Should You Choose?
 
@@ -145,7 +145,7 @@ Once you know how you are arriving, [browse hotels in Dharamshala and McLeod Gan
       },
       {
         question: 'Is the Dharamshala to McLeod Ganj ropeway working?',
-        answer: 'The Dharamshala Skyway was suspended in August 2025 after a landslide near one of its towers. It was closed for maintenance until 30 October 2026, so check its current status in our Dharamshala Skyway guide before you go; buses and taxis between Dharamshala and McLeod Ganj run every day.',
+        answer: 'The Dharamshala Skyway was suspended in August 2025 after a landslide near one of its towers. It was closed for maintenance from 21 to 30 October 2026, and its reopening was not confirmed when we checked on 2 November 2026, so check its current status in our Dharamshala Skyway guide before you go; buses and taxis between Dharamshala and McLeod Ganj run every day.',
       },
       {
         question: 'How much does a taxi from Delhi to Dharamshala cost?',
@@ -658,7 +658,7 @@ For a deeper look at the cold months, see our [Dharamshala in winter and snowfal
 
 ## Trek Packing Checklist (Triund, Kareri Lake and Beyond)
 
-Whether you are doing [Triund](/treks/triund-trek) as a day hike or the overnight [Kareri Lake trek](/treks/kareri-lake-trek), mountain weather changes fast. Pack:
+Whether you are doing [Triund](/blog/triund-trek-complete-guide) as a day hike or the overnight [Kareri Lake trek](/treks/kareri-lake-trek), mountain weather changes fast. Pack:
 
 1. A 20-30 litre daypack with a rain cover
 2. Trekking shoes with ankle support and good grip (not new, not slippery sneakers)
@@ -740,6 +740,10 @@ Wherever you choose to stay, from lower [Dharamshala](/destinations/dharamshala)
         question: 'What should I wear in Dharamshala in October?',
         answer: 'Light layers for sunny days of about 20-25 degrees Celsius, plus a fleece or light jacket for evenings, which can drop to around 9-14 degrees. Good walking shoes are essential since October is prime trekking season.',
       },
+      {
+        question: 'What to wear in Dharamshala in winter (December to February)?',
+        answer: 'A warm insulated down or synthetic jacket, two sets of thermal innerwear, wool or fleece mid-layers, a woollen cap, gloves, thick socks and waterproof shoes with good grip for icy paths. Days are often sunny, so add sunscreen and lip balm; McLeod Ganj is usually 3 to 5°C colder than the town.',
+      },
     ],
   },
   {
@@ -768,7 +772,7 @@ Many first-timers expect one town and find two very different places, a 20-30 mi
 - **Dharamkot** is a steep 2-3 km above McLeod Ganj, at about 2,100 m.
 - **Naddi** sits about 3-4 km west of McLeod Ganj, known for its view of the Dhauladhar.
 
-Getting between lower Dharamshala and McLeod Ganj takes 20-30 minutes by taxi (approx. ₹300-500) or about 30-45 minutes by local bus. The Dharamshala Skyway ropeway was suspended after a landslide in August 2025 ; check its current status before counting on it (it was closed for maintenance until 30 October 2026; [Skyway guide](/blog/dharamshala-skyway-ropeway-guide)). Our [how to reach Dharamshala guide](/blog/how-to-reach-dharamshala) covers all the transport details.
+Getting between lower Dharamshala and McLeod Ganj takes 20-30 minutes by taxi (approx. ₹300-500) or about 30-45 minutes by local bus. The Dharamshala Skyway ropeway was suspended after a landslide in August 2025 ; check its current status before counting on it (it was closed for maintenance from 21 to 30 October 2026, and its reopening was not confirmed when we checked on 2 November 2026; [Skyway guide](/blog/dharamshala-skyway-ropeway-guide)). Our [how to reach Dharamshala guide](/blog/how-to-reach-dharamshala) covers all the transport details.
 
 ## Side-by-Side Comparison
 
@@ -793,7 +797,7 @@ Getting between lower Dharamshala and McLeod Ganj takes 20-30 minutes by taxi (a
 
 ### Backpackers and budget travellers
 
-**Best base: Bhagsu or McLeod Ganj.** Bhagsu has a dense cluster of hostels, cheap guesthouses and travellers' cafes, while McLeod Ganj keeps you close to the bus stand and food stalls. Both are close to the [Triund trek](/treks/triund-trek) trailhead. Explore [Bhagsu](/destinations/bhagsu) and the [McLeod Ganj area guide](/destinations/mcleod-ganj), and compare [budget stays by area](/blog/budget-hotels-in-dharamshala).
+**Best base: Bhagsu or McLeod Ganj.** Bhagsu has a dense cluster of hostels, cheap guesthouses and travellers' cafes, while McLeod Ganj keeps you close to the bus stand and food stalls. Both are close to the [Triund trek](/blog/triund-trek-complete-guide) trailhead. Explore [Bhagsu](/destinations/bhagsu) and the [McLeod Ganj area guide](/destinations/mcleod-ganj), and compare [budget stays by area](/blog/budget-hotels-in-dharamshala).
 
 ### Spiritual travellers and long stays
 
@@ -883,6 +887,10 @@ Whichever you choose, you can [compare hotels in every area](/hotels) by price a
       {
         question: 'What is the difference between Dharamshala and McLeod Ganj? Are they the same place?',
         answer: 'No, they are not the same place. Dharamshala is the main working town at about 1,457 m, with Kotwali Bazaar, the bus stand and the cricket stadium. McLeod Ganj is its hilltop suburb, about 9 km up the road at 1,750 to 2,080 m, home to the Dalai Lama Temple, Tibetan cafes and the Triund trek route. The drive takes 20 to 30 minutes by taxi.',
+      },
+      {
+        question: 'Are Dharamshala and McLeod Ganj the same?',
+        answer: 'No. McLeod Ganj is a hilltop suburb of Dharamshala, about 9 km up the road (around 4 km on the steep footpath) and roughly 300 to 600 m higher. People often say Dharamshala when they mean McLeod Ganj, because the Dalai Lama Temple, the Tibetan cafes and the Triund trail are all in the upper town.',
       },
     ],
   },

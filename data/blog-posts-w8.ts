@@ -181,6 +181,10 @@ Dalhousie–Khajjiar works well at the start or end of a Kangra trip because it 
         question: 'Can I return from Chamba to Dharamshala via Jot Pass?',
         answer: 'In good weather the Jot Pass road is a shorter, scenic option, but it is narrow and is often closed or unsafe after snowfall from roughly December to March. The Banikhet and Nurpur route is the reliable all-season choice.',
       },
+      {
+        question: 'Dalhousie se Dharamshala kitni dur hai?',
+        answer: 'Dalhousie Dharamshala se sadak ke raste lagbhag 115 se 125 km door hai, Shahpur, Nurpur aur Banikhet hote hue, aur lagbhag 4 se 4.5 ghante lagte hain. Khajjiar Dalhousie se 22 se 24 km aage hai.',
+      },
     ],
   },
   {

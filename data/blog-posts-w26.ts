@@ -7,7 +7,9 @@ export const blogPostsW26: BlogPost[] = [
     slug: 'kullu-dussehra-mela-2026',
     title: 'Kullu Dussehra 2026: Dates (21 to 27 October), Raghunath Rath Yatra, Devtas, the Mela and How to Get There from Dharamshala',
     excerpt: 'International Kullu Dussehra 2026 runs from 21 to 27 October at Dhalpur Maidan in Kullu. What happens on which day, how many village deities come, the Kala Kendra cultural evenings, the mela and Kullu shawls, the 17th-century story behind it, traffic rules for 2026, and how to reach Kullu from Dharamshala, McLeod Ganj and Manali.',
-    content: `**Short answer:** International Kullu Dussehra 2026 runs from **21 to 27 October 2026** at **Dhalpur Maidan in Kullu town**, according to the Kullu district administration. It opened on 21 October with the rath yatra (chariot procession) of Lord Raghunath, and the festival committee invited **347 village deities (devtas)** this year. It ends on 27 October with Lanka Dahan at the southern end of the ground. As we write on 22 October, the festival is on now, and Kullu is about 180 to 215 km (6 to 7 hours) by road from Dharamshala.
+    content: `> **Update, 2 November 2026:** Kullu Dussehra 2026 is over (21 to 27 October). **Kullu Dussehra 2027 dates are not announced yet.** Dussehra (Vijayadashami) 2027 falls on **Saturday 9 October 2027** by Drik Panchang (a few calendars give 10 October); in 2026 the Kullu festival began the day after Dussehra, so expect it to start around 10 October 2027. We will add the official dates when the Kullu district administration announces them.
+
+**Short answer:** International Kullu Dussehra 2026 ran from **21 to 27 October 2026** at **Dhalpur Maidan in Kullu town**, according to the Kullu district administration. It opened on 21 October with the rath yatra (chariot procession) of Lord Raghunath, and the festival committee invited **347 village deities (devtas)** this year. It ended on 27 October with Lanka Dahan at the southern end of the ground. Kullu is about 180 to 215 km (6 to 7 hours) by road from Dharamshala.
 
 ![The giant wheel at the Kullu Dussehra fair with the hills of the Kullu valley behind](/images/places/dussehra-fair-wheel.jpg)
 
@@ -166,15 +168,16 @@ For other fairs this season, see our [melas and fairs in Dharamshala and Kangra]
     tags: ['kullu dussehra', 'kullu dussehra 2026', 'dussehra', 'mela', 'festivals', 'himachal festivals', 'raghunath rath yatra', 'devtas', 'kullu', 'dharamshala to kullu'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-10-22',
-    updated_at: '2026-10-22',
+    updated_at: '2026-11-02',
     image: placeImage('kullu-dussehra-procession'),
     image_alt: 'Giant wheel at the Kullu Dussehra fair with Himalayan hills behind, Himachal Pradesh',
     read_time: 11,
     featured: false,
     meta_title: 'Kullu Dussehra 2026: Dates, Rath Yatra, Mela Guide',
-    meta_description: 'Kullu Dussehra 2026 runs 21-27 Oct at Dhalpur Maidan: Raghunath rath yatra, 347 devtas invited, Lanka Dahan on 27 Oct. How to reach from Dharamshala.',
+    meta_description: 'Kullu Dussehra 2026 ran 21-27 Oct at Dhalpur Maidan. 2027 dates not announced; Dussehra 2027 is 9 Oct. Rath yatra, devtas, how to reach.',
     related_slugs: ['dharamshala-dussehra-police-ground', 'melas-fairs-dharamshala-kangra', 'dharamshala-to-manali', 'himachal-itinerary-delhi-dharamshala-manali', 'manali-travel-guide', 'kasol-travel-guide'],
     sources: [
+      { title: 'Vijayadashami 2027 date (Drik Panchang, checked 2 November 2026)', url: 'https://www.drikpanchang.com/festivals/vijayadashami/vijayadashami-date-time.html?year=2027' },
       { title: 'International Kullu Dussehra 2026 (21-27 October), District Administration Kullu (updated 17 October 2026)', url: 'https://hpkullu.nic.in/event/international-kullu-dussehra-2026-21-27-october/' },
       { title: 'History of Kullu Dussehra (official Kullu Dussehra website, Government of Himachal Pradesh)', url: 'https://kulludussehra.hp.gov.in/?p=78' },
       { title: 'Himachal Governor opens week-long International Kullu Dussehra Festival (IANS, 21 October 2026)', url: 'https://www.socialnews.xyz/2026/10/21/himachal-governor-opens-week-long-international-kullu-dussehra-festival/' },
@@ -193,6 +196,10 @@ For other fairs this season, see our [melas and fairs in Dharamshala and Kangra]
       { title: 'Distance from Dharamshala to Kullu (Zingbus)', url: 'https://www.zingbus.com/distance/distance-from-dharamshala-to-kullu' },
     ],
     faqs: [
+      {
+        question: 'When is Kullu Dussehra 2027?',
+        answer: 'Not announced yet (checked 2 November 2026). Dussehra (Vijayadashami) 2027 falls on Saturday 9 October 2027 by Drik Panchang, and in 2026 the Kullu festival began the day after Dussehra and ran for seven days, so expect it to start around 10 October 2027. Confirm with the Kullu district administration before you book.',
+      },
       {
         question: 'When is Kullu Dussehra in 2026?',
         answer: 'Kullu Dussehra 2026 runs from Wednesday 21 October to Tuesday 27 October 2026 at Dhalpur Maidan in Kullu, according to the Kullu district administration. It opened on 21 October with the rath yatra of Lord Raghunath and ends on 27 October with Lanka Dahan.',

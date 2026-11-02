@@ -49,7 +49,7 @@ Dharamshala is widely considered **the wettest place in Himachal Pradesh**, with
 - **Slippery trails and leeches.** Forest paths turn to mud and rock; leeches appear on some trails, so wear long socks.
 - **Flight disruption.** Flights into Kangra are more likely to be delayed or diverted by cloud, especially in the afternoon.
 - **Damp rooms.** Older buildings can smell musty; clothes take days to dry.
-- **Transport suspensions.** The Kangra Valley toy train has been repeatedly suspended by monsoon damage in recent years, and the [Dharamshala Skyway ropeway](/blog/dharamshala-skyway-ropeway-guide) was suspended after a landslide in August 2025 (check its current status in the guide: it was closed for maintenance until 30 October 2026). Check status locally before relying on either.
+- **Transport suspensions.** The Kangra Valley toy train has been repeatedly suspended by monsoon damage in recent years, and the [Dharamshala Skyway ropeway](/blog/dharamshala-skyway-ropeway-guide) was suspended after a landslide in August 2025 (check its current status in the guide: it was closed for maintenance from 21 to 30 October 2026, and its reopening was not confirmed when we checked on 2 November 2026). Check status locally before relying on either.
 
 ## Landslides and Road Safety
 
@@ -69,7 +69,7 @@ For routes and alternatives, see [how to reach Dharamshala](/blog/how-to-reach-d
 
 | Trek or walk | Monsoon verdict |
 |---|---|
-| [Triund](/treks/triund-trek) | Slippery and cloudy; avoid in heavy spells. The district sometimes closes Triund and higher treks in bad weather, so check orders first. Possible on dry days in late September. |
+| [Triund](/blog/triund-trek-complete-guide) | Slippery and cloudy; avoid in heavy spells. The district sometimes closes Triund and higher treks in bad weather, so check orders first. Possible on dry days in late September. |
 | [Kareri Lake](/treks/kareri-lake-trek) | Avoid July-August; river crossings swell. Late September-October is good. |
 | Snowline, Indrahar Pass | Not advisable in the monsoon. |
 | Bhagsu waterfall walk | Short and rewarding, but slippery; Bhagsu is dangerous after heavy rain. Stay back from the water. |

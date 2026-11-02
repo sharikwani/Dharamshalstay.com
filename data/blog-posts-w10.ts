@@ -119,6 +119,14 @@ For getting around in Dharamshala and McLeod Ganj, read our [local transport gui
         question: 'What is the best route from Amritsar to Dharamshala?',
         answer: 'The via-Pathankot route on NH-44 and NH-154 is the most reliable. It is about 200 to 210 km with good road quality for most of the journey. The direct Nurpur route is slightly shorter but has narrower roads.',
       },
+      {
+        question: 'Is there a direct train from Amritsar to Dharamshala?',
+        answer: 'No. There is no direct train because Dharamshala has no broad-gauge railway. Take a train from Amritsar Junction to Pathankot (Chakki Bank or Pathankot Junction), about 2 to 3 hours, then an HRTC bus (about 3 hours) or a taxi for the last 85 to 90 km.',
+      },
+      {
+        question: 'Amritsar se Dharamshala ki duri kitni hai?',
+        answer: 'Amritsar se Dharamshala ki doori sadak se lagbhag 200 se 210 km hai, Pathankot wale raste se. Taxi ya car se 5 se 6 ghante lagte hain aur HRTC bus se 6 se 7 ghante.',
+      },
     ],
   },
   {

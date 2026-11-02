@@ -7,7 +7,9 @@ export const blogPostsW22: BlogPost[] = [
     slug: 'dharamshala-dussehra-police-ground',
     title: 'Dussehra in Dharamshala 2026 at the Police Ground: Ravan Dahan, Mela, Fireworks and Music Nights',
     excerpt: 'Dharamshala Dussehra 2026 falls on Tuesday 20 October. The district mela runs 18 to 24 October at the Police Ground in lower Dharamshala, with Lanka and Akshay burnt on 19 October and Ravan, Meghnad and Kumbhkaran on 20 October, plus fireworks, stalls and rides. Here is what happens each day, what is not yet announced (singers included) and how to visit.',
-    content: `**Short answer:** Dussehra in Dharamshala 2026 is on **Tuesday 20 October**. The district-level Dussehra mela runs from **18 to 24 October 2026** at the **Police Ground (Netaji Subhash Chandra Bose Police Ground)** in Jawahar Nagar, lower Dharamshala. The Lanka and Akshay effigies are burnt on **19 October**, and Ravan, Meghnad and Kumbhkaran go up in flames on **20 October**, with fireworks as the main attraction. As of 18 October, **no singer line-up for the 2026 Dussehra has been published**, so check local news on the day.
+    content: `> **Update, 2 November 2026:** the 2026 Dussehra mela at the Police Ground is over (18 to 24 October). **Dussehra 2027 falls on Saturday 9 October 2027** by Drik Panchang (a few calendars give 10 October); the Dharamshala mela dates and programme are not announced yet.
+
+**Short answer:** Dussehra in Dharamshala 2026 was on **Tuesday 20 October**. The district-level Dussehra mela runs from **18 to 24 October 2026** at the **Police Ground (Netaji Subhash Chandra Bose Police Ground)** in Jawahar Nagar, lower Dharamshala. The Lanka and Akshay effigies are burnt on **19 October**, and Ravan, Meghnad and Kumbhkaran go up in flames on **20 October**, with fireworks as the main attraction. As of 18 October, **no singer line-up for the 2026 Dussehra has been published**, so check local news on the day.
 
 ![Crowds filming as Dussehra effigies burn with fireworks at night (photo location not stated, not Dharamshala 2026)](/images/places/ravan-dahan-crowd.jpg)
 
@@ -124,15 +126,16 @@ Browse rooms on our [Dharamshala hotels page](/hotels) or read [where to stay in
     tags: ['dussehra', 'dharamshala dussehra 2026', 'ravan dahan', 'police ground', 'mela', 'kangra', 'festivals', 'navratri', 'october'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-10-18',
-    updated_at: '2026-10-24',
+    updated_at: '2026-11-02',
     image: placeImage('ravan-dahan-crowd'),
     image_alt: 'Night crowd filming Dussehra effigies burning with fireworks (photo location not stated)',
     read_time: 7,
     featured: true,
     meta_title: 'Dharamshala Dussehra 2026: Ravan Dahan at Police Ground',
-    meta_description: 'Dussehra 2026 is on 20 Oct. Dharamshala mela at Police Ground 18-24 Oct: Lanka burnt 19 Oct, Ravan 20 Oct, fireworks. Singers not yet announced.',
+    meta_description: 'Dharamshala Dussehra 2026 mela ran 18-24 Oct at the Police Ground; Ravan Dahan 20 Oct. Dussehra 2027 is on 9 Oct; mela dates not announced.',
     related_slugs: ['ramlila-in-dharamshala', 'melas-fairs-dharamshala-kangra', 'festivals-events-calendar-dharamshala', 'dharamshala-in-october-november', 'kangra-valley-carnival-2026'],
     sources: [
+      { title: 'Vijayadashami 2027 date (Drik Panchang, checked 2 November 2026)', url: 'https://www.drikpanchang.com/festivals/vijayadashami/vijayadashami-date-time.html?year=2027' },
       { title: 'Vijayadashami 2026 date and time (Drik Panchang)', url: 'https://www.drikpanchang.com/festivals/vijayadashami/vijayadashami-date-time.html?year=2026' },
       { title: 'Dussehra 2026 date, Ravan dahan shubh muhurat (Amar Ujala, 16 October 2026)', url: 'https://www.amarujala.com/photo-gallery/spirituality/festivals/dussehra-2026-date-ravan-dahan-shubh-muhurat-vijayadashami-kab-hai-2026-2026-10-16' },
       { title: 'District headquarters Dussehra mela 18 to 24 October, Ravan dahan (Amar Ujala, 2 October 2026)', url: 'https://www.amarujala.com/video/himachal-pradesh/kangra/video-district-headquarters-dussehra-festival-mela-october-18-to-24-ravana-dahan-2026-10-02' },
@@ -147,6 +150,10 @@ Browse rooms on our [Dharamshala hotels page](/hotels) or read [where to stay in
       { title: '18-year-old Ramlila begins at Dari, Dharamshala (Amar Ujala, 13 October 2026)', url: 'https://www.amarujala.com/video/himachal-pradesh/kangra/video-dari-dharamshala-18-year-old-ramleela-begins-vishnu-leela-2026-10-13' },
     ],
     faqs: [
+      {
+        question: 'When is Dussehra 2027 in Dharamshala?',
+        answer: 'Dussehra (Vijayadashami) 2027 falls on Saturday 9 October 2027 by Drik Panchang; a few calendars give 10 October. The Dharamshala Police Ground mela dates and programme for 2027 are not announced yet (checked 2 November 2026). In 2026 the mela ran for seven days around Dussehra, from 18 to 24 October.',
+      },
       {
         question: 'When is Dussehra in Dharamshala in 2026?',
         answer: 'Dussehra (Vijayadashami) is on Tuesday 20 October 2026. The district Dussehra mela at the Police Ground in Dharamshala runs from 18 to 24 October 2026, with effigies burnt on 19 and 20 October.',

@@ -103,7 +103,7 @@ People often search for a "4 star hotel in McLeod Ganj". Few properties up here 
 
 ## Cosy Stays Near McLeod Ganj and the Triund Trailhead
 
-If you are coming for the [Triund trek](/treks/triund-trek), stay above McLeod Ganj. The trail starts at Gallu Devi temple above Dharamkot, and from there it is roughly 6-7 km to the Triund ridge at about 2,850 m, or around 9 km if you start from McLeod Ganj. Sleeping in Dharamkot or Upper Bhagsu lets you start at first light, skip the taxi and the steepest road section, and come back to a warm cafe rather than a traffic jam. These villages also have the cosiest small guesthouses in the area: a handful of rooms, a rooftop for breakfast and hosts who remember your name.
+If you are coming for the [Triund trek](/blog/triund-trek-complete-guide), stay above McLeod Ganj. The trail starts at Gallu Devi temple above Dharamkot, and from there it is roughly 6-7 km to the Triund ridge at about 2,850 m, or around 9 km if you start from McLeod Ganj. Sleeping in Dharamkot or Upper Bhagsu lets you start at first light, skip the taxi and the steepest road section, and come back to a warm cafe rather than a traffic jam. These villages also have the cosiest small guesthouses in the area: a handful of rooms, a rooftop for breakfast and hosts who remember your name.
 
 ### Dharamkot: closest to the trail
 

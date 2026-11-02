@@ -107,7 +107,7 @@ The upside: emerald hills, Bhagsu waterfall at full force, quiet streets and the
 | Avoiding crowds | November, late January-February, September | Weekdays are always calmer |
 | Families with kids | April, October-November | School holidays in May-June mean crowds |
 
-**Snow trip tip:** build one flexible day into your plan. The morning after a storm clears is the best moment to head up to Naddi or towards Triund. Book a guided [Triund trek](/treks/triund-trek) if you have not hiked it in winter before.
+**Snow trip tip:** build one flexible day into your plan. The morning after a storm clears is the best moment to head up to Naddi or towards Triund. Book a [guided Triund trek](/treks/triund-trek) if you have not hiked it in winter before.
 
 **Trekkers:** the spring and autumn windows also suit longer routes. See [Kareri Lake](/treks/kareri-lake-trek) and the [Indrahar Pass trek guide](/blog/indrahar-pass-trek-guide) (a summer-to-autumn route, not for winter).
 

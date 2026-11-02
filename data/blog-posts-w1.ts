@@ -248,7 +248,7 @@ The **Gallu Devi temple** sits above Upper Dharamkot at around 2,150 m, and this
 - **Snacks and water** are sold at a few points on the trail in season, at higher prices. Carry your own water.
 - **Check the latest rules** for camping, overnight stays and any trekking fees before you go; they have changed in recent years.
 
-Full details are in our [Triund trek complete guide](/blog/triund-trek-complete-guide) and our [Triund camping guide](/blog/triund-camping-guide). You can also book a guided [Triund trek](/treks/triund-trek) or browse all [treks](/treks).
+Full details are in our [Triund trek complete guide](/blog/triund-trek-complete-guide) and our [Triund camping guide](/blog/triund-camping-guide). You can also book a [guided Triund trek](/treks/triund-trek) or browse all [treks](/treks).
 
 ## The Israeli backpacker scene
 

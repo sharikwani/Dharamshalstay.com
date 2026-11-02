@@ -29,7 +29,7 @@ Dates follow the Hindu lunar calendar, so regional panchangs can differ by a day
 
 - **The views.** Early November is one of the clearest times of year. The post-monsoon air is clean and the snow line on the Dhauladhar is starting to drop. See our [October and November guide](/blog/dharamshala-in-october-november) for the wider season.
 - **A gentler festival.** There are lights, diyas and fireworks, but less noise and smoke than in Delhi or Chandigarh. Cold, clean evening air is a real change from the plains in November.
-- **Dry trails.** The [Triund trek](/treks/triund-trek) is usually in good shape in early November, though it is cold at the top after dark.
+- **Dry trails.** The [Triund trek](/blog/triund-trek-complete-guide) is usually in good shape in early November, though it is cold at the top after dark.
 - **Short travel time.** An overnight bus or a short flight gets you here, which works for a three-day break.
 
 ## What Diwali Looks Like Here

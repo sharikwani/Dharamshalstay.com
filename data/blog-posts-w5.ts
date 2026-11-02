@@ -665,9 +665,9 @@ None of these rules are hard to follow, and most come down to keeping the mounta
     slug: 'local-transport-dharamshala',
     title: 'Local Transport in Dharamshala & McLeod Ganj: Buses, Taxis, Ropeway & Scooters (2026)',
     excerpt: 'How to get around Dharamshala, McLeod Ganj, Bhagsu, Dharamkot and Naddi: HRTC local buses, shared and union taxis with approx. fares, ropeway status, walking shortcuts, parking, scooter rentals and getting to trailheads.',
-    content: `**Short answer:** The cheapest way between lower Dharamshala and McLeod Ganj is an **HRTC local bus** (approx. **₹20-30**); a union taxi on fixed rates costs approx. **₹300-500** for the same trip. Within McLeod Ganj, Bhagsu and Dharamkot, walking is often fastest. The Dharamshala Skyway ropeway was suspended in August 2025 after a landslide and was closed for maintenance until 30 October 2026, so check its status before relying on it.
+    content: `**Short answer:** The cheapest way between lower Dharamshala and McLeod Ganj is an **HRTC local bus** (approx. **₹20-30**); a union taxi on fixed rates costs approx. **₹300-500** for the same trip. Within McLeod Ganj, Bhagsu and Dharamkot, walking is often fastest. The Dharamshala Skyway ropeway was suspended in August 2025 after a landslide and was closed for maintenance from 21 to 30 October 2026, and its reopening was not confirmed when we checked on 2 November 2026, so check its status before relying on it.
 
-Getting around Dharamshala comes down to three options: **HRTC local buses** (cheapest, approx. ₹20-30 between lower Dharamshala and McLeod Ganj), **union taxis** on fixed rates (approx. ₹300-500 for the same trip), and **your own feet**, which is often fastest within McLeod Ganj, Bhagsu and Dharamkot. The **Dharamshala Skyway ropeway** was suspended in August 2025 after a landslide near one of its towers; check its current status in our [Skyway guide](/blog/dharamshala-skyway-ropeway-guide) before counting on it (it was closed for maintenance until 30 October 2026). Auto-rickshaws are rare up the hill, and app cabs are not a reliable option.
+Getting around Dharamshala comes down to three options: **HRTC local buses** (cheapest, approx. ₹20-30 between lower Dharamshala and McLeod Ganj), **union taxis** on fixed rates (approx. ₹300-500 for the same trip), and **your own feet**, which is often fastest within McLeod Ganj, Bhagsu and Dharamkot. The **Dharamshala Skyway ropeway** was suspended in August 2025 after a landslide near one of its towers; check its current status in our [Skyway guide](/blog/dharamshala-skyway-ropeway-guide) before counting on it (it was closed for maintenance from 21 to 30 October 2026, and its reopening was not confirmed when we checked on 2 November 2026). Auto-rickshaws are rare up the hill, and app cabs are not a reliable option.
 
 Below is how each option works, with routes, approx. fares as of 2026, walking shortcuts, driving and parking advice for narrow hill roads, renting a scooter legally, and how to reach the trailheads.
 
@@ -728,7 +728,7 @@ Autos are uncommon on the hill roads to McLeod Ganj and the villages because of 
 
 ## The ropeway (Dharamshala Skyway)
 
-The cable car opened in 2022 and connects lower Dharamshala (near Byepass Road, Kotwali Bazaar) to McLeod Ganj (Temple Road) in about 5 minutes over 1.8 km, cutting out the road traffic. Operations were **suspended in August 2025** after a landslide near one of its towers. Check the current status in our [Skyway guide](/blog/dharamshala-skyway-ropeway-guide) before you go: it was closed for maintenance until 30 October 2026. The listed hours are 9:30 am to 6 pm, and the helpline is +91-1892 223302. Confirm on the day and buy tickets at the counter. If it is running when you visit, it is a useful time-saver, especially on peak-season weekends when the road jams. Our [Dharamshala Skyway guide](/blog/dharamshala-skyway-ropeway-guide) covers stations, tickets and tips.
+The cable car opened in 2022 and connects lower Dharamshala (near Byepass Road, Kotwali Bazaar) to McLeod Ganj (Temple Road) in about 5 minutes over 1.8 km, cutting out the road traffic. Operations were **suspended in August 2025** after a landslide near one of its towers. Check the current status in our [Skyway guide](/blog/dharamshala-skyway-ropeway-guide) before you go: it was closed for maintenance from 21 to 30 October 2026, and its reopening was not confirmed when we checked on 2 November 2026. The listed hours are 9:30 am to 6 pm, and the helpline is +91-1892 223302. Confirm on the day and buy tickets at the counter. If it is running when you visit, it is a useful time-saver, especially on peak-season weekends when the road jams. Our [Dharamshala Skyway guide](/blog/dharamshala-skyway-ropeway-guide) covers stations, tickets and tips.
 
 ## Walking: shortcuts and distances
 
@@ -804,11 +804,11 @@ If you do not want to depend on taxis, stay in central McLeod Ganj, close to the
     faqs: [
       {
         question: 'How do I get from Dharamshala to McLeod Ganj?',
-        answer: 'Take an HRTC local bus from the Dharamshala bus stand (approx. ₹20-30, 30-45 minutes) or a taxi (approx. ₹300-500, 20-30 minutes). The ropeway was suspended in August 2025 after a landslide; check its current status in our Dharamshala Skyway guide before you go (it was closed for maintenance until 30 October 2026).',
+        answer: 'Take an HRTC local bus from the Dharamshala bus stand (approx. ₹20-30, 30-45 minutes) or a taxi (approx. ₹300-500, 20-30 minutes). The ropeway was suspended in August 2025 after a landslide; check its current status in our Dharamshala Skyway guide before you go (it was closed for maintenance from 21 to 30 October 2026, and its reopening was not confirmed when we checked on 2 November 2026).',
       },
       {
         question: 'Is the Dharamshala to McLeod Ganj ropeway working?',
-        answer: 'Check the current status in our Dharamshala Skyway guide before you go: it was closed for maintenance until 30 October 2026. It was suspended in August 2025 after a landslide near one of its towers and ran again in 2026. Hours are listed as 9:30 am to 6 pm. Call +91-1892 223302 or ask your hotel on the day.',
+        answer: 'Check the current status in our Dharamshala Skyway guide before you go: it was closed for maintenance from 21 to 30 October 2026, and its reopening was not confirmed when we checked on 2 November 2026. It was suspended in August 2025 after a landslide near one of its towers and ran again in 2026. Hours are listed as 9:30 am to 6 pm. Call +91-1892 223302 or ask your hotel on the day.',
       },
       {
         question: 'Are Uber and Ola available in McLeod Ganj?',

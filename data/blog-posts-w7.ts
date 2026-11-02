@@ -526,6 +526,10 @@ Land in the morning and you can be at the Dalai Lama Temple by lunch. Our [one d
         question: 'Is there a bus from Kangra Airport to Dharamshala?',
         answer: 'Yes. Local HRTC and private buses run on the Pathankot-Mandi highway outside the airport towards Dharamshala bus stand, where you change for McLeod Ganj. They suit light luggage in daylight; with bags or an evening arrival, a taxi is easier.',
       },
+      {
+        question: 'Does Dharamshala have an airport?',
+        answer: 'Yes. Dharamshala is served by Kangra Airport (code DHM), also called Gaggal Airport, at Gaggal about 12 to 15 km from Dharamshala town and 20 to 22 km from McLeod Ganj. IndiGo flies there from Delhi and a few other cities.',
+      },
     ],
   },
 
@@ -664,7 +668,7 @@ Rain is common from late June to mid-September and afternoon showers can hit any
 - **Triund:** it needs a full day (5-7 hours return) on its own. Do it as a separate day; see our [Triund guide](/blog/triund-trek-complete-guide).
 - **Bir Billing:** 2-2.5 hours each way by road. Combine it with an overnight stay.
 - **Palampur and Baijnath:** a whole day on their own.
-- **Dharamshala Skyway (ropeway):** suspended after a landslide in August 2025, listed hours are 9:30 am to 6 pm, but it was closed for maintenance until 30 October 2026. Check the current status before you go; see our [Skyway guide](/blog/dharamshala-skyway-ropeway-guide).
+- **Dharamshala Skyway (ropeway):** suspended after a landslide in August 2025, listed hours are 9:30 am to 6 pm, but it was closed for maintenance from 21 to 30 October 2026, and its reopening was not confirmed when we checked on 2 November 2026. Check the current status before you go; see our [Skyway guide](/blog/dharamshala-skyway-ropeway-guide).
 
 ## Practical Tips
 

@@ -90,7 +90,7 @@ Read more: [How to reach Dharamshala](/blog/how-to-reach-dharamshala), [Delhi to
 
 There is no Uber or Ola in Dharamshala. Local movement relies on union taxis with fixed rates, HRTC and private buses, shared jeeps on a few routes, and your legs.
 
-- **Lower Dharamshala to McLeod Ganj**: local bus (cheap and slow), taxi (approx. 300 to 500 rupees as of 2026), or the **Dharamshala Skyway** ropeway when it runs. The Skyway was suspended in August 2025 after a landslide near one of its towers; check the current status before you go (it was closed for maintenance until 30 October 2026; [Skyway guide](/blog/dharamshala-skyway-ropeway-guide)).
+- **Lower Dharamshala to McLeod Ganj**: local bus (cheap and slow), taxi (approx. 300 to 500 rupees as of 2026), or the **Dharamshala Skyway** ropeway when it runs. The Skyway was suspended in August 2025 after a landslide near one of its towers; check the current status before you go (it was closed for maintenance from 21 to 30 October 2026, and its reopening was not confirmed when we checked on 2 November 2026; [Skyway guide](/blog/dharamshala-skyway-ropeway-guide)).
 - **Within McLeod Ganj**: walk. The centre is a few hundred metres across, but steep.
 - **McLeod Ganj to Bhagsu, Dharamkot, Naddi**: walk (20 to 45 minutes) or a short taxi hop. Taxis cannot always reach Dharamkot's upper lanes.
 - **Valley sights**: hire a taxi for a half day (approx. 1,800 rupees) or full day (approx. 3,500 rupees for an SUV). Buses exist but connections eat a day.
@@ -169,7 +169,7 @@ For Triund, the forest department charges an entry fee (approx. 100 rupees per p
 
 Paragliding at **Bir Billing**, a two to three hour drive away, is one of the best tandem flying sites in the world in season (roughly October to November and March to May).
 
-Read more: [Triund trek complete guide](/blog/triund-trek-complete-guide), [Triund camping guide](/blog/triund-camping-guide), [Snowline and Laka Glacier trek](/blog/snowline-laka-glacier-trek), [Indrahar Pass trek](/blog/indrahar-pass-trek-guide), [Kareri Lake trek](/blog/kareri-lake-trek-guide), [Easy hikes near McLeod Ganj](/blog/easy-hikes-near-mcleod-ganj), [Bir Billing to Rajgundha](/blog/bir-billing-rajgundha-trek), [Bir Billing paragliding](/blog/bir-billing-paragliding-guide), and our bookable [treks](/treks) including the [Triund trek](/treks/triund-trek) and [Kareri Lake trek](/treks/kareri-lake-trek), plus [paragliding](/paragliding).
+Read more: [Triund trek complete guide](/blog/triund-trek-complete-guide), [Triund camping guide](/blog/triund-camping-guide), [Snowline and Laka Glacier trek](/blog/snowline-laka-glacier-trek), [Indrahar Pass trek](/blog/indrahar-pass-trek-guide), [Kareri Lake trek](/blog/kareri-lake-trek-guide), [Easy hikes near McLeod Ganj](/blog/easy-hikes-near-mcleod-ganj), [Bir Billing to Rajgundha](/blog/bir-billing-rajgundha-trek), [Bir Billing paragliding](/blog/bir-billing-paragliding-guide), and our bookable [treks](/treks) including the [guided Triund trek](/treks/triund-trek) and [Kareri Lake trek](/treks/kareri-lake-trek), plus [paragliding](/paragliding).
 
 ## Culture: Tibetan, Himachali and everything between
 
@@ -501,7 +501,7 @@ Read more: [Rules, permits, dos and don'ts](/blog/rules-permits-dos-donts-dharam
 
 ## Practical matters
 
-- **Getting to McLeod Ganj**: from Gaggal airport, about 45 minutes by taxi (approx. 1,100 rupees as of 2026); from lower Dharamshala by local bus, taxi or the Skyway ropeway when it runs (check the current status in our [Skyway guide](/blog/dharamshala-skyway-ropeway-guide) before you go: it was closed for maintenance until 30 October 2026). Pre-book a [taxi](/taxi) for late arrivals.
+- **Getting to McLeod Ganj**: from Gaggal airport, about 45 minutes by taxi (approx. 1,100 rupees as of 2026); from lower Dharamshala by local bus, taxi or the Skyway ropeway when it runs (check the current status in our [Skyway guide](/blog/dharamshala-skyway-ropeway-guide) before you go: it was closed for maintenance from 21 to 30 October 2026, and its reopening was not confirmed when we checked on 2 November 2026). Pre-book a [taxi](/taxi) for late arrivals.
 - **Overnight buses**: many Delhi buses terminate in or near McLeod Ganj, but some stop in lower Dharamshala; check your ticket.
 - **Money**: there are several ATMs around the square, but they can run out on long weekends. UPI is accepted almost everywhere.
 - **Connectivity**: Jio and Airtel 4G/5G is generally good in town; Wi-Fi is common in hotels and cafes.
@@ -1070,7 +1070,7 @@ App cabs do not operate here. Local taxis work on fixed union rates.
 
 ### 10. Counting on the ropeway
 
-The Dharamshala Skyway linking lower Dharamshala and McLeod Ganj was suspended in August 2025 after a landslide near one of its towers. Check the current status in our [Skyway guide](/blog/dharamshala-skyway-ropeway-guide) before you go: it was closed for maintenance until 30 October 2026, and it stops in bad weather.
+The Dharamshala Skyway linking lower Dharamshala and McLeod Ganj was suspended in August 2025 after a landslide near one of its towers. Check the current status in our [Skyway guide](/blog/dharamshala-skyway-ropeway-guide) before you go: it was closed for maintenance from 21 to 30 October 2026, and its reopening was not confirmed when we checked on 2 November 2026, and it stops in bad weather.
 
 **Fix**: confirm on the day before you plan around it. Taxis and local buses remain the fallback. See our [Dharamshala Skyway guide](/blog/dharamshala-skyway-ropeway-guide).
 
@@ -1136,7 +1136,7 @@ The international cafes are great, but some of the best food here is cheap Tibet
 
 The single most common mistake. Start at 10 or 11 am and you climb in the heat, reach a crowded top, and descend in afternoon clouds or darkness.
 
-**Fix**: be on the trail by 7 am. From McLeod Ganj the trail is about 9 km one way (6 to 7 km from Gallu Devi), typically 4 to 5 hours up for average walkers. Read the [Triund trek complete guide](/blog/triund-trek-complete-guide) or book a guided [Triund trek](/treks/triund-trek).
+**Fix**: be on the trail by 7 am. From McLeod Ganj the trail is about 9 km one way (6 to 7 km from Gallu Devi), typically 4 to 5 hours up for average walkers. Read the [Triund trek complete guide](/blog/triund-trek-complete-guide) or book a [guided Triund trek](/treks/triund-trek).
 
 ### 21. Camping wherever you like
 
@@ -1294,7 +1294,7 @@ Tripadvisor's McLeod Ganj budget list did not show prices, but two good-value bu
 
 ## Dorm Bed or Private Room?
 
-- **Dorm bed (₹350–700):** cheapest by far, and the easiest way to meet trekking partners for [Triund](/treks/triund-trek). Bring earplugs and a padlock; check whether blankets are enough in winter.
+- **Dorm bed (₹350–700):** cheapest by far, and the easiest way to meet trekking partners for [Triund](/blog/triund-trek-complete-guide). Bring earplugs and a padlock; check whether blankets are enough in winter.
 - **Private room in a hostel (₹1,000–2,000):** many hostels in Bhagsu and Dharamkot have private doubles, sometimes with a balcony and view, with the hostel's cafe and common areas.
 - **Guesthouse or homestay room (₹700–1,300):** usually the best value for couples. Rooms are simple, hosts are local, and food is often home-cooked.
 - **Budget hotel (₹1,000–2,000):** more likely to have road access, parking, a front desk and a heater, which matters for families and winter trips.

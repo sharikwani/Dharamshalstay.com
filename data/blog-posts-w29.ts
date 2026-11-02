@@ -231,8 +231,8 @@ On the Dharamshala leg of your trip, browse our checked [hotels in Dharamshala a
     id: 'blog-rohtang-pass-atal-tunnel-status',
     slug: 'rohtang-pass-atal-tunnel-status',
     title: 'Rohtang Pass & Atal Tunnel Status 2026: Open or Closed, Permit, Timings',
-    excerpt: 'Is Rohtang Pass open or closed today? Our dated status page for Rohtang and the Atal Tunnel: the position on 26 October 2026, how the official Rohtang permit works (fee, daily quota, booking slots, documents), Atal Tunnel winter rules, when Rohtang usually closes and reopens, how to check live, and what to do near Manali when it is shut.',
-    content: `**Short answer:** As of **26 October 2026**, we found **no official order closing Rohtang Pass for the 2026-27 winter**, and the official permit portal showed no closure notice. But winter has started up there: fresh snow fell at the **Atal Tunnel north portal and Sissu on 15 and 25 October 2026** (IANS photos). In past years Rohtang has closed to tourist vehicles between **early October and early December**, and reopened in **May**. Before you go, check the official permit portal, rohtangpermits.hp.gov.in, and local news on the morning of travel.
+    excerpt: 'Is Rohtang Pass open or closed today? Our dated status page for Rohtang and the Atal Tunnel: the position on 2 November 2026, how the official Rohtang permit works (fee, daily quota, booking slots, documents), Atal Tunnel winter rules, when Rohtang usually closes and reopens, how to check live, and what to do near Manali when it is shut.',
+    content: `**Short answer:** As of **2 November 2026**, we found **no official order closing Rohtang Pass for the 2026-27 winter**, and the official permit portal showed no closure notice. But winter has started up there: fresh snow fell at the **Atal Tunnel north portal and Sissu on 15 and 25 October 2026** (IANS photos). In past years Rohtang has closed to tourist vehicles between **early October and early December**, and reopened in **May**. Before you go, check the official permit portal, rohtangpermits.hp.gov.in, and local news on the morning of travel.
 
 ![The upper Kullu valley of the Beas near Palchan, on the Manali road towards Solang, the Atal Tunnel and Rohtang](/images/places/kullu-valley.jpg)
 
@@ -242,7 +242,7 @@ We update this page when the status changes. Every line in the status log below 
 
 | Question | Answer | Source / status |
 |---|---|---|
-| Status on 26 October 2026 | No official 2026-27 winter closure order found; no notice on the permit portal | Our check, 26 Oct 2026 |
+| Status on 2 November 2026 | No official 2026-27 winter closure order found; no notice on the permit portal | Our check, 2 Nov 2026 |
 | Altitude of Rohtang Pass | About 3,980 m (13,058 ft) | Wikipedia; HimTimes, May 2026 |
 | Distance from Manali | About 50 km (The Tribune calls it the 50-km Manali-Rohtang route) | The Tribune, 17 May 2026 |
 | Permit needed? | Yes, for vehicles going beyond the Gulaba barrier. Online only | rohtangpermits.hp.gov.in |
@@ -256,7 +256,7 @@ We update this page when the status changes. Every line in the status log below 
 
 ## Is Rohtang Pass open or closed today?
 
-**On 26 October 2026: not officially closed, as far as we could find, but in the early-snow window.** Here is what we checked:
+**On 2 November 2026: not officially closed, as far as we could find, but in the early-snow window.** Here is what we checked (portal re-checked on 2 November; the other checks are from 26 October):
 
 - **The official permit portal** (rohtangpermits.hp.gov.in, run by the Kullu district administration) was online and listed Rohtang, Special Rohtang and Hamta Pass permits. It showed no closure notice. The booking page returned an error when we tried it, so we could not see slot availability.
 - **The Kullu district website** (hpkullu.nic.in) links to the permit portal but had no Rohtang notice.
@@ -270,6 +270,7 @@ Newest first. "Tourist vehicles" means vehicles with a valid permit beyond Gulab
 
 | Date | What happened | Source |
 |---|---|---|
+| 2 Nov 2026 | Our check: permit portal online with no closure notice; no 2026-27 closure order or news report of a closure found. Rain or snow had been forecast for 30-31 October; we found no dated report of how much fell | Official permit portal; news search |
 | 26 Oct 2026 | Our check: no closure notice on the permit portal or the Kullu district site; no 2026-27 closure order found | Official sites |
 | 25 Oct 2026 | Snowfall at the Atal Tunnel north portal; tourists gathered there | IANS photos |
 | 15 Oct 2026 | Fresh snow near the Atal Tunnel and Sissu | IANS photos |
@@ -371,13 +372,13 @@ We found **no official fixed opening hours** for tourists at the Atal Tunnel. It
     tags: ['rohtang pass', 'rohtang pass status', 'rohtang open or closed', 'rohtang permit', 'atal tunnel', 'atal tunnel status', 'sissu', 'manali', 'gulaba', 'lahaul', 'road status'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-10-26',
-    updated_at: '2026-10-26',
+    updated_at: '2026-11-02',
     image: placeImage('atal-tunnel'),
     image_alt: 'Portal building of the Atal Tunnel, Rohtang, with the approach road curving past',
     read_time: 8,
     featured: false,
     meta_title: 'Rohtang Pass & Atal Tunnel Status 2026: Open or Closed?',
-    meta_description: '26 Oct 2026: no official Rohtang winter closure order found yet; snow at Atal Tunnel. Permit ₹500 + ₹50 online, 1,200 vehicles a day. How to check.',
+    meta_description: '2 Nov 2026: no official Rohtang winter closure order found yet; snow at Atal Tunnel. Permit ₹500 + ₹50 online, 1,200 vehicles a day. How to check.',
     related_slugs: ['manali-in-december-january', 'dharamshala-to-manali', 'himachal-itinerary-delhi-dharamshala-manali', 'bir-travel-guide', 'solang-valley-guide', 'manali-travel-guide'],
     sources: [
       { title: 'Rohtang Pass online permits, District Administration Kullu (official portal, checked 26 October 2026)', url: 'https://rohtangpermits.hp.gov.in/' },
@@ -406,7 +407,7 @@ We found **no official fixed opening hours** for tourists at the Atal Tunnel. It
     faqs: [
       {
         question: 'Is Rohtang Pass open or closed now?',
-        answer: 'As of 26 October 2026 we found no official order closing Rohtang Pass for the 2026-27 winter, and the official permit portal showed no closure notice. Fresh snow fell near the Atal Tunnel on 15 and 25 October 2026, and in past years Rohtang has closed between early October and early December, so check rohtangpermits.hp.gov.in on the day.',
+        answer: 'As of 2 November 2026 we found no official order closing Rohtang Pass for the 2026-27 winter, and the official permit portal showed no closure notice. Fresh snow fell near the Atal Tunnel on 15 and 25 October 2026, and in past years Rohtang has closed between early October and early December, so check rohtangpermits.hp.gov.in on the day.',
       },
       {
         question: 'How do I get a Rohtang Pass permit?',

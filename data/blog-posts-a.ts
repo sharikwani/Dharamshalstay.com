@@ -107,7 +107,7 @@ The classic Dharamshala day hike: around 9 km one way from McLeod Ganj (via Gall
 
 - **Time needed:** a full day, or overnight where camping is permitted
 - **Entry:** a forest department trekking fee applies; the amount and camping rules have changed several times, so confirm locally
-- **Tip:** start by 8 am, carry water and a warm layer, and read our [Triund trek complete guide](/blog/triund-trek-complete-guide) or book a guided [Triund trek](/treks/triund-trek).
+- **Tip:** start by 8 am, carry water and a warm layer, and read our [Triund trek complete guide](/blog/triund-trek-complete-guide) or book a [guided Triund trek](/treks/triund-trek).
 
 ### 12. Gallu Devi Temple
 
@@ -335,7 +335,7 @@ McLeod Ganj and Bhagsu have a famous cafe culture: rooftop terraces with Dhaulad
 
 ### 10. Hike to Triund
 
-The signature McLeod Ganj hike: around 9 km one way, about 1,000 m of climbing, and a ridge-top meadow facing the snow peaks. Start early, carry water, and check the current forest department fee and overnight camping rules before you go, as they change. Read the [Triund trek complete guide](/blog/triund-trek-complete-guide) or book a guided [Triund trek](/treks/triund-trek).
+The signature McLeod Ganj hike: around 9 km one way, about 1,000 m of climbing, and a ridge-top meadow facing the snow peaks. Start early, carry water, and check the current forest department fee and overnight camping rules before you go, as they change. Read the [Triund trek complete guide](/blog/triund-trek-complete-guide) or book a [guided Triund trek](/treks/triund-trek).
 
 **Cost:** forest fee plus food. **Time:** a full day.
 
@@ -912,7 +912,7 @@ Weather wise, March to June and October to November give the clearest skies; see
 ## How to get to the Dalai Lama Temple
 
 - **From McLeod Ganj main square:** walk down Temple Road, about 800 m and 10 minutes. The return is uphill.
-- **From Dharamshala (lower town):** about 9 to 10 km by road. Take a local taxi or bus to McLeod Ganj, or use the [Dharamshala Skyway ropeway](/blog/dharamshala-skyway-ropeway-guide) when it is running (check the current status in the guide before you go: it was closed for maintenance until 30 October 2026), then walk.
+- **From Dharamshala (lower town):** about 9 to 10 km by road. Take a local taxi or bus to McLeod Ganj, or use the [Dharamshala Skyway ropeway](/blog/dharamshala-skyway-ropeway-guide) when it is running (check the current status in the guide before you go: it was closed for maintenance from 21 to 30 October 2026, and its reopening was not confirmed when we checked on 2 November 2026), then walk.
 - **From Kangra (Gaggal) Airport:** around 20 km to Dharamshala and another 9 km up to McLeod Ganj; allow about an hour. Pre-book a [taxi](/taxi).
 - **From Pathankot railway station:** roughly 85 to 90 km, about 3 hours by taxi.
 - **Parking:** very limited near the temple. Get dropped at the main square or at the top of Temple Road and walk.
@@ -985,6 +985,10 @@ Temple Road and the streets just above it have guesthouses and hotels within a f
       {
         question: 'How can I meet the Dalai Lama in McLeod Ganj?',
         answer: 'The realistic way is to attend a public teaching or event when one is scheduled at the Tsuglagkhang. Check the official schedule at dalailama.com, then register in person a few days before, in the Main Tibetan Temple courtyard from 9 am to 1 pm and 2 pm to 5 pm (as of October 2026), with passport, visa and C-form copies for foreigners or an Aadhaar copy for Indian residents. The registration card costs Rs 10. Private audiences are rarely granted to individual tourists, so do not plan a trip around one.',
+      },
+      {
+        question: 'What is the Dalai Lama Temple closing time?',
+        answer: 'Most listings give a closing time of about 8 pm, and a few say 6 or 7 pm. The Tsuglagkhang does not publish official visiting hours, so aim to visit before dusk, and note that the inner prayer halls can close earlier than the courtyard.',
       },
     ],
   },

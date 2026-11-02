@@ -404,7 +404,7 @@ A lovely half-day circuit: walk up from McLeod Ganj to **Dharamkot** (about 2 km
 
 ## 5. Gallu Devi Temple
 
-The small **Gallu Devi** (also spelt Galu) temple above Dharamkot is where the [Triund trek](/treks/triund-trek) officially begins. From Dharamkot it is about 1.5 to 2 km of steady climbing, or a short drive if the road is passable. There are tea stalls and good valley views. It is a great test of your legs before committing to Triund, and if you want more, the next hour to the Magic View cafe area is a pleasant extension. The forest checkpost for Triund is in this area; carry ID.
+The small **Gallu Devi** (also spelt Galu) temple above Dharamkot is where the [Triund trek](/blog/triund-trek-complete-guide) officially begins. From Dharamkot it is about 1.5 to 2 km of steady climbing, or a short drive if the road is passable. There are tea stalls and good valley views. It is a great test of your legs before committing to Triund, and if you want more, the next hour to the Magic View cafe area is a pleasant extension. The forest checkpost for Triund is in this area; carry ID.
 
 ## 6. Naddi and Dal Lake
 
@@ -779,7 +779,7 @@ From December to March Triund is often under snow. The trail above Magic View be
 
 1. **Decide your date**, ideally a weekday in September–October or May.
 2. **Check the weather alerts** and any district orders a day or two before.
-3. **Book through a permitted operator** that handles tents, clearance and the guide. You can book a guided [Triund trek](/treks/triund-trek) with us, or browse other [treks](/treks).
+3. **Book through a permitted operator** that handles tents, clearance and the guide. You can book a [guided Triund trek](/treks/triund-trek) with us, or browse other [treks](/treks).
 4. **Carry cash** for the entry fee and an extra ₹500 in case the reported deposit is collected, plus photo ID.
 5. **Stay nearby** the night before in [Dharamkot](/destinations/dharamkot) or [McLeod Ganj](/destinations/mcleod-ganj); browse [hotels](/hotels).
 

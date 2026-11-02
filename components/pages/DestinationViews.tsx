@@ -15,6 +15,8 @@ import { localizeDestination, localizeHotel, localizePost } from '@/lib/i18n/con
 import type { Lang } from '@/lib/i18n/core';
 import { formatPrice } from '@/lib/utils';
 
+/** Each area's own complete guide, always listed first on its destination page. */
+const MAIN_GUIDE: Record<string, string> = { 'mcleod-ganj': 'mcleod-ganj-complete-guide', naddi: 'naddi-dal-lake-guide', bhagsu: 'bhagsu-travel-guide', dharamkot: 'dharamkot-travel-guide', dharamshala: 'dharamshala-complete-travel-guide' };
 const GUIDE_SLUGS = ['dharamshala-vs-mcleod-ganj', 'places-to-visit-in-dharamshala', 'places-to-visit-in-kangra', 'palampur-travel-guide'];
 
 export function destinationsMetadata(lang: Lang): Metadata {
@@ -121,7 +123,7 @@ export async function DestinationDetailView({ slug, lang }: { slug: string; lang
   const guides = blogPosts
     .map((b) => ({
       post: b,
-      score: nameRe.test(b.title) ? 2 : b.tags.some((tag) => nameRe.test(tag)) ? 1 : b.content.includes('/destinations/' + dest.slug) ? 0 : -1,
+      score: b.slug === MAIN_GUIDE[dest.slug] ? 3 : nameRe.test(b.title) ? 2 : b.tags.some((tag) => nameRe.test(tag)) ? 1 : b.content.includes('/destinations/' + dest.slug) ? 0 : -1,
     }))
     .filter((x) => x.score >= 0)
     .sort((a, b) => b.score - a.score)
