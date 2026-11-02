@@ -116,7 +116,7 @@ Local temple calendars can differ by a day. For reference, Sharad Navratri 2026 
 | Devi temple circuit | Chamunda, Brajeshwari, Kangra Fort, Jwalamukhi | Pilgrims; see our [Kangra devi temples guide](/blog/kangra-devi-temples-guide) |
 | Heritage day | Chamunda, then [Kangra Fort](/blog/kangra-fort-guide) | History lovers |
 
-**Adi Himani Chamunda trek.** The older shrine sits high on the Dhauladhar ridge above the temple. Incredible India puts it about 16 km uphill. It is a long, steep day hike of 7 to 9 hours for most people. Note that a **Kangra district order of 6 January 2026** made SP Kangra permission mandatory for Adi Himani Chamunda, Triund and Kareri, with permissions cancelled on weather alerts; check the current position before you go. Our guided [Adi Himani Chamunda trek](/treks/adi-himani-chamunda-trek) includes transfers and a local guide, and you can browse all our [treks from Dharamshala](/treks).
+**Adi Himani Chamunda trek.** The older shrine sits high on the Dhauladhar ridge above the temple. Incredible India puts it about 16 km uphill. It is a long, steep day hike of 7 to 9 hours for most people. The shrine is below 3,000 m, and as of 2 November 2026 no permission is needed for treks that stay below 3,000 m. Winter orders can change that: a **Kangra district order of 6 January 2026** required SP Kangra permission for Adi Himani Chamunda, Triund and Kareri, cancelled on weather alerts, so check again before a winter trek. Our guided [Adi Himani Chamunda trek](/treks/adi-himani-chamunda-trek) includes transfers and a local guide, and you can browse all our [treks from Dharamshala](/treks).
 
 ## Where should I stay to visit Chamunda Devi?
 
@@ -132,7 +132,7 @@ Most people visit as a short trip from **lower Dharamshala**, which is closer th
 | Aarti times | Not confirmed; no official timetable found |
 | Dress code | No published rules found |
 | Bus timetable and fare | Not checked |
-| Permission for the Adi Himani Chamunda trek | Required under the 6 January 2026 order; we have not seen it withdrawn |`,
+| Permission for the Adi Himani Chamunda trek | Not needed below 3,000 m as of 2 November 2026 (our local team); winter orders such as the one of 6 January 2026 can require it |`,
     category: 'Temples & Heritage',
     tags: ['chamunda devi temple', 'chamunda devi temple timings', 'chamunda nandikeshwar dham', 'chamunda temple dharamshala', 'kangra temples', 'navratri', 'adi himani chamunda', 'day trips from dharamshala', 'kangra valley'],
     author: 'Dharamshala Stay Team',
@@ -177,7 +177,7 @@ Most people visit as a short trip from **lower Dharamshala**, which is closer th
       },
       {
         question: 'What is Adi Himani Chamunda?',
-        answer: 'Adi Himani Chamunda is the original hilltop shrine of the goddess, high on the Dhauladhar ridge above the main temple, reached by a long, steep pilgrim trek of about 7 to 9 hours for most people. A Kangra district order of 6 January 2026 made SP Kangra permission mandatory for this trek, so check before you go.',
+        answer: 'Adi Himani Chamunda is the original hilltop shrine of the goddess, high on the Dhauladhar ridge above the main temple, reached by a long, steep pilgrim trek of about 7 to 9 hours for most people. As of 2 November 2026 no permission is needed, because the shrine is below 3,000 m, but winter orders such as the one of 6 January 2026 have required SP Kangra permission, so check again in winter.',
       },
       {
         question: 'When is Chamunda Devi temple most crowded?',
