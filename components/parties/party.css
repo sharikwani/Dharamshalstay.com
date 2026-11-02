@@ -234,3 +234,11 @@
   .nye-stub::after { display: none; }
   .nye-chip:hover, .nye-stub:hover, .nye-venue:hover { transform: none !important; }
 }
+
+/* Promise under the date: priority entry and a host at the gate */
+.nye-promise {
+  max-width: 44rem; padding: 1rem 1.25rem; border-radius: 18px;
+  border: 1px solid rgba(242, 196, 109, 0.5); border-left: 4px solid var(--gold);
+  background: linear-gradient(90deg, rgba(242, 196, 109, 0.16), rgba(13, 10, 36, 0.45)); backdrop-filter: blur(6px);
+}
+.nye-promise-lead { font-weight: 700; font-size: clamp(1.02rem, 2.2vw, 1.2rem); line-height: 1.4; color: #fff6df; }

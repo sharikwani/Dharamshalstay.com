@@ -111,6 +111,10 @@ export default function NewYearPartiesPage() {
             <span className="nye-title mt-2 block">NYE <em>Gala</em> Night</span>
           </h1>
           <p className="nye-date nye-in mt-4" style={{ animationDelay: '0.3s' }}>Thursday 31 December 2026 · {featured.startTime || '7:00 pm'} till {featured.endTime || 'late'}</p>
+          <div className="nye-promise nye-in mt-6" style={{ animationDelay: '0.36s' }}>
+            <p className="nye-promise-lead">The only New Year party in Dharamshala with a Dharamshala Stay host at the gate, and more in every ticket: DJ, bonfire, dinner and all drinks, alcohol included.</p>
+            <p className="mt-2 text-white/85">We make sure your booking and entry are handled on priority. Our host meets you at the gate: just show the ticket on your phone, and the host takes care of everything from there.</p>
+          </div>
           <div className="nye-in mt-8" style={{ animationDelay: '0.42s' }}><Countdown to={COUNTDOWN_TO} done="Happy New Year 2027!" /></div>
           <div className="nye-in mt-9 flex flex-wrap items-center gap-3" style={{ animationDelay: '0.55s' }}>
             <a href="#tickets" className="nye-cta"><Ticket className="h-5 w-5" aria-hidden="true" />{onSale ? `Book tickets · ${featured.discountPct || 0}% off online` : 'Tickets open soon'}</a>
