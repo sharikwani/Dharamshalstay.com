@@ -781,7 +781,7 @@ Distances for Chamunda and Jwalamukhi are from the Kangra district website, Kang
 
 ### Chamunda Devi (Chamunda Nandikeshwar Dham)
 
-**Chamunda Devi** stands beside the Baner river at Padar (Dadh) village, about 15 km from Dharamshala, with the Dhauladhar behind it. It honours Chamunda, the form of Durga who slew the demons Chanda and Munda, and there is a Shiva shrine in a cave-like space below the main temple.
+**[Chamunda Devi](/blog/chamunda-devi-temple-guide)** stands beside the Baner river at Padar (Dadh) village, about 15 km from Dharamshala, with the Dhauladhar behind it. It honours Chamunda, the form of Durga who slew the demons Chanda and Munda, and there is a Shiva shrine in a cave-like space below the main temple.
 
 - **Timings:** 6 am to 12 noon and 1 pm to 9 pm according to Incredible India; the Kangra district website says generally 6 am to 7 or 8 pm. Go in the morning to be safe.
 - **History:** the district website says the present temple is about 400 to 700 years old, and that local legend tells of the shrine moving down from Aadi Himani Chamunda, high on the ridge, to this easier site in the 16th century.

@@ -416,7 +416,7 @@ Past Dal Lake, quiet lanes and footpaths lead towards **Tota Rani**, a Gaddi vil
 
 ## 8. Kunal Pathri
 
-From **Kotwali Bazaar** in lower Dharamshala, a road and footpath lead about 3 km to **Kunal Pathri**, a temple of the goddess Kapaleshwari, surrounded by tea gardens. Locals believe a fragment of the goddess's skull fell here, and the stone (pathri) is said to always hold water. It is a calm, shady walk, good in the hotter months, and easy to combine with the War Memorial and Kangra Art Museum in the lower town.
+From **Kotwali Bazaar** in lower Dharamshala, a road and footpath lead about 3 km to **[Kunal Pathri](/blog/kunal-pathri-temple-guide)**, a temple of the goddess Kapaleshwari, surrounded by tea gardens. Locals believe a fragment of the goddess's skull fell here, and the stone (pathri) is said to always hold water. It is a calm, shady walk, good in the hotter months, and easy to combine with the War Memorial and Kangra Art Museum in the lower town.
 
 ## 9. Guna Devi Temple
 

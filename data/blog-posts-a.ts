@@ -517,7 +517,7 @@ About 16 km beyond Palampur, Baijnath is a beautifully carved stone Shiva temple
 
 ### 8. Chamunda Devi on the way
 
-If you are driving from Dharamshala, the Chamunda Devi temple is about 15 km out on the Palampur road and makes an easy stop. See the [Kangra devi temples guide](/blog/kangra-devi-temples-guide).
+If you are driving from Dharamshala, the [Chamunda Devi temple](/blog/chamunda-devi-temple-guide) is about 15 km out on the Palampur road and makes an easy stop. See the [Kangra devi temples guide](/blog/kangra-devi-temples-guide).
 
 ### 9. Tibetan monasteries near Baijnath
 
@@ -642,7 +642,7 @@ The most unusual monument in Himachal: a group of temples carved from a single s
 
 ## 4. Chamunda Devi
 
-About 15 km from Dharamshala on the road to Palampur, Chamunda Devi sits beside the Baner river with the mountains behind. It is one of the most visited temples in the district and the easiest of the big Devi temples to combine with Palampur.
+About 15 km from Dharamshala on the road to Palampur, [Chamunda Devi](/blog/chamunda-devi-temple-guide) sits beside the Baner river with the mountains behind. It is one of the most visited temples in the district and the easiest of the big Devi temples to combine with Palampur.
 
 - **Time needed:** 1 hour
 - **Entry:** free

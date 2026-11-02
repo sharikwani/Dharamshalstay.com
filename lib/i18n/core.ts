@@ -35,6 +35,7 @@ export const EN_ONLY_POSTS = [
   'dharamshala-to-bir', 'pathankot-to-dharamshala', 'baijnath-temple-guide',
   'manali-travel-guide', 'places-to-visit-in-manali', 'how-to-reach-manali', 'solang-valley-guide', 'kasol-travel-guide',
   'shimla-travel-guide', 'places-to-visit-in-shimla', 'how-to-reach-shimla', 'kangra-fort-guide',
+  'chamunda-devi-temple-guide', 'kunal-pathri-temple-guide', 'manali-winter-carnival-2027',
 ];
 
 /** English-only pages inside otherwise bilingual sections. */

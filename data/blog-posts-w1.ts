@@ -427,7 +427,7 @@ The church is usually open to visitors during the day and holds Sunday services;
 
 ## Kunal Pathri temple
 
-**Kunal Pathri** is a small Devi temple set in tea gardens a few kilometres from Kotwali Bazaar in lower Dharamshala. Legend links it to one of the sites associated with the goddess Sati, and the rock (pathri) in the shrine is said to always hold water. It is peaceful, rarely crowded and surrounded by tea bushes, making it a good short add-on when you are in lower Dharamshala. A taxi from Kotwali Bazaar takes about 10 to 15 minutes; check road conditions after heavy rain.
+**[Kunal Pathri](/blog/kunal-pathri-temple-guide)** is a small Devi temple set in tea gardens a few kilometres from Kotwali Bazaar in lower Dharamshala. Legend links it to one of the sites associated with the goddess Sati, and the rock (pathri) in the shrine is said to always hold water. It is peaceful, rarely crowded and surrounded by tea bushes, making it a good short add-on when you are in lower Dharamshala. A taxi from Kotwali Bazaar takes about 10 to 15 minutes; check road conditions after heavy rain.
 
 For more temples in the valley, see our [Kangra Devi temples guide](/blog/kangra-devi-temples-guide).
 

@@ -23,7 +23,7 @@ This guide is for travellers planning a winter trip to Manali in December 2026 o
 | Solang Nala | About 14 km north-west of Manali, on the road to Rohtang | Wikipedia |
 | Atal Tunnel | 9.02 km long; south portal about 25 km north of Manali; opened 3 October 2020 | Wikipedia; news reports |
 | Rohtang Pass | Closed beyond the Gulaba barrier in winter; reopens in May | Kullu ADM order (Tribune, 2 Dec 2024); Tribune, May 2026 |
-| Manali Winter Carnival | 2026 edition: five days from 20 January. **2027 dates not announced** (26 Oct 2026) | ETV Bharat, 14 Jan 2026 |
+| Manali Winter Carnival | 2026 edition: five days from 20 January. **2027 dates not announced** (2 Nov 2026) | ETV Bharat, 14 Jan 2026 |
 | Dharamshala to Manali | About 230 to 250 km, 7 to 9 hours by road | [Our route guide](/blog/dharamshala-to-manali) |
 | Nearest airport | Kullu-Manali Airport at Bhuntar, about 52 km from Manali | Wikipedia |
 
@@ -96,7 +96,7 @@ When there is snow, Solang Nala is the centre of winter fun near Manali. On the 
 
 ## When is the Manali Winter Carnival 2027?
 
-**Not announced yet** (checked 26 October 2026). The carnival is held in January. In **2026** it ran for **five days from Tuesday 20 January**, opened by Chief Minister Sukhvinder Singh Sukhu, with a parade of nearly 300 tableaux (Himachal Headlines, 20 January 2026). ETV Bharat reported that the 2026 edition had no Star Night and no performers from outside Himachal, after the monsoon damage of 2025.
+**Not announced yet** (checked 2 November 2026). The carnival is held in January; see our full [Manali Winter Carnival 2027 guide](/blog/manali-winter-carnival-2027) for past dates, events and how to get there. In **2026** it ran for **five days from Tuesday 20 January**, opened by Chief Minister Sukhvinder Singh Sukhu, with a parade of nearly 300 tableaux (Himachal Headlines, 20 January 2026). ETV Bharat reported that the 2026 edition had no Star Night and no performers from outside Himachal, after the monsoon damage of 2025.
 
 The programme in 2026 included the opening parade from the Hidimba Devi temple area, a Mahanati (mass folk dance) on Mall Road, the Winter Queen contest and Voice of the Carnival (ETV Bharat, 14 January 2026). We will add the 2027 dates when they are announced. A site at manaliwintercarnival.co.in that appears in search results did **not** show carnival information when we checked, so do not rely on it.
 
