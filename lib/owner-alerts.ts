@@ -65,10 +65,13 @@ export async function notifyOwner(input: { subject: string; template: string; do
       const sent = await sendLogged(chat as any, `🔔 *${title}*\n\n${detail}\n\nOpen it in admin: ${link}`);
       if (sent.ok) return;
     }
-    const r = await sendTemplate({ to: phone, template: 'owner_alert', params: [title, detail, link] });
+    // owner_update is the Utility replacement (submitted 2 Nov 2026); owner_alert stays as the fallback until Meta approves it.
+    let template = 'owner_update';
+    let r = await sendTemplate({ to: phone, template, params: [title, detail, link] });
+    if (!r.ok && !r.skipped) { template = 'owner_alert'; r = await sendTemplate({ to: phone, template, params: [title, detail, link] }); }
     if (!r.ok && r.skipped) return;
     const { error } = await serviceClient().from('whatsapp_messages').insert({
-      recipient_kind: 'owner', to_phone: phone, template: 'owner_alert',
+      recipient_kind: 'owner', to_phone: phone, template,
       wa_message_id: r.ok ? r.id : null, status: r.ok ? 'sent' : 'failed', error: r.ok ? null : r.error || 'Unknown error',
     });
     if (error) console.error('Owner alert: could not log:', error);

@@ -258,7 +258,7 @@ export async function runOwnerTool(name: string, args: any, ctx: { lastText: str
 
 /** The latest owner alerts sent to this phone, so "confirm it" has something to refer to. */
 async function recentAlerts(phone: string): Promise<string> {
-  const { data } = await serviceClient().from('whatsapp_template_sends').select('params, created_at').eq('to_phone', phone).eq('template', 'owner_alert').order('created_at', { ascending: false }).limit(5);
+  const { data } = await serviceClient().from('whatsapp_template_sends').select('params, created_at').eq('to_phone', phone).in('template', ['owner_update', 'owner_alert']).order('created_at', { ascending: false }).limit(5);
   if (!data?.length) return '';
   return '\n\nRecent alerts sent to the owner (newest first):\n' + data.map((a: any) => `- ${a.created_at.slice(0, 16)}: ${(a.params || []).join(' | ')}`).join('\n');
 }
