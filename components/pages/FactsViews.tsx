@@ -3,6 +3,8 @@ import type { Metadata } from 'next';
 import { BadgeCheck, ExternalLink, ArrowRight, CalendarClock } from 'lucide-react';
 import { Breadcrumb } from '@/components/ui/Cards';
 import JsonLd from '@/components/seo/JsonLd';
+import AlertSignup from '@/components/leads/AlertSignup';
+import { ALERTS } from '@/lib/leads/topics';
 import { getAllFacts, ALL_TOPICS, type FactWithTopic } from '@/lib/facts';
 import { travelUpdates, updatesChecked, type UpdateStatus } from '@/data/travel-updates';
 import { breadcrumbSchema, faqSchema, generateSEO } from '@/lib/seo';
@@ -178,6 +180,7 @@ export function TravelUpdatesView() {
             ))}
           </dl>
         </section>
+        <AlertSignup alert={ALERTS.updates} className="!mt-0 mb-10" />
         <ol className="space-y-5">
           {items.map((u) => (
             <li key={u.id} id={u.id} className="scroll-mt-24 rounded-xl border border-slate-200 bg-white p-5">

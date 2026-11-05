@@ -1,7 +1,6 @@
-import { getWhatsAppLink } from '@/lib/utils';
 import { getDict } from '@/lib/i18n/dict';
 import type { Lang } from '@/lib/i18n/core';
-import WhatsAppGreeting from './WhatsAppGreeting';
+import WhatsAppFab from './WhatsAppFab';
 import './whatsapp.css';
 
 export function WhatsAppIcon({ className }: { className?: string }) {
@@ -15,11 +14,7 @@ export function WhatsAppIcon({ className }: { className?: string }) {
 export default function WhatsAppButton({ lang }: { lang: Lang }) {
   const h = getDict(lang).home;
   return (
-    <div className="wa-fab">
-      <WhatsAppGreeting title={h.v2.waTitle} text={h.v2.waGreeting} closeLabel={h.v2.waClose} />
-      <a href={getWhatsAppLink(h.ctaMsg)} target="_blank" rel="noopener noreferrer" aria-label={h.ctaWhatsApp} className="wa-btn">
-        <WhatsAppIcon className="h-8 w-8" />
-      </a>
-    </div>
+    <WhatsAppFab hindi={lang === 'hi'} title={h.v2.waTitle} greeting={h.v2.waGreeting} message={h.ctaMsg} label={h.ctaWhatsApp} closeLabel={h.v2.waClose}
+      icon={<WhatsAppIcon className="h-8 w-8" />} />
   );
 }

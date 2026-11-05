@@ -9,6 +9,9 @@ import GuideSearch from '@/components/blog/GuideSearch';
 import FlightSearch from '@/components/blog/FlightSearch';
 import LocalGuidesStrip from '@/components/blog/LocalGuidesStrip';
 import JsonLd from '@/components/seo/JsonLd';
+import LeadBox from '@/components/leads/LeadBox';
+import AlertSignup from '@/components/leads/AlertSignup';
+import { topicForSlug } from '@/lib/leads/topics';
 import PreferredSourceButton from '@/components/seo/PreferredSourceButton';
 import { FESTIVE_POSTS, Toran, DiyaRow, Rangoli } from '@/components/blog/FestiveDecor';
 import { blogPosts, getBlogBySlug, getBlogCategories, getRelatedPosts, NOINDEX_POSTS } from '@/data/blog';
@@ -24,6 +27,21 @@ const START_HERE = ['dharamshala-complete-travel-guide', 'mcleod-ganj-complete-g
 // Every other guide links here with descriptive anchors: these pages target the money keywords.
 const HOTEL_GUIDES = ['best-hotels-in-dharamshala', 'best-hotels-in-mcleod-ganj'];
 const catId = (c: string) => c.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
+/**
+ * Splits a guide at the ## heading nearest its middle, so the "ask a local" box can sit between the halves.
+ * Guides with fewer than 3 sections stay whole (the box then only appears at the end).
+ */
+export function splitAtMiddle(content: string): [string, string] {
+  const starts: number[] = [];
+  const re = /^## /gm;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(content))) starts.push(m.index);
+  if (starts.length < 3) return [content, ''];
+  const mid = content.length / 2;
+  const at = starts.slice(1).reduce((best, i) => (Math.abs(i - mid) < Math.abs(best - mid) ? i : best), starts[1]);
+  return [content.slice(0, at), content.slice(at)];
+}
 
 export function blogIndexMetadata(lang: Lang): Metadata {
   const b = serverT(lang).t.blog;
@@ -171,6 +189,9 @@ export function BlogPostView({ slug, lang }: { slug: string; lang: Lang }) {
   const related = getRelatedPosts(raw, 4).map((p) => localizePost(p, lang));
   const headings = extractHeadings(post.content);
   const diwali = FESTIVE_POSTS[raw.slug] === 'diwali';
+  const topic = topicForSlug(raw.slug);
+  const [firstHalf, secondHalf] = splitAtMiddle(post.content);
+  const leadSource = 'Guide: ' + (lang === 'hi' ? '/hi' : '') + '/blog/' + raw.slug;
 
   const breadcrumb = (
     <Breadcrumb lang={lang} items={[
@@ -263,8 +284,15 @@ export function BlogPostView({ slug, lang }: { slug: string; lang: Lang }) {
         )}
 
         <div className="prose-custom">
-          <MarkdownContent content={post.content} lang={lang} />
+          <MarkdownContent content={firstHalf} lang={lang} />
         </div>
+        {secondHalf && (<>
+          <LeadBox topic={topic} lang={lang} source={leadSource} compact />
+          <div className="prose-custom">
+            <MarkdownContent content={secondHalf} lang={lang} />
+          </div>
+        </>)}
+        {topic.alert && lang === 'en' && <AlertSignup alert={topic.alert} lang={lang} />}
 
         <FlightSearch slug={post.slug} lang={lang} />
         <LocalGuidesStrip slug={post.slug} lang={lang} />
@@ -280,6 +308,8 @@ export function BlogPostView({ slug, lang }: { slug: string; lang: Lang }) {
             </p>
           </section>
         )}
+
+        <LeadBox topic={topic} lang={lang} source={leadSource} id="plan" />
 
         {lang === 'en' && post.tags?.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-8 pt-6 border-t border-slate-200">

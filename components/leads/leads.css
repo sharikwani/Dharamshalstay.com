@@ -1,0 +1,37 @@
+/* Lead tools: guide bar on phones and the free trip plan offer. */
+.lead-bar { display: none; }
+@media (max-width: 1023px) {
+  .lead-bar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; display: flex; gap: 6px;
+    padding: 8px 10px calc(8px + env(safe-area-inset-bottom, 0px)); padding-right: 84px;
+    background: rgba(255, 255, 255, 0.97); border-top: 1px solid #e2e8f0; box-shadow: 0 -8px 24px -12px rgba(15, 33, 56, 0.25);
+    transform: translateY(110%); transition: transform 0.3s ease;
+  }
+  .lead-bar.on { transform: none; }
+  .lead-bar a {
+    flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; white-space: nowrap;
+    min-height: 44px; border-radius: 10px; font-size: 13px; font-weight: 600; color: #13243a; background: #f1f5f9;
+  }
+  .lead-bar a.lead-bar-main { flex: 1.4; color: #fff; background: #047857; }
+  body.has-guide-bar .wa-fab { bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
+  body.has-guide-bar .wa-btn { width: 52px; height: 52px; }
+  body.has-guide-bar main { padding-bottom: 64px; }
+}
+
+.lead-offer {
+  position: fixed; z-index: 80; left: 20px; bottom: 20px; width: min(400px, calc(100vw - 40px));
+  max-height: calc(100vh - 40px); overflow: auto;
+  padding: 22px 20px 18px; border-radius: 20px; background: linear-gradient(160deg, #ecfdf5, #fff 55%);
+  box-shadow: 0 30px 60px -20px rgba(15, 33, 56, 0.45), 0 0 0 1px #a7f3d0;
+  animation: lead-in 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.lead-offer-x { position: absolute; top: 8px; right: 8px; padding: 6px; border-radius: 999px; color: #475569; }
+.lead-offer-x:hover { background: #e2e8f0; }
+@keyframes lead-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@media (max-width: 1023px) {
+  .lead-offer { left: 0; right: 0; bottom: 0; width: auto; max-height: 75vh; border-radius: 20px 20px 0 0; padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lead-offer { animation: none; }
+  .lead-bar { transition: none; }
+}

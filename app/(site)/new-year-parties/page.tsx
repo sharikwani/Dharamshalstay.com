@@ -6,6 +6,8 @@ import TicketForm from '@/components/parties/TicketForm';
 import Countdown from '@/components/parties/Countdown';
 import Fireworks from '@/components/parties/Fireworks';
 import Reveal from '@/components/parties/Reveal';
+import AlertSignup from '@/components/leads/AlertSignup';
+import { ALERTS } from '@/lib/leads/topics';
 import '@/components/parties/party.css';
 import { gala } from '@/lib/fonts';
 import { generateSEO, faqSchema, breadcrumbSchema } from '@/lib/seo';
@@ -180,6 +182,7 @@ export default function NewYearPartiesPage() {
             </div>
             <TicketForm party={featured.slug} types={featured.ticketTypes} onSale={onSale} discountPct={featured.discountPct} rooms={featured.rooms} deposit={featured.depositAmount} venue={featured.venue} />
           </div>
+          <AlertSignup alert={ALERTS.nye} dark className="nye-rv mx-auto max-w-3xl !mb-0 !mt-8" />
         </div>
       </section>
 
