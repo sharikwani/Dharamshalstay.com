@@ -7,7 +7,15 @@ import { revalidateTag } from 'next/cache';
  */
 export const PUBLISHED_PROPERTIES_TAG = 'published-properties';
 
+/** Published treks, paragliding packages and taxi routes, cached the same way (lib/db.ts). */
+export const PUBLISHED_CATALOGUE_TAG = 'published-catalogue';
+
 /** Never throws (outside a request, e.g. scripts and tests, there is nothing to clear). */
 export function refreshPublishedProperties(): void {
   try { revalidateTag(PUBLISHED_PROPERTIES_TAG); } catch { /* not in a request */ }
+}
+
+/** Call after any trek, paragliding or taxi route change. Never throws. */
+export function refreshPublishedCatalogue(): void {
+  try { revalidateTag(PUBLISHED_CATALOGUE_TAG); } catch { /* not in a request */ }
 }

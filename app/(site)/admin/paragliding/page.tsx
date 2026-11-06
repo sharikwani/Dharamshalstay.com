@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Wind, Plus, Pencil, Trash2, Save } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { refreshPropertyPages } from '@/lib/indexnow-client';
 import { AdminPageHeader } from '@/components/admin/AdminShell';
 import { formatPrice, slugify } from '@/lib/utils';
 
@@ -48,13 +49,13 @@ export default function AdminParagliding() {
       const { error } = await supabase.from('paragliding_packages').insert(payload);
       if (error) throw error;
     }
-    setEditing(null); loadPkgs();
+    setEditing(null); loadPkgs(); refreshPropertyPages();
   }
 
   async function handleDelete(id: string) {
     if (!confirm('Delete this package?')) return;
     await supabase.from('paragliding_packages').delete().eq('id', id);
-    loadPkgs();
+    loadPkgs(); refreshPropertyPages();
   }
 
   return (

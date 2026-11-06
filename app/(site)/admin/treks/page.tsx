@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Mountain, Plus, Pencil, Trash2, Save } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { refreshPropertyPages } from '@/lib/indexnow-client';
 import { AdminPageHeader } from '@/components/admin/AdminShell';
 import { formatPrice, slugify } from '@/lib/utils';
 
@@ -48,13 +49,13 @@ export default function AdminTreks() {
       const { error } = await supabase.from('treks').insert(payload);
       if (error) throw error;
     }
-    setEditing(null); loadTreks();
+    setEditing(null); loadTreks(); refreshPropertyPages();
   }
 
   async function handleDelete(id: string) {
     if (!confirm('Delete this trek?')) return;
     await supabase.from('treks').delete().eq('id', id);
-    loadTreks();
+    loadTreks(); refreshPropertyPages();
   }
 
   return (

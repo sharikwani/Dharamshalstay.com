@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Car, Plus, Pencil, Trash2, Save } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { refreshPropertyPages } from '@/lib/indexnow-client';
 import { AdminPageHeader } from '@/components/admin/AdminShell';
 import { formatPrice } from '@/lib/utils';
 
@@ -58,19 +59,19 @@ export default function AdminTaxis() {
       if (error) throw error;
     }
     setEditing(null);
-    loadRoutes();
+    loadRoutes(); refreshPropertyPages();
   }
 
   async function handleDelete(id: string) {
     if (!confirm('Delete this route?')) return;
     await supabase.from('taxi_routes').delete().eq('id', id);
-    loadRoutes();
+    loadRoutes(); refreshPropertyPages();
   }
 
   async function toggleStatus(id: string, current: string) {
     const newStatus = current === 'active' ? 'inactive' : 'active';
     await supabase.from('taxi_routes').update({ status: newStatus }).eq('id', id);
-    loadRoutes();
+    loadRoutes(); refreshPropertyPages();
   }
 
   return (

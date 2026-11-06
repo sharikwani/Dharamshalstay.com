@@ -48,8 +48,11 @@ export default function StoryLive({ story, initial, children }: { story: StoryIn
     let seen = false;
     try { seen = sessionStorage.getItem(key) === '1'; sessionStorage.setItem(key, '1'); } catch { /* ignore */ }
     (seen ? Promise.resolve() : storyAction(story.id, { action: 'view' }).catch(() => {})).then(refresh);
-    const t = setInterval(refresh, 45000);
-    return () => clearInterval(t);
+    // Only while the tab is visible (disk budget); coming back re-reads at once.
+    const t = setInterval(() => { if (document.visibilityState === 'visible') refresh(); }, 45000);
+    const wake = () => { if (document.visibilityState === 'visible') refresh(); };
+    document.addEventListener('visibilitychange', wake);
+    return () => { clearInterval(t); document.removeEventListener('visibilitychange', wake); };
   }, [story.id, refresh]);
 
   const like = useCallback(() => {

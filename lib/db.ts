@@ -11,7 +11,7 @@
  * Each function adds its own WHERE filters for safety.
  */
 import { unstable_cache } from 'next/cache';
-import { PUBLISHED_PROPERTIES_TAG, refreshPublishedProperties } from './property-cache';
+import { PUBLISHED_CATALOGUE_TAG, PUBLISHED_PROPERTIES_TAG, refreshPublishedProperties } from './property-cache';
 import { createServerClient } from './supabase';
 import { Property } from '@/types';
 import { toPublicProperty } from './public-property';
@@ -63,8 +63,8 @@ export async function getPublishedProperties(options?: PropertyQuery): Promise<P
 }
 
 /**
- * Every published property, read once and shared for 5 minutes (Supabase free-plan disk budget: hotel pages
- * rebuilding every minute for crawlers re-read the whole list thousands of times a day). Property edits clear
+ * Every published property, read once and shared for an hour (Supabase free-plan disk budget: each read pulls
+ * the whole table; at 5 minutes it was still the top query, 5,567 calls, 6 Nov). Property edits clear
  * it at once via refreshPublishedProperties(). A failed read throws, so it is never cached.
  */
 const loadPublishedRows = unstable_cache(async (): Promise<Property[]> => {
@@ -78,7 +78,47 @@ const loadPublishedRows = unstable_cache(async (): Promise<Property[]> => {
     .order('published_at', { ascending: false });
   if (error) throw new Error(error.message);
   return (data as Property[]) || [];
-}, ['published-properties-v1'], { revalidate: 300, tags: [PUBLISHED_PROPERTIES_TAG] });
+}, ['published-properties-v1'], { revalidate: 3600, tags: [PUBLISHED_PROPERTIES_TAG] });
+
+/**
+ * Published treks, paragliding packages and taxi routes: read once an hour, not on every page build (disk budget).
+ * Admin saves clear them at once (refreshPropertyPages -> refreshPublishedCatalogue). Failed reads throw, so they are never cached.
+ */
+const loadPublishedTreks = unstable_cache(async (): Promise<any[]> => {
+  const { data, error } = await createServerClient()
+    .from('treks')
+    .select('*')
+    .eq('status', 'published')
+    .order('is_sponsored', { ascending: false })
+    .order('priority_score', { ascending: false })
+    .order('featured', { ascending: false });
+  if (error) throw new Error(error.message);
+  return data || [];
+}, ['published-treks-v1'], { revalidate: 3600, tags: [PUBLISHED_CATALOGUE_TAG] });
+
+const loadParaglidingRows = unstable_cache(async (): Promise<any[]> => {
+  const { data, error } = await createServerClient()
+    .from('paragliding_packages')
+    .select('*')
+    .eq('status', 'published')
+    .order('is_sponsored', { ascending: false })
+    .order('priority_score', { ascending: false })
+    .order('price_per_person', { ascending: true });
+  if (error) throw new Error(error.message);
+  return data || [];
+}, ['published-paragliding-v1'], { revalidate: 3600, tags: [PUBLISHED_CATALOGUE_TAG] });
+
+const loadTaxiRoutes = unstable_cache(async (): Promise<any[]> => {
+  const { data, error } = await createServerClient()
+    .from('taxi_routes')
+    .select('*')
+    .eq('status', 'active')
+    .order('is_sponsored', { ascending: false })
+    .order('route_type')
+    .order('from_location');
+  if (error) throw new Error(error.message);
+  return data || [];
+}, ['active-taxi-routes-v1'], { revalidate: 3600, tags: [PUBLISHED_CATALOGUE_TAG] });
 
 export { refreshPublishedProperties };
 
@@ -221,15 +261,8 @@ export async function getPublishedTreks() {
   if (!isSupabaseConfigured()) return seedTreks.filter(t => t.status === 'published').map(withTrekImages);
 
   try {
-    const sb = createServerClient();
-    const { data, error } = await sb
-      .from('treks')
-      .select('*')
-      .eq('status', 'published')
-      .order('is_sponsored', { ascending: false })
-      .order('priority_score', { ascending: false })
-      .order('featured', { ascending: false });
-    if (error || !data || data.length === 0) return seedTreks.filter(t => t.status === 'published').map(withTrekImages);
+    const data = await loadPublishedTreks();
+    if (data.length === 0) return seedTreks.filter(t => t.status === 'published').map(withTrekImages);
     return data.map(withTrekImages);
   } catch {
     return seedTreks.filter(t => t.status === 'published').map(withTrekImages);
@@ -240,9 +273,8 @@ export async function getTrekBySlug(slug: string) {
   if (!isSupabaseConfigured()) return withTrekImages(seedTrekBySlug(slug)) || null;
 
   try {
-    const sb = createServerClient();
-    const { data, error } = await sb.from('treks').select('*').eq('slug', slug).eq('status', 'published').single();
-    if (error || !data) return withTrekImages(seedTrekBySlug(slug)) || null;
+    const data = (await loadPublishedTreks()).find((t) => t.slug === slug);
+    if (!data) return withTrekImages(seedTrekBySlug(slug)) || null;
     return withTrekImages(data);
   } catch {
     return withTrekImages(seedTrekBySlug(slug)) || null;
@@ -253,9 +285,8 @@ export async function getFeaturedTreks() {
   if (!isSupabaseConfigured()) return seedFeaturedTreks().map(withTrekImages);
 
   try {
-    const sb = createServerClient();
-    const { data, error } = await sb.from('treks').select('*').eq('status', 'published').eq('featured', true).limit(6);
-    if (error || !data || data.length === 0) return seedFeaturedTreks().map(withTrekImages);
+    const data = (await loadPublishedTreks()).filter((t) => t.featured === true).slice(0, 6);
+    if (data.length === 0) return seedFeaturedTreks().map(withTrekImages);
     return data.map(withTrekImages);
   } catch {
     return seedFeaturedTreks().map(withTrekImages);
@@ -270,15 +301,8 @@ export async function getActiveTaxiRoutes() {
   if (!isSupabaseConfigured()) return seedTaxiRoutes;
 
   try {
-    const sb = createServerClient();
-    const { data, error } = await sb
-      .from('taxi_routes')
-      .select('*')
-      .eq('status', 'active')
-      .order('is_sponsored', { ascending: false })
-      .order('route_type')
-      .order('from_location');
-    if (error || !data || data.length === 0) return seedTaxiRoutes;
+    const data = await loadTaxiRoutes();
+    if (data.length === 0) return seedTaxiRoutes;
     return data;
   } catch {
     return seedTaxiRoutes;
@@ -303,15 +327,7 @@ export const ADVENTURE_TYPES = ['zipline', 'sky_cycle', 'atv', 'rafting'];
 export async function getParaglidingPackages(): Promise<ParaglidingPackage[]> {
   if (!isSupabaseConfigured()) return [];
   try {
-    const sb = createServerClient();
-    const { data, error } = await sb
-      .from('paragliding_packages')
-      .select('*')
-      .eq('status', 'published')
-      .order('is_sponsored', { ascending: false })
-      .order('priority_score', { ascending: false })
-      .order('price_per_person', { ascending: true });
-    if (error || !data) return [];
+    const data = await loadParaglidingRows();
     return data.map((p: any) => {
       const img = Array.isArray(p.images) ? (typeof p.images[0] === 'string' ? p.images[0] : p.images[0]?.url) : undefined;
       return {

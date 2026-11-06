@@ -33,7 +33,8 @@ export function useGame(code: string) {
   useEffect(() => {
     refresh();
     const ch = supabase.channel('game:' + code).on('broadcast', { event: 'state' }, ({ payload }) => accept(payload as PublicState)).subscribe();
-    const t = setInterval(refresh, 10_000);
+    // Hidden tabs skip the safety re-read (disk budget); coming back re-reads at once below.
+    const t = setInterval(() => { if (document.visibilityState === 'visible') refresh(); }, 10_000);
     const wake = () => { if (document.visibilityState === 'visible') refresh(); };
     document.addEventListener('visibilitychange', wake);
     return () => { clearInterval(t); document.removeEventListener('visibilitychange', wake); supabase.removeChannel(ch); };
