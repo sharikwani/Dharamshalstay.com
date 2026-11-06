@@ -1,25 +1,44 @@
 'use client';
-import { useState, FormEvent } from 'react';
+import { useEffect, useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { Shield } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+
+const SLOW = 'Sign-in did not get a reply in time. Check your internet and try again. If it keeps happening, close other admin tabs and reload this page.';
 
 export default function AdminLogin() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  // Already signed in as admin (e.g. a second tab): go straight to the dashboard.
+  useEffect(() => {
+    supabase.auth.getSession().then(async ({ data }) => {
+      if (!data.session) return;
+      const { data: profile } = await supabase.from('profiles').select('role').eq('id', data.session.user.id).single();
+      if (profile?.role === 'admin') router.replace('/admin/dashboard');
+    }).catch(() => {});
+  }, [router]);
+
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault(); setLoading(true); setError('');
     const fd = new FormData(e.currentTarget);
-    const { data, error: err } = await supabase.auth.signInWithPassword({
-      email: fd.get('email') as string, password: fd.get('password') as string,
-    });
-    if (err) { setError(err.message); setLoading(false); return; }
-    // Check admin role
-    const { data: profile } = await supabase.from('profiles').select('role').eq('id', data.user?.id).single();
-    if (profile?.role !== 'admin') { setError('Access denied. Admin accounts only.'); await supabase.auth.signOut(); setLoading(false); return; }
-    router.push('/admin/dashboard');
+    try {
+      const { data, error: err } = await supabase.auth.signInWithPassword({
+        email: (fd.get('email') as string).trim(), password: fd.get('password') as string,
+      });
+      if (err) {
+        setError(/fetch|network|abort|timeout/i.test(err.message) ? SLOW : err.message);
+        setLoading(false); return;
+      }
+      // Check admin role
+      const { data: profile, error: profileErr } = await supabase.from('profiles').select('role').eq('id', data.user?.id).single();
+      if (profileErr && profileErr.code !== 'PGRST116') { setError(SLOW); setLoading(false); return; }
+      if (profile?.role !== 'admin') { setError('Access denied. Admin accounts only.'); await supabase.auth.signOut(); setLoading(false); return; }
+      router.push('/admin/dashboard');
+    } catch {
+      setError(SLOW); setLoading(false);
+    }
   }
 
   return (

@@ -3,8 +3,18 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
+// No request to Supabase may hang forever. A stalled token refresh or sign-in kept the admin
+// login button spinning (6 Nov 2026); with a limit it fails and shows an error instead.
+// Uploads (storage) and calls that bring their own abort signal are left alone.
+const REQUEST_TIMEOUT_MS = 20000;
+export function fetchWithTimeout(input: RequestInfo | URL, init: RequestInit = {}) {
+  const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
+  if (init.signal || url.includes('/storage/v1/') || typeof AbortSignal.timeout !== 'function') return fetch(input, init);
+  return fetch(input, { ...init, signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) });
+}
+
 // Browser client (for client components)
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, { global: { fetch: fetchWithTimeout } });
 
 // Server client with service role (for API routes / server actions)
 export function createServerClient() {
