@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { HttpError, jsonError, requireCaller, serviceClient } from '@/lib/server-auth';
 import { ACTIVITY_CATEGORIES, checkAssignment, commissionRateFor, paymentFields, splitAmount } from '@/lib/manual-booking';
-import { whatsappAssigned, whatsappNewBooking, whatsappPaymentReceived, whatsappReassignedAway } from '@/lib/booking-whatsapp';
+import { whatsappAssigned, whatsappNewBooking, whatsappPaymentReceived, whatsappReassignedAway, whatsappSendConfirmations } from '@/lib/booking-whatsapp';
 import { loadBookingView, sendManualBookingEmails, sendReassignedAwayEmail } from '@/lib/manual-booking-emails';
 
 import { cancelBooking } from '@/lib/bookings/cancel';
@@ -37,6 +37,7 @@ const schema = z.discriminatedUnion('action', [
   }),
   z.object({ action: z.literal('confirm') }),
   z.object({ action: z.literal('commission_paid') }),
+  z.object({ action: z.literal('send_confirmations') }),
 ]);
 
 const isId = (id: string) => uuid.safeParse(id).success;
@@ -132,6 +133,15 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
       const r = await confirmBooking(id, 'admin');
       if (!r.ok) throw new HttpError(r.status, r.error);
       return NextResponse.json({ booking: await loadBookingView(id), already: r.already });
+    }
+
+    if (body.action === 'send_confirmations') {
+      // Customer confirmation + partner booking alert in one go, from our WhatsApp number. Only for confirmed
+      // bookings, so a customer is never told "confirmed" about a booking that is still pending.
+      if (booking.status !== 'confirmed') throw new HttpError(409, 'Confirm the booking first, then send the confirmations.');
+      const sent = await whatsappSendConfirmations(id);
+      if (!sent.configured) throw new HttpError(503, 'WhatsApp sending is not set up on the server.');
+      return NextResponse.json({ sent });
     }
 
     if (body.action === 'commission_paid') {

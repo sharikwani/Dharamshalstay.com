@@ -46,6 +46,9 @@ export default function BookingDetailPage() {
   const [confirming, setConfirming] = useState(false);
   const [confirmMsg, setConfirmMsg] = useState<{ ok: boolean; text: string } | null>(null);
   const [commSure, setCommSure] = useState(false);
+  const [sendSure, setSendSure] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sendMsg, setSendMsg] = useState<{ ok: boolean; text: string } | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -123,6 +126,28 @@ export default function BookingDetailPage() {
       setConfirmMsg({ ok: false, text: 'Could not confirm the booking. Please check your connection and try again.' });
     } finally {
       setConfirming(false);
+    }
+  }
+
+  /** Customer confirmation + partner booking alert, sent from our WhatsApp number; then refresh the message log. */
+  async function sendConfirmations() {
+    setSending(true); setSendMsg(null);
+    try {
+      const res = await authFetch(`/api/admin/bookings/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'send_confirmations' }) });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) { setSendMsg({ ok: false, text: data.error || 'Could not send the confirmations.' }); return; }
+      const s = data.sent as { customer: boolean | null; partners: number; partnerTotal: number };
+      const parts = [
+        s.customer === null ? 'customer: no valid phone number' : s.customer ? 'customer: sent' : 'customer: failed',
+        s.partnerTotal === 0 ? 'partner: nobody assigned with a WhatsApp number' : `partner: ${s.partners} of ${s.partnerTotal} sent`,
+      ];
+      setSendMsg({ ok: !!s.customer && (s.partnerTotal === 0 || s.partners === s.partnerTotal), text: 'WhatsApp confirmations: ' + parts.join(' · ') });
+      const r = await authFetch(`/api/admin/bookings/${id}`);
+      if (r.ok) { const body = await r.json().catch(() => ({})); if (body.whatsapp_messages) setWa(body.whatsapp_messages); }
+    } catch {
+      setSendMsg({ ok: false, text: 'Could not send the confirmations. Please check your connection and try again.' });
+    } finally {
+      setSending(false); setSendSure(false);
     }
   }
 
@@ -268,6 +293,7 @@ export default function BookingDetailPage() {
           <h2 className={H2}>Actions</h2>
           <div className="flex flex-col sm:flex-row flex-wrap gap-2">
             {b.status === 'pending' && <button disabled={confirming} onClick={confirmNow} className={cn(BTN, 'inline-flex items-center justify-center gap-2 bg-brand-600 text-white hover:bg-brand-700')}>{confirming ? 'Confirming...' : 'Confirm booking'}</button>}
+            {b.status === 'confirmed' && !sendSure && <button disabled={sending} onClick={() => { setSendSure(true); setSendMsg(null); }} className={cn(BTN, 'inline-flex items-center justify-center gap-2 bg-emerald-700 text-white hover:bg-emerald-800')}><MessageCircle className="h-4 w-4" /> Send confirmation to both</button>}
             {partnerLink && <a href={partnerLink} target="_blank" rel="noopener noreferrer" className={cn(BTN, 'inline-flex items-center justify-center gap-2 bg-green-600 text-white hover:bg-green-700')}><MessageCircle className="h-4 w-4" /> Send on WhatsApp to partner</a>}
             {customerLink && <a href={customerLink} target="_blank" rel="noopener noreferrer" className={cn(BTN, 'inline-flex items-center justify-center gap-2 bg-green-600 text-white hover:bg-green-700')}><MessageCircle className="h-4 w-4" /> Send on WhatsApp to customer</a>}
             {owed && !commSure && <button onClick={() => setCommSure(true)} className={cn(BTN, 'inline-flex items-center justify-center gap-2 bg-amber-500 text-white hover:bg-amber-600')}><IndianRupee className="h-4 w-4" /> Mark commission paid</button>}
@@ -280,6 +306,14 @@ export default function BookingDetailPage() {
               <button onClick={() => setCommSure(false)} className="rounded-md bg-white px-3 py-1 font-semibold text-slate-700">Not yet</button>
             </div>
           )}
+          {sendSure && (
+            <div className="mt-3 flex flex-wrap items-center gap-2 rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-900">
+              Send the booking confirmation on WhatsApp now to {b.guest_name || 'the customer'}{pc?.name ? ` and ${pc.name}` : ' and the assigned partner'}?
+              <button disabled={sending} onClick={sendConfirmations} className="rounded-md bg-emerald-700 px-3 py-1 font-semibold text-white disabled:opacity-60">{sending ? 'Sending…' : 'Yes, send now'}</button>
+              <button disabled={sending} onClick={() => setSendSure(false)} className="rounded-md bg-white px-3 py-1 font-semibold text-slate-700">Not now</button>
+            </div>
+          )}
+          {sendMsg && <p className={cn('text-sm rounded-lg px-3 py-2 mt-3 border', sendMsg.ok ? 'text-green-700 bg-green-50 border-green-200' : 'text-amber-800 bg-amber-50 border-amber-200')}>{sendMsg.text}</p>}
           {confirmMsg && <p className={cn('text-sm rounded-lg px-3 py-2 mt-3 border', confirmMsg.ok ? 'text-green-700 bg-green-50 border-green-200' : 'text-red-700 bg-red-50 border-red-200')}>{confirmMsg.text}</p>}
           {panel === 'cancel' && (
             <div className="mt-4 pt-4 border-t border-slate-100">

@@ -242,6 +242,26 @@ export async function whatsappNewBooking(bookingId: string, opts: { customer: bo
   } catch (e) { console.error('WhatsApp new booking alert failed:', e); }
 }
 
+/**
+ * Admin "Send confirmation to both": the customer's booking confirmation and the partner/staff/hotel booking
+ * alert, sent now from our WhatsApp number with the approved templates (logged per message). Never throws.
+ */
+export async function whatsappSendConfirmations(bookingId: string): Promise<{ configured: boolean; customer: boolean | null; partners: number; partnerTotal: number }> {
+  const none = { configured: isWhatsAppConfigured(), customer: null, partners: 0, partnerTotal: 0 };
+  try {
+    if (!none.configured) return none;
+    const v = await loadBookingView(bookingId);
+    if (!v) return none;
+    const customerTo = normalizeIndianPhone(v.guest_phone);
+    const recipients = await loadRecipients(v);
+    const [customer, partners] = await Promise.all([
+      customerTo ? sendAndLog(bookingId, 'customer', customerTo, customerMsg(v)) : Promise.resolve(null),
+      recipients.length ? sendAll(bookingId, recipients, newBookingMsg(v)) : Promise.resolve(0),
+    ]);
+    return { configured: true, customer, partners, partnerTotal: recipients.length };
+  } catch (e) { console.error('WhatsApp confirmations failed:', e); return none; }
+}
+
 /** Cancellation notice to the same recipients as a new booking. Never throws. */
 export async function whatsappCancelled(bookingId: string, reason: string): Promise<void> {
   try {
