@@ -19,6 +19,11 @@ const T = {
     name: 'Your name on the card (optional)', share: 'Share card', save: 'Save to Photos', wa: 'Send on WhatsApp', close: 'Close',
     updating: 'Adding your name…', iosHint: 'In the menu that opens, tap “Save Image” to put the card in your Photos.', androidHint: 'Saved. Find it in your Gallery or Google Photos (Downloads).', pcHint: 'Saved to your Downloads folder.', hold: 'Tip: you can also press and hold the card to save it.',
     cta1: 'Light up beautiful Dharamshala & McLeod Ganj', cta2: 'Create yours at dharamshalastay.com',
+    gift: '🎁 Poster', giftTitle: 'Your Diwali surprise 🎁', giftSub: 'Get a Diwali poster of McLeod Ganj lit up, with your name on it, to save and send to family and friends.',
+    giftName: 'Your name (goes on the poster)', giftEmail: 'Your email', giftBtn: 'Get my Diwali poster', giftBusy: 'Making your poster…',
+    giftFine: 'We will email you once to confirm. After you confirm, we send Dharamshala travel ideas and festival offers, at most once a week. Unsubscribe any time.',
+    giftErr: 'Please enter a valid email and try again.', giftLater: 'Maybe later',
+    readyTitle: 'Your Diwali poster is ready', readySub: 'Save it or share it with everyone you love. Also check your inbox and confirm your email for our Diwali offers.',
     happy: 'Happy Diwali', from: (n: string) => `with love, ${n}`, line: 'from the lit lanes of McLeod Ganj, Dharamshala',
     msg: `Happy Diwali from Dharamshala! 🪔\n\nCreate yours at ${SITE}/?utm_source=diwali-card and light up your beautiful city, Dharamshala and McLeod Ganj.`,
   },
@@ -32,6 +37,11 @@ const T = {
     name: 'कार्ड पर आपका नाम (वैकल्पिक)', share: 'कार्ड शेयर करें', save: 'फ़ोटो में सेव करें', wa: 'WhatsApp पर भेजें', close: 'बंद करें',
     updating: 'आपका नाम जोड़ा जा रहा है…', iosHint: 'खुलने वाले मेन्यू में “Save Image” दबाएँ, कार्ड आपकी Photos में आ जाएगा।', androidHint: 'सेव हो गया। Gallery या Google Photos (Downloads) में देखें।', pcHint: 'Downloads फ़ोल्डर में सेव हो गया।', hold: 'कार्ड को दबाकर रखने से भी सेव कर सकते हैं।',
     cta1: 'खूबसूरत धर्मशाला और मैक्लोडगंज को रोशन करें', cta2: 'अपना कार्ड बनाएँ: dharamshalastay.com',
+    gift: '🎁 पोस्टर', giftTitle: 'आपके लिए दीपावली सरप्राइज़ 🎁', giftSub: 'जगमगाते मैक्लोडगंज का दीपावली पोस्टर, आपके नाम के साथ, सेव करें और परिवार-दोस्तों को भेजें।',
+    giftName: 'आपका नाम (पोस्टर पर)', giftEmail: 'आपका ईमेल', giftBtn: 'मेरा दीपावली पोस्टर पाएँ', giftBusy: 'पोस्टर बन रहा है…',
+    giftFine: 'पुष्टि के लिए हम एक ईमेल भेजेंगे। पुष्टि के बाद धर्मशाला यात्रा सुझाव और त्योहार ऑफ़र, हफ़्ते में अधिकतम एक बार। कभी भी अनसब्सक्राइब करें।',
+    giftErr: 'कृपया सही ईमेल डालें और दोबारा कोशिश करें।', giftLater: 'बाद में',
+    readyTitle: 'आपका दीपावली पोस्टर तैयार है', readySub: 'इसे सेव करें या अपनों के साथ शेयर करें। दीपावली ऑफ़र के लिए अपना इनबॉक्स देखें और ईमेल की पुष्टि करें।',
     happy: 'शुभ दीपावली', from: (n: string) => `स्नेह सहित, ${n}`, line: 'मैक्लोडगंज, धर्मशाला की जगमगाती गलियों से',
     msg: `धर्मशाला से शुभ दीपावली! 🪔\n\nअपना कार्ड बनाएँ ${SITE}/hi?utm_source=diwali-card पर और अपने खूबसूरत शहर धर्मशाला और मैक्लोडगंज को रोशन करें।`,
   },
@@ -48,12 +58,17 @@ interface Spark { x: number; y: number; vx: number; vy: number; life: number; ma
 const SPARK_COLOURS = ['#ffd27a', '#ffb43a', '#fff3c4', '#ff9f1c'];
 const BURST_COLOURS = ['#ffcf6b', '#fb7185', '#f472b6', '#a78bfa', '#38bdf8', '#4ade80', '#fde047', '#fb923c'];
 
+const GIFT_KEY = 'ds-diwali-gift';
+function giftSeen(): string | null { try { return localStorage.getItem(GIFT_KEY); } catch { return 'seen'; } }
+function markGift(v: 'seen' | 'claimed') { try { localStorage.setItem(GIFT_KEY, v); } catch { /* private mode */ } }
+
 export default function DiwaliScene({ path, hindi }: { path: string; hindi: boolean }) {
   const t = hindi ? T.hi : T.en;
   const [state, setState] = useState<DiwaliState | null>(null);
   const [fresh, setFresh] = useState<string | undefined>();
   const [toast, setToast] = useState<string | null>(null);
-  const [card, setCard] = useState(false);
+  const [card, setCard] = useState<false | 'lit' | 'gift'>(false);
+  const [gift, setGift] = useState(false);
   const [aspect, setAspect] = useState(8);
   const band = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
@@ -79,7 +94,7 @@ export default function DiwaliScene({ path, hindi }: { path: string; hindi: bool
         s = { ...s, done: true };
         track('diwali_complete');
         window.setTimeout(() => burst.current(), 900);
-        window.setTimeout(() => setCard(true), 4800);
+        window.setTimeout(() => setCard('lit'), 4800);
       }
     }
     save(s);
@@ -183,6 +198,17 @@ export default function DiwaliScene({ path, hindi }: { path: string; hindi: bool
     return () => { cancelAnimationFrame(raf); document.body.classList.remove('dw-night'); window.removeEventListener('resize', size); window.removeEventListener('pointermove', onMove); };
   }, []);
 
+  // The Diwali poster offer: once per visitor, 5 s after arriving (never instantly: Google marks pages that
+  // cover the content on arrival from search as intrusive). Closing it keeps a "Poster" button in the pill.
+  useEffect(() => {
+    if (giftSeen()) return;
+    const id = window.setTimeout(() => {
+      if (giftSeen() || document.querySelector('.lead-offer, .dw-card-wrap')) return;
+      markGift('seen'); setGift(true); track('diwali_gift_shown');
+    }, 5000);
+    return () => window.clearTimeout(id);
+  }, []);
+
   const update = (patch: Partial<DiwaliState>) => setState((s) => { const n = { ...(s || EMPTY), ...patch }; save(n); return n; });
 
   if (!state) return <canvas ref={canvas} className="dw-sparks" aria-hidden="true" />;
@@ -204,14 +230,19 @@ export default function DiwaliScene({ path, hindi }: { path: string; hindi: bool
               <span className="dw-long">{t.progress(count)}</span>
               <span className="dw-short">{t.short(count)}</span>
             </span>
-            {state.done && <button type="button" onClick={() => { setCard(true); track('diwali_card_open'); }}>{t.card}</button>}
+            {state.done && <button type="button" onClick={() => { setCard('lit'); track('diwali_card_open'); }}>{t.card}</button>}
+            {!state.done && <button type="button" onClick={() => { if (giftSeen() === 'claimed') setCard('gift'); else setGift(true); }}>{t.gift}</button>}
             {state.done && <button type="button" onClick={() => burst.current()} className="dw-hide-sm">{t.fireworks}</button>}
             <button type="button" onClick={() => update({ min: true })} aria-label={t.hide} title={t.hide} className="dw-x">×</button>
           </>
         )}
       </div>
       {toast && !state.min && <div className="dw-toast" role="status">✨ {toast}</div>}
-      {card && <DiwaliCard t={t} name={state.name} onName={(name) => update({ name })} onClose={() => setCard(false)} />}
+      {gift && !card && (
+        <DiwaliGift t={t} hindi={hindi} name={state.name} onClose={() => setGift(false)}
+          onDone={(name) => { update({ name }); markGift('claimed'); setGift(false); setCard('gift'); window.setTimeout(() => burst.current(), 300); }} />
+      )}
+      {card && <DiwaliCard t={t} mode={card} name={state.name} onName={(name) => update({ name })} onClose={() => setCard(false)} />}
     </>
   );
 }
@@ -277,7 +308,7 @@ async function drawCard(name: string, t: typeof T.en): Promise<HTMLCanvasElement
 const isIOS = () => /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 const isAndroid = () => /Android/i.test(navigator.userAgent);
 
-function DiwaliCard({ t, name, onName, onClose }: { t: typeof T.en; name: string; onName: (n: string) => void; onClose: () => void }) {
+function DiwaliCard({ t, mode, name, onName, onClose }: { t: typeof T.en; mode: 'lit' | 'gift'; name: string; onName: (n: string) => void; onClose: () => void }) {
   const [draft, setDraft] = useState(name);
   const [url, setUrl] = useState<string | null>(null);
   const [drawnFor, setDrawnFor] = useState<string | null>(null);
@@ -349,8 +380,8 @@ function DiwaliCard({ t, name, onName, onClose }: { t: typeof T.en; name: string
     <div className="dw-card-wrap" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
       <div className="dw-card" role="dialog" aria-modal="true" aria-label={t.title} tabIndex={-1} ref={box}>
         <button type="button" className="dw-card-x" onClick={onClose} aria-label={t.close}>×</button>
-        <h2>{t.title}</h2>
-        <p>{t.sub}</p>
+        <h2>{mode === 'gift' ? t.readyTitle : t.title}</h2>
+        <p>{mode === 'gift' ? t.readySub : t.sub}</p>
         <div className="dw-card-img">{url ? <img src={url} alt={t.happy} /> : <span>🪔</span>}</div>
         <label>
           <span>{t.name}</span>
@@ -362,6 +393,61 @@ function DiwaliCard({ t, name, onName, onClose }: { t: typeof T.en; name: string
           {!canFiles && <a href={`https://wa.me/?text=${encodeURIComponent(t.msg)}`} target="_blank" rel="noopener noreferrer" onClick={() => track('diwali_card_share', { how: 'whatsapp' })}>{t.wa}</a>}
         </div>
         <p className="dw-card-hint" role="status">{hint || t.hold}</p>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Name + email for the Diwali poster. Uses the newsletter sign-up (double opt-in): the contact is saved tagged
+ * "diwali" and only joins the marketing list after clicking the confirmation email. The poster shows at once either way.
+ */
+function DiwaliGift({ t, hindi, name, onClose, onDone }: { t: typeof T.en; hindi: boolean; name: string; onClose: () => void; onDone: (name: string) => void }) {
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState(false);
+  const first = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (window.matchMedia('(pointer: fine)').matches) first.current?.focus({ preventScroll: true }); // no keyboard jumping up on phones
+    const esc = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', esc);
+    return () => window.removeEventListener('keydown', esc);
+  }, [onClose]);
+
+  async function submit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (busy) return;
+    const fd = new FormData(e.currentTarget);
+    const who = String(fd.get('name') || '').trim().slice(0, 40);
+    setBusy(true); setErr(false);
+    try {
+      const r = await fetch('/api/email/subscribe', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: fd.get('email'), name: who || undefined, website: fd.get('website') || undefined, lang: hindi ? 'hi' : 'en', interests: ['diwali'] }),
+      });
+      if (!r.ok) throw new Error();
+      track('generate_lead', { lead_source: 'diwali_poster' });
+      track('diwali_signup');
+      onDone(who);
+    } catch { setErr(true); } finally { setBusy(false); }
+  }
+
+  return (
+    <div className="dw-card-wrap dw-gift" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+      <div className="dw-card" role="dialog" aria-modal="true" aria-label={t.giftTitle}>
+        <button type="button" className="dw-card-x" onClick={onClose} aria-label={t.close}>×</button>
+        <div className="dw-gift-art" aria-hidden="true">🪔✨</div>
+        <h2>{t.giftTitle}</h2>
+        <p>{t.giftSub}</p>
+        <form onSubmit={submit}>
+          <label><span>{t.giftName}</span><input ref={first} name="name" defaultValue={name} maxLength={40} autoComplete="given-name" /></label>
+          <label><span>{t.giftEmail}</span><input name="email" type="email" required autoComplete="email" inputMode="email" /></label>
+          <input name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ display: 'none' }} />
+          {err && <p className="dw-err" role="alert">{t.giftErr}</p>}
+          <div className="dw-card-btns"><button type="submit" className="dw-gold" disabled={busy}>{busy ? t.giftBusy : t.giftBtn}</button></div>
+          <p className="dw-fine">{t.giftFine}</p>
+          <button type="button" className="dw-later" onClick={onClose}>{t.giftLater}</button>
+        </form>
       </div>
     </div>
   );
