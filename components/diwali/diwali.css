@@ -93,3 +93,5 @@ body.dw-night .dw-band, body.dw-night .dw-pill { z-index: 72; }
 .dw-card-btns > .dw-gold { color: #1a1205; background: linear-gradient(90deg, #ffe39a, #ffc15a); border: 0; }
 .dw-card-btns > a { color: #fff; background: #128c4a; border: 0; }
 .dw-card-btns button:disabled { opacity: 0.5; }
+.dw-card p.dw-card-hint { margin: 10px 0 0; font-size: 12px; color: rgba(253, 231, 192, 0.75); }
+.dw-card-img img { -webkit-touch-callout: default; }

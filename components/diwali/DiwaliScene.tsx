@@ -16,9 +16,11 @@ const T = {
     first: 'Happy Diwali! Every page you open lights one more home in McLeod Ganj.',
     card: 'Your Diwali card', fireworks: 'Fireworks', hide: 'Hide the Diwali lights', show: 'Show the Diwali lights',
     title: 'You lit up McLeod Ganj', sub: 'Twelve homes, Bhagsu Road, the prayer flags and the temple are glowing because of you. Here is a Diwali card to send.',
-    name: 'Your name on the card (optional)', share: 'Share card', save: 'Save image', wa: 'Send on WhatsApp', close: 'Close',
+    name: 'Your name on the card (optional)', share: 'Share card', save: 'Save to Photos', wa: 'Send on WhatsApp', close: 'Close',
+    updating: 'Adding your name…', iosHint: 'In the menu that opens, tap “Save Image” to put the card in your Photos.', androidHint: 'Saved. Find it in your Gallery or Google Photos (Downloads).', pcHint: 'Saved to your Downloads folder.', hold: 'Tip: you can also press and hold the card to save it.',
+    cta1: 'Light up beautiful Dharamshala & McLeod Ganj', cta2: 'Create yours at dharamshalastay.com',
     happy: 'Happy Diwali', from: (n: string) => `with love, ${n}`, line: 'from the lit lanes of McLeod Ganj, Dharamshala',
-    msg: `Happy Diwali from Dharamshala! I lit up McLeod Ganj, one page at a time. Light yours: ${SITE}/?utm_source=diwali-card`,
+    msg: `Happy Diwali from Dharamshala! 🪔\n\nCreate yours at ${SITE}/?utm_source=diwali-card and light up your beautiful city, Dharamshala and McLeod Ganj.`,
   },
   hi: {
     progress: (n: number) => n >= TOTAL ? 'मैक्लोडगंज जगमगा उठा। शुभ दीपावली!' : `${TOTAL} में से ${n} दीये जले · अगला दीया जलाने के लिए कोई और पेज खोलें`,
@@ -27,9 +29,11 @@ const T = {
     first: 'शुभ दीपावली! हर नया पेज मैक्लोडगंज के एक और घर में दीया जलाता है।',
     card: 'आपका दीपावली कार्ड', fireworks: 'आतिशबाज़ी', hide: 'दीपावली की रोशनी छिपाएँ', show: 'दीपावली की रोशनी दिखाएँ',
     title: 'आपने मैक्लोडगंज रोशन कर दिया', sub: 'बारह घर, भागसू रोड, प्रार्थना पताकाएँ और मंदिर, सब आपकी वजह से जगमगा रहे हैं। यह रहा भेजने के लिए दीपावली कार्ड।',
-    name: 'कार्ड पर आपका नाम (वैकल्पिक)', share: 'कार्ड शेयर करें', save: 'इमेज सेव करें', wa: 'WhatsApp पर भेजें', close: 'बंद करें',
+    name: 'कार्ड पर आपका नाम (वैकल्पिक)', share: 'कार्ड शेयर करें', save: 'फ़ोटो में सेव करें', wa: 'WhatsApp पर भेजें', close: 'बंद करें',
+    updating: 'आपका नाम जोड़ा जा रहा है…', iosHint: 'खुलने वाले मेन्यू में “Save Image” दबाएँ, कार्ड आपकी Photos में आ जाएगा।', androidHint: 'सेव हो गया। Gallery या Google Photos (Downloads) में देखें।', pcHint: 'Downloads फ़ोल्डर में सेव हो गया।', hold: 'कार्ड को दबाकर रखने से भी सेव कर सकते हैं।',
+    cta1: 'खूबसूरत धर्मशाला और मैक्लोडगंज को रोशन करें', cta2: 'अपना कार्ड बनाएँ: dharamshalastay.com',
     happy: 'शुभ दीपावली', from: (n: string) => `स्नेह सहित, ${n}`, line: 'मैक्लोडगंज, धर्मशाला की जगमगाती गलियों से',
-    msg: `धर्मशाला से शुभ दीपावली! मैंने मैक्लोडगंज को रोशन किया, आप भी करें: ${SITE}/hi?utm_source=diwali-card`,
+    msg: `धर्मशाला से शुभ दीपावली! 🪔\n\nअपना कार्ड बनाएँ ${SITE}/hi?utm_source=diwali-card पर और अपने खूबसूरत शहर धर्मशाला और मैक्लोडगंज को रोशन करें।`,
   },
 };
 
@@ -257,18 +261,32 @@ async function drawCard(name: string, t: typeof T.en): Promise<HTMLCanvasElement
   ctx.fillStyle = 'rgba(255,255,255,0.82)';
   ctx.font = `400 36px ${family}`;
   ctx.fillText(t.line, W / 2, name.trim() ? 530 : 470);
-  ctx.fillStyle = 'rgba(255,255,255,0.7)';
-  ctx.font = `600 30px ${family}`;
-  ctx.fillText('dharamshalastay.com', W / 2, H - 34);
+  // the invitation along the bottom, on a dark band over the hillside so it reads on any phone
+  const band = ctx.createLinearGradient(0, H - 170, 0, H);
+  band.addColorStop(0, 'rgba(5, 9, 24, 0)'); band.addColorStop(0.45, 'rgba(5, 9, 24, 0.82)'); band.addColorStop(1, 'rgba(5, 9, 24, 0.95)');
+  ctx.fillStyle = band; ctx.fillRect(0, H - 170, W, 170);
+  ctx.fillStyle = '#fde7c0';
+  ctx.font = `600 34px ${family}`;
+  ctx.fillText(t.cta1, W / 2, H - 82);
+  ctx.fillStyle = '#ffcf6b';
+  ctx.font = `700 38px ${family}`;
+  ctx.fillText(t.cta2, W / 2, H - 32);
   return c;
 }
+
+const isIOS = () => /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const isAndroid = () => /Android/i.test(navigator.userAgent);
 
 function DiwaliCard({ t, name, onName, onClose }: { t: typeof T.en; name: string; onName: (n: string) => void; onClose: () => void }) {
   const [draft, setDraft] = useState(name);
   const [url, setUrl] = useState<string | null>(null);
+  const [drawnFor, setDrawnFor] = useState<string | null>(null);
+  const [hint, setHint] = useState<string | null>(null);
+  const [canFiles, setCanFiles] = useState(false);
   const blob = useRef<Blob | null>(null);
   const box = useRef<HTMLDivElement>(null);
 
+  // Redraw the card whenever the name changes; the buttons wait until the picture carries the latest name.
   useEffect(() => {
     let gone = false;
     const id = window.setTimeout(async () => {
@@ -276,9 +294,11 @@ function DiwaliCard({ t, name, onName, onClose }: { t: typeof T.en; name: string
       c.toBlob((b) => {
         if (gone || !b) return;
         blob.current = b;
+        try { setCanFiles(typeof navigator.canShare === 'function' && navigator.canShare({ files: [new File([b], 'card.jpg', { type: 'image/jpeg' })] })); } catch { setCanFiles(false); }
         setUrl((old) => { if (old) URL.revokeObjectURL(old); return URL.createObjectURL(b); });
-      }, 'image/jpeg', 0.9);
-    }, 250);
+        setDrawnFor(draft);
+      }, 'image/jpeg', 0.92);
+    }, 200);
     return () => { gone = true; window.clearTimeout(id); };
   }, [draft, t]);
 
@@ -289,20 +309,40 @@ function DiwaliCard({ t, name, onName, onClose }: { t: typeof T.en; name: string
     return () => window.removeEventListener('keydown', esc);
   }, [onClose]);
 
-  const file = () => blob.current ? new File([blob.current], 'happy-diwali-dharamshala.jpg', { type: 'image/jpeg' }) : null;
-  const canShareFile = () => { const f = file(); return !!f && typeof navigator.canShare === 'function' && navigator.canShare({ files: [f] }); };
+  const ready = !!url && drawnFor === draft;
+  const slug = draft.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const fileName = 'happy-diwali-dharamshala' + (slug ? '-' + slug : '') + '.jpg';
+  const file = () => blob.current ? new File([blob.current], fileName, { type: 'image/jpeg' }) : null;
 
+  /** The picture with the name on it, plus the invitation text, to any app or person they pick. */
   const share = async () => {
+    if (!ready) return;
+    onName(draft);
     const f = file();
     track('diwali_card_share', { how: 'native' });
-    try { if (f && canShareFile()) await navigator.share({ files: [f], text: t.msg }); else download(); } catch { /* cancelled */ }
+    if (f && canFiles) {
+      try { await navigator.share({ files: [f], text: t.msg }); } catch { /* closed the menu */ }
+      return;
+    }
+    if (typeof navigator.share === 'function') { try { await navigator.share({ text: t.msg }); } catch { /* closed */ } return; }
+    window.open(`https://wa.me/?text=${encodeURIComponent(t.msg)}`, '_blank', 'noopener');
   };
-  const download = () => {
-    if (!url) return;
+
+  /** iPhone: the share menu with only the picture, where "Save Image" puts it in Photos. Android and computers: download. */
+  const save = async () => {
+    if (!ready || !url) return;
+    onName(draft);
+    const f = file();
     track('diwali_card_share', { how: 'save' });
+    if (isIOS() && f && canFiles) {
+      setHint(t.iosHint);
+      try { await navigator.share({ files: [f] }); } catch { /* closed the menu */ }
+      return;
+    }
     const a = document.createElement('a');
-    a.href = url; a.download = 'happy-diwali-dharamshala.jpg';
+    a.href = url; a.download = fileName;
     document.body.appendChild(a); a.click(); a.remove();
+    setHint(isAndroid() ? t.androidHint : t.pcHint);
   };
 
   return (
@@ -314,13 +354,14 @@ function DiwaliCard({ t, name, onName, onClose }: { t: typeof T.en; name: string
         <div className="dw-card-img">{url ? <img src={url} alt={t.happy} /> : <span>🪔</span>}</div>
         <label>
           <span>{t.name}</span>
-          <input value={draft} maxLength={40} onChange={(e) => setDraft(e.target.value)} onBlur={() => onName(draft)} autoComplete="given-name" />
+          <input value={draft} maxLength={40} onChange={(e) => { setDraft(e.target.value); setHint(null); }} onBlur={() => onName(draft)} autoComplete="given-name" />
         </label>
         <div className="dw-card-btns">
-          <button type="button" className="dw-gold" onClick={share} disabled={!url}>{t.share}</button>
-          <button type="button" onClick={download} disabled={!url}>{t.save}</button>
-          <a href={`https://wa.me/?text=${encodeURIComponent(t.msg)}`} target="_blank" rel="noopener noreferrer" onClick={() => track('diwali_card_share', { how: 'whatsapp' })}>{t.wa}</a>
+          <button type="button" className="dw-gold" onClick={share} disabled={!ready}>{ready ? t.share : t.updating}</button>
+          <button type="button" onClick={save} disabled={!ready}>{t.save}</button>
+          {!canFiles && <a href={`https://wa.me/?text=${encodeURIComponent(t.msg)}`} target="_blank" rel="noopener noreferrer" onClick={() => track('diwali_card_share', { how: 'whatsapp' })}>{t.wa}</a>}
         </div>
+        <p className="dw-card-hint" role="status">{hint || t.hold}</p>
       </div>
     </div>
   );
