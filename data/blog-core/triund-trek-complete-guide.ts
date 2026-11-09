@@ -7,7 +7,7 @@ export const override: Partial<BlogPost> = {
   meta_title: 'Triund Trek 2026: Distance, Fees, Winter Rules & Route',
   meta_description:
     'Triund trek: about 6-7 km (3-5 h) from Gallu Devi or 9 km from McLeod Ganj to 2,850 m. ₹100 entry, camping rules, winter snow and how to book.',
-  updated_at: '2026-10-29',
+  updated_at: '2026-11-09',
   read_time: 14,
   image_alt: 'Triund ridge meadow at about 2,850 m with the snow-streaked Dhauladhar wall behind it, above McLeod Ganj',
   tags: ['triund', 'triund trek', 'triund trek 2026', 'triund in winter', 'trekking', 'dharamshala', 'mcleod ganj treks', 'hiking', 'camping'],
@@ -100,6 +100,15 @@ On the way down, stay on the main trail. Unmarked shortcuts on the descent are w
 | Day hike | Fit walkers, winter, tight schedules | Start by 8 am; no camping permission needed |
 | Overnight camp | Most visitors, March-June and Sep-Nov | Book with an operator; nights near freezing from late October |
 | Overnight + Snowline | Fit trekkers wanting more | Dawn walk higher on day 2, only when the 3,000 m rules allow |
+
+## Can you stay in a room at the top of Triund?
+
+**Yes, on our overnight trek, subject to availability.** Nights on the ridge drop close to freezing from late October, and a tent and sleeping bag are not always enough. When you book the [guided Triund trek](/treks/triund-trek), choose **"Room on Triund top"** instead of a tent: you get a bed, warm blankets, hot dinner and breakfast, and shelter from the wind. Rooms on the ridge are very few, so we check availability for your date first. **The room is not included in the trek price**: we confirm its price before you pay for it, and if no room is free you camp in a tent as usual. The Forest Department entry slip at the Gallu checkpost still applies.
+
+| Night on Triund | Bed | Food | Price |
+|---|---|---|---|
+| Tent (standard overnight trek) | Tent and sleeping bag | Dinner and breakfast | Included in the trek price |
+| Room on Triund top | Bed with blankets | Dinner and breakfast | Extra; confirmed after we check availability |
 
 ## Triund trek fee 2026: entry, camping and deposit
 
@@ -257,6 +266,11 @@ Rules here change at short notice. If you are unsure, ask at the Gallu checkpost
       question: 'Is camping allowed at Triund in 2026?',
       answer:
         'Yes, within limits. Camping needs a ₹275 per person slip from the Forest Department checkpost (October 2026), and the 2023 rules capped the ridge at 20 tents and 40 overnight visitors. We found no official order banning camping in 2026, but permissions can be cancelled in bad weather and winter camping depends on the orders for that season.',
+    },
+    {
+      question: 'Can I stay in a room at the top of Triund instead of a tent?',
+      answer:
+        'Yes, subject to availability. Book our overnight Triund trek on dharamshalastay.com/treks/triund-trek and choose "Room on Triund top". You get a bed, warm blankets, dinner and breakfast. Rooms are few and the room is not included in the trek price: we check availability for your date and confirm the room price first. If no room is free, you stay in a tent.',
     },
     {
       question: 'How do I book a guided Triund trek?',

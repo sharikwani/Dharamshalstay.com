@@ -14,6 +14,7 @@ import { serverT } from '@/lib/i18n/server';
 import { fmt } from '@/lib/i18n/dict';
 import { hasHindiTrek, localizeTrek } from '@/lib/i18n/content';
 import type { Lang } from '@/lib/i18n/core';
+import TriundRoomStay, { TRIUND_ROOM_TREKS, TRIUND_STAY } from '@/components/treks/TriundRoomStay';
 
 /** Full written guide for each bookable trek, where one exists. */
 const TREK_GUIDES: Record<string, string> = {
@@ -82,6 +83,7 @@ export async function TrekDetailView({ slug, lang }: { slug: string; lang: Lang 
   const k = t.treks;
   const others = (await getPublishedTreks()).filter((x: any) => x.slug !== trek.slug).slice(0, 4).map((x: any) => localizeTrek(x, lang));
   const guide = TREK_GUIDES[trek.slug];
+  const roomStay = TRIUND_ROOM_TREKS.has(trek.slug) ? TRIUND_STAY[lang === 'hi' ? 'hi' : 'en'] : null;
 
   return (
     <>
@@ -132,6 +134,8 @@ export async function TrekDetailView({ slug, lang }: { slug: string; lang: Lang 
 
             <div><h2 className="text-xl font-heading font-semibold mb-3">{k.overview}</h2><p className="text-slate-600 whitespace-pre-line leading-relaxed">{trek.description}</p></div>
 
+            {roomStay && <TriundRoomStay lang={lang === 'hi' ? 'hi' : 'en'} />}
+
             {trek.itinerary?.length > 0 && (
               <div>
                 <h2 className="text-xl font-heading font-semibold mb-3">{k.itinerary}</h2>
@@ -176,7 +180,8 @@ export async function TrekDetailView({ slug, lang }: { slug: string; lang: Lang 
           </div>
           <div>
             <div id="book" className="sticky top-20 space-y-4">
-              <BookingForm category="trek" entityId={trek.id} entityName={trek.name} defaultAmount={trek.price_per_person} />
+              <BookingForm category="trek" entityId={trek.id} entityName={trek.name} defaultAmount={trek.price_per_person}
+                stayChoice={roomStay ? { label: roomStay.selectLabel, options: roomStay.options } : undefined} />
               <a href={getWhatsAppLink(fmt(k.whatsappMsg, { name: raw.name }))} target="_blank" rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 bg-green-700 text-white py-3 rounded-xl font-medium hover:bg-green-800 w-full">
                 <MessageCircle className="h-4 w-4" /> {t.common.whatsapp}

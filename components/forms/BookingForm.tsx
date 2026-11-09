@@ -25,6 +25,8 @@ interface BookingFormProps {
   onDatesChange?: (checkIn: string, checkOut: string) => void;
   /** When set, booking is blocked and this message is shown (e.g. the chosen room is sold out). */
   blockedMessage?: string;
+  /** Trek only: a required choice for the night (e.g. tent or a room on Triund top); the choice is added to the booking notes. */
+  stayChoice?: { label: string; options: string[] };
 }
 
 /** A v4 uuid; crypto.randomUUID needs a secure context, so fall back to getRandomValues. */
@@ -37,7 +39,7 @@ function calcNights(checkIn: string, checkOut: string): number {
   return diff > 0 ? diff : 0;
 }
 
-export default function BookingForm({ category, entityId, entityName, pricePerNight, defaultAmount, roomName, planName, planIndex, extraBeds = 0, extraBedPrice = 0, className = '', onDatesChange, blockedMessage }: BookingFormProps) {
+export default function BookingForm({ category, entityId, entityName, pricePerNight, defaultAmount, roomName, planName, planIndex, extraBeds = 0, extraBedPrice = 0, className = '', onDatesChange, blockedMessage, stayChoice }: BookingFormProps) {
   const { t } = useT();
   const f = t.form;
   const [status, setStatus] = useState<'idle' | 'loading' | 'paying' | 'success' | 'error'>('idle');
@@ -56,6 +58,7 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
   const [payMethod, setPayMethod] = useState('pay_at_hotel');
   const [guests, setGuests] = useState('1');
   const [notes, setNotes] = useState('');
+  const [stay, setStay] = useState(stayChoice?.options[0] || '');
 
   const minDate = getMinDate();
   const minCheckout = getMinCheckoutDate(checkIn);
@@ -137,7 +140,7 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
     const payload: Record<string, any> = {
       category, guest_name: fd.get('guest_name'), guest_email: fd.get('guest_email') || '',
       guest_phone: fd.get('guest_phone'), num_guests: Number(fd.get('num_guests')) || 1,
-      special_requests: fd.get('special_requests') || '',
+      special_requests: [stayChoice && stay ? stayChoice.label + ': ' + stay : '', String(fd.get('special_requests') || '')].filter(Boolean).join('. '),
       payment_method: payMethod, booking_source: 'website',
       room_name: roomName || '', plan_name: planName || '',
       plan_index: typeof planIndex === 'number' ? planIndex : null,
@@ -251,6 +254,12 @@ export default function BookingForm({ category, entityId, entityName, pricePerNi
             <input name="pickup_location" placeholder={f.pickupLocation} className="px-3 py-2.5 border border-slate-300 rounded-lg text-sm outline-none" />
             <input name="drop_location" placeholder={f.dropLocation} className="px-3 py-2.5 border border-slate-300 rounded-lg text-sm outline-none" />
           </div>
+        )}
+
+        {stayChoice && (
+          <div><label className="block text-xs font-medium text-slate-600 mb-1">{stayChoice.label}</label>
+            <select value={stay} onChange={e => setStay(e.target.value)} className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm outline-none">
+              {stayChoice.options.map((o) => <option key={o} value={o}>{o}</option>)}</select></div>
         )}
 
         <textarea name="special_requests" value={notes} onChange={e => setNotes(e.target.value)} rows={2} placeholder={f.specialRequests} className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm outline-none resize-none" />
