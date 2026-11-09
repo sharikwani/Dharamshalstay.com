@@ -5,7 +5,6 @@ import WhatsAppButton from '@/components/layout/WhatsAppButton';
 import JsonLd from '@/components/seo/JsonLd';
 import Analytics from '@/components/seo/Analytics';
 import LeadLayer from '@/components/leads/LeadLayer';
-import DiwaliLights from '@/components/diwali/DiwaliLights';
 import Travelpayouts from '@/components/seo/Travelpayouts';
 import { heading, body } from '@/lib/fonts';
 import { organizationSchema, websiteSchema, localBusinessSchema } from '@/lib/seo';
@@ -31,7 +30,6 @@ export default function RootDocument({ lang, fontClassName = '', children }: { l
         <Footer lang={lang} />
         <WhatsAppButton lang={lang} />
         <LeadLayer />
-        <DiwaliLights />
         <Analytics />
         <Travelpayouts />
       </body>
