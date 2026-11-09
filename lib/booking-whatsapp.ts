@@ -4,6 +4,7 @@ import { cleanParam, isWhatsAppConfigured, sendTemplate } from '@/lib/whatsapp-c
 import { normalizeIndianPhone } from '@/lib/whatsapp';
 import { bookingPageUrlOrNull, hotelPhoneVisible } from '@/lib/bookings/stay-details';
 import { siteConfig } from '@/lib/config';
+import { partnerReviewUrl } from '@/lib/partner-reviews';
 
 export type RecipientKind = 'partner' | 'staff' | 'hotel' | 'guide';
 export type Recipient = { kind: RecipientKind; phone: string };
@@ -345,10 +346,12 @@ export function assignedParams(v: BookingView): string[] {
 }
 export const commissionParams = (v: BookingView, dueBy: string) => [v.partner_contact?.name || 'Partner', v.booking_ref, rupees(v.commission_amount), dueBy].map(cleanParam);
 
-/** Where a guest leaves a review: the hotel page's review form, else a WhatsApp message to us. */
+/** Where a guest leaves a review: the hotel page's review form, the partner rating page for a taxi, trek or paragliding
+ * booking with a partner, else a WhatsApp message to us. */
 export function reviewUrl(v: BookingView): string {
   const site = siteConfig.url.replace(/\/$/, '');
   if (v.category === 'hotel' && v.property_slug) return `${site}/hotels/${v.property_slug}?review=1#reviews`;
+  if (v.category !== 'hotel' && v.partner_id && v.id) return partnerReviewUrl(String(v.id));
   return `https://wa.me/${siteConfig.whatsapp}?text=` + encodeURIComponent(`Feedback for booking ${v.booking_ref}: `);
 }
 

@@ -110,6 +110,8 @@ export type BookingData = {
   id: string; booking_ref: string; guest_name: string; category: string; amount: number; paid_amount?: number | null;
   check_in?: string | null; check_out?: string | null; activity_date?: string | null; room_name?: string | null;
   property_name?: string | null; payment_text?: string; details_url?: string | null;
+  /** Taxi, trek or paragliding with a partner: the private page to rate the partner (lib/partner-reviews.ts). */
+  rate_url?: string | null;
   stay?: { address: string; landmark: string | null; mapUrl: string; phone: string | null } | null;
   property?: { name: string; slug?: string | null; images?: any; check_in_time?: string | null } | null;
   payment_link?: string | null;
@@ -202,16 +204,18 @@ export function preArrival(b: BookingData): Built {
 
 export function reviewRequest(b: BookingData, reminder = false): Built {
   const hotel = b.category === 'hotel' && b.property?.slug;
-  const href = hotel ? `/hotels/${b.property!.slug}?review=1#reviews` : 'https://wa.me/19295255894?text=' + encodeURIComponent('Feedback for booking ' + b.booking_ref + ': ');
+  const rate = !hotel && b.rate_url ? b.rate_url : null;
+  const href = hotel ? `/hotels/${b.property!.slug}?review=1#reviews` : rate || 'https://wa.me/19295255894?text=' + encodeURIComponent('Feedback for booking ' + b.booking_ref + ': ');
   return {
     subject: reminder ? `A quick favour: how was ${b.property_name || 'your trip'}?` : `How was your stay, ${firstName(b.guest_name)}?`,
     doc: T([
       { type: 'p', text: `Thank you for travelling with Dharamshala Stay. We hope ${b.property_name ? `your time at **${b.property_name}**` : 'your trip'} was wonderful.` },
       { type: 'p', text: hotel
         ? `Would you take **one minute** to rate it? Honest reviews help other travellers choose well and help good local hotels get noticed.`
+        : rate ? `Would you take **one minute** to rate your trip out of 5? Your rating helps other travellers choose well and helps good local drivers, guides and pilots get noticed.`
         : `We would love to hear how it went. Reply to this email or send us a WhatsApp: what did you love, and what could be better?` },
       ...(b.property ? [{ type: 'feature', photo: propertyPhoto(b.property), title: b.property.name, text: 'Tap below to rate the stay out of 5 and leave a short note.' } as Block] : []),
-      { type: 'button', label: hotel ? 'Rate your stay' : 'Share feedback', href },
+      { type: 'button', label: hotel ? 'Rate your stay' : rate ? 'Rate your trip' : 'Share feedback', href },
       { type: 'small', text: 'Coming back? Reply to this email and we will find you the best rate for your next visit.' },
     ], { preheader: 'One minute, five stars or honest feedback, it all helps.', kicker: reminder ? 'Quick reminder' : 'Thank you', heading: hotel ? 'How was your stay?' : 'How was your trip?' }),
   };

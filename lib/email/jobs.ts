@@ -9,6 +9,7 @@ import { deliver } from './send';
 import { livePaymentLink, loadBookingData, loadEnquiryData } from './data';
 import { enquiryFollowUp, paymentFailed, preArrival, reviewRequest, type Built } from './templates';
 import { whatsappEnquiryFollowUp } from '@/lib/wa-chat/enquiry-follow-up';
+import { partnerReviewUrl } from '@/lib/partner-reviews';
 
 export type JobTemplate = 'enquiry_follow_up' | 'pre_arrival' | 'review_request' | 'review_reminder' | 'payment_reminder';
 
@@ -96,7 +97,8 @@ async function prepare(sb: SupabaseClient, job: any): Promise<Outcome> {
       const { count } = await sb.from('hotel_reviews').select('id', { count: 'exact', head: true }).eq('property_id', b.property_id).eq('phone', phone10);
       if (count) return { skip: 'already reviewed' };
     }
-    return { send: { to: b.guest_email, built: reviewRequest(b, job.template === 'review_reminder'), bookingId: b.id } };
+    const rate_url = b.category !== 'hotel' && b.partner_id ? partnerReviewUrl(b.id) : null;
+    return { send: { to: b.guest_email, built: reviewRequest({ ...b, rate_url }, job.template === 'review_reminder'), bookingId: b.id } };
   }
   return { skip: 'unknown template' };
 }

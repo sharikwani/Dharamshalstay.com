@@ -7,7 +7,7 @@ import { confirmedPaymentText } from '@/lib/email';
 import type { BookingData, EnquiryData } from './templates';
 
 export type LoadedBooking = BookingData & {
-  status: string; payment_status: string; guest_email: string | null; guest_phone: string | null; property_id: string | null;
+  status: string; payment_status: string; guest_email: string | null; guest_phone: string | null; property_id: string | null; partner_id?: string | null;
 };
 
 export async function loadBookingData(bookingId: string): Promise<LoadedBooking | null> {
@@ -26,8 +26,8 @@ export async function loadBookingData(bookingId: string): Promise<LoadedBooking 
       payment_text: confirmedPaymentText(b), details_url: bookingPageUrlOrNull(b),
       stay: b.property_id ? await loadStayContact(b.id) : null,
       status: b.status, payment_status: b.payment_status, guest_email: b.guest_email || null, guest_phone: b.guest_phone || null, property_id: b.property_id || null,
-      razorpay_link_id: b.razorpay_link_id || null,
-    } as LoadedBooking & { razorpay_link_id: string | null };
+      razorpay_link_id: b.razorpay_link_id || null, partner_id: b.partner_id || null,
+    } as LoadedBooking & { razorpay_link_id: string | null; partner_id: string | null };
   } catch (e) {
     console.error('loadBookingData failed:', bookingId, e);
     return null;

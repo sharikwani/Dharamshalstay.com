@@ -19,6 +19,8 @@ export type TravelPartner = {
   area?: string;
   bio?: string;
   photo?: string;
+  /** The partner's account id (profiles.id): links customer star ratings (partner_reviews) to this profile. */
+  partnerId?: string;
   indexable: boolean;
   added: string; // YYYY-MM-DD
 };
@@ -39,6 +41,19 @@ export const TRAVEL_PARTNERS: TravelPartner[] = [
     groupsCompleted: 17,
     indexable: false, // add bio, area and photo, then set true
     added: '2026-10-27',
+  },
+  {
+    slug: 'karan',
+    name: 'Karan',
+    services: ['taxi', 'trek', 'paragliding'],
+    topPartner: false,
+    verified: true,
+    groupsCompleted: 0,
+    area: 'Dharamshala and McLeod Ganj',
+    bio: 'Karan is a local partner who runs taxis, treks and paragliding for our guests. His cars include Maruti Swift Dzire sedans for couples and small families, and a Toyota Innova and Toyota Rumion for groups of up to six, covering Kangra (Gaggal) Airport transfers, local sightseeing and outstation trips. Book through Dharamshala Stay: we confirm the car, the driver and the full price on WhatsApp before you travel.',
+    partnerId: '2eea6ea2-9eb5-4749-b2b4-3449de140e41',
+    indexable: false, // add a photo, then set true once he has a few reviews
+    added: '2026-11-09',
   },
 ];
 
