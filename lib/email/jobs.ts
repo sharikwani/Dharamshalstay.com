@@ -139,6 +139,11 @@ export async function runDueJobs(limit = 40): Promise<{ sent: number; skipped: n
     if (!claimed?.length) continue;
     try {
       const o = await prepare(sb, job);
+      // Partner trips: the same thank-you and rating link on WhatsApp (utility template, once per booking, also when there is no email).
+      if (job.template === 'review_request' && job.booking_id) {
+        try { await (await import('@/lib/booking-whatsapp')).whatsappPartnerThanks(job.booking_id); }
+        catch (e) { console.error('WhatsApp partner thanks failed:', e); }
+      }
       if (o.skip || !o.send) {
         await sb.from('email_jobs').update({ status: 'skipped', last_error: o.skip || null }).eq('id', job.id);
         res.skipped++;

@@ -4,7 +4,7 @@ import { cleanParam, isWhatsAppConfigured, sendTemplate } from '@/lib/whatsapp-c
 import { normalizeIndianPhone } from '@/lib/whatsapp';
 import { bookingPageUrlOrNull, hotelPhoneVisible } from '@/lib/bookings/stay-details';
 import { siteConfig } from '@/lib/config';
-import { partnerReviewUrl } from '@/lib/partner-reviews';
+import { partnerReviewUrl, rateContext, reviewToken } from '@/lib/partner-reviews';
 
 export type RecipientKind = 'partner' | 'staff' | 'hotel' | 'guide';
 export type Recipient = { kind: RecipientKind; phone: string };
@@ -132,7 +132,7 @@ export function customerParams(v: BookingView): string[] {
 }
 
 /** A template plus, where one exists, the approved v1 template to fall back on while v2 is under review at Meta. */
-type Msg = { template: string; params: string[]; fallback?: { template: string; params: string[] } };
+type Msg = { template: string; params: string[]; urlButtons?: string[]; fallback?: { template: string; params: string[] } };
 
 // v1 layouts (one-line date_text). Remove once the _v2 templates are approved.
 const v1 = (v: BookingView, ...rest: unknown[]) => [v.booking_ref, v.item_name, v.date_text, ...rest].map(cleanParam);
@@ -197,7 +197,7 @@ async function sendAndLog(bookingId: string, kind: RecipientKind | 'customer', t
     const base = { booking_id: bookingId, recipient_kind: kind, to_phone: to, template };
     const { data: queued, error: qErr } = await sb.from('whatsapp_messages').insert({ ...base, status: 'queued' }).select('id').single();
     if (qErr) console.error('WhatsApp: could not log queued message:', qErr);
-    let r = await sendTemplate({ to, template, params: msg.params });
+    let r = await sendTemplate({ to, template, params: msg.params, urlButtons: msg.urlButtons });
     if (!r.ok && !r.skipped && msg.fallback && NOT_APPROVED.test(r.error || '')) {
       template = msg.fallback.template;
       r = await sendTemplate({ to, template, params: msg.fallback.params });
@@ -425,10 +425,44 @@ async function hasMarketingConsent(email?: string | null, phone?: string | null)
   return (data || []).some((c: any) => c.marketing_consent && !c.unsubscribed_at);
 }
 
-/** Marketing template: only for guests who agreed to hear from us (contacts.marketing_consent, not unsubscribed). */
+const fmtTripDate = (d: string | null) => (d ? new Date(d + 'T00:00:00Z').toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }) : '');
+
+/**
+ * Utility template trip_completed_rating: a completed taxi, trek or paragliding booking is closed, thank you,
+ * and a "Rate this trip" button to the private rating page for the partner who ran it. Sent once per booking;
+ * skipped when the trip is already rated or the booking cannot be rated (not completed, no partner).
+ */
+export async function whatsappPartnerThanks(bookingId: string): Promise<{ ok: boolean; reason?: string }> {
+  try {
+    if (!isWhatsAppConfigured()) return { ok: false, reason: 'WhatsApp not configured' };
+    const ctx = await rateContext(reviewToken(bookingId));
+    if (!ctx) return { ok: false, reason: 'booking cannot be rated (needs completed status and a partner)' };
+    if (ctx.alreadyRated) return { ok: false, reason: 'already rated' };
+    const { count } = await serviceClient().from('whatsapp_messages').select('id', { count: 'exact', head: true })
+      .eq('booking_id', bookingId).eq('template', 'trip_completed_rating').eq('status', 'sent');
+    if (count) return { ok: false, reason: 'already sent' };
+    const v = await loadBookingView(bookingId);
+    const to = v ? normalizeIndianPhone(v.guest_phone) : null;
+    if (!v || !to) return { ok: false, reason: 'no customer phone' };
+    const trip = [ctx.item, fmtTripDate(ctx.date), ctx.vehicle].filter(Boolean).join(', ');
+    const ok = await sendAndLog(bookingId, 'customer', to, {
+      template: 'trip_completed_rating',
+      params: [firstName(v) || 'there', v.booking_ref, trip, ctx.partnerName].map(cleanParam),
+      urlButtons: [reviewToken(bookingId)],
+    });
+    return ok ? { ok } : { ok, reason: 'send failed' };
+  } catch (e) { console.error('WhatsApp partner thanks failed:', e); return { ok: false, reason: 'error' }; }
+}
+
+/**
+ * Partner trips (taxi, trek, paragliding) get the utility trip_completed_rating. Everything else uses the
+ * marketing review_request: only for guests who agreed to hear from us (contacts.marketing_consent, not unsubscribed).
+ */
 export async function whatsappReviewRequest(bookingId: string): Promise<{ ok: boolean; reason?: string }> {
   try {
     if (!isWhatsAppConfigured()) return { ok: false, reason: 'WhatsApp not configured' };
+    const partner = await whatsappPartnerThanks(bookingId);
+    if (partner.ok || partner.reason === 'already rated' || partner.reason === 'already sent') return partner;
     const v = await loadBookingView(bookingId);
     if (!v) return { ok: false, reason: 'booking not found' };
     if (!(await hasMarketingConsent(v.guest_email, v.guest_phone))) return { ok: false, reason: 'no marketing consent' };
