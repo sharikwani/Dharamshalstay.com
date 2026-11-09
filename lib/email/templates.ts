@@ -221,6 +221,33 @@ export function reviewRequest(b: BookingData, reminder = false): Built {
   };
 }
 
+/**
+ * Thank-you after a completed taxi, trek or paragliding trip, naming the partner who ran it, with the private
+ * link to rate them out of 5 (/rate/<token>). Sent by the review_request job for partner bookings, and by hand
+ * with scripts/send-partner-thanks.ts.
+ */
+export function partnerThankYou(b: BookingData & { partner_name: string; vehicle?: string | null; item?: string | null; rate_url: string }, reminder = false): Built {
+  const first = firstName(b.guest_name);
+  const what = b.category === 'taxi' ? 'taxi' : b.category === 'trek' ? 'trek' : 'paragliding flight';
+  const ride = b.category === 'taxi' && b.vehicle ? `the ride in the ${b.vehicle} with ${b.partner_name}` : `your ${what} with ${b.partner_name}`;
+  const role = b.category === 'taxi' ? 'drivers' : b.category === 'trek' ? 'trek guides' : 'pilots';
+  return {
+    subject: reminder ? `A quick favour: how was your ${what} with ${b.partner_name}?` : `Thank you for travelling with us${first ? ', ' + first : ''}`,
+    doc: T([
+      { type: 'p', text: `Thank you for booking your ${what} with **Dharamshala Stay**. We hope you enjoyed ${ride}.` },
+      ...(b.item || b.activity_date ? [{ type: 'details', rows: [
+        ...(b.item ? [['Trip', b.item] as [string, string]] : []),
+        ...(b.activity_date ? [['Date', fmtDate(b.activity_date)] as [string, string]] : []),
+        ...(b.vehicle ? [['Vehicle', b.vehicle] as [string, string]] : []),
+        ['Reference', b.booking_ref] as [string, string],
+      ] } as Block] : []),
+      { type: 'p', text: `If you have a minute, please rate ${b.partner_name} out of 5. It takes about one minute and helps other travellers choose well, and helps good local ${role} get noticed.` },
+      { type: 'button', label: `Rate your trip with ${b.partner_name}`, href: b.rate_url },
+      { type: 'small', text: `Your first name and rating show on ${b.partner_name}’s profile. We never share your phone number or email. Coming back? Reply to this email and we will plan your next trip.` },
+    ], { preheader: `One minute: rate your ${what} with ${b.partner_name} out of 5.`, kicker: reminder ? 'Quick reminder' : 'Thank you', heading: `How was your trip with ${b.partner_name}?` }),
+  };
+}
+
 // ───────────────────────── Hotel outreach ─────────────────────────
 
 /** "Your hotel is listed: claim it free (or have it removed)" for hotels we cannot reach on WhatsApp. */

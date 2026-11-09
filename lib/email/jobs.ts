@@ -7,9 +7,9 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { serviceClient } from '@/lib/server-auth';
 import { deliver } from './send';
 import { livePaymentLink, loadBookingData, loadEnquiryData } from './data';
-import { enquiryFollowUp, paymentFailed, preArrival, reviewRequest, type Built } from './templates';
+import { enquiryFollowUp, partnerThankYou, paymentFailed, preArrival, reviewRequest, type Built } from './templates';
 import { whatsappEnquiryFollowUp } from '@/lib/wa-chat/enquiry-follow-up';
-import { partnerReviewUrl } from '@/lib/partner-reviews';
+import { partnerReviewUrl, rateContext, reviewToken } from '@/lib/partner-reviews';
 
 export type JobTemplate = 'enquiry_follow_up' | 'pre_arrival' | 'review_request' | 'review_reminder' | 'payment_reminder';
 
@@ -98,6 +98,12 @@ async function prepare(sb: SupabaseClient, job: any): Promise<Outcome> {
       if (count) return { skip: 'already reviewed' };
     }
     const rate_url = b.category !== 'hotel' && b.partner_id ? partnerReviewUrl(b.id) : null;
+    if (rate_url) {
+      // Partner trip: thank them by the partner's name once the booking is completed; skip if already rated.
+      const ctx = await rateContext(reviewToken(b.id)).catch(() => null);
+      if (ctx?.alreadyRated) return { skip: 'already rated' };
+      if (ctx) return { send: { to: b.guest_email, built: partnerThankYou({ ...b, rate_url, partner_name: ctx.partnerName, vehicle: ctx.vehicle, item: ctx.item }, job.template === 'review_reminder'), bookingId: b.id } };
+    }
     return { send: { to: b.guest_email, built: reviewRequest({ ...b, rate_url }, job.template === 'review_reminder'), bookingId: b.id } };
   }
   return { skip: 'unknown template' };
