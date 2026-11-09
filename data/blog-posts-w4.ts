@@ -5,7 +5,7 @@ export const blogPostsW4: BlogPost[] = [
   {
     id: 'blog-himachali-food-guide',
     slug: 'himachali-food-guide',
-    title: 'Himachali Food Guide: Kangri Dham, Siddu, Babru & Where to Eat Them (2026)',
+    title: 'Himachali Food Guide: Kangri Dham, Siddu & Where to Eat (2026)',
     excerpt: 'What to eat in Dharamshala beyond momos: Kangri dham, madra, mash dal, siddu, babru, chha gosht and trout, plus honest advice on where a visitor can actually taste real Himachali food.',
     content: `**Short answer:** The Himachali food to try is the **Kangri dham**, a vegetarian feast cooked by hereditary cooks called **botis** and served on leaf plates, alongside everyday dishes such as siddu, babru, madra, mash dal and chha gosht. Real Himachali food is mostly cooked at home, at weddings and at temple feasts, not in restaurants, so your best chances are village feasts, fairs and homestays that cook for you. A Himachali thali costs approx. **₹200–450** in a local restaurant (2026, check locally).
 
@@ -147,7 +147,7 @@ For more on the town itself, start with our [Dharamshala destination page](/dest
     tags: ['himachali food', 'kangri dham', 'siddu', 'dharamshala food', 'kangra valley', 'local cuisine'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-09-17',
-    updated_at: '2026-10-02',
+    updated_at: '2026-11-09',
     image: placeImage('himachali-dham'),
     image_alt: 'Traditional Kangri dham feast served on leaf plates in the Kangra Valley near Dharamshala',
     read_time: 10,
