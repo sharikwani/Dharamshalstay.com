@@ -420,13 +420,13 @@ You have two options: a **taxi** (the practical choice for most people) or a **l
 
 ## How much is a taxi from Gaggal Airport?
 
-These are **our fixed fares per vehicle** (not per person), from our [taxi page](/taxi), checked on 24 October 2026. Tolls and parking are extra where they apply, and we confirm the exact fare before the trip.
+These are **our fixed fares per vehicle** (not per person), from our [taxi page](/taxi), checked on 10 November 2026. Tolls and parking are extra where they apply, and we confirm the exact fare before the trip.
 
 | Route | Hatchback (Alto) | Sedan (Dzire) | SUV (Ertiga / Innova, up to 6) | Distance | Time |
 |---|---|---|---|---|---|
 | [Gaggal Airport to Dharamshala](/taxi/gaggal-airport-to-dharamshala-taxi) | ₹1,200 | ₹1,200 | ₹1,800 | 22 km | 30-40 min |
 | [Gaggal Airport to McLeod Ganj](/taxi/gaggal-airport-to-mcleod-ganj-taxi) | ₹1,500 | ₹1,800 | ₹2,200 | 22 km | 45-60 min |
-| [Gaggal Airport to Bir Billing](/taxi/gaggal-airport-to-bir-billing-taxi) | - | ₹3,000 | - | 65 km | 2-2.5 hrs |
+| [Gaggal Airport to Bir Billing](/taxi/gaggal-airport-to-bir-billing-taxi) | ₹3,000 | ₹3,500 | ₹4,500 | 65 km | 2-2.5 hrs |
 | [Kangra Railway Station to Dharamshala](/taxi/kangra-railway-station-to-dharamshala-taxi) | - | ₹1,000 | - | 20 km | 40 min |
 
 The distances are the road distances in our route listings; the 12-15 km figure above is to the town centre.
@@ -482,7 +482,7 @@ Land in the morning and you can be at the Dalai Lama Temple by lunch. Our [one d
     tags: ['kangra airport', 'gaggal airport', 'dharamshala airport', 'kangra airport to dharamshala', 'kangra airport to mcleod ganj', 'flights to dharamshala', 'airport taxi', 'dhm'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-09-23',
-    updated_at: '2026-10-24',
+    updated_at: '2026-11-10',
     image: placeImage('kangra-airport'),
     image_alt: 'Kangra Airport at Gaggal near Dharamshala with the Dhauladhar mountains in the background',
     read_time: 9,

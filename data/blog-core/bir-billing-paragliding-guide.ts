@@ -7,7 +7,7 @@ export const override: Partial<BlogPost> = {
   meta_title: 'Bir Billing Paragliding 2026: Price, Season & Booking',
   meta_description:
     'Bir Billing tandem paragliding 2026: ₹3,500 for 15-25 min, ₹5,500 for 30-45 min, no flying 15 Jul-15 Sep. Taxi from Dharamshala ₹2,800, 2-2.5 hrs.',
-  updated_at: '2026-10-07',
+  updated_at: '2026-11-10',
   content: `**Short answer:** Bir Billing paragliding is a tandem flight from the **Billing meadow at about 2,400 m** to Bir at about 1,400 m, lasting about 15 to 45 minutes with a registered pilot and needing no experience. As of 2026, our packages cost **₹3,500** for 15-25 minutes and **₹5,500** for 30-45 minutes. Flying is banned from 15 July to 15 September, and Bir is about 70 km (2-2.5 hours) from Dharamshala.
 
 Bir Billing is India's best-known paragliding site: you take off from the **Billing meadow at about 2,400 m** and land in **Bir at about 1,400 m**, roughly 1,000 m lower, after a tandem flight of about **15 to 45 minutes** with a registered pilot. As of 2026, our tandem packages cost **₹3,500 per person for a 15-25 minute flight** and **₹5,500 for a 30-45 minute long flight**, with GoPro video included. Flying is banned every year from **15 July to 15 September** for the monsoon, and Bir is about **70 km (2-2.5 hours) from Dharamshala**.
@@ -118,7 +118,7 @@ Bir sits about **70 km east of Dharamshala** via Palampur and Baijnath. The driv
 | Option | Time | Approx. cost (2026) | Notes |
 |---|---|---|---|
 | Private taxi, Dharamshala to Bir | 2-2.5 hrs | From ₹2,800 one way per sedan (up to 4) | [Fixed-fare taxi](/taxi/dharamshala-to-bir-billing-taxi); waiting beyond 30 min and the launch-site jeep at Billing are extra |
-| Taxi from Kangra Airport (Gaggal) to Bir | 2-2.5 hrs | From ₹3,000 per sedan | Useful if you fly in and want to go straight to Bir ([book here](/taxi/gaggal-airport-to-bir-billing-taxi)) |
+| Taxi from Kangra Airport (Gaggal) to Bir | 2-2.5 hrs | ₹3,000 Alto, ₹3,500 Swift Dzire, ₹4,500 Ertiga / Innova | Useful if you fly in and want to go straight to Bir ([book here](/taxi/gaggal-airport-to-bir-billing-taxi)) |
 | HRTC or private bus | 3-4 hrs | Approx. ₹150-250 per person | Bus to Baijnath or Bir Road, then a local bus or taxi into Bir |
 | Self-drive | 2-2.5 hrs | Fuel only | Good but winding road; fill up before Bir |
 

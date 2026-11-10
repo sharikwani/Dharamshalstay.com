@@ -25,7 +25,7 @@ This guide is about **the journey**: distance, time, fares, buses, the train and
 | Drive time | 2 to 2.5 hours from Dharamshala; about 2.5 to 3 hours from McLeod Ganj | Our taxi route page |
 | Route | Dharamshala, Chamunda side, Nagrota Bagwan, Palampur, Baijnath, Bir | Our Palampur and Kangra Valley guides |
 | Our taxi fare | ₹2,800 one way, sedan, up to 4 people | [Dharamshala to Bir Billing taxi](/taxi/dharamshala-to-bir-billing-taxi), 26 Oct 2026 |
-| From Kangra Airport (Gaggal) | ₹3,000 one way, sedan, about 65 km, 2 to 2.5 hours | [Gaggal airport to Bir Billing taxi](/taxi/gaggal-airport-to-bir-billing-taxi) |
+| From Kangra Airport (Gaggal) | ₹3,000 (Alto), ₹3,500 (Swift Dzire) or ₹4,500 (Ertiga / Innova, 6 seats) one way, about 65 km, 2 to 2.5 hours | [Gaggal airport to Bir Billing taxi](/taxi/gaggal-airport-to-bir-billing-taxi) |
 | Bus | Change at Baijnath (or Palampur); some direct buses reported | Deer Park Institute and birhp.com; not checked against an HRTC timetable |
 | Train | Kangra toy train to Baijnath Paprola, then bus or taxi | 4 of 7 train pairs running since 11 Oct 2026 |
 | Billing take-off | 14 km above Bir; 40 to 60 minutes by jeep | Our paragliding guide |
@@ -53,7 +53,7 @@ This guide is about **the journey**: distance, time, fares, buses, the train and
 | Route | Vehicle | Our fare (26 Oct 2026) | Time |
 |---|---|---|---|
 | [Dharamshala to Bir Billing](/taxi/dharamshala-to-bir-billing-taxi) | Sedan, 4 seats | ₹2,800 | 2 to 2.5 hours |
-| [Gaggal Airport to Bir Billing](/taxi/gaggal-airport-to-bir-billing-taxi) | Sedan, 4 seats | ₹3,000 | 2 to 2.5 hours |
+| [Gaggal Airport to Bir Billing](/taxi/gaggal-airport-to-bir-billing-taxi) | Alto 4 seats / Swift Dzire 4 seats / Ertiga or Innova 6 seats | ₹3,000 / ₹3,500 / ₹4,500 | 2 to 2.5 hours |
 | [Dharamshala to Palampur](/taxi/dharamshala-to-palampur-taxi) | Sedan, 4 seats | ₹2,600 | 1 to 1.5 hours |
 
 Pickup from McLeod Ganj, Bhagsu or Dharamkot is arranged on the same booking; the exact fare is confirmed before the trip. For a return the same day, ask for a day booking rather than two one-way fares. Book on our [taxi page](/taxi).
@@ -127,7 +127,7 @@ Stay in Bir for the flight, or keep your base in Dharamshala or McLeod Ganj and 
 
 | Detail | Status |
 |---|---|
-| Our taxi fares: ₹2,800 Dharamshala to Bir, ₹3,000 Gaggal to Bir | Confirmed on our taxi pages, 26 Oct 2026 |
+| Our taxi fares: ₹2,800 Dharamshala to Bir; Gaggal to Bir ₹3,000 Alto, ₹3,500 Swift Dzire, ₹4,500 Ertiga / Innova | Confirmed on our taxi pages, 10 Nov 2026 |
 | Paragliding closed 15 July to 15 September | Annual rule, as in our paragliding guide |
 | Toy train: 4 of 7 pairs running since 11 Oct 2026 | Confirmed by The Tribune; no later suspension found |
 | Direct Dharamshala to Bir bus times | Reported by local guides; not confirmed on HRTC |
@@ -136,7 +136,7 @@ Stay in Bir for the flight, or keep your base in Dharamshala or McLeod Ganj and 
     tags: ['dharamshala to bir', 'dharamshala to bir billing', 'bir billing distance', 'bir billing taxi fare', 'dharamshala to bir bus', 'mcleod ganj to bir', 'bir billing', 'paragliding', 'kangra valley', 'how to reach bir'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-10-26',
-    updated_at: '2026-10-26',
+    updated_at: '2026-11-10',
     image: placeImage('mountain-road'),
     image_alt: 'Hill road near Chamunda on the Dharamshala to Palampur and Bir route, with the Dhauladhar range ahead',
     read_time: 8,
@@ -161,7 +161,7 @@ Stay in Bir for the flight, or keep your base in Dharamshala or McLeod Ganj and 
       },
       {
         question: 'What is the taxi fare from Dharamshala to Bir Billing?',
-        answer: 'Dharamshala Stay charges a fixed ₹2,800 one way for a sedan (Swift Dzire or Etios, up to 4 people), as listed on 26 October 2026. Waiting beyond 30 minutes and the jeep up to the Billing take-off are extra. From Kangra Airport (Gaggal) to Bir the fixed fare is ₹3,000.',
+        answer: 'Dharamshala Stay charges a fixed ₹2,800 one way for a sedan (Swift Dzire or Etios, up to 4 people), as listed on 26 October 2026. Waiting beyond 30 minutes and the jeep up to the Billing take-off are extra. From Kangra Airport (Gaggal) to Bir the fixed fare is ₹3,000 in an Alto, ₹3,500 in a Swift Dzire and ₹4,500 in an Ertiga or Innova (up to 6 people), as listed on 10 November 2026.',
       },
       {
         question: 'Is there a direct bus from Dharamshala to Bir?',
