@@ -99,7 +99,7 @@ export function EventsView() {
           '@context': 'https://schema.org', '@type': 'Event', name: e.name, description: e.summary,
           startDate: e.start, endDate: e.end || e.start, eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
           eventStatus: 'https://schema.org/EventScheduled', location: placeLd(e.venue, e.venue.includes('Dharamshala') ? 'Dharamshala' : 'McLeod Ganj'),
-          image: siteConfig.url + placeImage(e.image), url: siteConfig.url + '/events#' + e.id,
+          image: siteConfig.url + placeImage(e.image), url: siteConfig.url + (e.page || '/events#' + e.id),
           ...(e.organizer ? { organizer: { '@type': 'Organization', name: e.organizer, ...(e.organizerUrl ? { url: e.organizerUrl } : {}) } } : {}),
           // Free public events say so; ticketed ones without a published price get no offer rather than a guessed one.
           ...(e.free ? { isAccessibleForFree: true, offers: { '@type': 'Offer', price: 0, priceCurrency: 'INR', availability: 'https://schema.org/InStock', validFrom: eventsChecked + 'T00:00:00+05:30', url: siteConfig.url + '/events#' + e.id } } : {}),
@@ -135,7 +135,7 @@ export function EventsView() {
                   <span className={'font-semibold rounded-full px-2.5 py-1 ' + EVENT_STATUS[e.status].cls}>{EVENT_STATUS[e.status].label}</span>
                   <span className="inline-flex items-center gap-1 text-slate-600"><CalendarDays className="h-3.5 w-3.5" />{dates(e)}</span>
                 </div>
-                <h3 className="font-heading font-bold text-xl text-slate-900 mt-2">{e.name}</h3>
+                <h3 className="font-heading font-bold text-xl text-slate-900 mt-2">{e.page ? <Link href={e.page} className="hover:text-brand-700 hover:underline">{e.name}</Link> : e.name}</h3>
                 <p className="text-sm text-slate-600 mt-1 flex gap-1"><MapPin className="h-4 w-4 shrink-0 mt-0.5 text-brand-600" />{e.venue}. {e.where}.</p>
                 <p className="text-slate-700 mt-3 leading-relaxed">{e.summary}</p>
                 <div className="mt-4 rounded-xl bg-brand-50 p-4">

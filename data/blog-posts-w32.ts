@@ -8,9 +8,9 @@ export const blogPostsW32: BlogPost[] = [
   {
     id: 'blog-dharamshala-to-bir',
     slug: 'dharamshala-to-bir',
-    title: 'Dharamshala to Bir Billing 2026: Distance, Taxi Fare, Bus & Time',
+    title: 'Dharamshala to Bir Billing Distance 2026: Taxi Fare, Bus & Time',
     excerpt: 'Bir is about 70 km and 2 to 2.5 hours by road from Dharamshala, via Palampur and Baijnath. Our fixed taxi fare is ₹2,800 one way by sedan. Here is the route, the time from McLeod Ganj, buses with a change at Baijnath, the toy train option, day trip or overnight, and the best stops on the way.',
-    content: `**Short answer:** Bir is about **70 km from Dharamshala**, a drive of **2 to 2.5 hours** via Palampur and Baijnath; from McLeod Ganj add about 9 km and 30 minutes. The easiest way is a taxi: our fixed fare is **₹2,800 one way** in a sedan for up to 4 people (26 October 2026). Buses are cheap but slow, usually with a change at Baijnath, and the Kangra toy train can take you as far as Baijnath Paprola, about 12 to 15 km short of Bir.
+    content: `**Short answer:** The Dharamshala to Bir Billing distance is about **70 km** (the same from Bir to Dharamshala), a drive of **2 to 2.5 hours** via Palampur and Baijnath; from McLeod Ganj add about 9 km and 30 minutes. The easiest way is a taxi: our fixed fare is **₹2,800 one way** in a sedan for up to 4 people (26 October 2026). Buses are cheap but slow, usually with a change at Baijnath, and the Kangra toy train can take you as far as Baijnath Paprola, about 12 to 15 km short of Bir.
 
 ![Hill road near Chamunda on the Dharamshala to Palampur route, with the Dhauladhar range ahead](/images/places/mountain-road.jpg)
 
@@ -141,8 +141,8 @@ Stay in Bir for the flight, or keep your base in Dharamshala or McLeod Ganj and 
     image_alt: 'Hill road near Chamunda on the Dharamshala to Palampur and Bir route, with the Dhauladhar range ahead',
     read_time: 8,
     featured: false,
-    meta_title: 'Dharamshala to Bir Billing 2026: Distance, Taxi & Bus',
-    meta_description: 'Bir is about 70 km, 2 to 2.5 hours from Dharamshala via Palampur and Baijnath. Taxi ₹2,800 one way; buses via Baijnath; toy train option.',
+    meta_title: 'Dharamshala to Bir Billing Distance: 70 km, 2 Hours (2026)',
+    meta_description: 'Bir Billing is about 70 km from Dharamshala, 2 to 2.5 hours via Palampur. Fixed taxi ₹2,800 one way, bus via Baijnath, or the toy train.',
     related_slugs: ['bir-billing-paragliding-guide', 'bir-travel-guide', 'palampur-travel-guide', 'kangra-toy-train-guide'],
     sources: [
       { title: 'Dharamshala to Bir Billing taxi: fare, distance and time (Dharamshala Stay, checked 26 October 2026)', url: 'https://www.dharamshalastay.com/taxi/dharamshala-to-bir-billing-taxi' },

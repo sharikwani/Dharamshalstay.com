@@ -5,9 +5,9 @@ export const blogPostsW10: BlogPost[] = [
   {
     id: 'blog-amritsar-to-dharamshala',
     slug: 'amritsar-to-dharamshala',
-    title: 'Amritsar to Dharamshala: Distance, Route & Transport (2026)',
+    title: 'Dharamshala to Amritsar Distance & Route: Bus, Taxi, Train (2026)',
     excerpt: 'Complete guide to reaching Dharamshala from Amritsar by bus, taxi, train or self-drive, with three route options, real travel times, costs and stops worth making along the way.',
-    content: `**Short answer:** Amritsar to Dharamshala is roughly **200 to 210 km** by the most common route via Pathankot and takes about **5 to 6 hours** by road, depending on traffic. A one-way sedan taxi costs approx. **₹4,000 to ₹6,000** as of 2026, HRTC buses take about 6 to 7 hours (ordinary approx. ₹350 to ₹450), and you can also take a train to Pathankot and a bus or taxi onward.
+    content: `**Short answer:** The Dharamshala to Amritsar distance is roughly **200 to 210 km** (the same either way) by the most common route via Pathankot and takes about **5 to 6 hours** by road, depending on traffic. A one-way sedan taxi costs approx. **₹4,000 to ₹6,000** as of 2026, HRTC buses take about 6 to 7 hours (ordinary approx. ₹350 to ₹450), and you can also take a train to Pathankot and a bus or taxi onward.
 
 Amritsar is one of the shorter approaches to Dharamshala and a natural combination if you are visiting the Golden Temple before heading to the mountains. Many international travellers fly into Amritsar (Sri Guru Ram Dass Jee International Airport) specifically because it is the closest major airport to Dharamshala with good domestic and international connections.
 
@@ -99,8 +99,8 @@ For getting around in Dharamshala and McLeod Ganj, read our [local transport gui
     image_alt: 'Mountain road on the approach to Dharamshala from the plains',
     read_time: 8,
     featured: false,
-    meta_title: 'Amritsar to Dharamshala: Route, Distance & Transport 2026',
-    meta_description: 'Amritsar to Dharamshala is 200 km, 5-6 hours by road. Bus from ₹350, taxi from ₹4,000. Three routes compared with honest drive times and tips.',
+    meta_title: 'Dharamshala to Amritsar Distance: 200 km, 5-6 Hours (2026)',
+    meta_description: 'Dharamshala to Amritsar distance: about 200-210 km, 5-6 hours by road via Pathankot. Bus from ₹350, taxi from ₹4,000. Three routes compared.',
     related_slugs: ['how-to-reach-dharamshala', 'local-transport-dharamshala', 'places-to-visit-in-kangra', 'pathankot-to-dharamshala'],
     faqs: [
       {

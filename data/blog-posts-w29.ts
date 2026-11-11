@@ -377,8 +377,8 @@ We found **no official fixed opening hours** for tourists at the Atal Tunnel. It
     image_alt: 'Portal building of the Atal Tunnel, Rohtang, with the approach road curving past',
     read_time: 8,
     featured: false,
-    meta_title: 'Rohtang Pass & Atal Tunnel Status 2026: Open or Closed?',
-    meta_description: '2 Nov 2026: no official Rohtang winter closure order found yet; snow at Atal Tunnel. Permit ₹500 + ₹50 online, 1,200 vehicles a day. How to check.',
+    meta_title: 'Rohtang Pass Closing Date 2026: Open or Closed Today?',
+    meta_description: 'Rohtang Pass closing date 2026: no official winter closure order as of 2 Nov; it usually shuts between October and early December. Permit and live check.',
     related_slugs: ['manali-in-december-january', 'dharamshala-to-manali', 'himachal-itinerary-delhi-dharamshala-manali', 'bir-travel-guide', 'solang-valley-guide', 'manali-travel-guide'],
     sources: [
       { title: 'Rohtang Pass online permits, District Administration Kullu (official portal, checked 26 October 2026)', url: 'https://rohtangpermits.hp.gov.in/' },

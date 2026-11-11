@@ -3,6 +3,8 @@
  * Hindi mirrors them under /hi (/hi/hotels, /hi/blog/x ...).
  * Only public content sections are mirrored; account/admin/legal pages stay English.
  */
+import { HI_TREK_SLUGS } from '@/data/hi/trek-slugs';
+
 export type Lang = 'en' | 'hi';
 export const LANGS: Lang[] = ['en', 'hi'];
 // Set only by the language toggle. Renamed from 'ds_lang', which was also set automatically on any Hindi page view.
@@ -46,6 +48,8 @@ export function hasHindiVersion(enPath: string): boolean {
   const p = enPath.split(/[?#]/)[0];
   if (p.startsWith('/blog/') && EN_ONLY_POSTS.includes(p.slice(6))) return false;
   if (EN_ONLY_PATHS.includes(p)) return false;
+  // Trek pages without a Hindi translation redirect /hi/treks/<slug> to English, so do not link there.
+  if (p.startsWith('/treks/') && !HI_TREK_SLUGS.includes(p.slice(7).replace(/\/$/, ''))) return false;
   return HINDI_SECTIONS.some((s) => (s === '/' ? p === '/' : p === s || p.startsWith(s + '/')));
 }
 

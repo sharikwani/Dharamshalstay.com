@@ -171,7 +171,7 @@ More checked facts are on our [Dharamshala facts page](/facts).`,
     meta_description: 'New Year in McLeod Ganj 2026: NYE Gala Night at Panchvati, Dharamshala, 31 Dec from ₹3,999 a couple, plus traffic plan, snow odds and where to stay.',
     related_slugs: ['dharamshala-christmas-new-year', 'kangra-valley-carnival-2026', 'mcleod-ganj-in-december', 'dharamshala-in-winter-snowfall', 'where-to-stay-in-dharamshala', 'how-to-reach-dharamshala'],
     sources: [
-      { title: 'NYE Gala Night 2026 at Panchvati Cottages: date, timings, inclusions and ticket prices (Dharamshala Stay, our own event; checked 29 October 2026)', url: 'https://dharamshalastay.com/new-year-parties' },
+      { title: 'NYE Gala Night 2026 at Panchvati Cottages: date, timings, inclusions and ticket prices (Dharamshala Stay, our own event; checked 29 October 2026)', url: 'https://www.dharamshalastay.com/new-year-parties' },
       { title: 'Kangra Valley Carnival to be held in Dharamsala from December 24 to 31 (UNI, 30 September 2026; checked 29 October 2026)', url: 'https://www.uniindia.com/north-india/culture-himachal-kangra-valley-carnival/198184' },
       { title: 'Hotel bookings in McLeodganj down 20 per cent over Punjab bandh call, with the Kangra police New Year traffic plan (The Tribune, 1 January 2025; checked 29 October 2026)', url: 'https://www.tribuneindia.com/news/himachal/hotel-bookings-in-mcleodganj-down-20-over-farmers-punjab-bandh-call' },
       { title: 'To tackle influx of tourists, one-way traffic system in upper Dharamsala; parking for 300 vehicles (The Tribune, 28 December 2022; checked 29 October 2026)', url: 'https://www.tribuneindia.com/news/himachal/to-tackle-influx-of-tourists-one-way-traffic-system-in-upper-dharamsala-465211/amp' },

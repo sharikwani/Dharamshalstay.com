@@ -32,6 +32,9 @@ const nextConfig = {
       },
       // Someone linked our guides without "https://", so the domain ended up inside the path.
       { source: '/:lang(hi)?/:section(blog|treks|hotels|taxi)/:host(www.dharamshalastay.com|dharamshalastay.com)/:rest*', destination: '/:rest*', permanent: true },
+      // Old guide address that other sites still link to (SEO Rank Fixer crawl, 11 Nov 2026).
+      { source: '/blog/mcleodganj-in-december', destination: '/blog/dharamshala-in-december-january', permanent: true },
+      { source: '/hi/blog/mcleodganj-in-december', destination: '/hi/blog/dharamshala-in-december-january', permanent: true },
     ];
   },
 };

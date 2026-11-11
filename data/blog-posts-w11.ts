@@ -315,7 +315,7 @@ The reward is Dharamshala at its clearest and least crowded.
       { title: '58 bus routes suspended in Kangra as snowfall blankets McLeodganj (The Tribune, 24 January 2026)', url: 'https://www.tribuneindia.com/news/himachal/58-bus-routes-suspended-in-kangra-as-snowfall-blankets-mcleodganj/' },
       { title: 'Naddi, Dal Lake draped in white (The Tribune, 2 February 2024)', url: 'https://www.tribuneindia.com/news/himachal/naddi-dal-lake-draped-in-white-586419' },
       { title: 'Lower Dharamsala experiences snow after 6 years (The Tribune, 9 February 2019)', url: 'https://www.tribuneindia.com/news/archive/himachal/lower-dharamsala-experiences-snow-after-6-years-726214' },
-      { title: 'Snow at Dharamkot, Naddi, McLeodganj (The Tribune, 1 January 2011)', url: 'https://www.tribuneindia.com/2011/20110101/himachal.htm' },
+      { title: 'Snow at Dharamkot, Naddi, McLeodganj (The Tribune, 1 January 2011)', url: 'https://web.archive.org/web/20120202093017/http://www.tribuneindia.com/2011/20110101/himachal.htm' },
       { title: 'Kangra Valley Carnival to be held in Dharamsala from December 24 to 31 (UNI, 30 September 2026; checked 29 October 2026)', url: 'https://www.uniindia.com/north-india/culture-himachal-kangra-valley-carnival/198184' },
       { title: 'Trekking above 3K metres in Kangra temporarily banned (The Hans India, 28 November 2024)', url: 'https://www.thehansindia.com/news/national/trekking-above-3k-metres-in-kangra-temporarily-banned-925286' },
       { title: 'Himachal: Kangra administration bans trekking above 3,000 metres (The Week / PTI, 6 January 2026)', url: 'https://www.theweek.in/wire-updates/national/2026/01/06/himachal-kangra-administration-bans-trekking-above-3-000-metres.amp.html' },
