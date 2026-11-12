@@ -126,7 +126,7 @@ When it is running, yes, mainly as transport. It saves time on busy days, the vi
     image_alt: 'McLeod Ganj on its ridge above Dharamshala, the upper end of the Skyway ropeway',
     read_time: 7,
     featured: false,
-    meta_title: 'Dharamshala Ropeway: Status, Tickets & Timings (2026)',
+    meta_title: 'Dharamshala Skyway Tickets 2026: ₹550, Timings & Status',
     meta_description: 'Dharamshala Skyway ropeway: 9:30 am-6 pm, ₹550 one way, ₹800 return (official site, 2 Nov 2026). Status, stations, plan B by taxi or bus.',
     related_slugs: ['how-to-reach-dharamshala', 'dharamshala-vs-mcleod-ganj', 'places-to-visit-in-dharamshala', 'dharamshala-3-day-itinerary'],
     sources: [

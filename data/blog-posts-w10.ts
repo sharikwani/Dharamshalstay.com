@@ -343,7 +343,7 @@ If you are combining Dharamshala and Manali, give each place at least 2 to 3 nig
     image_alt: 'Kangra Valley landscape on the Dharamshala to Manali road',
     read_time: 9,
     featured: false,
-    meta_title: 'Dharamshala to Manali: Routes, Distance & Transport 2026',
+    meta_title: 'Dharamshala to Manali Distance: 230-250 km, 7-9 hrs (2026)',
     meta_description: 'Dharamshala to Manali is 230-250 km, 7-9 hours. Bus from ₹400, taxi from ₹5,000. Three routes compared, with stops at Bir, Palampur and Baijnath.',
     related_slugs: ['himachal-itinerary-delhi-dharamshala-manali', 'bir-travel-guide', 'palampur-travel-guide', 'manali-in-december-january', 'rohtang-pass-atal-tunnel-status', 'manali-travel-guide', 'how-to-reach-manali', 'solang-valley-guide'],
     faqs: [

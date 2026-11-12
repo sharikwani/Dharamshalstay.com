@@ -204,7 +204,7 @@ For everything else on this season, see our [festivals and events calendar for D
     image_alt: 'McLeod Ganj buildings on a forested hillside above the Kangra Valley, near the DIFF venue at TCV',
     read_time: 9,
     featured: false,
-    meta_title: 'DIFF 2026 Dharamshala Film Festival: Dates, Venue, Passes',
+    meta_title: 'Dharamshala Film Festival 2026 (DIFF): Dates, Venue, Films',
     meta_description: "DIFF 2026 runs 29 Oct to 1 Nov at Tibetan Children's Village (TCV), Upper Dharamshala. Passes, timings, films, how to reach and where to stay.",
     related_slugs: ['festivals-events-calendar-dharamshala', 'how-to-reach-dharamshala', 'mcleod-ganj-complete-guide', 'naddi-dal-lake-guide'],
     sources: [

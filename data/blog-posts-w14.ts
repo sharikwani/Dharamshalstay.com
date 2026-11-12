@@ -160,7 +160,7 @@ Full options and timings are in our [how to reach Dharamshala guide](/blog/how-t
     read_time: 10,
     featured: false,
     meta_title: 'McLeod Ganj in December 2026: Snow, Weather & Tips',
-    meta_description: 'McLeod Ganj in December: week-by-week weather, honest snow odds, what is open, warm rooms, Christmas and New Year crowds, packing and winter travel tips.',
+    meta_description: 'McLeod Ganj in December: sunny days 9-15°C, nights 0-5°C, snow on the peaks; snow in town is occasional, likelier late in the month. Weekly weather, tips.',
     related_slugs: ['dharamshala-in-winter-snowfall', 'dharamshala-in-december-january', 'best-time-to-visit-dharamshala', 'triund-trek-complete-guide', 'himachal-snowfall-tracker', 'kangra-valley-carnival-2026'],
     sources: [
       { title: 'Kangra district bans trekking above 3,000 m (The Tribune, December 2022)', url: 'https://www.tribuneindia.com/news/himachal/trekking-beyond-3-000-m-banned-in-kangra-district-466046' },
