@@ -176,7 +176,7 @@ The carnival overlaps with Christmas and New Year's Eve, so you can combine them
 
 We will update this guide as soon as the 2026 programme is published. For other winter plans, see the [events page](/events).`,
     category: 'Festivals',
-    tags: ['kangra valley carnival', 'kangra valley carnival 2026', 'dharamshala carnival', 'dharamshala carnival 2026', 'kangra carnival', 'police ground dharamshala', 'dharamshala events', 'christmas in dharamshala', 'new year dharamshala', 'festivals'],
+    tags: ['kangra valley carnival', 'kangra valley carnival 2026', 'kangra valley karnival 2026', 'kangra valley carnival tickets', 'dharamshala carnival', 'dharamshala carnival 2026', 'kangra carnival', 'police ground dharamshala', 'dharamshala events', 'christmas in dharamshala', 'new year dharamshala', 'festivals'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-10-26',
     updated_at: '2026-11-14',
