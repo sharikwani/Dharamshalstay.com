@@ -29,6 +29,19 @@ This guide covers what Bhagsu is actually like in 2026, how to do the waterfall 
 | Best months | March to June and late September to November |
 | Nearest airport | Kangra Airport, Gaggal (about 20 to 22 km) |
 
+## How far is Bhagsu waterfall from Dharamshala?
+
+**About 12 km from Dharamshala town (Kotwali Bazaar): roughly 11 km by road to Bhagsunag village via McLeod Ganj, then about 1 km on foot from the temple to the falls.** Allow 30 to 40 minutes by taxi to the Bhagsu taxi stand, plus 15 to 20 minutes walking. No vehicle can drive to the waterfall itself.
+
+| From | To Bhagsu waterfall | How long |
+|---|---|---|
+| Dharamshala town (Kotwali Bazaar) | About 12 km (11 km road + 1 km walk) | 30 to 40 min by taxi, then a 15 to 20 min walk |
+| McLeod Ganj main square | About 3 km (2 km to the temple + 1 km to the falls) | 45 min to 1 hr on foot, or a short taxi ride to the temple and a 15 to 20 min walk |
+| Bhagsunag temple | About 1 km on a paved path | 15 to 20 min |
+| Kangra Airport, Gaggal | About 20 to 22 km by road to Bhagsu, plus the 1 km walk | About 1 hr by taxi |
+
+**Coming from lower Dharamshala?** The quickest route is a taxi up through McLeod Ganj to the Bhagsu taxi stand. In daytime you can also take the [Dharamshala Skyway](/blog/dharamshala-skyway-ropeway-guide) from near Kotwali Bazaar to McLeod Ganj, then walk or take a taxi along Bhagsu Road. To book a cab, see [taxis in Dharamshala](/taxi). For the whole walk, including the climb past the falls to Shiva Cafe, see [easy hikes near McLeod Ganj](/blog/easy-hikes-near-mcleod-ganj).
+
 ## Bhagsu at a glance: how the village is laid out
 
 Bhagsu is easier to understand once you know it has three parts.
@@ -159,13 +172,13 @@ Bhagsu pairs well with a [Triund trek](/blog/triund-trek-complete-guide) (the tr
     tags: ['Bhagsu', 'Bhagsunag', 'Bhagsu waterfall', 'Shiva Cafe', 'McLeod Ganj', 'travel guide'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-09-18',
-    updated_at: '2026-10-17',
+    updated_at: '2026-11-14',
     image: placeImage('bhagsu-waterfall'),
     image_alt: 'Bhagsu waterfall pouring down a green rocky gorge above Bhagsunag village near McLeod Ganj',
     read_time: 10,
     featured: false,
     meta_title: 'Things to Do in Bhagsu: Waterfall, Temple & Shiva Cafe',
-    meta_description: 'Bhagsu (Bhagsunag) travel guide 2026: temple and pools, waterfall walk, Shiva Cafe climb, Upper Bhagsu cafes and yoga, where to stay and what to skip.',
+    meta_description: 'Bhagsu waterfall is about 12 km from Dharamshala and 3 km from McLeod Ganj. Bhagsu 2026 guide: temple, waterfall walk, Shiva Cafe, cafes, where to stay.',
     related_slugs: ['dharamkot-travel-guide', 'things-to-do-in-mcleod-ganj', 'best-hotels-in-mcleod-ganj'],
     faqs: [
       { question: 'What is the distance from Dharamshala to Bhagsu waterfall?', answer: 'About 12 km by road from Dharamshala town (Kotwali Bazaar): roughly 11 km to Bhagsunag village via McLeod Ganj, then about 1 km on foot from the temple to the falls. Allow 30 to 40 minutes by taxi to Bhagsunag plus a 15 to 20 minute walk.' },

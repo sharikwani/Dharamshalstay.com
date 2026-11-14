@@ -207,7 +207,9 @@ Live music in McLeod Ganj is informal and seasonal. You will find acoustic sets,
 
 ### Clubs and DJ nights
 
-There is no real club scene. A few places have run DJ or dance nights over the years, especially around Christmas and New Year, but they come and go. If you want a proper night out, treat New Year's Eve as the one big night (see our [Christmas and New Year in Dharamshala guide](/blog/dharamshala-christmas-new-year)) and check what is announced locally that week.
+There is no real club scene. A few places have run DJ or dance nights over the years, especially around Christmas and New Year, but they come and go. If you want a proper night out, treat New Year's Eve as the one big night (see our [Christmas and New Year in Dharamshala guide](/blog/dharamshala-christmas-new-year) and the [New Year parties page](/new-year-parties)) and check what is announced locally that week.
+
+**Christmas week 2026:** the biggest ticketed night out this winter is the **Kangra Valley Karnival 2026** music festival on **24 and 25 December** at the Sports Stadium in lower Dharamshala, with tickets from Rs 1,499 on District (checked 14 November 2026). It is about 30 minutes by taxi from McLeod Ganj and the venue has no parking, so book your ride back in advance. See the [Kangra Valley Carnival 2026 guide](/blog/kangra-valley-carnival-2026).
 
 ### Bhagsu and Dharamkot
 
@@ -294,14 +296,14 @@ If nightlife matters, stay central in [McLeod Ganj](/destinations/mcleod-ganj); 
     tags: ['mcleod ganj nightlife', 'bars in mcleod ganj', 'dharamshala nightlife', 'liquor rules himachal', 'live music', 'travel safety'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-09-21',
-    updated_at: '2026-10-02',
+    updated_at: '2026-11-14',
     image: placeImage('mcleod-cafe'),
     image_alt: 'Evening cafe and restaurant scene on Jogiwara Road in McLeod Ganj',
     read_time: 8,
     featured: false,
     meta_title: 'Nightlife in McLeod Ganj: Bars, Music & Liquor Rules',
     meta_description: 'The honest guide to McLeod Ganj nightlife in 2026: rooftop bars, live music, closing times, dry days, public drinking rules and getting home safely at night.',
-    related_slugs: ['top-cafes-in-mcleod-ganj', 'things-to-do-in-mcleod-ganj', 'dharamshala-christmas-new-year'],
+    related_slugs: ['top-cafes-in-mcleod-ganj', 'things-to-do-in-mcleod-ganj', 'dharamshala-christmas-new-year', 'new-year-in-mcleod-ganj', 'kangra-valley-carnival-2026'],
     faqs: [
       { question: 'Does McLeod Ganj have nightlife?', answer: 'Yes, but it is low-key. Expect rooftop restaurant-bars, occasional live music and open-mic nights, and busy cafes rather than clubs. Most places wind down between 10:30 pm and midnight, and New Year\'s Eve is the one big party night.' },
       { question: 'What time do bars close in McLeod Ganj?', answer: 'Most restaurant-bars close between about 11 pm and midnight, with last orders and kitchens closing earlier. Liquor shops usually close in the evening. Times can be shortened by police during elections or festivals, so check locally.' },
