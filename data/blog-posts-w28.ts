@@ -5,24 +5,26 @@ export const blogPostsW28: BlogPost[] = [
   {
     id: 'blog-kangra-valley-carnival-2026',
     slug: 'kangra-valley-carnival-2026',
-    title: 'Kangra Valley Carnival 2026 in Dharamshala: Dates, Venue, Events and Where to Stay',
-    excerpt: 'The Kangra Valley Carnival 2026 has been announced for 24 to 31 December in Dharamshala, according to a UNI report of 30 September 2026 quoting the Kangra Deputy Commissioner. The 2025 edition ran 24 to 31 December at the Police Ground. What is confirmed, what is not, past editions, how it differs from the Dussehra mela, how to reach and where to stay.',
-    content: `**Short answer:** The **Kangra Valley Carnival 2026** has been announced for **24 to 31 December 2026 in Dharamshala**. Kangra Deputy Commissioner Hemraj Bairwa gave these dates at a preparations meeting reported by UNI on **30 September 2026**, with an opening concert proposed at the **Dharamshala cricket stadium**. As of 26 October 2026, **no programme, artist line-up, venue plan or entry details have been published**. Last year the carnival ran **24 to 31 December 2025 at the Police Ground** in lower Dharamshala, with eight evenings of music, a marathon, a drone show and a crafts and millets bazaar.
+    title: 'Kangra Valley Carnival 2026 Dharamshala: Tickets, Dates, Venue and Where to Stay',
+    excerpt: 'Tickets for the Kangra Valley Karnival 2026 concert are on sale on District: 24-25 December 2026 at the Sports Stadium, Dharamshala, from Rs 1,499. The wider carnival is announced for 24 to 31 December. What is confirmed, ticket rules, past editions, how to reach and where to stay.',
+    content: `**Short answer:** Tickets for the **Kangra Valley Karnival 2026** music festival are **on sale on District (by Zomato)** for **24 and 25 December 2026** at the **Sports Stadium, Dharamshala**, **from Rs 1,499**, with gates opening at 3:30 pm. The wider **Kangra Valley Carnival** has been announced by the Kangra district administration for **24 to 31 December 2026** in Dharamshala. As of 14 November 2026 **no artists have been named** for 2026. Last year the carnival ran 24 to 31 December 2025 at the Police Ground, with eight evenings of music, a marathon, a drone show and a crafts and millets bazaar.
 
 ![Dharamshala town spread across green hillsides below the Dhauladhar peaks at dusk](/images/places/dharamshala-town.jpg)
 
-The carnival is the Kangra district administration's own winter festival, and it now lands in the Christmas and New Year week, when Dharamshala and McLeod Ganj are at their busiest. This guide sets out what is confirmed for the **Dharamshala carnival 2026**, what happened at past editions, and how to plan around it. We checked every fact against news reports and the district website on 26 October 2026 and will update this page as the programme comes out.
+The carnival is the Kangra district administration's own winter festival, and it now lands in the Christmas and New Year week, when Dharamshala and McLeod Ganj are at their busiest. This guide sets out what is confirmed for the **Dharamshala carnival 2026**, what happened at past editions, and how to plan around it. We checked the ticket listing and news reports on 14 November 2026 and will update this page as the programme comes out.
 
 ## Kangra Valley Carnival 2026: Quick Facts
 
 | Question | Answer | Source / status |
 |---|---|---|
-| 2026 dates | 24 to 31 December 2026 (eight days) | Kangra DC, reported by UNI on 30 Sep 2026; announced, no official schedule yet |
-| 2026 opening | A concert proposed at the Dharamshala cricket stadium | UNI, 30 Sep 2026; "proposed", not confirmed |
-| 2026 main venue | Not announced. In 2025 it was the Police Ground, Jawahar Nagar, lower Dharamshala | Hill Post, 25 Dec 2025; The Tribune, 20 Dec 2025 |
-| Organiser | Kangra district administration, led by the Deputy Commissioner | The Tribune, 13 Nov 2025; Hill Post, 25 Dec 2025 |
-| Artists for 2026 | Not announced (26 Oct 2026) | Watch local news |
-| Entry fee | None mentioned in any report we read, for any edition | Not confirmed |
+| Ticketed concert | "Kangra Valley Karnival 2026" music festival, 24 Dec (from 6 pm) to 25 Dec 2026 | District ticket listing, checked 14 Nov 2026 |
+| Concert venue | Sports Stadium, Dharamshala (the listing does not say which stadium) | District listing |
+| Ticket price | From Rs 1,499; tiers not shown on the listing | District listing |
+| Gates | Open 3:30 pm | District listing |
+| Carnival dates | 24 to 31 December 2026 (eight days) | Kangra DC, reported by UNI on 30 Sep 2026 |
+| Carnival main venue | Reported as the Police Ground, Jawahar Nagar, lower Dharamshala (also the 2025 venue) | Himachal Now, Nov 2026; not yet on the district website |
+| Organiser | Carnival: Kangra district administration. Ticket listing: Accombliss Private Limited | UNI 30 Sep 2026; District listing |
+| Artists for 2026 | Not announced (14 Nov 2026); the listing says only "leading artists from the music industry" | District listing |
 | From McLeod Ganj | About 9 km to the Police Ground, roughly 30 minutes by taxi | Our Dussehra guide |
 | Nearest airport | Kangra Airport, Gaggal, about 13 km and 30 minutes from Dharamshala town | Our taxi route listing |
 | Not the same as | The Dussehra mela at the same Police Ground (18 to 24 October 2026, now over) | See below |
@@ -42,21 +44,41 @@ In the 2025 edition, the programme mixed:
 
 Do not mix it up with the **Shimla Winter Carnival**, a separate event held in Shimla.
 
+## How do I buy Kangra Valley Carnival 2026 tickets?
+
+**Tickets are sold on District (by Zomato)** under the name [Kangra Valley Karnival 2026](https://www.district.in/events/kangra-valley-karnival-2026-buy-tickets), spelt with a K. This is what the listing showed on 14 November 2026:
+
+| Detail | What the listing says |
+|---|---|
+| Dates and times | 24 December 2026 from 6 pm to 25 December 2026, 10 pm (a two-day music festival) |
+| Venue | Sports Stadium, Dharamshala |
+| Gates open | 3:30 pm |
+| Price | From Rs 1,499 (tier names and what each includes are not shown) |
+| Organiser on the listing | Accombliss Private Limited |
+| Age | Entry from age 3; a ticket is needed from age 8 |
+| ID | Aadhaar, PAN, driving licence or passport needed at entry |
+| On site | Food and drink sold, including alcohol; first aid and ambulance |
+| Not allowed / not available | No parking, no pets, no wheelchair access |
+| Artists | Not named yet |
+
+**What we cannot confirm yet:** The district administration said in September that a concert was proposed at the Dharamshala cricket stadium to open the carnival, and a local report in October said the stadium concert would be ticketed. Neither the district nor the listing says that this ticketed show is that opening concert, or that "Sports Stadium" is the HPCA cricket stadium. Other carnival events, such as the procession and the evening programmes at the Police Ground, have needed no ticket in past years. Before you travel, check the ticket listing for the exact gate and the line-up. Buy only from District or the organiser, not from resellers.
+
+Since there is **no parking** at the venue, take a [taxi](/taxi) and book your ride back before the show ends.
+
 ## When is the Kangra Valley Carnival 2026?
 
 **24 to 31 December 2026, as announced.** On 30 September 2026, UNI reported from Dharamsala that the Deputy Commissioner had chaired a review meeting, said the carnival would be held from **December 24 to 31**, and asked all departments to begin preparations early for the week-long event. A concert at the Dharamshala cricket stadium was proposed for the inauguration, and other programmes with visiting dignitaries were also planned.
 
 Treat these as the announced dates rather than a fixed schedule. In 2025 the dates moved once: in November 2025 the administration said **21 to 25 December** (The Tribune, 13 Nov 2025), and the carnival actually ran **24 to 31 December**. We will update this page when the district publishes the 2026 programme.
 
-| Detail for 2026 | Status on 26 October 2026 |
+| Detail for 2026 | Status on 14 November 2026 |
 |---|---|
 | Dates 24 to 31 December | Announced by the DC (UNI, 30 Sep 2026) |
-| Opening concert at the cricket stadium | Proposed |
-| Main venue (Police Ground or other) | Not announced |
+| Ticketed music festival, 24-25 December, Sports Stadium | On sale on District, from Rs 1,499 |
+| Main venue | Reported as the Police Ground (Himachal Now, Nov 2026) |
 | Day-by-day programme | Not published |
 | Singers and bands | Not announced |
-| Marathon, sports, stalls | Not announced for 2026 |
-| Entry fee or passes | Not announced |
+| Marathon, sports, drone show, fireworks | Mentioned in local reports; no dates yet |
 
 ## What happened at past editions?
 
@@ -135,20 +157,21 @@ The carnival overlaps with Christmas and New Year's Eve, so you can combine them
 ## Tips for the Kangra Valley Carnival 2026
 
 1. **Book rooms now** for the Christmas and New Year week; do not wait for the line-up.
-2. **Wait for the official programme** before booking travel around a single concert. Dates moved once in 2025.
-3. **Dress for a cold evening outdoors.** Shows run after dark on an open ground.
-4. **Fix your ride home** before the evening show, especially if you stay in McLeod Ganj, Bhagsu or Dharamkot.
-5. **Follow the district administration and local news** (The Tribune, Hill Post, UNI) for artist and venue announcements.
+2. **Concert tickets are on District** for 24-25 December from Rs 1,499. Carry photo ID, and remember there is no parking at the venue.
+3. **Wait for the official programme** before booking travel around the other carnival days. Dates moved once in 2025.
+4. **Dress for a cold evening outdoors.** Shows run after dark on an open ground.
+5. **Fix your ride home** before the evening show, especially if you stay in McLeod Ganj, Bhagsu or Dharamkot.
+6. **Follow the district administration and local news** (The Tribune, Hill Post, UNI) for artist and venue announcements.
 
-## What is confirmed and what is not (26 October 2026)
+## What is confirmed and what is not (14 November 2026)
 
 | Detail | Status |
 |---|---|
 | 2026 dates 24 to 31 December, in Dharamshala | Announced by the Kangra DC (UNI, 30 Sep 2026) |
-| Opening concert at the cricket stadium | Proposed, not confirmed |
-| Police Ground as the 2026 venue | Not announced (it was the venue in 2023 and 2025) |
+| Ticketed music festival 24-25 Dec, Sports Stadium, from Rs 1,499 | On sale on District (checked 14 Nov 2026) |
+| That the District show is the official opening concert | Not confirmed by the district administration |
+| Police Ground as the main venue | Reported (Himachal Now, Nov 2026), not on the district website yet |
 | Artists, marathon, drone show for 2026 | Not announced |
-| Entry fee | Not mentioned in any report we read |
 | 2025 dates and programme | Confirmed by several news reports |
 
 We will update this guide as soon as the 2026 programme is published. For other winter plans, see the [events page](/events).`,
@@ -156,15 +179,17 @@ We will update this guide as soon as the 2026 programme is published. For other 
     tags: ['kangra valley carnival', 'kangra valley carnival 2026', 'dharamshala carnival', 'dharamshala carnival 2026', 'kangra carnival', 'police ground dharamshala', 'dharamshala events', 'christmas in dharamshala', 'new year dharamshala', 'festivals'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-10-26',
-    updated_at: '2026-10-26',
+    updated_at: '2026-11-14',
     image: placeImage('dharamshala-town'),
     image_alt: 'Dharamshala town on green hillsides below the Dhauladhar range at dusk, host town of the Kangra Valley Carnival',
-    read_time: 8,
+    read_time: 9,
     featured: false,
-    meta_title: 'Kangra Valley Carnival 2026 Dharamshala: Dates, Venue',
-    meta_description: 'Kangra Valley Carnival 2026 is announced for 24-31 Dec in Dharamshala. What is confirmed, the 2025 programme, venue, how to reach and where to stay.',
+    meta_title: 'Kangra Valley Carnival 2026: Tickets, Dates, Venue',
+    meta_description: 'Kangra Valley Karnival 2026 tickets: 24-25 Dec at the Sports Stadium, Dharamshala, from Rs 1,499 on District. Carnival runs 24-31 Dec. Full guide.',
     related_slugs: ['dharamshala-dussehra-police-ground', 'dharamshala-christmas-new-year', 'new-year-in-mcleod-ganj', 'festivals-events-calendar-dharamshala'],
     sources: [
+      { title: 'Kangra Valley Karnival 2026 tickets (District by Zomato, organiser Accombliss Private Limited; checked 14 November 2026)', url: 'https://www.district.in/events/kangra-valley-karnival-2026-buy-tickets' },
+      { title: 'Kangra Carnival 2026 in Dharamshala in December (Himachal Now, November 2026; checked 14 November 2026)', url: 'https://www.himachalnownews.com/kangra-carnival-2026-dharamshala-december.html' },
       { title: 'Kangra Valley Carnival to be held in Dharamsala from December 24 to 31 (UNI, 30 September 2026; checked 26 October 2026)', url: 'https://www.uniindia.com/north-india/culture-himachal-kangra-valley-carnival/198184' },
       { title: 'Past events: Kangra Valley Karnival-2023 and Kangra Valley Karnival-2025 (District Kangra, official site; checked 26 October 2026)', url: 'https://hpkangra.nic.in/past-events' },
       { title: 'Kangra Winter Carnival at Dharamshala kicks off with grand procession (Hill Post, 25 December 2025; checked 26 October 2026)', url: 'https://hillpost.in/2025/12/kangra-winter-carnival-at-dharamshala-kicks-off-with-grand-procession/168092/' },
@@ -179,11 +204,15 @@ We will update this guide as soon as the 2026 programme is published. For other 
     faqs: [
       {
         question: 'When is the Kangra Valley Carnival 2026?',
-        answer: 'The Kangra Valley Carnival 2026 has been announced for 24 to 31 December 2026 in Dharamshala. Kangra Deputy Commissioner Hemraj Bairwa gave the dates at a preparations meeting reported by UNI on 30 September 2026. As of 26 October 2026 the day-by-day programme had not been published.',
+        answer: 'The Kangra Valley Carnival 2026 has been announced for 24 to 31 December 2026 in Dharamshala. Kangra Deputy Commissioner Hemraj Bairwa gave the dates at a preparations meeting reported by UNI on 30 September 2026. A ticketed music festival under the name Kangra Valley Karnival 2026 is on sale for 24 and 25 December. As of 14 November 2026 the full day-by-day programme had not been published.',
+      },
+      {
+        question: 'How much are Kangra Valley Carnival 2026 tickets and where can I buy them?',
+        answer: 'Tickets for the Kangra Valley Karnival 2026 music festival are sold on District (by Zomato) from Rs 1,499, for 24 December (from 6 pm) to 25 December 2026 at the Sports Stadium, Dharamshala, with gates opening at 3:30 pm. A ticket is needed from age 8 and photo ID is required. The listing did not show ticket tiers or artists when we checked on 14 November 2026.',
       },
       {
         question: 'Where is the Kangra Valley Carnival held in Dharamshala?',
-        answer: 'The 2025 edition (24 to 31 December 2025) was held at the Police Ground in Jawahar Nagar, lower Dharamshala, about 9 km and roughly 30 minutes by taxi from McLeod Ganj. For 2026 an opening concert has been proposed at the Dharamshala cricket stadium; the main venue had not been announced by 26 October 2026.',
+        answer: 'The 2026 ticketed music festival on 24 and 25 December is listed at the Sports Stadium, Dharamshala. The main carnival is reported to be at the Police Ground in Jawahar Nagar, lower Dharamshala, which was also the venue in 2025. The Police Ground is about 9 km, roughly 30 minutes by taxi, from McLeod Ganj. The concert venue has no parking, so take a taxi.',
       },
       {
         question: 'Is the Dharamshala carnival the same as the Dussehra mela?',
@@ -191,11 +220,11 @@ We will update this guide as soon as the 2026 programme is published. For other 
       },
       {
         question: 'Who is performing at the Kangra Valley Carnival 2026?',
-        answer: 'No artists had been announced for 2026 as of 26 October 2026. In 2025 the announced line-up included Ankit Tiwari, Kanwar Grewal, Babbu Maan and the Kerala band Thaikkudam Bridge, along with Himachali artists.',
+        answer: 'No artists had been announced for 2026 as of 14 November 2026; the ticket listing says only "leading artists from the music industry". In 2025 the announced line-up included Ankit Tiwari, Kanwar Grewal, Babbu Maan and the Kerala band Thaikkudam Bridge, along with Himachali artists.',
       },
       {
-        question: 'Is there an entry fee for the Kangra Valley Carnival?',
-        answer: 'None of the news reports we read for the 2023, 2024 or 2025 editions mention an entry fee, and nothing has been published for 2026. We have not been able to confirm whether entry is free, so check the district administration’s announcement before you go.',
+        question: 'Is the Kangra Valley Carnival free?',
+        answer: 'The 2026 music festival on 24 and 25 December at the Sports Stadium is ticketed, from Rs 1,499 on District. Past news reports for the 2023 to 2025 editions mention no fee for the procession and the evening programmes at the Police Ground, but the district had not said by 14 November 2026 whether other 2026 events are free.',
       },
       {
         question: 'Can I combine the carnival with New Year in McLeod Ganj?',

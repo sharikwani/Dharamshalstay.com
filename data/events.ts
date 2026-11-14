@@ -34,7 +34,7 @@ export type DharamshalaEvent = {
   free?: boolean;
 };
 
-export const eventsChecked = '2026-10-20';
+export const eventsChecked = '2026-11-14';
 
 export const EVENTS: DharamshalaEvent[] = [
   {
@@ -46,12 +46,15 @@ export const EVENTS: DharamshalaEvent[] = [
     page: '/blog/dharamshala-film-festival-diff-2026', image: 'tibet-museum', organizer: 'Dharamshala International Film Festival', organizerUrl: 'https://diff.co.in/',
   },
   {
-    id: 'kangra-valley-carnival-2026', name: 'Kangra Valley Carnival 2026', start: '2026-12-24', end: '2026-12-31', status: 'expected',
-    venue: 'Dharamshala (opening concert proposed at HPCA Stadium)', where: 'HPCA Stadium is in Dharamshala town, about 1.5-2 km below Kotwali Bazaar and 8-10 km by road from McLeod Ganj',
-    summary: 'A week of music, food and culture across Dharamshala over Christmas and New Year, announced by the Kangra district administration.',
-    pack: { title: 'Christmas and New Year week', nights: '3-7 nights', includes: ['Hotel in McLeod Ganj, Dharamkot or Dharamshala town', 'Airport or bus stand pickup and drop', 'A local sightseeing day by taxi', 'Optional Triund trek or paragliding'] },
-    note: 'Dates from one news report; the final programme is not out yet. Hotels fill early for 24-31 December, so ask soon.',
-    sources: [{ label: 'UNI: Kangra Valley Carnival plans', url: 'https://www.uniindia.com/north-india/culture-himachal-kangra-valley-carnival/198184' }],
+    id: 'kangra-valley-carnival-2026', name: 'Kangra Valley Carnival 2026', start: '2026-12-24', end: '2026-12-31', status: 'confirmed',
+    venue: 'Dharamshala: ticketed music festival at the Sports Stadium (24-25 Dec); main carnival reported at the Police Ground', where: 'Lower Dharamshala, near Kotwali Bazaar; about 9 km and 30 minutes by taxi from McLeod Ganj',
+    summary: 'A week of music, food and culture across Dharamshala over Christmas and New Year, run by the Kangra district administration. Tickets for the 24-25 December music festival are on sale on District from Rs 1,499.',
+    pack: { title: 'Christmas and New Year week', nights: '3-7 nights', includes: ['Hotel in McLeod Ganj, Dharamkot or Dharamshala town', 'Airport or bus stand pickup and drop', 'Taxi to and from the concert (no parking at the venue)', 'Optional Triund trek or paragliding'] },
+    note: 'Concert tickets on District (from Rs 1,499, 24-25 Dec); artists and the full programme not announced yet. Hotels fill early for 24-31 December, so ask soon.',
+    sources: [
+      { label: 'District: Kangra Valley Karnival 2026 tickets', url: 'https://www.district.in/events/kangra-valley-karnival-2026-buy-tickets' },
+      { label: 'UNI: Kangra Valley Carnival plans', url: 'https://www.uniindia.com/north-india/culture-himachal-kangra-valley-carnival/198184' },
+    ],
     page: '/blog/kangra-valley-carnival-2026', image: 'mcleod-ganj', organizer: 'Kangra district administration', organizerUrl: 'https://hpkangra.nic.in/',
   },
   {
