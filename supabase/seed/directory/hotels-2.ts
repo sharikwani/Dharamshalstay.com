@@ -59,33 +59,6 @@ export const directoryHotels2: DirectoryHotel[] = [
     ],
   },
   {
-    slug: 'white-rabbit-guest-house-bhagsu',
-    name: 'White Rabbit Guest House',
-    type: 'guesthouse',
-    destination_slug: 'bhagsu',
-    locality: 'Upper Bhagsu',
-    price_band: 'budget',
-    short_description: 'Small, family-run Upper Bhagsu guesthouse on a quiet lane, praised for spotless rooms, warm hosts and its rooftop restaurant.',
-    description: 'White Rabbit is a small guesthouse of around half a dozen rooms, tucked at the end of a quiet lane just off the main Bhagsu road. It is run by a husband-and-wife team whose hospitality comes up again and again in guest reviews, and it has quietly held a near-perfect reputation for years.\n\nRooms are kept very clean and come with private bathrooms and mountain views. The top floor has a rooftop restaurant where breakfast is a highlight, with a menu that leans European with Indian touches. It suits couples, solo travellers and slow travellers who want somewhere calm to come back to after a day in the cafes or on the trails, without the hostel crowd. Vehicles cannot reach the door, so expect to use paid public parking nearby and walk the last stretch. The waterfall, the Bhagsunag temple and the footpath up to Dharamkot are all within easy walking distance.',
-    highlights: [
-      'Only a handful of rooms, so it stays peaceful',
-      'Rooftop restaurant with mountain views',
-      'Long-standing family hosts',
-      'Quiet lane off the main Bhagsu road',
-    ],
-    good_for: ['Couples', 'Solo travellers', 'Slow travellers'],
-    nearby: [
-      'Bhagsunag Temple -- approx 5 min walk',
-      'Bhagsu Waterfall -- approx 10 min walk',
-      'Dharamkot village -- approx 20 min walk',
-      'McLeod Ganj main square -- approx 2 km',
-    ],
-    amenities: ['Free Wi-Fi', 'Rooftop restaurant', 'Room service', 'Laundry service', 'Private bathrooms', '24-hour check-in'],
-    sources: [
-      'https://www.tripadvisor.com/Hotel_Review-g12486963-d7916978-Reviews-White_Rabbit_Guest_House-Bhagsu_Nag_Dharamsala_Kangra_District_Himachal_Pradesh.html',
-    ],
-  },
-  {
     slug: 'hotel-shivaay-grand-bhagsu',
     name: 'Hotel Shivaay Morex',
     type: 'hotel',

@@ -4,6 +4,7 @@ import { adminEmail, escHtml, sendEmail } from '@/lib/email';
 import { siteConfig } from '@/lib/config';
 import { verifyListingKey } from './links';
 import { refreshPublishedProperties } from '@/lib/property-cache';
+import { blockedPropertyMatch, BLOCKED_MESSAGE } from './blocked';
 
 export const listingRequestSchema = z.object({
   slug: z.string().min(1).max(200),
@@ -38,6 +39,8 @@ export async function submitListingRequest(input: ListingRequestInput, ipHash: s
 
   const { data: p } = await sb.from('properties').select('id, name, slug, status, listing_type').eq('slug', input.slug).maybeSingle();
   if (!p) throw new HttpError(404, 'Listing not found');
+  // A property that left us can still ask to stay removed, but never claim its way back on.
+  if (input.kind === 'claim' && blockedPropertyMatch(p)) throw new HttpError(403, BLOCKED_MESSAGE);
 
   const verified = verifyListingKey(p.id, input.token);
   const removeNow = input.kind === 'removal' && verified && p.status === 'published';

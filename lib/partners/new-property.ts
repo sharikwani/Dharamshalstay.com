@@ -7,6 +7,7 @@
  * draft save followed by "submit" still submits), while a slug clash retries with a short suffix, same id.
  */
 import { refreshPublishedProperties } from '@/lib/property-cache';
+import { blockedPropertyMatch, BLOCKED_MESSAGE } from '@/lib/listings/blocked';
 type Result = { data: { id: string; status: string } | null; error: any };
 
 const randomSuffix = () => Math.random().toString(36).slice(2, 6);
@@ -14,6 +15,7 @@ const randomSuffix = () => Math.random().toString(36).slice(2, 6);
 export async function insertNewProperty(
   sb: any, id: string, payload: Record<string, any>, baseSlug: string, suffix: () => string = randomSuffix,
 ): Promise<Result> {
+  if (blockedPropertyMatch({ ...payload, slug: baseSlug })) return { data: null, error: { message: BLOCKED_MESSAGE } };
   const status = String(payload.status);
   const tryInsert = (slug: string) => sb.from('properties').insert({ ...payload, id, slug }).select('id').single();
 

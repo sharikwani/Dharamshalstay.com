@@ -177,26 +177,6 @@ export const directoryMedia2: Record<string, DirectoryMedia> = {
     amenities: ['WiFi', 'Cafe', 'Parking', 'Power backup', 'Hot water', '24-hour reception', 'Lockers', 'Common area', 'Indoor games', 'Pool table', 'Rooftop', 'Lift', 'Daily housekeeping', 'Laundry (extra)', 'Bonfire', 'Water dispenser', 'Mountain view'],
   },
 
-  'white-rabbit-guest-house-bhagsu': {
-    images: [
-      { url: 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/332180091.jpg?k=a99414834550a2520bc9f0086c22d3faa64d42a2ff30aed12c4ab7b5693f0063&o=', alt: 'Orange White Rabbit Guest House building with blue windows and rooftop restaurant, Upper Bhagsu', category: 'exterior' },
-      { url: 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/832450893.jpg?k=0636f822422779c37cc3909170151dbfa8e3ef08a50e6491b227f34da68ed230&o=', alt: 'White Rabbit Guest House with its covered rooftop restaurant among the trees, Upper Bhagsu', category: 'exterior' },
-      { url: 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/332193887.jpg?k=6e4e09eff4b061bbeb7a869617f1382803edc5793c090d9e8960d0f2ac935805&o=', alt: 'Double room with exposed-brick wall and balcony at White Rabbit Guest House, Bhagsu', category: 'room' },
-      { url: 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/332193743.jpg?k=63d49e7cf7b46c118c4360a3f8f041117cfde54592cc0354caac1de3be567033&o=', alt: 'Double room with en-suite bathroom at White Rabbit Guest House, Bhagsu', category: 'room' },
-      { url: 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/332193932.jpg?k=36213ca6f52e9ead6b047936bb1273ae5badd087ffc4b16efb31184295f0e57b&o=', alt: 'Brick-walled double room with wall shelves at White Rabbit Guest House, Bhagsu', category: 'room' },
-      { url: 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/332180335.jpg?k=7a1e87f64ec92bd2443a46911fd4e8db476be217128778104940d270adde158b&o=', alt: 'Bed with warm lighting and brick headboard wall at White Rabbit Guest House, Bhagsu', category: 'room' },
-      { url: 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/332180396.jpg?k=6397780f322e717856b00a0fd1802d5128c719c76843d2d75ce1648c344cc300&o=', alt: 'Tea tray and kettle by the window in a room at White Rabbit Guest House, Bhagsu', category: 'room' },
-      { url: 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/332334568.jpg?k=fd166c5baa2e8e55cb74e2b9aef5b85f0ae7a336370c9368241e5b426b52ac95&o=', alt: 'Valley view through the balcony door at White Rabbit Guest House, Bhagsu', category: 'view' },
-      { url: 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/332334979.jpg?k=04bbbf53394e5caa2c931b643ad66ed5cb4d4676722bb558e70eed1dee045c2a&o=', alt: 'Morning view over the Kangra valley from White Rabbit Guest House, Bhagsu', category: 'view' },
-    ],
-    photo_source: 'https://www.booking.com/hotel/in/white-rabbit-guest-house-dharamshala.html',
-    check_in_time: '13:00',
-    check_out_time: '11:00',
-    amenities: ['WiFi', 'Restaurant', 'Breakfast', 'Non-smoking rooms', 'Mountain view'],
-    pet_policy: 'Pets are not allowed.',
-    smoking_policy: 'Smoking is not allowed.',
-  },
-
   'hotel-shivaay-grand-bhagsu': {
     images: [
       { url: 'https://images.trvl-media.com/lodging/93000000/92490000/92489700/92489648/36e7c2ed.jpg?impolicy=resizecrop&rw=1200&ra=fit', alt: 'Hotel Shivaay Grand building (signboard showing its earlier name, Shivaay Morex) beside the temple on Bhagsunag Road', category: 'exterior' },

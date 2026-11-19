@@ -1,5 +1,6 @@
 import { serviceClient, HttpError } from '@/lib/server-auth';
 import { refreshPublishedProperties } from '@/lib/property-cache';
+import { blockedPropertyMatch } from './blocked';
 
 export type AdminListingRequest = {
   id: string; kind: 'claim' | 'removal'; name: string; phone: string; email: string | null;
@@ -54,6 +55,10 @@ export async function actOnListingRequest(id: string, action: ListingAction, not
     if (error) throw new Error(error.message);
     result = ownerId ? 'Linked to their partner login.' : 'Saved their email. The listing links to their login once they sign up and confirm ' + email + '.';
   } else if (action === 'remove_listing' || action === 'restore_listing') {
+    if (action === 'restore_listing') {
+      const { data: prop } = await sb.from('properties').select('name, slug, contact_phone, contact_whatsapp').eq('id', r.property_id).maybeSingle();
+      if (prop && blockedPropertyMatch(prop)) throw new HttpError(409, 'This property is on the blocked list (lib/listings/blocked.ts) and cannot go live again.');
+    }
     const status = action === 'remove_listing' ? 'suspended' : 'published';
     const { error } = await sb.from('properties').update({ status, updated_at: now }).eq('id', r.property_id);
     refreshPublishedProperties();
