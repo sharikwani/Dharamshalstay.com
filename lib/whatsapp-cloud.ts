@@ -1,6 +1,10 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
+import { isBlockedPhone } from '@/lib/blocked-phones';
 
 const GRAPH = 'https://graph.facebook.com/v21.0';
+
+/** Nothing is ever sent to a blocked number (lib/blocked-phones.ts); the send is reported as skipped. */
+const BLOCKED_NUMBER = 'Blocked number: nothing is sent to it';
 
 export function isWhatsAppConfigured(): boolean {
   return !!process.env.WHATSAPP_TOKEN && !!process.env.WHATSAPP_PHONE_NUMBER_ID;
@@ -45,6 +49,7 @@ async function answer(res: Response): Promise<SendResult> {
  */
 export async function sendTemplate(opts: { to: string; template: string; params: unknown[]; language?: string; urlButtons?: string[]; headerImage?: string }): Promise<SendResult> {
   if (!isWhatsAppConfigured()) return { ok: false, skipped: true };
+  if (isBlockedPhone(opts.to)) return { ok: false, skipped: true, error: BLOCKED_NUMBER };
   try {
     const res = await fetch(`${GRAPH}/${process.env.WHATSAPP_PHONE_NUMBER_ID}/messages`, {
       method: 'POST',
@@ -96,6 +101,7 @@ const auth = () => ({ Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}` });
 /** Free-form text, allowed within 24 hours of the customer's last message. */
 export async function sendText(to: string, body: string): Promise<SendResult> {
   if (!isWhatsAppConfigured()) return { ok: false, skipped: true };
+  if (isBlockedPhone(to)) return { ok: false, skipped: true, error: BLOCKED_NUMBER };
   try {
     const res = await fetch(`${GRAPH}/${process.env.WHATSAPP_PHONE_NUMBER_ID}/messages`, {
       method: 'POST', signal: AbortSignal.timeout(5000), headers: { ...auth(), 'Content-Type': 'application/json' },

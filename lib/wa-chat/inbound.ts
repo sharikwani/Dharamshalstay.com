@@ -1,6 +1,7 @@
 import { downloadMedia, markReadTyping } from '@/lib/whatsapp-cloud';
 import { sendEmail, adminEmail } from '@/lib/email';
 import { siteConfig } from '@/lib/config';
+import { isBlockedPhone } from '@/lib/blocked-phones';
 import { transcribe } from './assistant';
 import { openCancellation } from './booking-store';
 import { handleProof } from './cancellations';
@@ -40,6 +41,8 @@ async function handToOwner(c: Conversation, what: string, messageId: string) {
  */
 export async function handleInbound(m: Inbound, deadline = Date.now() + 50_000): Promise<{ work: Promise<unknown> } | null> {
   if (m.timestamp && Date.now() / 1000 - m.timestamp > 24 * 3600) return null;
+  // A blocked number: not stored, not answered, nobody alerted.
+  if (isBlockedPhone(m.from)) return null;
   const body = m.kind === 'voice' ? VOICE_PLACEHOLDER : m.kind === 'media' ? [m.mediaLabel, m.text].filter(Boolean).join(' ') : m.text;
   const saved = await saveInbound(m, body, m.kind);
   if (!saved) return null;
