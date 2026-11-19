@@ -8,6 +8,7 @@ import { Resend } from 'resend';
 import { serviceClient } from '@/lib/server-auth';
 import { renderEmail, renderText, SITE, type EmailDoc } from './layout';
 import { normEmail } from './contacts';
+import { isPhoneLoginEmail } from '@/lib/partners/phone-login';
 
 export type EmailKind = 'transactional' | 'marketing' | 'admin';
 export const FROM = {
@@ -49,6 +50,8 @@ export type DeliverResult = { ok: boolean; status: 'sent' | 'skipped' | 'failed'
 export async function deliver(input: DeliverInput): Promise<DeliverResult> {
   const to = normEmail(input.to);
   if (!to) return { ok: false, status: 'skipped', reason: 'invalid address' };
+  // Stand-in login addresses of partners who sign in with their mobile number have no mailbox.
+  if (isPhoneLoginEmail(to)) return { ok: false, status: 'skipped', reason: 'phone login account (no mailbox)' };
   // Admin alerts also reach the owner's WhatsApp (lib/owner-alerts.ts); independent of whether the email sends.
   if (input.kind === 'admin') {
     try { await (await import('@/lib/owner-alerts')).notifyOwner({ subject: input.subject, template: input.template, doc: input.doc }); }

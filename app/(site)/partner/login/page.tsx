@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Building, Eye, EyeOff, MailCheck } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { loginEmailFor } from '@/lib/partners/phone-login';
 
 export default function PartnerLogin() {
   const router = useRouter();
@@ -28,7 +29,8 @@ export default function PartnerLogin() {
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault(); setLoading(true); setError('');
     const fd = new FormData(e.currentTarget);
-    const email = (fd.get('email') as string).trim();
+    // Partners whose account we made from their mobile number sign in with that number.
+    const email = loginEmailFor(fd.get('email') as string);
     const { error: err } = await supabase.auth.signInWithPassword({
       email, password: fd.get('password') as string,
     });
@@ -94,8 +96,8 @@ export default function PartnerLogin() {
         </div>
         <form onSubmit={handleSubmit} className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8 space-y-4 shadow-sm">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
-            <input name="email" type="email" required className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" />
+            <label className="block text-sm font-medium text-slate-700 mb-1">Email or mobile number</label>
+            <input name="email" type="text" inputMode="email" autoComplete="username" required className="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 outline-none" />
           </div>
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Password</label>
@@ -116,7 +118,7 @@ export default function PartnerLogin() {
         {forgot !== 'off' && (
           <div className="mt-4 bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
             {forgot === 'sent' ? (
-              <p className="text-sm text-slate-700">If that email has a partner account, a link to choose a new password is on its way. It works once and expires in about an hour. Check your spam folder too.</p>
+              <p className="text-sm text-slate-700">If that email has a partner account, a link to choose a new password is on its way. It works once and expires in about an hour. Check your spam folder too. If you log in with your mobile number, message us on WhatsApp and we will reset it for you.</p>
             ) : (
               <form onSubmit={sendReset} className="space-y-3">
                 <p className="text-sm font-medium text-slate-800">Get a link to choose a new password</p>

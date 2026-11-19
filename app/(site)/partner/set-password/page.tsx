@@ -5,16 +5,28 @@ import { useRouter } from 'next/navigation';
 import { KeyRound, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
-/** Choose a password from the one-time link we email (new partner accounts and "Forgot password?"). */
+/**
+ * Choose a password: from the one-time link we email (new partner accounts and "Forgot password?"), or,
+ * already signed in, to replace the temporary password the team gave (must_change_password).
+ */
 export default function SetPassword() {
   const router = useRouter();
   const [stage, setStage] = useState<'checking' | 'ready' | 'bad' | 'saving'>('checking');
   const [error, setError] = useState('');
+  const [temporary, setTemporary] = useState(false);
 
   useEffect(() => {
     const q = new URLSearchParams(window.location.search);
     const token_hash = q.get('token_hash');
-    if (!token_hash) { setStage('bad'); return; }
+    if (!token_hash) {
+      // Signed in with a temporary password: change it here.
+      supabase.auth.getSession().then(({ data }) => {
+        if (!data.session) { setStage('bad'); return; }
+        setTemporary(!!data.session.user.user_metadata?.must_change_password);
+        setStage('ready');
+      });
+      return;
+    }
     // Remove the token from the address bar so it is not kept in history or shared by accident.
     window.history.replaceState(null, '', '/partner/set-password');
     supabase.auth.verifyOtp({ token_hash, type: 'recovery' }).then(({ error: err }) => setStage(err ? 'bad' : 'ready'));
@@ -27,7 +39,7 @@ export default function SetPassword() {
     if (password.length < 8) { setError('Use at least 8 characters.'); return; }
     if (password !== fd.get('confirm')) { setError('The two passwords do not match.'); return; }
     setStage('saving'); setError('');
-    const { error: err } = await supabase.auth.updateUser({ password });
+    const { error: err } = await supabase.auth.updateUser({ password, data: { must_change_password: false } });
     if (err) { setError(err.message); setStage('ready'); return; }
     router.replace('/partner/dashboard');
   }
@@ -38,6 +50,7 @@ export default function SetPassword() {
       <div className="w-full max-w-md bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
         <div className="w-12 h-12 bg-brand-50 rounded-full flex items-center justify-center mb-3"><KeyRound className="h-6 w-6 text-brand-700" /></div>
         <h1 className="text-2xl font-heading font-bold text-slate-900 mb-1">Choose your password</h1>
+        {temporary && stage !== 'checking' && <p className="text-sm text-slate-600 mb-2">You signed in with a temporary password. Please choose your own password to continue.</p>}
         {stage === 'checking' && <p className="flex items-center gap-2 text-slate-600"><Loader2 className="h-4 w-4 animate-spin" />Checking your link…</p>}
         {stage === 'bad' && (
           <p className="text-slate-600">This link has expired or was already used. <Link href="/partner/login?forgot=1" className="text-brand-600 font-medium underline">Send me a new link</Link>.</p>
