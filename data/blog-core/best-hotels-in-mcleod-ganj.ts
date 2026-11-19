@@ -53,7 +53,6 @@ Every hotel named here is listed on our [hotels page](/hotels). We are a local t
 | [Green Hotel](/hotels/green-hotel-bhagsu-road-mcleod-ganj) | Bhagsu Road | Hotel | Budget | Balcony rooms on a budget |
 | [Backpackers Inn McLeodganj](/hotels/backpackers-inn-jogiwara-road-mcleod-ganj) | Jogiwara Road | Guesthouse | Budget | Solo travellers, couples |
 | [Young Monk Hostel](/hotels/young-monk-hostel-upper-dharamkot) | Upper Dharamkot | Hostel | Budget | Triund trekkers |
-| [White Rabbit Guest House](/hotels/white-rabbit-guest-house-bhagsu) | Upper Bhagsu | Guesthouse | Budget | Cosy, quiet, slow travel |
 | [Mastiff Select Mandavya](/hotels/mastiff-select-mandavya-dharamkot) | Lower Dharamkot | Hotel | Mid-range | Couples, pets, road access |
 | [Hotel Udechee Huts](/hotels/udechee-huts-naddi) | Naddi | Cottages | Mid-range | Dhauladhar views |
 
@@ -120,7 +119,6 @@ If you are coming for the [Triund trek](/blog/triund-trek-complete-guide), stay 
 
 [Bhagsu](/destinations/bhagsu) is 2 km east of McLeod Ganj, with the Bhagsunag temple, the waterfall and a lively cafe scene. From Upper Bhagsu, a steep footpath of about 1.5 km (roughly 40 minutes) climbs to Dharamkot, and the walk from Dharamkot to Gallu Devi is about 2 km more. See our [Bhagsu travel guide](/blog/bhagsu-travel-guide).
 
-- **[White Rabbit Guest House](/hotels/white-rabbit-guest-house-bhagsu)**: about half a dozen spotless rooms at the end of a quiet lane, run by a husband-and-wife team, with a rooftop breakfast that guests rave about. Cars cannot reach the door, so use paid parking nearby.
 - **[Zostel Dharamkot](/hotels/zostel-dharamkot-upper-bhagsu)**: on the Upper Bhagsu slope towards Dharamkot, with balcony dorms and private rooms, a 24-hour reception, travel desk, free parking and power backup. Can be lively; light sleepers should book a private room.
 - **[Loopin McLeodganj](/hotels/loopin-mcleodganj-upper-bhagsu)**: a laid-back Upper Bhagsunag hostel with a guest kitchen, valley views and luggage storage for trekkers. The path towards Dharamkot starts nearby.
 - **[Regenta Inn Luxinna Heights](/hotels/regenta-inn-luxinna-heights-bhagsu)** and **[Hotel Shivaay Morex](/hotels/hotel-shivaay-grand-bhagsu)**: hotel comforts near the Bhagsunag temple, both with free parking. Regenta has a lift and balcony rooms; Shivaay Morex is good value with a pure vegetarian restaurant.
@@ -133,7 +131,6 @@ If you are coming for the [Triund trek](/blog/triund-trek-complete-guide), stay 
 | [Shalom Backpackers](/hotels/shalom-backpackers-upper-dharamkot) | Upper Dharamkot | 25 min | Parking listed | Hostel, cottage, doubles |
 | [Eevolve Dharamkot](/hotels/eevolve-eco-hostel-dharamkot) | Dharamkot Road | Village centre 10 min, then approx. 45-60 min | Yes, free parking | Eco hostel |
 | [Mustard House](/hotels/mustard-house-homestay-dharamkot) | Lower Dharamkot | Village centre 10 min, then approx. 45-60 min | Free parking | Five-room homestay |
-| [White Rabbit](/hotels/white-rabbit-guest-house-bhagsu) | Upper Bhagsu | Dharamkot 20 min, then approx. 45-60 min | No, paid parking nearby | Small guesthouse |
 | [Zostel Dharamkot](/hotels/zostel-dharamkot-upper-bhagsu) | Upper Bhagsu | Via Dharamkot, approx. 1-1.5 hrs | Yes, free parking | Branded hostel |
 
 Planning to camp on the ridge? Most of these places will store your bags for a night. Read our [Triund trek guide](/blog/triund-trek-complete-guide) and [Triund camping guide](/blog/triund-camping-guide) for the current rules and fees, or book a [guided Triund trek](/treks/triund-trek) with us.
@@ -151,7 +148,7 @@ Planning to camp on the ridge? Most of these places will store your bags for a n
 | Couple or honeymooners | A Dhauladhar-facing balcony | [Glenmoor Cottages](/hotels/glenmoor-cottages-mcleod-ganj), [Udechee Huts](/hotels/udechee-huts-naddi), [Hyatt Regency](/hotels/hyatt-regency-dharamshala-resort-dharamkot) |
 | Trekker | Upper Dharamkot | [Young Monk Hostel](/hotels/young-monk-hostel-upper-dharamkot), [Shalom Backpackers](/hotels/shalom-backpackers-upper-dharamkot) |
 | Backpacker | Bhagsu or Dharamkot | [Zostel Dharamkot](/hotels/zostel-dharamkot-upper-bhagsu), [Loopin](/hotels/loopin-mcleodganj-upper-bhagsu), [Backpackers Inn](/hotels/backpackers-inn-jogiwara-road-mcleod-ganj) |
-| Solo female traveller | Small host-run places | [Mustard House](/hotels/mustard-house-homestay-dharamkot), [Shalom Backpackers](/hotels/shalom-backpackers-upper-dharamkot) (female dorm), [White Rabbit](/hotels/white-rabbit-guest-house-bhagsu) |
+| Solo female traveller | Small host-run places | [Mustard House](/hotels/mustard-house-homestay-dharamkot), [Shalom Backpackers](/hotels/shalom-backpackers-upper-dharamkot) (female dorm) |
 | Remote worker | Dharamkot or Naddi | [Eevolve Dharamkot](/hotels/eevolve-eco-hostel-dharamkot), [Aliza Inn and Suites](/hotels/aliza-inn-and-suites-naddi) |
 | Travelling with a dog | Pet-friendly hotel | [Mastiff Select Mandavya](/hotels/mastiff-select-mandavya-dharamkot) |
 
@@ -192,7 +189,7 @@ If the Dalai Lama is giving public teachings at the Tsuglagkhang, rooms near the
 - **Two or three nights, first visit:** central McLeod Ganj. [Chonor House](/hotels/chonor-house-temple-road-mcleod-ganj) for character, [The Belvedere](/hotels/the-belvedere-himalayan-retreat-mcleod-ganj) for comfort, [Green Hotel](/hotels/green-hotel-bhagsu-road-mcleod-ganj) on a budget.
 - **Doing Triund:** one or two nights in Upper Dharamkot before and after the trek.
 - **Family with a car:** [HPTDC Hotel Bhagsu](/hotels/hptdc-hotel-bhagsu-mcleod-ganj) in town, or [Fortune Park Moksha](/hotels/fortune-park-moksha-satobari) near Dal Lake.
-- **Cosy and quiet:** a small guesthouse in Upper Bhagsu or Dharamkot, like [White Rabbit](/hotels/white-rabbit-guest-house-bhagsu) or [Mustard House](/hotels/mustard-house-homestay-dharamkot).
+- **Cosy and quiet:** a small guesthouse in Upper Bhagsu or Dharamkot, like [Mustard House](/hotels/mustard-house-homestay-dharamkot).
 
 Staying in the lower town instead, or near the cricket stadium? Read our guide to the [best hotels in Dharamshala](/blog/best-hotels-in-dharamshala) and the [Dharamshala vs McLeod Ganj comparison](/blog/dharamshala-vs-mcleod-ganj). Or [see every hotel and homestay](/hotels), explore the [McLeod Ganj destination page](/destinations/mcleod-ganj), and [message our team](/contact) with your dates. Prices in this guide are indicative; confirm the current rate before you pay.`,
   faqs: [

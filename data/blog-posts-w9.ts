@@ -1244,7 +1244,6 @@ These are budget stays listed on our [hotels page](/hotels). Rates are on reques
 | [Eevolve Eco Hostel](/hotels/eevolve-eco-hostel-dharamkot) | Dharamkot | Hostel | Quiet eco hostel with free parking |
 | [Loopin McLeodganj](/hotels/loopin-mcleodganj-upper-bhagsu) | Upper Bhagsu | Hostel | Dorm beds near Bhagsu cafes |
 | [The Hosteller Dharamshala](/hotels/the-hosteller-dharamshala-bangatu) | Bangatu, Dharamshala | Hostel | Branded hostel away from McLeod crowds |
-| [White Rabbit Guest House](/hotels/white-rabbit-guest-house-bhagsu) | Bhagsu | Guesthouse | Private rooms with breakfast |
 | [Hotel Shivaay Grand](/hotels/hotel-shivaay-grand-bhagsu) | Bhagsu | Hotel | Budget hotel with free parking and heating |
 | [Green Hotel](/hotels/green-hotel-bhagsu-road-mcleod-ganj) | Bhagsu Road, McLeod Ganj | Hotel | Balcony rooms 5 minutes from the main square |
 | [Backpackers Inn](/hotels/backpackers-inn-jogiwara-road-mcleod-ganj) | Jogiwara Road, McLeod Ganj | Guesthouse | Cheap rooms with heating, central |
