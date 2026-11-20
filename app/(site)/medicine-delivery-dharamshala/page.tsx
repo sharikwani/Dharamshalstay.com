@@ -75,7 +75,7 @@ const pageSchema = {
     url: siteConfig.url + MEDICINE_PHOTO,
     width: 1600, height: 1172,
     caption: PHOTO_ALT,
-    ...(PHOTO ? { creditText: PHOTO.author, license: PHOTO.license_url, acquireLicensePage: PHOTO.source, creator: { '@type': 'Person', name: PHOTO.author } } : {}),
+    ...(PHOTO ? { creditText: PHOTO.author, copyrightNotice: `© ${PHOTO.author}, ${PHOTO.license}`, license: PHOTO.license_url, acquireLicensePage: PHOTO.source, creator: { '@type': 'Person', name: PHOTO.author } } : {}),
   },
 };
 
