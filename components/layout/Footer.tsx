@@ -55,6 +55,7 @@ export default function Footer({ lang }: { lang: Lang }) {
               {lang === 'en' && <li><Link href="/play" className="hover:text-orange-400">Free tambola game</Link></li>}
               {lang === 'en' && <li><Link href="/travel-partners" className="hover:text-orange-400">Verified travel partners</Link></li>}
               {lang === 'en' && <li><Link href="/luggage-storage" className="hover:text-orange-400">Luggage storage</Link></li>}
+              {lang === 'en' && <li><Link href="/medicine-delivery-dharamshala" className="hover:text-orange-400">Emergency medicine delivery</Link></li>}
               {lang === 'en' && <li><Link href="/local-guides/register" className="hover:text-orange-400">Become a local guide</Link></li>}
               <li><Link href="/partner/register" className="hover:text-orange-400">{t.nav.listProperty}</Link></li>
               <li><Link href="/for-hotels" className="hover:text-orange-400">{lang === 'hi' ? 'होटल मालिकों के लिए' : 'For hotel owners'}</Link></li>
