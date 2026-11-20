@@ -33,7 +33,7 @@ export function checkPrescriptionFile(f: { type: string; size: number; head: Uin
   const t = Object.prototype.hasOwnProperty.call(TYPES, f.type) ? TYPES[f.type] : null;
   if (!t) return { error: 'The prescription must be a photo (JPG, PNG, WebP) or a PDF.' };
   if (f.size <= 0) return { error: 'The prescription file is empty.' };
-  if (f.size > PRESCRIPTION_MAX_BYTES) return { error: 'The prescription file must be 5 MB or smaller.' };
+  if (f.size > PRESCRIPTION_MAX_BYTES) return { error: 'The prescription file must be 4 MB or smaller.' };
   if (f.head.length < 4 || !t.magic(f.head)) return { error: 'The prescription file could not be read. Please send a clear photo or the original PDF.' };
   return { ext: t.ext, contentType: f.type };
 }

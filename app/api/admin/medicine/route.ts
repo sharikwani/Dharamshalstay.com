@@ -1,21 +1,11 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { HttpError, jsonError, requireCaller, serviceClient } from '@/lib/server-auth';
-import { MEDICINE_BUCKET, MEDICINE_STATUSES, PRESCRIPTION_RETENTION_DAYS } from '@/lib/medicine/options';
+import { MEDICINE_BUCKET, MEDICINE_STATUSES } from '@/lib/medicine/options';
+import { purgeOldMedicineData } from '@/lib/medicine/purge';
 
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store';
-
-/** Prescriptions are health data: delete files older than the retention period (runs whenever admin opens the list). */
-async function purgeOldPrescriptions(sb: ReturnType<typeof serviceClient>) {
-  const before = new Date(Date.now() - PRESCRIPTION_RETENTION_DAYS * 24 * 3600e3).toISOString();
-  const { data } = await sb.from('medicine_requests').select('id, prescription_path').lt('created_at', before).not('prescription_path', 'is', null).limit(100);
-  const old = (data || []).filter((r: any) => r.prescription_path);
-  if (!old.length) return;
-  const { error } = await sb.storage.from(MEDICINE_BUCKET).remove(old.map((r: any) => r.prescription_path));
-  if (error) { console.error('Prescription purge failed:', error); return; }
-  await sb.from('medicine_requests').update({ prescription_path: null }).in('id', old.map((r: any) => r.id));
-}
 
 /** GET ?status=new|checking|doctor_confirmed|delivered|rejected (default new): requests with a 1-hour prescription link. */
 export async function GET(req: Request) {
@@ -24,7 +14,7 @@ export async function GET(req: Request) {
     const status = new URL(req.url).searchParams.get('status') || 'new';
     if (!(MEDICINE_STATUSES as readonly string[]).includes(status)) throw new HttpError(400, 'Unknown status');
     const sb = serviceClient();
-    await purgeOldPrescriptions(sb).catch((e) => console.error('Prescription purge failed:', e));
+    await purgeOldMedicineData(sb).catch((e) => console.error('Prescription purge failed:', e));
     const { data, error } = await sb.from('medicine_requests').select('*').eq('status', status).order('created_at', { ascending: false }).limit(200);
     if (error) throw new HttpError(500, 'Run migration v57 first (medicine requests).');
     const { data: counts } = await sb.from('medicine_requests').select('status').in('status', ['new', 'checking', 'doctor_confirmed']);

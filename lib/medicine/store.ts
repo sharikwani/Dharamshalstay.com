@@ -34,12 +34,12 @@ export async function submitMedicineRequest(
     console.error('Medicine request failed:', error);
     throw new HttpError(500, 'Could not send your request. Please try again or WhatsApp us.');
   }
-  // "Urgent" in the subject also sends it to the owner's WhatsApp (lib/owner-alerts.ts). No medicines or health
-  // details in the alert: they stay in admin.
+  // "Urgent" in the subject also sends it to the owner's WhatsApp (lib/owner-alerts.ts). No name, phone, medicines or
+  // health details in the alert (it is kept in the email log and passes through Meta): they stay in admin.
   const outside = isOutsideArea(input.area) ? ' (outside our delivery areas)' : '';
   await sendEmail({
     to: adminEmail(), subject: `Urgent medicine request: ${input.area}`,
-    html: `<h2>New emergency medicine request</h2><p><strong>${escHtml(input.patient_name)}</strong> (+${escHtml(input.phone)}), ${escHtml(input.area)}${outside}.</p>`
+    html: `<h2>New emergency medicine request</h2><p>Area: ${escHtml(input.area)}${outside}. Sent ${escHtml(new Date().toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: 'numeric', minute: '2-digit' }))}.</p>`
       + `<p>Check the prescription and call the doctor here: <a href="${siteConfig.url}/admin/medicine">${siteConfig.url}/admin/medicine</a></p>`,
   }).catch((e) => console.error('Medicine request email failed:', e));
   return { id };

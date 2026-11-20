@@ -41,7 +41,28 @@ describe('owner alert', () => {
   });
 });
 
+describe('30-day clean-up', () => {
+  it('deletes old prescription files and clears the health details of old requests', async () => {
+    const { purgeOldMedicineData } = await import('@/lib/medicine/purge');
+    const calls: any = {};
+    const query: any = {
+      select: () => query, lt: () => query, or: () => query, limit: async () => ({ data: [{ id: 'a', prescription_path: 'a.pdf' }, { id: 'b', prescription_path: null }] }),
+      update: (patch: any) => { calls.patch = patch; return { in: async (_c: string, ids: string[]) => { calls.ids = ids; return { error: null }; } }; },
+    };
+    const sb: any = { from: () => query, storage: { from: () => ({ remove: async (paths: string[]) => { calls.removed = paths; return { error: null }; } }) } };
+    expect(await purgeOldMedicineData(sb)).toBe(2);
+    expect(calls.removed).toEqual(['a.pdf']);
+    expect(calls.ids).toEqual(['a', 'b']);
+    expect(calls.patch).toMatchObject({ prescription_path: null, medicines: 'Deleted after 30 days', urgency: 'Deleted after 30 days' });
+  });
+});
+
 describe('prescription file check', () => {
+  it('stays under the 4.5 MB Vercel request limit', () => {
+    expect(checkPrescriptionFile({ type: 'image/jpeg', size: 4.2 * 1024 * 1024, head: head(0xff, 0xd8, 0xff) })).toHaveProperty('error');
+    expect(checkPrescriptionFile({ type: 'image/jpeg', size: 3.9 * 1024 * 1024, head: head(0xff, 0xd8, 0xff) })).toHaveProperty('ext', 'jpg');
+  });
+
   it('accepts a real PDF and a real JPEG', () => {
     expect(checkPrescriptionFile({ type: 'application/pdf', size: 1000, head: head(0x25, 0x50, 0x44, 0x46) })).toEqual({ ext: 'pdf', contentType: 'application/pdf' });
     expect(checkPrescriptionFile({ type: 'image/jpeg', size: 1000, head: head(0xff, 0xd8, 0xff) })).toEqual({ ext: 'jpg', contentType: 'image/jpeg' });

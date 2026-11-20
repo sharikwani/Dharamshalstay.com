@@ -19,7 +19,7 @@ export default function MedicineRequestForm() {
     e.preventDefault();
     setError('');
     if (!file) { setError('Please add a photo or PDF of the doctor prescription.'); return; }
-    if (file.size > PRESCRIPTION_MAX_BYTES) { setError('The prescription file must be 5 MB or smaller.'); return; }
+    if (file.size > PRESCRIPTION_MAX_BYTES) { setError('The prescription file must be 4 MB or smaller.'); return; }
     if (!consent) { setError('Please agree that we may call your doctor to confirm the prescription.'); return; }
     setBusy(true);
     try {
@@ -28,8 +28,9 @@ export default function MedicineRequestForm() {
       body.append('consent', String(consent));
       body.append('prescription', file);
       const res = await fetch('/api/medicine', { method: 'POST', body });
+      if (res.status === 413) throw new Error('The prescription file is too large. Please send a smaller photo (under 4 MB).');
       const j = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(j.error || 'Could not send your request');
+      if (!res.ok) throw new Error(j.error || 'Could not send your request. Please try again or WhatsApp us.');
       setDone(true);
       (window as any).gtag?.('event', 'generate_lead', { lead_type: 'medicine_delivery' });
     } catch (err: any) { setError(err.message); }
@@ -69,7 +70,7 @@ export default function MedicineRequestForm() {
         <p className={label}>Doctor prescription</p>
         <label className="mt-2 flex cursor-pointer items-center gap-4 rounded-2xl border-2 border-dashed border-slate-300 p-4 hover:border-brand-500">
           <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-500"><FileText className="h-7 w-7" /></span>
-          <span className="text-sm text-slate-700"><span className="font-semibold text-brand-700">{file ? file.name : 'Add the prescription'}</span><br />Clear photo (JPG, PNG) or PDF, up to 5 MB. Doctor name, date and signature must be readable.</span>
+          <span className="text-sm text-slate-700"><span className="font-semibold text-brand-700">{file ? file.name : 'Add the prescription'}</span><br />Clear photo (JPG, PNG) or PDF, up to 4 MB. Doctor name, date and signature must be readable.</span>
           <input type="file" accept="image/jpeg,image/png,image/webp,application/pdf" className="sr-only" onChange={(e) => setFile(e.target.files?.[0] || null)} />
         </label>
       </div>

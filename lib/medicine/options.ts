@@ -17,6 +17,7 @@ export const MEDICINE_STATUS_LABELS: Record<MedicineStatus, string> = {
 };
 
 export const MEDICINE_BUCKET = 'medicine-prescriptions';
-export const PRESCRIPTION_MAX_BYTES = 5 * 1024 * 1024;
+/** 4 MB: Vercel refuses request bodies over 4.5 MB before our code runs. */
+export const PRESCRIPTION_MAX_BYTES = 4 * 1024 * 1024;
 /** Prescriptions are health data: the file is deleted this many days after the request. */
 export const PRESCRIPTION_RETENTION_DAYS = 30;

@@ -5,6 +5,8 @@ import { runMarketingAutopilot } from '@/lib/email/autopilot';
 import { runSocialAutopilot } from '@/lib/social/autopilot';
 import { runStoriesAutopilot } from '@/lib/stories/feature';
 import { runTripReminders } from '@/lib/booking-whatsapp';
+import { purgeOldMedicineData } from '@/lib/medicine/purge';
+import { serviceClient } from '@/lib/server-auth';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -42,7 +44,9 @@ async function run(req: NextRequest) {
   const marketing = Date.now() - started < 30_000
     ? await runMarketingAutopilot({ deadline: started + 55_000 }).catch((e) => { console.error('marketing autopilot failed:', e); return { error: String(e?.message || e) }; })
     : { skipped: 'out of time' };
-  return NextResponse.json({ ok: true, unpaid, jobs, reminders, social, stories, marketing, ms: Date.now() - started });
+  // Medicine requests: prescriptions and health details are deleted after 30 days (promised on the page).
+  const medicinePurged = await purgeOldMedicineData(serviceClient()).catch((e) => { console.error('medicine purge failed:', e); return 0; });
+  return NextResponse.json({ ok: true, unpaid, jobs, reminders, social, stories, marketing, medicinePurged, ms: Date.now() - started });
 }
 
 export const GET = run;
