@@ -11,7 +11,7 @@ import { renderText, SITE, type EmailDoc } from '@/lib/email/layout';
 export type OwnerAlertMode = 'off' | 'important' | 'all';
 
 /** Admin emails that are never worth a ping (the owner is the one doing them). */
-const NEVER = new Set(['campaign_test', 'admin_compose']);
+const NEVER = new Set(['campaign_test', 'admin_compose', 'admin_medicine_request']); // medicine: sent in full by messageOwner
 /** Always important. */
 const IMPORTANT_TEMPLATES = new Set(['admin_new_booking', 'admin_new_enquiry', 'admin_partner_signup']);
 /** Other admin alerts are important when their subject is about money, a booking or a person waiting. */
@@ -47,6 +47,39 @@ async function settings(): Promise<{ mode: OwnerAlertMode; phone: string | null 
     const mode = (['off', 'important', 'all'] as const).includes(data?.owner_alerts) ? data!.owner_alerts as OwnerAlertMode : 'off';
     return { mode, phone: data?.owner_phone || null };
   } catch { return { mode: 'off', phone: null }; }
+}
+
+/**
+ * WhatsApp the owner a message that must always reach them (e.g. emergency medicine requests), whatever the alert
+ * mode: the full text while their chat is open (last 24 h), otherwise each [title, detail, link] as an owner_update
+ * template (owner_alert as fallback). Returns true when at least one message went out. Never throws.
+ */
+export async function messageOwner(input: { text: string; templates: [string, string, string][] }): Promise<boolean> {
+  if (process.env.NODE_ENV === 'test' || !isWhatsAppConfigured()) return false;
+  try {
+    const { phone } = await settings();
+    if (!phone) return false;
+    const { data: chat } = await serviceClient().from('whatsapp_conversations').select('id, phone, last_customer_at').eq('phone', phone).maybeSingle();
+    if (chat?.last_customer_at && Date.now() - Date.parse(chat.last_customer_at) < 23.5 * 3600e3) {
+      const { sendLogged } = await import('@/lib/wa-chat/send');
+      const sent = await sendLogged(chat as any, input.text);
+      if (sent.ok) return true;
+    }
+    let any = false;
+    for (const params of input.templates) {
+      let template = 'owner_update';
+      let r = await sendTemplate({ to: phone, template, params });
+      if (!r.ok && !r.skipped) { template = 'owner_alert'; r = await sendTemplate({ to: phone, template, params }); }
+      if (!r.ok && r.skipped) return any;
+      any = any || r.ok;
+      const { error } = await serviceClient().from('whatsapp_messages').insert({
+        recipient_kind: 'owner', to_phone: phone, template,
+        wa_message_id: r.ok ? r.id : null, status: r.ok ? 'sent' : 'failed', error: r.ok ? null : r.error || 'Unknown error',
+      });
+      if (error) console.error('Owner message: could not log:', error);
+    }
+    return any;
+  } catch (e) { console.error('Owner message failed:', e); return false; }
 }
 
 /** WhatsApp the owner about an admin email alert. Never throws; skipped when off or before migration v50. */

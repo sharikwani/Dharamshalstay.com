@@ -7,6 +7,7 @@ import { adminEmail, escHtml, sendEmail } from '@/lib/email';
 import { siteConfig } from '@/lib/config';
 import { MEDICINE_BUCKET } from './options';
 import { isOutsideArea, type MedicineRequestInput } from './validate';
+import { notifyOwnerOfMedicineRequest } from './notify';
 
 export async function submitMedicineRequest(
   input: MedicineRequestInput, ipHash: string | null, file: { bytes: Buffer; ext: string; contentType: string },
@@ -34,11 +35,13 @@ export async function submitMedicineRequest(
     console.error('Medicine request failed:', error);
     throw new HttpError(500, 'Could not send your request. Please try again or WhatsApp us.');
   }
-  // "Urgent" in the subject also sends it to the owner's WhatsApp (lib/owner-alerts.ts). No name, phone, medicines or
-  // health details in the alert (it is kept in the email log and passes through Meta): they stay in admin.
+  // The owner gets the complete details on WhatsApp (owner, 20 Nov 2026). The email stays short (no name, phone or
+  // health details) because the email log keeps it for good; its template is excluded from the email-to-WhatsApp hook.
+  const link = `${siteConfig.url}/admin/medicine`;
+  await notifyOwnerOfMedicineRequest(input, link);
   const outside = isOutsideArea(input.area) ? ' (outside our delivery areas)' : '';
   await sendEmail({
-    to: adminEmail(), subject: `Urgent medicine request: ${input.area}`,
+    to: adminEmail(), subject: `Urgent medicine request: ${input.area}`, template: 'admin_medicine_request',
     html: `<h2>New emergency medicine request</h2><p>Area: ${escHtml(input.area)}${outside}. Sent ${escHtml(new Date().toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: 'numeric', minute: '2-digit' }))}.</p>`
       + `<p>Check the prescription and call the doctor here: <a href="${siteConfig.url}/admin/medicine">${siteConfig.url}/admin/medicine</a></p>`,
   }).catch((e) => console.error('Medicine request email failed:', e));

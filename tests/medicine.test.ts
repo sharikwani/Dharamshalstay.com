@@ -34,10 +34,38 @@ describe('medicine request form', () => {
   });
 });
 
-describe('owner alert', () => {
-  it('a new request reaches the owner on WhatsApp in the default "important" mode', async () => {
+describe('owner WhatsApp with the complete details', () => {
+  const req = {
+    patient_name: 'Pema Lhamo', phone: '919816012345', area: 'Kandi' as const, address: 'Near the Kandi bus stop, house 12, upper road',
+    medicines: 'Salbutamol inhaler 100 mcg, 1', urgency: 'Asthma attack tonight, the inhaler is finished',
+    doctor_name: 'Dr. Sharma', doctor_phone: '919418000000', consent: true as const,
+  };
+  const link = 'https://www.dharamshalastay.com/admin/medicine';
+
+  it('puts every field in the chat message', async () => {
+    const { medicineOwnerMessage } = await import('@/lib/medicine/notify');
+    const m = medicineOwnerMessage(req, link);
+    for (const v of ['Pema Lhamo', '+919816012345', 'Kandi', 'house 12', 'Salbutamol inhaler 100 mcg, 1', 'Asthma attack', 'Dr. Sharma', '+919418000000', link]) expect(m.text).toContain(v);
+  });
+
+  it('splits the details over template messages that fit the 300-character limit, losing nothing', async () => {
+    const { medicineOwnerMessage } = await import('@/lib/medicine/notify');
+    const long = { ...req, medicines: 'Paracetamol 650 mg, 10 tablets; '.repeat(20).trim(), address: 'Ward 3, near the temple, '.repeat(8).trim() };
+    const m = medicineOwnerMessage(long, link);
+    expect(m.templates.length).toBeGreaterThan(1);
+    for (const [title, detail, l] of m.templates) {
+      expect(title.length).toBeLessThanOrEqual(300);
+      expect(detail.length).toBeLessThanOrEqual(300);
+      expect(l).toBe(link);
+    }
+    const joined = m.templates.map((t) => t[1]).join(' ');
+    expect(joined.replace(/\s+/g, '')).toContain(long.medicines.replace(/\s+/g, ''));
+    expect(joined).toContain('+919418000000');
+  });
+
+  it('the admin email no longer sends its own (shorter) WhatsApp', async () => {
     const { shouldAlert } = await import('@/lib/owner-alerts');
-    expect(shouldAlert('important', 'admin_alert', 'Urgent medicine request: Kandi')).toBe(true);
+    expect(shouldAlert('all', 'admin_medicine_request', 'Urgent medicine request: Kandi')).toBe(false);
   });
 });
 
