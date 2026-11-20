@@ -81,7 +81,7 @@ export async function sitemapEntries(): Promise<SitemapEntry[]> {
     { url: B + '/workation', lastModified: date('2026-10-20'), changeFrequency: 'monthly', priority: 0.7 },
     { url: B + '/play', lastModified: date('2026-10-22'), changeFrequency: 'monthly', priority: 0.6 },
     { url: B + '/luggage-storage', lastModified: date('2026-10-25'), changeFrequency: 'weekly', priority: 0.6 },
-    { url: B + '/medicine-delivery-dharamshala', lastModified: date('2026-11-20'), changeFrequency: 'weekly', priority: 0.6 },
+    { url: B + '/medicine-delivery-dharamshala', lastModified: date('2026-11-20'), changeFrequency: 'weekly', priority: 0.6, images: imgs(['/images/places/medicine-delivery.jpg']) },
     { url: B + '/luggage-storage/list-your-service', lastModified: date('2026-10-25'), changeFrequency: 'yearly', priority: 0.3 },
     { url: B + '/travel-partners', lastModified: date('2026-10-27'), changeFrequency: 'monthly', priority: 0.5 },
     ...TRAVEL_PARTNERS.filter((p) => p.indexable).map((p) => ({ url: B + '/travel-partners/' + p.slug, lastModified: date(p.added), changeFrequency: 'monthly' as const, priority: 0.4 })),
