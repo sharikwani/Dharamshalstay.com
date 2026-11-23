@@ -2,9 +2,11 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
+import { reloadOnceForChunkError } from '@/lib/chunk-reload';
 
 export default function Error({ error, reset }: { error: Error; reset: () => void }) {
-  useEffect(() => { console.error('Page error:', error); }, [error]);
+  // A stale deploy's missing script file: one fresh load fixes it (see lib/chunk-reload.ts).
+  useEffect(() => { if (!reloadOnceForChunkError(error)) console.error('Page error:', error); }, [error]);
 
   return (
     <div className="min-h-[60vh] flex items-center justify-center px-4">
