@@ -1,13 +1,17 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { reloadOnceForChunkError } from '@/lib/chunk-reload';
 
 /**
  * Last-resort boundary for errors in the root layouts (header, footer, lead tools). Without it Next.js
  * shows a bare "Application error: a client-side exception" page, which Google indexed for
- * /medicine-delivery-dharamshala after a run of deploys. Stale-deploy chunk errors reload once.
+ * /medicine-delivery-dharamshala on 21 Nov 2026 when its renderer could not fetch some script files.
+ * Missing-chunk errors reload once (lib/chunk-reload.ts).
  */
 export default function GlobalError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
+  // Keep the page's real title: Google's renderer sometimes fails to fetch our script files, and whatever this
+  // shows is what gets indexed. No noindex here, or one bad render could drop a good page from Google.
+  const [title] = useState(() => (typeof document !== 'undefined' && document.title) || 'Dharamshala Stay');
   useEffect(() => {
     if (!reloadOnceForChunkError(error)) console.error('Global error:', error);
   }, [error]);
@@ -15,8 +19,7 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
   return (
     <html lang="en">
       <head>
-        <title>Dharamshala Stay</title>
-        <meta name="robots" content="noindex" />
+        <title>{title}</title>
       </head>
       <body style={{ margin: 0, fontFamily: 'system-ui, sans-serif', background: '#f8fafc', color: '#0f172a' }}>
         <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16, textAlign: 'center' }}>
