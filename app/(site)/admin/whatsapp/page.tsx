@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import WhatsAppSent from '@/components/admin/WhatsAppSent';
 
 type Conv = { id: string; phone: string; profile_name: string | null; status: string; handover_reason: string | null; last_message_at: string; last_customer_at: string | null; unread_admin: number; last_body: string };
-type Msg = { id: string; author: 'customer' | 'ai' | 'admin'; body: string; kind: string; status: string; error: string | null; created_at: string };
+type Msg = { id: string; author: 'customer' | 'ai' | 'admin'; body: string; kind: string; status: string; error: string | null; created_at: string; media_url?: string; media_mime?: string | null };
 
 const BADGE: Record<string, [string, string]> = {
   ai: ['AI', 'bg-sky-100 text-sky-800'], human: ['You', 'bg-violet-100 text-violet-800'],
@@ -213,8 +213,16 @@ function Inbox() {
                         {m.author === 'customer' ? 'Customer' : m.author === 'ai' ? 'AI assistant' : 'You'} · {time(m.created_at)}
                         {m.author !== 'customer' && <span className={m.status === 'failed' ? 'text-red-600' : m.status === 'unknown' ? 'text-amber-600' : ''}> · {m.status}</span>}
                       </p>
+                      {m.media_url && (m.media_mime || '').startsWith('image/') ? (
+                        <a href={m.media_url} target="_blank" rel="noopener noreferrer" className="block mb-1">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={m.media_url} alt={'Photo sent ' + time(m.created_at)} className="max-h-64 rounded-lg border border-slate-200" />
+                        </a>
+                      ) : m.media_url ? (
+                        <a href={m.media_url} target="_blank" rel="noopener noreferrer" className="block mb-1 text-brand-700 underline">Open the file</a>
+                      ) : null}
                       {m.body}
-                      {m.error && <p className="text-xs text-red-600 mt-1">{m.error}</p>}
+                      {m.error &&<p className="text-xs text-red-600 mt-1">{m.error}</p>}
                     </div>
                   </div>
                 ))}

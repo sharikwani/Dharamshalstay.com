@@ -12,6 +12,7 @@ import { businessContact, businessReason, isAutoReply } from './business';
 import { answerHotel, hotelModeAllowed } from './hotel';
 import { handlePartnerMessage, partnerByPhone } from './partner-docs';
 import { handleOwnerMessage, ownerPhone } from './owner';
+import { archiveMedia } from './media';
 import { unanswered, VOICE_FAILED, VOICE_PLACEHOLDER, type Conversation, type Inbound } from './types';
 
 const esc = (s: unknown) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
@@ -46,6 +47,17 @@ export async function handleInbound(m: Inbound, deadline = Date.now() + 50_000):
   const body = m.kind === 'voice' ? VOICE_PLACEHOLDER : m.kind === 'media' ? [m.mediaLabel, m.text].filter(Boolean).join(' ') : m.text;
   const saved = await saveInbound(m, body, m.kind);
   if (!saved) return null;
+  // Keep photos and documents (Meta's media ids expire) so the owner can see them in the inbox, whoever sent them.
+  const archive = m.kind === 'media' && m.mediaId ? archiveMedia(m.mediaId, saved.conversation.id, saved.message.id) : null;
+  const routed = await routeInbound(m, saved, body, deadline);
+  if (!archive) return routed;
+  return { work: Promise.all([archive, routed?.work]) };
+}
+
+type Saved = NonNullable<Awaited<ReturnType<typeof saveInbound>>>;
+
+/** Who answers a stored message: the owner's assistant, a partner or hotel flow, or the customer AI. */
+async function routeInbound(m: Inbound, saved: Saved, body: string, deadline: number): Promise<{ work: Promise<unknown> } | null> {
   const { conversation, message, isNewConversation } = saved;
   // The owner managing the business from their phone: an admin assistant answers, never the customer AI.
   const owner = await ownerPhone();

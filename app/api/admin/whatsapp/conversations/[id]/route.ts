@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { requireCaller, serviceClient, jsonError, HttpError } from '@/lib/server-auth';
 import { setStatus } from '@/lib/wa-chat/store';
+import { signedMediaUrls } from '@/lib/wa-chat/media';
 
 export const dynamic = 'force-dynamic';
 export const fetchCache = 'force-no-store'; // Next 14 caches GET fetches (Supabase reads) in route handlers otherwise
@@ -20,7 +21,12 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
       sb.from('inquiries').select('id, type, status, created_at').eq('whatsapp_conversation_id', params.id).order('created_at', { ascending: false }),
     ]);
     if (conversation.unread_admin) await sb.from('whatsapp_conversations').update({ unread_admin: 0 }).eq('id', params.id);
-    return NextResponse.json({ conversation, messages: (msgs || []).reverse(), enquiries: enquiries || [] });
+    const messages = (msgs || []).reverse();
+    const urls = await signedMediaUrls(messages);
+    return NextResponse.json({
+      conversation, enquiries: enquiries || [],
+      messages: messages.map((m: any) => (urls[m.id] ? { ...m, media_url: urls[m.id] } : m)),
+    });
   } catch (e) { return jsonError(e); }
 }
 

@@ -11,6 +11,8 @@ export type ChatMessage = {
   id: string; conversation_id: string; direction: 'in' | 'out'; author: Author; body: string;
   kind: 'text' | 'voice' | 'media' | 'system'; wa_message_id: string | null; status: string;
   error: string | null; created_at: string;
+  /** A photo or document they sent, kept in the whatsapp-media bucket (v58). */
+  media_path?: string | null; media_mime?: string | null;
 };
 export type ChatSettings = { ai_mode: AiMode; test_numbers: string[] };
 
