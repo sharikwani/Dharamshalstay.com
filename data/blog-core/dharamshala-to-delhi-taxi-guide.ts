@@ -3,12 +3,12 @@ import type { BlogPost } from '@/types';
 export const override: Partial<BlogPost> = {
   title: 'Dharamshala to Delhi Taxi 2026: Fares by Car, Routes, Drive Time & Booking Tips',
   excerpt:
-    'A one-way taxi from Dharamshala to Delhi costs from ₹10,000 by sedan and ₹13,000 by Ertiga or Innova, covers about 480 km in 10-12 hours, and runs via Una-Chandigarh or Pathankot-Jalandhar. Here is how to plan the day.',
+    'A one-way taxi from Dharamshala to Delhi costs ₹17,000 by sedan and ₹22,000 by Ertiga or Innova, covers about 480 km in 10-12 hours, and runs via Una-Chandigarh or Pathankot-Jalandhar. Here is how to plan the day.',
   meta_title: 'Dharamshala to Delhi Taxi Fare 2026: Route, Time & Tips',
   meta_description:
-    'Dharamshala to Delhi taxi: ₹10,000 sedan, ₹13,000 Ertiga/Innova, driver allowance included, tolls extra. About 480 km, 10-12 hrs via Una or Pathankot.',
+    'Dharamshala to Delhi taxi: ₹17,000 sedan, ₹22,000 Ertiga/Innova, driver allowance included, tolls extra. About 480 km, 10-12 hrs via Una or Pathankot.',
   updated_at: '2026-11-26',
-  content: `**Short answer:** A one-way taxi from Dharamshala to Delhi costs **from ₹10,000 in a Swift Dzire or Etios sedan (up to 4 passengers)** and **₹13,000 in an Ertiga or Innova (up to 6)**, as a fixed fare that includes the AC car and the driver allowance; tolls, parking and any Delhi entry tax are extra. The trip is about **480 km** and takes **10-12 hours** with meal breaks, usually via **Una and Chandigarh** or via **Pathankot and Jalandhar (NH44)**. Leave by 5-6 am to reach Delhi in the afternoon, before the evening traffic.
+  content: `**Short answer:** A one-way taxi from Dharamshala to Delhi costs **₹17,000 in a Swift Dzire or Etios sedan (up to 4 passengers)** and **₹22,000 in an Ertiga or Innova (up to 6)**, as a fixed fare that includes the AC car and the driver allowance; tolls, parking and any Delhi entry tax are extra. The trip is about **480 km** and takes **10-12 hours** with meal breaks, usually via **Una and Chandigarh** or via **Pathankot and Jalandhar (NH44)**. Leave by 5-6 am to reach Delhi in the afternoon, before the evening traffic.
 
 Fares below are our published fares as of 2026 and are indicative; the exact price is confirmed when you book on our [Dharamshala to Delhi taxi page](/taxi/dharamshala-to-delhi-taxi).
 
@@ -18,8 +18,8 @@ Fares below are our published fares as of 2026 and are indicative; the exact pri
 |---|---|
 | Distance | About 480 km (roughly 475-520 km depending on route and drop point) |
 | Drive time | 10-12 hrs including meal breaks |
-| Sedan fare (Swift Dzire / Etios, up to 4) | ₹10,000 one way |
-| SUV fare (Ertiga / Innova, up to 6) | ₹13,000 one way |
+| Sedan fare (Swift Dzire / Etios, up to 4) | ₹17,000 one way |
+| SUV fare (Ertiga / Innova, up to 6) | ₹22,000 one way |
 | Included | AC vehicle, driver allowance |
 | Not included | Tolls, parking, Delhi state entry tax (if any) |
 | Main routes | Una - Nangal - Ropar - Chandigarh - Ambala, or Pathankot - Jalandhar - Ludhiana - Ambala (NH44) |
@@ -44,8 +44,8 @@ Whichever way you go, the slow part is the two-lane hill road out of Kangra dist
 
 | Vehicle | Seats | One-way fare | Approx. per person (full car) | Best for |
 |---|---|---|---|---|
-| Swift Dzire / Etios (sedan) | 4 | ₹10,000 | About ₹2,500 for 4 people | Couples, small families, 2-4 travellers with normal luggage |
-| Ertiga / Innova (SUV) | 6 | ₹13,000 | About ₹2,200 for 6 people | Families, groups, extra luggage, older travellers who want more legroom |
+| Swift Dzire / Etios (sedan) | 4 | ₹17,000 | About ₹4,250 for 4 people | Couples, small families, 2-4 travellers with normal luggage |
+| Ertiga / Innova (SUV) | 6 | ₹22,000 | About ₹3,670 for 6 people | Families, groups, extra luggage, older travellers who want more legroom |
 
 **What the fare includes:** the air-conditioned car, an experienced hill driver and the driver allowance for the trip. **What it does not include:** toll charges on the highways, parking fees and any Delhi state entry tax that applies to an outside-registered commercial vehicle. Tolls and taxes are paid on the way and settled at actuals, so ask the driver to keep the receipts.
 
@@ -55,7 +55,7 @@ If you need a bigger or premium vehicle, or a pickup somewhere unusual, ask when
 
 The fares above are **fixed one-way fares**, which is what most people need: you are leaving the hills and catching a flight or train in Delhi, or heading home. If you want the car and driver to stay with you, for example a few days in Delhi and then back to Himachal, or a multi-day [Himachal circuit](/blog/himachal-itinerary-delhi-dharamshala-manali), that is quoted separately based on days and distance. Tell us the full plan and we will give one price.
 
-Coming the other way? The [Delhi to Dharamshala taxi](/taxi/delhi-to-dharamshala-taxi) is the same route in reverse, but it is priced separately: ₹17,000 for a sedan on our live fare as of 26 November 2026.
+Coming the other way? The [Delhi to Dharamshala taxi](/taxi/delhi-to-dharamshala-taxi) is the same route in reverse at the same fares: ₹17,000 by sedan and ₹22,000 by Ertiga or Innova.
 
 ## Which Route Does the Taxi Take?
 
@@ -124,15 +124,15 @@ Short stops for food, toilets, photos or a viewpoint are fine on a fixed-fare ta
 
 | Option | Door-to-door time | Approx. cost (2026, one way) | Best for |
 |---|---|---|---|
-| Private taxi (sedan) | 10-12 hrs | ₹10,000 per car (up to 4) plus tolls | Families, 2-4 people, luggage, door-to-door comfort |
-| Private taxi (Ertiga / Innova) | 10-12 hrs | ₹13,000 per car (up to 6) plus tolls | Groups and families of 5-6 |
+| Private taxi (sedan) | 10-12 hrs | ₹17,000 per car (up to 4) plus tolls | Families, 2-4 people, luggage, door-to-door comfort |
+| Private taxi (Ertiga / Innova) | 10-12 hrs | ₹22,000 per car (up to 6) plus tolls | Groups and families of 5-6 |
 | Overnight AC Volvo bus | 10-13 hrs | Approx. ₹1,000-2,000 per person | Solo travellers and budget trips |
 | Flight Kangra (Gaggal) to Delhi | 3.5-5 hrs including airport time | Approx. ₹3,500-9,000 per person | Short trips, when fares are reasonable |
 | Taxi to Pathankot or Amb Andaura + train | 10-14 hrs | Train fare plus a station transfer (inbound fares from ₹3,200-3,800 per car) | Rail fans, people who sleep better on trains |
 
 ### When a taxi makes sense
 
-- **You are 3-6 people.** Per head, a full sedan or SUV costs about ₹2,200-2,500, close to a Volvo seat plus the local transfer at both ends, and you get door-to-door service.
+- **You are 3-6 people.** Per head, a full SUV or sedan costs about ₹3,700-4,250, more than a Volvo seat, but you get door-to-door service, your own stops and no transfers at either end.
 - **You have elders, kids or lots of luggage.** No bus stand at dawn, no luggage hold, stops whenever you need them. See our guides for [families with kids](/blog/dharamshala-with-kids-family-guide) and [senior citizens](/blog/dharamshala-for-senior-citizens).
 - **You are staying high up.** Buses cannot reach most lanes in McLeod Ganj, Bhagsu or Dharamkot; a taxi picks you up at your hotel or the nearest road point.
 - **You want to break the journey** in Chandigarh, Anandpur Sahib or Amritsar.
@@ -172,7 +172,7 @@ Need more than one transfer? We also run airport pickups, local sightseeing, [Bi
     {
       question: 'How much is a taxi from Dharamshala to Delhi?',
       answer:
-        'As of 2026, our fixed one-way fare is ₹10,000 for a Swift Dzire or Etios sedan (up to 4 passengers) and ₹13,000 for an Ertiga or Innova (up to 6). The fare includes the AC car and driver allowance. Tolls, parking and any Delhi state entry tax are extra. The exact price is confirmed when you book.',
+        'As of 2026, our fixed one-way fare is ₹17,000 for a Swift Dzire or Etios sedan (up to 4 passengers) and ₹22,000 for an Ertiga or Innova (up to 6). The fare includes the AC car and driver allowance. Tolls, parking and any Delhi state entry tax are extra. The exact price is confirmed when you book.',
     },
     {
       question: 'How far is Dharamshala from Delhi by road?',
@@ -197,7 +197,7 @@ Need more than one transfer? We also run airport pickups, local sightseeing, [Bi
     {
       question: 'Is a taxi or bus better from Dharamshala to Delhi?',
       answer:
-        'For one or two budget travellers, the overnight AC Volvo bus at about ₹1,000-2,000 per person is much cheaper. For 3-6 people, families, elders or heavy luggage, a taxi works out at about ₹2,200-2,500 per person in a full car and gives door-to-door service with stops when you want them.',
+        'For one or two budget travellers, the overnight AC Volvo bus at about ₹1,000-2,000 per person is much cheaper. For 3-6 people, families, elders or heavy luggage, a taxi works out at about ₹3,700-4,250 per person in a full car and gives door-to-door service with stops when you want them.',
     },
     {
       question: 'Can the taxi pick me up from McLeod Ganj or Bhagsu?',

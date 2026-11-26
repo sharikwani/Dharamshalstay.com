@@ -315,7 +315,7 @@ Times are indicative and vary by bus, route and traffic. Expect delays on Friday
 - **Private:** evening Volvos from McLeod Ganj (with offices around the main square and bus stand) or from lower Dharamshala, usually dropping at Majnu ka Tilla or Kashmere Gate, sometimes with other drop points.
 - **Book the return in advance** for Sunday and the last day of long weekends. Sunday evening buses fill up first.
 - **Getting on in Delhi at dawn:** Kashmere Gate metro opens early in the morning; check the current first-train time. Majnu ka Tilla is a short ride from Vidhan Sabha metro.
-- **If buses are full:** a one-way taxi is approx. ₹10,000-15,000 per car. Our [Dharamshala to Delhi taxi guide](/blog/dharamshala-to-delhi-taxi-guide) breaks this down, or you can [book a taxi](/taxi).
+- **If buses are full:** a one-way taxi is ₹17,000 by sedan or ₹22,000 by SUV. Our [Dharamshala to Delhi taxi guide](/blog/dharamshala-to-delhi-taxi-guide) breaks this down, or you can [book a taxi](/taxi).
 
 ## Bus vs Other Options
 

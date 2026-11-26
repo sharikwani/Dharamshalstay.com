@@ -30,7 +30,7 @@ You have three practical options, covered in detail in our [how to reach Dharams
 
 - **Overnight Volvo bus** from Delhi (HRTC and private operators). Buses leave in the evening and reach Dharamshala or McLeod Ganj early morning. This is the most popular choice because it saves a night of hotel cost and a day of travel.
 - **Flight to Kangra Airport (Gaggal)**, about 13 to 17 km from Dharamshala town. IndiGo and SpiceJet have run Delhi to Kangra flights in 2026, but schedules change seasonally and fog or weather can cause cancellations, so book a flexible fare.
-- **Private taxi** from Delhi, 10 to 12 hours, typically approx. ₹10,000–14,000 one way for a sedan. Our [Delhi taxi guide](/blog/dharamshala-to-delhi-taxi-guide) covers rates and the best departure times. You can also book a [Kangra airport or Delhi transfer](/taxi) with us.
+- **Private taxi** from Delhi, 10 to 12 hours, ₹17,000 one way for a sedan or ₹22,000 for an SUV on our fixed fare. Our [Delhi taxi guide](/blog/dharamshala-to-delhi-taxi-guide) covers rates and the best departure times. You can also book a [Kangra airport or Delhi transfer](/taxi) with us.
 
 Rail is possible too: the nearest broad-gauge stations are Pathankot (about 85–90 km away) and Amb Andaura in Una district, but you still need a 2.5 to 3 hour road transfer.
 

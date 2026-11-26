@@ -19,7 +19,7 @@ Which option is best depends on where you start, how much time you have and your
 | HRTC or private Volvo bus | 10-12 hrs overnight | ₹900-2,000 | Budget travellers, solo trips |
 | Overnight train to Pathankot + taxi/bus | 11-14 hrs | ₹500-2,500 train + ₹150-3,500 onward | Rail lovers, people who sleep badly on buses |
 | Self-drive | 9-11 hrs | ₹4,500-6,500 fuel + tolls per car | Groups, road-trippers |
-| One-way taxi from Delhi | 9-11 hrs | approx. ₹10,000-15,000 per car | Families, groups of 3-4 |
+| One-way taxi from Delhi | 10-12 hrs | ₹17,000 sedan, ₹22,000 SUV per car | Families, groups of 3-4 |
 
 All prices are indicative and move with season, fuel prices and how early you book.
 
@@ -86,7 +86,7 @@ One-way taxis are popular with families and groups because the per-person cost b
 
 | From | Distance | Drive time | Approx. one-way taxi fare |
 |---|---|---|---|
-| Delhi | 475-500 km | 9-11 hrs | ₹10,000-15,000 |
+| Delhi | 475-520 km | 10-12 hrs | ₹17,000 (sedan) |
 | Chandigarh | approx. 240 km | 5-6 hrs | ₹5,000-6,500 |
 | Amritsar | approx. 200 km | 4.5-5.5 hrs | ₹4,500-6,000 |
 | Pathankot | approx. 90 km | 2.5-3 hrs | ₹3,200 (Alto) / ₹4,000 (sedan), our fixed fares |
@@ -149,7 +149,7 @@ Once you know how you are arriving, [browse hotels in Dharamshala and McLeod Gan
       },
       {
         question: 'How much does a taxi from Delhi to Dharamshala cost?',
-        answer: 'Our fixed one-way fare from Delhi to Dharamshala is 17,000 rupees for a sedan (live fare checked 26 November 2026, tolls extra); see the Delhi to Dharamshala taxi page for current prices. The drive is about 475-520 km and takes about 10-12 hours.',
+        answer: 'Our fixed one-way fare from Delhi to Dharamshala is 17,000 rupees for a sedan or 22,000 rupees for an Ertiga or Innova (tolls extra); see the Delhi to Dharamshala taxi page for current prices. The drive is about 475-520 km and takes about 10-12 hours.',
       },
     ],
   },
