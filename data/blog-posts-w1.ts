@@ -66,7 +66,7 @@ The temple area gets crowded on Mondays (Shiva's day), on Shivratri and during s
 
 ## The Bhagsu waterfall walk
 
-From the temple a paved path climbs gently along the gorge to the **Bhagsu waterfall**. It is roughly 1 km and **15 to 20 minutes** at an easy pace, with a few steps near the end. Most people can do it in normal shoes, though trainers are better than sandals.
+From the temple a paved path climbs gently along the gorge to the **Bhagsu waterfall**. It is roughly 1 km and **15 to 20 minutes** at an easy pace, with a few steps near the end. Most people can do it in normal shoes, though trainers are better than sandals. For timings, entry fee, seasonal flow and safety in detail, see our dedicated [Bhagsunag waterfall guide](/blog/bhagsunag-waterfall-guide).
 
 How the falls change through the year:
 

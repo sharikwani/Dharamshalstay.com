@@ -835,6 +835,10 @@ The stadium is in **Jawahar Nagar, lower Dharamshala**, about **1.5-2 km below K
 | Altitude | about 1,457 m (4,780 ft) |
 | First Test | India v Australia, 25-29 March 2017 |
 
+## What are HPCA Stadium timings?
+
+HPCA Stadium in Dharamshala is open to visitors on **non-match days from about 9:30 am to 5 pm**, so the **closing time is about 5 pm** (Kangra district administration, page updated 1 April 2026; the page still showed this when we re-checked on 26 November 2026). Entry is **about ₹30 per person**. There is **no official weekly closed day**, but the ground is **closed to visitors on match days and around big matches**. One travel site says 9 am to 6 pm and free entry, so we recommend arriving **between 10 am and 4 pm** and asking your hotel to check the gate that morning.
+
 ## What Do Sources Say About Timings and Entry Fee?
 
 Published opening and closing times and entry fees for the stadium do not all agree, and there is no official HPCA tariff online that we could load. Here is what each source says, with the date we checked it:
@@ -991,13 +995,13 @@ For other questions, see our [FAQ](/faq).`,
     tags: ['HPCA Stadium', 'Cricket', 'IPL', 'Dharamshala', 'War Memorial', 'Sightseeing'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-10-01',
-    updated_at: '2026-10-28',
+    updated_at: '2026-11-26',
     image: placeImage('hpca-stadium'),
     image_alt: 'HPCA Cricket Stadium in Dharamshala with the snow-capped Dhauladhar range behind the pavilion',
     read_time: 10,
     featured: false,
-    meta_title: 'Dharamshala Cricket Stadium Timings & Entry Fee 2026',
-    meta_description: 'HPCA stadium Dharamshala: open on non-match days about 9:30 am-5 pm, entry about Rs 30. Closed to visitors around matches, so check before you go.',
+    meta_title: 'HPCA Stadium Dharamshala Timings & Entry Fee 2026',
+    meta_description: 'HPCA Stadium Dharamshala is open about 9:30 am to 5 pm on non-match days, entry about Rs 30. Closed on match days, so check first (Nov 2026).',
     related_slugs: ['places-to-visit-in-dharamshala', 'one-day-in-dharamshala', 'best-hotels-in-dharamshala'],
     sources: [
       { title: 'Kangra district administration: HPCA Cricket Stadium (updated 1 April 2026)', url: 'https://hpkangra.nic.in/tourist-place/hpca-cricket-stadium/' },
@@ -1009,6 +1013,18 @@ For other questions, see our [FAQ](/faq).`,
       { title: 'Holidify: Dharamshala Cricket Stadium', url: 'https://www.holidify.com/places/dharamsala/dharamshala-cricket-stadium-sightseeing-4518.html' },
     ],
     faqs: [
+      {
+        question: 'What are the HPCA stadium timings in Dharamshala?',
+        answer: 'On non-match days the HPCA stadium is open to visitors from about 9:30 am to 5 pm, with an entry fee of about Rs 30 per person (Kangra district administration, page updated 1 April 2026, re-checked 26 November 2026). Other sites quote 9 am to 6 pm, so arrive between 10 am and 4 pm.',
+      },
+      {
+        question: 'What is the Dharamshala cricket stadium closing time?',
+        answer: 'About 5 pm on non-match days according to the Kangra district page; one travel site says 6 pm. If you want to be safe, be at the gate by 4 pm, since closures and security checks can be decided at short notice.',
+      },
+      {
+        question: 'Can I visit Dharamshala stadium on a match day?',
+        answer: 'No, not as a sightseer. On match days, and around big matches, only ticket holders get in and the ground is closed to casual visitors. Visit on a non-match day, ideally a weekday morning, and check the gate status that morning.',
+      },
       {
         question: 'What is the Dharamshala stadium opening time and visiting time?',
         answer: 'On non-match days the HPCA stadium is open to visitors from about 9:30 am to 5 pm, according to the Kangra district administration (page updated April 2026), so the closing time is about 5 pm. Travel sites give slightly different hours, so the safest visiting time is between 10 am and 4 pm, after checking it is not a match or closure day.',

@@ -158,7 +158,7 @@ Once you know how you are arriving, [browse hotels in Dharamshala and McLeod Gan
     slug: 'dharamshala-in-winter-snowfall',
     title: 'When Does It Snow in Dharamshala? Snowfall Months, Places and a Dated Snow Log (2026)',
     excerpt: 'Upper Dharamshala (McLeod Ganj, Naddi, Dharamkot) gets snow on a few days between late December and February, most often in January; the lower town almost never does, and no year is guaranteed. Here is where and when it snows, a dated log of recent snowfalls, roads, hotels and packing.',
-    content: `**Short answer:** Snow falls in upper Dharamshala (McLeod Ganj, Naddi, Dharamkot and Bhagsu) on only a few days a winter, between late December and February, and most often in January. Lower Dharamshala and Kotwali Bazaar almost never get snow; the last time the bazaar did, on 8 February 2019, it was the first time in more than six years. Snow is never guaranteed: in winter 2023-24 the first fall in the upper villages came only on 1 February 2024. For snow you can almost count on from December to March, go higher, to Triund (about 2,850 m).
+    content: `**Short answer:** Snow falls in upper Dharamshala (McLeod Ganj, Naddi, Dharamkot and Bhagsu) on only a few days a winter, between late December and February, and most often in January. Lower Dharamshala and Kotwali Bazaar almost never get snow; the last time the bazaar did, on 8 February 2019, it was the first time in more than six years. Snow is never guaranteed: in winter 2023-24 the first fall in the upper villages came only on 1 February 2024. For snow you can almost count on from December to March, go higher, to Triund (about 2,850 m). For month-by-month temperatures and what to pack, see our [Dharamshala weather guide](/blog/dharamshala-weather-what-to-pack).
 
 ## Quick Facts: Snowfall in Dharamshala
 
@@ -313,7 +313,7 @@ Yes, if you like clear mountain views, quiet streets and cosy cafe afternoons. J
     tags: ['dharamshala snowfall', 'mcleod ganj snow', 'when does it snow in dharamshala', 'dharamshala me barf kab girti hai', 'winter travel', 'triund in winter', 'naddi', 'dharamkot snow'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-09-10',
-    updated_at: '2026-10-24',
+    updated_at: '2026-11-26',
     image: placeImage('dharamshala-snow'),
     image_alt: 'Fresh snow on the Dhauladhar range and rooftops above McLeod Ganj, Dharamshala, in winter',
     read_time: 10,
@@ -568,7 +568,9 @@ Have a budget in mind and want a plan that fits it? [Tell us your dates and budg
     slug: 'dharamshala-weather-what-to-pack',
     title: 'Dharamshala Weather by Month and What to Pack (2026 Guide)',
     excerpt: 'A month-by-month Dharamshala and McLeod Ganj weather table with temperatures and rainfall, plus season-by-season packing lists and a trek checklist from locals.',
-    content: `## Dharamshala Weather at a Glance
+    content: `**Short answer:** Dharamshala is mild in spring and autumn (about 20-25°C by day), warm in May-June (high 20s), very wet in July-August, and cold but sunny from December to February (about 16-18°C by day, 6-7°C at night in town, colder in McLeod Ganj). Pack layers year-round and a warm jacket plus rain gear for the monsoon. For snow dates and places, see our [Dharamshala snowfall guide](/blog/dharamshala-in-winter-snowfall).
+
+## Dharamshala Weather at a Glance
 
 Dharamshala has mild, pleasant summers, cold but mostly sunny winters and a very heavy monsoon. Dharamshala town sits at about 1,457 m and McLeod Ganj about 600 m higher at roughly 2,000 m, so **McLeod Ganj is usually 3-5°C cooler than lower Dharamshala**. Days in April-June reach the high 20s in town, winter nights in McLeod Ganj can drop below zero, and July and August each bring more rain than many places get in a year.
 
@@ -711,12 +713,12 @@ Wherever you choose to stay, from lower [Dharamshala](/destinations/dharamshala)
     tags: ['dharamshala weather', 'mcleod ganj weather', 'what to pack', 'packing list', 'monsoon', 'trekking gear'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-09-22',
-    updated_at: '2026-10-24',
+    updated_at: '2026-11-26',
     image: placeImage('dhauladhar-hero'),
     image_alt: 'Snow-capped Dhauladhar range rising above Dharamshala and McLeod Ganj under a clear sky',
     read_time: 8,
     featured: false,
-    meta_title: 'Dharamshala Weather 2026: Month-by-Month Temp & Rain',
+    meta_title: 'Dharamshala Weather by Month 2026: Temp, Rain & Packing',
     meta_description: 'Dharamshala weather: November days about 22°C, nights 10°C; December 18/7°C; January 16/6°C. McLeod Ganj is colder still. Monthly table and packing list.',
     related_slugs: ['best-time-to-visit-dharamshala', 'dharamshala-monsoon-travel-guide', 'dharamshala-in-winter-snowfall'],
     faqs: [

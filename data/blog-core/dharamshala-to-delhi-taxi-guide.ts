@@ -7,7 +7,7 @@ export const override: Partial<BlogPost> = {
   meta_title: 'Dharamshala to Delhi Taxi Fare 2026: Route, Time & Tips',
   meta_description:
     'Dharamshala to Delhi taxi: ₹10,000 sedan, ₹13,000 Ertiga/Innova, driver allowance included, tolls extra. About 480 km, 10-12 hrs via Una or Pathankot.',
-  updated_at: '2026-10-07',
+  updated_at: '2026-11-26',
   content: `**Short answer:** A one-way taxi from Dharamshala to Delhi costs **from ₹10,000 in a Swift Dzire or Etios sedan (up to 4 passengers)** and **₹13,000 in an Ertiga or Innova (up to 6)**, as a fixed fare that includes the AC car and the driver allowance; tolls, parking and any Delhi entry tax are extra. The trip is about **480 km** and takes **10-12 hours** with meal breaks, usually via **Una and Chandigarh** or via **Pathankot and Jalandhar (NH44)**. Leave by 5-6 am to reach Delhi in the afternoon, before the evening traffic.
 
 Fares below are our published fares as of 2026 and are indicative; the exact price is confirmed when you book on our [Dharamshala to Delhi taxi page](/taxi/dharamshala-to-delhi-taxi).
@@ -25,6 +25,20 @@ Fares below are our published fares as of 2026 and are indicative; the exact pri
 | Main routes | Una - Nangal - Ropar - Chandigarh - Ambala, or Pathankot - Jalandhar - Ludhiana - Ambala (NH44) |
 | Best departure | 5-6 am from Dharamshala or McLeod Ganj |
 | Book | [Dharamshala to Delhi taxi](/taxi/dharamshala-to-delhi-taxi), at least 24 hours ahead |
+
+## How Far Is Dharamshala from Delhi?
+
+**Dharamshala is about 475-520 km from Delhi by road**, roughly 9-11 hours of driving, or 10-12 hours with meal stops. The exact figure depends on the route your driver takes and where you are picked up and dropped. Figures below were checked on 26 November 2026.
+
+| Way to travel | Distance | Time | Status (26 Nov 2026) |
+|---|---|---|---|
+| By road (taxi or own car) | About 475-520 km | 9-11 hrs driving, 10-12 hrs with stops | Confirmed range; we have not verified a separate km figure for each route, so we do not quote one |
+| From McLeod Ganj instead of lower Dharamshala | Add about 9 km of hill road | Allow extra time for the climb | Kotwali Bazaar to McLeod Ganj by road |
+| By rail, Amb Andaura to New Delhi (Vande Bharat 22448) | 437 km of track | About 5 hrs 20-25 min on the train | Runs six days a week; sources disagree on the day it does not run, so check IRCTC. Amb Andaura is about 105 km (3-3.5 hrs) by taxi from Dharamshala |
+| By air, Kangra (Gaggal) to Delhi | Not a road distance | About 1 hr 20 min in the air | Number of daily flights for winter 2026-27 not confirmed; check the airlines |
+| By overnight AC Volvo bus | Same road distance | 10-13 hrs | Departure times change by season and operator; check HRTC before you travel |
+
+Whichever way you go, the slow part is the two-lane hill road out of Kangra district; after Una or Pathankot the highway is fast. That is why a taxi taking 10-12 hours for under 520 km is normal, not a sign of a bad driver.
 
 ## Taxi Fares by Vehicle (2026)
 
@@ -161,9 +175,9 @@ Need more than one transfer? We also run airport pickups, local sightseeing, [Bi
         'As of 2026, our fixed one-way fare is ₹10,000 for a Swift Dzire or Etios sedan (up to 4 passengers) and ₹13,000 for an Ertiga or Innova (up to 6). The fare includes the AC car and driver allowance. Tolls, parking and any Delhi state entry tax are extra. The exact price is confirmed when you book.',
     },
     {
-      question: 'How long does it take to drive from Dharamshala to Delhi?',
+      question: 'How far is Dharamshala from Delhi by road?',
       answer:
-        'The distance is about 480 km and the drive usually takes 10-12 hours including breakfast, lunch and tea stops. On a clear day with few stops it can be closer to 9-10 hours. Traffic at the Delhi end, fog in winter and landslides in the monsoon can add time.',
+        'About 475-520 km by road, depending on the route (via Una and Chandigarh, or via Pathankot and NH44) and your pickup and drop points; McLeod Ganj adds about 9 km. The drive usually takes 10-12 hours including meal stops, or 9-10 hours on a clear day with few stops. Winter fog and monsoon landslides can add time.',
     },
     {
       question: 'Which is the best route from Dharamshala to Delhi by road?',
@@ -196,5 +210,12 @@ Need more than one transfer? We also run airport pickups, local sightseeing, [Bi
         'Our listed fares are one-way fixed fares. If you want the car and driver to stay with you for a return trip or a multi-day tour, share your full plan and we will quote it based on the days and distance.',
     },
   ],
-  tags: ['taxi', 'delhi', 'dharamshala', 'transport', 'travel tips', 'dharamshala to delhi taxi', 'taxi fare', 'road trip'],
+  sources: [
+    { title: 'HPTDC (HP Tourism): How to reach and road distances from Dharamshala, Delhi 520 km (checked 26 November 2026)', url: 'https://hptdc.hp.gov.in/access' },
+    { title: 'New Delhi to Amb Andaura Vande Bharat Express: 437 km, six days a week (Wikipedia, checked 26 November 2026)', url: 'https://en.wikipedia.org/wiki/New_Delhi%E2%80%93Amb_Andaura_Vande_Bharat_Express' },
+    { title: 'Change in operating days of Vande Bharat 22447/22448 (Railway Board order CC-321/2023, 17 November 2023)', url: 'https://indianrailways.gov.in/railwayboard/uploads/directorate/coaching/2023/CC-321-2023-CID-2%20PAIRS%20OF%20VB.pdf' },
+    { title: 'Train timings and running days (IRCTC, official booking site)', url: 'https://www.irctc.co.in/' },
+    { title: 'HRTC bus timetables and booking (Himachal Road Transport Corporation, official)', url: 'https://online.hrtchp.com/' },
+  ],
+  tags: ['taxi', 'delhi', 'how far is dharamshala from delhi', 'dharamshala to delhi distance', 'dharamshala', 'transport', 'travel tips', 'dharamshala to delhi taxi', 'taxi fare', 'road trip'],
 };

@@ -89,7 +89,7 @@ The road is open year-round. Summer (April to June) means hot plains but pleasan
 
 ## Once You Arrive
 
-For getting around in Dharamshala and McLeod Ganj, read our [local transport guide](/blog/local-transport-dharamshala). If you need a return taxi, see our [Dharamshala to Amritsar taxi](/taxi/dharamshala-to-amritsar-taxi), or for onward transport [contact us](/contact) or use our [taxi booking page](/taxi).`,
+For getting around in Dharamshala and McLeod Ganj, read our [local transport guide](/blog/local-transport-dharamshala). If you need a return taxi, see our [Dharamshala to Amritsar taxi](/taxi/dharamshala-to-amritsar-taxi), or for onward transport [contact us](/contact) or use our [taxi booking page](/taxi). For road distances from Dharamshala to Pathankot, Dalhousie, Manali, Chandigarh, Delhi and more in one table, see our [Dharamshala distance chart](/blog/dharamshala-distance-chart).`,
     category: 'Transport',
     tags: ['amritsar to dharamshala', 'transport', 'how to reach dharamshala', 'taxi', 'bus', 'road trip', 'pathankot'],
     author: 'Dharamshala Stay Team',
@@ -243,9 +243,9 @@ Once in Dharamshala, our [local transport guide](/blog/local-transport-dharamsha
   {
     id: 'blog-dharamshala-to-manali',
     slug: 'dharamshala-to-manali',
-    title: 'Dharamshala to Manali: Distance, Best Routes & Transport (2026)',
+    title: 'Dharamshala to Manali Distance: 230-250 km, Routes & Transport (2026)',
     excerpt: 'Three ways to get from Dharamshala to Manali by bus, taxi or self-drive, with real drive times, costs, scenic detours through Bir and Palampur, and tips for breaking the long mountain journey.',
-    content: `**Short answer:** Dharamshala to Manali is roughly **230 to 250 km** by the direct route and takes about **7 to 9 hours** of driving. There is no direct flight or rail link between the two, so the road through the Kangra and Kullu valleys is the only practical option. The journey is long but crosses some of the most beautiful country in Himachal — tea gardens, ancient temples, river gorges, and apple orchards.
+    content: `**Short answer:** The Dharamshala to Manali distance is roughly **230 to 250 km** by road, about **7 to 9 hours** of driving, via Palampur, Baijnath, Mandi and Kullu (or Bir and Mandi for the scenic detour). Buses start from about ₹400 and a one-way taxi from about ₹5,000. There is no direct flight or rail link between the two, so the road through the Kangra and Kullu valleys is the only practical option. The journey is long but crosses some of the most beautiful country in Himachal — tea gardens, ancient temples, river gorges, and apple orchards.
 
 We send guests on this route regularly, and the advice below is based on real travel times, not optimistic Google Maps estimates. For a complete multi-destination Himachal trip, see our [Delhi-Dharamshala-Bir-Manali itinerary](/blog/himachal-itinerary-delhi-dharamshala-manali).
 
@@ -333,12 +333,12 @@ During monsoon (July to September), landslides can occur on any section but are 
 
 ## Planning Your Time
 
-If you are combining Dharamshala and Manali, give each place at least 2 to 3 nights. The drive between them is a full travel day either way. Use our [places to visit in Dharamshala](/blog/places-to-visit-in-dharamshala) and [things to do in McLeod Ganj](/blog/things-to-do-in-mcleod-ganj) to plan your Dharamshala days before heading to Manali.`,
+If you are combining Dharamshala and Manali, give each place at least 2 to 3 nights. The drive between them is a full travel day either way. Use our [places to visit in Dharamshala](/blog/places-to-visit-in-dharamshala) and [things to do in McLeod Ganj](/blog/things-to-do-in-mcleod-ganj) to plan your Dharamshala days before heading to Manali. For distances from Dharamshala to Bir, Dalhousie, Shimla, Amritsar and other towns, check our [Dharamshala distance chart](/blog/dharamshala-distance-chart).`,
     category: 'Transport',
     tags: ['dharamshala to manali', 'transport', 'road trip', 'himachal', 'bus', 'taxi', 'mandi', 'bir'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-10-11',
-    updated_at: '2026-10-11',
+    updated_at: '2026-11-26',
     image: placeImage('kangra-valley'),
     image_alt: 'Kangra Valley landscape on the Dharamshala to Manali road',
     read_time: 9,

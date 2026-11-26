@@ -128,6 +128,16 @@ There is no broad-gauge railway to Dharamshala. Your options:
 - **Amb Andaura (Una district):** the Vande Bharat Express from New Delhi to Amb Andaura stops at Chandigarh and Una, which makes it the fastest rail option from Chandigarh. From Amb Andaura, a taxi to Dharamshala is about 95-100 km and 2.5-3 hours (approx. ₹2,800-3,500). Check current timings and running days on IRCTC.
 - **Pathankot:** works well from Amritsar or Jammu, but from Chandigarh it is a detour. Skip it unless you want to ride the narrow-gauge [Kangra Valley toy train](/blog/kangra-toy-train-guide), and check its current operating status first.
 
+## What is the Dharamshala to Chandigarh distance and bus timing?
+
+**Short answer:** Dharamshala to Chandigarh is the same road in reverse, about **235-250 km** and **5.5-7 hours by car** or **7-9 hours by bus** (Dharamshala to Chandigarh bus times usually 7 to 8.5 hours). Buses leave from the **Dharamshala bus stand (ISBT) in lower Dharamshala**; from McLeod Ganj add 9 km and 25-40 minutes down to the stand.
+
+Bus departure times from Dharamshala change by season and we have no official HRTC timetable we can confirm. In our check on 26 November 2026, booking sites showed examples such as an HRTC ordinary bus around 4:30 pm (about 8.5 hours), an HRTC Himsuta AC Volvo around 8:45 am (about 7 hours) and private sleepers around 7:45 pm (about 6 hours). These are examples only and may be out of date, so **check HRTC before travel** (HRTC booking site or the counter at the bus stand). The last stretch into Chandigarh can be slow near Zirakpur and Ropar in evening traffic, so avoid tight connections or flights the same day.
+
+- **By taxi from McLeod Ganj or Dharamshala:** a one-way sedan is roughly the same as the Chandigarh to Dharamshala fare above; [book a taxi](/taxi) a day ahead.
+- **Flying out of Chandigarh?** Leave Dharamshala by early morning and allow a 2-hour buffer; see our [Kangra Airport guide](/blog/kangra-airport-gaggal-guide) for flying instead.
+- **Heading to Delhi instead?** See [Delhi to Dharamshala by bus](/blog/delhi-to-dharamshala-by-bus), which also covers the return trip, and [how to reach Dharamshala](/blog/how-to-reach-dharamshala).
+
 ## Which Option Should You Choose?
 
 - **Solo, backpacking or on a budget:** HRTC AC bus from Sector 43 in the morning, then local bus or taxi up to McLeod Ganj.
@@ -145,15 +155,24 @@ For more general questions about planning your visit, see our [FAQ page](/faq) a
     tags: ['chandigarh to dharamshala', 'hrtc bus', 'isbt 43', 'chandigarh to mcleod ganj', 'road trip', 'how to reach'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-09-17',
-    updated_at: '2026-10-02',
+    updated_at: '2026-11-26',
     image: placeImage('mountain-road'),
     image_alt: 'Winding mountain road through the Kangra hills on the Chandigarh to Dharamshala route',
     read_time: 10,
     featured: false,
-    meta_title: 'Chandigarh to Dharamshala (2026): Bus, Taxi, Car & Flight',
-    meta_description: 'Chandigarh to Dharamshala by HRTC bus from ISBT 43, taxi, self-drive via Ropar-Nangal-Una, flight or Vande Bharat to Amb: times, costs, route and stops.',
+    meta_title: 'Chandigarh to Dharamshala Distance, Bus & Taxi (2026)',
+    meta_description: 'Chandigarh to Dharamshala is 235-250 km: 5.5-7 hrs by car, 7-9 hrs by HRTC bus from ISBT 43. Taxi fares, flight, train, plus the return trip.',
     related_slugs: ['how-to-reach-dharamshala', 'kangra-airport-gaggal-guide', 'delhi-to-dharamshala-by-bus'],
+    sources: [
+      { title: 'HRTC (Himachal Road Transport Corporation) official booking site', url: 'https://hrtchp.com/' },
+      { title: 'MakeMyTrip: Dharamshala to Chandigarh Volvo AC buses (example timings, checked 26 November 2026)', url: 'https://www.makemytrip.com/bus-tickets/volvo-ac-buses-from-dharamshala_himachal_pradesh-to-chandigarh-online-ticket-booking.html' },
+      { title: 'RailYatri: HRTC routes and timings (example timings, checked 26 November 2026)', url: 'https://www.railyatri.in/bus-operators/hrtc' },
+    ],
     faqs: [
+      {
+        question: 'What is the Dharamshala to Chandigarh distance and bus timing?',
+        answer: 'About 235-250 km by road, 5.5-7 hours by car and 7-9 hours by bus. Buses leave from the Dharamshala bus stand in lower town; examples seen on booking sites on 26 November 2026 were around 8:45 am (HRTC Himsuta AC Volvo), 4:30 pm (HRTC ordinary) and about 7:45 pm (private sleepers), but timetables change, so check HRTC before travel.',
+      },
       {
         question: 'How far is Dharamshala from Chandigarh?',
         answer: 'About 235-250 km by road via Ropar, Nangal, Una and Kangra. Driving takes 5.5-7 hours with breaks, and buses take 7-9 hours. McLeod Ganj is another 9 km uphill from Dharamshala town.',
@@ -402,7 +421,7 @@ When people search for "Dharamshala airport", this is the airport they mean: the
 | Jaipur - Kangra | IndiGo (listed earlier) | **Not confirmed for 2026.** We found no current schedule | Our check, 24 Oct 2026 |
 | Jammu - Kangra | Not announced | **Proposed only.** Officials said in September 2026 it could start "in a few months" | Daily Excelsior, 1 Sep 2026 |
 
-**What this means for you:** timings above are as announced at launch, and small airports change schedules often, sometimes suspending a route for weather (as happened with Chandigarh this year). Always check the airline website before you book anything around a flight.
+**What this means for you:** timings above are as announced at launch, and small airports change schedules often, sometimes suspending a route for weather (as happened with Chandigarh this year). **Winter 2026-27:** we could not find a published winter timetable (checked 26 November 2026), and one flight-search site describes the Chandigarh route as seasonal (April to October), which conflicts with the four-days-a-week announcement, so treat Chandigarh in winter as unconfirmed. Always check the airline website before you book anything around a flight.
 
 **Coming from Mumbai, Bengaluru, Kolkata or Hyderabad?** There is no direct flight. Connect in Delhi, and on separate tickets leave at least 3 hours between flights, more in the winter fog season. If the connection looks risky, land in Delhi and take the [overnight bus from Delhi to Dharamshala](/blog/delhi-to-dharamshala-by-bus) instead.
 
@@ -482,13 +501,13 @@ Land in the morning and you can be at the Dalai Lama Temple by lunch. Our [one d
     tags: ['kangra airport', 'gaggal airport', 'dharamshala airport', 'kangra airport to dharamshala', 'kangra airport to mcleod ganj', 'flights to dharamshala', 'airport taxi', 'dhm'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-09-23',
-    updated_at: '2026-11-10',
+    updated_at: '2026-11-26',
     image: placeImage('kangra-airport'),
     image_alt: 'Kangra Airport at Gaggal near Dharamshala with the Dhauladhar mountains in the background',
     read_time: 9,
     featured: false,
-    meta_title: 'Kangra Airport (Gaggal) 2026: Flights, Taxi Fares, Tips',
-    meta_description: 'Kangra Airport (DHM) at Gaggal is 12-15 km from Dharamshala. IndiGo flies to Delhi, Noida and Chandigarh. Taxi to McLeod Ganj from Rs 1,500.',
+    meta_title: 'Kangra Airport (Gaggal) DHM: Flights & Taxi Fares 2026',
+    meta_description: 'Kangra Airport (DHM, Gaggal) is 12-15 km from Dharamshala, 20-22 km from McLeod Ganj. IndiGo flies Delhi, Noida, Chandigarh. Taxi from Rs 1,200.',
     related_slugs: ['how-to-reach-dharamshala', 'delhi-to-dharamshala-by-bus', 'chandigarh-to-dharamshala', 'where-to-stay-in-dharamshala'],
     sources: [
       { title: 'Kangra Airport: codes, location, runway, expansion, AAI passenger figures (Wikipedia, checked 24 October 2026)', url: 'https://en.wikipedia.org/wiki/Kangra_Airport' },
