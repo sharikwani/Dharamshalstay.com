@@ -1,7 +1,14 @@
 import { MetadataRoute } from 'next';
 import { siteConfig } from '@/lib/config';
 
-const PRIVATE = ['/api/', '/admin/', '/partner/', '/account', '/auth/', '/booking/'];
+/**
+ * Only paths nobody links to publicly are blocked here. /auth/, /account and
+ * /partner/ are linked from the header and footer on every page, so they must
+ * stay crawlable: their layouts send `noindex`, and Google can only obey that
+ * if it may fetch the page. Blocking them caused "Indexed, though blocked by
+ * robots.txt" in Search Console (/auth/login, 24 Nov 2026).
+ */
+const PRIVATE = ['/api/', '/admin/', '/booking/'];
 
 /**
  * AI crawlers and assistants named explicitly so there's no doubt they're
