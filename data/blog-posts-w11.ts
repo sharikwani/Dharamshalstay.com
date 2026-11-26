@@ -150,7 +150,7 @@ January is the coldest month and the likeliest time to see snow in McLeod Ganj i
 | Kangra Valley Carnival 2026 | 24-31 December 2026, Dharamshala (announced by the Kangra DC; schedule not yet published) |
 | New Year party | [NYE Gala Night, Panchvati Cottages](/new-year-parties), 31 Dec 2026, 7 pm to about 2 am |
 | Sunset | Around 5:15-5:30 pm |
-| Getting here | Kangra Airport (Gaggal), about 13 km from Dharamshala town; Pathankot railhead about 90 km; book a [winter taxi](/taxi) |
+| Getting here | Kangra Airport (Gaggal), about 13-17 km from Dharamshala town; Pathankot railhead about 90 km; book a [winter taxi](/taxi) |
 
 ## How cold is Dharamshala in December and January?
 

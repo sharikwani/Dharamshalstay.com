@@ -26,7 +26,7 @@ The carnival is the Kangra district administration's own winter festival, and it
 | Organiser | Carnival: Kangra district administration. Ticket listing: Accombliss Private Limited | UNI 30 Sep 2026; District listing |
 | Artists for 2026 | Not announced (14 Nov 2026); the listing says only "leading artists from the music industry" | District listing |
 | From McLeod Ganj | About 9 km to the Police Ground, roughly 30 minutes by taxi | Our Dussehra guide |
-| Nearest airport | Kangra Airport, Gaggal, about 13 km and 30 minutes from Dharamshala town | Our taxi route listing |
+| Nearest airport | Kangra Airport, Gaggal, about 13-17 km and 30 minutes from Dharamshala town | Our taxi route listing |
 | Not the same as | The Dussehra mela at the same Police Ground (18 to 24 October 2026, now over) | See below |
 
 ## What is the Kangra Valley Carnival?
@@ -131,7 +131,7 @@ The Police Ground is in the **lower town**, not in McLeod Ganj.
 | McLeod Ganj | Taxi, about 9 km, roughly 30 minutes | Book your return before the show ends; late-night taxis are scarce in the holiday week. [Book a taxi](/taxi) |
 | Kotwali Bazaar and Kacheri Adda | A short taxi ride within the lower town (we have not published a checked distance) | In 2025 the opening procession went from Kacheri Adda to the Police Ground |
 | McLeod Ganj by Skyway | The ropeway runs between Temple Road, McLeod Ganj and Bypass Road near Kotwali Bazaar (about 1.8 km, about 5 minutes) | Listed hours are 9:30 am to 6 pm, so it will not help after an evening show. See our [Skyway guide](/blog/dharamshala-skyway-ropeway-guide) |
-| Kangra Airport (Gaggal) | Taxi, about 13 km, about 30 minutes to Dharamshala town | [Gaggal airport to Dharamshala taxi](/taxi/gaggal-airport-to-dharamshala-taxi) |
+| Kangra Airport (Gaggal) | Taxi, about 13-17 km, about 30 minutes to Dharamshala town | [Gaggal airport to Dharamshala taxi](/taxi/gaggal-airport-to-dharamshala-taxi) |
 
 **Parking and traffic:** no 2026 traffic plan has been published. The Christmas and New Year week is the busiest of winter, and the town roads are narrow, so a taxi is easier than driving yourself.
 

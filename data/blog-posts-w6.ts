@@ -23,7 +23,7 @@ This guide covers where to stay by area (and what type of room to ask for), roma
 | Ideal length | 4-5 nights (7-9 with Dalhousie or Manali) |
 | Best months | Oct-mid Dec, Mar-Apr; Jan-Feb for snow on the peaks, cold nights |
 | Months to think twice about | Mid-July to mid-September (heavy monsoon, landslides, no views) |
-| Nearest airport | Kangra (Gaggal), about 13-15 km from Dharamshala |
+| Nearest airport | Kangra (Gaggal), about 13-17 km from Dharamshala |
 | Mid-range couple budget | approx. ₹45,000-75,000 for 5 nights, excluding flights |
 | Luxury couple budget | approx. ₹1.2-2.5 lakh for 5 nights, excluding flights |
 | Getting around | Private taxi for day trips; walk within McLeod Ganj |
@@ -113,7 +113,7 @@ Add a sixth day for Triund if you are hikers, or drop day 4 if you only have thr
 
 | Combination | Distance and drive | Ideal split | Notes |
 |---|---|---|---|
-| Dharamshala + Dalhousie/Khajjiar | approx. 120-130 km, 4-5 hrs | 4 nights + 3 nights | Gentle, colonial, pine forests; Khajjiar meadow is a good half day |
+| Dharamshala + Dalhousie/Khajjiar | approx. 125-143 km depending on route (HPTDC lists 143 km), 4-5 hrs | 4 nights + 3 nights | Gentle, colonial, pine forests; Khajjiar meadow is a good half day |
 | Dharamshala + Manali | approx. 235 km, 7-8 hrs | 4 nights + 4 nights | Long hill drive; break it at Bir or Palampur |
 | Dharamshala + Bir | approx. 70 km, 2.5 hrs | 4 nights + 2 nights | Easiest add-on; paragliding and Tibetan monasteries |
 | Dharamshala + Amritsar | approx. 200 km, 5-6 hrs | 4 nights + 1-2 nights | Golden Temple; good finish if flying out of Amritsar |

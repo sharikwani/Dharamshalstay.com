@@ -100,7 +100,7 @@ Do days 1 and 2 as above, then sleep a second night instead of catching the bus.
 |---|---|---|
 | 8:00 am | Breakfast and check-out | Keep bags in the taxi for the day |
 | 9:00-9:45 am | [Tibet Museum](/blog/tibet-museum-dharamshala-guide), Gangchen Kyishong | On the way down to lower Dharamshala, 10-15 min by taxi below McLeod Ganj; Rs 20 for adults, under-18s free; closed on Saturdays |
-| 10:15-11:30 am | Norbulingka Institute, Sidhbari | About 12 km, 30-40 min from McLeod Ganj; small entry fee; Tibetan arts workshops and gardens |
+| 10:15-11:30 am | Norbulingka Institute, Sidhbari | About 15 km, 40-50 min from McLeod Ganj; small entry fee; Tibetan arts workshops and gardens |
 | 11:45 am-12:30 pm | Gyuto Monastery | Big monastery with Dhauladhar views |
 | 12:30-1:30 pm | Lunch at Norbulingka or in Dharamshala | |
 | 1:30-2:30 pm | HPCA Cricket Stadium | Exterior and viewing; access depends on match days |

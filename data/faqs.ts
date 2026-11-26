@@ -76,7 +76,7 @@ export const faqCategories: FAQCategory[] = [
       {
         question: 'Which is the nearest airport, and which airlines fly there?',
         answer:
-          "Kangra Airport at Gaggal (code DHM) is the nearest, about 13-15 km from Dharamshala and roughly 18-20 km from McLeod Ganj. As of 2026 the main Delhi route is flown by IndiGo and SpiceJet on small turboprop aircraft, and some regional links such as Chandigarh and Shimla have operated seasonally. Flights are weather-sensitive and fares jump in peak season, so book early and avoid tight onward connections.",
+          "Kangra Airport at Gaggal (code DHM) is the nearest, about 13-17 km from Dharamshala and roughly 20-22 km from McLeod Ganj. As of 2026 the main Delhi route is flown by IndiGo and SpiceJet on small turboprop aircraft, and some regional links such as Chandigarh and Shimla have operated seasonally. Flights are weather-sensitive and fares jump in peak season, so book early and avoid tight onward connections.",
         link: { href: '/taxi', label: 'Book an airport transfer' },
       },
       {

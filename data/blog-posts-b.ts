@@ -7,7 +7,7 @@ export const blogPostsB: BlogPost[] = [
     slug: 'how-to-reach-dharamshala',
     title: 'How to Reach Dharamshala: Flights, Trains, Buses and Road Routes (2026)',
     excerpt: 'Every practical way to reach Dharamshala and McLeod Ganj from Delhi, Chandigarh, Amritsar, Mumbai and Bangalore, with realistic times, approx. costs and a side-by-side comparison table.',
-    content: `**Short answer:** The fastest way to reach Dharamshala is to fly into **Kangra Airport at Gaggal** (airport code DHM), about 12-15 km from Dharamshala town and roughly 20 km from McLeod Ganj. The cheapest and most popular way, especially from Delhi, is an **overnight Volvo bus** from Delhi that drops you in Dharamshala or McLeod Ganj in the morning. There is no broad-gauge railway station in Dharamshala itself, so train travellers usually ride to **Pathankot** and finish the last 85-90 km by road.
+    content: `**Short answer:** The fastest way to reach Dharamshala is to fly into **Kangra Airport at Gaggal** (airport code DHM), about 13-17 km from Dharamshala town and roughly 20-22 km from McLeod Ganj. The cheapest and most popular way, especially from Delhi, is an **overnight Volvo bus** from Delhi that drops you in Dharamshala or McLeod Ganj in the morning. There is no broad-gauge railway station in Dharamshala itself, so train travellers usually ride to **Pathankot** and finish the last 85-90 km by road.
 
 Which option is best depends on where you start, how much time you have and your budget. Below we break down every route the way a local would explain it, with approx. costs as of 2026, then answer the question most people forget to ask: how do you get from Dharamshala up to McLeod Ganj?
 
@@ -90,7 +90,7 @@ One-way taxis are popular with families and groups because the per-person cost b
 | Chandigarh | approx. 240 km | 5-6 hrs | ₹5,000-6,500 |
 | Amritsar | approx. 200 km | 4.5-5.5 hrs | ₹4,500-6,000 |
 | Pathankot | approx. 90 km | 2.5-3 hrs | ₹3,200 (Alto) / ₹4,000 (sedan), our fixed fares |
-| Kangra Airport | 12-20 km | 30-60 min | ₹800-1,500 |
+| Kangra Airport | 13-22 km | 30-60 min | ₹800-1,500 |
 
 Fares depend on vehicle size (hatchback, sedan, SUV), tolls and state taxes. For a detailed breakdown on the Delhi route, read our [Dharamshala to Delhi taxi guide](/blog/dharamshala-to-delhi-taxi-guide), or [get a fixed quote from our local taxi team](/taxi).
 
@@ -129,11 +129,11 @@ Once you know how you are arriving, [browse hotels in Dharamshala and McLeod Gan
     faqs: [
       {
         question: 'Which is the nearest airport to Dharamshala?',
-        answer: 'Kangra Airport at Gaggal (code DHM) is the nearest airport, about 12-15 km from Dharamshala town and around 20 km from McLeod Ganj. A taxi takes 30-60 minutes.',
+        answer: 'Kangra Airport at Gaggal (code DHM) is the nearest airport, about 13-17 km from Dharamshala town and around 20-22 km from McLeod Ganj. A taxi takes 30-60 minutes.',
       },
       {
         question: 'How to reach Dharamshala by flight?',
-        answer: 'Fly to Kangra Airport at Gaggal (code DHM), about 12-15 km from Dharamshala town and roughly 20 km from McLeod Ganj. As of 2026 IndiGo operates the main scheduled services, with flights from Delhi, Noida and Chandigarh (Jaipur flights are not confirmed for 2026). From the airport our fixed-fare taxi costs Rs 1,200 (sedan) to Dharamshala town in 30-40 minutes and Rs 1,500 (Alto) or Rs 1,800 (Swift Dzire sedan) to McLeod Ganj in 45-60 minutes. Check airline schedules directly, as they change often.',
+        answer: 'Fly to Kangra Airport at Gaggal (code DHM), about 13-17 km from Dharamshala town and roughly 20-22 km from McLeod Ganj. As of 2026 IndiGo operates the main scheduled services, with flights from Delhi, Noida and Chandigarh (Jaipur flights are not confirmed for 2026). From the airport our fixed-fare taxi costs Rs 1,200 (sedan) to Dharamshala town in 30-40 minutes and Rs 1,500 (Alto) or Rs 1,800 (Swift Dzire sedan) to McLeod Ganj in 45-60 minutes. Check airline schedules directly, as they change often.',
       },
       {
         question: 'Which is the nearest railway station to Dharamshala?',
@@ -149,7 +149,7 @@ Once you know how you are arriving, [browse hotels in Dharamshala and McLeod Gan
       },
       {
         question: 'How much does a taxi from Delhi to Dharamshala cost?',
-        answer: 'A one-way taxi from Delhi to Dharamshala costs approx. 10,000-15,000 rupees as of 2026 depending on the vehicle, tolls and season. The drive takes about 9-11 hours.',
+        answer: 'Our fixed one-way fare from Delhi to Dharamshala is 17,000 rupees for a sedan (live fare checked 26 November 2026, tolls extra); see the Delhi to Dharamshala taxi page for current prices. The drive is about 475-520 km and takes about 10-12 hours.',
       },
     ],
   },
@@ -788,7 +788,7 @@ Getting between lower Dharamshala and McLeod Ganj takes 20-30 minutes by taxi (a
 | Car access and parking | Easy | Difficult in centre | Limited | Narrow roads, limited | Good at most hotels |
 | Mountain views | Good from some areas | Good, partly blocked by buildings | Good | Excellent | Excellent |
 | Budget options | Good | Very good | Excellent | Very good | Fewer |
-| Distance to Kangra Airport (approx.) | 12-15 km | 20 km | 22 km | 23 km | 23 km |
+| Distance to Kangra Airport (approx.) | 13-17 km | 20 km | 22 km | 23 km | 23 km |
 | Best for | Families, cricket fans, business | First-timers, culture, food | Backpackers, social travellers | Long stays, digital nomads | Couples, views, quiet |
 
 ## Who Should Stay Where?

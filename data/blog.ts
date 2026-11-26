@@ -388,7 +388,7 @@ We also arrange airport transfers, sightseeing trips, and [Bir Billing paraglidi
 
 ## Day 3: Culture and Departure
 
-**Morning:** On the way down, stop at the [Tibet Museum](/blog/tibet-museum-dharamshala-guide) at Gangchen Kyishong (closed Saturdays), then Norbulingka Institute (about 12 km, 30-40 min by taxi from McLeod Ganj; small entry fee). Beautiful Tibetan arts centre. Great gardens and cafe.
+**Morning:** On the way down, stop at the [Tibet Museum](/blog/tibet-museum-dharamshala-guide) at Gangchen Kyishong (closed Saturdays), then Norbulingka Institute (about 15 km, 40-50 min by taxi from McLeod Ganj; small entry fee). Beautiful Tibetan arts centre. Great gardens and cafe.
 
 **Before Departure:** Pick up souvenirs. If heading to Delhi, our [taxi service](/blog/dharamshala-to-delhi-taxi-guide) can pick you up from the hotel. For your next visit, consider adding [Bir Billing paragliding](/blog/bir-billing-paragliding-guide).
 

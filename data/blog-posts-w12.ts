@@ -119,7 +119,7 @@ Lower Dharamshala, at around 1,250 to 1,450 m, is the main town: Kotwali Bazaar,
 **Pros**
 
 - Easy car access and parking, and larger hotels are more likely to have lifts.
-- Closest base to Kangra (Gaggal) Airport, about 13 to 15 km away, and to day trips such as Norbulingka, Kangra Fort and Chamunda Devi.
+- Closest base to Kangra (Gaggal) Airport, about 13 to 17 km away, and to day trips such as Norbulingka, Kangra Fort and Chamunda Devi.
 - A few degrees warmer than McLeod Ganj in winter.
 - Handy for late-night bus arrivals and early departures.
 - On cricket match days, staying near the stadium saves hours in traffic.

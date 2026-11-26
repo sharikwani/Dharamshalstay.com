@@ -300,7 +300,7 @@ Follow this winter’s reports in our [Himachal snowfall tracker](/blog/himachal
 
 ### Dharamshala and McLeod Ganj
 
-Snow in lower Dharamshala is rare; upper areas (McLeod Ganj, Bhagsu, Naddi, Dharamkot) see snow on a few days between late December and February, mostly January. The highway via Kangra stays open, and Kangra Airport at Gaggal is 13 km from Dharamshala. **Suits:** first-timers, families, anyone who wants culture plus mountain views. Stay: [hotels in Dharamshala and McLeod Ganj](/hotels); arrive with our [Gaggal airport to McLeod Ganj taxi](/taxi/gaggal-airport-to-mcleod-ganj-taxi).
+Snow in lower Dharamshala is rare; upper areas (McLeod Ganj, Bhagsu, Naddi, Dharamkot) see snow on a few days between late December and February, mostly January. The highway via Kangra stays open, and Kangra Airport at Gaggal is 13-17 km from Dharamshala. **Suits:** first-timers, families, anyone who wants culture plus mountain views. Stay: [hotels in Dharamshala and McLeod Ganj](/hotels); arrive with our [Gaggal airport to McLeod Ganj taxi](/taxi/gaggal-airport-to-mcleod-ganj-taxi).
 
 ### Naddi and Dharamkot
 

@@ -128,7 +128,7 @@ Until 2014 the final day included animal sacrifice. After the Himachal Pradesh H
 
 ## How do I get to Kullu Dussehra from Dharamshala or McLeod Ganj?
 
-**By road, about 180 to 215 km, 6 to 7 hours.** Published figures vary with the starting point and route: one bus operator lists 181 km from Dharamshala, while our own route notes give about 150 km from Dharamshala to Mandi and roughly 64 km more from Mandi to Kullu. McLeod Ganj is a little further, up the hill above Dharamshala. Expect slower going near Kullu during the festival.
+**By road, about 180 to 215 km, 6 to 7 hours.** Published figures vary with the starting point and route: one bus operator lists 181 km from Dharamshala, while HPTDC lists 125 km from Dharamshala to Mandi and roughly 64 km more from Mandi to Kullu. McLeod Ganj is a little further, up the hill above Dharamshala. Expect slower going near Kullu during the festival.
 
 The usual road runs **Dharamshala - Palampur - Baijnath - Jogindernagar - Mandi - Aut - Kullu**. Our [Dharamshala to Manali guide](/blog/dharamshala-to-manali) covers this road in detail: Kullu is on it, about 40 km before Manali.
 

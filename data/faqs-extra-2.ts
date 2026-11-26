@@ -192,7 +192,7 @@ export const faqsExtra2: FAQCategory[] = [
       {
         question: 'How far is Dalhousie from Dharamshala, and is it a good day trip?',
         answer:
-          "Dalhousie is roughly 115-125 km from Dharamshala, about 4-5 hours by road via Shahpur and Nurpur. That makes a same-day round trip long and tiring, so most travellers spend at least one night and combine it with Khajjiar. Dalhousie has colonial churches, pine-forest walks and views of the Pir Panjal and Dhauladhar ranges. A private taxi is the most practical option.",
+          "Dalhousie is roughly 125-143 km depending on route (HPTDC lists 143 km) from Dharamshala, about 4-5 hours by road via Shahpur and Nurpur. That makes a same-day round trip long and tiring, so most travellers spend at least one night and combine it with Khajjiar. Dalhousie has colonial churches, pine-forest walks and views of the Pir Panjal and Dhauladhar ranges. A private taxi is the most practical option.",
         link: { href: '/blog/dalhousie-khajjiar-from-dharamshala', label: 'Dalhousie and Khajjiar guide' },
       },
       {
@@ -204,7 +204,7 @@ export const faqsExtra2: FAQCategory[] = [
       {
         question: 'How do I get to Chamba from Dharamshala, and what is there to see?',
         answer:
-          "Chamba is roughly 170-190 km from Dharamshala by road, about 6-7 hours via Dalhousie or Khajjiar, so plan at least two nights. The old town on the Ravi river is known for the stone Lakshmi Narayan temple complex, the Bhuri Singh Museum with Pahari miniature paintings, the Chaugan meadow and embroidered Chamba rumals. Fit trekkers sometimes reach the Chamba side on foot over Indrahar Pass, but that is a serious multi-day route.",
+          "Chamba is roughly 165-185 km from Dharamshala depending on route (HPTDC lists 185 km) by road, about 6-7 hours via Dalhousie or Khajjiar, so plan at least two nights. The old town on the Ravi river is known for the stone Lakshmi Narayan temple complex, the Bhuri Singh Museum with Pahari miniature paintings, the Chaugan meadow and embroidered Chamba rumals. Fit trekkers sometimes reach the Chamba side on foot over Indrahar Pass, but that is a serious multi-day route.",
         link: { href: '/blog/dalhousie-khajjiar-from-dharamshala', label: 'Dalhousie, Khajjiar and Chamba' },
       },
       {

@@ -9,8 +9,8 @@ export const blogPostsW38: BlogPost[] = [
     id: 'blog-dharamshala-distance-chart',
     slug: 'dharamshala-distance-chart',
     title: 'Dharamshala Distance Chart 2026: Km & Travel Time from Delhi, Chandigarh, Amritsar, Pathankot, Manali & More',
-    excerpt: 'Road distances and drive times from Dharamshala and McLeod Ganj to 25 places in one chart: Pathankot 90 km, Dalhousie 125 km, Amritsar 200 to 210 km, Shimla and Manali about 235 km, Chandigarh about 240 km and Delhi about 480 km, plus nearby sights, the nearest airport and railheads, and a link to the full route guide for each.',
-    content: `**Short answer:** Measured from Dharamshala (Kotwali Bazaar, the lower town), the main road distances are **Pathankot about 90 km** (2.5 to 3 hours), **Dalhousie about 125 km** (4 to 5 hours), **Amritsar about 200 to 210 km** (5 to 6 hours), **Shimla and Manali about 235 km each** (6 to 9 hours of hill driving), **Chandigarh about 240 km** (5.5 to 7 hours) and **Delhi about 480 km** (10 to 12 hours). McLeod Ganj is 9 km further up the hill, so from there add about 9 km and 20 to 40 minutes. The nearest airport is Kangra (Gaggal), 13 to 15 km away, and the nearest main railhead is Pathankot.
+    excerpt: 'Road distances and drive times from Dharamshala and McLeod Ganj to 25 places in one chart: Pathankot 90 km, Dalhousie 125-143 km, Amritsar 200 to 210 km, Shimla and Manali about 235 km, Chandigarh about 240 km and Delhi about 480 km, plus nearby sights, the nearest airport and railheads, and a link to the full route guide for each.',
+    content: `**Short answer:** Measured from Dharamshala (Kotwali Bazaar, the lower town), the main road distances are **Pathankot about 90 km** (2.5 to 3 hours), **Dalhousie about 125-143 km depending on route (HPTDC lists 143 km)** (4 to 5 hours), **Amritsar about 200 to 210 km** (5 to 6 hours), **Shimla and Manali about 235 km each** (6 to 9 hours of hill driving), **Chandigarh about 240 km** (5.5 to 7 hours) and **Delhi about 480 km** (10 to 12 hours). McLeod Ganj is 9 km further up the hill, so from there add about 9 km and 20 to 40 minutes. The nearest airport is Kangra (Gaggal), 13 to 17 km away, and the nearest main railhead is Pathankot.
 
 ![Hill road near Chamunda on the way to Dharamshala with the Dhauladhar range in the distance](/images/places/mountain-road.jpg)
 
@@ -21,9 +21,9 @@ This chart puts every distance we publish in one place, so you do not have to op
 | Destination | Road distance from Dharamshala | Drive time | Fastest public transport | Full route guide |
 |---|---|---|---|---|
 | Pathankot | About 90 km (95 km to McLeod Ganj) | 2.5 to 3 hours | HRTC bus about 3.5 to 4 hours; toy train to Kangra | [Pathankot to Dharamshala distance](/blog/pathankot-to-dharamshala) |
-| Dalhousie | About 125 km | 4 to 5 hours | HRTC bus, about 5 hours, a few a day | [Dharamshala to Dalhousie distance](/blog/dharamshala-to-dalhousie) |
+| Dalhousie | About 125 to 143 km (HPTDC lists 143 km) | 4 to 5 hours | HRTC bus, about 5 hours, a few a day | [Dharamshala to Dalhousie distance](/blog/dharamshala-to-dalhousie) |
 | Khajjiar | About 147 to 150 km (Dalhousie plus 22 to 24 km) | 5 to 6 hours | Via Dalhousie; a taxi is far easier | [Dalhousie and Khajjiar from Dharamshala](/blog/dalhousie-khajjiar-from-dharamshala) |
-| Chamba | About 165 to 185 km via Banikhet | 5.5 to 6.5 hours | Bus via Banikhet; check HRTC | [Dalhousie, Khajjiar and Chamba trip](/blog/dalhousie-khajjiar-from-dharamshala) |
+| Chamba | About 165 to 185 km via Banikhet (HPTDC lists 185 km) | 5.5 to 6.5 hours | Bus via Banikhet; check HRTC | [Dalhousie, Khajjiar and Chamba trip](/blog/dalhousie-khajjiar-from-dharamshala) |
 | Amritsar | About 200 to 210 km | 5 to 6 hours | HRTC direct bus, 6 to 7 hours | [Dharamshala to Amritsar distance](/blog/amritsar-to-dharamshala) |
 | Jammu | About 190 to 210 km via Pathankot | 5 to 6 hours | Train from Jammu to Pathankot, then bus or taxi | No separate guide yet |
 | Shimla | About 230 to 240 km via Hamirpur | 6 to 7 hours | HRTC bus, 8 to 9 hours | [Shimla to Dharamshala distance](/blog/shimla-to-dharamshala) |
@@ -46,7 +46,7 @@ Drive times are for a car with one short break, in daylight and outside holiday 
 | Dharamkot | Via McLeod Ganj | About 2 to 3 km uphill | Via McLeod Ganj | [Where to stay in Dharamshala](/blog/where-to-stay-in-dharamshala) |
 | Naddi and Dal Lake | Via McLeod Ganj | About 3 to 4 km | Via McLeod Ganj | [Naddi and Dal Lake guide](/blog/naddi-dal-lake-guide) |
 | Norbulingka Institute (Sidhbari) | About 7 to 10 km | About 15 to 17 km | Short hop on the Sidhbari road | [Sidhbari, Norbulingka and Gyuto](/blog/sidhbari-norbulingka-gyuto-guide) |
-| Kangra Airport (Gaggal) | About 13 to 15 km | About 22 km | 30 to 40 minutes | [Kangra Airport guide](/blog/kangra-airport-gaggal-guide) |
+| Kangra Airport (Gaggal) | About 13 to 17 km | About 22 km | 30 to 40 minutes | [Kangra Airport guide](/blog/kangra-airport-gaggal-guide) |
 | Chamunda Devi temple | About 15 km | About 24 km | 30 to 40 minutes | [Chamunda Devi distance from Dharamshala](/blog/chamunda-devi-temple-guide) |
 | Kangra railway station | About 18 to 20 km | About 27 km | About 40 minutes | [Kangra toy train guide](/blog/kangra-toy-train-guide) |
 | Kangra Fort | About 20 km | About 29 km | About 45 minutes | [Kangra Fort guide](/blog/kangra-fort-guide) |
@@ -92,7 +92,7 @@ The usual road is Chandigarh, Ropar, Anandpur Sahib, Nangal, Una, Amb, Kangra an
 **About 475 to 520 km by road**, 10 to 12 hours by car. Our taxi route uses 480 km; HPTDC lists 520 km, and the figure depends on whether the driver takes the Chandigarh, Una and Kangra road or the Jalandhar and Pathankot road on NH-44. Most people either:
 
 - **Take the overnight Volvo** (10 to 13 hours) from ISBT Kashmere Gate or Majnu ka Tilla: see [Delhi to Dharamshala by bus](/blog/delhi-to-dharamshala-by-bus).
-- **Fly to Kangra (Gaggal)**, about 1 hour 20 minutes, then drive 13 to 15 km to town: see the [Kangra Airport guide](/blog/kangra-airport-gaggal-guide).
+- **Fly to Kangra (Gaggal)**, about 1 hour 20 minutes, then drive 13 to 17 km to town: see the [Kangra Airport guide](/blog/kangra-airport-gaggal-guide).
 - **Take an overnight train to Pathankot**, then a taxi or bus for the last 90 km.
 - **Hire a taxi:** [Delhi to Dharamshala taxi](/taxi/delhi-to-dharamshala-taxi) or, for the return, [Dharamshala to Delhi by taxi](/blog/dharamshala-to-delhi-taxi-guide).
 
@@ -100,7 +100,7 @@ The usual road is Chandigarh, Ropar, Anandpur Sahib, Nangal, Una, Amb, Kangra an
 
 | Type | Name | Distance from Dharamshala | Notes |
 |---|---|---|---|
-| Airport | Kangra Airport, Gaggal | About 13 to 15 km (HPTDC: 17 km); about 22 km from McLeod Ganj | Small turboprops; flights from Delhi about 1 hour 20 minutes. [Gaggal to McLeod Ganj taxi](/taxi/gaggal-airport-to-mcleod-ganj-taxi) |
+| Airport | Kangra Airport, Gaggal | About 13 to 17 km (HPTDC: 17 km); about 22 km from McLeod Ganj | Small turboprops; flights from Delhi about 1 hour 20 minutes. [Gaggal to McLeod Ganj taxi](/taxi/gaggal-airport-to-mcleod-ganj-taxi) |
 | Main railhead | Pathankot Junction and Pathankot Cantt (Chakki Bank) | About 88 to 90 km | Overnight trains from Delhi; [Chakki Bank to Dharamshala taxi](/taxi/chakki-bank-railway-station-to-dharamshala-taxi) |
 | Narrow gauge | Kangra station (Kangra Valley Railway) | About 18 to 20 km | Slow toy train from Pathankot; check NTES or 139 before you travel |
 | Vande Bharat stop | Amb Andaura, Una district | About 95 to 105 km | Delhi to Amb Andaura Vande Bharat; [Amb Andaura to Dharamshala taxi](/taxi/amb-andaura-railway-station-to-dharamshala-taxi) |
@@ -147,7 +147,7 @@ Arriving after a long drive, lower Dharamshala is quickest to reach and easier f
     read_time: 8,
     featured: false,
     meta_title: 'Dharamshala Distance Chart 2026: Km & Time to 20+ Places',
-    meta_description: 'Dharamshala road distances: Pathankot 90 km, Dalhousie 125, Amritsar 200-210, Manali and Shimla about 235, Chandigarh 240, Delhi 480. Times and routes.',
+    meta_description: 'Dharamshala road distances: Pathankot 90 km, Dalhousie 125-143, Amritsar 200-210, Manali and Shimla about 235, Chandigarh 240, Delhi 480. Times and routes.',
     related_slugs: ['how-to-reach-dharamshala', 'pathankot-to-dharamshala', 'amritsar-to-dharamshala', 'dharamshala-to-manali', 'dharamshala-to-dalhousie', 'chandigarh-to-dharamshala'],
     sources: [
       { title: 'Important distances table: Dharamshala to Pathankot, Dalhousie, Chamba, Manali, Shimla, Chandigarh, Delhi (HPTDC, Himachal Pradesh Tourism; checked 26 November 2026)', url: 'https://hptdc.hp.gov.in/access' },
@@ -174,7 +174,7 @@ Arriving after a long drive, lower Dharamshala is quickest to reach and easier f
       },
       {
         question: 'How far is Dharamshala from Delhi?',
-        answer: 'About 475 to 520 km by road, 10 to 12 hours by car. Overnight Volvo buses take 10 to 13 hours, and flights from Delhi to Kangra (Gaggal) Airport take about 1 hour 20 minutes. Gaggal is 13 to 15 km from Dharamshala.',
+        answer: 'About 475 to 520 km by road, 10 to 12 hours by car. Overnight Volvo buses take 10 to 13 hours, and flights from Delhi to Kangra (Gaggal) Airport take about 1 hour 20 minutes. Gaggal is 13 to 17 km from Dharamshala.',
       },
       {
         question: 'How far is Manali from Dharamshala?',
@@ -190,7 +190,7 @@ Arriving after a long drive, lower Dharamshala is quickest to reach and easier f
       },
       {
         question: 'Which is the nearest airport and railway station to Dharamshala?',
-        answer: 'The nearest airport is Kangra Airport at Gaggal, about 13 to 15 km from Dharamshala. The nearest main railhead is Pathankot, about 90 km away. The narrow-gauge Kangra station is about 18 to 20 km away but the toy train is slow.',
+        answer: 'The nearest airport is Kangra Airport at Gaggal, about 13 to 17 km from Dharamshala. The nearest main railhead is Pathankot, about 90 km away. The narrow-gauge Kangra station is about 18 to 20 km away but the toy train is slow.',
       },
     ],
   },
@@ -203,7 +203,7 @@ Arriving after a long drive, lower Dharamshala is quickest to reach and easier f
     slug: 'dharamshala-to-dalhousie',
     title: 'Dharamshala to Dalhousie Distance, Route & Travel Time (2026)',
     excerpt: 'Dalhousie is about 125 km and 4 to 5 hours by road from Dharamshala, via Gaggal, Shahpur, Nurpur and Banikhet. Our fixed taxi fare is ₹4,500 one way by sedan. The route, HRTC buses, why there is no train, Khajjiar as an add-on, winter snow on the Khajjiar road, and whether to go for a day or stay the night.',
-    content: `**Short answer:** The Dharamshala to Dalhousie distance is about **125 km** by road (the same from Dalhousie to Dharamshala), a drive of **4 to 5 hours** via Gaggal, Shahpur, Nurpur and Banikhet. Our fixed taxi fare is **₹4,500 one way** in a sedan for up to 4 people (checked 26 November 2026). HRTC buses take about 5 hours and run only a few times a day, and there is no train or flight between the two. Khajjiar is another 22 to 24 km beyond Dalhousie, so stay a night if you want to see both.
+    content: `**Short answer:** The Dharamshala to Dalhousie distance is about **125-143 km depending on route (HPTDC lists 143 km)** by road (the same from Dalhousie to Dharamshala), a drive of **4 to 5 hours** via Gaggal, Shahpur, Nurpur and Banikhet. Our fixed taxi fare is **₹4,500 one way** in a sedan for up to 4 people (checked 26 November 2026). HRTC buses take about 5 hours and run only a few times a day, and there is no train or flight between the two. Khajjiar is another 22 to 24 km beyond Dalhousie, so stay a night if you want to see both.
 
 ![Stone-built St John Church among deodar trees in Dalhousie hill station](/images/places/dalhousie.jpg)
 
@@ -331,8 +331,8 @@ Stay near Gandhi Chowk or Subhash Chowk in Dalhousie to walk the Mall, or in Kha
     image_alt: 'Stone-built St John Church among deodar trees in Dalhousie, about 125 km by road from Dharamshala',
     read_time: 7,
     featured: false,
-    meta_title: 'Dharamshala to Dalhousie Distance: 125 km, 4-5 hrs (2026)',
-    meta_description: 'Dharamshala to Dalhousie is about 125 km, 4-5 hours via Nurpur and Banikhet. Taxi ₹4,500 one way, HRTC bus about 5 hrs; Khajjiar is 22-24 km on.',
+    meta_title: 'Dharamshala to Dalhousie: 125-143 km, 4-5 hrs (2026)',
+    meta_description: 'Dharamshala to Dalhousie is 125-143 km (HPTDC: 143), 4-5 hours via Nurpur and Banikhet. Taxi ₹4,500 one way, HRTC bus about 5 hrs; Khajjiar is 22-24 km on.',
     related_slugs: ['dalhousie-khajjiar-from-dharamshala', 'dharamshala-distance-chart', 'pathankot-to-dharamshala', 'five-day-kangra-valley-itinerary'],
     sources: [
       { title: 'Dharamshala to Dalhousie taxi: 125 km, 4 to 5 hours, fixed fare (Dharamshala Stay, checked 26 November 2026)', url: 'https://www.dharamshalastay.com/taxi/dharamshala-to-dalhousie-taxi' },

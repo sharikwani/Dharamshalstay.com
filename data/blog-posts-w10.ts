@@ -7,7 +7,7 @@ export const blogPostsW10: BlogPost[] = [
     slug: 'amritsar-to-dharamshala',
     title: 'Dharamshala to Amritsar Distance & Route: Bus, Taxi, Train (2026)',
     excerpt: 'Complete guide to reaching Dharamshala from Amritsar by bus, taxi, train or self-drive, with three route options, real travel times, costs and stops worth making along the way.',
-    content: `**Short answer:** The Dharamshala to Amritsar distance is roughly **200 to 210 km** (the same either way) by the most common route via Pathankot and takes about **5 to 6 hours** by road, depending on traffic. A one-way sedan taxi costs approx. **₹4,000 to ₹6,000** as of 2026, HRTC buses take about 6 to 7 hours (ordinary approx. ₹350 to ₹450), and you can also take a train to Pathankot and a bus or taxi onward.
+    content: `**Short answer:** The Dharamshala to Amritsar distance is roughly **200 to 210 km** (the same either way) by the most common route via Pathankot and takes about **5 to 6 hours** by road, depending on traffic. A one-way taxi costs from **₹5,500 in an Alto and ₹7,000 in a sedan** as of 2026 (see the live fare on our [Amritsar to Dharamshala taxi](/taxi/amritsar-to-dharamshala-taxi) page), HRTC buses take about 6 to 7 hours (ordinary approx. ₹350 to ₹450), and you can also take a train to Pathankot and a bus or taxi onward.
 
 Amritsar is one of the shorter approaches to Dharamshala and a natural combination if you are visiting the Golden Temple before heading to the mountains. Many international travellers fly into Amritsar (Sri Guru Ram Dass Jee International Airport) specifically because it is the closest major airport to Dharamshala with good domestic and international connections.
 
@@ -53,7 +53,7 @@ This two-bus option is useful if you cannot find a direct bus at your preferred 
 
 ## By Taxi
 
-A one-way taxi from Amritsar to Dharamshala costs approx. **₹4,000 to ₹6,000** for a sedan (Dzire, Etios) as of 2026. An SUV (Innova, Ertiga) runs approx. ₹5,500 to ₹8,000. Rates depend on the season, vehicle type and whether you book through an aggregator, the airport counter, or a local operator.
+A one-way taxi from Amritsar to Dharamshala starts from **₹5,500 in an Alto and ₹7,000 in a sedan** (Dzire, Etios) as of 2026. An SUV (Innova, Ertiga) costs more: see the live fare on the taxi page. Rates depend on the season, vehicle type and whether you book through an aggregator, the airport counter, or a local operator.
 
 The taxi is the most comfortable option and the only practical one if you are arriving on a late flight. You can ask the driver to stop at Pathankot for food or at Kangra Fort if you take that route. The drive from Amritsar airport to McLeod Ganj takes roughly 5 to 6 hours with a single food stop.
 
@@ -94,14 +94,17 @@ For getting around in Dharamshala and McLeod Ganj, read our [local transport gui
     tags: ['amritsar to dharamshala', 'transport', 'how to reach dharamshala', 'taxi', 'bus', 'road trip', 'pathankot'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-10-11',
-    updated_at: '2026-10-11',
+    updated_at: '2026-11-26',
     image: placeImage('mountain-road'),
     image_alt: 'Mountain road on the approach to Dharamshala from the plains',
     read_time: 8,
     featured: false,
     meta_title: 'Dharamshala to Amritsar Distance: 200 km, 5-6 Hours (2026)',
-    meta_description: 'Dharamshala to Amritsar distance: about 200-210 km, 5-6 hours by road via Pathankot. Bus from ₹350, taxi from ₹4,000. Three routes compared.',
+    meta_description: 'Dharamshala to Amritsar distance: about 200-210 km, 5-6 hours by road via Pathankot. Bus from ₹350, taxi from ₹5,500. Three routes compared.',
     related_slugs: ['how-to-reach-dharamshala', 'local-transport-dharamshala', 'places-to-visit-in-kangra', 'pathankot-to-dharamshala'],
+    sources: [
+      { title: 'Important distances from Dharamshala (HPTDC, Himachal Pradesh Tourism Development Corporation; checked 26 November 2026)', url: 'https://hptdc.hp.gov.in/access' },
+    ],
     faqs: [
       {
         question: 'How far is Dharamshala from Amritsar?',
@@ -145,7 +148,7 @@ This guide covers the two practical routes, bus and taxi options, costs as of 20
 | Road distance | About 230 to 240 km (Rome2rio: 228.6 km; distancebetween2: about 237 km; SOTC: 240 km) |
 | Car or taxi | About 6 to 7 hours with a tea or lunch stop |
 | HRTC bus | About 8 to 9 hours (Rome2rio lists 8 h 20 min; bus listings show about 8 to 8.5 hours via Hamirpur and Kangra) |
-| Rail or air | No rail link. Alliance Air flies Shimla to Kangra (Gaggal) since May 2026, about 50 minutes, five days a week: check it is still running. Gaggal is about 12 km from Dharamshala |
+| Rail or air | No rail link. Alliance Air flies Shimla to Kangra (Gaggal) since May 2026, about 50 minutes, five days a week: check it is still running. Gaggal is about 13-17 km from Dharamshala |
 | Taxi fare, one way | About ₹7,000 to ₹10,000 (sedan), ₹9,000 to ₹13,000 (SUV), 2026 |
 | Best start | Before 7 am, so you arrive in daylight |
 
@@ -243,9 +246,9 @@ Once in Dharamshala, our [local transport guide](/blog/local-transport-dharamsha
   {
     id: 'blog-dharamshala-to-manali',
     slug: 'dharamshala-to-manali',
-    title: 'Dharamshala to Manali Distance: 230-250 km, Routes & Transport (2026)',
+    title: 'Dharamshala to Manali Distance: 235 km, Routes & Transport (2026)',
     excerpt: 'Three ways to get from Dharamshala to Manali by bus, taxi or self-drive, with real drive times, costs, scenic detours through Bir and Palampur, and tips for breaking the long mountain journey.',
-    content: `**Short answer:** The Dharamshala to Manali distance is roughly **230 to 250 km** by road, about **7 to 9 hours** of driving, via Palampur, Baijnath, Mandi and Kullu (or Bir and Mandi for the scenic detour). Buses start from about ₹400 and a one-way taxi from about ₹5,000. There is no direct flight or rail link between the two, so the road through the Kangra and Kullu valleys is the only practical option. The journey is long but crosses some of the most beautiful country in Himachal — tea gardens, ancient temples, river gorges, and apple orchards.
+    content: `**Short answer:** The Dharamshala to Manali distance is about **235 km** by road (HPTDC lists 235 km; other route planners give 230 to 250 km), about **7 to 9 hours** of driving, via Palampur, Baijnath, Mandi and Kullu (or Bir and Mandi for the scenic detour). Buses start from about ₹400 and a one-way taxi from about ₹5,000. There is no direct flight or rail link between the two, so the road through the Kangra and Kullu valleys is the only practical option. The journey is long but crosses some of the most beautiful country in Himachal — tea gardens, ancient temples, river gorges, and apple orchards.
 
 We send guests on this route regularly, and the advice below is based on real travel times, not optimistic Google Maps estimates. For a complete multi-destination Himachal trip, see our [Delhi-Dharamshala-Bir-Manali itinerary](/blog/himachal-itinerary-delhi-dharamshala-manali).
 
@@ -253,15 +256,15 @@ We send guests on this route regularly, and the advice below is based on real tr
 
 | Route | Distance (approx.) | Drive time (approx.) | Highlights |
 |---|---|---|---|
-| **Via Palampur, Baijnath & Mandi** | 230–250 km | 7–9 hrs | Most common; tea gardens, ancient temples |
-| **Via Jogindernagar & Mandi** | 240–260 km | 7.5–9.5 hrs | Passes through the narrow-gauge rail country |
-| **Via Bir (detour)** | 260–280 km | 8–10 hrs | Adds a stop at Bir Billing; the best option if you have time |
+| **Via Palampur, Baijnath & Mandi** | About 235 km | 7–9 hrs | Most common; tea gardens, ancient temples |
+| **Via Jogindernagar & Mandi** | About 240–250 km | 7.5–9.5 hrs | Passes through the narrow-gauge rail country |
+| **Via Bir (detour)** | About 265 km | 8–10 hrs | Adds a stop at Bir Billing; the best option if you have time |
 
-All three routes converge at **Mandi**, the junction town of Himachal, and then follow the same Mandi–Kullu–Manali highway for the last 110 to 120 km.
+All three routes converge at **Mandi**, the junction town of Himachal, and then follow the same Mandi–Kullu–Manali highway for the last 105 to 110 km.
 
 ### Route 1: Via Palampur, Baijnath and Mandi (Standard)
 
-From Dharamshala, drive south to **Palampur** (about 35 km, 1 to 1.5 hours) through the Kangra Valley tea country. Continue to **Baijnath** (ancient Shiva temple, right on the road, worth a 10-minute stop), then through **Jogindernagar** and down to **Mandi** (about 150 km from Dharamshala, 4 to 5 hours). From Mandi, it is the standard Mandi–Aut–Kullu–Manali highway (about 110 km, 3 to 4 hours).
+From Dharamshala, drive south to **Palampur** (about 35 km, 1 to 1.5 hours) through the Kangra Valley tea country. Continue to **Baijnath** (ancient Shiva temple, right on the road, worth a 10-minute stop), then through **Jogindernagar** and down to **Mandi** (about 125 km from Dharamshala per HPTDC, 4 to 5 hours). From Mandi, it is the standard Mandi–Aut–Kullu–Manali highway (about 105 to 110 km: Mandi to Kullu about 64 km, Kullu to Manali about 40 km, 3 to 4 hours).
 
 This is the most straightforward route and the one HRTC buses follow.
 
@@ -271,7 +274,7 @@ A minor variant that takes the lower road through Nagrota Surian and Jogindernag
 
 ### Route 3: Via Bir (Recommended If You Have Time)
 
-Instead of driving straight through, detour to **Bir** (about 65 to 70 km from Dharamshala, 2 to 2.5 hours). Spend a few hours or a night at the paragliding and monastery town, then continue from Bir to Mandi (about 120 km, 3.5 to 4 hours) and on to Manali. This adds about 30 km and 1 to 2 hours to the total but lets you experience one of Himachal's best small towns. Read our [Bir travel guide](/blog/bir-travel-guide) for what to see and do.
+Instead of driving straight through, detour to **Bir** (about 65 to 70 km from Dharamshala, 2 to 2.5 hours). Spend a few hours or a night at the paragliding and monastery town, then continue from Bir to Mandi (about 90 km, 2.5 to 3 hours) and on to Manali. This adds about 30 km and 1 to 2 hours to the total but lets you experience one of Himachal's best small towns. Read our [Bir travel guide](/blog/bir-travel-guide) for what to see and do.
 
 ## By Bus
 
@@ -325,9 +328,9 @@ Breaking the journey makes the trip one of the highlights of your Himachal vacat
 | Section | Distance | Condition | Watch out for |
 |---|---|---|---|
 | Dharamshala → Palampur | 35 km | Good state highway | Sharp turns around Chambi |
-| Palampur → Mandi | 115 km | Mixed; mostly good | Slow behind trucks near Jogindernagar |
-| Mandi → Kullu (via Aut tunnel) | 80 km | Under widening in parts | Construction delays, one-lane stretches |
-| Kullu → Manali | 40 km | Decent highway | Weekend traffic jams in Kullu town |
+| Palampur → Mandi | About 90 km | Mixed; mostly good | Slow behind trucks near Jogindernagar |
+| Mandi → Kullu (via Aut tunnel) | About 64 km | Under widening in parts | Construction delays, one-lane stretches |
+| Kullu → Manali | About 40 km | Decent highway | Weekend traffic jams in Kullu town |
 
 During monsoon (July to September), landslides can occur on any section but are most common between Mandi and Aut. Always check local road conditions before starting.
 
@@ -343,9 +346,12 @@ If you are combining Dharamshala and Manali, give each place at least 2 to 3 nig
     image_alt: 'Kangra Valley landscape on the Dharamshala to Manali road',
     read_time: 9,
     featured: false,
-    meta_title: 'Dharamshala to Manali Distance: 230-250 km, 7-9 hrs (2026)',
-    meta_description: 'Dharamshala to Manali is 230-250 km, 7-9 hours. Bus from ₹400, taxi from ₹5,000. Three routes compared, with stops at Bir, Palampur and Baijnath.',
+    meta_title: 'Dharamshala to Manali Distance: 235 km, 7-9 hrs (2026)',
+    meta_description: 'Dharamshala to Manali is about 235 km (HPTDC), 7-9 hours. Bus from ₹400, taxi from ₹5,000. Three routes compared, with stops at Bir, Palampur and Baijnath.',
     related_slugs: ['himachal-itinerary-delhi-dharamshala-manali', 'bir-travel-guide', 'palampur-travel-guide', 'manali-in-december-january', 'rohtang-pass-atal-tunnel-status', 'manali-travel-guide', 'how-to-reach-manali', 'solang-valley-guide'],
+    sources: [
+      { title: 'Important distances from Dharamshala (HPTDC, Himachal Pradesh Tourism Development Corporation; checked 26 November 2026)', url: 'https://hptdc.hp.gov.in/access' },
+    ],
     faqs: [
       {
         question: 'Is there a direct bus from Dharamshala to Manali?',
@@ -353,7 +359,7 @@ If you are combining Dharamshala and Manali, give each place at least 2 to 3 nig
       },
       {
         question: 'How long does it take to drive from Dharamshala to Manali?',
-        answer: 'The drive takes about 7 to 9 hours for the 230 to 250 km journey via Palampur, Baijnath and Mandi. Add 1 to 2 hours if you detour through Bir. Weekend traffic around Kullu and construction zones near Aut can add further delays.',
+        answer: 'The drive takes about 7 to 9 hours for the roughly 235 km journey (HPTDC) via Palampur, Baijnath and Mandi. Add 1 to 2 hours if you detour through Bir. Weekend traffic around Kullu and construction zones near Aut can add further delays.',
       },
       {
         question: 'Should I break the Dharamshala to Manali journey?',
@@ -395,7 +401,7 @@ Jogiwara Road, McLeod Ganj. Run by a Japanese-Tibetan team, Lung Ta is a quieter
 Jogiwara Road. Despite the bakery-sounding name, this is a proper Tibetan restaurant upstairs. The **tingmo** (steamed Tibetan bread) served with spicy vegetables is a must-try. Good for a hearty lunch. Budget about ₹150 to ₹300 per person.
 
 ### Norling Cafe (Norbulingka Institute)
-Sidhbari, about 10 km from McLeod Ganj. Worth the trip if you are visiting the Norbulingka. Tibetan and continental dishes served in a beautiful garden setting. The **momos here are among the cleanest-tasting in the area**, made with care rather than speed. Budget about ₹300 to ₹500 per person.
+Sidhbari, about 15 km from McLeod Ganj. Worth the trip if you are visiting the Norbulingka. Tibetan and continental dishes served in a beautiful garden setting. The **momos here are among the cleanest-tasting in the area**, made with care rather than speed. Budget about ₹300 to ₹500 per person.
 
 ## Indian Restaurants
 

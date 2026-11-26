@@ -65,7 +65,7 @@ A note on fares: you will see many different figures online, and most are old or
 The lower station is on the **Kotwali Bazaar side of lower Dharamshala, near the Bypass Road**. Kotwali Bazaar is the main market of the lower town, a short way above the Dharamshala bus stand. Any local taxi driver will know it if you ask for the "ropeway" or "Skyway" station.
 
 - **From the Dharamshala bus stand:** a short taxi hop, or a walk uphill through the bazaar if you are travelling light.
-- **From Gaggal airport:** about 13 to 15 km by road. If you plan to ride up, ask your driver to drop you at the ropeway rather than in McLeod Ganj, but check first that it is running, or you will need a second taxi. Our [taxi page](/taxi) has fixed fares.
+- **From Gaggal airport:** about 13 to 17 km by road. If you plan to ride up, ask your driver to drop you at the ropeway rather than in McLeod Ganj, but check first that it is running, or you will need a second taxi. Our [taxi page](/taxi) has fixed fares.
 - **By car:** there is paid covered parking at the lower station (the official site listed ₹50 for a car for up to 2 hours when we checked). Space fills on busy weekends.
 
 ### McLeodganj Station (upper)

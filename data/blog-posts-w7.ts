@@ -24,8 +24,8 @@ For most people the choice is simple. Travelling solo or on a budget? Take an **
 | Driving time | 5.5-7 hrs with one or two breaks |
 | Bus time | 7-9 hrs (AC is usually quicker than ordinary) |
 | Main bus terminal | ISBT Sector 43, Chandigarh |
-| Nearest airport at the Dharamshala end | Kangra Airport, Gaggal (DHM), about 12-15 km from town |
-| Closest railhead on this route | Amb Andaura (Una district), about 95-100 km from Dharamshala |
+| Nearest airport at the Dharamshala end | Kangra Airport, Gaggal (DHM), about 13-17 km from town |
+| Closest railhead on this route | Amb Andaura (Una district), about 95-105 km from Dharamshala (our taxi route is 105 km) |
 | Best time to drive | Leave Chandigarh by 6-7 am to arrive by early afternoon |
 | Roads | Good highway to Una, then two-lane hill and valley road |
 
@@ -125,7 +125,7 @@ Is it worth it? Only sometimes. By the time you reach Chandigarh airport an hour
 
 There is no broad-gauge railway to Dharamshala. Your options:
 
-- **Amb Andaura (Una district):** the Vande Bharat Express from New Delhi to Amb Andaura stops at Chandigarh and Una, which makes it the fastest rail option from Chandigarh. From Amb Andaura, a taxi to Dharamshala is about 95-100 km and 2.5-3 hours (approx. ₹2,800-3,500). Check current timings and running days on IRCTC.
+- **Amb Andaura (Una district):** the Vande Bharat Express from New Delhi to Amb Andaura stops at Chandigarh and Una, which makes it the fastest rail option from Chandigarh. From Amb Andaura, a taxi to Dharamshala is about 105 km and 3-3.5 hours (approx. ₹2,800-3,500). Check current timings and running days on IRCTC.
 - **Pathankot:** works well from Amritsar or Jammu, but from Chandigarh it is a detour. Skip it unless you want to ride the narrow-gauge [Kangra Valley toy train](/blog/kangra-toy-train-guide), and check its current operating status first.
 
 ## What is the Dharamshala to Chandigarh distance and bus timing?
@@ -187,7 +187,7 @@ For more general questions about planning your visit, see our [FAQ page](/faq) a
       },
       {
         question: 'Is there a flight from Chandigarh to Dharamshala?',
-        answer: 'IndiGo has listed Chandigarh among its routes to Kangra Airport at Gaggal, about 12-15 km from Dharamshala. Frequency is low and changes by season, so check the airline website for current schedules.',
+        answer: 'IndiGo has listed Chandigarh among its routes to Kangra Airport at Gaggal, about 13-17 km from Dharamshala. Frequency is low and changes by season, so check the airline website for current schedules.',
       },
       {
         question: 'Which is the best route to drive from Chandigarh to Dharamshala?',
@@ -374,8 +374,8 @@ If your bus ends at the Dharamshala bus stand and you want to rest before explor
     id: 'blog-kangra-airport-gaggal-guide',
     slug: 'kangra-airport-gaggal-guide',
     title: 'Kangra Airport (Gaggal) 2026: Flights, Taxi to Dharamshala and McLeod Ganj, Delays and Tips',
-    excerpt: 'Kangra Airport (DHM) at Gaggal is the airport for Dharamshala: about 12-15 km from town and 20-22 km from McLeod Ganj. Which IndiGo routes are confirmed for 2026 (Delhi, Noida, Chandigarh), our fixed taxi fares from Rs 1,200, buses, weather delays and the road backups via Pathankot, Amritsar and Chandigarh.',
-    content: `**Short answer:** Kangra Airport (code **DHM**), also called **Gaggal Airport** or Dharamshala Airport, is at **Gaggal on the Pathankot-Mandi highway (NH 154)**, about **12-15 km from Dharamshala town** and **20-22 km from McLeod Ganj**. In 2026 **IndiGo** flies here from **Delhi**, **Noida (Jewar)** (daily since 1 July 2026) and **Chandigarh** (four days a week since 1 September 2026). Our fixed taxi fare from the airport is **₹1,200 to Dharamshala** (30-40 min, hatchback or sedan) and **₹1,500 (Alto) or ₹1,800 (Swift Dzire sedan) to McLeod Ganj** (45-60 min).
+    excerpt: 'Kangra Airport (DHM) at Gaggal is the airport for Dharamshala: about 13-17 km from town and 20-22 km from McLeod Ganj. Which IndiGo routes are confirmed for 2026 (Delhi, Noida, Chandigarh), our fixed taxi fares from Rs 1,200, buses, weather delays and the road backups via Pathankot, Amritsar and Chandigarh.',
+    content: `**Short answer:** Kangra Airport (code **DHM**), also called **Gaggal Airport** or Dharamshala Airport, is at **Gaggal on the Pathankot-Mandi highway (NH 154)**, about **13-17 km from Dharamshala town** and **20-22 km from McLeod Ganj**. In 2026 **IndiGo** flies here from **Delhi**, **Noida (Jewar)** (daily since 1 July 2026) and **Chandigarh** (four days a week since 1 September 2026). Our fixed taxi fare from the airport is **₹1,200 to Dharamshala** (30-40 min, hatchback or sedan) and **₹1,500 (Alto) or ₹1,800 (Swift Dzire sedan) to McLeod Ganj** (45-60 min).
 
 Kangra is a small airport with a short runway, so only turboprop aircraft land here. That means few seats, fares that rise fast close to the date, and flights that are sensitive to cloud and rain. This guide says what we could confirm for 2026 and what we could not. Checked on 24 October 2026.
 
@@ -443,7 +443,7 @@ These are **our fixed fares per vehicle** (not per person), from our [taxi page]
 
 | Route | Hatchback (Alto) | Sedan (Dzire) | SUV (Ertiga / Innova, up to 6) | Distance | Time |
 |---|---|---|---|---|---|
-| [Gaggal Airport to Dharamshala](/taxi/gaggal-airport-to-dharamshala-taxi) | ₹1,200 | ₹1,200 | ₹1,800 | 22 km | 30-40 min |
+| [Gaggal Airport to Dharamshala](/taxi/gaggal-airport-to-dharamshala-taxi) | ₹1,200 | ₹1,200 | ₹1,800 | 15 km | 30-40 min |
 | [Gaggal Airport to McLeod Ganj](/taxi/gaggal-airport-to-mcleod-ganj-taxi) | ₹1,500 | ₹1,800 | ₹2,200 | 22 km | 45-60 min |
 | [Gaggal Airport to Bir Billing](/taxi/gaggal-airport-to-bir-billing-taxi) | ₹3,000 | ₹3,500 | ₹4,500 | 65 km | 2-2.5 hrs |
 | [Kangra Railway Station to Dharamshala](/taxi/kangra-railway-station-to-dharamshala-taxi) | - | ₹1,000 | - | 20 km | 40 min |
@@ -507,9 +507,10 @@ Land in the morning and you can be at the Dalai Lama Temple by lunch. Our [one d
     read_time: 9,
     featured: false,
     meta_title: 'Kangra Airport (Gaggal) DHM: Flights & Taxi Fares 2026',
-    meta_description: 'Kangra Airport (DHM, Gaggal) is 12-15 km from Dharamshala, 20-22 km from McLeod Ganj. IndiGo flies Delhi, Noida, Chandigarh. Taxi from Rs 1,200.',
+    meta_description: 'Kangra Airport (DHM, Gaggal) is 13-17 km from Dharamshala, 20-22 km from McLeod Ganj. IndiGo flies Delhi, Noida, Chandigarh. Taxi from Rs 1,200.',
     related_slugs: ['how-to-reach-dharamshala', 'delhi-to-dharamshala-by-bus', 'chandigarh-to-dharamshala', 'where-to-stay-in-dharamshala'],
     sources: [
+      { title: 'Important distances from Dharamshala (HPTDC, Himachal Pradesh Tourism Development Corporation; checked 26 November 2026)', url: 'https://hptdc.hp.gov.in/access' },
       { title: 'Kangra Airport: codes, location, runway, expansion, AAI passenger figures (Wikipedia, checked 24 October 2026)', url: 'https://en.wikipedia.org/wiki/Kangra_Airport' },
       { title: 'IndiGo resumes Dharamshala-Chandigarh direct flight service (Daily Excelsior, 1 September 2026)', url: 'https://www.dailyexcelsior.com/indigo-resumes-dharamshala-chandigarh-direct-flight-service/' },
       { title: 'Kangra-Chandigarh IndiGo flight to resume from 1 September, four days a week (Himachal Dastak, 30 August 2026)', url: 'https://himachaldastak.com/kangra-chandigarh-indigo-flight-service-resume-september-1/' },
@@ -519,7 +520,7 @@ Land in the morning and you can be at the Dalai Lama Temple by lunch. Our [one d
     faqs: [
       {
         question: 'Where is Kangra Airport?',
-        answer: 'Kangra Airport is at Gaggal in Kangra district, Himachal Pradesh, on the Pathankot-Mandi highway (NH 154). It is about 12-15 km from Dharamshala town, 20-22 km from McLeod Ganj and about 8 km from Kangra town. Its code is DHM.',
+        answer: 'Kangra Airport is at Gaggal in Kangra district, Himachal Pradesh, on the Pathankot-Mandi highway (NH 154). It is about 13-17 km from Dharamshala town, 20-22 km from McLeod Ganj and about 8 km from Kangra town. Its code is DHM.',
       },
       {
         question: 'Is Gaggal Airport the same as Kangra Airport and Dharamshala Airport?',
@@ -535,7 +536,7 @@ Land in the morning and you can be at the Dalai Lama Temple by lunch. Our [one d
       },
       {
         question: 'How far is Kangra Airport from Dharamshala?',
-        answer: 'About 12-15 km from Dharamshala town, or 30-40 minutes by taxi. McLeod Ganj is further up the hill, about 20-22 km or 45-60 minutes from the airport.',
+        answer: 'About 13-17 km from Dharamshala town, or 30-40 minutes by taxi. McLeod Ganj is further up the hill, about 20-22 km or 45-60 minutes from the airport.',
       },
       {
         question: 'Are flights to Kangra Airport often cancelled?',
@@ -547,7 +548,7 @@ Land in the morning and you can be at the Dalai Lama Temple by lunch. Our [one d
       },
       {
         question: 'Does Dharamshala have an airport?',
-        answer: 'Yes. Dharamshala is served by Kangra Airport (code DHM), also called Gaggal Airport, at Gaggal about 12 to 15 km from Dharamshala town and 20 to 22 km from McLeod Ganj. IndiGo flies there from Delhi and a few other cities.',
+        answer: 'Yes. Dharamshala is served by Kangra Airport (code DHM), also called Gaggal Airport, at Gaggal about 13 to 17 km from Dharamshala town and 20 to 22 km from McLeod Ganj. IndiGo flies there from Delhi and a few other cities.',
       },
     ],
   },
@@ -768,7 +769,7 @@ The plan that works best for most travellers:
 | From - to | Approx. distance | Approx. time |
 |---|---|---|
 | McLeod Ganj - Dharamshala town | 9 km | 25-40 min |
-| McLeod Ganj - Norbulingka (Sidhbari) | 15-18 km | 40-50 min |
+| McLeod Ganj - Norbulingka (Sidhbari) | 15-17 km | 40-50 min |
 | Norbulingka - Kangra Fort | 20-25 km | 40-50 min |
 | Kangra Fort - Masroor temples | 30-35 km | 1-1.25 hrs |
 | Masroor - McLeod Ganj | 45-50 km | 1.5-2 hrs |

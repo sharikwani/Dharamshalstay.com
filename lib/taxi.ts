@@ -236,7 +236,7 @@ const ROUTE_NOTES: RouteNote[] = [
   {
     from: DHARAMSHALA, to: /^dalhousie$/i,
     notes: [
-      'Dalhousie is about 125 km and 4-5 hours away, via Gaggal, Shahpur, Nurpur and Banikhet. The first part is wide highway; after Nurpur the road climbs, and the last 8 km from Banikhet is short, steep and busy in season.',
+      'Dalhousie is about 125 km and 4-5 hours away by our taxi route (HPTDC lists 143 km), via Gaggal, Shahpur, Nurpur and Banikhet. The first part is wide highway; after Nurpur the road climbs, and the last 8 km from Banikhet is short, steep and busy in season.',
       'Khajjiar is another 22-24 km beyond Dalhousie. A same-day return is a long, tiring day, so we suggest at least one night, and in winter check road and snow conditions before leaving. Tell us if you want to continue to Chamba. See [Dalhousie and Khajjiar from Dharamshala](/blog/dalhousie-khajjiar-from-dharamshala).',
     ],
     notesHi: [

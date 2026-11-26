@@ -404,7 +404,7 @@ Thangka studios and shops along Jogiwara Road and Temple Road sell painted thang
 | Stop | What you see | Distance from McLeod Ganj (approx.) | Time needed |
 |---|---|---|---|
 | Kangra Art Museum, Dharamshala | Kangra miniatures, crafts, textiles | 9–10 km | 1 hr |
-| Norbulingka, Sidhbari | Thangka painting, statue making, gardens | 13–15 km | 2 hrs |
+| Norbulingka, Sidhbari | Thangka painting, statue making, gardens | 15–17 km | 2 hrs |
 | Kangra Fort and museum | History of the Katoch rulers | 20–25 km | 2 hrs |
 | Andretta | Sobha Singh gallery, pottery | 50–55 km | 2–3 hrs |
 | Tira Sujanpur | Sansar Chand's old capital | Approx. 80–90 km | Half day |

@@ -55,7 +55,7 @@ If you need a bigger or premium vehicle, or a pickup somewhere unusual, ask when
 
 The fares above are **fixed one-way fares**, which is what most people need: you are leaving the hills and catching a flight or train in Delhi, or heading home. If you want the car and driver to stay with you, for example a few days in Delhi and then back to Himachal, or a multi-day [Himachal circuit](/blog/himachal-itinerary-delhi-dharamshala-manali), that is quoted separately based on days and distance. Tell us the full plan and we will give one price.
 
-Coming the other way? The [Delhi to Dharamshala taxi](/taxi/delhi-to-dharamshala-taxi) is the same route in reverse, also from ₹10,000.
+Coming the other way? The [Delhi to Dharamshala taxi](/taxi/delhi-to-dharamshala-taxi) is the same route in reverse, but it is priced separately: ₹17,000 for a sedan on our live fare as of 26 November 2026.
 
 ## Which Route Does the Taxi Take?
 

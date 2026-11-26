@@ -7,9 +7,9 @@ export const blogPostsW8: BlogPost[] = [
     slug: 'dalhousie-khajjiar-from-dharamshala',
     title: 'Dalhousie & Khajjiar from Dharamshala: Route, Day Trip or Overnight (2026)',
     excerpt: 'How to do Dalhousie and Khajjiar from Dharamshala: the road route, honest drive times, whether a day trip works, what to see, adding Chamba, and winter road conditions.',
-    content: `**Short answer:** Dalhousie is roughly **115–125 km from Dharamshala**, about **4 to 4.5 hours by road**, and Khajjiar is another 22–24 km beyond. A same-day loop is around 280 km and 9 to 10 hours in the car, so we recommend an overnight stay. A sedan taxi from Dharamshala is approx. ₹5,500–7,000 for a day trip or ₹8,000–11,000 for two days.
+    content: `**Short answer:** Dalhousie is about **125–143 km depending on route (HPTDC lists 143 km) from Dharamshala**, about **4 to 4.5 hours by road**, and Khajjiar is another 22–24 km beyond. A same-day loop is around 280 km and 9 to 10 hours in the car, so we recommend an overnight stay. A sedan taxi from Dharamshala is approx. ₹5,500–7,000 for a day trip or ₹8,000–11,000 for two days.
 
-Dalhousie is roughly **115–125 km from Dharamshala**, about **4 to 4.5 hours by road** via Shahpur, Nurpur and Banikhet. Khajjiar, the meadow people call "Mini Switzerland", is another **22–24 km (about 1 hour)** beyond Dalhousie. That means a same-day Dharamshala → Dalhousie → Khajjiar → Dharamshala loop is around 280 km and 9 to 10 hours in the car. It is possible, but it is a tiring day where you see Khajjiar for an hour and Dalhousie through a windscreen.
+Dalhousie is about **125–143 km depending on route (HPTDC lists 143 km) from Dharamshala**, about **4 to 4.5 hours by road** via Shahpur, Nurpur and Banikhet. Khajjiar, the meadow people call "Mini Switzerland", is another **22–24 km (about 1 hour)** beyond Dalhousie. That means a same-day Dharamshala → Dalhousie → Khajjiar → Dharamshala loop is around 280 km and 9 to 10 hours in the car. It is possible, but it is a tiring day where you see Khajjiar for an hour and Dalhousie through a windscreen.
 
 Our honest advice: **do it as an overnight (or two nights)**. Stay one night in Dalhousie or Khajjiar, see Khajjiar in the soft morning light before the crowds, and either return to Dharamshala or continue to Chamba. Below is the full route, a day-trip plan for people who are short on time, what is actually worth seeing, and how winter snow changes everything. Distances, times and costs are approx. as of 2026.
 
@@ -17,7 +17,7 @@ Our honest advice: **do it as an overnight (or two nights)**. Stay one night in 
 
 | | |
 |---|---|
-| Dharamshala → Dalhousie | approx. 115–125 km, 4–4.5 hrs |
+| Dharamshala → Dalhousie | approx. 125–143 km depending on route (HPTDC lists 143 km), 4–4.5 hrs |
 | Dalhousie → Khajjiar | approx. 22–24 km, 45 min–1 hr |
 | Khajjiar → Chamba | approx. 22–25 km, 1 hr |
 | Dalhousie altitude | approx. 1,950–2,000 m (town spread over five hills) |
@@ -32,7 +32,7 @@ Our honest advice: **do it as an overnight (or two nights)**. Stay one night in 
 The standard route runs **Dharamshala → Gaggal → Shahpur → Nurpur → Jassur → Banikhet → Dalhousie**. From Dharamshala you drop down past Gaggal and the [Kangra Airport](/blog/kangra-airport-gaggal-guide), then through Shahpur and Nurpur on the Pathankot–Mandi highway. At Jassur/Chakki side you leave the highway and climb through Banikhet to Dalhousie.
 
 - **Dharamshala to Nurpur (approx. 65–70 km):** mostly wide highway, 1.5–2 hrs. Nurpur Fort is right on the route if you want a 30-minute stop.
-- **Nurpur to Banikhet (approx. 35–40 km):** the climb begins after the plains-edge stretch near Jassur. 1–1.5 hrs.
+- **Nurpur to Banikhet (approx. 50–55 km):** the climb begins after the plains-edge stretch near Jassur. 1.5–2 hrs.
 - **Banikhet to Dalhousie (approx. 8 km):** short, steep, busy in season. Banikhet is also where many budget hotels and the turn for Chamba sit.
 
 Fuel up and use an ATM at Dharamshala, Shahpur or Nurpur. Dalhousie and Banikhet have pumps and ATMs, but Khajjiar has limited facilities. For more on hill driving and hiring, see our [local transport guide](/blog/local-transport-dharamshala).
@@ -103,7 +103,7 @@ Chamba town is approx. 22–25 km below Khajjiar on the Ravi river and is far ri
 
 ### Returning to Dharamshala from Chamba
 
-- **Via Banikhet and Nurpur:** the reliable all-season route, approx. 165–180 km and 5.5–6.5 hrs.
+- **Via Banikhet and Nurpur:** the reliable all-season route, approx. 165–185 km depending on route (HPTDC lists 185 km) and 5.5–6.5 hrs.
 - **Via Jot Pass:** the shorter mountain road over Jot (approx. 2,400 m) towards Chowari and the Dharamshala side. It is scenic and can save time, but it is narrow, sometimes broken, and **closed or risky after snowfall from roughly December to March**. Ask your driver and local police about conditions the day before.
 
 ## Winter: Snow and Road Conditions
@@ -152,7 +152,7 @@ Dalhousie–Khajjiar works well at the start or end of a Kangra trip because it 
     tags: ['Dalhousie', 'Khajjiar', 'Chamba', 'Day trip', 'Road trip', 'Snow'],
     author: 'Dharamshala Stay Team',
     published_at: '2026-09-17',
-    updated_at: '2026-10-02',
+    updated_at: '2026-11-26',
     image: placeImage('khajjiar'),
     image_alt: 'Khajjiar meadow ringed by deodar forest near Dalhousie, a popular trip from Dharamshala',
     read_time: 10,
@@ -160,10 +160,13 @@ Dalhousie–Khajjiar works well at the start or end of a Kangra trip because it 
     meta_title: 'Dalhousie & Khajjiar from Dharamshala: Route & Plan 2026',
     meta_description: 'Dharamshala to Dalhousie and Khajjiar: route, distance, drive times, day trip vs overnight, Chamba extension, taxi costs and winter road conditions.',
     related_slugs: ['five-day-kangra-valley-itinerary', 'places-to-visit-in-kangra', 'dharamshala-in-winter-snowfall', 'best-places-to-visit-in-himachal-in-winter'],
+    sources: [
+      { title: 'Important distances from Dharamshala (HPTDC, Himachal Pradesh Tourism Development Corporation; checked 26 November 2026)', url: 'https://hptdc.hp.gov.in/access' },
+    ],
     faqs: [
       {
         question: 'How far is Dalhousie from Dharamshala?',
-        answer: 'Dalhousie is approx. 115 to 125 km from Dharamshala by road via Shahpur, Nurpur and Banikhet. The drive takes about 4 to 4.5 hours in normal traffic.',
+        answer: 'Dalhousie is approx. 125 to 143 km from Dharamshala depending on route (HPTDC lists 143 km) by road via Shahpur, Nurpur and Banikhet. The drive takes about 4 to 4.5 hours in normal traffic.',
       },
       {
         question: 'Can I do Dalhousie and Khajjiar as a day trip from Dharamshala?',
@@ -183,7 +186,7 @@ Dalhousie–Khajjiar works well at the start or end of a Kangra trip because it 
       },
       {
         question: 'Dalhousie se Dharamshala kitni dur hai?',
-        answer: 'Dalhousie Dharamshala se sadak ke raste lagbhag 115 se 125 km door hai, Shahpur, Nurpur aur Banikhet hote hue, aur lagbhag 4 se 4.5 ghante lagte hain. Khajjiar Dalhousie se 22 se 24 km aage hai.',
+        answer: 'Dalhousie Dharamshala se sadak ke raste lagbhag 125 se 143 km door hai (HPTDC ke anusar 143 km), Shahpur, Nurpur aur Banikhet hote hue, aur lagbhag 4 se 4.5 ghante lagte hain. Khajjiar Dalhousie se 22 se 24 km aage hai.',
       },
     ],
   },
@@ -814,7 +817,7 @@ Booking questions are answered in our [FAQ](/faq).`,
 
 The **HPCA Cricket Stadium** in Dharamshala is often called the most beautiful cricket ground in the world: a compact stadium at about **1,457 m**, with the snow-covered **Dhauladhar range** rising directly behind the pavilion. On **non-match days** you can usually walk into the stands; on **match days** it holds a crowd of about 21,000-23,000 with strict security, road closures and no walk-ins.
 
-The stadium is in **Jawahar Nagar, lower Dharamshala**, about **1.5-2 km below Kotwali Bazaar**, **8-10 km by road from McLeod Ganj** and roughly **12-14 km from Kangra Airport (Gaggal)**. The **Dharamshala War Memorial** is next door, so the two are an easy combined visit.
+The stadium is in **Jawahar Nagar, lower Dharamshala**, about **1.5-2 km below Kotwali Bazaar**, **8-10 km by road from McLeod Ganj** and roughly **13-17 km from Kangra Airport (Gaggal)**. The **Dharamshala War Memorial** is next door, so the two are an easy combined visit.
 
 ## Quick Facts: Dharamshala Stadium Timings, Fee and Location
 
@@ -829,7 +832,7 @@ The stadium is in **Jawahar Nagar, lower Dharamshala**, about **1.5-2 km below K
 | Weekly closed day | none listed by any official source we checked |
 | Time needed | 30-60 minutes |
 | From McLeod Ganj | 8-10 km by road, 25-40 min by taxi |
-| From Kangra Airport | 12-14 km, 30-40 min |
+| From Kangra Airport | 13-17 km, 30-40 min |
 | Opened | 2003 |
 | Capacity | about 21,200-23,000 |
 | Altitude | about 1,457 m (4,780 ft) |
@@ -1051,7 +1054,7 @@ For other questions, see our [FAQ](/faq).`,
       },
       {
         question: 'How do I reach HPCA stadium Dharamshala?',
-        answer: 'Take a taxi from McLeod Ganj (approx. Rs 400 to 600 one way in 2026), a local bus to Kotwali Bazaar and a short walk or auto, or the Dharamshala Skyway cable car down to Kotwali Bazaar and an auto. From Kangra Airport at Gaggal it is about 12 to 14 km, 30 to 40 minutes by taxi.',
+        answer: 'Take a taxi from McLeod Ganj (approx. Rs 400 to 600 one way in 2026), a local bus to Kotwali Bazaar and a short walk or auto, or the Dharamshala Skyway cable car down to Kotwali Bazaar and an auto. From Kangra Airport at Gaggal it is about 13 to 17 km, 30 to 40 minutes by taxi.',
       },
       {
         question: 'Is photography allowed at HPCA stadium? Can I fly a drone?',

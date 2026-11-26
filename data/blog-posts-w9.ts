@@ -19,7 +19,7 @@ This is our master guide. It covers the whole picture in one read: areas, histor
 |---|---|
 | **State / district** | Himachal Pradesh, Kangra district |
 | **Altitude** | Lower Dharamshala approx. 1,250 to 1,450 m; McLeod Ganj approx. 2,000 m; Triund approx. 2,850 m |
-| **Nearest airport** | Kangra (Gaggal), approx. 13 km from lower Dharamshala, 18 km from McLeod Ganj |
+| **Nearest airport** | Kangra (Gaggal), approx. 13-17 km from lower Dharamshala, 22 km from McLeod Ganj |
 | **Nearest big railhead** | Pathankot, approx. 85 km (2.5 to 3 hours by road) |
 | **From Delhi** | approx. 475 to 500 km; 10 to 12 hours by overnight bus or car |
 | **Best months** | March to June and late September to November; December to February for snow views |
@@ -145,7 +145,7 @@ Read more: [Best hotels in Dharamshala](/blog/best-hotels-in-dharamshala), [Best
 | Bhagsu temple and waterfall | 2 km walk | 1.5 to 2 h | Free |
 | St. John in the Wilderness | 2 km | 30 to 45 min | Free |
 | Naddi viewpoint | 4 km | 1 h around sunset | Free |
-| Norbulingka Institute | 12 to 15 km | 1.5 to 2 h | Small fee |
+| Norbulingka Institute | 15 to 17 km | 1.5 to 2 h | Small fee |
 | Kangra Fort | 22 to 25 km | 1.5 to 2 h | Ticketed, check at gate |
 | Masroor temples | 40 to 45 km | 1 to 1.5 h | Small ASI fee |
 | HPCA stadium | 9 to 10 km | 30 to 60 min | Check at gate on non-match days |
@@ -265,7 +265,7 @@ Read [five-day Kangra Valley itinerary](/blog/five-day-kangra-valley-itinerary) 
 | Kangra town | 18 to 20 km | 45 min | Fort, Brajeshwari Devi |
 | Masroor | 40 to 45 km | 1.5 h | Rock-cut temples |
 | Pong Dam | 60 to 90 km depending on point | 2 to 2.5 h | Winter migratory birds |
-| Dalhousie and Khajjiar | 120 to 130 km | 4 to 5 h | Colonial hill station, meadow |
+| Dalhousie and Khajjiar | 125 to 143 km (HPTDC lists 143 km) | 4 to 5 h | Colonial hill station, meadow |
 | Barot Valley | approx. 120 km via Bir/Joginder Nagar | 4 h | Remote river valley, trout |
 | Manali | approx. 235 km | 7 to 8 h | Next stop on a Himachal circuit |
 | Amritsar | approx. 200 km | 5 to 6 h | Golden Temple |
@@ -291,7 +291,7 @@ The best Dharamshala trips are slow. Pick one base, walk a lot, eat at the small
       { question: 'Is Dharamshala the same as McLeod Ganj?', answer: 'No. Dharamshala is the wider town and municipal area; McLeod Ganj is the upper part, about 9 km uphill, where the Dalai Lama lives and most tourist hotels, cafes and monasteries are. Most visitors stay in McLeod Ganj or the villages around it.' },
       { question: 'How many days are enough for Dharamshala?', answer: 'Three days covers McLeod Ganj, Bhagsu, Dharamkot and a Triund day hike. Five to seven days lets you add the Kangra Valley, Palampur, Bir Billing and a slower pace.' },
       { question: 'What is the best month to visit Dharamshala?', answer: 'October and early November give the clearest mountain views and stable trekking weather. March to April is also excellent. May and June are pleasant but crowded, and July to mid-September brings very heavy monsoon rain.' },
-      { question: 'What is the nearest airport to Dharamshala?', answer: 'Kangra Airport at Gaggal, about 13 km from lower Dharamshala and 18 km from McLeod Ganj. Flights mainly connect to Delhi; schedules change seasonally, so check current airline timetables.' },
+      { question: 'What is the nearest airport to Dharamshala?', answer: 'Kangra Airport at Gaggal, about 13-17 km from lower Dharamshala and 22 km from McLeod Ganj. Flights mainly connect to Delhi; schedules change seasonally, so check current airline timetables.' },
       { question: 'Can I see the Dalai Lama in Dharamshala?', answer: 'Only at officially announced public teachings or events, which are listed on his official website. There is no daily public appearance, and security rules at teachings are strict, including restrictions on phones and cameras.' },
       { question: 'Is Dharamshala safe for tourists?', answer: 'Yes, it is considered one of the safer hill destinations in India. The main risks are weather, landslides in monsoon, slippery trails and mountain roads, plus monkeys snatching food.' },
     ],
@@ -301,7 +301,7 @@ The best Dharamshala trips are slow. Pick one base, walk a lot, eat at the small
     slug: 'mcleod-ganj-complete-guide',
     title: 'McLeod Ganj Complete Guide (2026): Streets, Sights, Food, Stays and Day Plans',
     excerpt: "The definitive McLeod Ganj guide: how the town is laid out street by street, Tibetan life and etiquette, sights, cafes and food, where to stay, the best walks, local rules and ready-made day plans.",
-    content: `**Short answer:** McLeod Ganj is the small, steep Tibetan town at approx. **2,000 m** where the 14th Dalai Lama has lived since 1960, about 9 to 10 km by road above lower Dharamshala and approx. 18 km (45 minutes by taxi) from Gaggal airport. Its heart is the Tsuglagkhang Complex (free entry) and the 30 to 45 minute Lingkhor kora. It is walkable but steep, and best for first-timers, culture, food and access to Bhagsu, Dharamkot, Naddi and Triund.
+    content: `**Short answer:** McLeod Ganj is the small, steep Tibetan town at approx. **2,000 m** where the 14th Dalai Lama has lived since 1960, about 9 to 10 km by road above lower Dharamshala and approx. 22 km (45 minutes by taxi) from Gaggal airport. Its heart is the Tsuglagkhang Complex (free entry) and the 30 to 45 minute Lingkhor kora. It is walkable but steep, and best for first-timers, culture, food and access to Bhagsu, Dharamkot, Naddi and Triund.
 
 McLeod Ganj (also written McLeodganj, and called "Little Lhasa" or Upper Dharamshala) is the small, steep Tibetan town above Dharamshala where the 14th Dalai Lama has lived since 1960. In practical terms it is a hub of about half a dozen lanes radiating from one crowded main square, wrapped around a hill, with the Tsuglagkhang temple at the bottom of one lane, the Bhagsu and Dharamkot villages above another, and forest walks in every direction. You can cross the centre on foot in ten minutes, yet still find something new on a tenth visit.
 
@@ -313,7 +313,7 @@ This guide is the deep dive. It explains how the streets connect (the thing that
 |---|---|
 | **Altitude** | approx. 2,000 m (main square) |
 | **Distance from lower Dharamshala** | approx. 9 to 10 km by road via the Cantt road; approx. 4 to 5 km on the steeper Gangchen Kyishong link |
-| **From Gaggal airport** | approx. 18 km, 45 minutes by taxi |
+| **From Gaggal airport** | approx. 22 km, 45 minutes by taxi |
 | **Population feel** | Tibetan, Indian and international mix; heavy tourist footfall in summer and on long weekends |
 | **Walkable?** | Yes, but steep. Comfortable shoes essential |
 | **Main religious site** | Tsuglagkhang Complex (Dalai Lama Temple), free entry |

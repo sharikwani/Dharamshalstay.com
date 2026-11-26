@@ -118,7 +118,7 @@ export const faqsExtra1: FAQCategory[] = [
       {
         question: 'Can I visit Dalhousie and Khajjiar from Dharamshala?',
         answer:
-          "Yes, but it is a long trip. Dalhousie is roughly 115-125 km from Dharamshala, about 4-5 hours by road, and Khajjiar is a further 22-24 km. A same-day return is possible but exhausting, so most travellers stay one or two nights in Dalhousie. Winter snow can close the Dalhousie-Khajjiar road for short periods, and monsoon landslides affect the route, so check conditions first.",
+          "Yes, but it is a long trip. Dalhousie is roughly 125-143 km depending on route (HPTDC lists 143 km) from Dharamshala, about 4-5 hours by road, and Khajjiar is a further 22-24 km. A same-day return is possible but exhausting, so most travellers stay one or two nights in Dalhousie. Winter snow can close the Dalhousie-Khajjiar road for short periods, and monsoon landslides affect the route, so check conditions first.",
         link: { href: '/blog/dalhousie-khajjiar-from-dharamshala', label: 'Dalhousie and Khajjiar trip' },
       },
       {
